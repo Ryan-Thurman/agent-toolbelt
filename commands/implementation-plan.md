@@ -1,0 +1,27 @@
+---
+description: Create a concise implementation plan for a task or feature ticket
+argument-hint: "<ticket-or-task-context>"
+---
+
+# /implementation-plan
+
+Create a concise implementation plan for the selected ticket or task.
+
+**Arguments:** `$ARGUMENTS`
+
+Required output:
+1. Summary of the change
+2. Files/repos likely impacted
+3. Step-by-step implementation plan
+4. Test-first plan: what failing or missing test should prove the behavior
+5. Verification commands to run before PR
+6. Risks
+7. Questions/blockers
+
+Feature delivery awareness:
+- If feature metadata exists, include feature ID, target release, related SDD
+  section, doc delta required yes/no/unknown, QA evidence needed, and PR
+  traceability notes.
+- If doc delta is unknown, flag it before implementation.
+- If behavior changes but no test can be written, document the reason and the
+  manual or browser verification that will replace it.

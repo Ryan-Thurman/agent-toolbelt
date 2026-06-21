@@ -1,0 +1,12 @@
+---
+description: Release-scoped document control rules
+alwaysApply: true
+---
+
+All controlled feature docs must include feature ID, target release, document
+type, document status, owner, source master record, and release eligibility.
+
+Future-release docs must not be included in the current release manifest.
+
+Only docs listed in the release manifest and marked
+`APPROVED_FOR_RELEASE` are eligible for release packaging.

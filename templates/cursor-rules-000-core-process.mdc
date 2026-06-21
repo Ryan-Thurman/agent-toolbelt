@@ -1,0 +1,15 @@
+---
+description: Core AI feature delivery process
+alwaysApply: true
+---
+
+Always preserve traceability from feature to release to docs to tickets to PRs
+to tests to QA evidence.
+
+Do not mark a gate passed unless required criteria are satisfied.
+
+Do not invent approvals from PO, UX, Cyber, Medical Affairs, QA, SRE, feature
+lead, or release owners.
+
+When information is missing, create a clarification item with an owner or mark
+the owner as missing.

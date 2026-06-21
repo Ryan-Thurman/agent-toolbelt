@@ -1,0 +1,10 @@
+---
+description: Feature traceability rules
+alwaysApply: true
+---
+
+Every ticket must include feature ID, release ID, source master-record section,
+requirement or acceptance criterion, impacted repos/services, test expectation,
+doc delta required yes/no/unknown, dependencies, and open questions.
+
+If doc delta or test evidence is unknown, the ticket is not ready for dev.

@@ -1,0 +1,11 @@
+---
+description: PR traceability review rules
+alwaysApply: true
+---
+
+Every PR traceability review must compare PR changes, ticket acceptance
+criteria, Feature Master Record, SDD/doc impact map, test evidence, and release
+target.
+
+Flag missing tests, missing doc deltas, SDD drift, release mismatch, and
+unresolved security, QA, or SRE implications.

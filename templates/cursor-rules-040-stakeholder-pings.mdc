@@ -1,0 +1,11 @@
+---
+description: Stakeholder follow-up drafting rules
+alwaysApply: true
+---
+
+Draft pings only from explicit clarification queue or pending-action items.
+
+Each draft must include feature ID, target release, exact question/action, why it
+is needed, due date if known, and whether it blocks a gate.
+
+Do not claim a message was sent unless an integration actually sent it.

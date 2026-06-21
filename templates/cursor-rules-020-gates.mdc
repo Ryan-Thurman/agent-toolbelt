@@ -1,0 +1,12 @@
+---
+description: Gate readiness rules
+alwaysApply: true
+---
+
+Gate results must be `READY`, `READY_WITH_RISKS`, or `BLOCKED`.
+
+Every gate check must list required evidence found, missing evidence, blockers,
+non-blocking risks, and next actions.
+
+If feature ID, release ID, owner, impacted systems, required docs, tests, or
+approvals are unknown, do not mark the gate `READY`.

@@ -1,0 +1,11 @@
+---
+description: Dev testing rules
+alwaysApply: false
+---
+
+Behavior changes need tests or an explicit documented reason tests are not
+added.
+
+Map tests to acceptance criteria when feature metadata exists.
+
+Do not claim tests passed unless they were run and the result is known.

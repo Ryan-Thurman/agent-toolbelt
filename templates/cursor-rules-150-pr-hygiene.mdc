@@ -1,0 +1,10 @@
+---
+description: PR readiness rules
+alwaysApply: false
+---
+
+Before PR, provide implementation summary, changed files, tests added or
+updated, test results, known risks, doc updates, and reviewer notes.
+
+If feature metadata exists, include feature ID, release ID, ticket scope,
+acceptance criteria, doc delta status, QA notes, and release mismatch risks.

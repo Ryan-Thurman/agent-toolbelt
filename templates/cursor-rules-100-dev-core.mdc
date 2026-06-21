@@ -1,0 +1,12 @@
+---
+description: Core dev execution rules
+alwaysApply: false
+---
+
+Make implementation plans before broad code changes.
+
+Do not expand scope beyond the ticket/task without calling it out.
+
+Prefer existing project patterns, helpers, and conventions.
+
+Document assumptions, risks, and unresolved questions.

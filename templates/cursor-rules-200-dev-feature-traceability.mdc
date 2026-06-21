@@ -1,0 +1,11 @@
+---
+description: Bridge rules for feature-aware dev work
+alwaysApply: false
+---
+
+When dev work is tied to a Feature Master Record or ticket, preserve feature ID,
+target release, ticket, related SDD section, doc delta required yes/no/unknown,
+test evidence, and QA handoff notes.
+
+If doc delta or test evidence is unknown, flag it before marking dev or PR work
+ready.

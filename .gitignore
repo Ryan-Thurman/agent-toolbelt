@@ -1,0 +1,9 @@
+.DS_Store
+
+# Local scratch and cloned external material should not be published.
+/repos/
+/notes/
+/grab-repos.sh
+/repos.txt
+/reference.md
+/roadmap.md

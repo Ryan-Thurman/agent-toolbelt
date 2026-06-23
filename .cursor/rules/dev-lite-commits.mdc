@@ -1,0 +1,74 @@
+---
+description: Commit rules for the lightweight AI-assisted dev workflow
+alwaysApply: false
+---
+
+# Dev Lite Commit Rules
+
+This workflow uses small, focused commits.
+
+## Branch Safety
+
+Do not push directly to `main`, `master`, or the repository default branch
+during this workflow unless the user explicitly asks for that exact behavior.
+
+Before implementation, check the current branch. If work is on the default
+branch, create or ask to create a focused feature/fix branch such as
+`dev/<short-feature-name>` or `fix/<short-bug-name>`.
+
+Keep commits on the feature/fix branch. After final PR readiness review passes,
+push the branch if needed and open a PR or provide the exact PR command and
+description for the user to run.
+
+Do not merge the PR, squash, rebase public history, or push to the default
+branch unless the user explicitly asks.
+
+## Commit Timing
+
+Commit after each completed task.
+
+Commit again after phase review fixes, if any.
+
+Do not combine unrelated tasks into one commit.
+
+## Commit Scope
+
+Each commit should map to one of these:
+
+- One completed task
+- One test-only improvement
+- One bug fix found during phase review
+- One review-fix batch after a phase review
+- One cleanup/refactor explicitly called out in the plan
+
+## Preferred Commit Format
+
+Use concise conventional-style messages when possible:
+
+```text
+feat: add [task summary]
+fix: address [issue summary]
+test: add coverage for [behavior]
+refactor: simplify [area]
+docs: update [doc or README area]
+chore: update [tooling/config]
+```
+
+## Commit Summary Should Include
+
+When suggesting a commit, include:
+
+- What changed
+- Why it changed
+- Tests/checks run
+- Any known risks
+
+## Avoid Committing
+
+Do not commit:
+
+- Temporary debugging
+- Generated noise
+- Unrelated formatting
+- Half-finished task work
+- Future-phase work mixed into current task work

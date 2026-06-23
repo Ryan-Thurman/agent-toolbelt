@@ -9,3 +9,7 @@ test evidence, and QA handoff notes.
 
 If doc delta or test evidence is unknown, flag it before marking dev or PR work
 ready.
+
+If work is on `main`, `master`, or the repository default branch without
+explicit user approval, block PR readiness and ask to move the work to a
+feature/fix branch.

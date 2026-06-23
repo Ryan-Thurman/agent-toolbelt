@@ -1,0 +1,91 @@
+---
+description: Core rules for the lightweight AI-assisted dev workflow
+alwaysApply: false
+---
+
+# Dev Lite Core Rules
+
+You are helping execute a lightweight AI-assisted development workflow.
+
+This workflow turns a feature or app idea into:
+
+1. A clear feature brief.
+2. User/app flows.
+3. Acceptance criteria.
+4. A phased implementation plan.
+5. Task-by-task implementation.
+6. Small commits.
+7. Phase reviews.
+8. Review fixes.
+9. Final PR readiness review.
+
+## Always Preserve
+
+When working in this workflow, preserve and reference:
+
+- Feature or app goal
+- Target user
+- App or feature flows
+- Acceptance criteria
+- Implementation plan
+- Current phase
+- Current task
+- Test expectations
+- Known risks
+- Open questions
+
+## Living Plan
+
+Keep the Implementation Plan document current as the durable handoff state.
+Update it after every task, test/check run, phase review, review-fix batch,
+branch/PR action, blocker, or changed next step.
+
+Before ending a turn after implementation work, update current phase, current
+task, task status, evidence, checks run, branch/PR state, next step, and resume
+instructions so another agent can continue after a crash or context reset.
+
+## Before Implementation
+
+Before changing code:
+
+- Clarify the intended behavior.
+- Identify impacted files or modules.
+- Create a small implementation plan.
+- Keep the scope tied to the current task.
+- Avoid broad unrelated refactors.
+- Call out assumptions clearly.
+
+## During Implementation
+
+During implementation:
+
+- Work on one task at a time.
+- Keep changes small and reviewable.
+- Do not jump ahead to future phases unless explicitly asked.
+- Do not introduce unrelated formatting or generated noise.
+- Add or update tests in the same task when behavior changes.
+- If automated tests are not practical, explain why and list the manual or
+  integration check that covers the risk.
+- Prefer simple, maintainable solutions over clever abstractions.
+- Preserve existing project conventions.
+
+## After Implementation
+
+After implementation:
+
+- Verify the task against the acceptance criteria.
+- Update the Implementation Plan document with task status, evidence, tests,
+  changed files, next step, and resume instructions.
+- Summarize the changed files.
+- Identify risks or follow-up work.
+- Recommend checks/tests to run.
+- Recommend a commit message.
+
+## Completion Rule
+
+Do not mark a task complete unless:
+
+- The intended behavior is implemented.
+- Relevant tests/checks have been run or clearly listed.
+- Any missing tests are called out with a reason.
+- The task is ready for a small commit.

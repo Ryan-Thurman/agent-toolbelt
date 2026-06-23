@@ -8,6 +8,8 @@ self-contained, copy-pasteable workflow docs or scripts.
   lifecycle with refinement, development, QA, and release documentation gates.
 - `cursor-first-ai-feature-delivery.md` - how to package the delivery process as
   Cursor rules, slash commands, workflow recipes, and templates.
+- `dev-lite-feature-workflow.md` - lightweight feature/app loop from intake to
+  phased implementation, phase review, and final PR review.
 - `dev-ticket-to-pr.md` - bridge workflow from refined ticket through
   implementation, tests, doc deltas, diff review, and PR traceability.
 

@@ -29,6 +29,16 @@ back to it.
 - Keep pure dev work lightweight, but when feature metadata exists preserve
   feature ID, target release, doc-delta expectations, test evidence, and PR
   traceability.
+- For dev execution, stop after producing an implementation plan and wait for
+  user approval before coding unless the user already explicitly asked to
+  implement after the plan.
+- Treat the implementation plan as durable handoff state. Update current state,
+  task status, evidence, checks, blockers, branch/PR state, and resume
+  instructions after every meaningful dev step.
+- Do not push directly to `main`, `master`, or the repository default branch
+  during feature delivery unless the user explicitly asks for that exact
+  behavior. Use a feature/fix branch, run PR readiness and traceability checks,
+  then open a PR.
 - Prefer the smallest useful command for the current state. Use
   `/workflow-router` when the next step is unclear.
 
@@ -100,9 +110,19 @@ queue, and target release. Produce:
 - PR checklist
 
 If `doc_delta_required` or test evidence is unknown, flag it before coding.
-When behavior is testable, prefer writing/updating the failing test before
-implementation. For browser/user-flow changes, use `/webapp-test` or equivalent
+After producing the plan, stop for user review and approval before changing
+code unless implementation was already explicitly requested. When behavior is
+testable, write or update the matching tests as part of the implementation work,
+preferably before or alongside the behavior change. Do not defer all test work
+to the end. For browser/user-flow changes, use `/webapp-test` or equivalent
 project browser evidence before PR readiness.
+Before implementation, confirm the current branch. If work is on `main`,
+`master`, or the repository default branch, create or ask to create a focused
+feature/fix branch.
+During implementation, keep `../../templates/implementation-plan-template.md`
+or the project-specific implementation plan updated with current step, current
+task, task status, evidence, checks run, blockers, next step, and resume
+instructions so another agent can continue after a crash or context reset.
 Use `../../templates/implementation-plan-template.md` for persistent plans.
 
 ## When Fleshing Out A Feature
@@ -150,7 +170,8 @@ When reviewing a PR or completed implementation, compare:
 - Release target and document statuses
 
 Flag behavior changes with missing tests, missing doc deltas, release mismatch,
-or unresolved security/QA/SRE implications. Use
+default-branch work without explicit approval, or unresolved security/QA/SRE
+implications. Use
 `../../templates/pr-traceability-review-template.md` for persistent reports.
 
 ## QA and Release

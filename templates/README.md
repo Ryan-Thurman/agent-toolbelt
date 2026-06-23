@@ -8,6 +8,11 @@ folder. The normal first artifact is `feature-master-record.md`; see
 `../docs/tutorial.md` for the full path.
 
 - `pr-review.md` - per-repo review priority config.
+- `dev-feature-brief.md` - lightweight feature/app brief with flows and
+  acceptance criteria.
+- `dev-implementation-plan.md` - phased dev-lite implementation plan.
+- `dev-phase-review.md` - phase review result and findings template.
+- `dev-pr-review.md` - final PR readiness review template.
 - `feature-master-record.md` - central feature traceability record.
 - `sdd-template.md` - release-scoped software design document.
 - `doc-impact-template.md` - controlled-document delta map.

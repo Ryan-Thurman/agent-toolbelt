@@ -18,6 +18,11 @@ Steps:
 3. Compare PR changes to ticket acceptance criteria and master-record
    requirements.
 4. Identify behavior changes, missing tests, missing doc deltas, SDD drift,
-   release metadata mismatches, and unresolved security/QA/SRE implications.
-5. Return recommendation: `Approve`, `Needs Work`, or `Block`, with required
-   fixes.
+   release metadata mismatches, default-branch work without explicit approval,
+   and unresolved security/QA/SRE implications.
+5. Verify the implementation plan or handoff record is current enough for
+   another agent to resume: current state, task status, evidence, checks,
+   blockers, branch/PR state, next step, and resume instructions.
+6. Return recommendation: `Approve`, `Needs Work`, or `Block`, with required
+   fixes. Do not recommend `Approve` if the work bypasses the PR branch flow
+   without explicit user approval.

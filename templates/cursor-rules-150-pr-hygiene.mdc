@@ -6,5 +6,9 @@ alwaysApply: false
 Before PR, provide implementation summary, changed files, tests added or
 updated, test results, known risks, doc updates, and reviewer notes.
 
+Do not push directly to `main`, `master`, or the repository default branch
+unless the user explicitly asks for that exact behavior. Work from a feature/fix
+branch, run PR readiness checks, then open a PR.
+
 If feature metadata exists, include feature ID, release ID, ticket scope,
 acceptance criteria, doc delta status, QA notes, and release mismatch risks.

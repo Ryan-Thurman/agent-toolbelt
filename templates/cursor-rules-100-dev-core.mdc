@@ -5,8 +5,19 @@ alwaysApply: false
 
 Make implementation plans before broad code changes.
 
+After producing an implementation plan, stop for user review and approval before
+coding unless the user already explicitly asked to implement after the plan.
+
 Do not expand scope beyond the ticket/task without calling it out.
 
 Prefer existing project patterns, helpers, and conventions.
+
+Build out tests as implementation progresses. Add or update matching tests in
+the same behavior-changing task when practical; if not practical, document the
+manual or browser verification that replaces automation.
+
+Keep the implementation plan current as durable handoff state. After every
+meaningful dev step, update current state, task status, evidence, checks run,
+blockers, branch/PR state, next step, and resume instructions.
 
 Document assumptions, risks, and unresolved questions.

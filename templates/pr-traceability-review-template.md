@@ -21,6 +21,8 @@ Release Risk: Low / Medium / High
 
 Security Impact: Pass / Needs Confirmation / Block
 
+Branch / PR Flow: Pass / Needs Work / Block
+
 Recommendation: Approve / Needs Work / Block
 
 ## Findings
@@ -40,3 +42,5 @@ Recommendation: Approve / Needs Work / Block
 | Required doc deltas completed | TBD | TBD |
 | SDD remains accurate | TBD | TBD |
 | Release metadata matches | TBD | TBD |
+| Work is on feature/fix branch | TBD | TBD |
+| Default-branch push avoided or explicitly approved | TBD | TBD |

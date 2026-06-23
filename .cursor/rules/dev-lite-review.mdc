@@ -1,0 +1,90 @@
+---
+description: Review rules for phase reviews and final PR reviews
+alwaysApply: false
+---
+
+# Dev Lite Review Rules
+
+All phase reviews and final PR reviews must evaluate correctness, tests,
+performance, security, code quality, maintainability, and product quality.
+
+## Correctness
+
+Check:
+
+- Does the implementation match the feature brief?
+- Are all relevant acceptance criteria covered?
+- Do the app/feature flows work as intended?
+- Are edge cases handled?
+- Are failure states handled?
+
+## Tests
+
+Check:
+
+- Were tests added or updated for behavior changes?
+- Are important flows covered?
+- Are edge cases covered where practical?
+- Do existing tests still pass?
+- Are test gaps clearly called out?
+- Did the implementation build out the test suite as tasks were completed
+  instead of deferring all coverage to the end?
+- Should missing feasible tests be classified as Should Fix or Blocking?
+
+## Performance
+
+Check:
+
+- Are there unnecessary re-renders?
+- Are there unnecessary loops or repeated expensive operations?
+- Are large queries or data loading paths reasonable?
+- Are API calls, caching, and loading behavior handled well?
+- Is the implementation likely to scale for expected usage?
+
+## Security
+
+Check:
+
+- Are inputs validated?
+- Are auth and permission boundaries respected?
+- Is sensitive data protected?
+- Are secrets avoided in source code and logs?
+- Are unsafe error messages avoided?
+- Are risky dependencies or unsafe patterns introduced?
+
+## Code Quality
+
+Check:
+
+- Is the code readable?
+- Is the code maintainable?
+- Are names clear?
+- Is there unnecessary complexity?
+- Is there duplicated logic that should be cleaned up?
+- Are abstractions appropriate for the current scope?
+- Does the code follow existing project conventions?
+
+## UX / Product Quality
+
+Check:
+
+- Are empty states handled?
+- Are loading states handled?
+- Are error states handled?
+- Is the flow understandable?
+- Are accessibility concerns considered where relevant?
+- Are confusing or surprising behaviors avoided?
+
+## Finding Severity
+
+Classify findings as:
+
+- Blocking: Must fix before moving on.
+- Should Fix: Important, but may not block if explicitly accepted.
+- Nice to Have: Improvement, polish, or future cleanup.
+
+Do not approve a phase or PR if blocking issues remain.
+
+Treat missing feasible tests for behavior changes as a Should Fix issue by
+default, or Blocking when the missing coverage leaves core behavior,
+permissions, data safety, or high-risk edge cases unverified.

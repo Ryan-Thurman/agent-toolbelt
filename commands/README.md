@@ -7,6 +7,13 @@ For a guided command path, see `../docs/tutorial.md`. If the next command is
 unclear inside a pilot repo, start with `/workflow-router`.
 
 - `/pr-review` - run the tiered PR/code review workflow.
+- `/dev-intake` - create a lightweight feature brief from an idea or ticket.
+- `/dev-plan` - create a phased implementation plan for dev-lite work.
+- `/dev-start-phase` - prepare the next dev-lite phase before coding.
+- `/dev-implement-task` - implement exactly one planned task.
+- `/dev-phase-review` - review a completed dev-lite phase before continuing.
+- `/dev-fix-review-issues` - fix only the latest phase review findings.
+- `/dev-pr-review` - run final PR readiness review for the dev-lite workflow.
 - `/workflow-router` - choose the smallest useful toolbelt command or workflow.
 - `/feature-start` - create a Feature Master Record and Gate 1 questions.
 - `/feature-fleshout` - flesh out stakeholder questions, risks, and Gate 1 readiness.

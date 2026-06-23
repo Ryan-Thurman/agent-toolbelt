@@ -15,5 +15,10 @@ Steps:
 2. Identify scope, acceptance criteria, impacted repos/files, dependencies,
    open questions, test expectations, and doc-delta expectations.
 3. Produce an implementation handoff with risks, assumptions, blockers, QA
-   evidence needed, and PR checklist.
+   evidence needed, branch/PR expectations, and PR checklist.
 4. If doc delta or test evidence is unknown, flag it before implementation.
+5. If the current branch is `main`, `master`, or the repository default branch,
+   recommend a focused feature/fix branch before implementation.
+6. Identify where the persistent implementation plan will live. It must be kept
+   updated with current state, task status, evidence, checks, blockers, next
+   step, and resume instructions during dev execution.

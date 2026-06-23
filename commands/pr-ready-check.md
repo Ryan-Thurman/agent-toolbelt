@@ -18,4 +18,11 @@ Steps:
    metadata.
 4. For user-facing changes, verify browser evidence exists or explain why it is
    not required.
-5. Return `Ready`, `Needs Work`, or `Block` with required fixes.
+5. Verify the work is on a feature/fix branch, not `main`, `master`, or the
+   repository default branch, unless direct default-branch work was explicitly
+   approved.
+6. Verify the implementation plan is up to date with current state, completed
+   tasks, test/check evidence, doc delta state, branch/PR state, blockers, next
+   step, and resume instructions.
+7. Return `Ready`, `Needs Work`, or `Block` with required fixes. Default-branch
+   work without explicit approval is `Block`.

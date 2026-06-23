@@ -3,9 +3,11 @@
 Reusable AI-agent commands, skills, workflows, and templates for software
 delivery work.
 
-The repository currently includes two main toolsets:
+The repository currently includes three main toolsets:
 
 - `pr-review`: a tiered, multi-agent pull-request and diff review workflow.
+- `dev-lite-workflow`: a lightweight development loop for app/feature ideas,
+  phased implementation, per-task commits, phase reviews, and final PR review.
 - `ai-feature-delivery`: a traceable feature-delivery workflow for turning a
   feature idea into design docs, implementation tickets, test evidence, QA
   handoff, and release documentation.
@@ -51,6 +53,40 @@ prompt, and press Enter.
 
 After install, open the target folder in Cursor and run `/workflow-router` or
 `/feature-start` from chat.
+
+## Dev Lite Workflow
+
+The Dev Lite Workflow is for practical feature or app delivery when you want a
+smaller loop than the full AI Feature Delivery process. It works from:
+
+```text
+Idea -> Feature Brief -> Implementation Plan -> Task -> Commit -> Phase Review -> Final PR Review
+```
+
+Install it into a project for Cursor, Claude Code, and Codex skill use:
+
+```sh
+./install-dev-lite-workflow.sh /path/to/project
+```
+
+Use `--dry-run` to preview the install:
+
+```sh
+./install-dev-lite-workflow.sh --dry-run /path/to/project
+```
+
+The installer adds Cursor commands/rules, Claude commands, a repo-scoped
+`.agents/skills/dev-lite-workflow` Codex skill, shared `skills/` copy,
+templates, and the workflow playbook.
+
+In Cursor or Claude Code, start with `/dev-intake`, then `/dev-plan`. In Codex,
+invoke the skill with `/skills` or by mentioning `$dev-lite-workflow`, then ask
+for the action you want:
+
+```text
+$dev-lite-workflow
+Run a PR readiness review for this bug fix against the current diff.
+```
 
 ## AI Feature Delivery
 

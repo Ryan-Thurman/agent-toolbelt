@@ -85,6 +85,13 @@ Rules:
 - Do not update release docs unless the feature release matches.
 - Do not mark complete without tests or evidence.
 - Do not claim docs are updated unless the delta was actually written.
+- Stop after the implementation plan for user review before coding unless the
+  user explicitly asks to continue.
+- Do not push directly to `main`, `master`, or the repository default branch
+  unless explicitly approved. Use a feature/fix branch and open a PR.
+- Keep the implementation plan current as durable handoff state. Update current
+  state, task status, evidence, checks, blockers, next step, and resume
+  instructions after every meaningful dev step.
 
 Gate 3: ready for PR/code review only with implementation summary, files
 changed, tests added/updated, test results, SDD delta, SRS/SAD/CDP delta if
@@ -109,12 +116,14 @@ recorded, and the master record is updated.
 Recommended dev ticket flow:
 1. Start dev from feature/ticket context.
 2. Create an implementation plan.
-3. Implement the change.
-4. Write or update tests.
-5. Run doc-delta checks.
-6. Review the diff.
-7. Run PR readiness and traceability checks.
-8. Create the PR with summary, tests, risks, and doc updates.
+3. Stop for plan review and approval.
+4. Confirm or create a feature/fix branch.
+5. Implement the change and write/update matching tests as behavior changes.
+6. Update the implementation plan after each meaningful step.
+7. Run doc-delta checks.
+8. Review the diff.
+9. Run PR readiness and traceability checks.
+10. Create the PR with summary, tests, risks, and doc updates.
 
 ### 5. QA Handoff
 

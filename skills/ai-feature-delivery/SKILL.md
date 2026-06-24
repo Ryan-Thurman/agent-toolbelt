@@ -42,150 +42,21 @@ back to it.
 - Prefer the smallest useful command for the current state. Use
   `/workflow-router` when the next step is unclear.
 
-## When Starting a Feature
+## Modes (load the matching reference for the step)
 
-1. Collect or infer the feature name, feature ID, target release, owner, feature
-   lead, PO, UX, cyber/security, medical affairs, QA, SRE, and dev teams.
-2. Create a Feature Master Record from
-   `../../templates/feature-master-record.md`.
-3. Fill known sections and add explicit `TBD` values where discovery is needed.
-4. Generate a stakeholder question map from the missing or risky areas.
-5. Record Gate 1 status as `BLOCKED`, `READY_WITH_RISKS`, or `READY`.
+The Operating Rules above always apply. For the detailed procedure of each mode,
+load its reference:
 
-## When Stewarding a Feature
+- `references/define-and-steward.md` — starting a feature (`/feature-start`),
+  fleshing it out (`/feature-fleshout`), stewardship (`/steward-review`), and
+  stakeholder pings (`/draft-pings`).
+- `references/design-refine-dev.md` — drafting design docs (`/sdd-draft`,
+  `/doc-impact`), slicing tickets (`/refine-to-tickets`), and starting dev work
+  from a feature (`/start-dev-from-feature`, `/implementation-plan`).
+- `references/gates-qa-release.md` — gate checks (`/gate-check`), PR
+  traceability and doc-delta review (`/pr-traceability-review`,
+  `/doc-delta`), QA handoff (`/qa-handoff`), and release documentation control
+  (`/release-manifest`, `/release-doc-check`).
 
-Read the master record, clarification queue, pending actions, related docs, and
-tickets. Return:
-- Current phase and gate status
-- Blockers and stale pending actions
-- Missing owners, missing decisions, and unresolved assumptions
-- Docs needing updates
-- Tickets missing traceability or doc/test expectations
-- Release eligibility and release risk
-- Recommended next actions and draft pings
-
-Use `../../templates/steward-review-template.md` when creating a persistent
-status report.
-
-## When Drafting Design Docs
-
-Use the master record as source material. For SDD work, start from
-`../../templates/sdd-template.md`. For document impact, start from
-`../../templates/doc-impact-template.md`.
-
-Required checks:
-- Filename and frontmatter include release, feature ID, doc type, status, owner,
-  and source master record.
-- Each requirement or design decision cites a master-record section.
-- Open assumptions are marked as assumptions, not facts.
-- Future-release work is marked `WITHHELD_FUTURE_RELEASE` or excluded from the
-  current release manifest.
-
-## When Refining to Tickets
-
-Use `../../templates/refinement-ticket-template.md`. Every ticket must include:
-
-- Feature ID and release ID
-- Source master-record section
-- Requirement or acceptance criterion
-- Impacted repos/services
-- Test expectation
-- Doc delta required: yes/no/unknown
-- Dependencies and open questions
-
-Do not call tickets ready if they cannot be implemented and verified without
-guessing at scope.
-
-## When Starting Dev Work From a Feature
-
-Read the Feature Master Record, ticket, SDD, doc impact map, clarification
-queue, and target release. Produce:
-- Implementation summary
-- Impacted repos/files
-- Step-by-step implementation plan
-- Test plan
-- Doc delta expectation
-- QA evidence needed
-- Risks, assumptions, and blockers
-- PR checklist
-
-If `doc_delta_required` or test evidence is unknown, flag it before coding.
-After producing the plan, stop for user review and approval before changing
-code unless implementation was already explicitly requested. When behavior is
-testable, write or update the matching tests as part of the implementation work,
-preferably before or alongside the behavior change. Do not defer all test work
-to the end. For browser/user-flow changes, use `/webapp-test` or equivalent
-project browser evidence before PR readiness.
-Before implementation, confirm the current branch. If work is on `main`,
-`master`, or the repository default branch, create or ask to create a focused
-feature/fix branch.
-During implementation, keep `../../templates/implementation-plan-template.md`
-or the project-specific implementation plan updated with current step, current
-task, task status, evidence, checks run, blockers, next step, and resume
-instructions so another agent can continue after a crash or context reset.
-Use `../../templates/implementation-plan-template.md` for persistent plans.
-
-## When Fleshing Out A Feature
-
-Interrogate the request before polishing it. Identify:
-- The user/business problem
-- Success outcome
-- Scope and non-goals
-- Unsupported claims or requirements
-- Blocking decisions by product, engineering, design, QA, security, release, or
-  medical/regulatory stakeholders
-
-Convert the answers into master-record updates, clarification queue items,
-risks, pending actions, and Gate 1 readiness. If a focused gate is needed, use
-`/role-review`.
-
-## When Drafting Pings
-
-Use `../../templates/clarification-queue-template.md` and pending actions in the
-master record. Group messages by owner. Each message should include feature ID,
-target release, why the input is needed, the exact question/action, due date if
-known, and whether it blocks a gate. Keep messages factual and human-reviewable.
-
-## Gate Checks
-
-Use `../../templates/gate-check-template.md` and the lifecycle in
+Templates live in `../../templates/`; the lifecycle and gates are in
 `../../workflows/ai-feature-delivery-lifecycle.md`.
-
-For every gate, return:
-- Verdict: `READY`, `READY_WITH_RISKS`, or `BLOCKED`
-- Required evidence found
-- Missing evidence
-- Blocking issues
-- Non-blocking risks
-- Next actions
-
-## PR Traceability and Doc Delta Review
-
-When reviewing a PR or completed implementation, compare:
-- PR/code changes
-- Ticket acceptance criteria
-- Feature Master Record
-- SDD/doc impact map
-- Test evidence
-- Release target and document statuses
-
-Flag behavior changes with missing tests, missing doc deltas, release mismatch,
-default-branch work without explicit approval, or unresolved security/QA/SRE
-implications. Use
-`../../templates/pr-traceability-review-template.md` for persistent reports.
-
-## QA and Release
-
-For QA handoff, use `../../templates/qa-handoff-template.md` and generate from
-the master record plus tickets.
-
-For release documentation control, use
-`../../templates/release-manifest-template.md`. Classify each document as:
-- allowed in release package
-- needs review
-- withhold from release
-- wrong release prefix
-- missing release metadata
-
-Only documents with `doc_status: APPROVED_FOR_RELEASE` and a matching release
-manifest entry are allowed in release packaging.

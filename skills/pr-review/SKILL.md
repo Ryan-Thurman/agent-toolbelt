@@ -141,3 +141,5 @@ The standard fan-out plus maximum coverage and adversarial verification. Full al
 - `references/rejection-memory.md` — cross-run anti-noise memory (downrank previously-rejected findings).
 - `references/output-format.md` — verdict derivation + the markdown report layout.
 - `references/posting.md` — inline PR-comment posting (`--comment`).
+- `references/rct-acceleration.md` — *optional*: when the rct MCP tools are available, ground the
+  review in the graph's blast-radius / unupdated-caller signals (diff-only review otherwise).

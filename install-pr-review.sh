@@ -188,6 +188,7 @@ references/rejection-memory.md
 references/repo-config.md
 references/review-rubric.md
 references/targets-and-diff.md
+references/rct-acceleration.md
 "
 
 for rel in $skill_files; do

@@ -21,6 +21,15 @@ workflow.
 - `webapp-testing/` - browser/webapp verification for user-facing changes and
   QA evidence.
 
+## Optional rct acceleration
+
+`pr-review`, `bug-to-fix`, `simplify`, and `shape-up` each ship a
+`references/rct-acceleration.md`. If the [rct](https://github.com/Ryan-Thurman/RyansContextToolbelt)
+MCP tools are available in the session, the skill uses the code graph for the
+retrieval-heavy steps (blast radius, callers, scope, localization) at a fraction
+of the tokens. It is strictly optional — every skill works by reading files
+directly when rct is not present.
+
 ## Canonical copies
 
 `skills/dev-lite-workflow/SKILL.md` is the **canonical** source. The repo also

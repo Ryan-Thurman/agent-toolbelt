@@ -172,6 +172,7 @@ references/durable-state.md
 references/rca-strategies.md
 references/adversarial-confirmation.md
 references/severity.md
+references/rct-acceleration.md
 "
 
 for rel in $skill_files; do

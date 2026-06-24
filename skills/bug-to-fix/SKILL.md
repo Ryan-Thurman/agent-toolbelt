@@ -81,6 +81,8 @@ Each step has a single hard gate, so the commands are independently invocable:
 - `references/adversarial-confirmation.md` — the doubt cycle that confirms a root cause before you
   accept it (reuses the pr-review falsify-don't-verify pattern).
 - `references/severity.md` — SEV1–SEV4, auto-upgrade triggers, and the intake schema.
+- `references/rct-acceleration.md` — *optional*: when the rct MCP tools are available, use the graph
+  to localize the cause and bound the fix (file-reading fallback otherwise).
 
 ## Credits
 

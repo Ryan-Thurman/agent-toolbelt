@@ -162,6 +162,7 @@ done
 skill_files="
 SKILL.md
 references/interrogation.md
+references/rct-acceleration.md
 "
 
 for rel in $skill_files; do

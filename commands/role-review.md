@@ -9,6 +9,12 @@ Run a focused review from one role's point of view.
 
 **Arguments:** `$ARGUMENTS`
 
+Preconditions:
+- If the role is missing or is not one of the supported roles below, list the
+  supported roles and ask which one to run. Do not guess the role.
+- If the target artifact is missing or its path does not resolve, ask for it
+  before reviewing.
+
 Supported roles:
 - `product`: scope, acceptance criteria, user value, stakeholder decisions.
 - `engineering`: architecture, maintainability, ownership, migrations,

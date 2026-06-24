@@ -7,6 +7,10 @@ argument-hint: "[target]"
 
 Review the selected diff before PR.
 
+> **When to use vs related:** `/review-diff` is a quick local-diff review before a
+> PR. Use `/pr-review` for the deeper tiered, multi-agent review, and
+> `/pr-ready-check` for the open-the-PR readiness checklist.
+
 **Arguments:** `$ARGUMENTS`
 
 Steps:

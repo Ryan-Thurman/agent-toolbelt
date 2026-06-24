@@ -41,46 +41,10 @@ Compare the completed phase against:
 
 ## Output
 
-# Phase Review
-
-## Phase
-
-## Result
-
-Use one:
-
-- Pass
-- Pass with Notes
-- Needs Fixes
-- Blocked
-
-## Completed Tasks
-
-## Acceptance Criteria Covered
-
-## Findings
-
-### Blocking
-
-### Should Fix
-
-### Nice to Have
-
-## Required Fixes Before Next Phase
-
-## Tests / Checks Reviewed
-
-## Remaining Risks
-
-## Plan Document Updates
-
-Summarize phase status, review result, required fixes, next step, and resume
-instructions recorded in the Implementation Plan.
-
-## Suggested Fix Commit Message
-
-Use this when fixes are needed:
-
-```text
-fix: address phase review issues for [phase name]
-```
+Produce a Phase Review following the structure in
+`templates/dev-phase-review.md`. Classify findings as Blocking, Should Fix, or
+Nice to Have, and list missing feasible tests under Test Gaps with the same
+classification. In Plan Document Updates, summarize the phase status, result,
+required fixes, next step, and resume instructions you recorded in the
+Implementation Plan. When fixes are needed, suggest a commit message like
+`fix: address phase review issues for [phase name]`.

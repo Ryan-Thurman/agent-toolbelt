@@ -22,3 +22,6 @@ Steps:
 6. Identify where the persistent implementation plan will live. It must be kept
    updated with current state, task status, evidence, checks, blockers, next
    step, and resume instructions during dev execution.
+
+Next: run `/implementation-plan` to turn this handoff into the persistent,
+traceable plan (or `/dev-plan` if you are running the lighter Dev Lite track).

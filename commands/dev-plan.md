@@ -9,6 +9,10 @@ Create a phased implementation plan from the Feature Brief.
 
 Use this after `/dev-intake`.
 
+> **When to use vs related:** `/dev-plan` builds a *phased* Dev Lite plan from a
+> Feature Brief. Use `/implementation-plan` for a concise single-ticket plan in
+> the feature-delivery track.
+
 **Arguments:** `$ARGUMENTS`
 
 ## Rules
@@ -48,99 +52,14 @@ Choose the model that fits the scope.
 
 ## Output
 
-Create or update an Implementation Plan using this structure:
-
-# Implementation Plan
-
-## Overview
-
-Briefly summarize the plan.
-
-## Acceptance Criteria Coverage Strategy
-
-Explain how the plan will satisfy the acceptance criteria.
-
-## Current State
-
-Status: Planning
-
-Current Phase: Not Started
-
-Current Task: Not Started
-
-Current Branch: TBD
-
-Last Updated: YYYY-MM-DD
-
-Last Completed Step: Plan created
-
-Next Step: Await user plan review
-
-Resume Instructions: Review this plan and either approve it, request changes,
-or choose the first task.
-
-## Activity Log
-
-| Date | Agent/Owner | Action | Evidence / Links | Next Step |
-|---|---|---|---|---|
-| YYYY-MM-DD | TBD | Plan created | TBD | Await user plan review |
-
-## Phase 1: [Name]
-
-### Goal
-
-### Tasks
-
-- [ ] Task 1
-- [ ] Task 2
-
-Each behavior-changing task should mention the matching test work.
-
-### Expected Commits
-
-- `feat: ...`
-- `test: ...`
-
-### Tests / Checks
-
-List the automated tests to add or update during this phase and any manual
-checks needed when automation is not practical.
-
-### Risks
-
-### Phase Review Checklist
-
-- [ ] Phase goal met
-- [ ] Acceptance criteria covered or still tracked
-- [ ] Tests/checks completed or gaps listed
-- [ ] No blocking performance/security/code quality issues
-
-## Phase 2: [Name]
-
-Repeat the same structure.
-
-## Phase 3: [Name]
-
-Repeat the same structure.
-
-## Phase 4: [Name]
-
-Repeat the same structure.
-
-## Final PR Review Plan
-
-Before PR is marked ready, review:
-
-- Correctness
-- Acceptance criteria
-- App/feature flows
-- Tests
-- Performance
-- Security
-- Code quality
-- Maintainability
-- UX/product quality
-- Documentation or README updates if needed
+Create or update an Implementation Plan following the structure in
+`templates/dev-implementation-plan.md`. Replace the template's default phase
+blocks with the phases from the model you chose above (duplicate the phase block
+per phase). For a freshly created plan, set Current State to `Status: Planning`,
+`Current Phase: Not Started`, `Next Step: Await user plan review`, and seed the
+Activity Log with a "Plan created" row. Each behavior-changing task must name its
+matching test work. Keep `Current State`, `Activity Log`, and `Resume
+Instructions` updated throughout the workflow.
 
 ## Plan Review Gate
 

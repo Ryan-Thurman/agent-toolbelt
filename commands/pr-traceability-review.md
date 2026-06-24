@@ -8,6 +8,10 @@ argument-hint: "<pr-or-diff-target> <path-to-master-record-or-ticket>"
 Use the `ai-feature-delivery` skill to check PR traceability, not just code
 quality.
 
+> **When to use vs related:** `/pr-traceability-review` checks a PR against its
+> feature record, ticket scope, docs, tests, and release metadata — not code
+> quality. Use `/pr-review` for code quality and `/pr-ready-check` for readiness.
+
 **Arguments:** `$ARGUMENTS`
 
 Steps:

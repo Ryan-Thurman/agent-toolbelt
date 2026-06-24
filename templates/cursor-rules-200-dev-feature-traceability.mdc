@@ -1,6 +1,6 @@
 ---
 description: Bridge rules for feature-aware dev work
-alwaysApply: false
+alwaysApply: true
 ---
 
 When dev work is tied to a Feature Master Record or ticket, preserve feature ID,

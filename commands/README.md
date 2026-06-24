@@ -7,6 +7,11 @@ For a guided command path, see `../docs/tutorial.md`. If the next command is
 unclear inside a pilot repo, start with `/workflow-router`.
 
 - `/pr-review` - run the tiered PR/code review workflow.
+- `/bug-intake` - triage a bug report and open a durable investigation.
+- `/reproduce` - establish a manual or automated reproduction before RCA.
+- `/rca` - root-cause a reproduced bug (`--diagnose` for read-only).
+- `/fix-plan` - turn a confirmed root cause into the smallest verified fix.
+- `/handoff` - write a resumable handoff so a fresh session can continue.
 - `/dev-intake` - create a lightweight feature brief from an idea or ticket.
 - `/dev-plan` - create a phased implementation plan for dev-lite work.
 - `/dev-start-phase` - prepare the next dev-lite phase before coding.
@@ -65,3 +70,16 @@ Some commands overlap. Use these tables to pick the right one.
 |---|---|
 | `/dev-plan` | Phased Dev Lite build plan from a Feature Brief. |
 | `/implementation-plan` | Concise single-ticket plan in the feature-delivery track. |
+
+**Diagnosing a bug (Bug-to-Fix lane)**
+
+| Command | Use it for |
+|---|---|
+| `/bug-intake` | Triage a defect: severity, intake schema, dedup, seed the durable investigation file. |
+| `/reproduce` | Establish reproduction — confirm a manual (QA) repro, or build an automated failing test. |
+| `/rca` | Root-cause a reproduced bug; `--diagnose` for a read-only analysis that never edits files. |
+| `/fix-plan` | Turn a confirmed cause into the smallest safe fix + verification, then hand to dev/review. |
+| `/handoff` | Cross-cutting: write a resumable summary before a context reset or session transfer. |
+
+The Bug-to-Fix lane hands off to the shared back half: `/fix-plan` → `/dev-implement-task` (or
+`/implementation-plan`) → `/pr-review` / `/dev-pr-review`.

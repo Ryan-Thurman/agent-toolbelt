@@ -275,6 +275,9 @@ package. Future-release material should be explicitly withheld.
 Use these shortcuts while piloting:
 
 - Raw idea: `/feature-start`, then `/feature-fleshout`.
+- Bug / broken behavior: `/bug-intake` -> `/reproduce` -> `/rca` -> `/fix-plan`
+  (then `/dev-implement-task` -> `/pr-review`). Use `/rca --diagnose` for a
+  read-only root-cause analysis.
 - Unsure what is next: `/workflow-router`.
 - Existing feature health check: `/steward-review`.
 - Stakeholder follow-up drafts: `/draft-pings`.

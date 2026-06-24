@@ -1,6 +1,6 @@
 ---
 description: Core rules for the lightweight AI-assisted dev workflow
-alwaysApply: false
+alwaysApply: true
 ---
 
 # Dev Lite Core Rules

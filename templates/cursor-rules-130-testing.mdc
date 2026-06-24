@@ -1,5 +1,6 @@
 ---
 description: Dev testing rules
+globs: "**/*.test.*,**/*.spec.*,**/test/**,**/tests/**,**/__tests__/**"
 alwaysApply: false
 ---
 

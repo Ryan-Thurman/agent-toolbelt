@@ -28,7 +28,7 @@ standard/deep. Each finding belongs to exactly one facet.
 - spaghetti growth: new ad-hoc conditionals/special-cases bolted onto unrelated flows.
 - file-size sprawl (a change pushing a file past ~1000 lines is a smell — ask to decompose first).
 - duplicated logic instead of reusing a canonical helper.
-- (deep tier raises this to the **thermo-nuclear** bar — see `examples/thermo-nuclear-review.md`:
+- (deep tier raises this to the **thermo-nuclear** bar — see `../../../examples/thermo-nuclear-review.md`:
   be ambitious, look for "code judo" that deletes whole branches/layers.)
 
 **standards** — does it match this repo's conventions?

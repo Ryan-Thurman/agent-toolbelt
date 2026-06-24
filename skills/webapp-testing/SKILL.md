@@ -9,6 +9,9 @@ Use this skill to verify webapp behavior from the user's point of view. Prefer
 existing project test commands and official tool help over inventing a custom
 browser harness.
 
+> This skill backs the `/webapp-test` command — the command name is shorter than
+> the skill name (`webapp-testing`). Both refer to this same capability.
+
 ## Operating Rules
 
 - Start from the requested user flow, acceptance criteria, or bug report.

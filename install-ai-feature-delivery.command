@@ -15,9 +15,9 @@ echo
 printf "Target folder: "
 IFS= read -r TARGET
 
-# Finder drag-and-drop may add escaping or surrounding spaces.
-TARGET="${TARGET# }"
-TARGET="${TARGET% }"
+# Finder drag-and-drop may add escaping or surrounding whitespace.
+TARGET="${TARGET#"${TARGET%%[![:space:]]*}"}"  # trim all leading whitespace
+TARGET="${TARGET%"${TARGET##*[![:space:]]}"}"  # trim all trailing whitespace
 TARGET="${TARGET//\\ / }"
 
 if [ -z "$TARGET" ]; then

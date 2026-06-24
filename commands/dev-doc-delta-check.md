@@ -8,6 +8,10 @@ argument-hint: "<ticket-or-pr-or-feature-folder>"
 Use this bridge command while coding or before PR to keep implementation aligned
 with controlled docs.
 
+> **When to use vs related:** `/dev-doc-delta-check` is the lightweight bridge to
+> run while coding or just before a PR. Use the fuller `/doc-delta` for the formal
+> release-doc gate and `/doc-impact` for up-front impact mapping.
+
 **Arguments:** `$ARGUMENTS`
 
 Steps:

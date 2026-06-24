@@ -1,6 +1,6 @@
 ---
 description: Core dev execution rules
-alwaysApply: false
+alwaysApply: true
 ---
 
 Make implementation plans before broad code changes.

@@ -14,3 +14,11 @@ workflow.
   refinement tickets, QA handoff, and release document control.
 - `webapp-testing/` - browser/webapp verification for user-facing changes and
   QA evidence.
+
+## Canonical copies
+
+`skills/dev-lite-workflow/SKILL.md` is the **canonical** source. The repo also
+ships `.agents/skills/dev-lite-workflow/SKILL.md` (the repo-scoped Codex copy);
+it must stay byte-identical. Edit the canonical file, then mirror the change.
+Run `scripts/check-skill-sync.sh` to verify the two copies match (also runnable
+in CI).

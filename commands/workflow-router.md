@@ -20,7 +20,17 @@ Steps:
    command.
 5. Do not run a heavy workflow when a narrower command is enough.
 
+Pick the track first:
+- **Dev Lite** (lightweight, solo or small build, no cross-functional
+  traceability needed): use the `/dev-*` chain below.
+- **AI Feature Delivery** (cross-functional work where requirements, tickets,
+  tests, docs, QA, and release eligibility must stay linked): use the
+  feature-delivery commands below.
+
 Routing guide:
+- Lightweight / solo build (Dev Lite): `/dev-intake` -> `/dev-plan` ->
+  `/dev-start-phase` -> `/dev-implement-task` -> `/dev-phase-review` ->
+  `/dev-fix-review-issues` (if needed) -> `/dev-pr-review`.
 - Raw idea or stakeholder request: `/feature-start`, then `/feature-fleshout`.
 - Existing feature with gaps: `/feature-fleshout`, `/steward-review`, or
   `/draft-pings`.

@@ -11,6 +11,7 @@
 # Existing files are skipped unless --force is passed.
 
 set -u
+set -o pipefail
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 FORCE=0
@@ -106,6 +107,11 @@ install_file() {
 
   if [ ! -f "$src" ]; then
     echo "! missing source: $src" >&2
+    exit 1
+  fi
+
+  if [ -d "$dest" ]; then
+    echo "! destination is a directory, refusing to overwrite: $dest" >&2
     exit 1
   fi
 

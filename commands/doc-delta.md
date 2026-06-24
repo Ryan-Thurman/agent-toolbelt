@@ -7,6 +7,10 @@ argument-hint: "<ticket-or-pr-or-feature-folder>"
 
 Use the `ai-feature-delivery` skill to verify documentation deltas.
 
+> **When to use vs related:** `/doc-delta` is the formal check that a ticket/PR's
+> changes require controlled-doc updates. Use `/doc-impact` for up-front impact
+> mapping, and `/dev-doc-delta-check` for the lighter in-loop check while coding.
+
 **Arguments:** `$ARGUMENTS`
 
 Steps:

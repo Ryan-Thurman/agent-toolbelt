@@ -7,6 +7,11 @@ argument-hint: "<ticket-or-diff-context>"
 
 Check whether a change is ready for PR.
 
+> **When to use vs related:** `/pr-ready-check` confirms a change is *ready to
+> open or complete* a PR (summary, tests, risks). Use `/review-diff` or
+> `/pr-review` for actual code review, and `/pr-traceability-review` for
+> feature/doc traceability.
+
 **Arguments:** `$ARGUMENTS`
 
 Steps:

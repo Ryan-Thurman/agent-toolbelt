@@ -8,6 +8,8 @@ The AI Feature Delivery skills are installed into pilot repos by
 workflow.
 
 - `pr-review/` - tiered multi-agent PR/code review.
+- `bug-to-fix/` - diagnostic lane: triage, reproduce, root-cause analysis,
+  minimal fix, and verification for a reported bug.
 - `dev-lite-workflow/` - lightweight dev workflow for feature/app ideas,
   phased implementation, per-task commits, phase reviews, and final PR review.
 - `ai-feature-delivery/` - release-traceable feature definition, design docs,

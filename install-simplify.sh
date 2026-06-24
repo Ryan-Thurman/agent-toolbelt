@@ -161,6 +161,7 @@ skill_files="
 SKILL.md
 references/smell-taxonomy.md
 references/apply-discipline.md
+references/rct-acceleration.md
 "
 
 for rel in $skill_files; do

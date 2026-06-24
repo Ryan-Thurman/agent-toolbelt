@@ -3,14 +3,21 @@
 Reusable AI-agent commands, skills, workflows, and templates for software
 delivery work.
 
-The repository currently includes three main toolsets:
+The repository currently includes four main toolsets:
 
 - `pr-review`: a tiered, multi-agent pull-request and diff review workflow.
+- `bug-to-fix`: a diagnostic lane that takes a bug report through triage,
+  reproduction, root-cause analysis, a minimal fix, and verification.
 - `dev-lite-workflow`: a lightweight development loop for app/feature ideas,
   phased implementation, per-task commits, phase reviews, and final PR review.
 - `ai-feature-delivery`: a traceable feature-delivery workflow for turning a
   feature idea into design docs, implementation tickets, test evidence, QA
   handoff, and release documentation.
+
+The two lanes are different shapes: `ai-feature-delivery` / `dev-lite-workflow`
+are **generative** (start from an idea), while `bug-to-fix` is **diagnostic**
+(start from broken behavior). They share a back half — dev implementation and PR
+review.
 
 ## What Is Included
 
@@ -161,6 +168,37 @@ Useful options:
 
 Target repos can copy `templates/pr-review.md` to `.pr-review.md` to declare
 local review priorities.
+
+## Bug to Fix
+
+The `bug-to-fix` tool is the diagnostic lane: it takes a bug report from triage
+to a verified fix.
+
+```text
+Bug report -> /bug-intake -> /reproduce -> /rca -> /fix-plan -> /dev-implement-task -> /pr-review
+```
+
+Install it into a project for Cursor, Claude Code, and Codex skill use:
+
+```sh
+./install-bug-to-fix.sh /path/to/project
+```
+
+Use `--dry-run` to preview and `--force` only when replacing a previous install.
+The installer adds the `/bug-*` commands, the `bug-to-fix` skill tree, the
+investigation/RCA/fix-brief templates, and the workflow playbook. On macOS,
+double-click `install-bug-to-fix.command` and drag the target folder into the
+Terminal prompt.
+
+Key ideas:
+
+- A **durable investigation file** (`templates/bug-investigation.md`) is updated
+  *before* each action, so the work survives a context reset and hands off cleanly.
+- **No fix without a confirmed root cause**, and **no "fixed" without verification**.
+- **Reproduction is manual-first**: `/reproduce` asks whether you or QA reproduced
+  the bug before dev, and keeps the automated failing-test path for when a test
+  harness exists.
+- `/rca --diagnose` runs a read-only root-cause analysis that never edits files.
 
 ## Repository Safety
 

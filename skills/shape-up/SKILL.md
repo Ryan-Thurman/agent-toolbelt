@@ -59,6 +59,8 @@ implementation step; the hard gate is mandatory.
 
 - `references/interrogation.md` — the question techniques, the contradiction/overloaded-term
   challenges, edge-case stress tests, and the brief self-audit.
+- `references/rct-acceleration.md` — *optional*: when the rct MCP tools are available, use the graph
+  to resolve the repo-first questions cheaply (file-reading fallback otherwise).
 
 ## Credits
 

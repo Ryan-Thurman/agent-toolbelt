@@ -68,6 +68,8 @@ parallelize` (`/simplify`); `inspect | delete | inline | extract | refactor | gu
   axes, the thin-wrapper taxonomy and its keep-rule, and detection cues.
 - `references/apply-discipline.md` — the report-then-apply contract, the Chesterton's-Fence
   pre-removal checklist, behavior-preserving rules, red flags, and scope/ignore handling.
+- `references/rct-acceleration.md` — *optional*: when the rct MCP tools are available, use the graph
+  for reuse-search and caller checks (file-reading fallback otherwise).
 
 ## Credits
 

@@ -10,6 +10,10 @@ workflow.
 - `pr-review/` - tiered multi-agent PR/code review.
 - `bug-to-fix/` - diagnostic lane: triage, reproduce, root-cause analysis,
   minimal fix, and verification for a reported bug.
+- `shape-up/` - interrogate a vague request into an agreed brief before
+  building (the front-door to the dev lanes).
+- `simplify/` - active code cleanup: apply high-conviction simplifications on
+  opt-in (the counterpart to pr-review).
 - `dev-lite-workflow/` - lightweight dev workflow for feature/app ideas,
   phased implementation, per-task commits, phase reviews, and final PR review.
 - `ai-feature-delivery/` - release-traceable feature definition, design docs,

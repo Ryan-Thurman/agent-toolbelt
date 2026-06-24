@@ -36,10 +36,11 @@ Routing guide:
 - Vague / underspecified request: `/shape-up` (then `/dev-intake` or `/to-issues`).
 - Broken behavior / bug (Bug-to-Fix): `/bug-intake` -> `/reproduce` -> `/rca`
   (or `/rca --diagnose` for read-only) -> `/fix-plan` -> `/dev-implement-task`
-  -> `/pr-review`.
+  -> `/pr-review` -> `/ship-it` (optional, on release).
 - Lightweight / solo build (Dev Lite): `/dev-intake` -> `/dev-plan` ->
   `/dev-start-phase` -> `/dev-implement-task` -> `/dev-phase-review` ->
-  `/dev-fix-review-issues` (if needed) -> `/dev-pr-review`.
+  `/dev-fix-review-issues` (if needed) -> `/dev-pr-review` -> `/ship-it`
+  (optional, on release).
 - Raw idea or stakeholder request: `/feature-start`, then `/feature-fleshout`.
 - Existing feature with gaps: `/feature-fleshout`, `/steward-review`, or
   `/draft-pings`.
@@ -55,6 +56,7 @@ Routing guide:
 - QA package: `/qa-handoff`.
 - Release documentation: `/release-manifest`, then `/release-doc-check`.
 - General PR/code review: `/pr-review --tier=light|standard|deep`.
+- Release a merged change (readiness + rollback + notes + rollout): `/ship-it`.
 - Clean up / slim a diff after a feature (apply): `/simplify`.
 - Scan an area for structural smells (detect-only): `/code-smell`.
 - Root-cause only, no fix: `/rca --diagnose`.

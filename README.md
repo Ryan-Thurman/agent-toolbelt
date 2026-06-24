@@ -17,12 +17,14 @@ The repository currently includes these toolsets:
   the front-door to the dev lanes.
 - `simplify`: actively clean up existing code, applying high-conviction
   simplifications on opt-in — the active counterpart to `pr-review`.
+- `ship-it`: lightweight release readiness — go/no-go check, rollback plan,
+  release notes, and a rollout/monitor plan; pipeline-aware.
 
 The lanes are different shapes: `ai-feature-delivery` / `dev-lite-workflow` are
 **generative** (start from an idea), while `bug-to-fix` is **diagnostic** (start
 from broken behavior). `shape-up` shapes a fuzzy request before either; `pr-review`
-and `simplify` are the review/cleanup utilities. They share a back half — dev
-implementation and PR review.
+and `simplify` are the review/cleanup utilities; `ship-it` is the release step at
+the tail. They share a back half — dev implementation and PR review.
 
 ## What Is Included
 
@@ -236,6 +238,26 @@ and applies nothing, simplify *drives the cleanup* and applies it on opt-in.
   behavior-preserving (existing tests must pass unmodified).
 - `/code-smell` — detect-only scan of an area, ranked by severity × confidence; applies
   nothing.
+
+## Ship It
+
+The `ship-it` tool is the lightweight release step at the tail of the dev lanes — they end at
+"PR merged," this takes it to "released safely."
+
+```sh
+./install-ship-it.sh /path/to/project
+```
+
+Run `/ship-it` after a change is merged/approved. It produces a **go/no-go readiness check**, a
+**rollback plan + trigger**, a **release-notes draft** (`templates/release-notes.md`), and a
+**rollout/monitor plan** with advance/hold/roll-back thresholds.
+
+It is **pipeline-aware**: when an external CI/CD pipeline you don't control owns the deploy (a
+common org setup), `/ship-it` prepares the release package and **hands off** — it does not run
+deploy steps, and frames the monitor plan as the watch-list for after the pipeline deploys. When
+*you* own the deploy, it walks the staged rollout and proposes the exact commands, never executing
+a deploy without explicit confirmation. It's the lightweight sibling of the regulated
+`/release-manifest` + `/release-doc-check` path.
 
 ## Repository Safety
 

@@ -11,6 +11,7 @@ unclear inside a pilot repo, start with `/workflow-router`.
 - `/to-issues` - slice an approved brief into vertical-slice tickets.
 - `/simplify` - actively clean up a diff/area and apply cleanups on opt-in.
 - `/code-smell` - detect-only scan of an area for structural smells.
+- `/ship-it` - prepare a merged change for release (readiness, rollback, notes, rollout).
 - `/bug-intake` - triage a bug report and open a durable investigation.
 - `/reproduce` - establish a manual or automated reproduction before RCA.
 - `/rca` - root-cause a reproduced bug (`--diagnose` for read-only).
@@ -104,3 +105,11 @@ Some commands overlap. Use these tables to pick the right one.
 
 The Bug-to-Fix lane hands off to the shared back half: `/fix-plan` → `/dev-implement-task` (or
 `/implementation-plan`) → `/pr-review` / `/dev-pr-review`.
+
+**Releasing a change**
+
+| Command | Use it for |
+|---|---|
+| `/ship-it` | Lightweight launch readiness: go/no-go check, rollback plan, release notes, rollout/monitor plan. Pipeline-aware — hands off when external CI/CD owns the deploy. |
+| `/release-manifest` + `/release-doc-check` | The regulated path: release manifests + controlled-doc eligibility (AI Feature Delivery). |
+| `/dev-pr-review` / `/pr-ready-check` | Earlier gate — is the change ready to *open/complete a PR* (not to release). |

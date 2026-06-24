@@ -7,6 +7,10 @@ For a guided command path, see `../docs/tutorial.md`. If the next command is
 unclear inside a pilot repo, start with `/workflow-router`.
 
 - `/pr-review` - run the tiered PR/code review workflow.
+- `/shape-up` - interrogate a vague request into an agreed brief before building.
+- `/to-issues` - slice an approved brief into vertical-slice tickets.
+- `/simplify` - actively clean up a diff/area and apply cleanups on opt-in.
+- `/code-smell` - detect-only scan of an area for structural smells.
 - `/bug-intake` - triage a bug report and open a durable investigation.
 - `/reproduce` - establish a manual or automated reproduction before RCA.
 - `/rca` - root-cause a reproduced bug (`--diagnose` for read-only).
@@ -70,6 +74,23 @@ Some commands overlap. Use these tables to pick the right one.
 |---|---|
 | `/dev-plan` | Phased Dev Lite build plan from a Feature Brief. |
 | `/implementation-plan` | Concise single-ticket plan in the feature-delivery track. |
+
+**Shaping a request before building**
+
+| Command | Use it for |
+|---|---|
+| `/shape-up` | *Interrogate* a vague request into an agreed brief (one question at a time, repo-first, gated on approval). |
+| `/dev-intake` | *Capture* a brief by making safe assumptions — lighter, no grilling. Compose: `/shape-up` -> `/dev-intake`. |
+| `/feature-fleshout` | The heavy, regulated, stakeholder version (Feature Master Record, gates). |
+| `/to-issues` | Slice an approved brief into vertical-slice tickets (dev lane). Use `/refine-to-tickets` for the regulated lane. |
+
+**Cleaning up code**
+
+| Command | Use it for |
+|---|---|
+| `/simplify` | *Apply* high-conviction cleanups to a diff/area (dead code, thin wrappers, reuse, small inefficiencies), on opt-in. |
+| `/code-smell` | *Detect-only* scan of an area for structural smells ranked by severity × confidence. Applies nothing. |
+| `/pr-review` | *Find* bugs/quality issues with a merge verdict on changed lines. Applies nothing. |
 
 **Diagnosing a bug (Bug-to-Fix lane)**
 

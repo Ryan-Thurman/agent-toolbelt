@@ -1,0 +1,84 @@
+# Smell taxonomy and detection cues
+
+What to look for. `/code-smell` scans by family; `/simplify` scans by axis. Treat cheap regex/lexical
+cues as untrusted leads to verify by reading, never as truth.
+
+## `/code-smell` families (structural scan)
+
+- **Complexity** — long functions, mixed responsibilities, deep nesting, boolean-flag control flow,
+  branch-heavy conditionals.
+- **Duplication** — copy-paste blocks, repeated condition chains, parallel representations of the
+  same concept.
+- **Coupling** — modules reaching through boundaries, feature code importing internals,
+  circular-feeling dependencies.
+- **State** — redundant derived state, mutable globals, caches without invalidation, multiple
+  sources of truth.
+- **Errors** — swallowed errors, empty catch blocks, broad catch that hides failures, inconsistent
+  error mapping.
+- **Performance** — N+1 loops, repeated I/O, sequential awaits for independent work, hot-path
+  blocking work.
+- **Maintainability** — debug remnants, commented-out code, TODO/HACK hiding required design,
+  stringly-typed constants.
+
+Rank each by **severity** (high = likely bug/perf/user impact; medium = concrete maintenance cost;
+low = useful cleanup) **× confidence** (high only after reading enough to verify; medium for strong
+lexical hints; low = worth human inspection). Do not flag subjective style. Do not recommend large
+rewrites unless a small first slice is clear.
+
+## `/simplify` axes (cleanup scan)
+
+### Reuse
+Before flagging, **search the codebase for an existing helper and quote the symbol you'd use.**
+- Duplicates an existing function.
+- Inline logic that already has a utility (hand-rolled string manipulation, manual path handling,
+  custom env checks, ad-hoc type guards).
+- Reinvented framework primitive.
+
+### Quality
+- **Dead code (safe)** — unused exports, orphan files, zombie variables, empty try/catch/if blocks.
+- **Debug remnants (safe)** — `console.log/warn/error`, `debugger`, temporary feature flags, stale
+  TODOs.
+- **Commented-out code (review)**.
+- **Over-engineering / thin wrappers (confirm)** — see the taxonomy below.
+- **Hacky patterns (confirm)** — redundant state (cache what could be derived), parameter sprawl,
+  copy-paste with variation, leaky abstractions, stringly-typed code, unnecessary wrapper elements,
+  nested conditionals 3+ deep (flatten with early returns or a lookup table), useless comments (keep
+  only the non-obvious WHY).
+
+### Efficiency (confirm)
+- Unnecessary work (N+1, repeated reads), missed concurrency (sequential awaits for independent
+  work), hot-path bloat, recurring no-op updates (add a change-detection guard), unnecessary
+  existence checks (TOCTOU — operate directly and handle the error), memory leaks/unbounded growth,
+  overly broad operations.
+
+## Thin-wrapper taxonomy (the standout)
+
+Flag and inline/remove unless the keep-rule applies:
+
+- **Rename-only wrapper** — `foo()` just calls `bar()` with the same inputs. Inline unless `foo` is
+  a real public/domain concept.
+- **Constructor/factory wrapper** — `createX(args)` only returns `new X(args)`. Inline unless the
+  factory selects implementations or enforces policy.
+- **Scope-specific alias** — `SlackThing`/`ConversationThing` only wraps a generic helper. Delete
+  if the generic name is already clear at call sites.
+- **Single-call-site helper** — used once, especially one-line formatting/parsing/path helpers.
+  Inline it.
+- **Duplicated write APIs** — several `saveFooConfig` functions. Consolidate into one
+  `updateSettings(patch)`-style API.
+- **Test-only export** — exists only so a test can reach internals. Test the underlying public
+  helper or observable behavior instead.
+- **Pass-through class method** — method only forwards to a function. Remove it or call the function
+  directly.
+
+**Keep rule:** keep a wrapper if it protects a public API, documents a domain boundary, centralizes
+cross-cutting behavior, or isolates an unstable dependency.
+
+## Lexical leads (verify before trusting)
+
+- Large/complex function: > ~80 lines or > ~12 branches (`if|for|while|catch|case|&&|\|\|`); > ~140
+  lines or > ~18 branches = high.
+- Repeated line: a normalized non-comment line (> ~20 chars) appearing 3+ times = duplication lead.
+- Debug remnant: `console.(log|debug|warn|error)` / `debugger` (the latter = high).
+- Commented-out code: a `//`-prefixed line starting with `if|for|while|return|const|let|var|
+  function|class|import|export`.
+- Loose markers: `any`, `TODO`, `FIXME`, `HACK`, `XXX`.

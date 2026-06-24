@@ -20,6 +20,9 @@ Steps:
    command.
 5. Do not run a heavy workflow when a narrower command is enough.
 
+If the request itself is vague or underspecified, shape it first with `/shape-up`
+(interrogate -> agreed brief), then pick a track below.
+
 Pick the track first — is this a new capability or broken behavior?
 - **Bug-to-Fix** (broken behavior: a bug ticket / defect needs diagnosis and a
   fix): use the `/bug-*` chain below.
@@ -30,6 +33,7 @@ Pick the track first — is this a new capability or broken behavior?
   linked): use the feature-delivery commands below.
 
 Routing guide:
+- Vague / underspecified request: `/shape-up` (then `/dev-intake` or `/to-issues`).
 - Broken behavior / bug (Bug-to-Fix): `/bug-intake` -> `/reproduce` -> `/rca`
   (or `/rca --diagnose` for read-only) -> `/fix-plan` -> `/dev-implement-task`
   -> `/pr-review`.
@@ -51,5 +55,7 @@ Routing guide:
 - QA package: `/qa-handoff`.
 - Release documentation: `/release-manifest`, then `/release-doc-check`.
 - General PR/code review: `/pr-review --tier=light|standard|deep`.
+- Clean up / slim a diff after a feature (apply): `/simplify`.
+- Scan an area for structural smells (detect-only): `/code-smell`.
 - Root-cause only, no fix: `/rca --diagnose`.
 - Pause or transfer work to a fresh session/agent: `/handoff`.

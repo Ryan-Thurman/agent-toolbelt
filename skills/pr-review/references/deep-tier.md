@@ -51,7 +51,7 @@ As standard (`fan-out.md` §5–8): synthesize re-entry notes, **apply the repo-
 (severity overrides + do-not-flag, host-side, `repo-config.md`), **apply the rejection memory**
 (downrank + tag previously-rejected findings, `rejection-memory.md`), threshold, derive the verdict,
 render — including the `repo-config:` and `memory:` audit footers. Add the **token-usage footer**
-(`output-format.md`), which for deep includes facet tokens + scan + dual-judge + tiebreaker, so the
+(`output-format.md`), which for deep includes facet tokens + dual-judge + tiebreaker, so the
 deep cost is explicit in every run. If `--comment` was passed, post inline per `posting.md`.
 
 ## Failure handling

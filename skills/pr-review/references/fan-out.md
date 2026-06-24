@@ -21,6 +21,19 @@ yourself** — you set up context, spawn facet sub-agents, then aggregate, verif
 > several findings were against a stale version.) Sub-agents may still read full files for
 > *surrounding context*, but the **changed-lines set is the frozen snapshot**, identical for all.
 
+> **Large diffs — slice, don't dump.** Embedding the full frozen diff in every facet prompt is fine
+> for normal PRs, but the auto-tier deep trigger fires at `> 400 changed lines` or `> 20 files`
+> (`auto-tier.md`), where the full diff can exhaust a sub-agent's context. Above that threshold, give
+> each facet a **prioritized slice** instead of the whole snapshot:
+> - Rank changed files by facet relevance (e.g. `security` gets auth/input/external-call files first;
+>   `performance` gets hot-path/loop/query files first) and include only the top files until you hit a
+>   per-agent budget (default ~1500 changed lines / ~25 files per facet; tune to the model).
+> - Always include each hunk's surrounding context lines; never split a hunk.
+> - Tell the sub-agent which files were **withheld for budget** and that it may pull them on demand
+>   (read-only) if a finding requires it — this is the fallback, not the default path.
+> - The slice is still cut from the **one frozen snapshot** (same line numbers for all), so dedup and
+>   the critic's `file:line` re-read stay consistent. Note any withholding in the report.
+
 ## 1. Select facets
 
 Base set (always): **correctness, tests, standards, maintainability**.

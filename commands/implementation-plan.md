@@ -7,6 +7,10 @@ argument-hint: "<ticket-or-task-context>"
 
 Create a concise implementation plan for the selected ticket or task.
 
+> **When to use vs related:** `/implementation-plan` produces a concise plan for
+> one ticket/task in the feature-delivery track. Use `/dev-plan` for a phased Dev
+> Lite build plan from a Feature Brief.
+
 **Arguments:** `$ARGUMENTS`
 
 Required output:

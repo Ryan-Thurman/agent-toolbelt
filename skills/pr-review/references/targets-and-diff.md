@@ -87,4 +87,6 @@ __old hunk__
 
 - Anchor every finding to a **new-side line number** (`lineStart`/`lineEnd`).
 - For large PRs, don't dump the whole diff — pull file slices on demand and prioritise:
-  models → controllers → migrations → routes → key tests.
+  models → controllers → migrations → routes → key tests. For the multi-agent fan-out,
+  the orchestrator slices the frozen snapshot per facet against a per-agent budget — see
+  the "Large diffs — slice, don't dump" rule in `fan-out.md`.

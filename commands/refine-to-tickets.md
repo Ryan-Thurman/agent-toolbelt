@@ -9,6 +9,11 @@ Use the `ai-feature-delivery` skill to convert a feature package into tickets.
 
 **Arguments:** `$ARGUMENTS`
 
+Preconditions:
+- If the Feature Master Record is missing, malformed, or its path does not
+  resolve, stop and ask for it (or recommend `/feature-start`). Do not fabricate
+  feature content.
+
 Steps:
 1. Read the Feature Master Record, SDD if present, and doc impact map if present.
 2. Use `templates/refinement-ticket-template.md` for each ticket.

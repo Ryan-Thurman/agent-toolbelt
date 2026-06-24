@@ -11,54 +11,23 @@ Cursor.
 - Templates: required output structures.
 - Scripts/CI later: automation and enforcement outside Cursor.
 
-## Recommended Project Layout
+## Installed Layout
+
+`install-ai-feature-delivery.sh` writes everything **flat** — there are no `dev/`
+or `bridge/` rule subfolders:
 
 ```text
-ai-feature-delivery/
+<project>/
   .cursor/
-    rules/
-      000-core-process.mdc
-      010-doc-control.mdc
-      020-gates.mdc
-      030-traceability.mdc
-      040-stakeholder-pings.mdc
-      050-pr-review.mdc
-      dev/
-        100-dev-core.mdc
-        130-testing.mdc
-        150-pr-hygiene.mdc
-      bridge/
-        200-dev-feature-traceability.mdc
-    commands/
-      feature-start.md
-      feature-fleshout.md
-      doc-impact.md
-      gate-check.md
-      draft-pings.md
-      steward-review.md
-      refine-to-tickets.md
-      start-dev-from-feature.md
-      implementation-plan.md
-      write-tests.md
-      review-diff.md
-      pr-ready-check.md
-      dev-doc-delta-check.md
-      pr-traceability-review.md
-      release-doc-check.md
-  workflows/
-    define-to-refinement.md
-    refinement-to-dev.md
-    dev-to-pr.md
-    pr-to-qa.md
-    qa-to-release.md
-  templates/
-    feature-master-record.md
-    sdd-template.md
-    doc-impact-map.md
-    clarification-queue.md
-    release-manifest.md
-    qa-handoff.md
+    rules/        000-050 process rules + 100/130/150 dev rules + 200 bridge rule (flat)
+    commands/     all feature-delivery command .md files (flat)
+  skills/         ai-feature-delivery/ and webapp-testing/ SKILL.md trees
+  templates/      *-template.md output structures (e.g. feature-master-record.md, sdd-template.md)
+  workflows/      ai-feature-delivery-lifecycle.md and the other playbooks
 ```
+
+The installer's file lists are the source of truth for exactly what lands; run it
+with `--dry-run` to preview before installing.
 
 ## Command Recipes
 

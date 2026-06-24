@@ -114,8 +114,14 @@ Common commands:
 - `/start-dev-from-feature`, `/implementation-plan`, `/write-tests`,
   `/webapp-test`, `/review-diff`, `/pr-ready-check`, and
   `/pr-traceability-review` - carry a ticket through development and PR review.
+- `/role-review` - run a product, engineering, design, QA, security, or release
+  review gate from one role's point of view.
 - `/qa-handoff`, `/release-manifest`, and `/release-doc-check` - prepare QA and
   release documentation.
+
+The AI Feature Delivery pack installs Cursor commands/rules only (no
+`.claude/commands`); the Dev Lite pack installs both Cursor and Claude Code
+commands.
 
 ## PR Review
 
@@ -126,6 +132,18 @@ The `pr-review` tool reviews a PR, branch, or local diff with escalating depth:
 | `light` | quick gut-checks and tiny or low-risk diffs |
 | `standard` | normal PRs that need broad facet coverage |
 | `deep` | high-stakes, security-sensitive, or pre-merge reviews |
+
+Install it into a project for Cursor, Claude Code, and Codex skill use:
+
+```sh
+./install-pr-review.sh /path/to/project
+```
+
+Use `--dry-run` to preview and `--force` only when replacing a previous install.
+The installer adds the `/pr-review` command, the full `pr-review` skill tree, the
+`templates/pr-review.md` config sample, and the `examples/` reference material. On
+macOS, double-click `install-pr-review.command` and drag the target folder into the
+Terminal prompt.
 
 Run it with:
 

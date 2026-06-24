@@ -1,6 +1,6 @@
 ---
 description: PR readiness rules
-alwaysApply: false
+alwaysApply: true
 ---
 
 Before PR, provide implementation summary, changed files, tests added or

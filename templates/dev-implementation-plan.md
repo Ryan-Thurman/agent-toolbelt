@@ -28,6 +28,10 @@ Resume Instructions: Briefly state exactly what the next agent should do first.
 |---|---|---|---|---|
 | YYYY-MM-DD | TBD | Plan created | TBD | Await plan approval |
 
+<!-- Phases below are a starting scaffold. Rename, add, or remove phase blocks to
+match the phase model chosen in /dev-plan; the count is not fixed. Duplicate a
+full phase block for each additional phase. -->
+
 ## Phase 1: Foundation
 
 ### Goal

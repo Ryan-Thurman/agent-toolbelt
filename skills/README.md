@@ -14,6 +14,8 @@ workflow.
   building (the front-door to the dev lanes).
 - `simplify/` - active code cleanup: apply high-conviction simplifications on
   opt-in (the counterpart to pr-review).
+- `ship-it/` - lightweight release readiness: go/no-go check, rollback plan,
+  release notes, and rollout/monitor plan (pipeline-aware).
 - `dev-lite-workflow/` - lightweight dev workflow for feature/app ideas,
   phased implementation, per-task commits, phase reviews, and final PR review.
 - `ai-feature-delivery/` - release-traceable feature definition, design docs,

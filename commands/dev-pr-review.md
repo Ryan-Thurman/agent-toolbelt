@@ -16,6 +16,10 @@ unless the user explicitly asks for that exact behavior.
 Update the Implementation Plan with PR readiness result, branch/PR notes,
 required fixes, next step, and resume instructions.
 
+> **When to use vs related:** `/dev-pr-review` is the Dev Lite final readiness gate
+> (Feature Brief + plan + diff). Use `/pr-review` for a deeper standalone code
+> review and `/pr-ready-check` for the feature-delivery readiness checklist.
+
 **Arguments:** `$ARGUMENTS`
 
 ## Compare Against
@@ -84,83 +88,12 @@ default-branch work.
 
 ## Output
 
-# PR Readiness Review
-
-## Result
-
-Use one:
-
-- Ready for PR
-- Needs Fixes
-- Blocked
-
-## Acceptance Criteria Matrix
-
-| Criteria | Status | Evidence / Notes |
-|---|---|---|
-| ... | Met / Partial / Missing | ... |
-
-## Flow Coverage Matrix
-
-| Flow | Status | Evidence / Notes |
-|---|---|---|
-| ... | Covered / Partial / Missing | ... |
-
-## Findings
-
-### Blocking
-
-### Should Fix
-
-### Nice to Have
-
-## Required Fixes
-
-## Tests / Checks Reviewed
-
-## Performance Notes
-
-## Security Notes
-
-## Code Quality Notes
-
-## UX / Product Notes
-
-## Documentation Notes
-
-## Branch / PR Notes
-
-State the current branch, whether it is safe to open a PR, and any required
-branch/push action. If ready, include the recommended PR command when the host
-CLI is available, or the PR title/body for manual creation.
-
-## Plan Document Updates
-
-Summarize the Implementation Plan updates made for PR readiness result,
-branch/PR state, required fixes, next step, and resume instructions.
-
-## Suggested PR Description
-
-Use this format:
-
-```md
-## Summary
-
-- ...
-
-## What Changed
-
-- ...
-
-## How Tested
-
-- ...
-
-## Risks / Notes
-
-- ...
-
-## Screenshots / Videos
-
-- Add if applicable.
-```
+Produce a PR Readiness Review following the structure in
+`templates/dev-pr-review.md`. Include the Acceptance Criteria Matrix, Flow
+Coverage Matrix, findings buckets (Blocking / Should Fix / Nice to Have), Test
+Suite Changes, Test Gaps, the per-area notes, Branch / PR Notes, Plan Document
+Updates, and the Suggested PR Description. Treat missing feasible tests as a
+Should Fix issue by default, or Blocking when core behavior, permissions, or data
+safety is unverified. In Branch / PR Notes, state the current branch, whether it
+is safe to open a PR, and the recommended PR command (when the host CLI is
+available) or PR title/body for manual creation.

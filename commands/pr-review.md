@@ -7,6 +7,12 @@ argument-hint: "[target] [--tier=light|standard|deep] [--focus=performance,…] 
 
 Run the **pr-review** skill on the requested target.
 
+> **When to use vs related:** `/pr-review` is the deep, tiered, multi-agent code
+> review (bugs/security/perf/tests/maintainability/standards). For a quick local
+> pass use `/review-diff`; for PR-open readiness use `/pr-ready-check`; for
+> feature/ticket/doc traceability use `/pr-traceability-review`; for the Dev Lite
+> final gate use `/dev-pr-review`.
+
 **Arguments:** `$ARGUMENTS`
 
 Parse them as:

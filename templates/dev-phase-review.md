@@ -34,4 +34,9 @@ Have.
 
 ## Remaining Risks
 
+## Plan Document Updates
+
+Summarize the phase status, review result, required fixes, next step, and resume
+instructions recorded in the Implementation Plan.
+
 ## Suggested Fix Commit Message

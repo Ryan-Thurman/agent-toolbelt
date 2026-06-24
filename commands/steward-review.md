@@ -9,6 +9,11 @@ Use the `ai-feature-delivery` skill to run a feature stewardship review.
 
 **Arguments:** `$ARGUMENTS`
 
+Preconditions:
+- If the master record / feature folder is missing, malformed, or its path does
+  not resolve, stop and ask for it (or recommend `/feature-start`). Do not
+  fabricate feature content.
+
 Steps:
 1. Read the Feature Master Record, related docs, tickets, clarification queue,
    pending actions, gate history, and release manifest if present.

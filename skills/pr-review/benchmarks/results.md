@@ -54,8 +54,8 @@ run light + standard + deep against that frozen snapshot in fresh sessions. → 
 
 ✅ **Clean comparison.** Same diff frozen to `/tmp/pr-review-bench/` at base sha `dbb5f41` (476-line
 diff + 2 new files, 6 code files); working tree verified unchanged across all runs; every sub-agent
-reviewed the identical snapshot. semgrep not installed → deep ran LLM-only security (scan layer
-degraded, as designed). No spec → spec-alignment no-op.
+reviewed the identical snapshot. No external SAST tool integrated → deep ran LLM-only security.
+No spec → spec-alignment no-op.
 
 | tier | sub-agents | review tokens | raw findings | final (after verify) | blockers | verdict | tokens/finding |
 |---|---|---|---|---|---|---|---|

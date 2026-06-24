@@ -1,6 +1,6 @@
 ---
 description: Review rules for phase reviews and final PR reviews
-alwaysApply: false
+alwaysApply: true
 ---
 
 # Dev Lite Review Rules

@@ -1,14 +1,14 @@
 #!/usr/bin/env bash
-# macOS double-click wrapper for the Dev Lite workflow installer.
+# macOS double-click wrapper for the PR Review installer.
 
 set -u
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-echo "Dev Lite Workflow Installer"
+echo "PR Review Installer"
 echo
 echo "Drag the project folder into this Terminal window, then press Enter."
-echo "The installer will add Cursor commands/rules, Claude commands, Codex .agents skill files, templates, and workflow docs."
+echo "The installer will add the /pr-review command, the pr-review skill tree, a sample review config, and reference examples."
 echo "Existing files are skipped."
 echo
 
@@ -23,11 +23,11 @@ TARGET="${TARGET//\\ / }"
 if [ -z "$TARGET" ]; then
   echo "No target folder provided. Nothing installed."
   echo
-  read -r -p "Press Enter to close."
+  read -r -p "Press Enter to close. "
   exit 1
 fi
 
-"$ROOT/install-dev-lite-workflow.sh" "$TARGET"
+"$ROOT/install-pr-review.sh" "$TARGET"
 
 echo
-read -r -p "Press Enter to close."
+read -r -p "Press Enter to close. "

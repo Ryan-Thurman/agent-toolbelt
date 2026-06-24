@@ -36,3 +36,32 @@ unclear inside a pilot repo, start with `/workflow-router`.
 - `/qa-handoff` - build a QA execution package.
 - `/release-manifest` - create or update a release documentation manifest.
 - `/release-doc-check` - validate docs against release eligibility rules.
+
+## Choosing between similar commands
+
+Some commands overlap. Use these tables to pick the right one.
+
+**Reviewing a change**
+
+| Command | Use it for |
+|---|---|
+| `/pr-review` | Deep, tiered, multi-agent code review (bugs, security, perf, tests, maintainability, standards). The heavy code-quality pass. |
+| `/review-diff` | Quick local-diff review before a PR — lighter than `/pr-review`. |
+| `/pr-ready-check` | Readiness checklist: is the change *ready to open or complete* a PR (summary, tests, risks)? Not code review. |
+| `/pr-traceability-review` | Does the PR trace to its feature record, ticket scope, docs, tests, and release metadata? Not code quality. |
+| `/dev-pr-review` | Dev Lite final readiness gate against the Feature Brief + plan + diff. |
+
+**Checking documentation impact**
+
+| Command | Use it for |
+|---|---|
+| `/doc-impact` | Up-front map of which controlled docs (CDP/SRS/SAD/SDD) a feature will touch. |
+| `/doc-delta` | Formal check that a ticket/PR's changes *require* controlled-doc updates. |
+| `/dev-doc-delta-check` | Lightweight in-dev / pre-PR bridge to keep code aligned with controlled docs. |
+
+**Planning implementation**
+
+| Command | Use it for |
+|---|---|
+| `/dev-plan` | Phased Dev Lite build plan from a Feature Brief. |
+| `/implementation-plan` | Concise single-ticket plan in the feature-delivery track. |

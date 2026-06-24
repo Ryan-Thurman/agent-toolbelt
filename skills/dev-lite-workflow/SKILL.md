@@ -87,8 +87,10 @@ The portable command prompts live in `../../commands/`:
 - `/dev-fix-review-issues` fixes only phase review findings.
 - `/dev-pr-review` performs final PR readiness review.
 
-In Codex, these command files are reusable prompt references, not automatically
-registered slash commands. Use this skill directly instead:
+These command files install as real slash commands in Cursor
+(`.cursor/commands/`) and Claude Code (`.claude/commands/`). In Codex they are
+reusable prompt references rather than registered slash commands, so invoke this
+skill directly instead:
 
 ```text
 $dev-lite-workflow

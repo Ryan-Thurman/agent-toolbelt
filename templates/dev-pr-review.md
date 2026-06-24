@@ -58,6 +58,11 @@ Have.
 - Ready to open PR: Yes / No
 - Recommended PR command or manual PR title/body:
 
+## Plan Document Updates
+
+Summarize the Implementation Plan updates made for PR readiness result,
+branch/PR state, required fixes, next step, and resume instructions.
+
 ## Suggested PR Description
 
 ```md

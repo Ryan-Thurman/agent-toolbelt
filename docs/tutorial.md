@@ -285,6 +285,8 @@ Use these shortcuts while piloting:
 - Browser verification: `/webapp-test`.
 - PR readiness: `/review-diff`, `/pr-ready-check`,
   `/pr-traceability-review`.
+- Role-specific review gate: `/role-review` (product, engineering, design, QA,
+  security, or release).
 - QA and release: `/qa-handoff`, `/release-manifest`,
   `/release-doc-check`.
 

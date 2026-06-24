@@ -22,60 +22,14 @@ avoid building the wrong thing.
 
 ## Output
 
-Create or update a Feature Brief using this structure:
+Create or update a Feature Brief following the structure in
+`templates/dev-feature-brief.md`. Fill every section and keep it concise.
 
-# Feature Brief
-
-## Summary
-
-Briefly describe the feature or app idea.
-
-## Target User
-
-Describe who this is for.
-
-## Problem / Goal
-
-Describe the problem being solved or the outcome the feature should enable.
-
-## App or Feature Flows
-
-List the main flows step by step.
-
-Example:
-
-1. User opens the page.
-2. User selects an item.
-3. User submits a form.
-4. System validates the input.
-5. System shows a result.
-
-## Acceptance Criteria
-
-Use checkbox format.
-
-- [ ] Criteria 1
-- [ ] Criteria 2
-- [ ] Criteria 3
-
-Acceptance criteria should be specific, testable, and tied to the flows.
-
-## Constraints
-
-List technical, product, design, time, platform, or integration constraints.
-
-## Non-Goals
-
-List what should not be included in this implementation.
-
-## Open Questions
-
-List unresolved questions.
-
-## Suggested Assumptions
-
-List assumptions that allow implementation planning to continue safely.
-
-## Risks
-
-List likely product, technical, security, performance, or UX risks.
+Guidance for specific sections:
+- **App or Feature Flows** — list the main flows step by step (e.g. open page ->
+  select item -> submit form -> validate -> show result).
+- **Acceptance Criteria** — checkbox format; each criterion specific, testable,
+  and tied to a flow.
+- **Suggested Assumptions** — list the assumptions that let planning continue
+  safely, and mark anything you assumed because a detail was missing.
+- **Risks** — likely product, technical, security, performance, or UX risks.

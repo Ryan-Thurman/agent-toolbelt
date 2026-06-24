@@ -3,7 +3,7 @@
 Reusable AI-agent commands, skills, workflows, and templates for software
 delivery work.
 
-The repository currently includes four main toolsets:
+The repository currently includes these toolsets:
 
 - `pr-review`: a tiered, multi-agent pull-request and diff review workflow.
 - `bug-to-fix`: a diagnostic lane that takes a bug report through triage,
@@ -13,11 +13,16 @@ The repository currently includes four main toolsets:
 - `ai-feature-delivery`: a traceable feature-delivery workflow for turning a
   feature idea into design docs, implementation tickets, test evidence, QA
   handoff, and release documentation.
+- `shape-up`: interrogate a vague request into an agreed brief before building —
+  the front-door to the dev lanes.
+- `simplify`: actively clean up existing code, applying high-conviction
+  simplifications on opt-in — the active counterpart to `pr-review`.
 
-The two lanes are different shapes: `ai-feature-delivery` / `dev-lite-workflow`
-are **generative** (start from an idea), while `bug-to-fix` is **diagnostic**
-(start from broken behavior). They share a back half — dev implementation and PR
-review.
+The lanes are different shapes: `ai-feature-delivery` / `dev-lite-workflow` are
+**generative** (start from an idea), while `bug-to-fix` is **diagnostic** (start
+from broken behavior). `shape-up` shapes a fuzzy request before either; `pr-review`
+and `simplify` are the review/cleanup utilities. They share a back half — dev
+implementation and PR review.
 
 ## What Is Included
 
@@ -199,6 +204,38 @@ Key ideas:
   the bug before dev, and keeps the automated failing-test path for when a test
   harness exists.
 - `/rca --diagnose` runs a read-only root-cause analysis that never edits files.
+
+## Shape Up
+
+The `shape-up` tool interrogates a vague request into an agreed brief **before** anyone
+plans or writes code — the front-door to the dev lanes.
+
+```sh
+./install-shape-up.sh /path/to/project
+```
+
+It grills the request one question at a time (resolving from the codebase first, each
+question with a recommended answer), hunts contradictions and overloaded terms, and emits
+a lean brief — gated on your approval. Then it hands off: `/shape-up` -> `/dev-intake` ->
+`/dev-plan`, or `/to-issues` to slice the brief into vertical-slice tickets. It is lighter
+than `/feature-fleshout` (no gates/compliance) and complements `/dev-intake` (which captures
+a brief but does not grill).
+
+## Simplify
+
+The `simplify` tool is the active counterpart to `pr-review`: where review *finds* problems
+and applies nothing, simplify *drives the cleanup* and applies it on opt-in.
+
+```sh
+./install-simplify.sh /path/to/project
+```
+
+- `/simplify` — diff/feature-scoped: propose high-conviction cleanups (dead code, debug
+  remnants, thin wrappers, reuse, small inefficiencies), then apply the ones you select.
+  Every candidate must state `rootIssue -> consequence -> benefit`, and changes are
+  behavior-preserving (existing tests must pass unmodified).
+- `/code-smell` — detect-only scan of an area, ranked by severity × confidence; applies
+  nothing.
 
 ## Repository Safety
 

@@ -158,7 +158,12 @@ install_workflow() {
 
 install_skill() {
   local name="$1"
+  shift
   install_file "$ROOT/skills/$name/SKILL.md" "$TARGET/skills/$name/SKILL.md"
+  local rel
+  for rel in "$@"; do
+    install_file "$ROOT/skills/$name/$rel" "$TARGET/skills/$name/$rel"
+  done
 }
 
 install_rule() {
@@ -198,12 +203,11 @@ do
   install_command "$command"
 done
 
-for skill in \
-  ai-feature-delivery \
-  webapp-testing
-do
-  install_skill "$skill"
-done
+install_skill ai-feature-delivery \
+  references/define-and-steward.md \
+  references/design-refine-dev.md \
+  references/gates-qa-release.md
+install_skill webapp-testing
 
 for template in \
   feature-master-record.md \

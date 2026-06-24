@@ -107,31 +107,6 @@ Use the matching templates in `../../templates/` for persistent artifacts:
 - `dev-phase-review.md`
 - `dev-pr-review.md`
 
-## Standalone Use
-
-The full workflow is optional. For bug fixes or small changes, use the review
-steps by themselves when enough context is available.
-
-For a QA-style change review:
-
-```text
-$dev-lite-workflow
-Run a phase review for this bug fix. Check expected behavior, tests, edge cases,
-security, performance, code quality, UX, and whether review issues remain.
-```
-
-For final PR readiness:
-
-```text
-$dev-lite-workflow
-Run a PR readiness review for the current diff. Compare against this bug:
-[describe bug and expected behavior].
-```
-
-When running standalone reviews, infer the feature brief from the bug or change
-summary. If acceptance criteria are missing, turn the expected behavior into a
-small checklist before reviewing.
-
 ## Planning Approval Gate
 
 After creating or updating the Implementation Plan, stop and ask the user to
@@ -176,105 +151,12 @@ Before ending a turn after implementation work, update `Current State`,
 exists yet, create one from `dev-implementation-plan.md` or clearly ask where to
 store it before continuing substantial work.
 
-## Before Implementation
+## Detailed rules (load when you reach that step)
 
-Before changing code:
-
-1. Confirm the intended behavior.
-2. Identify impacted files or modules.
-3. Tie the work to the current task.
-4. Call out assumptions.
-5. Identify the automated tests that should prove the behavior.
-6. If automated tests are not practical, explain why and identify the manual or
-   integration check that will cover the risk.
-
-Do not implement future-phase work while completing the current task.
-
-## Test Suite Rule
-
-Build out the test suite as implementation progresses.
-
-For every task that changes behavior, include the matching test work in the same
-task unless there is a clear, stated reason it cannot be automated yet. Prefer
-small tests near the changed code: unit tests for logic, component or integration
-tests for interactions, and browser/user-flow checks for critical UI behavior.
-
-Do not defer all test coverage to a final hardening phase. A final test phase
-may fill gaps, add regression coverage, and clean up brittle tests, but each
-feature task should leave the relevant test suite better than it started.
-
-## During Implementation
-
-- Work on one task at a time.
-- Keep changes small and reviewable.
-- Follow existing project conventions.
-- Avoid unrelated formatting and broad refactors.
-- Add or update tests in the same task when behavior changes.
-- Prefer simple, maintainable solutions over clever abstractions.
-
-## After Implementation
-
-Return:
-
-- Task completed
-- Intended behavior
-- Files changed
-- Tests added or updated
-- Checks run or still needed
-- Acceptance criteria impact
-- Risks or notes
-- Suggested commit message
-
-Also update the Implementation Plan document with the completed task status,
-test/check evidence, changed files, next task, and resume instructions before
-claiming the task is ready for commit.
-
-Do not mark the task complete unless the intended behavior is implemented,
-relevant tests/checks have run or are clearly listed, missing tests are called
-out with a reason, and the task is ready for a small commit.
-
-## Phase Review Rules
-
-At the end of each phase, review against the Feature Brief, app/feature flows,
-acceptance criteria, Implementation Plan, completed tasks, tests/checks, and
-current diff if available.
-
-Evaluate:
-
-- Correctness
-- Acceptance criteria coverage
-- Tests
-- Performance
-- Security
-- Code quality
-- Maintainability
-- UX/product quality
-- Future-phase leakage
-
-Classify findings as:
-
-- Blocking: must fix before moving on.
-- Should Fix: important, but may not block if explicitly accepted.
-- Nice to Have: improvement, polish, or future cleanup.
-
-Do not approve a phase or PR if blocking issues remain.
-
-Treat missing feasible tests for behavior changes as a Should Fix issue by
-default, or Blocking when the missing coverage leaves core behavior,
-permissions, data safety, or high-risk edge cases unverified.
-
-## Commit Rules
-
-Recommend one small commit after each completed task and another after phase
-review fixes, if any.
-
-Use concise conventional-style messages when possible:
-
-```text
-feat: add [task summary]
-fix: address [issue summary]
-test: add coverage for [behavior]
-refactor: simplify [area]
-docs: update [doc or README area]
-chore: update [tooling/config]
-```
+- `references/implementation-rules.md` — before / during / after implementing a
+  task, plus the test-suite rule.
+- `references/review-rules.md` — phase review evaluation and finding
+  classification (also used for the final PR readiness review).
+- `references/commit-rules.md` — commit cadence and message conventions.
+- `references/standalone-use.md` — running the review steps by themselves for a
+  bug fix or small change.

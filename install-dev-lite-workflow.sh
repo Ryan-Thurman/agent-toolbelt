@@ -166,8 +166,14 @@ install_rule() {
 
 install_skill() {
   local name="$1"
+  shift
   install_file "$ROOT/skills/$name/SKILL.md" "$TARGET/.agents/skills/$name/SKILL.md"
   install_file "$ROOT/skills/$name/SKILL.md" "$TARGET/skills/$name/SKILL.md"
+  local rel
+  for rel in "$@"; do
+    install_file "$ROOT/skills/$name/$rel" "$TARGET/.agents/skills/$name/$rel"
+    install_file "$ROOT/skills/$name/$rel" "$TARGET/skills/$name/$rel"
+  done
 }
 
 echo "Installing Dev Lite workflow into: $TARGET"
@@ -194,7 +200,11 @@ do
   install_rule "$rule"
 done
 
-install_skill dev-lite-workflow
+install_skill dev-lite-workflow \
+  references/implementation-rules.md \
+  references/review-rules.md \
+  references/commit-rules.md \
+  references/standalone-use.md
 
 for template in \
   dev-feature-brief.md \

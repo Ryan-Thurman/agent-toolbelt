@@ -29,6 +29,12 @@ tells you the PR number, so it calls `/pr-review` directly and needs no ledger.*
 for everything that can't (Azure Repos PRs without Pipelines wired, polling several repos at once, a
 laptop-side watcher). Both end in the same review.
 
+**Third trigger — a local push queue.** When the PR is opened by *another local agent* (not a remote
+host you'd poll), the cleanest ignition is push, not poll: the producing agent enqueues a job and a
+worker claims it. That's the **`review-queue`** pack (`skills/review-queue/SKILL.md`) — fully local,
+no CI/webhook/API key, with atomic exactly-once claim and crash-safe leases. Use it for agent-to-agent
+hand-off; use the event/poller here for host-originated PRs. All three end in `/pr-review --comment`.
+
 ## Principles (always)
 
 - **A fresh agent per review.** The reviewer must not share context with the agent that *wrote* the

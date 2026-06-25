@@ -16,6 +16,12 @@ workflow.
   GitHub Actions event workflow (the PR event fires a headless review) and a
   host-agnostic poller (`/loop` or `/schedule`) that reviews open PRs unseen at
   their current head SHA. Idempotent; adds no review logic.
+- `review-queue/` - the push-based third trigger: a local, SQLite-backed work
+  queue (pure bash + `sqlite3`, no runtime) that decouples PR-opening agents from
+  the reviewer. A producer agent enqueues a PR; a worker claims jobs (atomic,
+  exactly-once, crash-safe leases, dead-lettering) and runs `/pr-review --comment`
+  on each. Fully local — no CI/webhook/API key. Drive the worker with `/loop` or
+  `/schedule`.
 - `bug-to-fix/` - diagnostic lane: triage, reproduce, root-cause analysis,
   minimal fix, and verification for a reported bug.
 - `shape-up/` - interrogate a vague request into an agreed brief before

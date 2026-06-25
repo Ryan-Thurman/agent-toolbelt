@@ -66,6 +66,9 @@ Routing guide:
   changed since the review): `/pr-review-reply` (run after `/pr-review`).
 - Auto-review PRs as they're opened/updated (trigger, not on-demand): `/review-on-open`
   (poller; drive with `/loop` / `/schedule`) — or wire the GitHub Actions event template.
+- Agent-to-agent review hand-off (one agent opens a PR, another reviews it) via a local
+  queue: `/enqueue-review` (producer) → `/review-queue-worker` (consumer; drive with
+  `/loop` / `/schedule`). Fully local — no CI/webhook/API key.
 - Release a merged change (readiness + rollback + notes + rollout): `/ship-it`.
 - Clean up / slim a diff after a feature (apply): `/simplify`.
 - Scan an area for structural smells (detect-only): `/code-smell`.

@@ -12,6 +12,10 @@ The repository currently includes these toolsets:
 - `review-on-open`: the trigger layer for `pr-review` — auto-run a fresh review
   when a PR is opened or updated, via a GitHub Actions event workflow or a
   host-agnostic poller driven by `/loop` or `/schedule`.
+- `review-queue`: a local, SQLite-backed work queue that decouples PR-opening
+  agents from the reviewer — a producer enqueues a PR, a worker claims it and
+  runs `/pr-review --comment`. The push-based trigger; fully local, no
+  CI/webhook/API key.
 - `bug-to-fix`: a diagnostic lane that takes a bug report through triage,
   reproduction, root-cause analysis, a minimal fix, and verification.
 - `dev-lite-workflow`: a lightweight development loop for app/feature ideas,
@@ -272,6 +276,51 @@ The decision rule: if the host can run CI on the PR event, prefer the event path
 everything that can't. After a review posts, `/pr-review-reply` handles the
 inbound threads — `review-on-open` → `pr-review` → `pr-review-reply` is the full
 loop.
+
+## Review Queue
+
+The `review-queue` tool is the **push-based** third trigger: a local work queue
+that decouples the agent that *opens* a PR from the agent that *reviews* it.
+Instead of polling a host or waiting on CI, the producing agent enqueues a job
+and a worker claims it — fully local, so it runs on your subscription with no
+GitHub webhook, no CI, and no `ANTHROPIC_API_KEY`. Any harness (Claude Code,
+Cursor, Codex) can produce or consume against the one shared queue.
+
+```sh
+./install.sh review-queue /path/to/project
+```
+
+State is a single SQLite file (`$REVIEW_QUEUE_DB`, else `~/.review-queue/queue.db`)
+driven by a shipped CLI — pure bash + `sqlite3`, nothing to install. Two lanes:
+
+- **Producer** — after opening/updating a PR, enqueue it (idempotent on the head
+  SHA, so re-runs are safe and a new push gets its own job):
+
+  ```text
+  /enqueue-review [target] [--repo=…] [--sha=…] [--tier=…] [--reason=…]
+  ```
+
+- **Consumer** — a worker drains the queue, running `/pr-review --comment` on each
+  claimed job in a fresh sub-agent:
+
+  ```text
+  /review-queue-worker [--worker=id] [--max=N] [--tier=…]
+  ```
+
+  Run it on an interval with `/loop 5m /review-queue-worker` (local) or a
+  `/schedule` routine (hands-off).
+
+Claiming is an atomic `BEGIN IMMEDIATE` transaction (exactly-once — two workers
+never grab the same job, verified under concurrency). A claim takes a lease
+(default 30m), so a job whose worker dies mid-review is reaped back to the queue;
+a job that fails `MAX_ATTEMPTS` times is **dead-lettered** rather than retried
+forever (`review-queue list --status dead`). Full CLI contract:
+`skills/review-queue/references/cli.md`.
+
+**Caveat:** a queue still needs a worker draining it — it removes *remote
+polling*, not the need for a live consumer. Use the queue for agent-to-agent
+hand-off; use `review-on-open` (event/poller) for host-originated PRs. All three
+end in `/pr-review --comment`.
 
 ## Bug to Fix
 

@@ -7,6 +7,7 @@ For a guided command path, see `../docs/tutorial.md`. If the next command is
 unclear inside a pilot repo, start with `/workflow-router`.
 
 - `/pr-review` - run the tiered PR/code review workflow.
+- `/pr-review-reply` - round-trip a PR review: read reviewer threads, triage, re-review only since-SHA changes, reply per-thread.
 - `/shape-up` - interrogate a vague request into an agreed brief before building.
 - `/to-issues` - slice an approved brief into vertical-slice tickets.
 - `/simplify` - actively clean up a diff/area and apply cleanups on opt-in.
@@ -57,6 +58,7 @@ Some commands overlap. Use these tables to pick the right one.
 | Command | Use it for |
 |---|---|
 | `/pr-review` | Deep, tiered, multi-agent code review (bugs, security, perf, tests, maintainability, standards). The heavy code-quality pass. |
+| `/pr-review-reply` | The round-trip: answer a human reviewer's PR threads — triage each (`answered`/`changed`/`needs-follow-up`), re-review only the code changed since the review, reply per-thread. Run after `/pr-review`. |
 | `/review-diff` | Quick local-diff review before a PR — lighter than `/pr-review`. |
 | `/pr-ready-check` | Readiness checklist: is the change *ready to open or complete* a PR (summary, tests, risks)? Not code review. |
 | `/pr-traceability-review` | Does the PR trace to its feature record, ticket scope, docs, tests, and release metadata? Not code quality. |

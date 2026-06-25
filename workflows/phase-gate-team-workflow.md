@@ -3,8 +3,8 @@
 A phased build loop for **team/work repos** where humans still do the manual review and own the merge,
 but an agent **auto-reviews each phase PR and posts its findings to the PR** (GitHub or Azure). The
 auto-review *supplements* the human review — it puts an agent's pass on the PR before (or alongside)
-the human reviewers, so nothing waits on you to review by hand first. This is the `--post` mode of
-`/phase-gate`.
+the human reviewers, so nothing waits on you to review by hand first. This is the **default** mode of
+`/phase-gate` (no `--merge`).
 
 > POC — standalone. Same in-loop gate as the solo flow, but findings go to the **PR on the host** and
 > the gate **stops** for human review + merge (it never auto-merges).
@@ -21,7 +21,7 @@ Agree a plan (phases)
 │ ↓                                                          │
 │ Open the phase PR                                          │
 │ ↓                                                          │
-│ /phase-gate --post                                         │
+│ /phase-gate            (default — no --merge)              │
 │   • subagent runs /pr-review --comment                     │
 │   • findings posted inline to the GitHub/Azure PR          │
 │   • gate STOPS — handed to human review                    │
@@ -42,7 +42,7 @@ Feature complete
 3. **Open the phase PR** against the base branch.
 4. **Run the gate:**
    ```text
-   /phase-gate --post
+   /phase-gate
    ```
    - A fresh **review subagent** runs `/pr-review <pr> --comment`: it reviews the phase diff and
      **posts the findings as inline comments** on the PR — GitHub (`gh`) or Azure Repos (`az`), via the

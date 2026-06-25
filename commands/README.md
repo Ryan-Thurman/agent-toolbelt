@@ -11,6 +11,8 @@ unclear inside a pilot repo, start with `/workflow-router`.
 - `/to-issues` - slice an approved brief into vertical-slice tickets.
 - `/simplify` - actively clean up a diff/area and apply cleanups on opt-in.
 - `/code-smell` - detect-only scan of an area for structural smells.
+- `/cover` - author/strengthen behavior-pinning tests for a diff/module/bug repro, on opt-in.
+- `/cover-gaps` - detect-only scan for missing/weak coverage, ranked by risk × likelihood.
 - `/ship-it` - prepare a merged change for release (readiness, rollback, notes, rollout).
 - `/retrofit` - apply one defined change across every site (library swap, API rename, upgrade).
 - `/bug-intake` - triage a bug report and open a durable investigation.
@@ -95,6 +97,14 @@ Some commands overlap. Use these tables to pick the right one.
 | `/pr-review` | *Find* bugs/quality issues with a merge verdict on changed lines. Applies nothing. |
 | `/retrofit` | Apply *one defined* change across *every* site (library swap, API rename, framework upgrade). The same change, many places — discover/transform/verify, opt-in. |
 
+**Authoring tests**
+
+| Command | Use it for |
+|---|---|
+| `/cover` | *Author/strengthen* behavior-pinning tests for a diff, module, or bug repro (red→green regression lock), on opt-in. Framework-detected, falsified, deterministic; lane-agnostic. Writes tests only. |
+| `/cover-gaps` | *Detect-only* scan for missing/weak coverage, ranked by risk × likelihood. Applies nothing — hands top gaps to `/cover`. |
+| `/write-tests` | Regulated AI Feature Delivery test planning/authoring tied to a feature/ticket's traceability and doc control. The gated lane; `/cover` is the standalone one. |
+
 **Diagnosing a bug (Bug-to-Fix lane)**
 
 | Command | Use it for |
@@ -106,7 +116,8 @@ Some commands overlap. Use these tables to pick the right one.
 | `/handoff` | Cross-cutting: write a resumable summary before a context reset or session transfer. |
 
 The Bug-to-Fix lane hands off to the shared back half: `/fix-plan` → `/dev-implement-task` (or
-`/implementation-plan`) → `/pr-review` / `/dev-pr-review`.
+`/implementation-plan`) → `/pr-review` / `/dev-pr-review`. `/reproduce` also hands the repro to
+`/cover`, which turns it into a committed red→green regression test.
 
 **Releasing a change**
 

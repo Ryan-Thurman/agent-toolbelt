@@ -11,6 +11,11 @@ workflow.
 - `pr-review-reply/` - the round-trip half of pr-review: read a human
   reviewer's PR threads, triage each, re-review only the code changed since the
   review, and reply per-thread (posting opt-in, idempotent).
+- `review-on-open/` - the trigger layer for pr-review: auto-run a fresh
+  `/pr-review --comment` when a PR is opened or updated. Two triggers — a
+  GitHub Actions event workflow (the PR event fires a headless review) and a
+  host-agnostic poller (`/loop` or `/schedule`) that reviews open PRs unseen at
+  their current head SHA. Idempotent; adds no review logic.
 - `bug-to-fix/` - diagnostic lane: triage, reproduce, root-cause analysis,
   minimal fix, and verification for a reported bug.
 - `shape-up/` - interrogate a vague request into an agreed brief before

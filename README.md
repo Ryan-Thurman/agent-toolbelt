@@ -33,6 +33,8 @@ the tail. They share a back half — dev implementation and PR review.
 
 ```text
 agent-toolbelt/
+  install.sh        single installer entry point (./install.sh <pack...> <target>)
+  install/          per-pack file lists (install/<pack>.sh) + shared install/lib.sh
   docs/             user-facing setup and usage docs
   commands/         slash commands and reusable command prompts
   skills/           agent skills with operating instructions
@@ -50,23 +52,28 @@ For the guided path, start with:
 - `docs/README.md` for the documentation map.
 - `docs/tutorial.md` for a first install and first feature walkthrough.
 
-To install the AI Feature Delivery pack into a pilot repo or folder:
+Everything installs through one entry point — `./install.sh` — which takes one or
+more pack names (or `all`) and a target folder:
 
 ```sh
-./install-ai-feature-delivery.sh /path/to/pilot-folder
+./install.sh <pack> [<pack> ...] <target-folder>
+./install.sh --list                 # see the available packs
+./install.sh ai-feature-delivery /path/to/pilot-folder
+./install.sh bug-to-fix simplify shape-up /path/to/project
+./install.sh all /path/to/project
 ```
 
-Use `--dry-run` to preview the install:
+Each pack's file list lives in `install/<pack>.sh`; the shared logic is in
+`install/lib.sh`. Use `--dry-run` to preview and `--force` only when replacing a
+previous install:
 
 ```sh
-./install-ai-feature-delivery.sh --dry-run /path/to/pilot-folder
+./install.sh --dry-run ai-feature-delivery /path/to/pilot-folder
 ```
 
-Use `--force` only when replacing a previous install.
-
-On macOS, non-developer pilot users can double-click
-`install-ai-feature-delivery.command`, drag the target folder into the Terminal
-prompt, and press Enter.
+On macOS, non-developer pilot users can double-click `install.command`, which
+asks which pack(s) to install and then for the target folder (drag it into the
+Terminal prompt and press Enter).
 
 After install, open the target folder in Cursor and run `/workflow-router` or
 `/feature-start` from chat.
@@ -83,13 +90,13 @@ Idea -> Feature Brief -> Implementation Plan -> Task -> Commit -> Phase Review -
 Install it into a project for Cursor, Claude Code, and Codex skill use:
 
 ```sh
-./install-dev-lite-workflow.sh /path/to/project
+./install.sh dev-lite-workflow /path/to/project
 ```
 
 Use `--dry-run` to preview the install:
 
 ```sh
-./install-dev-lite-workflow.sh --dry-run /path/to/project
+./install.sh --dry-run dev-lite-workflow /path/to/project
 ```
 
 The installer adds Cursor commands/rules, Claude commands, a repo-scoped
@@ -153,14 +160,13 @@ The `pr-review` tool reviews a PR, branch, or local diff with escalating depth:
 Install it into a project for Cursor, Claude Code, and Codex skill use:
 
 ```sh
-./install-pr-review.sh /path/to/project
+./install.sh pr-review /path/to/project
 ```
 
 Use `--dry-run` to preview and `--force` only when replacing a previous install.
 The installer adds the `/pr-review` command, the full `pr-review` skill tree, the
 `templates/pr-review.md` config sample, and the `examples/` reference material. On
-macOS, double-click `install-pr-review.command` and drag the target folder into the
-Terminal prompt.
+macOS, double-click `install.command` and follow the prompts.
 
 Run it with:
 
@@ -191,14 +197,13 @@ Bug report -> /bug-intake -> /reproduce -> /rca -> /fix-plan -> /dev-implement-t
 Install it into a project for Cursor, Claude Code, and Codex skill use:
 
 ```sh
-./install-bug-to-fix.sh /path/to/project
+./install.sh bug-to-fix /path/to/project
 ```
 
 Use `--dry-run` to preview and `--force` only when replacing a previous install.
 The installer adds the `/bug-*` commands, the `bug-to-fix` skill tree, the
 investigation/RCA/fix-brief templates, and the workflow playbook. On macOS,
-double-click `install-bug-to-fix.command` and drag the target folder into the
-Terminal prompt.
+double-click `install.command` and follow the prompts.
 
 Key ideas:
 
@@ -216,7 +221,7 @@ The `shape-up` tool interrogates a vague request into an agreed brief **before**
 plans or writes code — the front-door to the dev lanes.
 
 ```sh
-./install-shape-up.sh /path/to/project
+./install.sh shape-up /path/to/project
 ```
 
 It grills the request one question at a time (resolving from the codebase first, each
@@ -232,7 +237,7 @@ The `simplify` tool is the active counterpart to `pr-review`: where review *find
 and applies nothing, simplify *drives the cleanup* and applies it on opt-in.
 
 ```sh
-./install-simplify.sh /path/to/project
+./install.sh simplify /path/to/project
 ```
 
 - `/simplify` — diff/feature-scoped: propose high-conviction cleanups (dead code, debug
@@ -248,7 +253,7 @@ The `ship-it` tool is the lightweight release step at the tail of the dev lanes 
 "PR merged," this takes it to "released safely."
 
 ```sh
-./install-ship-it.sh /path/to/project
+./install.sh ship-it /path/to/project
 ```
 
 Run `/ship-it` after a change is merged/approved. It produces a **go/no-go readiness check**, a
@@ -269,7 +274,7 @@ swap (moment → dayjs), an API/symbol rename across N call sites, a framework u
 replacement. It is *not* a database migration and does *not* decide what the change is.
 
 ```sh
-./install-retrofit.sh /path/to/project
+./install.sh retrofit /path/to/project
 ```
 
 `/retrofit` runs **discover → transform → verify**: enumerate every site (grep / AST / the rct graph
@@ -289,7 +294,7 @@ fresh agent — or a teammate — can continue work without context loss (the mo
 multi-session and multi-agent failure). Useful in any lane.
 
 ```sh
-./install-handoff.sh /path/to/project
+./install.sh handoff /path/to/project
 ```
 
 It leads with the single concrete **next action**, references the lane's durable state file (the

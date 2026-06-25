@@ -1,17 +1,22 @@
 #!/usr/bin/env bash
-# macOS double-click wrapper for the retrofit installer.
+# macOS double-click wrapper for the unified agent-toolbelt installer.
 
 set -u
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-echo "retrofit Installer"
+echo "agent-toolbelt Installer"
 echo
-echo "Drag the project folder into this Terminal window, then press Enter."
-echo "The installer will add the /retrofit command, the retrofit skill tree, the plan template, and the workflow playbook."
-echo "Existing files are skipped."
+echo "Available packs:"
+"$ROOT/install.sh" --list | sed -n '2,$p'
 echo
 
+printf "Packs to install (space-separated, or 'all'): "
+IFS= read -r PACKS
+[ -z "$PACKS" ] && PACKS="all"
+
+echo
+echo "Drag the target project folder into this Terminal window, then press Enter."
 printf "Target folder: "
 IFS= read -r TARGET
 
@@ -27,7 +32,8 @@ if [ -z "$TARGET" ]; then
   exit 1
 fi
 
-"$ROOT/install-retrofit.sh" "$TARGET"
+# shellcheck disable=SC2086
+"$ROOT/install.sh" $PACKS "$TARGET"
 
 echo
 read -r -p "Press Enter to close. "

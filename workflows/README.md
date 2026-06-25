@@ -12,6 +12,10 @@ self-contained, copy-pasteable workflow docs or scripts.
   phased implementation, phase review, and final PR review.
 - `dev-ticket-to-pr.md` - bridge workflow from refined ticket through
   implementation, tests, doc deltas, diff review, and PR traceability.
+- `bug-to-fix-workflow.md` - diagnostic lane from bug report through triage,
+  reproduction, root-cause analysis, minimal fix, and verification.
+- `retrofit-workflow.md` - apply one defined change across every site
+  (discover → transform in isolation → verify exhaustively); opt-in fan-out.
 
 Common entry command: `/workflow-router` chooses the smallest useful command or
 workflow for the current state.

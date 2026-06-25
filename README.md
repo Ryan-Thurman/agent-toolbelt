@@ -19,6 +19,9 @@ The repository currently includes these toolsets:
   simplifications on opt-in — the active counterpart to `pr-review`.
 - `ship-it`: lightweight release readiness — go/no-go check, rollback plan,
   release notes, and a rollout/monitor plan; pipeline-aware.
+- `retrofit`: apply one defined change across every site that needs it (library
+  swap, API rename, framework upgrade) — discover, transform in isolation, verify
+  exhaustively.
 
 The lanes are different shapes: `ai-feature-delivery` / `dev-lite-workflow` are
 **generative** (start from an idea), while `bug-to-fix` is **diagnostic** (start
@@ -258,6 +261,26 @@ deploy steps, and frames the monitor plan as the watch-list for after the pipeli
 *you* own the deploy, it walks the staged rollout and proposes the exact commands, never executing
 a deploy without explicit confirmation. It's the lightweight sibling of the regulated
 `/release-manifest` + `/release-doc-check` path.
+
+## Retrofit
+
+The `retrofit` tool applies **one defined change across every site that needs it** — a library
+swap (moment → dayjs), an API/symbol rename across N call sites, a framework upgrade, a pattern
+replacement. It is *not* a database migration and does *not* decide what the change is.
+
+```sh
+./install-retrofit.sh /path/to/project
+```
+
+`/retrofit` runs **discover → transform → verify**: enumerate every site (grep / AST / the rct graph
+when available), classify mechanical vs. judgment, transform each in worktree isolation (a codemod
+for the mechanical bulk), and verify exhaustively — full suite green, the judgment sites
+adversarially checked, zero references to the old path before it's removed. Every site ends
+`done` or `skipped (reason)` — no silent truncation.
+
+It's a deterministic fan-out, so it maps onto the `Workflow` orchestration tool and is **explicitly
+opt-in** (it can spawn many agents). Distinct from `/simplify`, which makes many small *different*
+cleanups in a diff; retrofit makes the *same* change in *many* places.
 
 ## Repository Safety
 

@@ -59,5 +59,6 @@ Routing guide:
 - Release a merged change (readiness + rollback + notes + rollout): `/ship-it`.
 - Clean up / slim a diff after a feature (apply): `/simplify`.
 - Scan an area for structural smells (detect-only): `/code-smell`.
+- Apply one defined change across many sites (library swap / API rename / upgrade): `/retrofit`.
 - Root-cause only, no fix: `/rca --diagnose`.
 - Pause or transfer work to a fresh session/agent: `/handoff`.

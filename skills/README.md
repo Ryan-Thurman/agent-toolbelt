@@ -16,6 +16,9 @@ workflow.
   opt-in (the counterpart to pr-review).
 - `ship-it/` - lightweight release readiness: go/no-go check, rollback plan,
   release notes, and rollout/monitor plan (pipeline-aware).
+- `retrofit/` - apply one defined change across every site (library swap, API
+  rename, framework upgrade): discover, transform in isolation, verify
+  exhaustively. Opt-in; orchestrated fan-out.
 - `dev-lite-workflow/` - lightweight dev workflow for feature/app ideas,
   phased implementation, per-task commits, phase reviews, and final PR review.
 - `ai-feature-delivery/` - release-traceable feature definition, design docs,

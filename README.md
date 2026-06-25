@@ -17,6 +17,8 @@ The repository currently includes these toolsets:
   the front-door to the dev lanes.
 - `simplify`: actively clean up existing code, applying high-conviction
   simplifications on opt-in — the active counterpart to `pr-review`.
+- `cover`: author and strengthen tests for a diff, module, or bug reproduction
+  (behavior-pinning, applied on opt-in) + a detect-only coverage-gap scan.
 - `ship-it`: lightweight release readiness — go/no-go check, rollback plan,
   release notes, and a rollout/monitor plan; pipeline-aware.
 - `retrofit`: apply one defined change across every site that needs it (library
@@ -25,9 +27,10 @@ The repository currently includes these toolsets:
 
 The lanes are different shapes: `ai-feature-delivery` / `dev-lite-workflow` are
 **generative** (start from an idea), while `bug-to-fix` is **diagnostic** (start
-from broken behavior). `shape-up` shapes a fuzzy request before either; `pr-review`
-and `simplify` are the review/cleanup utilities; `ship-it` is the release step at
-the tail. They share a back half — dev implementation and PR review.
+from broken behavior). `shape-up` shapes a fuzzy request before either; `pr-review`,
+`simplify`, and `cover` are the review / cleanup / test-authoring utilities; `ship-it`
+is the release step at the tail. They share a back half — dev implementation and PR
+review.
 
 ## What Is Included
 
@@ -246,6 +249,30 @@ and applies nothing, simplify *drives the cleanup* and applies it on opt-in.
   behavior-preserving (existing tests must pass unmodified).
 - `/code-smell` — detect-only scan of an area, ranked by severity × confidence; applies
   nothing.
+
+## Cover
+
+The `cover` tool is the test-authoring lane — the active/detect pair that mirrors `simplify`. It
+authors and strengthens **behavior-pinning** tests for a diff, a module, or a bug reproduction, and
+turns a bug repro into a committed regression test. It writes tests only — it never edits production
+code.
+
+```sh
+./install.sh cover /path/to/project
+```
+
+- `/cover` — author/strengthen tests for a diff, module, or bug reproduction, applied on opt-in.
+  Tests pin observable behavior (not implementation); every new test is **falsified** (confirmed to
+  fail when the behavior is broken); for a bug repro it writes the test that fails before the fix and
+  passes after (a red→green regression lock). It detects the repo's test framework first and keeps
+  tests deterministic (no real network/time/RNG, no flaky sleeps).
+- `/cover-gaps` — detect-only scan of an area for missing/weak coverage (untested branches, error
+  paths, boundary conditions, regressions waiting to happen), ranked by risk × likelihood; applies
+  nothing and hands its top gaps to `/cover`.
+
+It is the hand-off target from `bug-to-fix`: `/reproduce` establishes a manual or failing-test repro,
+and `/cover` turns it into the committed regression test. `/ship-it`'s readiness checklist wants that
+suite green.
 
 ## Ship It
 

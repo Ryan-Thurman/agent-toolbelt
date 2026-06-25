@@ -36,7 +36,8 @@ Routing guide:
 - Vague / underspecified request: `/shape-up` (then `/dev-intake` or `/to-issues`).
 - Broken behavior / bug (Bug-to-Fix): `/bug-intake` -> `/reproduce` -> `/rca`
   (or `/rca --diagnose` for read-only) -> `/fix-plan` -> `/dev-implement-task`
-  -> `/pr-review` -> `/ship-it` (optional, on release).
+  -> `/cover` (lock the repro as a regression test) -> `/pr-review` -> `/ship-it`
+  (optional, on release).
 - Lightweight / solo build (Dev Lite): `/dev-intake` -> `/dev-plan` ->
   `/dev-start-phase` -> `/dev-implement-task` -> `/dev-phase-review` ->
   `/dev-fix-review-issues` (if needed) -> `/dev-pr-review` -> `/ship-it`
@@ -48,7 +49,11 @@ Routing guide:
 - Ticket slicing: `/refine-to-tickets`.
 - Starting implementation: `/start-dev-from-feature`, then
   `/implementation-plan`.
-- Behavior change needing tests: `/write-tests`.
+- Behavior change needing tests (regulated, traceable lane): `/write-tests`.
+- Author/strengthen tests for a diff/module, or lock a bug repro as a regression
+  test (standalone, apply on opt-in): `/cover`.
+- Scan an area for missing/weak coverage (detect-only, ranked by risk × likelihood):
+  `/cover-gaps`.
 - Browser/user-flow verification: `/webapp-test`.
 - Local diff review: `/review-diff`.
 - PR readiness: `/pr-ready-check`, then `/pr-traceability-review`.

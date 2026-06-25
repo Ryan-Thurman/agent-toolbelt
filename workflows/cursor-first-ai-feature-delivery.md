@@ -13,7 +13,7 @@ Cursor.
 
 ## Installed Layout
 
-`install-ai-feature-delivery.sh` writes everything **flat** — there are no `dev/`
+`./install.sh ai-feature-delivery` writes everything **flat** — there are no `dev/`
 or `bridge/` rule subfolders:
 
 ```text

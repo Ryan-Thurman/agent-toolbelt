@@ -26,7 +26,7 @@ process.
 From this repo:
 
 ```sh
-./install-dev-lite-workflow.sh --dry-run /path/to/project
+./install.sh --dry-run dev-lite-workflow /path/to/project
 ```
 
 The dry run shows the files that would be installed:
@@ -42,7 +42,7 @@ The dry run shows the files that would be installed:
 ### 2. Install Dev Lite
 
 ```sh
-./install-dev-lite-workflow.sh /path/to/project
+./install.sh dev-lite-workflow /path/to/project
 ```
 
 Use `--force` only when replacing a previous install.
@@ -95,7 +95,7 @@ release eligibility need traceability back to a Feature Master Record.
 From this repo:
 
 ```sh
-./install-ai-feature-delivery.sh --dry-run /path/to/pilot-folder
+./install.sh --dry-run ai-feature-delivery /path/to/pilot-folder
 ```
 
 The dry run shows the files that would be installed:
@@ -111,19 +111,19 @@ Existing files are skipped by default during a real install.
 ### 2. Install into the pilot folder
 
 ```sh
-./install-ai-feature-delivery.sh /path/to/pilot-folder
+./install.sh ai-feature-delivery /path/to/pilot-folder
 ```
 
 Use `--force` only when you intentionally want to replace previously installed
 files:
 
 ```sh
-./install-ai-feature-delivery.sh --force /path/to/pilot-folder
+./install.sh --force ai-feature-delivery /path/to/pilot-folder
 ```
 
-On macOS, a non-developer pilot user can double-click
-`install-ai-feature-delivery.command`, drag the target folder into the Terminal
-prompt, and press Enter.
+On macOS, a non-developer pilot user can double-click `install.command`, which
+asks which pack(s) to install and then for the target folder (drag it into the
+Terminal prompt and press Enter).
 
 ### 3. Open the target in Cursor
 

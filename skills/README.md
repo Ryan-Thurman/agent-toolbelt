@@ -4,7 +4,7 @@ Agent **skills** you want to keep or adapt — each in its own subfolder with a
 `SKILL.md`. Lifted from reviewed repos or written from scratch.
 
 The AI Feature Delivery skills are installed into pilot repos by
-`../install-ai-feature-delivery.sh`. See `../docs/tutorial.md` for the first-run
+`../install.sh ai-feature-delivery`. See `../docs/tutorial.md` for the first-run
 workflow.
 
 - `pr-review/` - tiered multi-agent PR/code review.

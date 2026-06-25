@@ -1,0 +1,53 @@
+# Merging the phase PR (solo `--merge` mode)
+
+Only the **solo** flow merges, and only the **phase PR**, and only when the review + the main agent's
+fix pass leave **zero blockers**. Team (`--post`) mode never reaches this step — humans merge there.
+
+## Precondition
+
+Do not merge unless **all** hold:
+- the gate ran in `--merge` mode (solo), and
+- the latest review found no remaining **blockers** (non-blocker findings do not block a merge), and
+- the PR targets an ordinary base branch (a feature/integration branch or `main` per the repo's
+  normal flow) — merging the PR into its base is the intended action here.
+
+Never force-push or rewrite shared history to "merge"; use the host's merge so the PR is recorded as
+merged. If the host CLI is missing or the merge is refused (protections, conflicts, required checks),
+**stop and report** — don't improvise a push to the base branch.
+
+## Provider-aware merge
+
+Detect the host the same way `pr-review` does (`skills/pr-review/references/providers.md`):
+
+```bash
+url="$(git remote get-url origin 2>/dev/null)"
+case "$url" in
+  *github.com*)                       provider=github ;;
+  *dev.azure.com*|*visualstudio.com*) provider=azure  ;;
+  *)                                  provider=git     ;;
+esac
+```
+
+**GitHub (`gh`):**
+```bash
+gh pr merge <pr> --squash --delete-branch    # --squash is the default phase-PR strategy; adjust to repo norm
+```
+- Honors branch protections / required checks; if it can't merge, it errors — surface that, don't work around it.
+- Drop `--delete-branch` if the next phase branches off this one.
+
+**Azure Repos (`az`):**
+```bash
+az repos pr update --id <id> --status completed \
+  --merge-commit-message "Merge phase PR #<id>" --delete-source-branch true
+# add --squash true to squash-merge, per repo norm
+```
+- Completing the PR is Azure's merge. If policies block completion, report it.
+
+**Generic git / no host CLI:** don't auto-merge. Report the PR as review-clean and ask the human to
+merge (degrade like the rest of the review family).
+
+## After merge
+
+Confirm the merge succeeded (the PR shows merged/completed), then hand control back to the phase loop:
+the main agent proceeds to the next phase (e.g. branch the next phase off the updated base). Print a
+one-line record: `merged PR #<n> (squash) → next phase`.

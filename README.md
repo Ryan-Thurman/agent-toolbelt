@@ -27,6 +27,10 @@ The repository currently includes these toolsets:
 - `retrofit`: apply one defined change across every site that needs it (library
   swap, API rename, framework upgrade) — discover, transform in isolation, verify
   exhaustively.
+- `ticket-sync`: a provider-agnostic issue-tracker adapter that publishes the
+  tickets the slicers produce to GitHub Issues, Jira, or Azure Boards — so
+  `/refine-to-tickets` and `/to-issues` can land their work in the tracker, not
+  just local markdown.
 
 The lanes are different shapes: `ai-feature-delivery` / `dev-lite-workflow` are
 **generative** (start from an idea), while `bug-to-fix` is **diagnostic** (start
@@ -367,6 +371,32 @@ It leads with the single concrete **next action**, references the lane's durable
 bug-investigation file, the implementation plan, or the retrofit plan) instead of duplicating it,
 captures what's been ruled out, redacts secrets, and stays compact. It's bundled with the
 `bug-to-fix` pack and also installs standalone for the other lanes.
+
+## Ticket Sync
+
+The `ticket-sync` tool is a **provider-agnostic issue-tracker adapter**. The lanes already slice work
+into tickets (`/refine-to-tickets`, `/to-issues`, `/bug-intake`) but only ever as local markdown or
+GitHub Issues; `/ticket-sync` publishes those same ticket files to whichever tracker a repo declares
+— **GitHub Issues, Jira, or Azure Boards** — so `/refine-to-tickets` can land its tickets in Jira
+instead of staying as markdown. It mirrors how `pr-review` abstracts the gh-vs-az *host*; here the
+abstraction is the *tracker*.
+
+```sh
+./install-ticket-sync.sh /path/to/project
+```
+
+A target repo declares the tracker in a repo-local `.tickets.md` (copy `templates/tickets-config.md`)
+— `provider`, the project/board key, default issue type, labels/components, and FIELD MAPPINGS from
+the ticket-template fields (feature ID, release ID, acceptance criteria, dependencies, test
+expectation, doc-delta status) to the tracker's fields. When absent, ticket-sync infers the provider
+from the remote and asks for the project key.
+
+`/ticket-sync` is **idempotent** — it records the created issue's key back into each ticket (a
+`Tracker:` line) and on re-run **updates** rather than duplicating. It **never creates or modifies
+remote issues without confirmation** (a dry-run preview first), takes credentials only from the
+tracker CLI's own auth, and **degrades to a publish-ready manifest** when no tracker CLI/credentials
+are present. Like pr-review, it loads `.tickets.md` from the base branch so a working branch can't
+silently retarget publishing.
 
 ## Repository Safety
 

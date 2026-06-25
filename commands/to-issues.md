@@ -34,4 +34,6 @@ skill.
 ## Output
 
 A dependency-ordered list of vertical-slice tickets following `templates/shape-up-issues.md`, each
-demoable on its own, ready to hand to `/dev-plan` or `/dev-implement-task`.
+demoable on its own, ready to hand to `/dev-plan` or `/dev-implement-task`. Optionally publish them to
+the repo's configured tracker (GitHub Issues / Jira / Azure Boards) via `/ticket-sync`, which preserves
+the dependency order as "Blocked by" links.

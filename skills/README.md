@@ -27,6 +27,10 @@ workflow.
   exhaustively. Opt-in; orchestrated fan-out.
 - `handoff/` - cross-cutting: write a resumable handoff so a fresh agent or
   person can continue without context loss (any lane).
+- `ticket-sync/` - provider-agnostic issue-tracker adapter: publish the tickets
+  the slicers produce to GitHub Issues, Jira, or Azure Boards via a repo-local
+  `.tickets.md`. Idempotent (records the tracker key back), confirmation-gated
+  with a dry-run preview, and degrades to a manifest when offline.
 - `dev-lite-workflow/` - lightweight dev workflow for feature/app ideas,
   phased implementation, per-task commits, phase reviews, and final PR review.
 - `ai-feature-delivery/` - release-traceable feature definition, design docs,

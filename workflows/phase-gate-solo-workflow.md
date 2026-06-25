@@ -26,7 +26,8 @@ Agree a plan (phases)
 │ Open the phase PR                                          │
 │ ↓                                                          │
 │ /phase-gate --merge                                        │
-│   • subagent runs /pr-review → returns findings            │
+│   • subagent runs /pr-review --comment                     │
+│       → posts review to the PR AND returns findings         │
 │   • main agent fixes blockers (in-context), pushes         │
 │   • [--rereview] one confirming pass (optional)            │
 │   • no blockers? → main agent MERGES the phase PR          │
@@ -46,8 +47,9 @@ Feature complete
    ```text
    /phase-gate --merge
    ```
-   - A fresh **review subagent** runs `/pr-review` on the phase PR and **returns its findings** to the
-     main agent (it posts nothing and never edits).
+   - A fresh **review subagent** runs `/pr-review --comment` on the phase PR: it **posts the review to
+     the PR** (GitHub/Azure, for the record) and **returns the findings** to the main agent. It never
+     edits code. (Add `--no-post` for a dry run that posts nothing.)
    - The **main agent** reads the findings, fixes the **blockers** in its own context, and pushes.
      Non-blocker findings are surfaced but don't gate.
    - Default is a **single review pass**; add `--rereview` if you want one confirming pass after fixes.

@@ -1,7 +1,8 @@
 # Merging the phase PR (solo `--merge` mode)
 
-Only the **solo** flow merges, and only the **phase PR**, and only when the review + the main agent's
-fix pass leave **zero blockers**. Team (`--post`) mode never reaches this step — humans merge there.
+Only the **solo** flow (`--merge`) merges, and only the **phase PR**, and only when the review + the
+main agent's fix pass leave **zero blockers**. Team mode (the default, no `--merge`) never reaches this
+step — it posts the review and stops; humans merge there.
 
 ## Precondition
 

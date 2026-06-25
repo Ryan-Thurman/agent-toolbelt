@@ -1,0 +1,52 @@
+# Agent PR review — fires a fresh, headless code review when a PR is opened or updated.
+#
+# Copy this into a target repo as .github/workflows/agent-pr-review.yml, then add an
+# ANTHROPIC_API_KEY secret under Settings → Secrets and variables → Actions.
+#
+# It runs the toolbelt's `pr-review` skill in headless mode and posts findings as inline
+# PR comments. The review logic, tiering, and host posting all live in `/pr-review --comment`;
+# this file is only the trigger. Full explanation + security notes:
+#   skills/review-on-open/references/ci-event.md
+#
+# SECURITY: uses `pull_request` (untrusted context, read-only token, no secrets on fork PRs)
+# — NOT `pull_request_target`. Do not change this without reading the hardening section above.
+
+name: agent-pr-review
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+permissions:
+  contents: read          # read the code under review
+  pull-requests: write    # post the inline review — nothing else
+
+concurrency:
+  group: pr-review-${{ github.event.pull_request.number }}
+  cancel-in-progress: true   # a newer push supersedes an in-flight review of an older SHA
+
+jobs:
+  review:
+    runs-on: ubuntu-latest
+    # Skip drafts; review only ready PRs. Remove this line to review drafts too.
+    if: github.event.pull_request.draft == false
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0   # pr-review diffs base..head — needs full history
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install Claude Code
+        run: npm install -g @anthropic-ai/claude-code
+
+      - name: Review the PR
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR: ${{ github.event.pull_request.number }}
+        run: |
+          claude -p "/pr-review $PR --comment" \
+            --allowedTools "Bash,Read,Grep,Glob,Task"

@@ -64,6 +64,8 @@ Routing guide:
 - General PR/code review: `/pr-review --tier=light|standard|deep`.
 - Respond to a human reviewer's PR threads (triage + reply, re-review only what
   changed since the review): `/pr-review-reply` (run after `/pr-review`).
+- Auto-review PRs as they're opened/updated (trigger, not on-demand): `/review-on-open`
+  (poller; drive with `/loop` / `/schedule`) — or wire the GitHub Actions event template.
 - Release a merged change (readiness + rollback + notes + rollout): `/ship-it`.
 - Clean up / slim a diff after a feature (apply): `/simplify`.
 - Scan an area for structural smells (detect-only): `/code-smell`.

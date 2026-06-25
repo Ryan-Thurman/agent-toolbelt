@@ -17,7 +17,13 @@ Check whether a change is ready for PR.
 Steps:
 1. Verify implementation summary, changed files, tests added/updated, test
    results, known risks, and reviewer notes.
-2. Confirm required docs are updated or explicitly not impacted.
+2. **Documentation gate (blocking).** If the change altered behavior, an
+   API/endpoint, a flag/config, the data model, or notable performance, the docs
+   that describe it (README / setup / module header / architecture notes / API
+   docs) must be updated **and committed to the same branch** so they get pushed
+   and reviewed alongside the code. Updated-but-uncommitted, "I'll do it after
+   merge," or a bare "flagged" is a `Block`, not a pass. The only pass without a
+   doc edit is an explicit, recorded "not doc-impacting" judgment with a reason.
 3. If feature metadata exists, verify feature ID, release ID, ticket scope,
    acceptance criteria, SDD/doc impact map, doc delta, QA notes, and release
    metadata.
@@ -30,4 +36,5 @@ Steps:
    tasks, test/check evidence, doc delta state, branch/PR state, blockers, next
    step, and resume instructions.
 7. Return `Ready`, `Needs Work`, or `Block` with required fixes. Default-branch
-   work without explicit approval is `Block`.
+   work without explicit approval is `Block`; a doc-impacting change whose docs
+   are not committed to the branch (step 2) is a `Block`.

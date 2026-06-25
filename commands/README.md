@@ -9,6 +9,7 @@ unclear inside a pilot repo, start with `/workflow-router`.
 - `/pr-review` - run the tiered PR/code review workflow.
 - `/shape-up` - interrogate a vague request into an agreed brief before building.
 - `/to-issues` - slice an approved brief into vertical-slice tickets.
+- `/ticket-sync` - publish/sync sliced tickets to the repo's tracker (GitHub Issues / Jira / Azure Boards).
 - `/simplify` - actively clean up a diff/area and apply cleanups on opt-in.
 - `/code-smell` - detect-only scan of an area for structural smells.
 - `/ship-it` - prepare a merged change for release (readiness, rollback, notes, rollout).

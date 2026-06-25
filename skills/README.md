@@ -17,6 +17,9 @@ workflow.
   building (the front-door to the dev lanes).
 - `simplify/` - active code cleanup: apply high-conviction simplifications on
   opt-in (the counterpart to pr-review).
+- `cover/` - author/strengthen behavior-pinning tests for a diff, module, or bug
+  reproduction on opt-in, plus a detect-only coverage-gap scan; turns a bug repro
+  into a committed red→green regression test (the active/detect pair).
 - `ship-it/` - lightweight release readiness: go/no-go check, rollback plan,
   release notes, and rollout/monitor plan (pipeline-aware).
 - `retrofit/` - apply one defined change across every site (library swap, API

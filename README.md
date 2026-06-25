@@ -282,6 +282,21 @@ It's a deterministic fan-out, so it maps onto the `Workflow` orchestration tool 
 opt-in** (it can spawn many agents). Distinct from `/simplify`, which makes many small *different*
 cleanups in a diff; retrofit makes the *same* change in *many* places.
 
+## Handoff
+
+The `handoff` tool is a small, cross-cutting capability: `/handoff` writes a resumable handoff so a
+fresh agent — or a teammate — can continue work without context loss (the most common cause of
+multi-session and multi-agent failure). Useful in any lane.
+
+```sh
+./install-handoff.sh /path/to/project
+```
+
+It leads with the single concrete **next action**, references the lane's durable state file (the
+bug-investigation file, the implementation plan, or the retrofit plan) instead of duplicating it,
+captures what's been ruled out, redacts secrets, and stays compact. It's bundled with the
+`bug-to-fix` pack and also installs standalone for the other lanes.
+
 ## Repository Safety
 
 This public repo is meant to contain reusable prompts, skills, workflow docs,

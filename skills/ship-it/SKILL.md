@@ -35,8 +35,9 @@ takes it to "released safely." Every release should be **reversible, observable,
    release), and the **trigger** that says "roll back now" (see the thresholds in
    `references/rollout-and-rollback.md`).
 3. **Release notes** — draft a changelog / release-notes entry from the merged commits/PRs since
-   the last tag, using `templates/release-notes.md`; suggest the version/tag. Cross-check that
-   README / docs the change affects are updated (or flag them).
+   the last tag, using `templates/release-notes.md`; suggest the version/tag. Verify the docs the
+   change affects are updated **in this change** — an unaddressed doc impact is a readiness blocker
+   (see the Documentation gate in `references/readiness-checklist.md`), not a footnote.
 4. **Rollout + monitor plan** (`references/rollout-and-rollback.md`) — choose big-bang vs.
    flagged/staged/canary, and list the metrics + window to watch at each stage.
 5. **Hand off or roll out:**

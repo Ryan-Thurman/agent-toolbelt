@@ -8,6 +8,9 @@ The AI Feature Delivery skills are installed into pilot repos by
 workflow.
 
 - `pr-review/` - tiered multi-agent PR/code review.
+- `pr-review-reply/` - the round-trip half of pr-review: read a human
+  reviewer's PR threads, triage each, re-review only the code changed since the
+  review, and reply per-thread (posting opt-in, idempotent).
 - `bug-to-fix/` - diagnostic lane: triage, reproduce, root-cause analysis,
   minimal fix, and verification for a reported bug.
 - `shape-up/` - interrogate a vague request into an agreed brief before

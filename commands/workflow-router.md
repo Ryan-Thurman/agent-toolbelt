@@ -56,6 +56,8 @@ Routing guide:
 - QA package: `/qa-handoff`.
 - Release documentation: `/release-manifest`, then `/release-doc-check`.
 - General PR/code review: `/pr-review --tier=light|standard|deep`.
+- Respond to a human reviewer's PR threads (triage + reply, re-review only what
+  changed since the review): `/pr-review-reply` (run after `/pr-review`).
 - Release a merged change (readiness + rollback + notes + rollout): `/ship-it`.
 - Clean up / slim a diff after a feature (apply): `/simplify`.
 - Scan an area for structural smells (detect-only): `/code-smell`.

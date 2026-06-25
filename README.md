@@ -6,6 +6,9 @@ delivery work.
 The repository currently includes these toolsets:
 
 - `pr-review`: a tiered, multi-agent pull-request and diff review workflow.
+- `pr-review-reply`: the round-trip half of `pr-review` — read a human
+  reviewer's PR threads, triage each, re-review only the code changed since the
+  review, and reply per-thread (posting opt-in).
 - `bug-to-fix`: a diagnostic lane that takes a bug report through triage,
   reproduction, root-cause analysis, a minimal fix, and verification.
 - `dev-lite-workflow`: a lightweight development loop for app/feature ideas,
@@ -184,6 +187,42 @@ Useful options:
 
 Target repos can copy `templates/pr-review.md` to `.pr-review.md` to declare
 local review priorities.
+
+## PR Review Reply
+
+The `pr-review-reply` tool is the **round-trip** half of `pr-review`: where
+`/pr-review` produces a one-shot review, `/pr-review-reply` answers a human
+reviewer's threads on a PR.
+
+```sh
+./install.sh pr-review-reply /path/to/project
+```
+
+It reads the reviewer's **open** threads (GitHub `gh` or Azure Repos `az`,
+reusing the `pr-review` provider layer), re-reviews **only the code changed
+since the review** (`<reviewedSha>..HEAD`, not the whole PR), and triages each
+thread into exactly one of `answered`, `changed`, or `needs-follow-up` — never
+claiming a thread resolved without citing the commit/lines. It emits one reply
+block per thread:
+
+```text
+[[thread:<id>]]
+Status: answered | changed | needs-follow-up
+Response: <concise, evidence-bearing>
+```
+
+Run it with:
+
+```text
+/pr-review-reply [target] [--post] [--since=<sha>]
+```
+
+By default it prints the reply blocks (a report). `--post` writes the replies
+back via the host CLI, **opt-in, confirmed, and idempotent** (a re-run skips
+threads already replied to) — and never auto-resolves a human's thread. With no
+host CLI or no open PR it degrades to report-only. It complements `pr-review`:
+run `/pr-review` to produce the findings, then `/pr-review-reply` to close the
+loop.
 
 ## Bug to Fix
 

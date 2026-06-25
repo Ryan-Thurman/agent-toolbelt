@@ -12,6 +12,7 @@ unclear inside a pilot repo, start with `/workflow-router`.
 - `/simplify` - actively clean up a diff/area and apply cleanups on opt-in.
 - `/code-smell` - detect-only scan of an area for structural smells.
 - `/ship-it` - prepare a merged change for release (readiness, rollback, notes, rollout).
+- `/retrofit` - apply one defined change across every site (library swap, API rename, upgrade).
 - `/bug-intake` - triage a bug report and open a durable investigation.
 - `/reproduce` - establish a manual or automated reproduction before RCA.
 - `/rca` - root-cause a reproduced bug (`--diagnose` for read-only).
@@ -89,9 +90,10 @@ Some commands overlap. Use these tables to pick the right one.
 
 | Command | Use it for |
 |---|---|
-| `/simplify` | *Apply* high-conviction cleanups to a diff/area (dead code, thin wrappers, reuse, small inefficiencies), on opt-in. |
+| `/simplify` | *Apply* high-conviction cleanups to a diff/area (dead code, thin wrappers, reuse, small inefficiencies), on opt-in. Many small, *different* changes. |
 | `/code-smell` | *Detect-only* scan of an area for structural smells ranked by severity × confidence. Applies nothing. |
 | `/pr-review` | *Find* bugs/quality issues with a merge verdict on changed lines. Applies nothing. |
+| `/retrofit` | Apply *one defined* change across *every* site (library swap, API rename, framework upgrade). The same change, many places — discover/transform/verify, opt-in. |
 
 **Diagnosing a bug (Bug-to-Fix lane)**
 

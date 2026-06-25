@@ -19,6 +19,8 @@ workflow.
 - `retrofit/` - apply one defined change across every site (library swap, API
   rename, framework upgrade): discover, transform in isolation, verify
   exhaustively. Opt-in; orchestrated fan-out.
+- `handoff/` - cross-cutting: write a resumable handoff so a fresh agent or
+  person can continue without context loss (any lane).
 - `dev-lite-workflow/` - lightweight dev workflow for feature/app ideas,
   phased implementation, per-task commits, phase reviews, and final PR review.
 - `ai-feature-delivery/` - release-traceable feature definition, design docs,

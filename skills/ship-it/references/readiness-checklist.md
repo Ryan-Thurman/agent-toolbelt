@@ -37,13 +37,22 @@ skips the accessibility/Web-Vitals rows; a docs change skips most of this. The o
 - [ ] Database migrations applied or ready to apply (and reversible — see rollback).
 - [ ] Health-check endpoint responds; logging and error reporting are wired.
 
-## Documentation
+## Documentation (blocking gate — not just a checkbox)
+
+If the change altered **behavior, an API/endpoint, a flag/config, the data model, or notable
+performance**, the docs that describe that thing must be updated **in the same change** — README /
+setup / module header / architecture notes / API docs, whichever applies. "I'll do it later" or a
+bare "flagged" is a **NO-GO**, not a pass. The only pass without a doc edit is an explicit, recorded
+"not doc-impacting" judgment with a reason (e.g. internal refactor with no observable change).
 
 - [ ] Changelog / release notes drafted (`templates/release-notes.md`).
-- [ ] README / setup / API docs updated for anything the change alters (or explicitly flagged).
+- [ ] Docs describing anything the change alters are updated in this change — or "not doc-impacting"
+      is explicitly recorded with a reason.
 - [ ] ADR written for any notable architectural decision.
 
 ## Verdict
 
 - **GO** — no blocking gaps; proceed to the rollback plan and rollout.
-- **NO-GO** — list each blocking gap and what's needed to clear it. Do not proceed past a NO-GO.
+- **NO-GO** — list each blocking gap and what's needed to clear it. Do not proceed past a NO-GO. A
+  behavior / API / flag-config / data-model / perf change with no matching doc update (and no
+  recorded "not doc-impacting" reason) is a NO-GO.

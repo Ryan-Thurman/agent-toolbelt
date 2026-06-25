@@ -31,8 +31,9 @@ release should be reversible, observable, and incremental.
 2. **Rollback plan** — how to revert (flag-off / `git revert` / prior tag / migration-down; flag any
    irreversible step) and the trigger that means roll back.
 3. **Release notes** — draft from the merged commits/PRs since the last tag using
-   `templates/release-notes.md`; suggest the version/tag; confirm affected docs are updated or flag
-   them.
+   `templates/release-notes.md`; suggest the version/tag. Verify the docs the change affects are
+   updated **in this change** — an unaddressed doc impact is a readiness blocker (the Documentation
+   gate in `references/readiness-checklist.md`), not a footnote.
 4. **Rollout + monitor plan** — pick big-bang vs. flagged/staged/canary; list the metrics + window
    to watch and the advance/hold/roll-back thresholds.
 5. **Hand off or roll out** — if a pipeline owns deploy, output the package and stop (frame the

@@ -19,6 +19,11 @@ Steps:
 2. Use `templates/refinement-ticket-template.md` for each ticket.
 3. Ensure every ticket includes feature ID, release ID, source section,
    requirement, acceptance criteria, impacted repos/services, test expectation,
-   doc delta status, dependencies, and open questions.
+   doc delta status, dependencies, open questions, and a `Tracker` field (the
+   tracker key once published, blank until then).
 4. Group tickets by dependency order where possible.
 5. End with Gate 2 readiness: `READY`, `READY_WITH_RISKS`, or `BLOCKED`.
+6. Publish (optional): hand off to `/ticket-sync` to create/update these in the
+   configured tracker (GitHub Issues / Jira / Azure Boards). When the repo's
+   `.tickets.md` sets `provider: jira`, map feature ID, release ID, acceptance
+   criteria, and dependencies to the Jira fields per the ticket-sync config.

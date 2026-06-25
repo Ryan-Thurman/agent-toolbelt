@@ -46,6 +46,7 @@ Routing guide:
   `/draft-pings`.
 - Design/document work: `/sdd-draft`, `/doc-impact`, or `/doc-delta`.
 - Ticket slicing: `/refine-to-tickets`.
+- Publish sliced tickets to a tracker (GitHub Issues / Jira / Azure Boards): `/ticket-sync`.
 - Starting implementation: `/start-dev-from-feature`, then
   `/implementation-plan`.
 - Behavior change needing tests: `/write-tests`.

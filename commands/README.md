@@ -10,6 +10,7 @@ unclear inside a pilot repo, start with `/workflow-router`.
 - `/pr-review-reply` - round-trip a PR review: read reviewer threads, triage, re-review only since-SHA changes, reply per-thread.
 - `/shape-up` - interrogate a vague request into an agreed brief before building.
 - `/to-issues` - slice an approved brief into vertical-slice tickets.
+- `/ticket-sync` - publish/sync sliced tickets to the repo's tracker (GitHub Issues / Jira / Azure Boards).
 - `/simplify` - actively clean up a diff/area and apply cleanups on opt-in.
 - `/code-smell` - detect-only scan of an area for structural smells.
 - `/cover` - author/strengthen behavior-pinning tests for a diff/module/bug repro, on opt-in.

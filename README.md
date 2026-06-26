@@ -20,6 +20,8 @@ The repository currently includes these toolsets:
   reproduction, root-cause analysis, a minimal fix, and verification.
 - `dev-lite-workflow`: a lightweight development loop for app/feature ideas,
   phased implementation, per-task commits, phase reviews, and final PR review.
+- `phase-context-workflow`: durable phase files, handoffs, and context packets
+  for long agent work that needs safe `/clear` or `/compact` boundaries.
 - `ai-feature-delivery`: a traceable feature-delivery workflow for turning a
   feature idea into design docs, implementation tickets, test evidence, QA
   handoff, and release documentation.
@@ -128,6 +130,26 @@ for the action you want:
 $dev-lite-workflow
 Run a PR readiness review for this bug fix against the current diff.
 ```
+
+## Phase Context Workflow
+
+The Phase Context Workflow keeps long agent work resumable by writing phase
+state into repo files before context resets:
+
+```text
+Plan -> Phase File -> Context Packet -> Implement -> Phase Handoff -> Clear/Compact
+```
+
+Install it into a project:
+
+```sh
+./install.sh phase-context-workflow /path/to/project
+```
+
+It adds `/phase-create`, `/phase-start`, `/phase-close`, and `/phase-status`,
+plus templates for `.acc/phases/<room>/` phase files, handoffs, and context
+packets. It pairs well with `dev-lite-workflow` for phased implementation and
+with `phase-gate` when each phase opens its own PR.
 
 ## AI Feature Delivery
 

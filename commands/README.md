@@ -32,6 +32,10 @@ unclear inside a pilot repo, start with `/workflow-router`.
 - `/dev-phase-review` - review a completed dev-lite phase before continuing.
 - `/dev-fix-review-issues` - fix only the latest phase review findings.
 - `/dev-pr-review` - run final PR readiness review for the dev-lite workflow.
+- `/phase-create` - create or update a durable phase file.
+- `/phase-start` - create a context packet for a fresh or reset phase session.
+- `/phase-close` - write a phase handoff before clearing or compacting context.
+- `/phase-status` - summarize phase files and handoff state for a room.
 - `/workflow-router` - choose the smallest useful toolbelt command or workflow.
 - `/feature-start` - create a Feature Master Record and Gate 1 questions.
 - `/feature-fleshout` - flesh out stakeholder questions, risks, and Gate 1 readiness.

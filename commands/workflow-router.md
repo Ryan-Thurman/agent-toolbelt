@@ -31,8 +31,14 @@ Pick the track first — is this a new capability or broken behavior?
 - **AI Feature Delivery** (new capability, cross-functional work where
   requirements, tickets, tests, docs, QA, and release eligibility must stay
   linked): use the feature-delivery commands below.
+- **Phase Context** (long agent work where planning, implementation, test,
+  review, or PR prep should survive `/clear` or `/compact`): use the
+  `/phase-*` chain below, usually alongside Dev Lite or implementation work.
 
 Routing guide:
+- Long agent session, Agent Command Center work, context reset boundary, or
+  phase handoff needed: `/phase-create` -> `/phase-start` -> do the phase work
+  -> `/phase-close` -> `/clear` or `/compact`.
 - Vague / underspecified request: `/shape-up` (then `/dev-intake` or `/to-issues`).
 - Broken behavior / bug (Bug-to-Fix): `/bug-intake` -> `/reproduce` -> `/rca`
   (or `/rca --diagnose` for read-only) -> `/fix-plan` -> `/dev-implement-task`
@@ -70,3 +76,5 @@ Routing guide:
 - Apply one defined change across many sites (library swap / API rename / upgrade): `/retrofit`.
 - Root-cause only, no fix: `/rca --diagnose`.
 - Pause or transfer work to a fresh session/agent: `/handoff`.
+- Repeated phase boundaries or planned context resets: `/phase-status`, then
+  `/phase-start` or `/phase-close`.

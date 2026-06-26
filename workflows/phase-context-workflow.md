@@ -72,6 +72,8 @@ Plan the work
 Use these commands in Cursor or Claude Code when installed, or invoke the
 `phase-context-workflow` skill in Codex and ask for the same action.
 
+- `/handoff` writes compact resumable handoffs and supplies the handoff
+  discipline reused by `/phase-close`.
 - `/phase-create` creates or updates a phase file.
 - `/phase-start` writes a context packet for a fresh session.
 - `/phase-close` writes a durable phase handoff.

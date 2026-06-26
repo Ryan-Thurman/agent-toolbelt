@@ -90,6 +90,10 @@ Some commands overlap. Use these tables to pick the right one.
 |---|---|
 | `/dev-plan` | Phased Dev Lite build plan from a Feature Brief. |
 | `/implementation-plan` | Concise single-ticket plan in the feature-delivery track. |
+| `/phase-create` | Durable phase file for a bounded implementation phase that must survive context resets. |
+| `/phase-start` | Context packet for a fresh or reset session starting a phase. |
+| `/phase-close` | Phase handoff before clearing, compacting, or transferring context. |
+| `/phase-status` | Current phase and handoff state for a room or project. |
 
 **Shaping a request before building**
 

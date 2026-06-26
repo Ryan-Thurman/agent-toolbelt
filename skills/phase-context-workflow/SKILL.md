@@ -41,6 +41,7 @@ project-visible planning docs instead of local command-center metadata.
 
 The portable command prompts live in `../../commands/`:
 
+- `/handoff` supplies the handoff-writing discipline used by phase close.
 - `/phase-create` creates or updates a phase file.
 - `/phase-start` creates or updates a context packet.
 - `/phase-close` writes a phase handoff.
@@ -104,13 +105,20 @@ Do not start implementation from memory when the phase files are available.
 
 ## Phase Close Rules
 
+`/phase-close` composes the `handoff` skill. Use the same handoff discipline,
+but save the result inside the tracked phase directory because this project
+explicitly tracks phase handoffs.
+
 Before ending a phase or clearing context:
 
 1. Write `.acc/phases/<room>/phase-NN-handoff.md`.
 2. Include completed work, decisions, files changed, validation, known issues,
    risks, and next-session context.
-3. Mark `Safe To Clear` as `Yes` only when all important context is durable.
-4. Mark `Safe To Clear` as `No` when important details still need to be written
+3. Lead with the next concrete action and capture what has been ruled out.
+4. Reference durable artifacts instead of duplicating whole documents.
+5. Redact secrets, tokens, credentials, and sensitive personal data.
+6. Mark `Safe To Clear` as `Yes` only when all important context is durable.
+7. Mark `Safe To Clear` as `No` when important details still need to be written
    down, and list exactly what is missing.
 
 ## `/clear` vs `/compact`
@@ -140,8 +148,10 @@ coordination-heavy work.
 
 ## Relationship To Other Skills
 
-- Use `handoff` for compact cross-lane handoffs. This skill uses a structured,
-  repo-tracked handoff for repeated phase boundaries.
+- Use `handoff` for the handoff-writing rules: reference durable artifacts, lead
+  with the next action, capture ruled-out paths, redact secrets, and keep the
+  summary compact. This skill adds the repeated phase lifecycle and repo-tracked
+  `.acc/phases/<room>/phase-NN-handoff.md` destination.
 - Use `dev-lite-workflow` for feature/app delivery. This skill can wrap
   dev-lite phases when context reset safety matters.
 - Use `phase-gate` after opening a phase PR when the phase needs a fresh

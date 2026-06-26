@@ -45,7 +45,8 @@ workflow.
 - `dev-lite-workflow/` - lightweight dev workflow for feature/app ideas,
   phased implementation, per-task commits, phase reviews, and final PR review.
 - `phase-context-workflow/` - durable phase context files, handoffs, and context
-  packets for safe context resets during long agent work.
+  packets for safe context resets during long agent work; composes `handoff`
+  for phase closeout.
 - `ai-feature-delivery/` - release-traceable feature definition, design docs,
   refinement tickets, QA handoff, and release document control.
 - `webapp-testing/` - browser/webapp verification for user-facing changes and

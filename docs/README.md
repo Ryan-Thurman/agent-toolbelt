@@ -15,5 +15,7 @@ Reference docs elsewhere in the repo:
 - `templates/README.md` - reusable starting files.
 - `workflows/dev-lite-feature-workflow.md` - lightweight app/feature delivery
   loop for Cursor, Claude Code, and Codex-style skill use.
+- `workflows/phase-context-workflow.md` - durable phase context, handoffs, and
+  context packets for safe `/clear` or `/compact` boundaries.
 - `workflows/ai-feature-delivery-lifecycle.md` - full lifecycle and gates.
 - `workflows/dev-ticket-to-pr.md` - implementation ticket to PR workflow.

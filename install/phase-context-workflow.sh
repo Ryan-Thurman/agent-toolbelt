@@ -1,4 +1,4 @@
-# DESC: durable phase context files, handoffs, and context packets for safe /clear or /compact boundaries
+# DESC: durable phase context files, handoffs, and context packets; includes handoff for safe /clear or /compact boundaries
 pack_phase_context_workflow() {
   cmd handoff
   cmd phase-create

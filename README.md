@@ -21,7 +21,8 @@ The repository currently includes these toolsets:
 - `dev-lite-workflow`: a lightweight development loop for app/feature ideas,
   phased implementation, per-task commits, phase reviews, and final PR review.
 - `phase-context-workflow`: durable phase files, handoffs, and context packets
-  for long agent work that needs safe `/clear` or `/compact` boundaries.
+  for long agent work that needs safe `/clear` or `/compact` boundaries. It
+  composes the cross-cutting `handoff` skill for phase closeout.
 - `ai-feature-delivery`: a traceable feature-delivery workflow for turning a
   feature idea into design docs, implementation tickets, test evidence, QA
   handoff, and release documentation.
@@ -146,9 +147,12 @@ Install it into a project:
 ./install.sh phase-context-workflow /path/to/project
 ```
 
-It adds `/phase-create`, `/phase-start`, `/phase-close`, and `/phase-status`,
-plus templates for `.acc/phases/<room>/` phase files, handoffs, and context
-packets. It pairs well with `dev-lite-workflow` for phased implementation and
+It adds `/handoff`, `/phase-create`, `/phase-start`, `/phase-close`, and
+`/phase-status`, plus templates for `.acc/phases/<room>/` phase files,
+handoffs, and context packets. `/phase-close` reuses the `handoff` rules
+(reference durable artifacts, lead with the next action, capture ruled-out
+paths, redact secrets, keep it compact) but saves into the tracked phase
+directory. It pairs well with `dev-lite-workflow` for phased implementation and
 with `phase-gate` when each phase opens its own PR.
 
 ## AI Feature Delivery

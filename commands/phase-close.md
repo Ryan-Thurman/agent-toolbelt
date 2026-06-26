@@ -9,12 +9,29 @@ Write a durable handoff for a completed or paused phase.
 
 **Arguments:** `$ARGUMENTS`
 
+## Handoff Composition
+
+This command uses the `handoff` skill's discipline:
+
+- Reference durable artifacts instead of copying whole documents.
+- Lead with the next concrete action.
+- Capture what has been tried and ruled out.
+- Redact secrets, tokens, credentials, and sensitive personal data.
+- Keep the handoff compact.
+
+Unlike the generic `/handoff` command, this workflow intentionally saves inside
+the repo because phase handoffs are tracked project context.
+
 ## Rules
 
 - Default to `.acc/phases/<room-slug>/phase-NN-handoff.md`.
 - Reference existing durable artifacts instead of copying whole documents.
+- Lead with the next concrete action for the next phase or session.
+- Capture dead ends or ruled-out approaches so the next session does not repeat
+  them.
 - Include what changed, why it changed, validation evidence, open issues, risks,
   and next-session context.
+- Redact secrets, tokens, credentials, and sensitive personal data.
 - Capture `git status --short --branch`.
 - Capture changed files with `git diff --stat` or equivalent when useful.
 - Mark `Safe To Clear` as `Yes` only when all important context has been written

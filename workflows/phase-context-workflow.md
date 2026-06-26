@@ -72,6 +72,8 @@ Plan the work
 Use these commands in Cursor or Claude Code when installed, or invoke the
 `phase-context-workflow` skill in Codex and ask for the same action.
 
+- `/handoff` writes compact resumable handoffs and supplies the handoff
+  discipline reused by `/phase-close`.
 - `/phase-create` creates or updates a phase file.
 - `/phase-start` writes a context packet for a fresh session.
 - `/phase-close` writes a durable phase handoff.
@@ -80,6 +82,11 @@ Use these commands in Cursor or Claude Code when installed, or invoke the
 These commands are prompt-driven. They write files from templates and use normal
 repo commands such as `git status`, `git diff --stat`, and `git log` for
 evidence.
+
+`/phase-close` composes `/handoff`: it uses the same compact, reference-first,
+next-action-first handoff discipline, but writes the result to
+`.acc/phases/<room>/phase-NN-handoff.md` because this workflow tracks phase
+handoffs in the project.
 
 ## Phase Start
 
@@ -141,8 +148,9 @@ edits that require constant coordination.
 
 ## Relationship To Other Toolbelt Lanes
 
-- `handoff` is cross-cutting and compact. This workflow is a structured,
-  repo-tracked version for repeated phase boundaries.
+- `handoff` provides the handoff-writing rules. This workflow adds phase files,
+  context packets, and repo-tracked handoff destinations for repeated phase
+  boundaries.
 - `dev-lite-workflow` owns feature/app implementation. This workflow can wrap
   dev-lite phases when context reset safety matters.
 - `phase-gate` owns PR review at phase boundaries. Run it after a phase PR is

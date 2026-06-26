@@ -14,7 +14,8 @@ folder. The normal first artifact is `feature-master-record.md`; see
 - `dev-phase-review.md` - phase review result and findings template.
 - `dev-pr-review.md` - final PR readiness review template.
 - `phase-file.md` - durable phase definition for phase-context workflow.
-- `phase-handoff.md` - phase closeout and reset-safety handoff.
+- `phase-handoff.md` - phase closeout and reset-safety handoff, written with
+  the `handoff` skill's compact, reference-first discipline.
 - `context-packet.md` - compact source-of-truth packet for fresh sessions.
 - `feature-master-record.md` - central feature traceability record.
 - `sdd-template.md` - release-scoped software design document.

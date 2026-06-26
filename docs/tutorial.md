@@ -3,6 +3,8 @@
 This walkthrough shows the two install paths in `agent-toolbelt`:
 
 - Dev Lite Workflow: a lightweight feature/app loop for practical development.
+- Phase Context Workflow: durable phase files, handoffs, and context packets
+  for safe context resets during long agent work.
 - AI Feature Delivery: the fuller traceable feature-delivery pack for
   cross-functional or regulated work.
 
@@ -84,6 +86,79 @@ The Dev Lite workflow now enforces these checkpoints:
 The plan document should be updated after every meaningful step with current
 state, current task, evidence, tests/checks, blockers, next step, branch/PR
 state, and resume instructions.
+
+## Phase Context Workflow
+
+Use Phase Context when an agent session is getting long, a phase boundary is
+coming up, or you want to safely use `/clear` or `/compact` without losing the
+work state.
+
+It can wrap Dev Lite, AI Feature Delivery, bug fixing, or ad-hoc implementation.
+The key rule is simple: write the context you still need into files before
+clearing chat history.
+
+### 1. Preview the Phase Context install
+
+From this repo:
+
+```sh
+./install.sh --dry-run phase-context-workflow /path/to/project
+```
+
+The dry run shows:
+
+- `.cursor/commands/handoff.md`
+- `.cursor/commands/phase-*.md`
+- `.claude/commands/handoff.md`
+- `.claude/commands/phase-*.md`
+- `.agents/skills/handoff/SKILL.md`
+- `.agents/skills/phase-context-workflow/SKILL.md`
+- `skills/handoff/SKILL.md`
+- `skills/phase-context-workflow/SKILL.md`
+- `templates/phase-file.md`
+- `templates/phase-handoff.md`
+- `templates/context-packet.md`
+- `workflows/phase-context-workflow.md`
+
+### 2. Install Phase Context
+
+```sh
+./install.sh phase-context-workflow /path/to/project
+```
+
+Use `--force` only when replacing a previous install.
+
+### 3. Run a phase with durable context
+
+For a room or project slug such as `fix-auth-bug`, use:
+
+```text
+/phase-create fix-auth-bug --phase 1 --title "Implement auth session handling"
+/phase-start fix-auth-bug --phase 1
+```
+
+Do the phase work using the normal development commands. At the phase boundary,
+run:
+
+```text
+/phase-close fix-auth-bug --phase 1
+```
+
+`/phase-close` composes `/handoff`: it uses the handoff rules to keep the
+summary compact, reference durable artifacts, lead with the next action, capture
+ruled-out paths, and redact secrets. Unlike the generic `/handoff` command, it
+saves into `.acc/phases/<room>/phase-NN-handoff.md` because phase handoffs are
+tracked project context.
+
+After the handoff says `Safe To Clear: Yes`, start the next session from:
+
+```text
+.acc/phases/<room>/context-packet.md
+.acc/phases/<room>/phase-NN-handoff.md
+```
+
+Use `/phase-status <room>` whenever you need to see which phase files and
+handoffs exist.
 
 ## AI Feature Delivery Pack
 

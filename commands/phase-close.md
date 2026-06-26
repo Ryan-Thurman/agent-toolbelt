@@ -39,4 +39,3 @@ Phase handoff written:
 Safe to clear:
   Yes / No
 ```
-

@@ -80,4 +80,3 @@ If this is phase 1, say there is no previous handoff.
 ## Next Action
 
 The first concrete action for the next session.
-

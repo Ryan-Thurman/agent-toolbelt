@@ -37,4 +37,3 @@ Phase file written:
 Recommended next step:
   /phase-start <room> --phase <n>
 ```
-

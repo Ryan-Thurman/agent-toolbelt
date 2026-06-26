@@ -41,4 +41,3 @@ Latest context packet:
 Recommended next action:
   /phase-start <room> --phase <n>
 ```
-

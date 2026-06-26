@@ -55,4 +55,3 @@ What the next agent or session must know.
 Yes / No
 
 If no, explain what still needs to be captured before clearing context.
-

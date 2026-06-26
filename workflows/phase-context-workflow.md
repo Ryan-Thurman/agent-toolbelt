@@ -147,4 +147,3 @@ edits that require constant coordination.
   dev-lite phases when context reset safety matters.
 - `phase-gate` owns PR review at phase boundaries. Run it after a phase PR is
   open; it does not replace the phase handoff.
-

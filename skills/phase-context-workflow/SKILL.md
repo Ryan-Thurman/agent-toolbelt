@@ -146,4 +146,3 @@ coordination-heavy work.
   dev-lite phases when context reset safety matters.
 - Use `phase-gate` after opening a phase PR when the phase needs a fresh
   review subagent and PR comments.
-

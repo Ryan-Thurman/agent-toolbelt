@@ -47,4 +47,3 @@ Describe the goal of this phase.
 ## Notes
 
 TBD
-

@@ -38,4 +38,3 @@ Context packet written:
 Recommended next step:
   Open a fresh agent session or use /clear, then provide this context packet.
 ```
-

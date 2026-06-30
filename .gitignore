@@ -1,5 +1,8 @@
 .DS_Store
 
+# Build output (e.g. the assembled Cursor plugin) is generated, not source.
+/build/
+
 # Local scratch and cloned external material should not be published.
 /repos/
 /notes/

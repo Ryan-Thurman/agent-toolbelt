@@ -3,8 +3,11 @@
 # the helpers below to declare what a pack installs. Not meant to run directly.
 #
 # Expects these globals to be set by install.sh before a pack function runs:
-#   REPO_ROOT  TARGET  FORCE  DRY_RUN
-# and maintains the counters: created updated skipped.
+#   REPO_ROOT  TARGET  FORCE  DRY_RUN  HARNESS_ENABLED  CURRENT_PACK
+# and maintains the counters: created updated skipped gated.
+#
+# HARNESS_ENABLED is a space-wrapped list of enabled harnesses (e.g. " cursor claude ");
+# helpers below gate each write on it so only the selected harness' files are installed.
 
 # Resolve the repo root from this file's location (install/lib.sh -> repo root).
 REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
@@ -12,6 +15,35 @@ REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 created=0
 updated=0
 skipped=0
+gated=0          # files skipped because their harness was not selected
+
+# Per-target record of what was actually installed, for the AGENTS.md pointer.
+# Entries are "pack<TAB>name". Reset per target by install.sh.
+INSTALLED_COMMANDS=()
+INSTALLED_SKILLS=()
+
+# ---- Harness gating -----------------------------------------------------------
+
+# harness_enabled <name> — true if <name> is in the selected harness set.
+harness_enabled() {
+  case " ${HARNESS_ENABLED:-} " in
+    *" $1 "*) return 0 ;;
+    *) return 1 ;;
+  esac
+}
+
+# _record_command <name> / _record_skill <dir> — note an installed artifact under
+# the current pack so write_agents_md can group by pack. Skills dedup on pack+dir.
+_record_command() {
+  INSTALLED_COMMANDS+=("${CURRENT_PACK:-}"$'\t'"$1")
+}
+_record_skill() {
+  local key="${CURRENT_PACK:-}"$'\t'"$1" e
+  for e in "${INSTALLED_SKILLS[@]:-}"; do
+    [ "$e" = "$key" ] && return 0
+  done
+  INSTALLED_SKILLS+=("$key")
+}
 
 ensure_dir() {
   local dir="$1"
@@ -71,39 +103,114 @@ _install() {
 
 # ---- Semantic helpers used by install/<pack>.sh -------------------------------
 
-# cmd <name> — a slash command for both Cursor and Claude Code.
+# cmd <name> — a slash command for Cursor and/or Claude Code (per selected harness).
 cmd() {
-  _install "commands/$1.md" ".cursor/commands/$1.md"
-  _install "commands/$1.md" ".claude/commands/$1.md"
+  local did=0
+  if harness_enabled cursor; then _install "commands/$1.md" ".cursor/commands/$1.md"; did=1; else gated=$((gated + 1)); fi
+  if harness_enabled claude; then _install "commands/$1.md" ".claude/commands/$1.md"; did=1; else gated=$((gated + 1)); fi
+  [ "$did" = 1 ] && _record_command "$1"
+  return 0
 }
 
 # cmd_cursor <name> — a slash command for Cursor only (AI Feature Delivery pack).
 cmd_cursor() {
-  _install "commands/$1.md" ".cursor/commands/$1.md"
+  if harness_enabled cursor; then _install "commands/$1.md" ".cursor/commands/$1.md"; _record_command "$1"; else gated=$((gated + 1)); fi
+  return 0
 }
 
 # rule_local <name.mdc> — a Cursor rule shipped from .cursor/rules/ (Dev Lite pack).
 rule_local() {
-  _install ".cursor/rules/$1" ".cursor/rules/$1"
+  if harness_enabled cursor; then _install ".cursor/rules/$1" ".cursor/rules/$1"; else gated=$((gated + 1)); fi
+  return 0
 }
 
 # rule_tmpl <src.mdc> <dest.mdc> — a Cursor rule shipped from templates/ (AI Feature Delivery).
 rule_tmpl() {
-  _install "templates/$1" ".cursor/rules/$2"
+  if harness_enabled cursor; then _install "templates/$1" ".cursor/rules/$2"; else gated=$((gated + 1)); fi
+  return 0
 }
 
-# skill <pack> <rel> — a skill-tree file to both skills/ and the Codex .agents/skills/.
+# skill <pack> <rel> — canonical skills/ copy (always; commands reference it by path),
+# plus the agent-native .agents/skills/ copy when cursor or codex is selected. Cursor AND
+# Codex both auto-discover skills under .agents/skills/, so one copy serves both — writing a
+# separate .cursor/skills/ too would make Cursor list every skill twice. (Bare skills/ is NOT
+# an auto-discovery root, so it never double-registers.) SKILL.md is a cross-agent standard.
 skill() {
   _install "skills/$1/$2" "skills/$1/$2"
-  _install "skills/$1/$2" ".agents/skills/$1/$2"
+  if harness_enabled cursor || harness_enabled codex; then
+    _install "skills/$1/$2" ".agents/skills/$1/$2"
+  else
+    gated=$((gated + 1))
+  fi
+  _record_skill "$1"
+  return 0
 }
 
-# skill_shared <pack> <rel> — a skill-tree file to skills/ only (AI Feature Delivery).
+# skill_shared <pack> <rel> — canonical skills/ copy plus the native .agents/skills/ copy when
+# cursor is selected (AI Feature Delivery is Cursor-first; no Codex-only case to cover).
 skill_shared() {
   _install "skills/$1/$2" "skills/$1/$2"
+  if harness_enabled cursor; then _install "skills/$1/$2" ".agents/skills/$1/$2"; else gated=$((gated + 1)); fi
+  _record_skill "$1"
+  return 0
 }
 
-# template <name>, workflow <name>, example <name> — shared artifacts.
+# template <name>, workflow <name>, example <name> — shared artifacts (harness-agnostic).
 template() { _install "templates/$1" "templates/$1"; }
 workflow() { _install "workflows/$1" "workflows/$1"; }
 example()  { _install "examples/$1"  "examples/$1"; }
+
+# ---- AGENTS.md pointer --------------------------------------------------------
+
+AGENTS_BEGIN="<!-- BEGIN agent-toolbelt -->"
+AGENTS_END="<!-- END agent-toolbelt -->"
+
+# write_agents_md <packs...> — write/update an "Available workflows" block in
+# $TARGET/AGENTS.md listing the commands and skills installed for the given packs.
+# Only runs when cursor or codex is selected (the AGENTS.md-consuming harnesses).
+# Idempotent: replaces the marked block in place, appends if absent, creates if missing.
+write_agents_md() {
+  harness_enabled cursor || harness_enabled codex || return 0
+
+  local f="$TARGET/AGENTS.md" p e block cmds sk
+  block="$AGENTS_BEGIN"$'\n'"## Available workflows"$'\n'
+  block="$block"$'\n'"Installed by agent-toolbelt. Reach for these when the task matches the description."$'\n'
+  for p in "$@"; do
+    block="$block"$'\n'"### $p"$'\n'"$(pack_desc "$p")"$'\n'
+    cmds=""
+    for e in "${INSTALLED_COMMANDS[@]:-}"; do
+      case "$e" in "$p"$'\t'*) cmds="$cmds- \`/${e#*$'\t'}\`"$'\n' ;; esac
+    done
+    sk=""
+    for e in "${INSTALLED_SKILLS[@]:-}"; do
+      case "$e" in "$p"$'\t'*) sk="$sk- \`skills/${e#*$'\t'}/\`"$'\n' ;; esac
+    done
+    [ -n "$cmds" ] && block="${block}"$'\n'"Commands:"$'\n'"$cmds"
+    [ -n "$sk" ]   && block="${block}"$'\n'"Skills:"$'\n'"$sk"
+  done
+  block="$block$AGENTS_END"$'\n'
+
+  if [ "$DRY_RUN" = "1" ]; then
+    if [ -f "$f" ]; then echo "~ would update AGENTS.md block: $f"; else echo "+ would create AGENTS.md: $f"; fi
+    return 0
+  fi
+
+  ensure_dir "$(dirname "$f")"
+  if [ ! -f "$f" ]; then
+    printf '%s' "$block" > "$f" || exit 1
+    echo "+ installed: $f"; created=$((created + 1)); return 0
+  fi
+  if ! grep -q "^$AGENTS_BEGIN\$" "$f"; then
+    { printf '\n'; printf '%s' "$block"; } >> "$f" || exit 1
+    echo "~ updated: $f"; updated=$((updated + 1)); return 0
+  fi
+  local tmp
+  tmp="$(mktemp "$(dirname "$f")/.AGENTS.md.XXXXXX")" || exit 1
+  awk -v b="$AGENTS_BEGIN" -v e="$AGENTS_END" -v blk="$block" '
+    $0==b { printf "%s", blk; skip=1; next }
+    skip && $0==e { skip=0; next }
+    skip { next }
+    { print }
+  ' "$f" > "$tmp" && mv "$tmp" "$f" || { rm -f "$tmp"; exit 1; }
+  echo "~ updated: $f"; updated=$((updated + 1)); return 0
+}

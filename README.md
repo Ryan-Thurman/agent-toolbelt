@@ -59,6 +59,7 @@ agent-toolbelt/
   docs/             user-facing setup and usage docs
   commands/         slash commands and reusable command prompts
   skills/           agent skills with operating instructions
+  hooks/            Cursor hook scripts + hooks.json (cursor-hooks pack)
   workflows/        multi-step workflow playbooks
   templates/        reusable starting files and Cursor rules
   examples/         worked reference material
@@ -424,6 +425,29 @@ forever (`review-queue list --status dead`). Full CLI contract:
 polling*, not the need for a live consumer. Use the queue for agent-to-agent
 hand-off; use `review-on-open` (event/poller) for host-originated PRs. All three
 end in `/pr-review --comment`.
+
+## Cursor Hooks
+
+`cursor-hooks` installs project-level [Cursor hooks](https://cursor.com/docs/hooks)
+(`.cursor/hooks.json` + `.cursor/hooks/*.sh`) that wire two toolbelt principles into
+Cursor's agent loop. Cursor-only (gated on `--harness cursor`); the scripts are pure
+bash, invoked as `bash .cursor/hooks/<script>`, and run in cloud agents too since they
+live in version control.
+
+```sh
+./install.sh --harness cursor cursor-hooks /path/to/project
+```
+
+| Hook | Fires on | Behavior |
+|---|---|---|
+| `doc-sync-guard.sh` | `git commit` (`beforeShellExecution`) | If the commit changes code but no docs (README, `docs/**`, `*.md`, `AGENTS.md`, `CLAUDE.md`), returns `ask` so you confirm — the local counterpart to the PR-open doc gate. |
+| `review-nudge.sh` | `git push` (`beforeShellExecution`) | Returns `ask` to nudge running `/pr-review` before the branch leaves your machine. |
+
+Both are **advisory** (worst case they prompt; never hard-block) and **fail-open** (a
+hook error allows the action). Bypass per-action with `[skip-docs]` / `[skip-review]` in
+the command, or disable entirely with `TOOLBELT_DOC_CHECK=0` / `TOOLBELT_REVIEW_NUDGE=0`.
+If the target already has a `.cursor/hooks.json`, the installer **skips** it rather than
+clobber your hooks — merge the two entries from `hooks/hooks.json` by hand.
 
 ## Bug to Fix
 

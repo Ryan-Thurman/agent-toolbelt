@@ -5,6 +5,7 @@ User-facing documentation for installing and using the toolbelt.
 Start here:
 
 - `tutorial.md` - guided first install and first feature walkthrough.
+- `phase-command-map.md` - which commands each workflow phase uses, at a glance.
 
 Reference docs elsewhere in the repo:
 

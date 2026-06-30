@@ -34,6 +34,14 @@ yourself** — you set up context, spawn facet sub-agents, then aggregate, verif
 > - The slice is still cut from the **one frozen snapshot** (same line numbers for all), so dedup and
 >   the critic's `file:line` re-read stay consistent. Note any withholding in the report.
 
+> **Standard reachability sketch.** Before spawning facets, do a bounded grep pass for changed
+> exported/public symbols, route/API handlers, validation/parsing functions, and changed functions
+> with arithmetic or boundary-sensitive logic. Capture up to 3 direct callers/importers and nearby
+> tests per symbol, plus any obvious request/user-input source. This is intentionally cheaper than
+> deep's blast-radius map: one-hop context only, capped and summarized. Pass the sketch to
+> correctness, security, tests, and standards facets. If the cap is hit or no caller is found, say so
+> explicitly; unknown reachability is a grading input, not proof of safety.
+
 ## 1. Select facets
 
 Base set (always): **correctness, tests, standards, maintainability**.
@@ -57,6 +65,7 @@ sub-agent gets a prompt composed of:
 - the contents of `facets/_shared.md` (the contract),
 - the contents of its `facets/<facet>.md`,
 - the **formatted diff**,
+- the **standard reachability sketch** when present,
 - the **project standards** text,
 - the repo config's **Context + Budgets** (`repo-config.md`) — the domain/scale framing and the
   concrete bars to hold the diff to. If this facet is in **Emphasis** or **`--focus`**, also tell it
@@ -93,6 +102,12 @@ finding, the critic asks: *can I show this is wrong or unreachable from the diff
 - **Drop** a finding only if it is demonstrably false, outside the diff, stale, or has no real consequence.
 - **Downgrade** (bucket/severity) or convert to a **question** if it's real but weaker/uncertain
   than claimed (confidence < ~0.5 → question).
+- **Calibrate severity before thresholding.** Re-apply the severity floors in
+  `review-rubric.md`. A correctness/security finding with a concrete runtime consequence
+  (wrong output, crash, `NaN`/`Infinity`, unbounded work, data integrity issue, auth/security
+  failure) must not remain a `nit` merely because reachability is incomplete. Keep it at least
+  `should-fix`; escalate to `blocker` when the reachability sketch, changed API/route, tests, or
+  caller reads show a documented/user-controlled path.
 - Default to **keep** — bias toward not deleting real findings (fail open).
 - **Record adjudicated drops.** When the critic drops a finding because it is *demonstrably false* or
   has *no real consequence*, append it to the rejection memory (`rejection-memory.md`). Do **not**
@@ -127,7 +142,8 @@ blocker correctly flips the verdict to APPROVE while still showing the item.
 
 ## 8. Threshold, verdict, render
 
-- Apply the posting threshold: hide `nit`s unless there are no higher findings or the user asked.
+- Apply the posting threshold: hide `nit`s unless there are no higher findings or the user asked,
+  after the critic has performed the calibration pass above.
 - Derive the verdict mechanically (`output-format.md`): `APPROVE` iff zero blockers, else
   `REQUEST CHANGES` / `NEEDS DISCUSSION`.
 - Render the markdown report (`output-format.md`), including the Re-entry notes section, the

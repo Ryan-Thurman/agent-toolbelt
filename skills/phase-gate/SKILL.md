@@ -32,7 +32,9 @@ GitHub or Azure). They differ only in **what happens after** the review is poste
 
 `--no-post` makes it **report-only** (no posting) — for a dry run, or when no host CLI is present
 (posting otherwise degrades to report-only automatically). `--tier=light|standard|deep` is passed
-through to `pr-review` (omit → auto-tier).
+through to `pr-review` (omit → auto-tier). Auto-tier floors production logic at **standard**; use
+`--tier=light` only for docs/tests/config or tiny mechanical phases, and force `--tier=deep` when a
+wrong severity would be expensive (auth, payments, migrations, public APIs, security-sensitive code).
 
 **Host is auto-detected** from the origin remote via the `pr-review` provider layer — GitHub (`gh`) or
 Azure Repos (`az`, `dev.azure.com`/`visualstudio.com`). A work repo migrating Azure→GitHub needs no
@@ -91,6 +93,8 @@ The main agent runs this at a phase boundary, with the phase's work already push
 - **`--no-post`** — report-only: don't post to the PR (dry run / no host CLI). Posting is otherwise
   always on for both modes.
 - **`--tier=light|standard|deep`** — review depth (passthrough to `pr-review`; omit → auto-tier).
+  For phase PRs, prefer the default auto-tier or explicit `standard` for normal logic phases; reserve
+  explicit `light` for low-risk/mechanical phases and explicit `deep` for high-stakes surfaces.
 - **`--rereview`** — after fixing blockers (solo/report), run one confirming re-review before merge.
 
 ## References

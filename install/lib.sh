@@ -160,6 +160,20 @@ template() { _install "templates/$1" "templates/$1"; }
 workflow() { _install "workflows/$1" "workflows/$1"; }
 example()  { _install "examples/$1"  "examples/$1"; }
 
+# hook_json <src> — the Cursor hooks manifest (cursor only). install_file skips an existing
+# .cursor/hooks.json (no --force), so we never clobber hooks you already have — merge manually.
+hook_json() {
+  if harness_enabled cursor; then _install "hooks/$1" ".cursor/hooks.json"; else gated=$((gated + 1)); fi
+  return 0
+}
+
+# hook_script <name> — a Cursor hook script under .cursor/hooks/ (cursor only). hooks.json
+# invokes these via `bash .cursor/hooks/<name>`, so no executable bit is required.
+hook_script() {
+  if harness_enabled cursor; then _install "hooks/$1" ".cursor/hooks/$1"; else gated=$((gated + 1)); fi
+  return 0
+}
+
 # ---- AGENTS.md pointer --------------------------------------------------------
 
 AGENTS_BEGIN="<!-- BEGIN agent-toolbelt -->"

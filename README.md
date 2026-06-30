@@ -16,6 +16,10 @@ The repository currently includes these toolsets:
   agents from the reviewer — a producer enqueues a PR, a worker claims it and
   runs `/pr-review --comment`. The push-based trigger; fully local, no
   CI/webhook/API key.
+- `phase-gate`: the in-loop (synchronous) third trigger — at each phase boundary
+  the main agent delegates the PR review to a fresh subagent running `pr-review`,
+  which posts inline findings; then either stops for human merge (team) or feeds
+  the findings back so the main agent fixes and merges (solo, `--merge`).
 - `bug-to-fix`: a diagnostic lane that takes a bug report through triage,
   reproduction, root-cause analysis, a minimal fix, and verification.
 - `dev-lite-workflow`: a lightweight development loop for app/feature ideas,
@@ -41,6 +45,12 @@ The repository currently includes these toolsets:
   tickets the slicers produce to GitHub Issues, Jira, or Azure Boards — so
   `/refine-to-tickets` and `/to-issues` can land their work in the tracker, not
   just local markdown.
+- `handoff`: a small, cross-cutting `/handoff` that writes a resumable handoff so
+  a fresh agent — or a teammate — can continue work without context loss. Bundled
+  with `bug-to-fix`; installs standalone for the other lanes too.
+- `cursor-hooks`: project-level Cursor hooks that wire two toolbelt principles
+  into Cursor's agent loop — a doc-sync gate on `git commit` and a `/pr-review`
+  nudge on `git push` (Cursor-only; advisory and fail-open).
 
 The lanes are different shapes: `ai-feature-delivery` / `dev-lite-workflow` are
 **generative** (start from an idea), while `bug-to-fix` is **diagnostic** (start
@@ -59,6 +69,7 @@ agent-toolbelt/
   docs/             user-facing setup and usage docs
   commands/         slash commands and reusable command prompts
   skills/           agent skills with operating instructions
+  hooks/            Cursor hook scripts + hooks.json (cursor-hooks pack)
   workflows/        multi-step workflow playbooks
   templates/        reusable starting files and Cursor rules
   examples/         worked reference material
@@ -68,21 +79,35 @@ Each major folder has a `README.md` describing what belongs there.
 
 ## Quick Start
 
-For the guided path, start with:
-
-- `docs/README.md` for the documentation map.
-- `docs/tutorial.md` for a first install and first feature walkthrough.
-
-Everything installs through one entry point — `./install.sh` — which takes one or
-more pack names (or `all`), a **required `--harness`** choice, and a target folder:
+Everything installs through one entry point — `./install.sh` — which answers three
+questions: **which packs**, **which harness(es)**, and **into which folder**:
 
 ```sh
-./install.sh --harness <list> <pack> [<pack> ...] <target-folder>
-./install.sh --list                                  # see the available packs
-./install.sh --harness cursor ai-feature-delivery /path/to/pilot-folder
-./install.sh --harness cursor,claude bug-to-fix simplify shape-up /path/to/project
-./install.sh --harness all all /path/to/project
+./install.sh --harness <cursor|claude|codex|all> <pack ...|all> <target-folder>
 ```
+
+The most common command — install every pack into one project for Cursor:
+
+```sh
+./install.sh --harness cursor all /path/to/project
+```
+
+Other shapes:
+
+```sh
+./install.sh --list                                          # list the available packs
+./install.sh --harness cursor ai-feature-delivery ~/pilot    # one pack, one harness
+./install.sh --harness cursor,claude bug-to-fix simplify shape-up ~/project
+./install.sh --harness all all ~/project                     # every pack, every harness
+```
+
+New here? Take the guided path:
+
+- `docs/tutorial.md` — a first install and first feature walkthrough.
+- `docs/README.md` — the documentation map.
+
+After install, open the target folder and run `/workflow-router` (or a specific
+pack's entry command from the sections below) from chat.
 
 ### Choosing harnesses
 
@@ -169,9 +194,6 @@ previous install:
 On macOS, non-developer pilot users can double-click `install.command`, which
 asks which pack(s) to install, which harness(es), whether to sweep child repos,
 and then the target folder (drag it into the Terminal prompt and press Enter).
-
-After install, open the target folder in Cursor and run `/workflow-router` or
-`/feature-start` from chat.
 
 ## Dev Lite Workflow
 
@@ -425,6 +447,63 @@ polling*, not the need for a live consumer. Use the queue for agent-to-agent
 hand-off; use `review-on-open` (event/poller) for host-originated PRs. All three
 end in `/pr-review --comment`.
 
+## Phase Gate
+
+The `phase-gate` tool is the **in-loop (synchronous)** third PR-review trigger —
+the sibling of the async `review-on-open` (CI event + poller) and `review-queue`
+(local push queue). In a phased build loop (plan → build phase → open PR → **gate**
+→ next phase) it removes the manual "stop and review each phase PR" step: the main
+agent delegates the review to a **fresh subagent** (clean context, not biased by the
+build reasoning) that runs `/pr-review --comment` and posts inline findings to the PR.
+
+```sh
+./install.sh --harness all phase-gate /path/to/project
+```
+
+Run it at a phase boundary with:
+
+```text
+/phase-gate [target] [--merge] [--tier=light|standard|deep] [--rereview] [--no-post]
+```
+
+**Both flows post the review to the PR**; they differ only in what happens *after*:
+
+- **Team (default).** Post the review, then **stop** — humans do the manual review
+  and merge; the auto-review supplements theirs. No auto-merge.
+- **Solo (`--merge`).** Post the review **and** return the findings to the main
+  agent, which fixes blockers in-context and **merges** the phase PR (`gh pr merge
+  --squash` / `az repos pr update --status completed`) before the next phase.
+
+`--no-post` makes it report-only (also the automatic fallback when no host CLI is
+present); `--rereview` adds one confirming pass after solo fixes. The host (GitHub
+`gh` / Azure `az`) is auto-detected from the remote. It adds no review logic — it
+wraps `pr-review`'s provider and posting layers — and pairs with
+`phase-context-workflow` when each phase opens its own PR. All three triggers end in
+`/pr-review --comment`.
+
+## Cursor Hooks
+
+`cursor-hooks` installs project-level [Cursor hooks](https://cursor.com/docs/hooks)
+(`.cursor/hooks.json` + `.cursor/hooks/*.sh`) that wire two toolbelt principles into
+Cursor's agent loop. Cursor-only (gated on `--harness cursor`); the scripts are pure
+bash, invoked as `bash .cursor/hooks/<script>`, and run in cloud agents too since they
+live in version control.
+
+```sh
+./install.sh --harness cursor cursor-hooks /path/to/project
+```
+
+| Hook | Fires on | Behavior |
+|---|---|---|
+| `doc-sync-guard.sh` | `git commit` (`beforeShellExecution`) | If the commit changes code but no docs (README, `docs/**`, `*.md`, `AGENTS.md`, `CLAUDE.md`), returns `ask` so you confirm — the local counterpart to the PR-open doc gate. |
+| `review-nudge.sh` | `git push` (`beforeShellExecution`) | Returns `ask` to nudge running `/pr-review` before the branch leaves your machine. |
+
+Both are **advisory** (worst case they prompt; never hard-block) and **fail-open** (a
+hook error allows the action). Bypass per-action with `[skip-docs]` / `[skip-review]` in
+the command, or disable entirely with `TOOLBELT_DOC_CHECK=0` / `TOOLBELT_REVIEW_NUDGE=0`.
+If the target already has a `.cursor/hooks.json`, the installer **skips** it rather than
+clobber your hooks — merge the two entries from `hooks/hooks.json` by hand.
+
 ## Bug to Fix
 
 The `bug-to-fix` tool is the diagnostic lane: it takes a bug report from triage
@@ -576,7 +655,7 @@ instead of staying as markdown. It mirrors how `pr-review` abstracts the gh-vs-a
 abstraction is the *tracker*.
 
 ```sh
-./install-ticket-sync.sh /path/to/project
+./install.sh --harness all ticket-sync /path/to/project
 ```
 
 A target repo declares the tracker in a repo-local `.tickets.md` (copy `templates/tickets-config.md`)

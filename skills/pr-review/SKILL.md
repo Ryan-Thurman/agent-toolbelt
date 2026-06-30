@@ -35,8 +35,9 @@ three tiers.
 - **target** — a PR URL/number, a branch name, or empty (local working changes). Resolution +
   diff acquisition: `references/targets-and-diff.md`.
 - **tier** — `light` | `standard` | `deep`. **If omitted, auto-select from the diff**
-  (`references/auto-tier.md`): trivial/low-risk → light, hot-path/large → deep, else standard. An
-  explicit tier always wins; a token **guardrail** warns before spending deep on a trivial change.
+  (`references/auto-tier.md`): docs/tests/config or tiny mechanical edits → light, production logic
+  → at least standard, hot-path/large → deep. An explicit tier always wins; a token **guardrail**
+  warns before spending deep on a trivial change.
 - **`--comment`** *(PR targets only)* — post findings as inline PR review comments instead of only
   printing the report (`references/posting.md`). Works on **GitHub (`gh`)** and **Azure Repos (`az`)**
   (`references/providers.md`); degrades to report-only if neither CLI is present. Off by default;
@@ -69,9 +70,9 @@ actually buys:
 
 | tier | rel. token cost | what it buys | use when |
 |---|---|---|---|
-| **light** | 1× (~41k) | the headline blockers, fast | quick gut-check, tiny/low-risk diffs |
-| **standard** | ~5.7× (~233k) | **breadth** — full facet coverage (5 → 16 findings) | **normal PRs (the sweet spot)** |
-| **deep** | ~8.2× (~335k) | **precision/calibration**, *not* more findings | high-stakes / pre-merge / security-sensitive |
+| **light** | 1× (~41k) | the headline blockers, fast, with severity floors | quick gut-check, docs/tests/config, tiny mechanical diffs |
+| **standard** | ~5.7× (~233k) | **breadth** + bounded one-hop reachability context | **normal production PRs (the sweet spot)** |
+| **deep** | ~8.2× (~335k) | **precision/calibration** via blast radius + dual judge | high-stakes / pre-merge / security-sensitive |
 
 Key result: **light → standard buys coverage; standard → deep buys correct severities, not new
 findings.** Deep's dual-judge re-reads cited code and re-rates — in the benchmark it downgraded a
@@ -91,6 +92,8 @@ A single generalist pass with the review facets applied as internal lenses. Fast
 3. **Review the diff in one pass**, sweeping these lenses (full rubric: `references/review-rubric.md`):
    - correctness/bugs · security · performance · tests · maintainability · standards · re-entry context.
    - Apply the anti-noise rules above. Read full files for context; flag only changed lines.
+   - Apply the severity floors before suppressing nits: runtime/security consequences are at least
+     `should-fix` unless proven unreachable, and blockers when reachable on valid/user-controlled paths.
    - Weight any **`--focus`** / Emphasis facet harder and lower its threshold a notch.
    - Pull in the **per-language checklist** lenses for the diff's languages (`references/lang-checklists.md`).
 4. **Emit findings** in the schema from `references/finding-schema.md` (empty list if clean).
@@ -107,15 +110,17 @@ Multi-agent fan-out. The orchestrator never reviews code itself — it sets up c
 
 Full algorithm: `references/fan-out.md`. In short:
 1. Setup: resolve target + diff + load standards (as light).
-2. Select facets: base {correctness, tests, standards, maintainability} + auto-add
+2. Build the bounded standard reachability sketch for changed public/exported/API or
+   boundary-sensitive code.
+3. Select facets: base {correctness, tests, standards, maintainability} + auto-add
    {security, performance} by change signal.
-3. Spawn facet sub-agents in parallel — each = `facets/_shared.md` + `facets/<facet>.md` + the diff
-   + standards; each returns a JSON findings array (`references/finding-schema.md`).
-4. Aggregate + dedup (same file/overlapping lines + same root cause).
-5. Self-reflect critic pass (falsify-don't-verify): drop only the demonstrably wrong; downgrade the
-   weak; default to keep.
-6. Synthesize re-entry notes.
-7. Threshold + host-derived verdict + render (`references/output-format.md`).
+4. Spawn facet sub-agents in parallel — each = `facets/_shared.md` + `facets/<facet>.md` + the diff
+   + reachability sketch + standards; each returns a JSON findings array (`references/finding-schema.md`).
+5. Aggregate + dedup (same file/overlapping lines + same root cause).
+6. Self-reflect critic pass (falsify-don't-verify): drop only the demonstrably wrong; downgrade the
+   weak; re-apply severity floors before thresholding; default to keep.
+7. Synthesize re-entry notes.
+8. Threshold + host-derived verdict + render (`references/output-format.md`).
 
 ## Deep tier (active)
 

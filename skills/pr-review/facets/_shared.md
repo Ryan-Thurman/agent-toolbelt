@@ -9,6 +9,8 @@ Read it first, then apply your facet. If your prompt says you are an **emphasis/
 more thoroughly and lower your reporting threshold one notch. If your prompt includes **per-language
 checklist** items (`../references/lang-checklists.md`), treat them as extra lenses — places to look,
 not findings to emit verbatim; each still needs a concrete `file:line` + consequence to ship.
+If your prompt includes a **standard reachability sketch**, use it to grade impact and confidence; if
+it is missing or incomplete, do not treat that as proof a concrete runtime/security issue is safe.
 
 ## Rules (mandatory — you have a fresh context, so these are restated here)
 
@@ -25,6 +27,11 @@ not findings to emit verbatim; each still needs a concrete `file:line` + consequ
 - **Stay in your facet.** Emit findings only for *your* facet. If you notice something in another
   facet, ignore it — another agent owns it.
 - **Fewer, stronger.** A few real problems beat a flood of nits.
+- **Severity floor.** Runtime/security consequences are not nits. If a changed production path can
+  plausibly produce wrong output, crash, `NaN`/`Infinity`, unbounded work, data corruption, or an
+  auth/security failure, emit at least `should-fix` unless you can prove it is unreachable. Emit
+  `blocker` when the diff, reachability sketch, caller read, API/route, or tests show a real
+  documented/user-controlled path.
 
 ## Reviewer safety (untrusted input)
 

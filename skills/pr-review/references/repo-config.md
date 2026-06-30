@@ -115,6 +115,36 @@ _repo-config: .pr-review.md · forced facets: performance, security · 1 finding
 If the config is malformed/unreadable, note it in one line and proceed as if absent — never block a
 review on a bad config.
 
+## Recipe: never let a runtime-risk finding get suppressed
+
+The rubric already floors concrete runtime/security consequences at **should-fix** before nits are
+hidden (`review-rubric.md` → severity floors; applied in every facet via `facets/_shared.md`). That
+floor is a *tendency*, not a guarantee — a borderline finding can still be graded `nit` by one agent
+and then suppressed because a clear blocker is present in the same diff. When a repo has a class of
+issue it has been **burned by in real PRs** (the common one: missing input validation that ships, then
+crashes or returns garbage), pin it host-side so a single agent's grading can't bury it:
+
+```markdown
+## Severity overrides
+- missing input validation on a request/handler path (`*/api/*`, `*/handlers/*`, `*/routes/*`) → blocker
+- missing input validation anywhere in production source → should-fix (min)
+- unguarded division / array or string index from caller-supplied values → should-fix (min)
+```
+
+Why this is robust where the in-agent floor alone is not:
+
+- **Host-side, after aggregation.** The re-rate runs in the orchestrator on the merged findings, so it
+  fires even if the facet agent under-graded — it's the backstop *below* the agent's own calibration.
+- **It runs before the posting threshold.** A finding raised to `should-fix`/`blocker` is no longer a
+  `nit`, so the "hide nits when blockers exist" rule can't suppress it.
+- **It's auditable.** Every re-rate shows up in the footer (`1 finding re-rated …`), so a human can
+  see the policy fired and reverse it — unlike a silent self-suppression inside one agent.
+
+Keep the rule **specific** (path globs + a named condition) so it re-rates the real class and not
+every defensive nit. Pair it with a `## Minimum tier: standard` floor so these diffs never auto-pick
+light (the tier with the least reachability context). See `auto-tier.md` for the production-logic
+floor that already nudges logic diffs to standard.
+
 ## See also
 
 - `templates/pr-review.md` — a copyable starter to drop into a target repo.

@@ -5,10 +5,12 @@ User-facing documentation for installing and using the toolbelt.
 Start here:
 
 - `tutorial.md` - guided first install and first feature walkthrough.
+- `phase-command-map.md` - which commands each workflow phase uses, at a glance.
 
 Reference docs elsewhere in the repo:
 
-- `README.md` - project overview, layout, and major built systems.
+- `wiki/Home.md` - the deep-dive wiki (install, workflows, code review, utilities).
+- `README.md` - project overview, layout, and pack summary.
 - `commands/README.md` - available slash commands.
 - `skills/README.md` - available skills and what they control.
 - `workflows/README.md` - multi-step workflows.

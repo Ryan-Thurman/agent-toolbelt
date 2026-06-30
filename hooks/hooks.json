@@ -1,0 +1,9 @@
+{
+  "version": 1,
+  "hooks": {
+    "beforeShellExecution": [
+      { "command": "bash .cursor/hooks/doc-sync-guard.sh", "matcher": "git commit" },
+      { "command": "bash .cursor/hooks/review-nudge.sh", "matcher": "git push" }
+    ]
+  }
+}

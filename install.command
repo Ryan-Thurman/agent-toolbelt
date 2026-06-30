@@ -16,6 +16,16 @@ IFS= read -r PACKS
 [ -z "$PACKS" ] && PACKS="all"
 
 echo
+printf "Harnesses (cursor,claude,codex, or 'all') [all]: "
+IFS= read -r HARNESS
+[ -z "$HARNESS" ] && HARNESS="all"
+
+echo
+printf "Install into all child repos under the target too? [y/N]: "
+IFS= read -r SWEEP_ANS
+case "$SWEEP_ANS" in [Yy]*) SWEEP_FLAG="--sweep" ;; *) SWEEP_FLAG="" ;; esac
+
+echo
 echo "Drag the target project folder into this Terminal window, then press Enter."
 printf "Target folder: "
 IFS= read -r TARGET
@@ -33,7 +43,7 @@ if [ -z "$TARGET" ]; then
 fi
 
 # shellcheck disable=SC2086
-"$ROOT/install.sh" $PACKS "$TARGET"
+"$ROOT/install.sh" --harness "$HARNESS" $SWEEP_FLAG $PACKS "$TARGET"
 
 echo
 read -r -p "Press Enter to close. "

@@ -9,7 +9,8 @@ Start here:
 
 Reference docs elsewhere in the repo:
 
-- `README.md` - project overview, layout, and major built systems.
+- `wiki/Home.md` - the deep-dive wiki (install, workflows, code review, utilities).
+- `README.md` - project overview, layout, and pack summary.
 - `commands/README.md` - available slash commands.
 - `skills/README.md` - available skills and what they control.
 - `workflows/README.md` - multi-step workflows.

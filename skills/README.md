@@ -36,6 +36,11 @@ workflow.
 - `retrofit/` - apply one defined change across every site (library swap, API
   rename, framework upgrade): discover, transform in isolation, verify
   exhaustively. Opt-in; orchestrated fan-out.
+- `worktree/` - isolated git worktrees (pure bash + git, no runtime) so multiple
+  agents can work a shared directory of repos without clobbering each other's
+  branch: one worktree per task on its own branch, collision-safe auto-naming,
+  collected under `<parent>/.worktrees/`, with tidy cleanup. For independent
+  sessions; in-run fan-out should use `Workflow`'s `isolation: 'worktree'`.
 - `handoff/` - cross-cutting: write a resumable handoff so a fresh agent or
   person can continue without context loss (any lane).
 - `ticket-sync/` - provider-agnostic issue-tracker adapter: publish the tickets

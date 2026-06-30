@@ -13,7 +13,7 @@ This wiki is the deep-dive companion to the [README](../README.md). Start with
 | [Installation](Installation.md) | `install.sh`, harness selection, polyrepo `--sweep`, the private Cursor plugin |
 | [Workflows](Workflows.md) | The delivery lanes: Dev Lite, Phase Context, AI Feature Delivery, Bug to Fix, Shape Up |
 | [Code Review](Code-Review.md) | PR Review and its triggers: Review Reply, Review on Open, Review Queue, Phase Gate, Cursor Hooks |
-| [Utilities](Utilities.md) | Simplify, Cover, Ship It, Retrofit, Handoff, Ticket Sync |
+| [Utilities](Utilities.md) | Simplify, Cover, Ship It, Retrofit, Worktree, Handoff, Ticket Sync |
 | [Phase → Command Map](../docs/phase-command-map.md) | Which commands each workflow phase uses (with Mermaid diagrams) |
 
 ## What's included
@@ -56,6 +56,9 @@ The repository ships these toolsets:
 - `retrofit`: apply one defined change across every site that needs it (library
   swap, API rename, framework upgrade) — discover, transform in isolation, verify
   exhaustively.
+- `worktree`: isolated git worktrees so multiple agents can share a directory of
+  repos without clobbering each other's branch — one worktree per task on its own
+  branch, collision-safe naming, for independent sessions.
 - `ticket-sync`: a provider-agnostic issue-tracker adapter that publishes the
   tickets the slicers produce to GitHub Issues, Jira, or Azure Boards — so
   `/refine-to-tickets` and `/to-issues` can land their work in the tracker, not

@@ -53,8 +53,9 @@ review.
 
 ```text
 agent-toolbelt/
-  install.sh        single installer entry point (./install.sh <pack...> <target>)
+  install.sh        single installer entry point (./install.sh --harness <list> <pack...> <target>)
   install/          per-pack file lists (install/<pack>.sh) + shared install/lib.sh
+  build-cursor-plugin.sh  assemble a private, user-scoped Cursor plugin from the packs
   docs/             user-facing setup and usage docs
   commands/         slash commands and reusable command prompts
   skills/           agent skills with operating instructions
@@ -73,27 +74,101 @@ For the guided path, start with:
 - `docs/tutorial.md` for a first install and first feature walkthrough.
 
 Everything installs through one entry point — `./install.sh` — which takes one or
-more pack names (or `all`) and a target folder:
+more pack names (or `all`), a **required `--harness`** choice, and a target folder:
 
 ```sh
-./install.sh <pack> [<pack> ...] <target-folder>
-./install.sh --list                 # see the available packs
-./install.sh ai-feature-delivery /path/to/pilot-folder
-./install.sh bug-to-fix simplify shape-up /path/to/project
-./install.sh all /path/to/project
+./install.sh --harness <list> <pack> [<pack> ...] <target-folder>
+./install.sh --list                                  # see the available packs
+./install.sh --harness cursor ai-feature-delivery /path/to/pilot-folder
+./install.sh --harness cursor,claude bug-to-fix simplify shape-up /path/to/project
+./install.sh --harness all all /path/to/project
 ```
+
+### Choosing harnesses
+
+`--harness` is required (there is no implicit default) and takes a comma-separated
+list of `cursor`, `claude`, `codex`, or `all`. Only the selected harness' files are
+written:
+
+| Harness | Installs |
+|---|---|
+| `cursor` | `.cursor/commands/`, `.cursor/rules/`, and skills into `.agents/skills/` |
+| `claude` | `.claude/commands/` |
+| `codex`  | skills into `.agents/skills/` |
+| _always_ | the canonical `skills/` tree (commands reference it by path), plus `templates/`, `workflows/`, `examples/` |
+
+**Skills:** Cursor and Codex both auto-discover skills under `.agents/skills/`, so the
+installer writes that one native copy for either harness (a separate `.cursor/skills/`
+would make Cursor list every skill twice). The bare `skills/` tree at the root is *not*
+an auto-discovery root, so it never double-registers — it exists only because the
+commands reference it by relative path. Each `SKILL.md` carries `name`/`description`
+frontmatter, so Cursor surfaces them as first-class, on-demand skills alongside the
+`/commands`.
+
+When `cursor` or `codex` is selected, the installer also writes an **`AGENTS.md`
+pointer** at the target — a marker-delimited "Available workflows" block listing the
+installed commands and skills so the agent discovers them. It is regenerated
+idempotently and never disturbs the rest of your `AGENTS.md`.
+
+### Polyrepo / `--sweep`
+
+For repos kept side-by-side under a common parent, `--sweep` treats the target as
+the **parent** and installs into it **and** every immediate child git repo, so the
+tooling works both inside a single repo and across the whole application:
+
+```sh
+./install.sh --sweep --harness cursor all /path/to/parent
+```
+
+Each level is a full, self-contained install — its own `skills/` tree (commands
+reference it by relative path), `AGENTS.md`, and `.cursor/rules` — so a repo opened
+on its own carries its guardrails.
+
+**Multi-root caveat (verified against Cursor):** in a Cursor multi-root workspace,
+only the **top root's `AGENTS.md`** reliably loads into context (nested per-repo
+`AGENTS.md` files do not auto-apply), and per-root `.cursor/rules` are not applied
+consistently across the session. This is a documented Cursor limitation, not an
+installer issue. The per-repo project rules this installs are reliable when you
+**open a single repo as the project**; for always-on behavior across the *whole
+application* in a multi-root workspace, promote those rules to **Cursor User Rules**
+(Settings → Rules, Skills, Subagents → User) instead of relying on a repo's
+`.cursor/rules`.
+
+### Private Cursor plugin (one global install)
+
+Instead of installing into each repo, you can bundle the toolbelt as a **private,
+user-scoped Cursor plugin** — its skills become available in *every* project from a
+single install, with nothing published. `build-cursor-plugin.sh` assembles the plugin:
+
+```sh
+./build-cursor-plugin.sh                       # skills + commands (recommended)
+ln -s "$(pwd)/build/cursor-plugin/agent-toolbelt" ~/.cursor/plugins/local/agent-toolbelt
+# then enable "agent-toolbelt" in Cursor → Settings → Plugins, and run Developer: Reload Window
+```
+
+Notes:
+- **Skills** are the reliable, self-contained unit here — Cursor auto-discovers them
+  globally and surfaces them on demand. This is the main reason to use the plugin.
+- **Rules are omitted by default**: most of the repo's rules are `alwaysApply: true`,
+  and a user-scoped plugin would fire them in *every* project. Pass `--with-rules` only
+  if you want that. For scoped, per-project rules, use the per-repo `install.sh` instead.
+- **Commands** are included for the `/command` UX, but some reference skill files by
+  project-relative `skills/...` paths; for the full command-driven flow with those
+  references resolving, a per-repo `install.sh --harness cursor` is still the way.
+
+The symlink picks up rebuilds live (Reload Window); `build/` is gitignored.
 
 Each pack's file list lives in `install/<pack>.sh`; the shared logic is in
 `install/lib.sh`. Use `--dry-run` to preview and `--force` only when replacing a
 previous install:
 
 ```sh
-./install.sh --dry-run ai-feature-delivery /path/to/pilot-folder
+./install.sh --dry-run --harness cursor ai-feature-delivery /path/to/pilot-folder
 ```
 
 On macOS, non-developer pilot users can double-click `install.command`, which
-asks which pack(s) to install and then for the target folder (drag it into the
-Terminal prompt and press Enter).
+asks which pack(s) to install, which harness(es), whether to sweep child repos,
+and then the target folder (drag it into the Terminal prompt and press Enter).
 
 After install, open the target folder in Cursor and run `/workflow-router` or
 `/feature-start` from chat.
@@ -110,13 +185,13 @@ Idea -> Feature Brief -> Implementation Plan -> Task -> Commit -> Phase Review -
 Install it into a project for Cursor, Claude Code, and Codex skill use:
 
 ```sh
-./install.sh dev-lite-workflow /path/to/project
+./install.sh --harness all dev-lite-workflow /path/to/project
 ```
 
 Use `--dry-run` to preview the install:
 
 ```sh
-./install.sh --dry-run dev-lite-workflow /path/to/project
+./install.sh --dry-run --harness all dev-lite-workflow /path/to/project
 ```
 
 The installer adds Cursor commands/rules, Claude commands, a repo-scoped
@@ -144,7 +219,7 @@ Plan -> Phase File -> Context Packet -> Implement -> Phase Handoff -> Clear/Comp
 Install it into a project:
 
 ```sh
-./install.sh phase-context-workflow /path/to/project
+./install.sh --harness all phase-context-workflow /path/to/project
 ```
 
 It adds `/handoff`, `/phase-create`, `/phase-start`, `/phase-close`, and
@@ -186,9 +261,11 @@ Common commands:
 - `/qa-handoff`, `/release-manifest`, and `/release-doc-check` - prepare QA and
   release documentation.
 
-The AI Feature Delivery pack installs Cursor commands/rules only (no
-`.claude/commands`); the Dev Lite pack installs both Cursor and Claude Code
-commands.
+Which harnesses receive files is controlled by `--harness` (see [Choosing
+harnesses](#choosing-harnesses)). Note that the AI Feature Delivery pack ships
+Cursor-only commands and rules, so installing it with `--harness claude` writes
+only its shared `skills/`, `templates/`, and `workflows/` (the installer prints a
+note for each pack that contributes nothing harness-specific).
 
 ## PR Review
 
@@ -203,7 +280,7 @@ The `pr-review` tool reviews a PR, branch, or local diff with escalating depth:
 Install it into a project for Cursor, Claude Code, and Codex skill use:
 
 ```sh
-./install.sh pr-review /path/to/project
+./install.sh --harness all pr-review /path/to/project
 ```
 
 Use `--dry-run` to preview and `--force` only when replacing a previous install.
@@ -235,7 +312,7 @@ The `pr-review-reply` tool is the **round-trip** half of `pr-review`: where
 reviewer's threads on a PR.
 
 ```sh
-./install.sh pr-review-reply /path/to/project
+./install.sh --harness all pr-review-reply /path/to/project
 ```
 
 It reads the reviewer's **open** threads (GitHub `gh` or Azure Repos `az`,
@@ -272,7 +349,7 @@ open get reviewed automatically — no one pressing the button. It adds no revie
 logic; every path ends in `/pr-review … --comment`.
 
 ```sh
-./install.sh review-on-open /path/to/project
+./install.sh --harness all review-on-open /path/to/project
 ```
 
 Two triggers, pick by host:
@@ -313,7 +390,7 @@ GitHub webhook, no CI, and no `ANTHROPIC_API_KEY`. Any harness (Claude Code,
 Cursor, Codex) can produce or consume against the one shared queue.
 
 ```sh
-./install.sh review-queue /path/to/project
+./install.sh --harness all review-queue /path/to/project
 ```
 
 State is a single SQLite file (`$REVIEW_QUEUE_DB`, else `~/.review-queue/queue.db`)
@@ -360,7 +437,7 @@ Bug report -> /bug-intake -> /reproduce -> /rca -> /fix-plan -> /dev-implement-t
 Install it into a project for Cursor, Claude Code, and Codex skill use:
 
 ```sh
-./install.sh bug-to-fix /path/to/project
+./install.sh --harness all bug-to-fix /path/to/project
 ```
 
 Use `--dry-run` to preview and `--force` only when replacing a previous install.
@@ -384,7 +461,7 @@ The `shape-up` tool interrogates a vague request into an agreed brief **before**
 plans or writes code — the front-door to the dev lanes.
 
 ```sh
-./install.sh shape-up /path/to/project
+./install.sh --harness all shape-up /path/to/project
 ```
 
 It grills the request one question at a time (resolving from the codebase first, each
@@ -400,7 +477,7 @@ The `simplify` tool is the active counterpart to `pr-review`: where review *find
 and applies nothing, simplify *drives the cleanup* and applies it on opt-in.
 
 ```sh
-./install.sh simplify /path/to/project
+./install.sh --harness all simplify /path/to/project
 ```
 
 - `/simplify` — diff/feature-scoped: propose high-conviction cleanups (dead code, debug
@@ -418,7 +495,7 @@ turns a bug repro into a committed regression test. It writes tests only — it 
 code.
 
 ```sh
-./install.sh cover /path/to/project
+./install.sh --harness all cover /path/to/project
 ```
 
 - `/cover` — author/strengthen tests for a diff, module, or bug reproduction, applied on opt-in.
@@ -440,7 +517,7 @@ The `ship-it` tool is the lightweight release step at the tail of the dev lanes 
 "PR merged," this takes it to "released safely."
 
 ```sh
-./install.sh ship-it /path/to/project
+./install.sh --harness all ship-it /path/to/project
 ```
 
 Run `/ship-it` after a change is merged/approved. It produces a **go/no-go readiness check**, a
@@ -461,7 +538,7 @@ swap (moment → dayjs), an API/symbol rename across N call sites, a framework u
 replacement. It is *not* a database migration and does *not* decide what the change is.
 
 ```sh
-./install.sh retrofit /path/to/project
+./install.sh --harness all retrofit /path/to/project
 ```
 
 `/retrofit` runs **discover → transform → verify**: enumerate every site (grep / AST / the rct graph
@@ -481,7 +558,7 @@ fresh agent — or a teammate — can continue work without context loss (the mo
 multi-session and multi-agent failure). Useful in any lane.
 
 ```sh
-./install.sh handoff /path/to/project
+./install.sh --harness all handoff /path/to/project
 ```
 
 It leads with the single concrete **next action**, references the lane's durable state file (the

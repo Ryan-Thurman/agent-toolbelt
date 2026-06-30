@@ -28,8 +28,16 @@ doesn't scale is a real defect here, not a nit.
 - p99 request latency target: 150ms.
 
 ## Severity overrides
-<!-- Re-rate matching findings (applied host-side, after aggregation, so it's auditable). -->
+<!--
+  Re-rate matching findings (applied host-side, after aggregation, so it's auditable). Use this to
+  PIN the bug classes this repo has actually been burned by, so a single reviewer's grading can't
+  bury them behind a louder blocker. The tool already floors runtime/security consequences at
+  should-fix; these rules make that a guarantee for your hot classes, not just a tendency.
+-->
 - performance findings on hot paths (`*/api/*`, `*/handlers/*`) → blocker
+- missing input validation on a request/handler path (`*/api/*`, `*/handlers/*`, `*/routes/*`) → blocker
+- missing input validation anywhere in production source → should-fix (minimum)
+- unguarded division / array or string index from caller-supplied values → should-fix (minimum)
 - missing test for a new public function → should-fix (minimum)
 
 ## Do not flag

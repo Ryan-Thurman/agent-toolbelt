@@ -21,3 +21,16 @@ Set `"facet": "correctness"` on every finding.
 
 Prioritize bugs that change behavior on a real input. A correctness blocker is something that
 produces a wrong result, crashes, corrupts data, or breaks a caller.
+
+## Severity calibration
+
+- Mark **blocker** when the changed line is wrong for valid input, the documented happy path, an
+  existing caller/test contract, a route/API handler, or a user/request-controlled path.
+- Mark **should-fix** when the changed production code can fail for a plausible but not fully traced
+  input and the consequence is runtime-visible: wrong output, crash, `NaN`/`Infinity`, unbounded
+  work, data loss/corruption, or broken caller behavior.
+- Use **nit** only for defensive polish with no concrete runtime consequence.
+
+Do not downshift a boundary/validation/arithmetic bug to nit just because the caller path is not
+fully proven in your facet context. State the reachability uncertainty in `evidence`; the critic or
+deep tier can escalate if caller context proves it reachable.

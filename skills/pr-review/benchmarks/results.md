@@ -85,14 +85,16 @@ Standard facets: corr 40,899 · sec 37,348 · perf 32,373 · tests 37,792 · mai
 - **\*severity calibration diverges by tier:** light and a standard agent both marked the unauthenticated
   backfill endpoint a **blocker/critical**; deep's two blind judges both rated it **should-fix/high**
   (real, but consistent with the repo's all-unauthenticated convention → an intent question, not an
-  auto-block). Without a verification pass, light/standard severities go unchecked. This is the
-  clearest evidence for deep's dual-judge on anything that gates a merge.
+  auto-block). At the time of this benchmark, light/standard severities went mostly unchecked; later
+  tuning added severity floors to light/standard and a bounded reachability sketch to standard. Deep's
+  dual-judge is still the stronger calibration path for anything that gates a merge.
 - **cross-tier agreement = highest-confidence signal:** all three tiers independently flagged the
   unauth endpoint and the CSV-escaping issue — those are the safe bets regardless of tier.
 
-**Recommendation from the data:** default to **light** for a quick gut-check, **standard** for normal
-PRs (breadth at ~5× is the sweet spot), **deep** only when a wrong/missed blocker is expensive
-(security-sensitive or pre-release), since its extra spend buys calibration rather than coverage.
+**Recommendation from the data:** use **light** for docs/tests/config or tiny mechanical gut-checks,
+**standard** for normal production PRs (breadth at ~5× is the sweet spot), and **deep** when a
+wrong/missed blocker is expensive (security-sensitive or pre-release), since its extra spend buys the
+strongest calibration rather than broad coverage.
 
 **Tool behavior validated this run:** frozen diff fix worked (no stale-version disagreement this
 time); dual-judge re-read code and corrected 3 severities + noted line-number drift (cited

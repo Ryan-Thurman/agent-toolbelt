@@ -24,6 +24,10 @@ paths=$(git diff "$base" --name-only)
 - **low-risk-only** — every changed path is docs/config/test/lockfile:
   `*.md *.mdx docs/* *.txt LICENSE* *.lock package-lock.json *.snap` and `*test* *spec* __tests__/*`
   with no production source touched.
+- **logic-bearing production** — any production source hunk that changes a branch/condition, loop,
+  arithmetic, parsing/validation, error handling, data write, public/exported function, route/API
+  handler, or call into an external system. Size does not make these safe; tiny logic diffs are where
+  light has the least context for severity calibration.
 
 ## Default tier selection (no `--tier`)
 
@@ -32,13 +36,16 @@ First matching rule wins, top to bottom:
 | # | Condition | Tier |
 |---|---|---|
 | 1 | low-risk-only (docs/test/config) **and** no hot-path hit | **light** |
-| 2 | tiny: `added ≤ 15` **and** `files ≤ 2` **and** no hot-path hit | **light** |
+| 2 | tiny mechanical/non-production: `added ≤ 15`, `files ≤ 2`, no hot-path hit, **and no logic-bearing production hunk** | **light** |
 | 3 | hot-path hit (security/auth/payment/migration/public API) | **deep** |
 | 4 | large: `added > 400` **or** `files > 20` | **deep** |
 | 5 | everything else (the common case) | **standard** |
 
 State the choice and the trigger in the report header, e.g. `tier: standard (auto — 7 files, 180
 added lines, no hot paths)` — auto-selection is never silent, so the user can correct it.
+
+**Production-logic floor.** A production logic change floors auto-tier at **standard**, even when it
+is tiny. Light remains for docs/tests/config and mechanical edits where a single pass is enough.
 
 **Minimum-tier floor.** If the repo config (`repo-config.md`) sets a **Minimum tier**, the
 auto-selected tier is **raised to the floor** (never dropped below it): e.g. a repo with floor
@@ -51,7 +58,7 @@ to repo floor)`. An explicit `--tier` below the floor is honored but warned (see
 Deep costs ~8× light. Refuse to spend that on a change that can't pay it back:
 
 - **Guardrail trip** = tier resolves to / is forced to **deep** while the diff is **trivial** (rule 1
-  or 2 above: low-risk-only, or `added ≤ 15` and no hot-path hit).
+  or 2 above: low-risk-only, or tiny mechanical/non-production with no hot-path hit).
 - On a trip:
   - **Auto-selected deep** can't happen (rules 1–2 select light first) — so a trip only comes from an
     **explicit `--tier=deep`** on a trivial diff.

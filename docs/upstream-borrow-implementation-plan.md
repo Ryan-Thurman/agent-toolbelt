@@ -60,24 +60,23 @@ Primary upstream ranges reviewed:
 
 Status: In Progress
 
-Current Phase: Phase 3A - Skill Authoring and Architecture Review Discipline
+Current Phase: Phase 4 - Final Hardening and PR Readiness
 
-Current Task: Run Phase 3A review
+Current Task: Run final checks across changed docs/skills/install scripts
 
 Current Branch: `feat/architecture-smell-guidance`
 
 Last Updated: 2026-07-01
 
-Last Completed Step: Evaluated architecture review scope and absorbed it into
-`/code-smell --architecture`.
+Last Completed Step: Ran Phase 3A review.
 
-Next Step: Run the Phase 3A review.
+Next Step: Run final hardening checks across changed docs/skills/install scripts.
 
-Resume Instructions: Start by running the Phase 3A review. The current branch is
+Resume Instructions: Start from Phase 4 Task 1. The current branch is
 `feat/architecture-smell-guidance`; do not create another branch unless the user
-asks. Review the completed skill-authoring, smell-baseline, and architecture
-mode guidance for acceptance coverage, command overlap, and taxonomy
-duplication. Preserve unrelated work.
+asks. Run final hardening checks across changed docs/skills/install scripts,
+including skill sync and whitespace checks, then update this plan with the
+results. Preserve unrelated work.
 
 ## Activity Log
 
@@ -118,6 +117,7 @@ duplication. Preserve unrelated work.
 | 2026-07-01 | Codex | Completed Phase 3A Task 3: progressive-disclosure rule of thumb | Added branch-based progressive disclosure guidance to `skills/README.md`: inline what every invocation needs; move variant-specific detail, optional paths, schemas, examples, and provider/framework mechanics behind condition-specific `references/` pointers. Audited long skill `pr-review/`: keep tier choice, reviewer-safety, inputs, and short tier algorithms inline; future cleanup candidate is duplicated reference cataloging, keeping `## References` navigation-only while detailed provider/posting/tier/schema mechanics stay in references. Validated with `rg "progressive disclosure|variant-specific|pr-review/|reference cataloging|navigation only" skills/README.md` and `git diff --check`. | Commit Task 3, then fold compact Fowler smell baseline into maintainability guidance |
 | 2026-07-01 | Codex | Completed Phase 3A Task 4: compact Fowler smell baseline | Added the compact Fowler-style baseline to `skills/simplify/references/smell-taxonomy.md` as the shared maintainability vocabulary for `/code-smell`, `/simplify`, and `pr-review`. Added safety rules that the smells are heuristics, not hard violations, and documented repo standards override the baseline. Updated `skills/simplify/SKILL.md`, `skills/pr-review/facets/maintainability.md`, and `skills/pr-review/references/review-rubric.md` to point at the shared taxonomy instead of creating a second list. Validated with `rg "Mysterious name|Feature envy|heuristics, not hard violations|documented repo standards override|shared smell vocabulary|single source of truth"` and `git diff --check`. | Commit Task 4, then evaluate architecture review command/mode scope |
 | 2026-07-01 | Codex | Completed Phase 3A Task 5: architecture review command/mode scope | Rejected a separate `improve-codebase-architecture` command for this pass and absorbed the vocabulary into `/code-smell --architecture`. Updated `commands/code-smell.md`, `skills/simplify/references/smell-taxonomy.md`, `skills/simplify/SKILL.md`, `commands/README.md`, and `commands/workflow-router.md`; added `docs/architecture-smell-mode-decision.md` with a no-code candidate report for the local `/code-smell` surface. Validated with focused `rg` checks and `git diff --check`. | Commit Task 5, then run Phase 3A review |
+| 2026-07-01 | Codex | Ran Phase 3A review | Result: Pass. Acceptance / Spec: Pass. Code Quality: Pass. Verification Reach: skill-authoring guidance, shared smell taxonomy, PR-review maintainability pointers, and `/code-smell --architecture` routing were verified from the plan, diff, and focused checks; no Failed or Not Inferable items affected the phase decision. Checks: `git diff --check origin/main..HEAD`; `scripts/check-skill-sync.sh`; `rg -n -e "single source of truth|heuristics, not hard violations|documented repo standards override|Mysterious name|Feature envy|Architecture mode|--architecture|deepening candidates|no-code candidate report" skills commands docs`; `git diff --name-only origin/main..HEAD`. | Start Phase 4 |
 
 ## Phase 1: Upstream Delta Triage
 
@@ -563,10 +563,10 @@ Manual or integration checks:
 
 ### Phase Review Checklist
 
-- [ ] Phase goal met
-- [ ] Acceptance criteria covered or still tracked
-- [ ] Tests/checks completed or gaps listed
-- [ ] No blocking performance/security/code quality issues
+- [x] Phase goal met
+- [x] Acceptance criteria covered or still tracked
+- [x] Tests/checks completed or gaps listed
+- [x] No blocking performance/security/code quality issues
 
 ## Phase 4: Final Hardening and PR Readiness
 

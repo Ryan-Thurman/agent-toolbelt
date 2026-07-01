@@ -62,20 +62,21 @@ Status: In Progress
 
 Current Phase: Phase 3 - Workflow, Install, and Packaging Hardening
 
-Current Task: Decide whether a lightweight router/front-door command belongs in this repo
+Current Task: Adapt the Superpowers file-handoff pattern into dev-lite/phase review guidance
 
 Current Branch: `feat/atb-namespace-install`
 
 Last Updated: 2026-07-01
 
-Last Completed Step: Added focused Cursor plugin build validation for manifest shape and default packaging contents.
+Last Completed Step: Evaluated router/front-door scope and kept the existing `/workflow-router` as the single front door.
 
-Next Step: Decide whether a lightweight router/front-door command belongs in this repo, or whether existing `/workflow-router` already covers the need.
+Next Step: Adapt the Superpowers file-handoff pattern into dev-lite/phase review guidance.
 
-Resume Instructions: Start from Phase 3 Task 3. The current branch is already
+Resume Instructions: Start from Phase 3 Task 4. The current branch is already
 `feat/atb-namespace-install`; do not create another branch unless the user asks.
-Decide whether a lightweight router/front-door command belongs in this repo, or
-whether existing `/workflow-router` already covers the need. Preserve unrelated
+Adapt the Superpowers file-handoff pattern into dev-lite/phase review guidance.
+Exercise a generated task brief and review package on a small local diff, or
+document why prose-only guidance is sufficient for this pass. Preserve unrelated
 work.
 
 ## Activity Log
@@ -103,6 +104,7 @@ work.
 | 2026-07-01 | Codex | Ran Phase 2 review | `git diff --check c53c1e8..HEAD`; `scripts/check-skill-sync.sh`; `rg "APPROVE ⇔ 0 blockers|APPROVE.*iff zero blockers|blockers > 0|approval-blocking|focus-note|Bucket/verdict invariants|critic decision|Optional eval ledger"` | Start Phase 3 |
 | 2026-07-01 | Codex | Completed Phase 3 Task 1: install parity fixture evaluation | Fixed dry-run planned-write counters in `install/lib.sh`; rejected broad golden fixtures because pack scripts plus dry-run/real-install smoke checks already enumerate harness destinations and a fixture would mostly duplicate declarations; validated with `./install.sh --list`, `./install.sh --dry-run --harness all pr-review /private/tmp/agent-toolbelt-install-eval-phase3-pr-review`, `./install.sh --dry-run --harness all dev-lite-workflow /private/tmp/agent-toolbelt-install-eval-phase3-dev-lite`, `./install.sh --harness all dev-lite-workflow /private/tmp/agent-toolbelt-install-eval-phase3-dev-lite-real`, `bash -n install.sh install/*.sh scripts/check-skill-sync.sh`, and `scripts/check-skill-sync.sh` | Commit Task 1, then review Codex/plugin packaging |
 | 2026-07-01 | Codex | Completed Phase 3 Task 2: plugin packaging manifest discipline | Added `scripts/check-cursor-plugin-build.sh` because this repo ships a private Cursor plugin build, not a tracked `.codex-plugin/`; the check validates generated manifest JSON, required manifest keys, command/skill payloads, and that default plugin builds omit hooks, rules, and harness-local folders; validated with `scripts/check-cursor-plugin-build.sh`, `bash -n build-cursor-plugin.sh scripts/check-cursor-plugin-build.sh`, and `scripts/check-skill-sync.sh` | Commit Task 2, then evaluate router/front-door scope |
+| 2026-07-01 | Codex | Completed Phase 3 Task 3: router/front-door scope decision | Kept the existing `/workflow-router` as the single front door. `README.md` already directs fresh installs to run it, and `commands/workflow-router.md` already routes vague requests through `/shape-up`, chooses a lane, recommends the next 1-3 commands, and avoids heavy workflows when narrower commands are enough. No separate lightweight router command was added. | Commit Task 3, then adapt file-handoff guidance |
 
 ## Phase 1: Upstream Delta Triage
 
@@ -356,11 +358,14 @@ with special attention to Superpowers v6's lower-token subagent workflow.
       plugin builder, so the smoke check builds it, validates generated manifest JSON and required
       keys, confirms commands and skills are present, and ensures the default package does not ship
       hooks, rules, `.cursor`, `.claude`, or `.agents` payloads.
-- [ ] Task: Decide whether a lightweight router/front-door command belongs in this repo, or whether
+- [x] Task: Decide whether a lightweight router/front-door command belongs in this repo, or whether
       existing `/workflow-router` already covers the need.
       Test work: Documentation-only unless a real gap is found.
-      Status: Pending.
-      Evidence: Updated command docs or explicit no-change rationale.
+      Status: Complete.
+      Evidence: No new command added. `README.md` already points fresh installs to
+      `/workflow-router`, and `commands/workflow-router.md` already provides the needed front-door
+      behavior: classify work, route vague requests to `/shape-up`, choose the lane, recommend the
+      next 1-3 commands, and avoid heavy workflows when a narrower command is enough.
 - [ ] Task: Adapt the Superpowers file-handoff pattern into dev-lite/phase review guidance.
       Test work: Exercise generated task brief and review package on a small local diff, or document why
       prose-only guidance is sufficient for this pass.

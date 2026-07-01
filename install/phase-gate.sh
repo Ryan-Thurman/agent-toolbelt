@@ -3,6 +3,7 @@ pack_phase_gate() {
   cmd phase-gate
 
   skill phase-gate SKILL.md
+  skill phase-gate references/modes.md
   skill phase-gate references/merge.md
   shared_contract references/providers.md
 

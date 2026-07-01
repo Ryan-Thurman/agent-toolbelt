@@ -37,9 +37,9 @@ The dry run shows the files that would be installed:
 - `.cursor/rules/dev-lite-*.mdc`
 - `.claude/commands/dev-*.md`
 - `.agents/skills/dev-lite-workflow/SKILL.md`
-- `skills/dev-lite-workflow/SKILL.md`
-- `templates/dev-*.md`
-- `workflows/dev-lite-feature-workflow.md`
+- `.atb/skills/dev-lite-workflow/SKILL.md`
+- `.atb/templates/dev-*.md`
+- `.atb/workflows/dev-lite-feature-workflow.md`
 
 ### 2. Install Dev Lite
 

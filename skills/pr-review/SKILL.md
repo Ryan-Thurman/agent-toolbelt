@@ -67,29 +67,13 @@ the **reviewed repo** (travels to every host/clone), is loaded **from the base b
 relax its own review), and is injected into the facet agents + applied host-side. Falls back cleanly
 to `CLAUDE.md`/`AGENTS.md` standards when absent. Copyable starter: `../../templates/pr-review.md`.
 
-## Cross-run anti-noise memory (all multi-agent tiers)
+## Tier And Memory Guidance
 
-When verification (standard critic / deep dual-judge) **refutes** a finding, it's recorded to a
-per-repo store (`.git/pr-review-rejections.jsonl`). On later runs, a finding the judge already threw
-out is **downranked and tagged** `⟲ previously rejected` — never hidden. Lowers repeat noise without
-suppressing a real regression. Full contract: `references/rejection-memory.md`.
-
-## Choosing a tier (from benchmark data)
-
-A frozen 3-tier benchmark on a real diff (`benchmarks/results.md`) measured what each step up
-actually buys:
-
-| tier | rel. token cost | what it buys | use when |
-|---|---|---|---|
-| **light** | 1× (~41k) | the headline blockers, fast, with severity floors | quick gut-check, docs/tests/config, tiny mechanical diffs |
-| **standard** | ~5.7× (~233k) | **breadth** + bounded one-hop reachability context | **normal production PRs (the sweet spot)** |
-| **deep** | ~8.2× (~335k) | **precision/calibration** via blast radius + dual judge | high-stakes / pre-merge / security-sensitive |
-
-Key result: **light → standard buys coverage; standard → deep buys correct severities, not new
-findings.** Deep's dual-judge re-reads cited code and re-rates — in the benchmark it downgraded a
-false blocker that light *and* standard had both raised, yielding the only calibrated verdict. So
-reach for deep only when a wrong or missed blocker is expensive; for routine review, standard's
-breadth at ~5× is the better trade. Findings all three tiers agree on are the highest-confidence ones.
+Use `references/auto-tier.md` for default tier selection and the deep-spend token
+guardrail. Use `references/rejection-memory.md` when verification refutes a
+finding: later runs may downrank and tag the same finding, but must never hide
+it. Benchmark cost/impact rationale lives in `references/benchmarking.md` and
+`benchmarks/results.md`.
 
 ## Light tier (active)
 

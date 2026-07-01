@@ -30,6 +30,32 @@ Primary upstream ranges reviewed:
   existing `skills/pr-review` references and benchmarks where practical.
 - Licensing risk is avoided: lift concepts and local wording, not upstream code from restrictive repos.
 
+## Global Constraints
+
+- Preserve the lightweight command/skill/template shape of `agent-toolbelt`; do
+  not add a service, dashboard, database, or new runtime for this pass.
+- Borrow concepts and local wording only. Do not copy AGPL/commercial upstream
+  code or wholesale prompt text.
+- Keep Dev Lite plan changes usable for normal single-agent work; add structure
+  that improves handoff quality without turning plans into heavyweight specs.
+- Keep PR review changes compatible with the existing light/standard/deep model.
+- Run `scripts/check-skill-sync.sh` whenever workflow skill guidance or mirrored
+  skill files are touched.
+- Preserve unrelated work and keep commits scoped to one completed task or
+  review-fix batch.
+
+## File / Responsibility Map
+
+| File / Module | Responsibility | Expected Phase / Task | Interfaces or Consumers | Notes |
+|---|---|---|---|---|
+| `docs/upstream-delta-2026-07.md` | Source-of-truth upstream delta report | Phase 1 | Implementation plan, later phase decisions | Complete |
+| `docs/upstream-borrow-implementation-plan.md` | Living workflow state and task evidence | All phases | Dev Lite resume/handoff rules | Keep current after each task |
+| `templates/dev-implementation-plan.md` | Default Dev Lite plan scaffold | Phase 1A Tasks 1-3 | `/dev-plan`, future generated plans | Updated for constraints, file map, task fields |
+| `commands/dev-plan.md` | Dev Lite planning command behavior | Phase 1A Tasks 1-7 | Plan template, plan review gate | Updated for robustness guidance |
+| `skills/pr-review/**` | PR review behavior, output, rubric, tiers, eval guidance | Phase 2 | `/pr-review`, review benchmarks | Planned |
+| `install/**`, `install.sh`, `scripts/check-skill-sync.sh` | Install/package validation surface | Phase 3 | Installer smoke checks, skill sync | Planned, coordinate around unrelated install work |
+| `skills/README.md`, `skills/simplify/**`, `skills/pr-review/facets/**` | Skill authoring and architecture smell guidance | Phase 3A | Skill authors, simplify/code-smell/pr-review flows | Planned |
+
 ## Current State
 
 Status: In Progress
@@ -66,6 +92,7 @@ start Phase 2. Preserve unrelated work.
 | 2026-07-01 | Codex | Completed Phase 1A Task 5: code-in-plan policy | Updated `commands/dev-plan.md`; reviewed with `sed`; confirmed policy terms with `rg "exact test names|check commands|full code snippets|algorithmically specific|fresh-context subagent|Code and Command Specificity"` | Commit Task 5, then add assumption-delta guidance |
 | 2026-07-01 | Codex | Completed Phase 1A Task 6: assumption-delta guidance | Updated `commands/dev-plan.md`; reviewed with `sed`; confirmed triggers with `rg "assumption-delta|Assumption Delta|platform|provider|auth method|source of truth|primary noun|accepted debt"` | Commit Task 6, then add stale-assumption pre-check |
 | 2026-07-01 | Codex | Completed Phase 1A Task 7: stale-assumption pre-check | Updated `commands/dev-plan.md`; reviewed with `sed`; confirmed guidance with `rg "Planning Pre-Check|No drift found|Planning drift|current repo state|File / Responsibility Map"` | Commit Task 7, then run Phase 1A review |
+| 2026-07-01 | Codex | Revised active plan with new robustness sections | Added `Global Constraints` and `File / Responsibility Map` to this plan; used as sample-plan validation for Phase 1A | Run Phase 1A review |
 
 ## Phase 1: Upstream Delta Triage
 

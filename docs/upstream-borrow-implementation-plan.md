@@ -62,20 +62,21 @@ Status: In Progress
 
 Current Phase: Phase 3 - Workflow, Install, and Packaging Hardening
 
-Current Task: Add durable scratch/ledger conventions for subagent-style execution
+Current Task: Add explicit subagent dispatch/model-selection guidance for Codex-capable runs
 
 Current Branch: `feat/atb-namespace-install`
 
 Last Updated: 2026-07-01
 
-Last Completed Step: Added a combined Dev Lite review contract with separate acceptance/spec and code-quality verdicts.
+Last Completed Step: Added Dev Lite `.atb-work/dev-lite/` scratch and progress ledger convention.
 
-Next Step: Add durable scratch/ledger conventions for subagent-style execution.
+Next Step: Add explicit subagent dispatch/model-selection guidance for Codex-capable runs.
 
-Resume Instructions: Start from Phase 3 Task 6. The current branch is already
+Resume Instructions: Start from Phase 3 Task 7. The current branch is already
 `feat/atb-namespace-install`; do not create another branch unless the user asks.
-Add durable scratch/ledger conventions for subagent-style execution that stay
-out of `.git/` and out of commits. Preserve unrelated work.
+Add explicit subagent dispatch/model-selection guidance for Codex-capable runs,
+while keeping the workflow usable without multi-agent support. Preserve
+unrelated work.
 
 ## Activity Log
 
@@ -105,6 +106,7 @@ out of `.git/` and out of commits. Preserve unrelated work.
 | 2026-07-01 | Codex | Completed Phase 3 Task 3: router/front-door scope decision | Kept the existing `/workflow-router` as the single front door. `README.md` already directs fresh installs to run it, and `commands/workflow-router.md` already routes vague requests through `/shape-up`, chooses a lane, recommends the next 1-3 commands, and avoids heavy workflows when narrower commands are enough. No separate lightweight router command was added. | Commit Task 3, then adapt file-handoff guidance |
 | 2026-07-01 | Codex | Completed Phase 3 Task 4: Dev Lite file-handoff guidance | Added optional task-brief/report-file guidance to `implementation-rules.md` and `/dev-implement-task`, plus review-package guidance to `review-rules.md` and `/dev-phase-review`; mirrored skill files under `.agents/`; exercised the pattern by writing `/private/tmp/agent-toolbelt-dev-lite-handoff-check/task-4-brief.md` and `/private/tmp/agent-toolbelt-dev-lite-handoff-check/task-4-review-package.diff`; validated with `scripts/check-skill-sync.sh`, `rg "File handoffs|review package|task brief|report file|outside tracked source" ...`, `wc -l` on the generated files, and `git diff --check` | Commit Task 4, then evaluate combined task review |
 | 2026-07-01 | Codex | Completed Phase 3 Task 5: combined task review contract | Updated Dev Lite review rules, `/dev-phase-review`, and `templates/dev-phase-review.md` to keep one review pass but require separate Acceptance / Spec and Code Quality verdicts; mirrored skill files under `.agents/`; exercised the output contract with `/private/tmp/agent-toolbelt-dev-lite-combined-review-check/sample-phase-review.md`; validated with `scripts/check-skill-sync.sh`, `rg "Combined Review Verdicts|Acceptance / Spec|Code Quality|one combined review pass|two verdicts" ...`, `rg "Acceptance / Spec:|Code Quality:" /private/tmp/agent-toolbelt-dev-lite-combined-review-check/sample-phase-review.md`, and `bash -n scripts/check-cursor-plugin-build.sh build-cursor-plugin.sh` | Commit Task 5, then add scratch/ledger conventions |
+| 2026-07-01 | Codex | Completed Phase 3 Task 6: scratch and ledger convention | Added `.atb-work/` to `.gitignore`; documented `.atb-work/dev-lite/` setup, self-ignore, optional `progress.md` ledger, and pre-commit `git status --short` check in Dev Lite skill guidance; mirrored skill files under `.agents/`; validated by creating `.atb-work/dev-lite/.gitignore` and `.atb-work/dev-lite/progress.md` and confirming `git status --short` stayed limited to tracked edits; also ran `scripts/check-skill-sync.sh`, `rg "Scratch and Ledger Convention|\\.atb-work/dev-lite|progress.md|git status --short|scratch workspace" ...`, and `git diff --check` | Commit Task 6, then add dispatch/model-selection guidance |
 
 ## Phase 1: Upstream Delta Triage
 
@@ -384,11 +386,14 @@ with special attention to Superpowers v6's lower-token subagent workflow.
       `templates/dev-phase-review.md` so one review pass now reports separate Acceptance / Spec and
       Code Quality verdicts. Confirmed both verdict fields with
       `/private/tmp/agent-toolbelt-dev-lite-combined-review-check/sample-phase-review.md`.
-- [ ] Task: Add durable scratch/ledger conventions for subagent-style execution that stay out of `.git/`
+- [x] Task: Add durable scratch/ledger conventions for subagent-style execution that stay out of `.git/`
       and out of commits.
       Test work: Verify `git status --short` stays clean after scratch files are created.
-      Status: Pending.
-      Evidence: Workspace convention documented or implemented.
+      Status: Complete.
+      Evidence: Added `.atb-work/` ignore coverage and documented `.atb-work/dev-lite/` as the
+      scratch workspace for task briefs, reports, review packages, and optional `progress.md`
+      ledger files. Created sample scratch files under `.atb-work/dev-lite/` and confirmed
+      `git status --short` did not show them.
 - [ ] Task: Add explicit subagent dispatch/model-selection guidance for Codex-capable runs, while keeping
       the workflow usable without multi-agent support.
       Test work: Check command/skill text still has a sequential fallback and does not require unavailable

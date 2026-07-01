@@ -59,6 +59,12 @@ return only status, commits or changed files, a one-line test summary, and
 blockers or concerns. Exact values, command output, and longer reasoning belong
 in the file, not in the chat transcript.
 
+Prefer `.atb-work/dev-lite/` for these handoff files. Ensure the directory has
+a `.gitignore` containing `*` before writing scratch artifacts there. If a
+delegated task completes cleanly, append one compact line to
+`.atb-work/dev-lite/progress.md` with the task name, commit range or changed
+files, checks run, and review result.
+
 ## After implementation
 
 Return:

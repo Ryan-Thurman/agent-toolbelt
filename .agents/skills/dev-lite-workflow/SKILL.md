@@ -151,6 +151,25 @@ Before ending a turn after implementation work, update `Current State`,
 exists yet, create one from `dev-implementation-plan.md` or clearly ask where to
 store it before continuing substantial work.
 
+## Scratch and Ledger Convention
+
+For temporary task briefs, implementer reports, review packages, and progress
+ledgers, use a repo-local scratch workspace instead of `.git/`:
+
+```sh
+mkdir -p .atb-work/dev-lite
+printf '*\n' > .atb-work/dev-lite/.gitignore
+```
+
+Use `.atb-work/dev-lite/progress.md` as an optional recovery ledger for
+subagent-style execution. Record one compact line per completed task with the
+task name, commit range or changed files, checks run, and review result. The
+Implementation Plan remains the durable tracked source of truth; the ledger is
+only a local recovery aid after context loss.
+
+Before committing, run `git status --short`. If `.atb-work/` appears, stop and
+fix the scratch location or ignore before continuing.
+
 ## Detailed rules (load when you reach that step)
 
 - `references/implementation-rules.md` — before / during / after implementing a

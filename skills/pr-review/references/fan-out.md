@@ -119,6 +119,14 @@ finding, the critic asks: *can I show this is wrong or unreachable from the diff
   `should-fix`; escalate to `blocker` when the reachability sketch, changed API/route, tests, or
   caller reads show a documented/user-controlled path.
 - Default to **keep** — bias toward not deleting real findings (fail open).
+- Emit a critic decision for every reviewed finding:
+  - `KEEP` — finding survives as-is; include the code evidence checked.
+  - `DROP` — finding is demonstrably false, outside the diff, stale, or has no real consequence;
+    include the falsifying evidence.
+  - `DOWNGRADE` — finding is real but weaker; include the new bucket/severity and reason.
+  - `QUESTION` — finding is real enough to ask about but too uncertain to assert; include the
+    missing fact that would settle it.
+  Do not silently remove or reword a finding without one of these decisions.
 - **Record adjudicated drops.** When the critic drops a finding because it is *demonstrably false* or
   has *no real consequence*, append it to the rejection memory (`rejection-memory.md`). Do **not**
   record **stale** drops — stale code may legitimately recur. This feeds the cross-run anti-noise loop.

@@ -68,9 +68,9 @@ Current Branch: `feat/atb-namespace-install`
 
 Last Updated: 2026-07-01
 
-Last Completed Step: Added lightweight repo-local PR review eval ledger guidance.
+Last Completed Step: Fixed Phase 2 review finding: contradictory approve/needs-discussion verdict invariant.
 
-Next Step: Run Phase 2 review, then address any findings before starting Phase 3.
+Next Step: Rerun Phase 2 review checks, then start Phase 3 if clean.
 
 Resume Instructions: Start from Phase 2 review. The current branch is already
 `feat/atb-namespace-install`; do not create another branch unless the user asks.
@@ -98,6 +98,7 @@ then start Phase 3. Preserve unrelated work.
 | 2026-07-01 | Codex | Completed Phase 2 Task 2: verdict/bucket invariants | Compared `output-format.md` and `review-rubric.md`; added bucket/verdict invariants to `review-rubric.md`; confirmed with `rg "Bucket/verdict invariants|Any single surviving|APPROVE|NEEDS DISCUSSION|composite verdicts|REQUEST CHANGES"` | Commit Task 2, then review critic/safeguard rules |
 | 2026-07-01 | Codex | Completed Phase 2 Task 3: critic decision contract | Compared `fan-out.md`, `deep-tier.md`, and `dual-judge.md`; added standard critic decisions `KEEP`/`DROP`/`DOWNGRADE`/`QUESTION` to `fan-out.md`; confirmed with `rg "KEEP|DROP|DOWNGRADE|QUESTION|critic decision|falsifying evidence|silently remove"` | Commit Task 3, then add eval ledger guidance |
 | 2026-07-01 | Codex | Completed Phase 2 Task 4: eval ledger guidance | Updated `skills/pr-review/references/benchmarking.md` and `skills/pr-review/benchmarks/results.md`; confirmed with `rg "eval ledger|eval-ledger|JSONL|Committed benchmark summary|Local scratch ledger|critic"` | Commit Task 4, then run Phase 2 review |
+| 2026-07-01 | Codex | Fixed Phase 2 review finding: verdict invariant contradiction | Updated `skills/pr-review/SKILL.md`, `output-format.md`, `review-rubric.md`, `fan-out.md`, and `rejection-memory.md`; confirmed no stale `APPROVE ⇔ 0 blockers` wording with `rg "APPROVE ⇔ 0 blockers|APPROVE.*iff zero blockers|blockers > 0|approval-blocking"` | Rerun Phase 2 review |
 
 ## Phase 1: Upstream Delta Triage
 

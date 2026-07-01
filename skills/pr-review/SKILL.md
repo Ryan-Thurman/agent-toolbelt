@@ -105,7 +105,8 @@ A single generalist pass with the review facets applied as internal lenses. Fast
 4. **Emit findings** in the schema from `references/finding-schema.md` (empty list if clean).
 5. **Derive the verdict and render** per `references/output-format.md` (with the `repo-config:` footer
    if the config affected anything):
-   - `APPROVE` iff zero blockers; else `REQUEST CHANGES` or `NEEDS DISCUSSION`.
+   - `REQUEST CHANGES` when blockers remain; `NEEDS DISCUSSION` when no blockers remain but an
+     approval-blocking question needs an answer; otherwise `APPROVE`.
    - Default output: a markdown report. With `--comment` on a PR target, also post inline
      (`references/posting.md`).
 

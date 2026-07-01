@@ -155,15 +155,15 @@ self-suppress):
 Before thresholding, run the surviving findings through the rejection memory (`rejection-memory.md`):
 fingerprint each, and for any that the critic has refuted on a previous run, **downrank one bucket**
 and **tag** `⟲ previously rejected`. Never hide — the tag is the signal. (Skip if not in a git repo or
-the store is empty.) Because the verdict is `APPROVE ⇔ 0 blockers`, demoting a lone known-non-issue
-blocker correctly flips the verdict to APPROVE while still showing the item.
+the store is empty.) Because the verdict is host-derived, demoting a lone known-non-issue blocker
+can flip the verdict away from `REQUEST CHANGES` while still showing the item.
 
 ## 8. Threshold, verdict, render
 
 - Apply the posting threshold: hide `nit`s unless there are no higher findings or the user asked,
   after the critic has performed the calibration pass above.
-- Derive the verdict mechanically (`output-format.md`): `APPROVE` iff zero blockers, else
-  `REQUEST CHANGES` / `NEEDS DISCUSSION`.
+- Derive the verdict mechanically (`output-format.md`): blockers request changes; no blockers plus
+  approval-blocking questions needs discussion; no blockers and no such questions approves.
 - Render the markdown report (`output-format.md`), including the Re-entry notes section, the
   `memory:` footer if anything was downranked, and the `repo-config:` footer if `.pr-review.md`
   forced facets / re-rated / suppressed anything.

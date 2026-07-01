@@ -111,8 +111,9 @@ Bucket/verdict invariants:
 
 - Any single surviving `blocker` means `REQUEST CHANGES`; do not average it away because other
   facets are clean.
-- `APPROVE` is allowed only when there are zero blockers. `should-fix` and `nit` findings may remain
-  in an approved report, but they must stay in their sections.
+- `APPROVE` is allowed only when there are zero blockers and no approval-blocking open questions.
+  `should-fix` and `nit` findings may remain in an approved report, but they must stay in their
+  sections.
 - `NEEDS DISCUSSION` is for no-blocker reviews with an unresolved low-confidence question that must
   be answered before approval. Do not use it as a softer name for `REQUEST CHANGES`.
 - Do not emit composite verdicts such as "approve with blockers" or "request changes, but optional."

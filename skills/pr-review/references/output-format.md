@@ -4,12 +4,13 @@
 
 Compute the verdict mechanically from the findings — never let the model "decide" a fuzzy verdict:
 
-- `APPROVE` — **iff zero blockers** (should-fix / nits may remain).
+- `APPROVE` — zero blockers and no approval-blocking open questions (should-fix / nits may remain).
 - `REQUEST CHANGES` — one or more blockers.
 - `NEEDS DISCUSSION` — no blockers, but an open question / low-confidence finding that needs the
   author's input before approving.
 
-Invariant: **APPROVE ⇔ 0 blockers.** No composite verdicts.
+Invariant: **blockers > 0 ⇒ REQUEST CHANGES**; **blockers = 0 + approval-blocking question ⇒ NEEDS
+DISCUSSION**; **blockers = 0 + no approval-blocking question ⇒ APPROVE**. No composite verdicts.
 
 ## Markdown report layout
 

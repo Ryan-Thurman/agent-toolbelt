@@ -89,9 +89,9 @@ After aggregation + verification, **before** thresholding/rendering:
      dominating the verdict.
 4. Findings with no fingerprint match render normally.
 
-Because the verdict is host-derived (`APPROVE ⇔ 0 blockers`), downranking a lone previously-rejected
-"blocker" to should-fix flips the verdict to APPROVE — exactly the intended "stop blocking merge over
-a known non-issue" behavior, while still showing the item.
+Because the verdict is host-derived, downranking a lone previously-rejected "blocker" to should-fix
+can move the verdict away from `REQUEST CHANGES` — exactly the intended "stop blocking merge over a
+known non-issue" behavior, while still showing the item.
 
 ## Writing the memory (write path)
 

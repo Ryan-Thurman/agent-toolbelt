@@ -17,6 +17,7 @@ FORCE=0
 DRY_RUN=0
 DO_LIST=0
 SWEEP=0
+RULE_MODE="minimal"
 HARNESS_SPEC=""      # raw accumulated --harness text
 HARNESS_GIVEN=0
 HARNESS_ENABLED=""   # normalized, space-wrapped: " cursor claude "
@@ -67,8 +68,11 @@ Usage:
 Options:
   --harness <list>  REQUIRED. Comma list of harnesses to install for:
                     cursor, claude, codex, or all (repeatable).
+  --rules <mode>    Cursor rule mode: minimal (default) or full.
+                    minimal installs one small router/guardrail rule; full
+                    installs every pack's project rules.
   --sweep           target is a parent dir: install into it AND each child git
-                    repo (Cursor rules land at the parent only).
+                    repo, with the selected Cursor rule mode at each level.
   --list            list the available packs and exit
   --force           overwrite existing installed files
   --dry-run         print what would be installed without writing files
@@ -76,6 +80,7 @@ Options:
 
 Examples:
   ./install.sh --harness cursor pr-review ~/work/my-project
+  ./install.sh --harness cursor --rules full ai-feature-delivery ~/pilot
   ./install.sh --harness cursor,claude bug-to-fix simplify ~/work/my-project
   ./install.sh --harness all all ~/work/my-project
   ./install.sh --sweep --harness cursor all ~/work/my-monorepo-parent
@@ -100,6 +105,11 @@ while [ "$#" -gt 0 ]; do
       HARNESS_SPEC="${HARNESS_SPEC:+$HARNESS_SPEC,}$2"; HARNESS_GIVEN=1; shift ;;
     --harness=*)
       HARNESS_SPEC="${HARNESS_SPEC:+$HARNESS_SPEC,}${1#--harness=}"; HARNESS_GIVEN=1 ;;
+    --rules)
+      if [ "$#" -lt 2 ]; then echo "install: --rules needs a value" >&2; exit 2; fi
+      RULE_MODE="$2"; shift ;;
+    --rules=*)
+      RULE_MODE="${1#--rules=}" ;;
     --help|-h) usage; exit 0 ;;
     -*)
       echo "install: unknown option: $1" >&2
@@ -162,6 +172,10 @@ if [ "$HARNESS_GIVEN" = "0" ]; then
   exit 2
 fi
 normalize_harness
+case "$RULE_MODE" in
+  minimal|full) ;;
+  *) echo "install: unknown --rules mode: '$RULE_MODE' (valid: minimal, full)" >&2; exit 2 ;;
+esac
 
 # shellcheck source=install/lib.sh
 . "$INSTALL_DIR/lib.sh"
@@ -202,6 +216,7 @@ install_into_target() {
       echo "  note: $p skipped $((gated - pre_g)) file(s) not owned by the selected harness/scope"
     fi
   done
+  write_cursor_router_rule
   write_agents_md "${selected[@]}"
 
   if [ "$DRY_RUN" = "1" ]; then
@@ -215,6 +230,9 @@ PARENT="$TARGET"   # install_into_target overwrites TARGET, so remember the orig
 
 echo "Packs: ${selected[*]}"
 echo "Harness:${HARNESS_ENABLED}"
+if harness_enabled cursor; then
+  echo "Cursor rules: $RULE_MODE"
+fi
 [ "$DRY_RUN" = "1" ] && echo "Mode: dry run"
 [ "$FORCE" = "1" ] && echo "Mode: overwrite existing files"
 echo

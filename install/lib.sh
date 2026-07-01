@@ -137,14 +137,24 @@ cmd_cursor() {
 }
 
 # rule_local <name.mdc> — a Cursor rule shipped from .cursor/rules/ (Dev Lite pack).
+# Installed only in --rules full mode; minimal mode relies on the generated router rule.
 rule_local() {
-  if harness_enabled cursor; then _install ".cursor/rules/$1" ".cursor/rules/$1"; else gated=$((gated + 1)); fi
+  if harness_enabled cursor && [ "${RULE_MODE:-minimal}" = "full" ]; then
+    _install ".cursor/rules/$1" ".cursor/rules/$1"
+  else
+    gated=$((gated + 1))
+  fi
   return 0
 }
 
 # rule_tmpl <src.mdc> <dest.mdc> — a Cursor rule shipped from templates/ (AI Feature Delivery).
+# Installed only in --rules full mode; minimal mode relies on the generated router rule.
 rule_tmpl() {
-  if harness_enabled cursor; then _install "templates/$1" ".cursor/rules/$2"; else gated=$((gated + 1)); fi
+  if harness_enabled cursor && [ "${RULE_MODE:-minimal}" = "full" ]; then
+    _install "templates/$1" ".cursor/rules/$2"
+  else
+    gated=$((gated + 1))
+  fi
   return 0
 }
 
@@ -191,6 +201,14 @@ hook_json() {
 hook_script() {
   if harness_enabled cursor; then _install "hooks/$1" ".cursor/hooks/$1"; else gated=$((gated + 1)); fi
   return 0
+}
+
+# write_cursor_router_rule — in minimal Cursor rule mode, install one small always-on
+# router/guardrail rule instead of every workflow's detailed project rules.
+write_cursor_router_rule() {
+  harness_enabled cursor || return 0
+  [ "${RULE_MODE:-minimal}" = "minimal" ] || return 0
+  _install "templates/cursor-rules-agent-toolbelt-router.mdc" ".cursor/rules/agent-toolbelt-router.mdc"
 }
 
 # ---- AGENTS.md pointer --------------------------------------------------------

@@ -62,21 +62,21 @@ Status: In Progress
 
 Current Phase: Phase 3 - Workflow, Install, and Packaging Hardening
 
-Current Task: Review Codex/plugin packaging against Superpowers' manifest discipline
+Current Task: Decide whether a lightweight router/front-door command belongs in this repo
 
 Current Branch: `feat/atb-namespace-install`
 
 Last Updated: 2026-07-01
 
-Last Completed Step: Evaluated install parity golden fixtures, fixed a dry-run counter bug, and rejected broad golden fixtures for now.
+Last Completed Step: Added focused Cursor plugin build validation for manifest shape and default packaging contents.
 
-Next Step: Review Codex/plugin packaging against Superpowers' manifest discipline.
+Next Step: Decide whether a lightweight router/front-door command belongs in this repo, or whether existing `/workflow-router` already covers the need.
 
-Resume Instructions: Start from Phase 3 Task 2. The current branch is already
+Resume Instructions: Start from Phase 3 Task 3. The current branch is already
 `feat/atb-namespace-install`; do not create another branch unless the user asks.
-Review Codex/plugin packaging against Superpowers' manifest discipline. Run any
-available build or manifest validation if packaging files are present; otherwise
-document the no-change rationale. Preserve unrelated work.
+Decide whether a lightweight router/front-door command belongs in this repo, or
+whether existing `/workflow-router` already covers the need. Preserve unrelated
+work.
 
 ## Activity Log
 
@@ -102,6 +102,7 @@ document the no-change rationale. Preserve unrelated work.
 | 2026-07-01 | Codex | Fixed Phase 2 review finding: verdict invariant contradiction | Updated `skills/pr-review/SKILL.md`, `output-format.md`, `review-rubric.md`, `fan-out.md`, and `rejection-memory.md`; confirmed no stale `APPROVE ⇔ 0 blockers` wording with `rg "APPROVE ⇔ 0 blockers|APPROVE.*iff zero blockers|blockers > 0|approval-blocking"` | Rerun Phase 2 review |
 | 2026-07-01 | Codex | Ran Phase 2 review | `git diff --check c53c1e8..HEAD`; `scripts/check-skill-sync.sh`; `rg "APPROVE ⇔ 0 blockers|APPROVE.*iff zero blockers|blockers > 0|approval-blocking|focus-note|Bucket/verdict invariants|critic decision|Optional eval ledger"` | Start Phase 3 |
 | 2026-07-01 | Codex | Completed Phase 3 Task 1: install parity fixture evaluation | Fixed dry-run planned-write counters in `install/lib.sh`; rejected broad golden fixtures because pack scripts plus dry-run/real-install smoke checks already enumerate harness destinations and a fixture would mostly duplicate declarations; validated with `./install.sh --list`, `./install.sh --dry-run --harness all pr-review /private/tmp/agent-toolbelt-install-eval-phase3-pr-review`, `./install.sh --dry-run --harness all dev-lite-workflow /private/tmp/agent-toolbelt-install-eval-phase3-dev-lite`, `./install.sh --harness all dev-lite-workflow /private/tmp/agent-toolbelt-install-eval-phase3-dev-lite-real`, `bash -n install.sh install/*.sh scripts/check-skill-sync.sh`, and `scripts/check-skill-sync.sh` | Commit Task 1, then review Codex/plugin packaging |
+| 2026-07-01 | Codex | Completed Phase 3 Task 2: plugin packaging manifest discipline | Added `scripts/check-cursor-plugin-build.sh` because this repo ships a private Cursor plugin build, not a tracked `.codex-plugin/`; the check validates generated manifest JSON, required manifest keys, command/skill payloads, and that default plugin builds omit hooks, rules, and harness-local folders; validated with `scripts/check-cursor-plugin-build.sh`, `bash -n build-cursor-plugin.sh scripts/check-cursor-plugin-build.sh`, and `scripts/check-skill-sync.sh` | Commit Task 2, then evaluate router/front-door scope |
 
 ## Phase 1: Upstream Delta Triage
 
@@ -347,10 +348,14 @@ with special attention to Superpowers v6's lower-token subagent workflow.
       declarations, dry-run output, real install smoke checks, shell syntax checks, and skill-sync
       validation cover the useful drift without adding a high-churn fixture that duplicates every
       declared pack file.
-- [ ] Task: Review Codex/plugin packaging against Superpowers' manifest discipline.
+- [x] Task: Review Codex/plugin packaging against Superpowers' manifest discipline.
       Test work: Run plugin build or manifest validation if present.
-      Status: Pending.
-      Evidence: Packaging files updated or rejection documented.
+      Status: Complete.
+      Evidence: Added `scripts/check-cursor-plugin-build.sh`. The repo has no tracked
+      `.codex-plugin/` package to validate; the real local package surface is the private Cursor
+      plugin builder, so the smoke check builds it, validates generated manifest JSON and required
+      keys, confirms commands and skills are present, and ensures the default package does not ship
+      hooks, rules, `.cursor`, `.claude`, or `.agents` payloads.
 - [ ] Task: Decide whether a lightweight router/front-door command belongs in this repo, or whether
       existing `/workflow-router` already covers the need.
       Test work: Documentation-only unless a real gap is found.

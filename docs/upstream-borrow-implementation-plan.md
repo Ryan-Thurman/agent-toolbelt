@@ -60,23 +60,23 @@ Primary upstream ranges reviewed:
 
 Status: In Progress
 
-Current Phase: Phase 3 - Workflow, Install, and Packaging Hardening
+Current Phase: Phase 3A - Skill Authoring and Architecture Review Discipline
 
-Current Task: Run Phase 3 review
+Current Task: Add a concise skill-authoring checklist to our skill creation/update guidance
 
 Current Branch: `feat/atb-namespace-install`
 
 Last Updated: 2026-07-01
 
-Last Completed Step: Added script portability guidance and hardened the Cursor plugin smoke check temp directory.
+Last Completed Step: Phase 3 review passed with no findings.
 
-Next Step: Run the Phase 3 review before starting Phase 3A.
+Next Step: Start Phase 3A Task 1: add a concise skill-authoring checklist and apply it to one existing skill.
 
-Resume Instructions: Start from the Phase 3 review. The current branch is already
+Resume Instructions: Start from Phase 3A Task 1. The current branch is already
 `feat/atb-namespace-install`; do not create another branch unless the user asks.
-Review Phase 3 against its goal, acceptance criteria, completed tasks, checks,
-and current diff. Do not start Phase 3A until the Phase 3 review passes or any
-required fixes are addressed.
+Add a concise skill-authoring checklist to our skill creation/update guidance.
+Apply the checklist to one existing skill and record at least one concrete
+keep/cut decision. Preserve unrelated work.
 
 ## Activity Log
 
@@ -111,6 +111,7 @@ required fixes are addressed.
 | 2026-07-01 | Codex | Completed Phase 3 Task 8: verify-reach review guidance | Added `Verification reach` rules to Dev Lite review guidance and `Verification Reach` sections to phase and PR review templates; updated `/dev-phase-review` and `/dev-pr-review` to require Verified, Failed, and Not Inferable classification, with Not Inferable not counted as a pass when it affects the decision; mirrored skill files under `.agents/`; exercised with `/private/tmp/agent-toolbelt-dev-lite-verify-reach-check/sample-phase-review.md`; validated with `scripts/check-skill-sync.sh`, `rg "Verification reach|Verification Reach|Verified|Failed|Not Inferable|Not inferable|do not count Not Inferable|do not convert" ...`, `rg "Not Inferable|Need focused command output|Verified" /private/tmp/agent-toolbelt-dev-lite-verify-reach-check/sample-phase-review.md`, and `git diff --check` | Commit Task 8, then evaluate state-rebuild/sync check |
 | 2026-07-01 | Codex | Completed Phase 3 Task 9: Dev Lite plan state reconciliation | Added a manual State Reconciliation Checklist to `templates/dev-implementation-plan.md`, `/dev-plan`, and Dev Lite skill guidance instead of a parser script because plan state is partly human-authored narrative; the checklist reconciles `Current Phase`, `Current Task`, `Last Completed Step`, `Next Step`, `Resume Instructions`, task checkboxes, task status, task evidence, and Activity Log rows while preserving notes and recording conflicts rather than guessing; mirrored skill files under `.agents/`; validated with `scripts/check-skill-sync.sh`, `rg "State Reconciliation|reconcile derived|Current Phase|Current Task|Last Completed Step|Next Step|Resume Instructions|human-authored|task list and Activity Log" ...`, and `git diff --check` | Commit Task 9, then add portability/path hardening guidance |
 | 2026-07-01 | Codex | Completed Phase 3 Task 10: script portability/path hardening | Added `docs/script-portability-checklist.md` covering confined writes, path-final `mktemp`, temp cleanup traps, quoted paths, hardcoded home/temp avoidance, CRLF/list parsing, overwrite safety, and validation commands; updated `scripts/check-cursor-plugin-build.sh` to use a path-final `mktemp -d` output directory with cleanup when no output path is provided; validated with `bash -n install.sh install/*.sh scripts/check-cursor-plugin-build.sh scripts/check-skill-sync.sh build-cursor-plugin.sh`, `scripts/check-cursor-plugin-build.sh`, `./install.sh --dry-run --harness all dev-lite-workflow /private/tmp/agent-toolbelt-install-portability-check`, `rg "path-final|mktemp|CRLF|hardcoded|confined|dry-run|bash -n|trap|temporary" docs/script-portability-checklist.md scripts/check-cursor-plugin-build.sh`, `find /private/tmp -maxdepth 1 -name 'agent-toolbelt-cursor-plugin-check.*' -print`, and `git diff --check` | Commit Task 10, then run Phase 3 review |
+| 2026-07-01 | Codex | Ran Phase 3 review | Result: Pass. Acceptance / Spec: Pass. Code Quality: Pass. Verification Reach: Phase 3 tasks, install/package checks, Dev Lite workflow guidance, and portability changes were verified; no Failed or Not Inferable items affected the phase decision. Checks: `git diff --check 8ed3674..HEAD`; `scripts/check-skill-sync.sh`; `bash -n install.sh install/*.sh scripts/check-cursor-plugin-build.sh scripts/check-skill-sync.sh build-cursor-plugin.sh`; `scripts/check-cursor-plugin-build.sh`; `./install.sh --list`; `./install.sh --dry-run --harness all dev-lite-workflow /private/tmp/agent-toolbelt-phase3-review-dev-lite`; `./install.sh --dry-run --harness all pr-review /private/tmp/agent-toolbelt-phase3-review-pr-review`; `rg "Optional Subagent Dispatch|File handoffs|Verification Reach|State Reconciliation Checklist|Script Portability Checklist|Combined Review Verdicts|Not Inferable|path-final|mktemp|installed nothing" skills commands templates docs scripts install/lib.sh .agents/skills/dev-lite-workflow` | Start Phase 3A |
 
 ## Phase 1: Upstream Delta Triage
 
@@ -463,10 +464,10 @@ Manual or integration checks:
 
 ### Phase Review Checklist
 
-- [ ] Phase goal met
-- [ ] Acceptance criteria covered or still tracked
-- [ ] Tests/checks completed or gaps listed
-- [ ] No blocking performance/security/code quality issues
+- [x] Phase goal met
+- [x] Acceptance criteria covered or still tracked
+- [x] Tests/checks completed or gaps listed
+- [x] No blocking performance/security/code quality issues
 
 ## Phase 3A: Skill Authoring and Architecture Review Discipline
 

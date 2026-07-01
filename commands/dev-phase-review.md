@@ -23,6 +23,12 @@ Compare the completed phase against:
 - Tests/checks
 - Current diff if available
 
+If the review is delegated, the diff is large, or context is near a reset,
+create a review package outside tracked source and give the reviewer the file
+path. Include the base/head identifiers, commit list, diff stat, full diff with
+context, and paths to any task brief or implementer report files. Do not paste a
+large diff into the review prompt when a file handoff will do.
+
 ## Check
 
 - Were all phase tasks completed?

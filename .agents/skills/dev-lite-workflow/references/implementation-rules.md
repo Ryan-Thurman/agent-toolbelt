@@ -38,6 +38,27 @@ feature task should leave the relevant test suite better than it started.
 - Add or update tests in the same task when behavior changes.
 - Prefer simple, maintainable solutions over clever abstractions.
 
+## File handoffs for delegated or fresh-context work
+
+Use normal prose when one agent is implementing directly in the current
+session. When a task is delegated to another agent or likely to cross a
+`/clear` or `/compact` boundary, hand off files instead of pasting the whole
+plan or long prior-task history into the prompt.
+
+Create a short task brief outside tracked source and make it the implementer's
+requirements source. The brief should include only:
+
+- The selected task text from the Implementation Plan.
+- Applicable global constraints.
+- Files and interfaces the task owns or touches.
+- Decisions from earlier tasks that the selected task cannot infer.
+- Exact checks/tests expected for this task.
+
+Ask the implementer to write its detailed report to a sibling report file and
+return only status, commits or changed files, a one-line test summary, and
+blockers or concerns. Exact values, command output, and longer reasoning belong
+in the file, not in the chat transcript.
+
 ## After implementation
 
 Return:

@@ -62,22 +62,21 @@ Status: In Progress
 
 Current Phase: Phase 3 - Workflow, Install, and Packaging Hardening
 
-Current Task: Adapt the Superpowers file-handoff pattern into dev-lite/phase review guidance
+Current Task: Evaluate replacing two-step per-task reviews with one combined task review contract
 
 Current Branch: `feat/atb-namespace-install`
 
 Last Updated: 2026-07-01
 
-Last Completed Step: Evaluated router/front-door scope and kept the existing `/workflow-router` as the single front door.
+Last Completed Step: Added optional Dev Lite file-handoff guidance for delegated implementation and review packages.
 
-Next Step: Adapt the Superpowers file-handoff pattern into dev-lite/phase review guidance.
+Next Step: Evaluate replacing two-step per-task reviews with one combined task review contract.
 
-Resume Instructions: Start from Phase 3 Task 4. The current branch is already
+Resume Instructions: Start from Phase 3 Task 5. The current branch is already
 `feat/atb-namespace-install`; do not create another branch unless the user asks.
-Adapt the Superpowers file-handoff pattern into dev-lite/phase review guidance.
-Exercise a generated task brief and review package on a small local diff, or
-document why prose-only guidance is sufficient for this pass. Preserve unrelated
-work.
+Evaluate replacing two-step per-task reviews with one combined task review
+contract where applicable: spec/acceptance compliance plus code quality in a
+single reviewer pass. Preserve unrelated work.
 
 ## Activity Log
 
@@ -105,6 +104,7 @@ work.
 | 2026-07-01 | Codex | Completed Phase 3 Task 1: install parity fixture evaluation | Fixed dry-run planned-write counters in `install/lib.sh`; rejected broad golden fixtures because pack scripts plus dry-run/real-install smoke checks already enumerate harness destinations and a fixture would mostly duplicate declarations; validated with `./install.sh --list`, `./install.sh --dry-run --harness all pr-review /private/tmp/agent-toolbelt-install-eval-phase3-pr-review`, `./install.sh --dry-run --harness all dev-lite-workflow /private/tmp/agent-toolbelt-install-eval-phase3-dev-lite`, `./install.sh --harness all dev-lite-workflow /private/tmp/agent-toolbelt-install-eval-phase3-dev-lite-real`, `bash -n install.sh install/*.sh scripts/check-skill-sync.sh`, and `scripts/check-skill-sync.sh` | Commit Task 1, then review Codex/plugin packaging |
 | 2026-07-01 | Codex | Completed Phase 3 Task 2: plugin packaging manifest discipline | Added `scripts/check-cursor-plugin-build.sh` because this repo ships a private Cursor plugin build, not a tracked `.codex-plugin/`; the check validates generated manifest JSON, required manifest keys, command/skill payloads, and that default plugin builds omit hooks, rules, and harness-local folders; validated with `scripts/check-cursor-plugin-build.sh`, `bash -n build-cursor-plugin.sh scripts/check-cursor-plugin-build.sh`, and `scripts/check-skill-sync.sh` | Commit Task 2, then evaluate router/front-door scope |
 | 2026-07-01 | Codex | Completed Phase 3 Task 3: router/front-door scope decision | Kept the existing `/workflow-router` as the single front door. `README.md` already directs fresh installs to run it, and `commands/workflow-router.md` already routes vague requests through `/shape-up`, chooses a lane, recommends the next 1-3 commands, and avoids heavy workflows when narrower commands are enough. No separate lightweight router command was added. | Commit Task 3, then adapt file-handoff guidance |
+| 2026-07-01 | Codex | Completed Phase 3 Task 4: Dev Lite file-handoff guidance | Added optional task-brief/report-file guidance to `implementation-rules.md` and `/dev-implement-task`, plus review-package guidance to `review-rules.md` and `/dev-phase-review`; mirrored skill files under `.agents/`; exercised the pattern by writing `/private/tmp/agent-toolbelt-dev-lite-handoff-check/task-4-brief.md` and `/private/tmp/agent-toolbelt-dev-lite-handoff-check/task-4-review-package.diff`; validated with `scripts/check-skill-sync.sh`, `rg "File handoffs|review package|task brief|report file|outside tracked source" ...`, `wc -l` on the generated files, and `git diff --check` | Commit Task 4, then evaluate combined task review |
 
 ## Phase 1: Upstream Delta Triage
 
@@ -366,11 +366,15 @@ with special attention to Superpowers v6's lower-token subagent workflow.
       `/workflow-router`, and `commands/workflow-router.md` already provides the needed front-door
       behavior: classify work, route vague requests to `/shape-up`, choose the lane, recommend the
       next 1-3 commands, and avoid heavy workflows when a narrower command is enough.
-- [ ] Task: Adapt the Superpowers file-handoff pattern into dev-lite/phase review guidance.
+- [x] Task: Adapt the Superpowers file-handoff pattern into dev-lite/phase review guidance.
       Test work: Exercise generated task brief and review package on a small local diff, or document why
       prose-only guidance is sufficient for this pass.
-      Status: Pending.
-      Evidence: Updated dev-lite references, new helper scripts, or explicit rejection.
+      Status: Complete.
+      Evidence: Updated Dev Lite implementation/review guidance and commands to use task briefs,
+      implementer report files, and review packages for delegated or fresh-context work while
+      keeping direct prose review acceptable for small in-session phases. Exercised the pattern with
+      `/private/tmp/agent-toolbelt-dev-lite-handoff-check/task-4-brief.md` and
+      `/private/tmp/agent-toolbelt-dev-lite-handoff-check/task-4-review-package.diff`.
 - [ ] Task: Evaluate replacing two-step per-task reviews with one combined task review contract where
       applicable: spec/acceptance compliance plus code quality in a single reviewer pass.
       Test work: Run the new review prompt against a completed task or fixture diff and confirm both

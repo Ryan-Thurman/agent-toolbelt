@@ -7,6 +7,21 @@ At the end of each phase, review against the Feature Brief, app/feature flows,
 acceptance criteria, Implementation Plan, completed tasks, tests/checks, and
 current diff if available.
 
+For a small in-session phase, direct review from the plan and diff is enough.
+When the review is delegated, the diff is large, or context is near a
+compaction boundary, create a review package outside tracked source and hand the
+reviewer the path instead of pasting the diff. The package should include:
+
+- Base and head identifiers.
+- Commit list for the range.
+- Diff stat.
+- Full diff with enough context to judge changed code.
+- Paths to any task brief and implementer report files, if used.
+
+The reviewer should treat reports as claims and verify them against the diff.
+They should inspect outside the package only for a concrete named risk, not to
+reconstruct the whole codebase from scratch.
+
 Evaluate:
 
 - Correctness

@@ -24,6 +24,10 @@ Use this command for the core implementation loop.
 - Update the Implementation Plan document before and after the task so the
   current task, status, evidence, checks, next step, and resume instructions are
   durable.
+- When another agent will implement the task, or when context may be cleared,
+  create a short task brief and report file outside tracked source. Put exact
+  requirements and checks in the brief; ask the implementer to write the full
+  report to the report file and return only a short status summary.
 - After implementation, summarize changes and recommend a commit message.
 
 ## Required Steps
@@ -32,14 +36,16 @@ Use this command for the core implementation loop.
 2. Restate the intended behavior.
 3. Identify files likely to change.
 4. Identify tests to add or update.
-5. Update the plan document to mark the task `In Progress`.
-6. Implement the task.
-7. Add/update tests for behavior changes.
-8. Run or list the relevant checks/tests.
-9. Update the plan document with task status, evidence, checks, next step, and
+5. If delegating or preserving context across a reset, create the task brief and
+   report file outside tracked source.
+6. Update the plan document to mark the task `In Progress`.
+7. Implement the task.
+8. Add/update tests for behavior changes.
+9. Run or list the relevant checks/tests.
+10. Update the plan document with task status, evidence, checks, next step, and
    resume instructions.
-10. Summarize what changed.
-11. Recommend a commit message.
+11. Summarize what changed.
+12. Recommend a commit message.
 
 ## Output
 

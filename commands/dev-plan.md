@@ -22,9 +22,41 @@ Use this after `/dev-intake`.
 - Each task should be small enough for one focused commit.
 - Include test work inside each behavior-changing task, not only in a final
   hardening phase.
+- Add a `Global Constraints` section for rules that apply across tasks, such as
+  compatibility, security boundaries, migration limits, design-system
+  constraints, performance budgets, dependency restrictions, or licensing
+  rules.
+- Put cross-task rules in `Global Constraints` once, then reference them from
+  tasks only when a task needs a narrower or exceptional constraint.
+- Add a `File / Responsibility Map` before phase tasks. Name the files/modules
+  expected to be created, modified, or tested, and state each one's
+  responsibility.
+- Make task file choices trace back to the map. If a task needs a file not in
+  the map, update the map or explain the deviation in the task.
+- For each behavior-changing task, include `Files` and `Interfaces` fields.
+  `Files` names created/modified/test files from the map. `Interfaces` names
+  what the task consumes, produces, exports, calls, or changes for neighboring
+  tasks.
 - Identify dependencies and risks.
 - Avoid over-engineering.
 - Prefer the smallest useful implementation that satisfies the acceptance criteria.
+- Replace template placeholders before presenting the plan. A generated plan
+  should not contain `TBD`, vague "add tests", "handle edge cases", or undefined
+  file/interface references.
+- Require exact test names, check commands, or manual verification steps for
+  each task. Do not use generic test instructions when the repo has a known
+  command or file-level check.
+- Include full code snippets only when they materially reduce ambiguity: an
+  algorithmically specific task, a tricky data shape, or work that will be
+  dispatched to a fresh-context subagent. Otherwise, name files, interfaces,
+  commands, and acceptance criteria instead of embedding code.
+- Run the assumption-delta check when the plan introduces another
+  platform/provider/auth method/source of truth, makes a required field
+  optional, or turns a derived constant into user choice. Record the accepted
+  assumption change, promoted primary noun, or explicit debt in the plan.
+- Before finalizing the `File / Responsibility Map`, compare the brief's
+  assumptions with current repo state. Record `No drift found` or list concrete
+  files/commands that changed the plan.
 - Stop after producing the plan. Do not start implementation, file edits, or
   `/dev-start-phase` until the user approves the plan or explicitly asks to
   continue.
@@ -50,6 +82,18 @@ For larger app ideas, use:
 
 Choose the model that fits the scope.
 
+## Planning Pre-Check
+
+Before finalizing files, interfaces, or phases:
+
+1. Inspect the current repo state for the areas named by the brief.
+2. Compare the brief's assumptions against the actual files, commands,
+   templates, public interfaces, and installed workflow structure.
+3. Record either `No drift found` or a short `Planning drift` note naming the
+   files or commands that changed the plan.
+4. Update the `File / Responsibility Map`, task files, interfaces, tests, and
+   risks to reflect any drift before asking for approval.
+
 ## Output
 
 Create or update an Implementation Plan following the structure in
@@ -57,11 +101,80 @@ Create or update an Implementation Plan following the structure in
 blocks with the phases from the model you chose above (duplicate the phase block
 per phase). For a freshly created plan, set Current State to `Status: Planning`,
 `Current Phase: Not Started`, `Next Step: Await user plan review`, and seed the
-Activity Log with a "Plan created" row. Each behavior-changing task must name its
-matching test work. Keep `Current State`, `Activity Log`, and `Resume
-Instructions` updated throughout the workflow.
+Activity Log with a "Plan created" row. Fill `Global Constraints` with any
+cross-task rules from the brief or write `None beyond existing repo standards`
+when no special constraints apply. Fill `File / Responsibility Map` before
+writing phase tasks; include implementation, test, template, command, and
+documentation files when they are relevant. Each behavior-changing task must
+include `Files`, `Interfaces`, and matching test work, and either use files from
+the map or explain why the map changed. Keep `Current State`, `Activity Log`,
+`Resume Instructions`, and the State Reconciliation Checklist updated
+throughout the workflow.
+
+## State Reconciliation
+
+Dev Lite plans contain derived fields (`Current Phase`, `Current Task`, `Last
+Completed Step`, `Next Step`, and `Resume Instructions`) plus human-authored
+notes. Do not rebuild the whole plan mechanically. Before handoff, after context
+reset, and before phase/PR review:
+
+- Compare completed task checkboxes, task `Status`, task `Evidence`, and the
+  latest Activity Log rows.
+- Update derived fields only when the next state is clear.
+- Preserve narrative notes, risks, rationale, and accepted debt.
+- If the task list and Activity Log disagree, record the mismatch instead of
+  guessing.
+
+## Code and Command Specificity
+
+Plans are execution prompts, but they should stay lightweight:
+
+- Required: exact files, interfaces, test names, commands, expected check
+  results, and manual verification steps where automation is not practical.
+- Required: full code snippets only for algorithmically specific changes,
+  fragile data transformations, complex schemas/contracts, or tasks intended
+  for fresh-context subagent dispatch.
+- Avoid: broad implementation prose that restates the goal without naming
+  files, commands, interfaces, or acceptance criteria.
+- Avoid: embedding routine code when the file/interface/test contract is enough
+  for a local implementer to proceed.
+
+## Assumption Delta Check
+
+Most plans should not need extra ceremony. Use this checkpoint only when the
+feature changes a core planning assumption:
+
+- Adds a second platform, provider, auth method, storage layer, runtime, or
+  source of truth.
+- Makes a required field optional, or makes an optional field required.
+- Turns a derived constant, convention, or environment assumption into user
+  choice.
+- Changes which noun is primary in the domain model, such as repository vs
+  workspace, user vs organization, or local vs remote config.
+
+When triggered, add a short note in the plan that states:
+
+- Previous assumption.
+- New assumption.
+- Primary noun or source of truth after the change.
+- Accepted debt, compatibility cost, or migration risk.
 
 ## Plan Review Gate
+
+Before presenting the plan, perform this self-review and fix any failures:
+
+- Search the generated plan for `TBD`, placeholder text, or empty task fields.
+- Confirm each task is concrete enough for one focused commit.
+- Confirm each behavior-changing task names specific test work, not vague
+  "add tests" language.
+- Confirm file references in tasks exist in the `File / Responsibility Map` or
+  the task explains why the map changed.
+- Confirm `Interfaces` entries name concrete inputs, outputs, exports,
+  consumers, commands, templates, or contracts.
+- Confirm risks and acceptance criteria are represented in phases or explicitly
+  deferred.
+- If the assumption-delta triggers appear, confirm the plan records the previous
+  assumption, new assumption, primary noun/source of truth, and accepted debt.
 
 End the response by asking the user to review the plan and confirm whether to
 proceed, revise it, or choose the first task. Do not begin implementation in the
@@ -69,4 +182,5 @@ same turn unless the user already explicitly asked for implementation after the
 plan.
 
 When creating a persistent plan file, include `Current State`, `Activity Log`,
-and `Resume Instructions`. These fields must be updated throughout the workflow.
+`Resume Instructions`, and the State Reconciliation Checklist. These fields must
+be updated throughout the workflow.

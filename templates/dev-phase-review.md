@@ -11,9 +11,25 @@ Use one:
 - Needs Fixes
 - Blocked
 
+## Combined Review Verdicts
+
+Use one for each verdict: Pass, Pass with Notes, Needs Fixes, or Blocked.
+
+- Acceptance / Spec:
+- Code Quality:
+
 ## Completed Tasks
 
 ## Acceptance Criteria Covered
+
+## Verification Reach
+
+List important requirements or risks as Verified, Failed, or Not Inferable. For
+Not Inferable items, state the exact evidence needed next.
+
+| Item | Reach | Evidence / Needed Evidence |
+|---|---|---|
+| ... | Verified / Failed / Not Inferable | ... |
 
 ## Findings
 

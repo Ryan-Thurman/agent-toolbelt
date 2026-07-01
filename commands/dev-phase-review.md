@@ -23,6 +23,12 @@ Compare the completed phase against:
 - Tests/checks
 - Current diff if available
 
+If the review is delegated, the diff is large, or context is near a reset,
+create a review package outside tracked source and give the reviewer the file
+path. Include the base/head identifiers, commit list, diff stat, full diff with
+context, and paths to any task brief or implementer report files. Do not paste a
+large diff into the review prompt when a file handoff will do.
+
 ## Check
 
 - Were all phase tasks completed?
@@ -43,7 +49,10 @@ Compare the completed phase against:
 
 Produce a Phase Review following the structure in
 `templates/dev-phase-review.md`. Classify findings as Blocking, Should Fix, or
-Nice to Have, and list missing feasible tests under Test Gaps with the same
+Nice to Have, and include both required verdicts: Acceptance / Spec and Code
+Quality. Include Verification Reach entries that distinguish Verified, Failed,
+and Not Inferable items; do not count Not Inferable as a pass when it affects a
+phase decision. List missing feasible tests under Test Gaps with the same
 classification. In Plan Document Updates, summarize the phase status, result,
 required fixes, next step, and resume instructions you recorded in the
 Implementation Plan. When fixes are needed, suggest a commit message like

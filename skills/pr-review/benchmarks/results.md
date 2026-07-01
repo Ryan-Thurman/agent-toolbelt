@@ -2,6 +2,8 @@
 
 Append one row per tier run. Method + metrics: `../references/benchmarking.md`.
 Token figures are Task-tool sub-agent sums (review work only; orchestrator overhead not included).
+For machine-readable history, optionally append JSONL events using the eval ledger schema in
+`../references/benchmarking.md`; keep this file as the human-readable conclusion log.
 
 ## Runs
 

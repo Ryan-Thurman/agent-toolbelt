@@ -25,12 +25,41 @@ setup/aggregation/critic tokens — for a true total, add the harness figure.
 - **derived**: `tokens / finding` and, across tiers on the same target, the **marginal yield** of
   going up a tier (what extra real findings did the extra tokens buy?).
 
+## Optional eval ledger
+
+For repeatable review-quality evaluation, keep the ledger repo-local and append-only. Do not add a
+service, dashboard, database, or hosted eval runner.
+
+Use one of these storage modes:
+
+- **Committed benchmark summary:** append human-readable results to `benchmarks/results.md` when the
+  run informs tier guidance or prompt/rubric changes.
+- **Tracked JSONL ledger:** append one JSON object per run to
+  `skills/pr-review/benchmarks/eval-ledger.jsonl` only when the team wants machine-readable history in
+  the repo.
+- **Local scratch ledger:** append to `.git/pr-review-eval-ledger.jsonl` for private experiments that
+  should not be committed.
+
+Recommended JSONL fields:
+
+```json
+{"date":"YYYY-MM-DD","target":"<repo/ref or fixture>","frozenDiff":"<path or sha>","tier":"standard","focus":"<none|facets/note>","reviewTokens":0,"findings":{"blocker":0,"shouldFix":0,"nit":0,"questions":0},"verdict":"APPROVE|REQUEST CHANGES|NEEDS DISCUSSION","critic":{"kept":0,"dropped":0,"downgraded":0,"questions":0},"notes":"<short outcome or calibration lesson>"}
+```
+
+Rules:
+
+- Freeze the diff or record why the run is exploratory.
+- Record critic/dual-judge effects separately from raw findings.
+- Never include secrets, private code snippets, or full proprietary diffs in the ledger.
+- Keep `benchmarks/results.md` as the readable source of conclusions; JSONL is supporting evidence.
+
 ## Apples-to-apples protocol
 
 1. Pick one target (a real diff). Freeze it.
 2. Run each tier on it (light → standard → deep), each ideally in a fresh session.
 3. Run the review work in sub-agents so the Task tool meters it uniformly.
-4. Append one row per tier to `benchmarks/results.md`.
+4. Append one row per tier to `benchmarks/results.md`, and optionally one JSONL event per run to the
+   eval ledger.
 5. Compare: does standard find *materially more high-severity* issues than light for ~Nx the
    tokens? Does deep find anything standard missed, or just re-confirm? That ratio is the decision.
 

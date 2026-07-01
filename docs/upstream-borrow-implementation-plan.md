@@ -62,21 +62,21 @@ Status: In Progress
 
 Current Phase: Phase 4 - Final Hardening and PR Readiness
 
-Current Task: Run final checks across changed docs/skills/install scripts
+Current Task: Update README/docs only where user-facing behavior changed
 
 Current Branch: `feat/architecture-smell-guidance`
 
 Last Updated: 2026-07-01
 
-Last Completed Step: Ran Phase 3A review.
+Last Completed Step: Ran final hardening checks across changed docs/skills/install surfaces.
 
-Next Step: Run final hardening checks across changed docs/skills/install scripts.
+Next Step: Review README/docs for user-facing behavior changes.
 
-Resume Instructions: Start from Phase 4 Task 1. The current branch is
+Resume Instructions: Start from Phase 4 Task 2. The current branch is
 `feat/architecture-smell-guidance`; do not create another branch unless the user
-asks. Run final hardening checks across changed docs/skills/install scripts,
-including skill sync and whitespace checks, then update this plan with the
-results. Preserve unrelated work.
+asks. Review README/docs for user-facing behavior changes, especially
+`/code-smell --architecture`, and update only where the behavior is user-facing
+and not already documented. Preserve unrelated work.
 
 ## Activity Log
 
@@ -118,6 +118,7 @@ results. Preserve unrelated work.
 | 2026-07-01 | Codex | Completed Phase 3A Task 4: compact Fowler smell baseline | Added the compact Fowler-style baseline to `skills/simplify/references/smell-taxonomy.md` as the shared maintainability vocabulary for `/code-smell`, `/simplify`, and `pr-review`. Added safety rules that the smells are heuristics, not hard violations, and documented repo standards override the baseline. Updated `skills/simplify/SKILL.md`, `skills/pr-review/facets/maintainability.md`, and `skills/pr-review/references/review-rubric.md` to point at the shared taxonomy instead of creating a second list. Validated with `rg "Mysterious name|Feature envy|heuristics, not hard violations|documented repo standards override|shared smell vocabulary|single source of truth"` and `git diff --check`. | Commit Task 4, then evaluate architecture review command/mode scope |
 | 2026-07-01 | Codex | Completed Phase 3A Task 5: architecture review command/mode scope | Rejected a separate `improve-codebase-architecture` command for this pass and absorbed the vocabulary into `/code-smell --architecture`. Updated `commands/code-smell.md`, `skills/simplify/references/smell-taxonomy.md`, `skills/simplify/SKILL.md`, `commands/README.md`, and `commands/workflow-router.md`; added `docs/architecture-smell-mode-decision.md` with a no-code candidate report for the local `/code-smell` surface. Validated with focused `rg` checks and `git diff --check`. | Commit Task 5, then run Phase 3A review |
 | 2026-07-01 | Codex | Ran Phase 3A review | Result: Pass. Acceptance / Spec: Pass. Code Quality: Pass. Verification Reach: skill-authoring guidance, shared smell taxonomy, PR-review maintainability pointers, and `/code-smell --architecture` routing were verified from the plan, diff, and focused checks; no Failed or Not Inferable items affected the phase decision. Checks: `git diff --check origin/main..HEAD`; `scripts/check-skill-sync.sh`; `rg -n -e "single source of truth|heuristics, not hard violations|documented repo standards override|Mysterious name|Feature envy|Architecture mode|--architecture|deepening candidates|no-code candidate report" skills commands docs`; `git diff --name-only origin/main..HEAD`. | Start Phase 4 |
+| 2026-07-01 | Codex | Completed Phase 4 Task 1: final hardening checks | Final checks passed for the branch diff. Checks: `git diff --check origin/main..HEAD`; `scripts/check-skill-sync.sh`; `scripts/check-cursor-plugin-build.sh`; `./install.sh --list`; `./install.sh --dry-run --harness all simplify /private/tmp/agent-toolbelt-phase4-simplify`; `./install.sh --dry-run --harness all pr-review /private/tmp/agent-toolbelt-phase4-pr-review`; `rg -n -e "--architecture|Architecture mode|single source of truth|heuristics, not hard violations|documented repo standards override|no-code deepening|deepening candidates|HTML/CDN|grilling" commands skills docs`. | Commit Task 1, then review README/docs for user-facing behavior changes |
 
 ## Phase 1: Upstream Delta Triage
 
@@ -576,11 +577,13 @@ Ensure the borrowed updates are coherent, documented, and ready for review.
 
 ### Tasks
 
-- [ ] Task: Run final checks across changed docs/skills/install scripts.
+- [x] Task: Run final checks across changed docs/skills/install scripts.
       Test work: `scripts/check-skill-sync.sh`, relevant shell syntax checks, installer dry-runs, and any
       added tests.
-      Status: Pending.
-      Evidence: Command output summarized in Activity Log.
+      Status: Complete.
+      Evidence: `git diff --check origin/main..HEAD`, `scripts/check-skill-sync.sh`,
+      `scripts/check-cursor-plugin-build.sh`, `./install.sh --list`, dry-run installs for
+      `simplify` and `pr-review`, and focused `rg` checks all passed.
 - [ ] Task: Update README/docs only where user-facing behavior changed.
       Test work: Documentation review.
       Status: Pending.

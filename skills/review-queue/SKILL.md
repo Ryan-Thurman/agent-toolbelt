@@ -31,22 +31,12 @@ work *originates from another local agent*:
 `/loop` session or a `/schedule` routine). What the queue removes is *remote polling*; it does not
 remove the need for a live consumer. If no agent is producing locally, prefer the CI event or poller.
 
-## The store & the CLI
+## Store And CLI
 
-State is one SQLite file — `$REVIEW_QUEUE_DB`, else `~/.review-queue/queue.db` (user-global, so a
-producer in repo X and a worker session elsewhere share it). All access goes through the shipped
-**`review-queue` CLI** (`bin/review-queue.sh`, pure bash + `sqlite3` — no runtime to install). Full
-contract, schema, and flags: `references/cli.md`. The operations:
-
-| op | who | what |
-|---|---|---|
-| `enqueue --repo --target --sha [--tier] [--reason] [--by]` | producer | push a job; **idempotent on (repo, target, head_sha)** — same commit is a no-op (`duplicate`) |
-| `claim [--worker] [--lease]` | consumer | **atomic** dequeue of the oldest pending job → JSON (`[]` if none) |
-| `complete <id> --verdict [--findings]` | consumer | mark reviewed |
-| `requeue <id>` | consumer | return to pending on error (or dead-letter if attempts exhausted) |
-| `list [--status]` / `stats` | either | inspect |
-
-Invoke it at its installed path: `bash skills/review-queue/bin/review-queue.sh <op> …`.
+State is one SQLite file: `$REVIEW_QUEUE_DB`, else `~/.review-queue/queue.db`.
+All access goes through the shipped `review-queue` CLI
+(`bin/review-queue.sh`, pure bash + `sqlite3`). Load `references/cli.md` for
+the schema, subcommands, flags, output formats, and env overrides.
 
 ## Principles (always)
 
@@ -69,14 +59,9 @@ Invoke it at its installed path: `bash skills/review-queue/bin/review-queue.sh <
 
 ## The two lanes
 
-**Producer** — wherever an agent finishes opening/updating a PR (e.g. end of `ship-it`, a dev PR step,
-or a manual `/enqueue-review`), it enqueues:
-
-```bash
-bash skills/review-queue/bin/review-queue.sh enqueue \
-  --repo "$(basename "$(git rev-parse --show-toplevel)")" \
-  --target 142 --sha "$(git rev-parse HEAD)" --tier standard --by ship-it
-```
+**Producer** — wherever an agent finishes opening/updating a PR (e.g. end of
+`ship-it`, a dev PR step, or a manual `/enqueue-review`), it enqueues through
+`references/cli.md`.
 
 **Consumer** — the worker drains the queue (`/review-queue-worker`, full loop in
 `references/worker.md`): `claim` → if a job, run `/pr-review <target> --comment` in a fresh sub-agent →

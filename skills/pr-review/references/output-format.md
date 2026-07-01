@@ -39,6 +39,8 @@ Invariant: **APPROVE ⇔ 0 blockers.** No composite verdicts.
 
 ### ✅ What's working well
 - <brief, genuine positives — keep short>
+
+_review-focus: <none | facet list and/or focus-note summary; focus is priority context only, not a filter>_
 ```
 
 Rules:

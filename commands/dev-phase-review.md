@@ -50,7 +50,9 @@ large diff into the review prompt when a file handoff will do.
 Produce a Phase Review following the structure in
 `templates/dev-phase-review.md`. Classify findings as Blocking, Should Fix, or
 Nice to Have, and include both required verdicts: Acceptance / Spec and Code
-Quality. List missing feasible tests under Test Gaps with the same
+Quality. Include Verification Reach entries that distinguish Verified, Failed,
+and Not Inferable items; do not count Not Inferable as a pass when it affects a
+phase decision. List missing feasible tests under Test Gaps with the same
 classification. In Plan Document Updates, summarize the phase status, result,
 required fixes, next step, and resume instructions you recorded in the
 Implementation Plan. When fixes are needed, suggest a commit message like

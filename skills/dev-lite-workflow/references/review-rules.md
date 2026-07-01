@@ -22,6 +22,20 @@ The reviewer should treat reports as claims and verify them against the diff.
 They should inspect outside the package only for a concrete named risk, not to
 reconstruct the whole codebase from scratch.
 
+## Verification reach
+
+For each important requirement or risk, label what the available inputs prove:
+
+- Verified: confirmed from the spec/plan, diff, tests/checks, or focused
+  inspection.
+- Failed: evidence shows the requirement is missing, broken, or unsafe.
+- Not inferable: the available spec/diff/checks do not prove it either way.
+
+Do not convert "not inferable" into a pass. If the item is important for the
+phase or PR decision, list the exact evidence needed next, such as a focused
+test, manual check, runtime screenshot, command output, or source file to
+inspect.
+
 Evaluate:
 
 - Correctness

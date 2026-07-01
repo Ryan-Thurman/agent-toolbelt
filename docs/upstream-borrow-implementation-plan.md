@@ -62,21 +62,21 @@ Status: In Progress
 
 Current Phase: Phase 3 - Workflow, Install, and Packaging Hardening
 
-Current Task: Add a "verify reach" rule to phase and PR review guidance
+Current Task: Evaluate a lightweight state-rebuild/sync check for Dev Lite plan files
 
 Current Branch: `feat/atb-namespace-install`
 
 Last Updated: 2026-07-01
 
-Last Completed Step: Added optional Dev Lite subagent dispatch and model-selection guidance with sequential fallback.
+Last Completed Step: Added verify-reach guidance to Dev Lite phase and PR reviews.
 
-Next Step: Add a "verify reach" rule to phase and PR review guidance.
+Next Step: Evaluate a lightweight state-rebuild/sync check for Dev Lite plan files.
 
-Resume Instructions: Start from Phase 3 Task 8. The current branch is already
+Resume Instructions: Start from Phase 3 Task 9. The current branch is already
 `feat/atb-namespace-install`; do not create another branch unless the user asks.
-Add a "verify reach" rule to phase and PR review guidance: reviewers must
-distinguish verified, failed, and not inferable from the available spec/diff.
-Preserve unrelated work.
+Evaluate a lightweight state-rebuild/sync check for Dev Lite plan files: derived
+fields such as current phase/task should be reconcilable from task checkboxes
+and activity log, while human notes remain preserved. Preserve unrelated work.
 
 ## Activity Log
 
@@ -108,6 +108,7 @@ Preserve unrelated work.
 | 2026-07-01 | Codex | Completed Phase 3 Task 5: combined task review contract | Updated Dev Lite review rules, `/dev-phase-review`, and `templates/dev-phase-review.md` to keep one review pass but require separate Acceptance / Spec and Code Quality verdicts; mirrored skill files under `.agents/`; exercised the output contract with `/private/tmp/agent-toolbelt-dev-lite-combined-review-check/sample-phase-review.md`; validated with `scripts/check-skill-sync.sh`, `rg "Combined Review Verdicts|Acceptance / Spec|Code Quality|one combined review pass|two verdicts" ...`, `rg "Acceptance / Spec:|Code Quality:" /private/tmp/agent-toolbelt-dev-lite-combined-review-check/sample-phase-review.md`, and `bash -n scripts/check-cursor-plugin-build.sh build-cursor-plugin.sh` | Commit Task 5, then add scratch/ledger conventions |
 | 2026-07-01 | Codex | Completed Phase 3 Task 6: scratch and ledger convention | Added `.atb-work/` to `.gitignore`; documented `.atb-work/dev-lite/` setup, self-ignore, optional `progress.md` ledger, and pre-commit `git status --short` check in Dev Lite skill guidance; mirrored skill files under `.agents/`; validated by creating `.atb-work/dev-lite/.gitignore` and `.atb-work/dev-lite/progress.md` and confirming `git status --short` stayed limited to tracked edits; also ran `scripts/check-skill-sync.sh`, `rg "Scratch and Ledger Convention|\\.atb-work/dev-lite|progress.md|git status --short|scratch workspace" ...`, and `git diff --check` | Commit Task 6, then add dispatch/model-selection guidance |
 | 2026-07-01 | Codex | Completed Phase 3 Task 7: subagent dispatch/model-selection guidance | Added optional subagent dispatch rules to Dev Lite skill guidance, `/dev-implement-task`, and implementation rules: sequential execution remains the default; subagents require an environment that supports them plus explicit user authorization; delegated tasks need owned files/modules, task brief path, report path, checks, short return contract, and sequential fallback; model overrides are only for task-specific reasons. Mirrored skill files under `.agents/`; validated with `scripts/check-skill-sync.sh`, `rg "Optional Subagent Dispatch|sequentially|explicitly asked|model override|default/current model|owned files/modules|sequential fallback" ...`, and `git diff --check` | Commit Task 7, then add verify-reach review guidance |
+| 2026-07-01 | Codex | Completed Phase 3 Task 8: verify-reach review guidance | Added `Verification reach` rules to Dev Lite review guidance and `Verification Reach` sections to phase and PR review templates; updated `/dev-phase-review` and `/dev-pr-review` to require Verified, Failed, and Not Inferable classification, with Not Inferable not counted as a pass when it affects the decision; mirrored skill files under `.agents/`; exercised with `/private/tmp/agent-toolbelt-dev-lite-verify-reach-check/sample-phase-review.md`; validated with `scripts/check-skill-sync.sh`, `rg "Verification reach|Verification Reach|Verified|Failed|Not Inferable|Not inferable|do not count Not Inferable|do not convert" ...`, `rg "Not Inferable|Need focused command output|Verified" /private/tmp/agent-toolbelt-dev-lite-verify-reach-check/sample-phase-review.md`, and `git diff --check` | Commit Task 8, then evaluate state-rebuild/sync check |
 
 ## Phase 1: Upstream Delta Triage
 
@@ -404,11 +405,15 @@ with special attention to Superpowers v6's lower-token subagent workflow.
       The workflow defaults to sequential execution, requires explicit user authorization before
       subagent delegation, defines dispatch ownership/report/check fields, and treats model
       overrides as task-specific rather than mandatory.
-- [ ] Task: Add a "verify reach" rule to phase and PR review guidance: reviewers must distinguish
+- [x] Task: Add a "verify reach" rule to phase and PR review guidance: reviewers must distinguish
       verified, failed, and not inferable from the available spec/diff.
       Test work: Review one sample report and confirm uncertain/non-inferable items do not silently pass.
-      Status: Pending.
-      Evidence: Updated review rules.
+      Status: Complete.
+      Evidence: Updated Dev Lite review rules, `/dev-phase-review`, `/dev-pr-review`,
+      `templates/dev-phase-review.md`, and `templates/dev-pr-review.md` to require
+      Verification Reach entries with Verified, Failed, and Not Inferable classifications.
+      Confirmed a sample report keeps an uncertain runtime path as Not Inferable with needed
+      evidence instead of passing it.
 - [ ] Task: Evaluate a lightweight state-rebuild/sync check for Dev Lite plan files: derived fields
       such as current phase/task should be reconcilable from task checkboxes and activity log, while
       human notes remain preserved.

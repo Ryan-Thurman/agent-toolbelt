@@ -54,6 +54,22 @@ ensure_dir() {
   fi
 }
 
+# The shared, harness-agnostic folders (skills/ templates/ workflows/ examples/)
+# are installed under .atb/ in the target so they don't collide with a brownfield
+# project's own top-level dirs. Content shipped by the packs still refers to them by
+# their *source* path (e.g. `skills/pr-review/references/foo.md`), so we rewrite those
+# absolute-from-root refs to `.atb/…` as each file is copied. Relative refs
+# (`../../examples/…`) are left alone: since all four dirs move together, their
+# relative distance is unchanged and they still resolve. Matching only at a path
+# boundary ([start | space | ` | ( | =]) skips relative refs (preceded by `/`) and
+# makes the rewrite idempotent (an existing `.atb/` prefix is preceded by `/`).
+ATB_REWRITE='s#(^|[[:space:](=`])(skills|templates|workflows|examples)/#\1.atb/\2/#g'
+
+# install_copy <src> <dest> — copy while rewriting shared-folder refs to .atb/.
+install_copy() {
+  sed -E "$ATB_REWRITE" "$1" > "$2"
+}
+
 # install_file <abs-src> <abs-dest>
 install_file() {
   local src="$1" dest="$2"
@@ -86,11 +102,11 @@ install_file() {
   fi
 
   if [ -e "$dest" ]; then
-    cp "$src" "$dest" || exit 1
+    install_copy "$src" "$dest" || exit 1
     echo "~ updated: $dest"
     updated=$((updated + 1))
   else
-    cp "$src" "$dest" || exit 1
+    install_copy "$src" "$dest" || exit 1
     echo "+ installed: $dest"
     created=$((created + 1))
   fi
@@ -136,7 +152,7 @@ rule_tmpl() {
 # separate .cursor/skills/ too would make Cursor list every skill twice. (Bare skills/ is NOT
 # an auto-discovery root, so it never double-registers.) SKILL.md is a cross-agent standard.
 skill() {
-  _install "skills/$1/$2" "skills/$1/$2"
+  _install "skills/$1/$2" ".atb/skills/$1/$2"
   if harness_enabled cursor || harness_enabled codex; then
     _install "skills/$1/$2" ".agents/skills/$1/$2"
   else
@@ -149,16 +165,17 @@ skill() {
 # skill_shared <pack> <rel> — canonical skills/ copy plus the native .agents/skills/ copy when
 # cursor is selected (AI Feature Delivery is Cursor-first; no Codex-only case to cover).
 skill_shared() {
-  _install "skills/$1/$2" "skills/$1/$2"
+  _install "skills/$1/$2" ".atb/skills/$1/$2"
   if harness_enabled cursor; then _install "skills/$1/$2" ".agents/skills/$1/$2"; else gated=$((gated + 1)); fi
   _record_skill "$1"
   return 0
 }
 
 # template <name>, workflow <name>, example <name> — shared artifacts (harness-agnostic).
-template() { _install "templates/$1" "templates/$1"; }
-workflow() { _install "workflows/$1" "workflows/$1"; }
-example()  { _install "examples/$1"  "examples/$1"; }
+# Installed under .atb/ so they don't collide with the target project's own top-level dirs.
+template() { _install "templates/$1" ".atb/templates/$1"; }
+workflow() { _install "workflows/$1" ".atb/workflows/$1"; }
+example()  { _install "examples/$1"  ".atb/examples/$1"; }
 
 # hook_json <src> — the Cursor hooks manifest (cursor only). install_file skips an existing
 # .cursor/hooks.json (no --force), so we never clobber hooks you already have — merge manually.
@@ -197,7 +214,7 @@ write_agents_md() {
     done
     sk=""
     for e in "${INSTALLED_SKILLS[@]:-}"; do
-      case "$e" in "$p"$'\t'*) sk="$sk- \`skills/${e#*$'\t'}/\`"$'\n' ;; esac
+      case "$e" in "$p"$'\t'*) sk="$sk- \`.atb/skills/${e#*$'\t'}/\`"$'\n' ;; esac
     done
     [ -n "$cmds" ] && block="${block}"$'\n'"Commands:"$'\n'"$cmds"
     [ -n "$sk" ]   && block="${block}"$'\n'"Skills:"$'\n'"$sk"
@@ -218,13 +235,19 @@ write_agents_md() {
     { printf '\n'; printf '%s' "$block"; } >> "$f" || exit 1
     echo "~ updated: $f"; updated=$((updated + 1)); return 0
   fi
-  local tmp
-  tmp="$(mktemp "$(dirname "$f")/.AGENTS.md.XXXXXX")" || exit 1
-  awk -v b="$AGENTS_BEGIN" -v e="$AGENTS_END" -v blk="$block" '
-    $0==b { printf "%s", blk; skip=1; next }
+  # Splice the block in place. The block is read from a temp file rather than an
+  # awk -v var: BSD/macOS awk rejects a literal newline in a -v value ("newline in
+  # string"), which would break every re-install over an existing AGENTS.md.
+  local tmp blkfile
+  blkfile="$(mktemp "$(dirname "$f")/.atb-block.XXXXXX")" || exit 1
+  printf '%s' "$block" > "$blkfile" || { rm -f "$blkfile"; exit 1; }
+  tmp="$(mktemp "$(dirname "$f")/.AGENTS.md.XXXXXX")" || { rm -f "$blkfile"; exit 1; }
+  awk -v b="$AGENTS_BEGIN" -v e="$AGENTS_END" -v bf="$blkfile" '
+    $0==b { while ((getline line < bf) > 0) print line; close(bf); skip=1; next }
     skip && $0==e { skip=0; next }
     skip { next }
     { print }
-  ' "$f" > "$tmp" && mv "$tmp" "$f" || { rm -f "$tmp"; exit 1; }
+  ' "$f" > "$tmp" && mv "$tmp" "$f" || { rm -f "$tmp" "$blkfile"; exit 1; }
+  rm -f "$blkfile"
   echo "~ updated: $f"; updated=$((updated + 1)); return 0
 }

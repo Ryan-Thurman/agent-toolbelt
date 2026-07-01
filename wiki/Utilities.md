@@ -61,7 +61,7 @@ The `ship-it` tool is the lightweight release step at the tail of the dev lanes 
 ```
 
 Run `/ship-it` after a change is merged/approved. It produces a **go/no-go readiness check**, a
-**rollback plan + trigger**, a **release-notes draft** (`templates/release-notes.md`), and a
+**rollback plan + trigger**, a **release-notes draft** (`.atb/templates/release-notes.md`), and a
 **rollout/monitor plan** with advance/hold/roll-back thresholds.
 
 It is **pipeline-aware**: when an external CI/CD pipeline you don't control owns the deploy (a
@@ -140,7 +140,7 @@ abstraction is the *tracker*.
 ./install.sh --harness all ticket-sync /path/to/project
 ```
 
-A target repo declares the tracker in a repo-local `.tickets.md` (copy `templates/tickets-config.md`)
+A target repo declares the tracker in a repo-local `.tickets.md` (copy `.atb/templates/tickets-config.md`)
 — `provider`, the project/board key, default issue type, labels/components, and FIELD MAPPINGS from
 the ticket-template fields (feature ID, release ID, acceptance criteria, dependencies, test
 expectation, doc-delta status) to the tracker's fields. When absent, ticket-sync infers the provider

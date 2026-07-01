@@ -8,7 +8,7 @@ has **three entry-point workflows** plus shared review/handoff utilities. Use
 
 Six gated phases, centered on the **Feature Master Record** — every artifact
 derives from or links back to it. Full lifecycle and gate definitions:
-`workflows/ai-feature-delivery-lifecycle.md`. Skill: `skills/ai-feature-delivery/`.
+`.atb/workflows/ai-feature-delivery-lifecycle.md`. Skill: `.atb/skills/ai-feature-delivery/`.
 
 | # | Phase | Commands | Gate (must pass to advance) |
 |---|-------|----------|------------------------------|
@@ -45,7 +45,7 @@ flowchart TD
 - `/steward-review`, `/draft-pings` — daily status review and stakeholder pings.
 
 The skill loads one reference per step
-(`skills/ai-feature-delivery/SKILL.md`):
+(`.atb/skills/ai-feature-delivery/SKILL.md`):
 
 - `references/define-and-steward.md` → phase 1 + stewardship
 - `references/design-refine-dev.md` → phases 2–3
@@ -54,7 +54,7 @@ The skill loads one reference per step
 ## Dev Lite (lightweight / solo / fast)
 
 Eight steps, no doc-control / QA / release gates. Workflow:
-`workflows/dev-lite-feature-workflow.md`. Skill: `skills/dev-lite-workflow/`.
+`.atb/workflows/dev-lite-feature-workflow.md`. Skill: `.atb/skills/dev-lite-workflow/`.
 
 | # | Step | Command |
 |---|------|---------|
@@ -86,7 +86,7 @@ flowchart TD
 ## Bug-to-Fix (diagnostic / verification-first)
 
 Four steps to a minimal fix, then the shared dev/review back half. Workflow:
-`workflows/bug-to-fix-workflow.md`. Skill: `skills/bug-to-fix/`.
+`.atb/workflows/bug-to-fix-workflow.md`. Skill: `.atb/skills/bug-to-fix/`.
 
 | # | Step | Command |
 |---|------|---------|

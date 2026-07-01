@@ -86,6 +86,13 @@ Use this checklist when creating or updating a skill:
   synonyms.
 - Keep `SKILL.md` focused on steps and always-needed rules. Move branch-only
   reference behind a clearly worded pointer in `references/`.
+- Use progressive disclosure by branch: inline what every successful invocation
+  needs to choose and execute the workflow; move variant-specific detail,
+  optional paths, schemas, examples, and provider/framework mechanics to
+  `references/`. The pointer from `SKILL.md` should name the exact condition for
+  loading the file, such as "Read `references/provider.md` when posting to that
+  provider." If the condition is vague or every branch needs the material, keep
+  it inline.
 - State completion criteria that let the agent tell done from not done.
 - Keep one source of truth for each behavior. Do not repeat the same rule in the
   description, body, commands, and references unless each copy has a distinct
@@ -100,3 +107,9 @@ Applied check:
   exclusions for bug and regulated feature lanes. Keep `references/interrogation.md`
   behind a pointer because only the questioning branch needs those techniques;
   do not inline it into `SKILL.md`.
+- `pr-review/`: keep tier choice, reviewer-safety, inputs, and short tier
+  algorithms inline because every invocation needs them to pick scope, intensity,
+  and output. Do not move the tier summaries yet; the long-skill audit found the
+  better cleanup candidate is duplicated reference cataloging. Future edits
+  should keep `## References` as navigation only and move detailed provider,
+  posting, tier, and schema mechanics into the referenced files.

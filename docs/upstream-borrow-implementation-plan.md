@@ -62,22 +62,23 @@ Status: In Progress
 
 Current Phase: Phase 3A - Skill Authoring and Architecture Review Discipline
 
-Current Task: Add a progressive-disclosure rule of thumb to authoring guidance
+Current Task: Fold compact Fowler smell baseline into simplify/pr-review guidance
 
 Current Branch: `feat/atb-namespace-install`
 
 Last Updated: 2026-07-01
 
-Last Completed Step: Audited three model-invoked PR review skill descriptions and trimmed repeated trigger phrasing.
+Last Completed Step: Added progressive-disclosure guidance and audited `pr-review/` for sprawl.
 
-Next Step: Add a progressive-disclosure rule of thumb to authoring guidance.
+Next Step: Fold the compact Fowler smell baseline into existing maintainability guidance without
+creating a second taxonomy.
 
-Resume Instructions: Start from Phase 3A Task 3. The current branch is already
+Resume Instructions: Start from Phase 3A Task 4. The current branch is already
 `feat/atb-namespace-install`; do not create another branch unless the user asks.
-Add a progressive-disclosure rule of thumb to authoring guidance: inline what
-every branch needs, move branch-only reference behind a strongly worded context
-pointer. Check one long skill for sprawl/sediment and identify whether
-reference should move. Preserve unrelated work.
+Fold the compact Fowler smell baseline into existing `simplify`/`pr-review`
+maintainability guidance without duplicating the current taxonomy. Verify the
+final vocabulary labels smells as heuristics, not hard violations. Preserve
+unrelated work.
 
 ## Activity Log
 
@@ -115,6 +116,7 @@ reference should move. Preserve unrelated work.
 | 2026-07-01 | Codex | Ran Phase 3 review | Result: Pass. Acceptance / Spec: Pass. Code Quality: Pass. Verification Reach: Phase 3 tasks, install/package checks, Dev Lite workflow guidance, and portability changes were verified; no Failed or Not Inferable items affected the phase decision. Checks: `git diff --check 8ed3674..HEAD`; `scripts/check-skill-sync.sh`; `bash -n install.sh install/*.sh scripts/check-cursor-plugin-build.sh scripts/check-skill-sync.sh build-cursor-plugin.sh`; `scripts/check-cursor-plugin-build.sh`; `./install.sh --list`; `./install.sh --dry-run --harness all dev-lite-workflow /private/tmp/agent-toolbelt-phase3-review-dev-lite`; `./install.sh --dry-run --harness all pr-review /private/tmp/agent-toolbelt-phase3-review-pr-review`; `rg "Optional Subagent Dispatch|File handoffs|Verification Reach|State Reconciliation Checklist|Script Portability Checklist|Combined Review Verdicts|Not Inferable|path-final|mktemp|installed nothing" skills commands templates docs scripts install/lib.sh .agents/skills/dev-lite-workflow` | Start Phase 3A |
 | 2026-07-01 | Codex | Completed Phase 3A Task 1: skill-authoring checklist | Added `Skill authoring checklist` to `skills/README.md`, covering invocation choice, context load, trigger branches, progressive disclosure, completion criteria, single source of truth, no-op pruning, and sediment. Applied it to `shape-up/`: keep the model-invoked description because its fuzzy-idea/ticket trigger and bug/regulated-lane exclusions are distinct; keep `references/interrogation.md` behind a pointer and do not inline branch-only questioning techniques into `SKILL.md`. Validated with `rg "Skill authoring checklist|Decide invocation first|description pay|completion criteria|Prune no-ops|Applied check|shape-up" skills/README.md` and `git diff --check` | Commit Task 1, then audit model-invoked descriptions |
 | 2026-07-01 | Codex | Completed Phase 3A Task 2: model-invoked description audit | Audited `pr-review`, `review-on-open`, and `review-queue` descriptions. Branches: direct PR/branch/diff code review; host-triggered event/poller review automation; local producer/consumer queue handoff. Trimmed repeated/no-op trigger phrasing such as duplicated `PR review`/`reviewing a diff`, verbose PR event explanation, and repeated local/no-webhook wording while preserving distinct invocation coverage. Validated with frontmatter `sed`, `git diff --check`, and scoped diff review. | Commit Task 2, then add progressive-disclosure guidance |
+| 2026-07-01 | Codex | Completed Phase 3A Task 3: progressive-disclosure rule of thumb | Added branch-based progressive disclosure guidance to `skills/README.md`: inline what every invocation needs; move variant-specific detail, optional paths, schemas, examples, and provider/framework mechanics behind condition-specific `references/` pointers. Audited long skill `pr-review/`: keep tier choice, reviewer-safety, inputs, and short tier algorithms inline; future cleanup candidate is duplicated reference cataloging, keeping `## References` navigation-only while detailed provider/posting/tier/schema mechanics stay in references. Validated with `rg "progressive disclosure|variant-specific|pr-review/|reference cataloging|navigation only" skills/README.md` and `git diff --check`. | Commit Task 3, then fold compact Fowler smell baseline into maintainability guidance |
 
 ## Phase 1: Upstream Delta Triage
 
@@ -506,11 +508,14 @@ cheaper to carry in context, and sharper when reviewing architecture or code sme
       Evidence: Updated descriptions for `pr-review`, `review-on-open`, and `review-queue`.
       Classified branches as direct review, host-triggered review automation, and local queue
       handoff; trimmed repeated trigger wording without removing distinct invocation coverage.
-- [ ] Task: Add a progressive-disclosure rule of thumb to authoring guidance: inline what every branch
+- [x] Task: Add a progressive-disclosure rule of thumb to authoring guidance: inline what every branch
       needs, move branch-only reference behind a strongly worded context pointer.
       Test work: Check one long skill for sprawl/sediment and identify whether reference should move.
-      Status: Pending.
-      Evidence: Updated guidance and candidate notes.
+      Status: Complete.
+      Evidence: Updated `skills/README.md` with branch-based progressive-disclosure guidance and
+      audited `pr-review/`: keep tier choice, safety, inputs, and short tier algorithms inline; use
+      future edits to keep `## References` navigation-only and leave detailed provider, posting,
+      tier, and schema mechanics in referenced files.
 - [ ] Task: Fold the compact Fowler smell baseline into `simplify`/`code-smell` or `pr-review`
       maintainability guidance without duplicating our existing taxonomy.
       Test work: Verify the final taxonomy has one source of truth and labels smells as heuristics, not

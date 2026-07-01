@@ -6,7 +6,26 @@ set -u
 set -o pipefail
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-OUT="${1:-${TMPDIR:-/tmp}/agent-toolbelt-cursor-plugin-check}"
+cleanup_out=0
+
+if [ $# -gt 1 ]; then
+  echo "usage: check-cursor-plugin-build.sh [output-dir]" >&2
+  exit 2
+fi
+
+if [ $# -eq 1 ]; then
+  OUT="$1"
+else
+  OUT="$(mktemp -d "${TMPDIR:-/tmp}/agent-toolbelt-cursor-plugin-check.XXXXXX")"
+  cleanup_out=1
+fi
+
+cleanup() {
+  if [ "$cleanup_out" = "1" ]; then
+    rm -rf "$OUT"
+  fi
+}
+trap cleanup EXIT
 
 "$ROOT/build-cursor-plugin.sh" "$OUT" >/dev/null
 

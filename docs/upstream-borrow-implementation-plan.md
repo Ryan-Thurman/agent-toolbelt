@@ -62,21 +62,21 @@ Status: In Progress
 
 Current Phase: Phase 3 - Workflow, Install, and Packaging Hardening
 
-Current Task: Add portability/path hardening guidance for installer and helper scripts
+Current Task: Run Phase 3 review
 
 Current Branch: `feat/atb-namespace-install`
 
 Last Updated: 2026-07-01
 
-Last Completed Step: Added a manual State Reconciliation Checklist for Dev Lite plan files.
+Last Completed Step: Added script portability guidance and hardened the Cursor plugin smoke check temp directory.
 
-Next Step: Add portability/path hardening guidance for installer and helper scripts.
+Next Step: Run the Phase 3 review before starting Phase 3A.
 
-Resume Instructions: Start from Phase 3 Task 10. The current branch is already
+Resume Instructions: Start from the Phase 3 review. The current branch is already
 `feat/atb-namespace-install`; do not create another branch unless the user asks.
-Add portability/path hardening guidance for installer and helper scripts inspired
-by GSD's recent fixes: path-final `mktemp`, CRLF-safe parsing, no hardcoded
-temp/home paths, and confined writes. Preserve unrelated work.
+Review Phase 3 against its goal, acceptance criteria, completed tasks, checks,
+and current diff. Do not start Phase 3A until the Phase 3 review passes or any
+required fixes are addressed.
 
 ## Activity Log
 
@@ -110,6 +110,7 @@ temp/home paths, and confined writes. Preserve unrelated work.
 | 2026-07-01 | Codex | Completed Phase 3 Task 7: subagent dispatch/model-selection guidance | Added optional subagent dispatch rules to Dev Lite skill guidance, `/dev-implement-task`, and implementation rules: sequential execution remains the default; subagents require an environment that supports them plus explicit user authorization; delegated tasks need owned files/modules, task brief path, report path, checks, short return contract, and sequential fallback; model overrides are only for task-specific reasons. Mirrored skill files under `.agents/`; validated with `scripts/check-skill-sync.sh`, `rg "Optional Subagent Dispatch|sequentially|explicitly asked|model override|default/current model|owned files/modules|sequential fallback" ...`, and `git diff --check` | Commit Task 7, then add verify-reach review guidance |
 | 2026-07-01 | Codex | Completed Phase 3 Task 8: verify-reach review guidance | Added `Verification reach` rules to Dev Lite review guidance and `Verification Reach` sections to phase and PR review templates; updated `/dev-phase-review` and `/dev-pr-review` to require Verified, Failed, and Not Inferable classification, with Not Inferable not counted as a pass when it affects the decision; mirrored skill files under `.agents/`; exercised with `/private/tmp/agent-toolbelt-dev-lite-verify-reach-check/sample-phase-review.md`; validated with `scripts/check-skill-sync.sh`, `rg "Verification reach|Verification Reach|Verified|Failed|Not Inferable|Not inferable|do not count Not Inferable|do not convert" ...`, `rg "Not Inferable|Need focused command output|Verified" /private/tmp/agent-toolbelt-dev-lite-verify-reach-check/sample-phase-review.md`, and `git diff --check` | Commit Task 8, then evaluate state-rebuild/sync check |
 | 2026-07-01 | Codex | Completed Phase 3 Task 9: Dev Lite plan state reconciliation | Added a manual State Reconciliation Checklist to `templates/dev-implementation-plan.md`, `/dev-plan`, and Dev Lite skill guidance instead of a parser script because plan state is partly human-authored narrative; the checklist reconciles `Current Phase`, `Current Task`, `Last Completed Step`, `Next Step`, `Resume Instructions`, task checkboxes, task status, task evidence, and Activity Log rows while preserving notes and recording conflicts rather than guessing; mirrored skill files under `.agents/`; validated with `scripts/check-skill-sync.sh`, `rg "State Reconciliation|reconcile derived|Current Phase|Current Task|Last Completed Step|Next Step|Resume Instructions|human-authored|task list and Activity Log" ...`, and `git diff --check` | Commit Task 9, then add portability/path hardening guidance |
+| 2026-07-01 | Codex | Completed Phase 3 Task 10: script portability/path hardening | Added `docs/script-portability-checklist.md` covering confined writes, path-final `mktemp`, temp cleanup traps, quoted paths, hardcoded home/temp avoidance, CRLF/list parsing, overwrite safety, and validation commands; updated `scripts/check-cursor-plugin-build.sh` to use a path-final `mktemp -d` output directory with cleanup when no output path is provided; validated with `bash -n install.sh install/*.sh scripts/check-cursor-plugin-build.sh scripts/check-skill-sync.sh build-cursor-plugin.sh`, `scripts/check-cursor-plugin-build.sh`, `./install.sh --dry-run --harness all dev-lite-workflow /private/tmp/agent-toolbelt-install-portability-check`, `rg "path-final|mktemp|CRLF|hardcoded|confined|dry-run|bash -n|trap|temporary" docs/script-portability-checklist.md scripts/check-cursor-plugin-build.sh`, `find /private/tmp -maxdepth 1 -name 'agent-toolbelt-cursor-plugin-check.*' -print`, and `git diff --check` | Commit Task 10, then run Phase 3 review |
 
 ## Phase 1: Upstream Delta Triage
 
@@ -424,12 +425,15 @@ with special attention to Superpowers v6's lower-token subagent workflow.
       `/dev-plan`, and skill guidance. Rejected a parser script for now because plan state includes
       human-authored notes and accepted rationale; the checklist reconciles derived fields while
       preserving narrative content.
-- [ ] Task: Add portability/path hardening guidance for installer and helper scripts inspired by GSD's
+- [x] Task: Add portability/path hardening guidance for installer and helper scripts inspired by GSD's
       recent fixes: path-final `mktemp`, CRLF-safe parsing, no hardcoded temp/home paths, and confined
       writes.
       Test work: Run relevant shell syntax checks and installer dry-runs when touched.
-      Status: Pending.
-      Evidence: Updated install/review checklist or tests.
+      Status: Complete.
+      Evidence: Added `docs/script-portability-checklist.md` and hardened
+      `scripts/check-cursor-plugin-build.sh` to use a path-final temporary output directory with
+      cleanup when no output path is supplied. Shell syntax, plugin smoke, installer dry-run, grep
+      checks, temp cleanup check, and `git diff --check` passed.
 
 ### Expected Commits
 

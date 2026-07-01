@@ -1,6 +1,6 @@
 ---
 name: review-on-open
-description: Automatically run a fresh PR review when a PR is opened or updated, with no human in the loop. Two triggers — an event-driven GitHub Actions path (the PR event fires a headless review) and a host-agnostic poller that lists open PRs and reviews the ones it hasn't seen at their current head SHA. Use to set up agent-driven PR review, auto-review PRs that other agents open, review-on-open/on-push automation, or a review bot. Drives the pr-review pack; posting is idempotent and confirm-gated.
+description: Automatically trigger /pr-review when a PR is opened or updated. Supports two paths: a GitHub Actions event and a host-agnostic poller that reviews unseen PR heads. Use for event/poller PR review automation, PRs opened by other agents, or a review bot. Drives the pr-review pack; posting is idempotent and confirm-gated.
 ---
 
 # review-on-open

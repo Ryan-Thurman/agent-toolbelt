@@ -91,9 +91,11 @@ default-branch work.
 Produce a PR Readiness Review following the structure in
 `templates/dev-pr-review.md`. Include the Acceptance Criteria Matrix, Flow
 Coverage Matrix, findings buckets (Blocking / Should Fix / Nice to Have), Test
-Suite Changes, Test Gaps, the per-area notes, Branch / PR Notes, Plan Document
-Updates, and the Suggested PR Description. Treat missing feasible tests as a
-Should Fix issue by default, or Blocking when core behavior, permissions, or data
-safety is unverified. In Branch / PR Notes, state the current branch, whether it
-is safe to open a PR, and the recommended PR command (when the host CLI is
-available) or PR title/body for manual creation.
+Suite Changes, Test Gaps, Verification Reach, the per-area notes, Branch / PR
+Notes, Plan Document Updates, and the Suggested PR Description. Distinguish
+Verified, Failed, and Not Inferable items; do not count Not Inferable as a pass
+when it affects PR readiness. Treat missing feasible tests as a Should Fix issue
+by default, or Blocking when core behavior, permissions, or data safety is
+unverified. In Branch / PR Notes, state the current branch, whether it is safe
+to open a PR, and the recommended PR command (when the host CLI is available) or
+PR title/body for manual creation.

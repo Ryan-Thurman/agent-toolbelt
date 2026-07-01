@@ -95,8 +95,10 @@ install_file() {
   if [ "$DRY_RUN" = "1" ]; then
     if [ -e "$dest" ]; then
       echo "~ would overwrite: $dest"
+      updated=$((updated + 1))
     else
       echo "+ would install: $dest"
+      created=$((created + 1))
     fi
     return 0
   fi

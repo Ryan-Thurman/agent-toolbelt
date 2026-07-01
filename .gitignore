@@ -4,6 +4,7 @@
 /build/
 
 # Local scratch and cloned external material should not be published.
+/.atb-work/
 /repos/
 /notes/
 /grab-repos.sh

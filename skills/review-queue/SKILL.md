@@ -1,6 +1,6 @@
 ---
 name: review-queue
-description: A local, SQLite-backed work queue that decouples PR-opening agents from PR-review agents. The agent that opens/updates a PR enqueues a review job; a separate worker claims jobs one at a time and runs /pr-review --comment on each. Use to wire agent-to-agent PR review without GitHub webhooks, CI, or an API key — fully local, runs on your subscription. Producer/consumer with atomic exactly-once claim, crash-safe leases, and dead-lettering.
+description: Local SQLite-backed queue for handing PR-review jobs from PR-opening agents to review workers. A producer enqueues a PR; a worker claims jobs and runs /pr-review --comment. Use for local agent-to-agent PR review when webhooks, CI, or API keys are unavailable or unwanted. Provides atomic exactly-once claims, crash-safe leases, and dead-lettering.
 ---
 
 # review-queue

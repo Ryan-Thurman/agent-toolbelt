@@ -73,3 +73,43 @@ ships `.agents/skills/dev-lite-workflow/SKILL.md` (the repo-scoped Codex copy);
 it must stay byte-identical. Edit the canonical file, then mirror the change.
 Run `scripts/check-skill-sync.sh` to verify the two copies match (also runnable
 in CI).
+
+## Skill authoring checklist
+
+Use this checklist when creating or updating a skill:
+
+- Decide invocation first. Keep a `description` only when the agent should
+  discover and invoke the skill on its own; otherwise make the skill
+  user-invoked and route to it from docs or commands.
+- Make the description pay for its context load. Use leading words users and
+  agents actually say, and keep distinct trigger branches rather than repeated
+  synonyms.
+- Keep `SKILL.md` focused on steps and always-needed rules. Move branch-only
+  reference behind a clearly worded pointer in `references/`.
+- Use progressive disclosure by branch: inline what every successful invocation
+  needs to choose and execute the workflow; move variant-specific detail,
+  optional paths, schemas, examples, and provider/framework mechanics to
+  `references/`. The pointer from `SKILL.md` should name the exact condition for
+  loading the file, such as "Read `references/provider.md` when posting to that
+  provider." If the condition is vague or every branch needs the material, keep
+  it inline.
+- State completion criteria that let the agent tell done from not done.
+- Keep one source of truth for each behavior. Do not repeat the same rule in the
+  description, body, commands, and references unless each copy has a distinct
+  job.
+- Prune no-ops and sediment: remove lines that do not change agent behavior,
+  stale provenance notes, or branches no current workflow can reach.
+
+Applied check:
+
+- `shape-up/`: keep the model-invoked description because it has distinct
+  trigger branches for fuzzy ideas/tickets before Dev Lite planning, with clear
+  exclusions for bug and regulated feature lanes. Keep `references/interrogation.md`
+  behind a pointer because only the questioning branch needs those techniques;
+  do not inline it into `SKILL.md`.
+- `pr-review/`: keep tier choice, reviewer-safety, inputs, and short tier
+  algorithms inline because every invocation needs them to pick scope, intensity,
+  and output. Do not move the tier summaries yet; the long-skill audit found the
+  better cleanup candidate is duplicated reference cataloging. Future edits
+  should keep `## References` as navigation only and move detailed provider,
+  posting, tier, and schema mechanics into the referenced files.

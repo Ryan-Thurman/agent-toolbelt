@@ -53,7 +53,7 @@ The **[wiki](wiki/Home.md)** is the deep dive. Quick map:
 | `phase-context-workflow` | Durable phase files, handoffs, and context packets for safe `/clear` / `/compact`. |
 | `ai-feature-delivery` | Traceable feature delivery: design docs, tickets, tests, QA handoff, release docs. |
 | `shape-up` | Interrogate a vague request into an agreed brief before building. |
-| `simplify` | Active cleanup: high-conviction simplifications applied on opt-in. |
+| `simplify` | Active cleanup plus `/code-smell` detect-only scans, including architecture/deepening candidates. |
 | `cover` | Author/strengthen behavior-pinning tests + a detect-only coverage-gap scan. |
 | `ship-it` | Lightweight release readiness: go/no-go, rollback plan, release notes, rollout plan. |
 | `retrofit` | Apply one defined change across every site that needs it — discover, transform, verify. |

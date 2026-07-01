@@ -62,21 +62,22 @@ Status: In Progress
 
 Current Phase: Phase 4 - Final Hardening and PR Readiness
 
-Current Task: Update README/docs only where user-facing behavior changed
+Current Task: Run final PR readiness review
 
 Current Branch: `feat/architecture-smell-guidance`
 
 Last Updated: 2026-07-01
 
-Last Completed Step: Ran final hardening checks across changed docs/skills/install surfaces.
+Last Completed Step: Updated README/wiki docs for the user-facing `/code-smell --architecture`
+mode.
 
-Next Step: Review README/docs for user-facing behavior changes.
+Next Step: Run final PR readiness review.
 
-Resume Instructions: Start from Phase 4 Task 2. The current branch is
+Resume Instructions: Start from Phase 4 Task 3. The current branch is
 `feat/architecture-smell-guidance`; do not create another branch unless the user
-asks. Review README/docs for user-facing behavior changes, especially
-`/code-smell --architecture`, and update only where the behavior is user-facing
-and not already documented. Preserve unrelated work.
+asks. Run the final PR readiness review against the branch diff, covering
+prompt/workflow behavior, documentation consistency, install/package drift, and
+license/copying risk. Preserve unrelated work.
 
 ## Activity Log
 
@@ -119,6 +120,7 @@ and not already documented. Preserve unrelated work.
 | 2026-07-01 | Codex | Completed Phase 3A Task 5: architecture review command/mode scope | Rejected a separate `improve-codebase-architecture` command for this pass and absorbed the vocabulary into `/code-smell --architecture`. Updated `commands/code-smell.md`, `skills/simplify/references/smell-taxonomy.md`, `skills/simplify/SKILL.md`, `commands/README.md`, and `commands/workflow-router.md`; added `docs/architecture-smell-mode-decision.md` with a no-code candidate report for the local `/code-smell` surface. Validated with focused `rg` checks and `git diff --check`. | Commit Task 5, then run Phase 3A review |
 | 2026-07-01 | Codex | Ran Phase 3A review | Result: Pass. Acceptance / Spec: Pass. Code Quality: Pass. Verification Reach: skill-authoring guidance, shared smell taxonomy, PR-review maintainability pointers, and `/code-smell --architecture` routing were verified from the plan, diff, and focused checks; no Failed or Not Inferable items affected the phase decision. Checks: `git diff --check origin/main..HEAD`; `scripts/check-skill-sync.sh`; `rg -n -e "single source of truth|heuristics, not hard violations|documented repo standards override|Mysterious name|Feature envy|Architecture mode|--architecture|deepening candidates|no-code candidate report" skills commands docs`; `git diff --name-only origin/main..HEAD`. | Start Phase 4 |
 | 2026-07-01 | Codex | Completed Phase 4 Task 1: final hardening checks | Final checks passed for the branch diff. Checks: `git diff --check origin/main..HEAD`; `scripts/check-skill-sync.sh`; `scripts/check-cursor-plugin-build.sh`; `./install.sh --list`; `./install.sh --dry-run --harness all simplify /private/tmp/agent-toolbelt-phase4-simplify`; `./install.sh --dry-run --harness all pr-review /private/tmp/agent-toolbelt-phase4-pr-review`; `rg -n -e "--architecture|Architecture mode|single source of truth|heuristics, not hard violations|documented repo standards override|no-code deepening|deepening candidates|HTML/CDN|grilling" commands skills docs`. | Commit Task 1, then review README/docs for user-facing behavior changes |
+| 2026-07-01 | Codex | Completed Phase 4 Task 2: user-facing docs review | Updated concise user-facing summaries for the new `/code-smell --architecture` behavior in `README.md`, `wiki/Home.md`, `wiki/Utilities.md`, and `docs/phase-command-map.md`. Left deeper docs unchanged where command docs already carry the detailed behavior. Validated with `rg -n -e "architecture/deepening|--architecture|deepening candidates|detect-only scans" README.md wiki/Home.md wiki/Utilities.md docs/phase-command-map.md commands/README.md commands/code-smell.md commands/workflow-router.md` and `git diff --check`. | Commit Task 2, then run final PR readiness review |
 
 ## Phase 1: Upstream Delta Triage
 
@@ -584,10 +586,12 @@ Ensure the borrowed updates are coherent, documented, and ready for review.
       Evidence: `git diff --check origin/main..HEAD`, `scripts/check-skill-sync.sh`,
       `scripts/check-cursor-plugin-build.sh`, `./install.sh --list`, dry-run installs for
       `simplify` and `pr-review`, and focused `rg` checks all passed.
-- [ ] Task: Update README/docs only where user-facing behavior changed.
+- [x] Task: Update README/docs only where user-facing behavior changed.
       Test work: Documentation review.
-      Status: Pending.
-      Evidence: Changed docs cite the new behavior without duplicating implementation details.
+      Status: Complete.
+      Evidence: Updated `README.md`, `wiki/Home.md`, `wiki/Utilities.md`, and
+      `docs/phase-command-map.md` to cite `/code-smell --architecture` at summary level without
+      duplicating command implementation details. Focused `rg` checks and `git diff --check` passed.
 - [ ] Task: Run final PR readiness review.
       Test work: Dev-lite PR review pass against branch diff.
       Status: Pending.

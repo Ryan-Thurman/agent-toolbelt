@@ -3,7 +3,7 @@
 Cross-cutting tools that support the [delivery lanes](Workflows.md): cleanup,
 test authoring, release, codebase-wide change, handoff, and tracker sync.
 
-- [Simplify](#simplify) — active code cleanup.
+- [Simplify](#simplify) — active code cleanup plus detect-only smell scans.
 - [Cover](#cover) — test authoring.
 - [Ship It](#ship-it) — release readiness.
 - [Retrofit](#retrofit) — one change across many sites.
@@ -25,7 +25,8 @@ and applies nothing, simplify *drives the cleanup* and applies it on opt-in.
   Every candidate must state `rootIssue -> consequence -> benefit`, and changes are
   behavior-preserving (existing tests must pass unmodified).
 - `/code-smell` — detect-only scan of an area, ranked by severity × confidence; applies
-  nothing.
+  nothing. Use `/code-smell <path> --architecture` for no-code architecture/deepening
+  candidates.
 
 ## Cover
 

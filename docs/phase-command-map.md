@@ -121,7 +121,8 @@ flowchart TD
 - **Review triggers:** `/review-on-open` (event/poller), `/enqueue-review` +
   `/review-queue-worker` (push queue), `/phase-gate` (in-loop boundary review).
 - **Tests:** `/cover`, `/cover-gaps`.
-- **Cleanup:** `/simplify`, `/code-smell`.
+- **Cleanup:** `/simplify`, `/code-smell` (`--architecture` for no-code
+  deepening candidates).
 - **Release:** `/ship-it`.
 - **Tickets:** `/ticket-sync`, `/to-issues`.
 - **Durable state:** `/handoff`, and `/phase-create` → `/phase-start` →

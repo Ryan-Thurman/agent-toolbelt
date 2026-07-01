@@ -108,7 +108,22 @@ writing phase tasks; include implementation, test, template, command, and
 documentation files when they are relevant. Each behavior-changing task must
 include `Files`, `Interfaces`, and matching test work, and either use files from
 the map or explain why the map changed. Keep `Current State`, `Activity Log`,
-and `Resume Instructions` updated throughout the workflow.
+`Resume Instructions`, and the State Reconciliation Checklist updated
+throughout the workflow.
+
+## State Reconciliation
+
+Dev Lite plans contain derived fields (`Current Phase`, `Current Task`, `Last
+Completed Step`, `Next Step`, and `Resume Instructions`) plus human-authored
+notes. Do not rebuild the whole plan mechanically. Before handoff, after context
+reset, and before phase/PR review:
+
+- Compare completed task checkboxes, task `Status`, task `Evidence`, and the
+  latest Activity Log rows.
+- Update derived fields only when the next state is clear.
+- Preserve narrative notes, risks, rationale, and accepted debt.
+- If the task list and Activity Log disagree, record the mismatch instead of
+  guessing.
 
 ## Code and Command Specificity
 
@@ -167,4 +182,5 @@ same turn unless the user already explicitly asked for implementation after the
 plan.
 
 When creating a persistent plan file, include `Current State`, `Activity Log`,
-and `Resume Instructions`. These fields must be updated throughout the workflow.
+`Resume Instructions`, and the State Reconciliation Checklist. These fields must
+be updated throughout the workflow.

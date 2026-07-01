@@ -47,6 +47,21 @@ Resume Instructions: Briefly state exactly what the next agent should do first.
 |---|---|---|---|---|
 | YYYY-MM-DD | TBD | Plan created | TBD | Await plan approval |
 
+## State Reconciliation Checklist
+
+Run this before handing off, after context reset, and before phase/PR review.
+Preserve human notes; only update derived fields when the task list and activity
+log make the next state clear.
+
+- [ ] `Current Phase` matches the phase containing the next incomplete task, or
+      the plan explains why work is paused elsewhere.
+- [ ] `Current Task` matches the next incomplete task, or is `None` when the
+      phase/PR review is the next step.
+- [ ] `Last Completed Step` matches the latest completed task/review/fix in the
+      Activity Log.
+- [ ] `Next Step` and `Resume Instructions` point to the same next action.
+- [ ] Completed task checkboxes, task `Status`, and task `Evidence` agree.
+
 <!-- Phases below are a starting scaffold. Rename, add, or remove phase blocks to
 match the phase model chosen in /dev-plan; the count is not fixed. Duplicate a
 full phase block for each additional phase. -->

@@ -151,6 +151,19 @@ Before ending a turn after implementation work, update `Current State`,
 exists yet, create one from `dev-implementation-plan.md` or clearly ask where to
 store it before continuing substantial work.
 
+When resuming, handing off, or preparing a phase/PR review, reconcile derived
+state before proceeding:
+
+- `Current Phase` and `Current Task` should match the next incomplete task, or
+  explain why the next action is review/fix/blocked work instead.
+- `Last Completed Step` should match the latest completed Activity Log entry.
+- `Next Step` and `Resume Instructions` should point to the same action.
+- Task checkboxes, task `Status`, and task `Evidence` should agree.
+
+Do not overwrite human-authored notes just to make the plan mechanically tidy.
+If the task list and Activity Log conflict, record the mismatch and proceed from
+the most reliable evidence.
+
 ## Scratch and Ledger Convention
 
 For temporary task briefs, implementer reports, review packages, and progress

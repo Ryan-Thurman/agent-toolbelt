@@ -62,21 +62,21 @@ Status: In Progress
 
 Current Phase: Phase 3 - Workflow, Install, and Packaging Hardening
 
-Current Task: Evaluate a lightweight state-rebuild/sync check for Dev Lite plan files
+Current Task: Add portability/path hardening guidance for installer and helper scripts
 
 Current Branch: `feat/atb-namespace-install`
 
 Last Updated: 2026-07-01
 
-Last Completed Step: Added verify-reach guidance to Dev Lite phase and PR reviews.
+Last Completed Step: Added a manual State Reconciliation Checklist for Dev Lite plan files.
 
-Next Step: Evaluate a lightweight state-rebuild/sync check for Dev Lite plan files.
+Next Step: Add portability/path hardening guidance for installer and helper scripts.
 
-Resume Instructions: Start from Phase 3 Task 9. The current branch is already
+Resume Instructions: Start from Phase 3 Task 10. The current branch is already
 `feat/atb-namespace-install`; do not create another branch unless the user asks.
-Evaluate a lightweight state-rebuild/sync check for Dev Lite plan files: derived
-fields such as current phase/task should be reconcilable from task checkboxes
-and activity log, while human notes remain preserved. Preserve unrelated work.
+Add portability/path hardening guidance for installer and helper scripts inspired
+by GSD's recent fixes: path-final `mktemp`, CRLF-safe parsing, no hardcoded
+temp/home paths, and confined writes. Preserve unrelated work.
 
 ## Activity Log
 
@@ -109,6 +109,7 @@ and activity log, while human notes remain preserved. Preserve unrelated work.
 | 2026-07-01 | Codex | Completed Phase 3 Task 6: scratch and ledger convention | Added `.atb-work/` to `.gitignore`; documented `.atb-work/dev-lite/` setup, self-ignore, optional `progress.md` ledger, and pre-commit `git status --short` check in Dev Lite skill guidance; mirrored skill files under `.agents/`; validated by creating `.atb-work/dev-lite/.gitignore` and `.atb-work/dev-lite/progress.md` and confirming `git status --short` stayed limited to tracked edits; also ran `scripts/check-skill-sync.sh`, `rg "Scratch and Ledger Convention|\\.atb-work/dev-lite|progress.md|git status --short|scratch workspace" ...`, and `git diff --check` | Commit Task 6, then add dispatch/model-selection guidance |
 | 2026-07-01 | Codex | Completed Phase 3 Task 7: subagent dispatch/model-selection guidance | Added optional subagent dispatch rules to Dev Lite skill guidance, `/dev-implement-task`, and implementation rules: sequential execution remains the default; subagents require an environment that supports them plus explicit user authorization; delegated tasks need owned files/modules, task brief path, report path, checks, short return contract, and sequential fallback; model overrides are only for task-specific reasons. Mirrored skill files under `.agents/`; validated with `scripts/check-skill-sync.sh`, `rg "Optional Subagent Dispatch|sequentially|explicitly asked|model override|default/current model|owned files/modules|sequential fallback" ...`, and `git diff --check` | Commit Task 7, then add verify-reach review guidance |
 | 2026-07-01 | Codex | Completed Phase 3 Task 8: verify-reach review guidance | Added `Verification reach` rules to Dev Lite review guidance and `Verification Reach` sections to phase and PR review templates; updated `/dev-phase-review` and `/dev-pr-review` to require Verified, Failed, and Not Inferable classification, with Not Inferable not counted as a pass when it affects the decision; mirrored skill files under `.agents/`; exercised with `/private/tmp/agent-toolbelt-dev-lite-verify-reach-check/sample-phase-review.md`; validated with `scripts/check-skill-sync.sh`, `rg "Verification reach|Verification Reach|Verified|Failed|Not Inferable|Not inferable|do not count Not Inferable|do not convert" ...`, `rg "Not Inferable|Need focused command output|Verified" /private/tmp/agent-toolbelt-dev-lite-verify-reach-check/sample-phase-review.md`, and `git diff --check` | Commit Task 8, then evaluate state-rebuild/sync check |
+| 2026-07-01 | Codex | Completed Phase 3 Task 9: Dev Lite plan state reconciliation | Added a manual State Reconciliation Checklist to `templates/dev-implementation-plan.md`, `/dev-plan`, and Dev Lite skill guidance instead of a parser script because plan state is partly human-authored narrative; the checklist reconciles `Current Phase`, `Current Task`, `Last Completed Step`, `Next Step`, `Resume Instructions`, task checkboxes, task status, task evidence, and Activity Log rows while preserving notes and recording conflicts rather than guessing; mirrored skill files under `.agents/`; validated with `scripts/check-skill-sync.sh`, `rg "State Reconciliation|reconcile derived|Current Phase|Current Task|Last Completed Step|Next Step|Resume Instructions|human-authored|task list and Activity Log" ...`, and `git diff --check` | Commit Task 9, then add portability/path hardening guidance |
 
 ## Phase 1: Upstream Delta Triage
 
@@ -414,12 +415,15 @@ with special attention to Superpowers v6's lower-token subagent workflow.
       Verification Reach entries with Verified, Failed, and Not Inferable classifications.
       Confirmed a sample report keeps an uncertain runtime path as Not Inferable with needed
       evidence instead of passing it.
-- [ ] Task: Evaluate a lightweight state-rebuild/sync check for Dev Lite plan files: derived fields
+- [x] Task: Evaluate a lightweight state-rebuild/sync check for Dev Lite plan files: derived fields
       such as current phase/task should be reconcilable from task checkboxes and activity log, while
       human notes remain preserved.
       Test work: Document no-change rationale or add a manual "reconcile current state" checklist.
-      Status: Pending.
-      Evidence: Updated plan template or rejection note.
+      Status: Complete.
+      Evidence: Added a manual State Reconciliation Checklist to the Dev Lite plan template,
+      `/dev-plan`, and skill guidance. Rejected a parser script for now because plan state includes
+      human-authored notes and accepted rationale; the checklist reconciles derived fields while
+      preserving narrative content.
 - [ ] Task: Add portability/path hardening guidance for installer and helper scripts inspired by GSD's
       recent fixes: path-final `mktemp`, CRLF-safe parsing, no hardcoded temp/home paths, and confined
       writes.

@@ -26,43 +26,16 @@ collision-safe branch naming and a tidy, predictable layout.
   pack is for **independent sessions** that the harness can't coordinate, where the worktree must
   outlive a single tool call.
 
-## The layout
-
-Worktrees live **outside** the repos, collected under the shared parent so they never pollute a
-repo's tree and are trivial to see/prune in one place:
-
-```
-<parent>/                      # your shared working dir
-  .worktrees/
-    repo-a/agent-fix-login/    # agent 1's isolated checkout of repo-a
-    repo-b/agent-perf-1/       # agent 2's isolated checkout of repo-b
-  repo-a/   <- main tree, branch untouched by the worktrees
-  repo-b/
-  …
-```
-
-`<parent>` is the directory that contains the repo's **main** working tree, so every repo under one
-shared dir routes to the same `.worktrees/`. Nothing inside any repo changes, so there is no
-`.gitignore` to manage.
-
 ## The CLI
 
-One shipped script — `bin/worktree.sh` (pure bash + `git`, nothing to install). Invoke it at its
-installed path:
+One shipped script — `bin/worktree.sh` (pure bash + `git`, nothing to install). Use:
 
 ```bash
 bash skills/worktree/bin/worktree.sh <op> …
 ```
 
-| op | what |
-|---|---|
-| `new [repo] [branch] [--task <slug>] [--from <ref>]` | create a worktree on a **new** branch; prints the path to `cd` into |
-| `list [repo]` / `list --all` | show worktrees for one repo, or across every repo under the parent (a `*` marks dirty) |
-| `rm <path-or-branch> [--force] [--delete-branch]` | remove a worktree (refuses if dirty unless `--force`) + prune |
-| `prune` | drop stale worktree metadata + tidy empty `.worktrees` dirs |
-
-Full contract, flags, and resolution rules: `references/cli.md`. The multi-agent discipline (claim,
-work, hand back) and how this relates to retrofit's fan-out: `references/isolation.md`.
+Read `references/cli.md` for every op, flag, exit behavior, and resolution rule.
+Read `references/isolation.md` for the shared-parent layout and the claim → work → hand back flow.
 
 ## Principles (always)
 
@@ -78,17 +51,6 @@ work, hand back) and how this relates to retrofit's fan-out: `references/isolati
   `--delete-branch` keeps an unmerged branch unless `--force`. Clean up when done so stale checkouts
   don't accumulate.
 - **The main tree is sacred.** `rm` refuses to remove the repo's main working tree.
-
-## Typical flow (one agent)
-
-```bash
-# 1. carve out an isolated checkout for this task
-bash skills/worktree/bin/worktree.sh new repo-a --task fix-login
-#    -> prints:  cd "<parent>/.worktrees/repo-a/agent-fix-login"
-# 2. cd into the printed path and do the work (edit, commit, push) on its own branch
-# 3. when merged/abandoned, remove it
-bash skills/worktree/bin/worktree.sh rm agent/fix-login --delete-branch
-```
 
 ## References
 

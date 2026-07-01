@@ -36,22 +36,22 @@ Status: In Progress
 
 Current Phase: Phase 1A - Planning Robustness Upgrade
 
-Current Task: Add lightweight assumption-delta prompt to `/dev-plan`
+Current Task: Add stale-assumption planning pre-check to `/dev-plan`
 
 Current Branch: `feat/atb-namespace-install`
 
 Last Updated: 2026-07-01
 
-Last Completed Step: Documented Dev Lite code-in-plan strictness policy.
+Last Completed Step: Added lightweight assumption-delta guidance to `/dev-plan`.
 
-Next Step: Add lightweight assumption-delta guidance to `/dev-plan` for major planning assumption changes.
+Next Step: Add stale-assumption/codebase-drift pre-check guidance to `/dev-plan`.
 
-Resume Instructions: Start from Phase 1A Task 6. The current branch is already
+Resume Instructions: Start from Phase 1A Task 7. The current branch is already
 `feat/atb-namespace-install`; do not create another branch unless the user asks.
-Task 5 is complete. Add assumption-delta guidance to `commands/dev-plan.md` for
-phases that introduce another platform/provider/auth method/source of truth,
-make required fields optional, or turn derived constants into user choice.
-Preserve unrelated work.
+Task 6 is complete. Add a planning pre-check to compare the feature brief
+against current repo state before finalizing file/interface plans, then record
+either "no drift found" or concrete files that changed the plan. Preserve
+unrelated work.
 
 ## Activity Log
 
@@ -66,6 +66,7 @@ Preserve unrelated work.
 | 2026-07-01 | Codex | Completed Phase 1A Task 3: per-task Files/Interfaces | Updated task scaffolds in `templates/dev-implementation-plan.md` and `/dev-plan` rules; reviewed with `sed`; confirmed fields with `rg "Files:|Interfaces:|behavior-changing task|consumes|produces"` | Commit Task 3, then add no-placeholder checklist |
 | 2026-07-01 | Codex | Completed Phase 1A Task 4: no-placeholder self-review | Updated `commands/dev-plan.md`; reviewed with `sed`; confirmed checklist terms with `rg "TBD|placeholder|add tests|handle edge cases|self-review|File / Responsibility Map|Interfaces"` | Commit Task 4, then document code-in-plan policy |
 | 2026-07-01 | Codex | Completed Phase 1A Task 5: code-in-plan policy | Updated `commands/dev-plan.md`; reviewed with `sed`; confirmed policy terms with `rg "exact test names|check commands|full code snippets|algorithmically specific|fresh-context subagent|Code and Command Specificity"` | Commit Task 5, then add assumption-delta guidance |
+| 2026-07-01 | Codex | Completed Phase 1A Task 6: assumption-delta guidance | Updated `commands/dev-plan.md`; reviewed with `sed`; confirmed triggers with `rg "assumption-delta|Assumption Delta|platform|provider|auth method|source of truth|primary noun|accepted debt"` | Commit Task 6, then add stale-assumption pre-check |
 
 ## Phase 1: Upstream Delta Triage
 
@@ -166,13 +167,13 @@ constraints, test commands, or acceptance-criteria intent.
       required only when the task is algorithmically specific or subagent-dispatched.
       Status: Complete.
       Evidence: Updated `commands/dev-plan.md` with a `Code and Command Specificity` section requiring exact files/interfaces/tests/commands while reserving full code snippets for algorithmically specific, fragile data-shape, contract-heavy, or fresh-context subagent tasks.
-- [ ] Task: Add a lightweight assumption-delta prompt to `/dev-plan` for phases that introduce a
+- [x] Task: Add a lightweight assumption-delta prompt to `/dev-plan` for phases that introduce a
       second platform/provider/auth method/source of truth, make a required field optional, or turn a
       derived constant into user choice.
       Test work: Verify normal plans are not burdened; when the trigger appears, the plan records the
       promoted primary noun or accepted debt.
-      Status: Pending.
-      Evidence: Updated command guidance.
+      Status: Complete.
+      Evidence: Updated `commands/dev-plan.md` with a conditional `Assumption Delta Check`; focused review confirmed it only triggers on core assumption changes and records previous/new assumption, primary noun/source of truth, and accepted debt.
 - [ ] Task: Add a planning pre-check for stale assumptions: compare the feature brief against current
       repo state before finalizing file/interface plans.
       Test work: Run on one local plan and confirm it either records "no drift found" or lists concrete

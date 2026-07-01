@@ -50,6 +50,10 @@ Use this after `/dev-intake`.
   algorithmically specific task, a tricky data shape, or work that will be
   dispatched to a fresh-context subagent. Otherwise, name files, interfaces,
   commands, and acceptance criteria instead of embedding code.
+- Run the assumption-delta check when the plan introduces another
+  platform/provider/auth method/source of truth, makes a required field
+  optional, or turns a derived constant into user choice. Record the accepted
+  assumption change, promoted primary noun, or explicit debt in the plan.
 - Stop after producing the plan. Do not start implementation, file edits, or
   `/dev-start-phase` until the user approves the plan or explicitly asks to
   continue.
@@ -105,6 +109,26 @@ Plans are execution prompts, but they should stay lightweight:
 - Avoid: embedding routine code when the file/interface/test contract is enough
   for a local implementer to proceed.
 
+## Assumption Delta Check
+
+Most plans should not need extra ceremony. Use this checkpoint only when the
+feature changes a core planning assumption:
+
+- Adds a second platform, provider, auth method, storage layer, runtime, or
+  source of truth.
+- Makes a required field optional, or makes an optional field required.
+- Turns a derived constant, convention, or environment assumption into user
+  choice.
+- Changes which noun is primary in the domain model, such as repository vs
+  workspace, user vs organization, or local vs remote config.
+
+When triggered, add a short note in the plan that states:
+
+- Previous assumption.
+- New assumption.
+- Primary noun or source of truth after the change.
+- Accepted debt, compatibility cost, or migration risk.
+
 ## Plan Review Gate
 
 Before presenting the plan, perform this self-review and fix any failures:
@@ -119,6 +143,8 @@ Before presenting the plan, perform this self-review and fix any failures:
   consumers, commands, templates, or contracts.
 - Confirm risks and acceptance criteria are represented in phases or explicitly
   deferred.
+- If the assumption-delta triggers appear, confirm the plan records the previous
+  assumption, new assumption, primary noun/source of truth, and accepted debt.
 
 End the response by asking the user to review the plan and confirm whether to
 proceed, revise it, or choose the first task. Do not begin implementation in the

@@ -62,23 +62,22 @@ Status: In Progress
 
 Current Phase: Phase 3A - Skill Authoring and Architecture Review Discipline
 
-Current Task: Evaluate architecture review command/mode scope
+Current Task: Run Phase 3A review
 
 Current Branch: `feat/architecture-smell-guidance`
 
 Last Updated: 2026-07-01
 
-Last Completed Step: Folded compact Fowler-style smell baseline into the shared maintainability
-taxonomy.
+Last Completed Step: Evaluated architecture review scope and absorbed it into
+`/code-smell --architecture`.
 
-Next Step: Evaluate whether architecture review vocabulary should become a new detect-only command
-or a `/code-smell` mode.
+Next Step: Run the Phase 3A review.
 
-Resume Instructions: Start from Phase 3A Task 5. The current branch is
+Resume Instructions: Start by running the Phase 3A review. The current branch is
 `feat/architecture-smell-guidance`; do not create another branch unless the user
-asks. Evaluate whether `improve-codebase-architecture` should become a new
-detect-only command or whether its vocabulary should be absorbed into
-`/code-smell` as an architecture review mode. Preserve unrelated work.
+asks. Review the completed skill-authoring, smell-baseline, and architecture
+mode guidance for acceptance coverage, command overlap, and taxonomy
+duplication. Preserve unrelated work.
 
 ## Activity Log
 
@@ -118,6 +117,7 @@ detect-only command or whether its vocabulary should be absorbed into
 | 2026-07-01 | Codex | Completed Phase 3A Task 2: model-invoked description audit | Audited `pr-review`, `review-on-open`, and `review-queue` descriptions. Branches: direct PR/branch/diff code review; host-triggered event/poller review automation; local producer/consumer queue handoff. Trimmed repeated/no-op trigger phrasing such as duplicated `PR review`/`reviewing a diff`, verbose PR event explanation, and repeated local/no-webhook wording while preserving distinct invocation coverage. Validated with frontmatter `sed`, `git diff --check`, and scoped diff review. | Commit Task 2, then add progressive-disclosure guidance |
 | 2026-07-01 | Codex | Completed Phase 3A Task 3: progressive-disclosure rule of thumb | Added branch-based progressive disclosure guidance to `skills/README.md`: inline what every invocation needs; move variant-specific detail, optional paths, schemas, examples, and provider/framework mechanics behind condition-specific `references/` pointers. Audited long skill `pr-review/`: keep tier choice, reviewer-safety, inputs, and short tier algorithms inline; future cleanup candidate is duplicated reference cataloging, keeping `## References` navigation-only while detailed provider/posting/tier/schema mechanics stay in references. Validated with `rg "progressive disclosure|variant-specific|pr-review/|reference cataloging|navigation only" skills/README.md` and `git diff --check`. | Commit Task 3, then fold compact Fowler smell baseline into maintainability guidance |
 | 2026-07-01 | Codex | Completed Phase 3A Task 4: compact Fowler smell baseline | Added the compact Fowler-style baseline to `skills/simplify/references/smell-taxonomy.md` as the shared maintainability vocabulary for `/code-smell`, `/simplify`, and `pr-review`. Added safety rules that the smells are heuristics, not hard violations, and documented repo standards override the baseline. Updated `skills/simplify/SKILL.md`, `skills/pr-review/facets/maintainability.md`, and `skills/pr-review/references/review-rubric.md` to point at the shared taxonomy instead of creating a second list. Validated with `rg "Mysterious name|Feature envy|heuristics, not hard violations|documented repo standards override|shared smell vocabulary|single source of truth"` and `git diff --check`. | Commit Task 4, then evaluate architecture review command/mode scope |
+| 2026-07-01 | Codex | Completed Phase 3A Task 5: architecture review command/mode scope | Rejected a separate `improve-codebase-architecture` command for this pass and absorbed the vocabulary into `/code-smell --architecture`. Updated `commands/code-smell.md`, `skills/simplify/references/smell-taxonomy.md`, `skills/simplify/SKILL.md`, `commands/README.md`, and `commands/workflow-router.md`; added `docs/architecture-smell-mode-decision.md` with a no-code candidate report for the local `/code-smell` surface. Validated with focused `rg` checks and `git diff --check`. | Commit Task 5, then run Phase 3A review |
 
 ## Phase 1: Upstream Delta Triage
 
@@ -527,12 +527,16 @@ cheaper to carry in context, and sharper when reviewing architecture or code sme
       and smells are heuristics rather than hard violations. Updated `skills/simplify/SKILL.md`,
       `skills/pr-review/facets/maintainability.md`, and
       `skills/pr-review/references/review-rubric.md` to point at the shared taxonomy.
-- [ ] Task: Evaluate whether `improve-codebase-architecture` should become a new detect-only command,
+- [x] Task: Evaluate whether `improve-codebase-architecture` should become a new detect-only command,
       or whether its vocabulary should be absorbed into `/code-smell` as an architecture review mode.
       Test work: Produce a no-code architecture candidate report for one small local area, or document
       why this is out of scope.
-      Status: Pending.
-      Evidence: New command proposal or rejected-item note.
+      Status: Complete.
+      Evidence: Added `/code-smell --architecture` guidance and
+      `docs/architecture-smell-mode-decision.md`. The decision rejects a separate command for this
+      pass because it overlaps with the existing detect-only structural scan and would import heavier
+      HTML/grilling/domain side effects. The no-code candidate report covers the local `/code-smell`
+      and taxonomy surface.
 
 ### Expected Commits
 

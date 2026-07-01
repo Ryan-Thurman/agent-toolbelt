@@ -18,7 +18,8 @@ rewrites.
   `safe`/`confirm` changes. This is the default, post-feature tool.
 - **`/code-smell`** — detect-only scan of a path/area (not diff-bound). Surfaces deeper structural
   smells ranked by `severity × confidence`. **Never auto-applies** — it hands findings to a human
-  (or to `/simplify` for the safe subset).
+  (or to `/simplify` for the safe subset). Use `/code-smell <path> --architecture` for no-code
+  architecture/deepening candidates.
 
 ## Principles (always)
 
@@ -65,8 +66,8 @@ parallelize` (`/simplify`); `inspect | delete | inline | extract | refactor | gu
 ## References
 
 - `references/smell-taxonomy.md` — the shared smell families, compact Fowler-style baseline,
-  `/simplify` reuse/quality/efficiency axes, thin-wrapper taxonomy and keep-rule, and detection
-  cues.
+  architecture/deepening mode, `/simplify` reuse/quality/efficiency axes, thin-wrapper taxonomy and
+  keep-rule, and detection cues.
 - `references/apply-discipline.md` — the report-then-apply contract, the Chesterton's-Fence
   pre-removal checklist, behavior-preserving rules, red flags, and scope/ignore handling.
 - `references/rct-acceleration.md` — *optional*: when the rct MCP tools are available, use the graph

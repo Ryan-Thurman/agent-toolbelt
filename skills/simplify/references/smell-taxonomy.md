@@ -29,6 +29,8 @@ smell. Every finding still needs concrete evidence and a consequence.
   blocking work.
 - **Maintainability** — debug remnants, commented-out code, TODO/HACK hiding required design,
   stringly-typed constants.
+- **Architecture** — shallow modules, weak seams, leakage across module interfaces, low locality,
+  and scattered edits that suggest a deeper module would concentrate behavior.
 
 ## Compact Fowler-style baseline
 
@@ -54,6 +56,38 @@ Rank each by **severity** (high = likely bug/perf/user impact; medium = concrete
 low = useful cleanup) **× confidence** (high only after reading enough to verify; medium for strong
 lexical hints; low = worth human inspection). Do not flag subjective style. Do not recommend large
 rewrites unless a small first slice is clear.
+
+## Architecture mode (`/code-smell --architecture`)
+
+Use this mode for no-code architecture review. It absorbs the useful `improve-codebase-architecture`
+vocabulary without adding a separate visual report command.
+
+Vocabulary:
+
+- **Module** — a coherent unit with an interface and implementation.
+- **Interface** — the surface other code uses; judge whether it is smaller than the implementation.
+- **Implementation** — the hidden work the module owns.
+- **Depth** — a deep module has a small interface over meaningful implementation; a shallow module
+  exposes nearly as much complexity as it hides.
+- **Seam** — a substitution point worth naming only when it buys leverage.
+- **Adapter** — code that connects the module to an external or replaceable dependency.
+- **Locality** — related behavior can be understood and changed in one place.
+- **Leverage** — one change or test covers many call sites.
+
+Deepening cues:
+
+- A module is shallow: deleting it would just move the same complexity to the caller.
+- Callers must know implementation details, message chains, data shapes, or ordering rules.
+- One concept requires bouncing through several files with little behavior in each.
+- The same change repeatedly touches scattered files or parallel condition chains.
+- Tests target extracted helpers because the real interface is too hard to exercise.
+- A seam has one adapter and no realistic substitution point.
+- Feature-specific logic leaks into a shared module, or shared policy leaks into feature code.
+
+Report architecture candidates as `candidate, strength, files, current shape, deepening opportunity,
+locality/leverage gain, smallest next slice, ADR or constraint notes`. Strength is `strong`,
+`worth exploring`, or `speculative`. Keep it detect-only: no HTML reports, no domain-doc edits, no
+ADR creation, and no full interface proposal until the user chooses a candidate.
 
 ## `/simplify` axes (cleanup scan)
 

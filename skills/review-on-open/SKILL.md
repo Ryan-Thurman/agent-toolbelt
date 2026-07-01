@@ -12,8 +12,8 @@ reviewer** runs automatically with no one pressing the button.
 
 > This pack adds no review logic. Every path ends in `/pr-review … --comment` (the
 > `pr-review` skill). It reuses that pack's host-provider layer
-> (`skills/pr-review/references/providers.md`) and its opt-in / idempotent posting model
-> (`skills/pr-review/references/posting.md`).
+> (`shared/contracts/references/providers.md`) and its opt-in / idempotent posting model
+> (`shared/contracts/references/posting.md`).
 
 ## Two triggers, one reviewer
 
@@ -71,7 +71,7 @@ hand-off; use the event/poller here for host-originated PRs. All three end in `/
   for the next tick). Always `log` what was deferred — never silently drop.
 - **`--dry-run`** — list the PRs that would be reviewed (and why: new / head-changed) and stop. No
   review, no posting.
-- **`--host=auto|github|azure`** — override host detection (`skills/pr-review/references/providers.md`).
+- **`--host=auto|github|azure`** — override host detection (`shared/contracts/references/providers.md`).
   Default `auto` from the origin remote.
 
 ## Flow (poller)
@@ -116,6 +116,6 @@ reference; until that's wired, use the poller against Azure.
 - `references/ci-event.md` — the GitHub Actions setup (the shipped template explained), required
   secrets, untrusted-diff hardening (`pull_request` vs `pull_request_target`), idempotency marker, and
   the Azure Pipelines sketch.
-- `skills/pr-review/references/providers.md` — the host abstraction reused for PR listing and SHA reads.
-- `skills/pr-review/references/posting.md` — the opt-in / idempotent posting model `--comment` obeys.
+- `shared/contracts/references/providers.md` — the host abstraction reused for PR listing and SHA reads.
+- `shared/contracts/references/posting.md` — the opt-in / idempotent posting model `--comment` obeys.
 - `templates/review-on-open-github.yml` — the copyable workflow target repos drop into `.github/workflows/`.

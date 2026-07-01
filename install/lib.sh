@@ -21,6 +21,7 @@ gated=0          # files skipped because their harness was not selected
 # Entries are "pack<TAB>name". Reset per target by install.sh.
 INSTALLED_COMMANDS=()
 INSTALLED_SKILLS=()
+INSTALLED_SHARED_CONTRACTS=()
 
 # ---- Harness gating -----------------------------------------------------------
 
@@ -54,7 +55,7 @@ ensure_dir() {
   fi
 }
 
-# The shared, harness-agnostic folders (skills/ templates/ workflows/ examples/)
+# The shared, harness-agnostic folders (skills/ templates/ workflows/ examples/ shared/)
 # are installed under .atb/ in the target so they don't collide with a brownfield
 # project's own top-level dirs. Content shipped by the packs still refers to them by
 # their *source* path (e.g. `skills/pr-review/references/foo.md`), so we rewrite those
@@ -63,7 +64,7 @@ ensure_dir() {
 # relative distance is unchanged and they still resolve. Matching only at a path
 # boundary ([start | space | ` | ( | =]) skips relative refs (preceded by `/`) and
 # makes the rewrite idempotent (an existing `.atb/` prefix is preceded by `/`).
-ATB_REWRITE='s#(^|[[:space:](=`])(skills|templates|workflows|examples)/#\1.atb/\2/#g'
+ATB_REWRITE='s#(^|[[:space:](=`])(skills|templates|workflows|examples|shared)/#\1.atb/\2/#g'
 
 # install_copy <src> <dest> — copy while rewriting shared-folder refs to .atb/.
 install_copy() {
@@ -188,6 +189,24 @@ skill_shared() {
 template() { _install "templates/$1" ".atb/templates/$1"; }
 workflow() { _install "workflows/$1" ".atb/workflows/$1"; }
 example()  { _install "examples/$1"  ".atb/examples/$1"; }
+
+# shared_contract <rel> — support-only contracts consumed by multiple packs.
+# These are not skills and are not installed under .agents/.
+shared_contract() {
+  local rel="$1" e
+  for e in "${INSTALLED_SHARED_CONTRACTS[@]:-}"; do
+    [ "$e" = "manifest.json" ] && break
+  done
+  if [ "${e:-}" != "manifest.json" ]; then
+    _install "shared/contracts/manifest.json" ".atb/shared/contracts/manifest.json"
+    INSTALLED_SHARED_CONTRACTS+=("manifest.json")
+  fi
+  for e in "${INSTALLED_SHARED_CONTRACTS[@]:-}"; do
+    [ "$e" = "$rel" ] && return 0
+  done
+  _install "shared/contracts/$rel" ".atb/shared/contracts/$rel"
+  INSTALLED_SHARED_CONTRACTS+=("$rel")
+}
 
 # hook_json <src> — the Cursor hooks manifest (cursor only). install_file skips an existing
 # .cursor/hooks.json (no --force), so we never clobber hooks you already have — merge manually.

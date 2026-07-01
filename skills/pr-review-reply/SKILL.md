@@ -12,8 +12,8 @@ evidence-bearing reply per thread. Default output is a report (the set of reply 
 back to the host is opt-in, confirmed, and idempotent.
 
 > Complements the `pr-review` pack — it reuses that pack's host-provider layer
-> (`skills/pr-review/references/providers.md`) and its opt-in/idempotent posting philosophy
-> (`skills/pr-review/references/posting.md`).
+> (`shared/contracts/references/providers.md`) and its opt-in/idempotent posting philosophy
+> (`shared/contracts/references/posting.md`).
 
 ## Mutation Policy
 
@@ -54,7 +54,7 @@ idempotent.
 ## Flow
 
 1. **Fetch threads** (`references/thread-roundtrip.md` → "Fetch threads per host"). Detect the
-   provider (`skills/pr-review/references/providers.md`): GitHub via
+   provider (`shared/contracts/references/providers.md`): GitHub via
    `gh pr view --json reviews,comments` + inline review comments
    (`gh api .../pulls/<n>/comments`); Azure Repos via the `pullRequestThreads` API. Keep only
    **OPEN, human** threads — skip resolved/outdated ones and your own prior replies. If no host CLI
@@ -87,7 +87,7 @@ idempotent.
 - `references/thread-roundtrip.md` — the full mechanics: fetch-per-host (GitHub/Azure/degrade),
   finding the reviewed SHA + diffing since it, the triage rubric with worked examples, the reply
   contract, and posting + idempotency.
-- `skills/pr-review/references/providers.md` — the host abstraction this pack reuses (GitHub `gh` /
+- `shared/contracts/references/providers.md` — the host abstraction this pack reuses (GitHub `gh` /
   Azure Repos `az` / generic git).
-- `skills/pr-review/references/posting.md` — the opt-in, idempotent, confirm-first posting
+- `shared/contracts/references/posting.md` — the opt-in, idempotent, confirm-first posting
   philosophy this pack mirrors for `--post`.

@@ -46,9 +46,12 @@ for skill_md in "$ROOT"/skills/*/SKILL.md; do
     fi
   fi
 
-  refs="$(grep -Eo 'skills/[-A-Za-z0-9_./]+/references/[-A-Za-z0-9_./]+\.md|references/[-A-Za-z0-9_./]+\.md' "$skill_md" | sort -u || true)"
+  refs="$(grep -Eo 'shared/contracts/references/[-A-Za-z0-9_./]+\.md|skills/[-A-Za-z0-9_./]+/references/[-A-Za-z0-9_./]+\.md|references/[-A-Za-z0-9_./]+\.md' "$skill_md" | sort -u || true)"
   for ref in $refs; do
     case "$ref" in
+      shared/*)
+        target="$ROOT/$ref"
+        ;;
       skills/*)
         target="$ROOT/$ref"
         ;;
@@ -61,6 +64,15 @@ for skill_md in "$ROOT"/skills/*/SKILL.md; do
       status=1
     fi
   done
+done
+
+for ref in "$ROOT"/shared/contracts/references/*.md; do
+  [ -f "$ref" ] || continue
+  rel="${ref#"$ROOT"/shared/contracts/}"
+  if ! grep -q "\"path\": \"$rel\"" "$ROOT/shared/contracts/manifest.json"; then
+    echo "! shared/contracts/manifest.json: missing $rel" >&2
+    status=1
+  fi
 done
 
 if [ "$status" -eq 0 ]; then

@@ -65,8 +65,8 @@ change here; the gate follows whatever the remote is.
 
 ## Flow
 
-The main agent runs this at a phase boundary, with the phase's work already pushed and a PR open
-(resolve/acquire the diff via the `pr-review` provider layer, `skills/pr-review/references/targets-and-diff.md`).
+The main agent runs this at a phase boundary, with the phase's work already pushed and a PR open.
+The review subagent resolves and acquires the phase diff through `pr-review`.
 
 1. **Spawn the review subagent.** One Task sub-agent, review-only (must not edit code): instruct it to
    run `/pr-review <pr> --comment --tier=<t>` — it reviews the phase diff, **posts the findings inline**

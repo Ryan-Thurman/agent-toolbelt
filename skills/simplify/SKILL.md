@@ -37,10 +37,11 @@ Never change behavior or edit tests to make cleanup pass.
 - **Report-then-apply.** Propose findings first; apply only what the user opts into, in a separate
   step. Never silently rewrite.
 - **Fewer, higher-conviction.** A short list of defensible deletions beats a flood of style nits.
-- **Keep one maintainability vocabulary.** `references/smell-taxonomy.md` is the shared source for
-  `/code-smell`, `/simplify`, and `pr-review` maintainability. This skill owns the *apply* side.
-  Leave ambitious structural "code judo" rewrites to `pr-review --tier=deep` (advisory);
-  simplify stays small and safe.
+- **Keep one maintainability vocabulary.**
+  `shared/contracts/references/maintainability-taxonomy.md` is the shared source for `/code-smell`,
+  `/simplify`, and `pr-review` maintainability. This skill owns the *apply* side. Leave ambitious
+  structural "code judo" rewrites to `pr-review --tier=deep` (advisory); simplify stays small and
+  safe.
 - **Respect fences.** Honor `simplify-ignore` block markers and existing abstraction boundaries;
   be especially careful with error handling, security logic, migration files, and code that looks
   unused but is called via reflection/eval.
@@ -59,8 +60,8 @@ parallelize` (`/simplify`); `inspect | delete | inline | extract | refactor | gu
 ## Flow
 
 1. **Scope** the target (default: the working diff if dirty; or a named path/area for `/code-smell`).
-2. **Detect** candidates using `references/smell-taxonomy.md`. For reuse candidates, search the
-   codebase for the existing helper first and quote the symbol you'd use.
+2. **Detect** candidates using `shared/contracts/references/maintainability-taxonomy.md`. For reuse
+   candidates, search the codebase for the existing helper first and quote the symbol you'd use.
 3. **Make the case** for each (rootIssue → consequence → benefit) and assign a `risk` tier; drop
    anything without a real consequence.
 4. **Report** the findings list (no prose dump). Stop here for `/code-smell`.
@@ -69,7 +70,7 @@ parallelize` (`/simplify`); `inspect | delete | inline | extract | refactor | gu
 
 ## References
 
-- `references/smell-taxonomy.md` — the shared smell families, compact Fowler-style baseline,
+- `shared/contracts/references/maintainability-taxonomy.md` — the shared smell families, compact Fowler-style baseline,
   architecture/deepening mode, `/simplify` reuse/quality/efficiency axes, thin-wrapper taxonomy and
   keep-rule, and detection cues.
 - `references/apply-discipline.md` — the report-then-apply contract, the Chesterton's-Fence

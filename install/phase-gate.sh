@@ -4,6 +4,7 @@ pack_phase_gate() {
 
   skill phase-gate SKILL.md
   skill phase-gate references/merge.md
+  shared_contract references/providers.md
 
   workflow phase-gate-solo-workflow.md
   workflow phase-gate-team-workflow.md

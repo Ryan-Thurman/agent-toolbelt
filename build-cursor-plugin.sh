@@ -36,7 +36,7 @@ done
 
 echo "Building Cursor plugin into: $OUT"
 rm -rf "$OUT"
-mkdir -p "$OUT/.cursor-plugin" "$OUT/skills" "$OUT/commands"
+mkdir -p "$OUT/.cursor-plugin" "$OUT/skills" "$OUT/commands" "$OUT/shared"
 [ "$WITH_RULES" = "1" ] && mkdir -p "$OUT/rules"
 
 # --- Manifest -----------------------------------------------------------------
@@ -63,6 +63,11 @@ for d in "$ROOT"/skills/*/; do
   [ -f "$d/SKILL.md" ] || continue          # only real skill folders, skip README etc.
   cp -R "$d" "$OUT/skills/" && skill_count=$((skill_count + 1))
 done
+
+# --- Shared support contracts -------------------------------------------------
+if [ -d "$ROOT/shared/contracts" ]; then
+  cp -R "$ROOT/shared/contracts" "$OUT/shared/"
+fi
 
 # --- Rules (*.mdc) — opt-in only ----------------------------------------------
 # From templates/cursor-rules-*.mdc (strip the cursor-rules- prefix) and .cursor/rules/.

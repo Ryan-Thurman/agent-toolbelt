@@ -63,6 +63,10 @@ if [ "$skill_count" -eq 0 ]; then
   echo "plugin build contains no skills" >&2
   exit 1
 fi
+if [ ! -f "$OUT/shared/contracts/manifest.json" ]; then
+  echo "plugin build is missing shared contracts manifest" >&2
+  exit 1
+fi
 
 for path in "$OUT/hooks" "$OUT/rules" "$OUT/.cursor" "$OUT/.claude" "$OUT/.agents"; do
   if [ -e "$path" ]; then

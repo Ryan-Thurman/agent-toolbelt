@@ -5,7 +5,8 @@ and safety. Set `"facet": "maintainability"` on every finding.
 
 ## What to flag
 
-Use the shared smell vocabulary in `../../simplify/references/smell-taxonomy.md` as the baseline:
+Use the shared maintainability vocabulary in
+`shared/contracts/references/maintainability-taxonomy.md` as the baseline:
 complexity, duplication, coupling, state, errors, performance, maintainability, thin wrappers, and
 the compact Fowler-style cues. Treat those cues as heuristics, not hard violations; documented repo
 standards override the baseline.

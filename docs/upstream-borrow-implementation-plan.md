@@ -60,22 +60,23 @@ Primary upstream ranges reviewed:
 
 Status: In Progress
 
-Current Phase: Phase 2 - PR Review Quality Updates
+Current Phase: Phase 3 - Workflow, Install, and Packaging Hardening
 
-Current Task: Phase 2 review
+Current Task: Evaluate install parity golden fixtures
 
 Current Branch: `feat/atb-namespace-install`
 
 Last Updated: 2026-07-01
 
-Last Completed Step: Fixed Phase 2 review finding: contradictory approve/needs-discussion verdict invariant.
+Last Completed Step: Phase 2 review passed after fixing verdict invariant contradiction.
 
-Next Step: Rerun Phase 2 review checks, then start Phase 3 if clean.
+Next Step: Evaluate whether install parity should be tested with golden fixtures for supported harnesses.
 
-Resume Instructions: Start from Phase 2 review. The current branch is already
+Resume Instructions: Start from Phase 3 Task 1. The current branch is already
 `feat/atb-namespace-install`; do not create another branch unless the user asks.
-Phase 2 tasks are complete. Run a Phase 2 review, address any blocking findings,
-then start Phase 3. Preserve unrelated work.
+Evaluate whether install parity golden fixtures cover a real current risk in
+this repo. Add a focused fixture/check only if it catches drift current checks
+miss; otherwise document the rejection. Preserve unrelated work.
 
 ## Activity Log
 
@@ -99,6 +100,7 @@ then start Phase 3. Preserve unrelated work.
 | 2026-07-01 | Codex | Completed Phase 2 Task 3: critic decision contract | Compared `fan-out.md`, `deep-tier.md`, and `dual-judge.md`; added standard critic decisions `KEEP`/`DROP`/`DOWNGRADE`/`QUESTION` to `fan-out.md`; confirmed with `rg "KEEP|DROP|DOWNGRADE|QUESTION|critic decision|falsifying evidence|silently remove"` | Commit Task 3, then add eval ledger guidance |
 | 2026-07-01 | Codex | Completed Phase 2 Task 4: eval ledger guidance | Updated `skills/pr-review/references/benchmarking.md` and `skills/pr-review/benchmarks/results.md`; confirmed with `rg "eval ledger|eval-ledger|JSONL|Committed benchmark summary|Local scratch ledger|critic"` | Commit Task 4, then run Phase 2 review |
 | 2026-07-01 | Codex | Fixed Phase 2 review finding: verdict invariant contradiction | Updated `skills/pr-review/SKILL.md`, `output-format.md`, `review-rubric.md`, `fan-out.md`, and `rejection-memory.md`; confirmed no stale `APPROVE ⇔ 0 blockers` wording with `rg "APPROVE ⇔ 0 blockers|APPROVE.*iff zero blockers|blockers > 0|approval-blocking"` | Rerun Phase 2 review |
+| 2026-07-01 | Codex | Ran Phase 2 review | `git diff --check c53c1e8..HEAD`; `scripts/check-skill-sync.sh`; `rg "APPROVE ⇔ 0 blockers|APPROVE.*iff zero blockers|blockers > 0|approval-blocking|focus-note|Bucket/verdict invariants|critic decision|Optional eval ledger"` | Start Phase 3 |
 
 ## Phase 1: Upstream Delta Triage
 
@@ -307,10 +309,10 @@ Manual or integration checks:
 
 ### Phase Review Checklist
 
-- [ ] Phase goal met
-- [ ] Acceptance criteria covered or still tracked
-- [ ] Tests/checks completed or gaps listed
-- [ ] No blocking performance/security/code quality issues
+- [x] Phase goal met
+- [x] Acceptance criteria covered or still tracked
+- [x] Tests/checks completed or gaps listed
+- [x] No blocking performance/security/code quality issues
 
 ## Phase 3: Workflow, Install, and Packaging Hardening
 

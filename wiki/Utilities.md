@@ -7,6 +7,7 @@ test authoring, release, codebase-wide change, handoff, and tracker sync.
 - [Cover](#cover) — test authoring.
 - [Ship It](#ship-it) — release readiness.
 - [Retrofit](#retrofit) — one change across many sites.
+- [Worktree](#worktree) — isolated worktrees for parallel agents.
 - [Handoff](#handoff) — resumable handoffs.
 - [Ticket Sync](#ticket-sync) — publish tickets to a tracker.
 
@@ -89,6 +90,27 @@ adversarially checked, zero references to the old path before it's removed. Ever
 It's a deterministic fan-out, so it maps onto the `Workflow` orchestration tool and is **explicitly
 opt-in** (it can spawn many agents). Distinct from `/simplify`, which makes many small *different*
 cleanups in a diff; retrofit makes the *same* change in *many* places.
+
+## Worktree
+
+The `worktree` tool gives **independent agents sharing one directory of repos** a safe way to
+isolate work: **one worktree per task, on its own branch**, instead of a `git checkout` in one
+checkout that yanks the branch out from under another agent.
+
+```sh
+./install.sh --harness all worktree /path/to/project
+```
+
+`/worktree new [repo] [branch]` creates a worktree on a new branch and prints the path to `cd` into;
+omit the branch and it auto-names `agent/<repo|task>-<n>` so concurrent agents never collide (an
+explicit name errors if taken). Worktrees live **outside** the repos at
+`<parent>/.worktrees/<repo>/<branch-slug>`, so repos stay clean and `worktree list --all` shows every
+agent's checkout across every repo. `worktree rm <branch> --delete-branch` tears one down (refusing a
+dirty tree or unmerged branch without `--force`). Pure bash + git — no runtime.
+
+Scope boundary: this is for **cross-session** work the harness can't coordinate. Parallel fan-out
+*inside a single `Workflow` run* should use the tool's `isolation: 'worktree'` (auto-cleanup)
+instead — the same discipline `retrofit` uses for its in-run transforms.
 
 ## Handoff
 

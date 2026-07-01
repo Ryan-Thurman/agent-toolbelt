@@ -74,6 +74,7 @@ Routing guide:
 - Clean up / slim a diff after a feature (apply): `/simplify`.
 - Scan an area for structural smells (detect-only): `/code-smell`.
 - Apply one defined change across many sites (library swap / API rename / upgrade): `/retrofit`.
+- Isolate work so parallel agents in a shared polyrepo dir don't clobber each other's branch: `/worktree new`.
 - Root-cause only, no fix: `/rca --diagnose`.
 - Pause or transfer work to a fresh session/agent: `/handoff`.
 - Repeated phase boundaries or planned context resets: `/phase-status`, then

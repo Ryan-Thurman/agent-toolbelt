@@ -57,6 +57,7 @@ The **[wiki](wiki/Home.md)** is the deep dive. Quick map:
 | `cover` | Author/strengthen behavior-pinning tests + a detect-only coverage-gap scan. |
 | `ship-it` | Lightweight release readiness: go/no-go, rollback plan, release notes, rollout plan. |
 | `retrofit` | Apply one defined change across every site that needs it — discover, transform, verify. |
+| `worktree` | Isolated git worktrees so parallel agents share a polyrepo dir without clobbering each other's branch — one worktree per task, collision-safe naming. |
 | `ticket-sync` | Provider-agnostic adapter: publish tickets to GitHub Issues, Jira, or Azure Boards. |
 | `handoff` | Cross-cutting `/handoff` that writes a resumable handoff so a fresh agent can continue. |
 | `cursor-hooks` | Project-level Cursor hooks: doc-sync gate on `git commit`, `/pr-review` nudge on `git push`. |

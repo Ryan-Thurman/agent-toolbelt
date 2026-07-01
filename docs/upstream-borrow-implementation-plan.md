@@ -58,27 +58,24 @@ Primary upstream ranges reviewed:
 
 ## Current State
 
-Status: In Progress
+Status: Ready for PR
 
-Current Phase: Phase 3A - Skill Authoring and Architecture Review Discipline
+Current Phase: Phase 4 - Final Hardening and PR Readiness
 
-Current Task: Fold compact Fowler smell baseline into simplify/pr-review guidance
+Current Task: Open PR
 
-Current Branch: `feat/atb-namespace-install`
+Current Branch: `feat/architecture-smell-guidance`
 
 Last Updated: 2026-07-01
 
-Last Completed Step: Added progressive-disclosure guidance and audited `pr-review/` for sprawl.
+Last Completed Step: Ran final PR readiness review and fixed the standalone `pr-review` install
+support reference.
 
-Next Step: Fold the compact Fowler smell baseline into existing maintainability guidance without
-creating a second taxonomy.
+Next Step: Push `feat/architecture-smell-guidance` and open a PR to `main`.
 
-Resume Instructions: Start from Phase 3A Task 4. The current branch is already
-`feat/atb-namespace-install`; do not create another branch unless the user asks.
-Fold the compact Fowler smell baseline into existing `simplify`/`pr-review`
-maintainability guidance without duplicating the current taxonomy. Verify the
-final vocabulary labels smells as heuristics, not hard violations. Preserve
-unrelated work.
+Resume Instructions: The branch is ready for PR. The current branch is
+`feat/architecture-smell-guidance`; push it and open a PR to `main` when the user
+asks. Preserve unrelated work.
 
 ## Activity Log
 
@@ -117,6 +114,12 @@ unrelated work.
 | 2026-07-01 | Codex | Completed Phase 3A Task 1: skill-authoring checklist | Added `Skill authoring checklist` to `skills/README.md`, covering invocation choice, context load, trigger branches, progressive disclosure, completion criteria, single source of truth, no-op pruning, and sediment. Applied it to `shape-up/`: keep the model-invoked description because its fuzzy-idea/ticket trigger and bug/regulated-lane exclusions are distinct; keep `references/interrogation.md` behind a pointer and do not inline branch-only questioning techniques into `SKILL.md`. Validated with `rg "Skill authoring checklist|Decide invocation first|description pay|completion criteria|Prune no-ops|Applied check|shape-up" skills/README.md` and `git diff --check` | Commit Task 1, then audit model-invoked descriptions |
 | 2026-07-01 | Codex | Completed Phase 3A Task 2: model-invoked description audit | Audited `pr-review`, `review-on-open`, and `review-queue` descriptions. Branches: direct PR/branch/diff code review; host-triggered event/poller review automation; local producer/consumer queue handoff. Trimmed repeated/no-op trigger phrasing such as duplicated `PR review`/`reviewing a diff`, verbose PR event explanation, and repeated local/no-webhook wording while preserving distinct invocation coverage. Validated with frontmatter `sed`, `git diff --check`, and scoped diff review. | Commit Task 2, then add progressive-disclosure guidance |
 | 2026-07-01 | Codex | Completed Phase 3A Task 3: progressive-disclosure rule of thumb | Added branch-based progressive disclosure guidance to `skills/README.md`: inline what every invocation needs; move variant-specific detail, optional paths, schemas, examples, and provider/framework mechanics behind condition-specific `references/` pointers. Audited long skill `pr-review/`: keep tier choice, reviewer-safety, inputs, and short tier algorithms inline; future cleanup candidate is duplicated reference cataloging, keeping `## References` navigation-only while detailed provider/posting/tier/schema mechanics stay in references. Validated with `rg "progressive disclosure|variant-specific|pr-review/|reference cataloging|navigation only" skills/README.md` and `git diff --check`. | Commit Task 3, then fold compact Fowler smell baseline into maintainability guidance |
+| 2026-07-01 | Codex | Completed Phase 3A Task 4: compact Fowler smell baseline | Added the compact Fowler-style baseline to `skills/simplify/references/smell-taxonomy.md` as the shared maintainability vocabulary for `/code-smell`, `/simplify`, and `pr-review`. Added safety rules that the smells are heuristics, not hard violations, and documented repo standards override the baseline. Updated `skills/simplify/SKILL.md`, `skills/pr-review/facets/maintainability.md`, and `skills/pr-review/references/review-rubric.md` to point at the shared taxonomy instead of creating a second list. Validated with `rg "Mysterious name|Feature envy|heuristics, not hard violations|documented repo standards override|shared smell vocabulary|single source of truth"` and `git diff --check`. | Commit Task 4, then evaluate architecture review command/mode scope |
+| 2026-07-01 | Codex | Completed Phase 3A Task 5: architecture review command/mode scope | Rejected a separate `improve-codebase-architecture` command for this pass and absorbed the vocabulary into `/code-smell --architecture`. Updated `commands/code-smell.md`, `skills/simplify/references/smell-taxonomy.md`, `skills/simplify/SKILL.md`, `commands/README.md`, and `commands/workflow-router.md`; added `docs/architecture-smell-mode-decision.md` with a no-code candidate report for the local `/code-smell` surface. Validated with focused `rg` checks and `git diff --check`. | Commit Task 5, then run Phase 3A review |
+| 2026-07-01 | Codex | Ran Phase 3A review | Result: Pass. Acceptance / Spec: Pass. Code Quality: Pass. Verification Reach: skill-authoring guidance, shared smell taxonomy, PR-review maintainability pointers, and `/code-smell --architecture` routing were verified from the plan, diff, and focused checks; no Failed or Not Inferable items affected the phase decision. Checks: `git diff --check origin/main..HEAD`; `scripts/check-skill-sync.sh`; `rg -n -e "single source of truth|heuristics, not hard violations|documented repo standards override|Mysterious name|Feature envy|Architecture mode|--architecture|deepening candidates|no-code candidate report" skills commands docs`; `git diff --name-only origin/main..HEAD`. | Start Phase 4 |
+| 2026-07-01 | Codex | Completed Phase 4 Task 1: final hardening checks | Final checks passed for the branch diff. Checks: `git diff --check origin/main..HEAD`; `scripts/check-skill-sync.sh`; `scripts/check-cursor-plugin-build.sh`; `./install.sh --list`; `./install.sh --dry-run --harness all simplify /private/tmp/agent-toolbelt-phase4-simplify`; `./install.sh --dry-run --harness all pr-review /private/tmp/agent-toolbelt-phase4-pr-review`; `rg -n -e "--architecture|Architecture mode|single source of truth|heuristics, not hard violations|documented repo standards override|no-code deepening|deepening candidates|HTML/CDN|grilling" commands skills docs`. | Commit Task 1, then review README/docs for user-facing behavior changes |
+| 2026-07-01 | Codex | Completed Phase 4 Task 2: user-facing docs review | Updated concise user-facing summaries for the new `/code-smell --architecture` behavior in `README.md`, `wiki/Home.md`, `wiki/Utilities.md`, and `docs/phase-command-map.md`. Left deeper docs unchanged where command docs already carry the detailed behavior. Validated with `rg -n -e "architecture/deepening|--architecture|deepening candidates|detect-only scans" README.md wiki/Home.md wiki/Utilities.md docs/phase-command-map.md commands/README.md commands/code-smell.md commands/workflow-router.md` and `git diff --check`. | Commit Task 2, then run final PR readiness review |
+| 2026-07-01 | Codex | Ran final PR readiness review | Result: Ready for PR after fix. Initial blocking finding: standalone `pr-review` installs referenced `../../simplify/references/smell-taxonomy.md` without installing that support file. Fixed by updating `install/pr-review.sh` to install the shared smell taxonomy support file into `.atb/skills/simplify/references/` and `.agents/skills/simplify/references/` without registering the whole `simplify` skill. Final checks passed: `git diff --check origin/main..HEAD`; `scripts/check-skill-sync.sh`; `scripts/check-cursor-plugin-build.sh`; `bash -n install.sh install/*.sh scripts/check-cursor-plugin-build.sh scripts/check-skill-sync.sh build-cursor-plugin.sh`; `./install.sh --dry-run --harness all pr-review /private/tmp/agent-toolbelt-phase4-pr-review-final`; `./install.sh --dry-run --harness all simplify /private/tmp/agent-toolbelt-phase4-simplify-final`; focused `rg` over install/commands/skills/docs/wiki. | Push branch and open PR |
 
 ## Phase 1: Upstream Delta Triage
 
@@ -516,18 +519,26 @@ cheaper to carry in context, and sharper when reviewing architecture or code sme
       audited `pr-review/`: keep tier choice, safety, inputs, and short tier algorithms inline; use
       future edits to keep `## References` navigation-only and leave detailed provider, posting,
       tier, and schema mechanics in referenced files.
-- [ ] Task: Fold the compact Fowler smell baseline into `simplify`/`code-smell` or `pr-review`
+- [x] Task: Fold the compact Fowler smell baseline into `simplify`/`code-smell` or `pr-review`
       maintainability guidance without duplicating our existing taxonomy.
       Test work: Verify the final taxonomy has one source of truth and labels smells as heuristics, not
       hard violations.
-      Status: Pending.
-      Evidence: Updated `skills/simplify/references/smell-taxonomy.md` or PR review facet.
-- [ ] Task: Evaluate whether `improve-codebase-architecture` should become a new detect-only command,
+      Status: Complete.
+      Evidence: Updated `skills/simplify/references/smell-taxonomy.md` as the single source of truth
+      with a compact Fowler-style baseline and safety rules: repo standards override the baseline,
+      and smells are heuristics rather than hard violations. Updated `skills/simplify/SKILL.md`,
+      `skills/pr-review/facets/maintainability.md`, and
+      `skills/pr-review/references/review-rubric.md` to point at the shared taxonomy.
+- [x] Task: Evaluate whether `improve-codebase-architecture` should become a new detect-only command,
       or whether its vocabulary should be absorbed into `/code-smell` as an architecture review mode.
       Test work: Produce a no-code architecture candidate report for one small local area, or document
       why this is out of scope.
-      Status: Pending.
-      Evidence: New command proposal or rejected-item note.
+      Status: Complete.
+      Evidence: Added `/code-smell --architecture` guidance and
+      `docs/architecture-smell-mode-decision.md`. The decision rejects a separate command for this
+      pass because it overlaps with the existing detect-only structural scan and would import heavier
+      HTML/grilling/domain side effects. The no-code candidate report covers the local `/code-smell`
+      and taxonomy surface.
 
 ### Expected Commits
 
@@ -554,10 +565,10 @@ Manual or integration checks:
 
 ### Phase Review Checklist
 
-- [ ] Phase goal met
-- [ ] Acceptance criteria covered or still tracked
-- [ ] Tests/checks completed or gaps listed
-- [ ] No blocking performance/security/code quality issues
+- [x] Phase goal met
+- [x] Acceptance criteria covered or still tracked
+- [x] Tests/checks completed or gaps listed
+- [x] No blocking performance/security/code quality issues
 
 ## Phase 4: Final Hardening and PR Readiness
 
@@ -567,19 +578,24 @@ Ensure the borrowed updates are coherent, documented, and ready for review.
 
 ### Tasks
 
-- [ ] Task: Run final checks across changed docs/skills/install scripts.
+- [x] Task: Run final checks across changed docs/skills/install scripts.
       Test work: `scripts/check-skill-sync.sh`, relevant shell syntax checks, installer dry-runs, and any
       added tests.
-      Status: Pending.
-      Evidence: Command output summarized in Activity Log.
-- [ ] Task: Update README/docs only where user-facing behavior changed.
+      Status: Complete.
+      Evidence: `git diff --check origin/main..HEAD`, `scripts/check-skill-sync.sh`,
+      `scripts/check-cursor-plugin-build.sh`, `./install.sh --list`, dry-run installs for
+      `simplify` and `pr-review`, and focused `rg` checks all passed.
+- [x] Task: Update README/docs only where user-facing behavior changed.
       Test work: Documentation review.
-      Status: Pending.
-      Evidence: Changed docs cite the new behavior without duplicating implementation details.
-- [ ] Task: Run final PR readiness review.
+      Status: Complete.
+      Evidence: Updated `README.md`, `wiki/Home.md`, `wiki/Utilities.md`, and
+      `docs/phase-command-map.md` to cite `/code-smell --architecture` at summary level without
+      duplicating command implementation details. Focused `rg` checks and `git diff --check` passed.
+- [x] Task: Run final PR readiness review.
       Test work: Dev-lite PR review pass against branch diff.
-      Status: Pending.
-      Evidence: Final PR Review Result updated below.
+      Status: Complete.
+      Evidence: Final PR readiness review found and fixed one install/package blocker, then passed
+      rerun checks. Final PR Review Result updated below.
 
 ### Expected Commits
 
@@ -605,10 +621,10 @@ Manual or integration checks:
 
 ### Phase Review Checklist
 
-- [ ] Phase goal met
-- [ ] Acceptance criteria covered or still tracked
-- [ ] Tests/checks completed or gaps listed
-- [ ] No blocking performance/security/code quality issues
+- [x] Phase goal met
+- [x] Acceptance criteria covered or still tracked
+- [x] Tests/checks completed or gaps listed
+- [x] No blocking performance/security/code quality issues
 
 ## Final PR Review Plan
 
@@ -625,10 +641,10 @@ Before PR is marked ready, review:
 
 ## PR / Branch Status
 
-Work Branch: `feat/atb-namespace-install`
+Work Branch: `feat/architecture-smell-guidance`
 
 PR Target Branch: `main`
 
 PR URL: TBD
 
-Final PR Review Result: Not Started
+Final PR Review Result: Ready for PR

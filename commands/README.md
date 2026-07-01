@@ -15,7 +15,8 @@ unclear inside a pilot repo, start with `/workflow-router`.
 - `/to-issues` - slice an approved brief into vertical-slice tickets.
 - `/ticket-sync` - publish/sync sliced tickets to the repo's tracker (GitHub Issues / Jira / Azure Boards).
 - `/simplify` - actively clean up a diff/area and apply cleanups on opt-in.
-- `/code-smell` - detect-only scan of an area for structural smells.
+- `/code-smell` - detect-only scan of an area for structural smells; use `--architecture` for
+  no-code deepening candidates.
 - `/cover` - author/strengthen behavior-pinning tests for a diff/module/bug repro, on opt-in.
 - `/cover-gaps` - detect-only scan for missing/weak coverage, ranked by risk × likelihood.
 - `/ship-it` - prepare a merged change for release (readiness, rollback, notes, rollout).
@@ -110,7 +111,7 @@ Some commands overlap. Use these tables to pick the right one.
 | Command | Use it for |
 |---|---|
 | `/simplify` | *Apply* high-conviction cleanups to a diff/area (dead code, thin wrappers, reuse, small inefficiencies), on opt-in. Many small, *different* changes. |
-| `/code-smell` | *Detect-only* scan of an area for structural smells ranked by severity × confidence. Applies nothing. |
+| `/code-smell` | *Detect-only* scan of an area for structural smells ranked by severity × confidence; `--architecture` reports deepening candidates. Applies nothing. |
 | `/pr-review` | *Find* bugs/quality issues with a merge verdict on changed lines. Applies nothing. |
 | `/retrofit` | Apply *one defined* change across *every* site (library swap, API rename, framework upgrade). The same change, many places — discover/transform/verify, opt-in. |
 

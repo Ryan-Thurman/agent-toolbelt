@@ -1,6 +1,6 @@
 ---
 name: bug-to-fix
-description: Diagnose and fix a reported bug — triage, reproduce, root-cause analysis, minimal fix, and verification. Use when a bug ticket or defect arrives, when something is broken/throwing/failing/slow and needs investigation, when you need an RCA / root-cause analysis, or when turning a confirmed bug into a verified fix and PR.
+description: Diagnose and fix reported bugs through triage, reproduction, root-cause analysis, minimal repair, and verification. Use for bug tickets, broken/failing/slow behavior, RCA requests, or turning a confirmed defect into a verified fix.
 ---
 
 # bug-to-fix

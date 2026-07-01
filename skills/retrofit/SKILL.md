@@ -1,6 +1,6 @@
 ---
 name: retrofit
-description: Apply one defined change across every site that needs it — a library swap, API rename, framework upgrade, or pattern replacement — discovering all sites, transforming each in isolation, and verifying exhaustively. Use for codebase-wide mechanical-ish changes (e.g. moment→dayjs, a renamed API across N call sites). Not for deciding what the change should be (use shape-up), and not a database migration.
+description: Apply one defined change across every required site, such as a library swap, API rename, framework upgrade, or pattern replacement. Use for codebase-wide mechanical changes. Not for deciding the change or database migrations.
 ---
 
 # retrofit

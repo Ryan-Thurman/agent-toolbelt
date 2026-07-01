@@ -1,6 +1,6 @@
 ---
 name: ai-feature-delivery
-description: Create and validate release-traceable feature delivery artifacts for regulated or cross-functional software work. Use when defining a feature, stewarding feature status, drafting SDD/doc-impact artifacts, slicing refinement tickets, checking gates, drafting stakeholder pings, planning dev work from feature context, reviewing PR traceability/doc deltas, preparing QA handoff, or controlling release documentation.
+description: Create release-traceable delivery artifacts for regulated or cross-functional software work. Use when defining feature records, SDD/doc-impact artifacts, refinement tickets, gate checks, stakeholder pings, QA handoff, PR traceability, or release documentation.
 ---
 
 # ai-feature-delivery

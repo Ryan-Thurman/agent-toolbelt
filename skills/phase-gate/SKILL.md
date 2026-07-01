@@ -1,6 +1,6 @@
 ---
 name: phase-gate
-description: An in-loop PR-review gate for a phased build. At a phase boundary the main agent delegates the review to a fresh subagent running pr-review, which posts the review to the GitHub/Azure PR as inline comments. Then either (team mode, default) the gate stops for human review+merge, or (solo mode, --merge) the findings also return to the main agent which fixes blockers and merges the phase PR before moving on. Use to auto-review per-phase PRs without stopping to review by hand. Single pass by default; the reviewer is isolated, fix + merge stay with the main agent.
+description: Run a synchronous PR-review gate at a phased-build boundary. Use when each phase PR needs an isolated subagent review, posted findings, and either team handoff or solo fix-and-merge routing.
 ---
 
 # phase-gate

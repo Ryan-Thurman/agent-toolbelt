@@ -1,6 +1,6 @@
 ---
 name: pr-review-reply
-description: Handle the round-trip on a PR review — read the human reviewer's threads, triage each, re-review only the code touched since the review, and reply per-thread. Use to respond to PR comments, address review feedback, answer reviewer threads, or close the loop after a /pr-review. Posting replies is opt-in and idempotent.
+description: Handle the PR-review round-trip: read reviewer threads, triage each one, re-review only touched code, and draft per-thread replies. Use to address PR comments, answer review feedback, or close a /pr-review loop.
 ---
 
 # pr-review-reply

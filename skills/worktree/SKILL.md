@@ -1,6 +1,6 @@
 ---
 name: worktree
-description: Create, list, and remove isolated git worktrees so multiple agents can work a shared directory of repos without clobbering each other's branch. Each agent carves out its own worktree on its own branch (one checkout per task), works there, and removes it when done. Use when several agents/sessions share a polyrepo working dir and a plain `git checkout` in one would change the branch under another, or whenever a task wants an isolated checkout off the main tree. Pure bash + git — no runtime, no API.
+description: Create, list, and remove isolated git worktrees for multi-agent shared repo directories. Use when several sessions need separate branches, or when a task wants an isolated checkout without disturbing the main tree.
 ---
 
 # worktree

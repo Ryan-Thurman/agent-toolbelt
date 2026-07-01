@@ -1,6 +1,6 @@
 ---
 name: simplify
-description: Actively clean up existing code — delete dead code and debug remnants, inline thin wrappers, reuse existing helpers, and fix small inefficiencies, applying changes on opt-in. Use after finishing a feature, to reduce a diff before PR, or when asked to simplify / clean up / remove cruft. For finding bugs or a review verdict, use pr-review instead.
+description: Apply behavior-preserving cleanup on opt-in: delete dead code, inline thin wrappers, reuse helpers, and fix small inefficiencies. Use after feature work, before PR, or when asked to simplify. For verdicts use pr-review.
 ---
 
 # simplify

@@ -1,6 +1,6 @@
 ---
 name: ticket-sync
-description: Publish/sync the ticket files the slicers produce (refine-to-tickets / to-issues / bug-intake) to whichever issue tracker a repo declares — GitHub Issues, Jira, or Azure Boards. Provider-agnostic: one flow, swappable tracker, chosen by a repo-local .tickets.md config. Idempotent (records the tracker key back into each ticket; updates instead of duplicating), confirmation-gated with a dry-run preview, and degrades to a publish-ready manifest when no tracker CLI/credentials are present. Use after slicing work into tickets to get them into the tracker.
+description: Publish sliced ticket files to the repo-declared tracker: GitHub Issues, Jira, or Azure Boards. Use after refine-to-tickets, to-issues, or bug-intake. Provider-agnostic, idempotent, confirmation-gated, and manifest-only when offline.
 ---
 
 # ticket-sync

@@ -1,6 +1,6 @@
 ---
 name: cover
-description: Author and strengthen tests for a diff, a module, or a bug reproduction — behavior-pinning tests that capture current (or intended-and-agreed) behavior, applied on opt-in. For a bug repro, write the test that fails before the fix and passes after (a red→green regression lock). Detect the project's test framework first; never edit production code to make a test pass. For finding what's untested, use `/cover-gaps`; for a merge verdict use `/pr-review`.
+description: Author behavior-pinning tests for a diff, module, or bug reproduction, applied on opt-in. Use when adding regression coverage or strengthening tests. For finding untested areas use /cover-gaps; for a merge verdict use /pr-review.
 ---
 
 # cover

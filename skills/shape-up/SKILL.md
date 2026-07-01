@@ -1,6 +1,6 @@
 ---
 name: shape-up
-description: Interrogate a vague feature request into a tight, agreed brief before any building — one question at a time, resolving from the codebase first, surfacing contradictions and missing decisions. Use to shape a fuzzy idea or ticket before /dev-intake or /dev-plan. For broken behavior use bug-to-fix; for heavy regulated features use ai-feature-delivery.
+description: Shape a vague feature request into a tight, agreed brief before building. Use for fuzzy ideas or tickets before /dev-intake or /dev-plan. For broken behavior use bug-to-fix; for regulated features use ai-feature-delivery.
 ---
 
 # shape-up

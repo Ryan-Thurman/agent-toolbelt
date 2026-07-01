@@ -1,6 +1,6 @@
 ---
 name: review-queue
-description: Local SQLite-backed queue for handing PR-review jobs from PR-opening agents to review workers. A producer enqueues a PR; a worker claims jobs and runs /pr-review --comment. Use for local agent-to-agent PR review when webhooks, CI, or API keys are unavailable or unwanted. Provides atomic exactly-once claims, crash-safe leases, and dead-lettering.
+description: Queue PR-review jobs locally with SQLite. Use when PR-opening agents need review workers without webhooks, CI, or API keys. Producers enqueue PRs; workers claim jobs and run /pr-review --comment.
 ---
 
 # review-queue

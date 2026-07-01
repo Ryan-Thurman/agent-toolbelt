@@ -1,6 +1,6 @@
 ---
 name: ship-it
-description: Prepare a change for release safely — readiness check, rollback plan, release notes, and a rollout/monitor plan. Pipeline-aware: prepares and hands off when an external CI/CD owns the deploy, or walks the rollout when you own it. Use after a PR is merged/approved and you're about to release. Not for regulated release-manifest/doc-control work (use ai-feature-delivery).
+description: Prepare a change for release with readiness checks, rollback, release notes, and rollout monitoring. Use after PR merge or approval. Pipeline-aware; not for regulated release-manifest or doc-control work.
 ---
 
 # ship-it

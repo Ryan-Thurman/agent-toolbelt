@@ -36,21 +36,22 @@ Status: In Progress
 
 Current Phase: Phase 1A - Planning Robustness Upgrade
 
-Current Task: Add `No Placeholders` and self-review checklist to `/dev-plan`
+Current Task: Decide code-in-plan strictness policy for Dev Lite
 
 Current Branch: `feat/atb-namespace-install`
 
 Last Updated: 2026-07-01
 
-Last Completed Step: Added per-task `Files` and `Interfaces` fields for behavior-changing tasks.
+Last Completed Step: Added no-placeholder guidance and a self-review checklist to `/dev-plan`.
 
-Next Step: Add no-placeholder guidance and a plan self-review checklist to `/dev-plan`.
+Next Step: Document the Dev Lite policy for exact test names/commands and when full code snippets are required.
 
-Resume Instructions: Start from Phase 1A Task 4. The current branch is already
+Resume Instructions: Start from Phase 1A Task 5. The current branch is already
 `feat/atb-namespace-install`; do not create another branch unless the user asks.
-Task 3 is complete. Add no-placeholder guidance and a self-review checklist to
-`commands/dev-plan.md`, then validate the checklist catches vague generated-plan
-content. Preserve unrelated work.
+Task 4 is complete. Document the code-in-plan strictness policy in
+`commands/dev-plan.md`: exact test names/commands are required; full code
+snippets are required only for algorithmically specific or subagent-dispatched
+tasks. Preserve unrelated work.
 
 ## Activity Log
 
@@ -63,6 +64,7 @@ content. Preserve unrelated work.
 | 2026-07-01 | Codex | Completed Phase 1A Task 1: Global Constraints | Updated `templates/dev-implementation-plan.md` and `commands/dev-plan.md`; reviewed generated section/rules with `sed`; confirmed references with `rg "Global Constraints|None beyond existing repo standards|cross-task"` | Commit Task 1, then start File / Responsibility Map |
 | 2026-07-01 | Codex | Completed Phase 1A Task 2: File / Responsibility Map | Updated `templates/dev-implementation-plan.md` and `commands/dev-plan.md`; reviewed section/rules with `sed`; confirmed references with `rg "File / Responsibility Map|files/modules|map changed|explain the deviation"` | Commit Task 2, then start per-task Files/Interfaces |
 | 2026-07-01 | Codex | Completed Phase 1A Task 3: per-task Files/Interfaces | Updated task scaffolds in `templates/dev-implementation-plan.md` and `/dev-plan` rules; reviewed with `sed`; confirmed fields with `rg "Files:|Interfaces:|behavior-changing task|consumes|produces"` | Commit Task 3, then add no-placeholder checklist |
+| 2026-07-01 | Codex | Completed Phase 1A Task 4: no-placeholder self-review | Updated `commands/dev-plan.md`; reviewed with `sed`; confirmed checklist terms with `rg "TBD|placeholder|add tests|handle edge cases|self-review|File / Responsibility Map|Interfaces"` | Commit Task 4, then document code-in-plan policy |
 
 ## Phase 1: Upstream Delta Triage
 
@@ -153,11 +155,11 @@ constraints, test commands, or acceptance-criteria intent.
       consumes/produces for neighboring tasks.
       Status: Complete.
       Evidence: Updated `templates/dev-implementation-plan.md` task scaffolds and `/dev-plan` guidance; focused review confirmed behavior-changing tasks must name files from the map and interfaces they consume, produce, export, call, or change.
-- [ ] Task: Add a `No Placeholders` and self-review checklist to `/dev-plan`.
+- [x] Task: Add a `No Placeholders` and self-review checklist to `/dev-plan`.
       Test work: Search generated plan for `TBD`, vague "add tests", "handle edge cases", and undefined
       references before plan approval.
-      Status: Pending.
-      Evidence: Updated command guidance.
+      Status: Complete.
+      Evidence: Updated `commands/dev-plan.md`; focused review confirmed the self-review checklist searches for `TBD`, placeholders, empty task fields, vague test language, map mismatches, and undefined interfaces before plan approval.
 - [ ] Task: Decide how strict code-in-plan should be for this repo.
       Test work: Document the policy: exact test names/commands are required; full code snippets are
       required only when the task is algorithmically specific or subagent-dispatched.

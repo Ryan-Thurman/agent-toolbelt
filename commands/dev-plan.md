@@ -40,6 +40,9 @@ Use this after `/dev-intake`.
 - Identify dependencies and risks.
 - Avoid over-engineering.
 - Prefer the smallest useful implementation that satisfies the acceptance criteria.
+- Replace template placeholders before presenting the plan. A generated plan
+  should not contain `TBD`, vague "add tests", "handle edge cases", or undefined
+  file/interface references.
 - Stop after producing the plan. Do not start implementation, file edits, or
   `/dev-start-phase` until the user approves the plan or explicitly asks to
   continue.
@@ -82,6 +85,19 @@ the map or explain why the map changed. Keep `Current State`, `Activity Log`,
 and `Resume Instructions` updated throughout the workflow.
 
 ## Plan Review Gate
+
+Before presenting the plan, perform this self-review and fix any failures:
+
+- Search the generated plan for `TBD`, placeholder text, or empty task fields.
+- Confirm each task is concrete enough for one focused commit.
+- Confirm each behavior-changing task names specific test work, not vague
+  "add tests" language.
+- Confirm file references in tasks exist in the `File / Responsibility Map` or
+  the task explains why the map changed.
+- Confirm `Interfaces` entries name concrete inputs, outputs, exports,
+  consumers, commands, templates, or contracts.
+- Confirm risks and acceptance criteria are represented in phases or explicitly
+  deferred.
 
 End the response by asking the user to review the plan and confirm whether to
 proceed, revise it, or choose the first task. Do not begin implementation in the

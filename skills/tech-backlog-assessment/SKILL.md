@@ -91,3 +91,8 @@ Always include:
 - Proposed implementation shape if accepted.
 - Test strategy and verification commands.
 - Risks, open questions, and next workflow.
+
+Completion criterion: the assessment is done only when it states confidence,
+rejected options, concrete repo evidence, test strategy, risks, and the next
+workflow. If any required evidence is missing, say what was searched and why the
+recommendation still holds or remains a `Spike`.

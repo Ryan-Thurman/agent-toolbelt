@@ -41,13 +41,20 @@ written:
 | `cursor` | `.cursor/commands/`, `.cursor/rules/`, and skills into `.agents/skills/` |
 | `claude` | `.claude/commands/` |
 | `codex`  | skills into `.agents/skills/` |
-| _always_ | the canonical `skills/` tree (commands reference it by path), plus `templates/`, `workflows/`, `examples/` |
+| _always_ | the shared `.atb/` folder: the canonical `.atb/skills/` tree (commands reference it by path), plus `.atb/templates/`, `.atb/workflows/`, `.atb/examples/` |
+
+**No top-level clutter.** The harness-agnostic artifacts live under a single hidden
+`.atb/` folder in the target rather than as bare `skills/`, `templates/`, `workflows/`,
+and `examples/` folders at the project root, so they never collide with (or get mistaken
+for) a brownfield project's own directories. The packs still ship their content with
+`.atb/…` references — the installer rewrites the absolute-from-root paths as it copies,
+while relative refs are unaffected because the four folders move together.
 
 **Skills:** Cursor and Codex both auto-discover skills under `.agents/skills/`, so the
 installer writes that one native copy for either harness (a separate `.cursor/skills/`
-would make Cursor list every skill twice). The bare `skills/` tree at the root is *not*
+would make Cursor list every skill twice). The canonical `.atb/skills/` tree is *not*
 an auto-discovery root, so it never double-registers — it exists only because the
-commands reference it by relative path. Each `SKILL.md` carries `name`/`description`
+commands reference it by path. Each `SKILL.md` carries `name`/`description`
 frontmatter, so Cursor surfaces them as first-class, on-demand skills alongside the
 `/commands`.
 
@@ -66,8 +73,8 @@ tooling works both inside a single repo and across the whole application:
 ./install.sh --sweep --harness cursor all /path/to/parent
 ```
 
-Each level is a full, self-contained install — its own `skills/` tree (commands
-reference it by relative path), `AGENTS.md`, and `.cursor/rules` — so a repo opened
+Each level is a full, self-contained install — its own `.atb/` folder (commands
+reference the skills tree by path), `AGENTS.md`, and `.cursor/rules` — so a repo opened
 on its own carries its guardrails.
 
 **Multi-root caveat (verified against Cursor):** in a Cursor multi-root workspace,
@@ -99,7 +106,7 @@ Notes:
   and a user-scoped plugin would fire them in *every* project. Pass `--with-rules` only
   if you want that. For scoped, per-project rules, use the per-repo `install.sh` instead.
 - **Commands** are included for the `/command` UX, but some reference skill files by
-  project-relative `skills/...` paths; for the full command-driven flow with those
+  project-relative `.atb/skills/...` paths; for the full command-driven flow with those
   references resolving, a per-repo `install.sh --harness cursor` is still the way.
 
 The symlink picks up rebuilds live (Reload Window); `build/` is gitignored.

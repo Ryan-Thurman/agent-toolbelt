@@ -31,7 +31,7 @@ Use `--dry-run` to preview the install:
 ```
 
 The installer adds Cursor commands/rules, Claude commands, a repo-scoped
-`.agents/skills/dev-lite-workflow` Codex skill, shared `skills/` copy,
+`.agents/skills/dev-lite-workflow` Codex skill, shared `.atb/skills/` copy,
 templates, and the workflow playbook.
 
 In Cursor or Claude Code, start with `/dev-intake`, then `/dev-plan`. In Codex,
@@ -74,11 +74,11 @@ stay connected.
 
 Start with:
 
-- `workflows/ai-feature-delivery-lifecycle.md` for the full lifecycle and gates.
-- `workflows/dev-ticket-to-pr.md` for the implementation-ticket-to-PR path.
-- `skills/ai-feature-delivery/SKILL.md` for agent operating rules.
-- `skills/webapp-testing/SKILL.md` for browser/user-flow verification.
-- `templates/feature-master-record.md` for the central traceability record.
+- `.atb/workflows/ai-feature-delivery-lifecycle.md` for the full lifecycle and gates.
+- `.atb/workflows/dev-ticket-to-pr.md` for the implementation-ticket-to-PR path.
+- `.atb/skills/ai-feature-delivery/SKILL.md` for agent operating rules.
+- `.atb/skills/webapp-testing/SKILL.md` for browser/user-flow verification.
+- `.atb/templates/feature-master-record.md` for the central traceability record.
 
 Common commands:
 
@@ -100,7 +100,7 @@ Common commands:
 Which harnesses receive files is controlled by `--harness` (see [Choosing
 harnesses](Installation.md#choosing-harnesses)). Note that the AI Feature Delivery
 pack ships Cursor-only commands and rules, so installing it with `--harness claude`
-writes only its shared `skills/`, `templates/`, and `workflows/` (the installer
+writes only its shared `.atb/skills/`, `.atb/templates/`, and `.atb/workflows/` (the installer
 prints a note for each pack that contributes nothing harness-specific).
 
 ## Bug to Fix
@@ -125,7 +125,7 @@ double-click `install.command` and follow the prompts.
 
 Key ideas:
 
-- A **durable investigation file** (`templates/bug-investigation.md`) is updated
+- A **durable investigation file** (`.atb/templates/bug-investigation.md`) is updated
   *before* each action, so the work survives a context reset and hands off cleanly.
 - **No fix without a confirmed root cause**, and **no "fixed" without verification**.
 - **Reproduction is manual-first**: `/reproduce` asks whether you or QA reproduced

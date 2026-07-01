@@ -34,6 +34,16 @@ Evaluate:
 - UX/product quality
 - Future-phase leakage
 
+Use one combined review pass. Do not split acceptance/spec compliance and code
+quality into separate reviewers unless the user explicitly asks for that extra
+process. The report must include two verdicts:
+
+- Acceptance / spec verdict: whether the completed work satisfies the phase
+  goal, selected tasks, and relevant acceptance criteria.
+- Code quality verdict: whether the implementation is maintainable, tested
+  enough for its risk, and free of blocking correctness, security, performance,
+  or UX issues.
+
 Classify findings as:
 
 - Blocking: must fix before moving on.

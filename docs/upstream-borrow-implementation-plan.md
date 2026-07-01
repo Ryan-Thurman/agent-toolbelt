@@ -62,21 +62,20 @@ Status: In Progress
 
 Current Phase: Phase 3 - Workflow, Install, and Packaging Hardening
 
-Current Task: Evaluate replacing two-step per-task reviews with one combined task review contract
+Current Task: Add durable scratch/ledger conventions for subagent-style execution
 
 Current Branch: `feat/atb-namespace-install`
 
 Last Updated: 2026-07-01
 
-Last Completed Step: Added optional Dev Lite file-handoff guidance for delegated implementation and review packages.
+Last Completed Step: Added a combined Dev Lite review contract with separate acceptance/spec and code-quality verdicts.
 
-Next Step: Evaluate replacing two-step per-task reviews with one combined task review contract.
+Next Step: Add durable scratch/ledger conventions for subagent-style execution.
 
-Resume Instructions: Start from Phase 3 Task 5. The current branch is already
+Resume Instructions: Start from Phase 3 Task 6. The current branch is already
 `feat/atb-namespace-install`; do not create another branch unless the user asks.
-Evaluate replacing two-step per-task reviews with one combined task review
-contract where applicable: spec/acceptance compliance plus code quality in a
-single reviewer pass. Preserve unrelated work.
+Add durable scratch/ledger conventions for subagent-style execution that stay
+out of `.git/` and out of commits. Preserve unrelated work.
 
 ## Activity Log
 
@@ -105,6 +104,7 @@ single reviewer pass. Preserve unrelated work.
 | 2026-07-01 | Codex | Completed Phase 3 Task 2: plugin packaging manifest discipline | Added `scripts/check-cursor-plugin-build.sh` because this repo ships a private Cursor plugin build, not a tracked `.codex-plugin/`; the check validates generated manifest JSON, required manifest keys, command/skill payloads, and that default plugin builds omit hooks, rules, and harness-local folders; validated with `scripts/check-cursor-plugin-build.sh`, `bash -n build-cursor-plugin.sh scripts/check-cursor-plugin-build.sh`, and `scripts/check-skill-sync.sh` | Commit Task 2, then evaluate router/front-door scope |
 | 2026-07-01 | Codex | Completed Phase 3 Task 3: router/front-door scope decision | Kept the existing `/workflow-router` as the single front door. `README.md` already directs fresh installs to run it, and `commands/workflow-router.md` already routes vague requests through `/shape-up`, chooses a lane, recommends the next 1-3 commands, and avoids heavy workflows when narrower commands are enough. No separate lightweight router command was added. | Commit Task 3, then adapt file-handoff guidance |
 | 2026-07-01 | Codex | Completed Phase 3 Task 4: Dev Lite file-handoff guidance | Added optional task-brief/report-file guidance to `implementation-rules.md` and `/dev-implement-task`, plus review-package guidance to `review-rules.md` and `/dev-phase-review`; mirrored skill files under `.agents/`; exercised the pattern by writing `/private/tmp/agent-toolbelt-dev-lite-handoff-check/task-4-brief.md` and `/private/tmp/agent-toolbelt-dev-lite-handoff-check/task-4-review-package.diff`; validated with `scripts/check-skill-sync.sh`, `rg "File handoffs|review package|task brief|report file|outside tracked source" ...`, `wc -l` on the generated files, and `git diff --check` | Commit Task 4, then evaluate combined task review |
+| 2026-07-01 | Codex | Completed Phase 3 Task 5: combined task review contract | Updated Dev Lite review rules, `/dev-phase-review`, and `templates/dev-phase-review.md` to keep one review pass but require separate Acceptance / Spec and Code Quality verdicts; mirrored skill files under `.agents/`; exercised the output contract with `/private/tmp/agent-toolbelt-dev-lite-combined-review-check/sample-phase-review.md`; validated with `scripts/check-skill-sync.sh`, `rg "Combined Review Verdicts|Acceptance / Spec|Code Quality|one combined review pass|two verdicts" ...`, `rg "Acceptance / Spec:|Code Quality:" /private/tmp/agent-toolbelt-dev-lite-combined-review-check/sample-phase-review.md`, and `bash -n scripts/check-cursor-plugin-build.sh build-cursor-plugin.sh` | Commit Task 5, then add scratch/ledger conventions |
 
 ## Phase 1: Upstream Delta Triage
 
@@ -375,12 +375,15 @@ with special attention to Superpowers v6's lower-token subagent workflow.
       keeping direct prose review acceptable for small in-session phases. Exercised the pattern with
       `/private/tmp/agent-toolbelt-dev-lite-handoff-check/task-4-brief.md` and
       `/private/tmp/agent-toolbelt-dev-lite-handoff-check/task-4-review-package.diff`.
-- [ ] Task: Evaluate replacing two-step per-task reviews with one combined task review contract where
+- [x] Task: Evaluate replacing two-step per-task reviews with one combined task review contract where
       applicable: spec/acceptance compliance plus code quality in a single reviewer pass.
       Test work: Run the new review prompt against a completed task or fixture diff and confirm both
       verdicts are present.
-      Status: Pending.
-      Evidence: Updated review rules or phase-review template.
+      Status: Complete.
+      Evidence: Updated review rules, `/dev-phase-review`, and
+      `templates/dev-phase-review.md` so one review pass now reports separate Acceptance / Spec and
+      Code Quality verdicts. Confirmed both verdict fields with
+      `/private/tmp/agent-toolbelt-dev-lite-combined-review-check/sample-phase-review.md`.
 - [ ] Task: Add durable scratch/ledger conventions for subagent-style execution that stay out of `.git/`
       and out of commits.
       Test work: Verify `git status --short` stays clean after scratch files are created.

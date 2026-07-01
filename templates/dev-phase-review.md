@@ -11,6 +11,13 @@ Use one:
 - Needs Fixes
 - Blocked
 
+## Combined Review Verdicts
+
+Use one for each verdict: Pass, Pass with Notes, Needs Fixes, or Blocked.
+
+- Acceptance / Spec:
+- Code Quality:
+
 ## Completed Tasks
 
 ## Acceptance Criteria Covered

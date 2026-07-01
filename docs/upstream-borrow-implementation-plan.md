@@ -62,21 +62,21 @@ Status: In Progress
 
 Current Phase: Phase 3A - Skill Authoring and Architecture Review Discipline
 
-Current Task: Add a concise skill-authoring checklist to our skill creation/update guidance
+Current Task: Review existing model-invoked skill descriptions for context load and trigger duplication
 
 Current Branch: `feat/atb-namespace-install`
 
 Last Updated: 2026-07-01
 
-Last Completed Step: Phase 3 review passed with no findings.
+Last Completed Step: Added a concise skill-authoring checklist and applied it to `shape-up/`.
 
-Next Step: Start Phase 3A Task 1: add a concise skill-authoring checklist and apply it to one existing skill.
+Next Step: Review existing model-invoked skill descriptions for context load and trigger duplication.
 
-Resume Instructions: Start from Phase 3A Task 1. The current branch is already
+Resume Instructions: Start from Phase 3A Task 2. The current branch is already
 `feat/atb-namespace-install`; do not create another branch unless the user asks.
-Add a concise skill-authoring checklist to our skill creation/update guidance.
-Apply the checklist to one existing skill and record at least one concrete
-keep/cut decision. Preserve unrelated work.
+Review three existing model-invoked skill descriptions for context load and
+trigger duplication. Classify each description's branches and trim only no-op or
+repeated trigger phrasing. Preserve unrelated work.
 
 ## Activity Log
 
@@ -112,6 +112,7 @@ keep/cut decision. Preserve unrelated work.
 | 2026-07-01 | Codex | Completed Phase 3 Task 9: Dev Lite plan state reconciliation | Added a manual State Reconciliation Checklist to `templates/dev-implementation-plan.md`, `/dev-plan`, and Dev Lite skill guidance instead of a parser script because plan state is partly human-authored narrative; the checklist reconciles `Current Phase`, `Current Task`, `Last Completed Step`, `Next Step`, `Resume Instructions`, task checkboxes, task status, task evidence, and Activity Log rows while preserving notes and recording conflicts rather than guessing; mirrored skill files under `.agents/`; validated with `scripts/check-skill-sync.sh`, `rg "State Reconciliation|reconcile derived|Current Phase|Current Task|Last Completed Step|Next Step|Resume Instructions|human-authored|task list and Activity Log" ...`, and `git diff --check` | Commit Task 9, then add portability/path hardening guidance |
 | 2026-07-01 | Codex | Completed Phase 3 Task 10: script portability/path hardening | Added `docs/script-portability-checklist.md` covering confined writes, path-final `mktemp`, temp cleanup traps, quoted paths, hardcoded home/temp avoidance, CRLF/list parsing, overwrite safety, and validation commands; updated `scripts/check-cursor-plugin-build.sh` to use a path-final `mktemp -d` output directory with cleanup when no output path is provided; validated with `bash -n install.sh install/*.sh scripts/check-cursor-plugin-build.sh scripts/check-skill-sync.sh build-cursor-plugin.sh`, `scripts/check-cursor-plugin-build.sh`, `./install.sh --dry-run --harness all dev-lite-workflow /private/tmp/agent-toolbelt-install-portability-check`, `rg "path-final|mktemp|CRLF|hardcoded|confined|dry-run|bash -n|trap|temporary" docs/script-portability-checklist.md scripts/check-cursor-plugin-build.sh`, `find /private/tmp -maxdepth 1 -name 'agent-toolbelt-cursor-plugin-check.*' -print`, and `git diff --check` | Commit Task 10, then run Phase 3 review |
 | 2026-07-01 | Codex | Ran Phase 3 review | Result: Pass. Acceptance / Spec: Pass. Code Quality: Pass. Verification Reach: Phase 3 tasks, install/package checks, Dev Lite workflow guidance, and portability changes were verified; no Failed or Not Inferable items affected the phase decision. Checks: `git diff --check 8ed3674..HEAD`; `scripts/check-skill-sync.sh`; `bash -n install.sh install/*.sh scripts/check-cursor-plugin-build.sh scripts/check-skill-sync.sh build-cursor-plugin.sh`; `scripts/check-cursor-plugin-build.sh`; `./install.sh --list`; `./install.sh --dry-run --harness all dev-lite-workflow /private/tmp/agent-toolbelt-phase3-review-dev-lite`; `./install.sh --dry-run --harness all pr-review /private/tmp/agent-toolbelt-phase3-review-pr-review`; `rg "Optional Subagent Dispatch|File handoffs|Verification Reach|State Reconciliation Checklist|Script Portability Checklist|Combined Review Verdicts|Not Inferable|path-final|mktemp|installed nothing" skills commands templates docs scripts install/lib.sh .agents/skills/dev-lite-workflow` | Start Phase 3A |
+| 2026-07-01 | Codex | Completed Phase 3A Task 1: skill-authoring checklist | Added `Skill authoring checklist` to `skills/README.md`, covering invocation choice, context load, trigger branches, progressive disclosure, completion criteria, single source of truth, no-op pruning, and sediment. Applied it to `shape-up/`: keep the model-invoked description because its fuzzy-idea/ticket trigger and bug/regulated-lane exclusions are distinct; keep `references/interrogation.md` behind a pointer and do not inline branch-only questioning techniques into `SKILL.md`. Validated with `rg "Skill authoring checklist|Decide invocation first|description pay|completion criteria|Prune no-ops|Applied check|shape-up" skills/README.md` and `git diff --check` | Commit Task 1, then audit model-invoked descriptions |
 
 ## Phase 1: Upstream Delta Triage
 
@@ -488,11 +489,14 @@ cheaper to carry in context, and sharper when reviewing architecture or code sme
 
 ### Tasks
 
-- [ ] Task: Add a concise skill-authoring checklist to our skill creation/update guidance.
+- [x] Task: Add a concise skill-authoring checklist to our skill creation/update guidance.
       Test work: Apply the checklist to one existing skill and record at least one concrete keep/cut
       decision.
-      Status: Pending.
-      Evidence: Updated skill-creator guidance or local `skills/README.md` authoring section.
+      Status: Complete.
+      Evidence: Added the checklist to `skills/README.md`. Applied it to `shape-up/`: keep the
+      model-invoked description for distinct fuzzy-idea/ticket triggers and clear exclusions; keep
+      branch-only interrogation detail in `references/interrogation.md` rather than inlining it into
+      `SKILL.md`.
 - [ ] Task: Review existing model-invoked skill descriptions for context load and trigger duplication.
       Test work: Pick 3 skills, classify each description's branches, and trim only no-op/repeated
       trigger phrasing.

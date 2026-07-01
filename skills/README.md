@@ -73,3 +73,30 @@ ships `.agents/skills/dev-lite-workflow/SKILL.md` (the repo-scoped Codex copy);
 it must stay byte-identical. Edit the canonical file, then mirror the change.
 Run `scripts/check-skill-sync.sh` to verify the two copies match (also runnable
 in CI).
+
+## Skill authoring checklist
+
+Use this checklist when creating or updating a skill:
+
+- Decide invocation first. Keep a `description` only when the agent should
+  discover and invoke the skill on its own; otherwise make the skill
+  user-invoked and route to it from docs or commands.
+- Make the description pay for its context load. Use leading words users and
+  agents actually say, and keep distinct trigger branches rather than repeated
+  synonyms.
+- Keep `SKILL.md` focused on steps and always-needed rules. Move branch-only
+  reference behind a clearly worded pointer in `references/`.
+- State completion criteria that let the agent tell done from not done.
+- Keep one source of truth for each behavior. Do not repeat the same rule in the
+  description, body, commands, and references unless each copy has a distinct
+  job.
+- Prune no-ops and sediment: remove lines that do not change agent behavior,
+  stale provenance notes, or branches no current workflow can reach.
+
+Applied check:
+
+- `shape-up/`: keep the model-invoked description because it has distinct
+  trigger branches for fuzzy ideas/tickets before Dev Lite planning, with clear
+  exclusions for bug and regulated feature lanes. Keep `references/interrogation.md`
+  behind a pointer because only the questioning branch needs those techniques;
+  do not inline it into `SKILL.md`.

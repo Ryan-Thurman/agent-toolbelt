@@ -60,22 +60,22 @@ Primary upstream ranges reviewed:
 
 Status: In Progress
 
-Current Phase: Phase 1A - Planning Robustness Upgrade
+Current Phase: Phase 2 - PR Review Quality Updates
 
-Current Task: Phase 1A review
+Current Task: Add safe review focus/directive contract to `/pr-review`
 
 Current Branch: `feat/atb-namespace-install`
 
 Last Updated: 2026-07-01
 
-Last Completed Step: Added stale-assumption/codebase-drift planning pre-check guidance to `/dev-plan`.
+Last Completed Step: Phase 1A review passed with no findings.
 
-Next Step: Run Phase 1A review, then address any findings before starting Phase 2.
+Next Step: Compare current PR review guidance against upstream focus-directive patterns, then update `/pr-review` safely.
 
-Resume Instructions: Start from Phase 1A review. The current branch is already
+Resume Instructions: Start from Phase 2 Task 1. The current branch is already
 `feat/atb-namespace-install`; do not create another branch unless the user asks.
-Task 7 is complete. Run a Phase 1A review, address any blocking findings, then
-start Phase 2. Preserve unrelated work.
+Add a safe review focus/directive contract to `/pr-review` without allowing user
+focus text to predetermine the verdict. Preserve unrelated work.
 
 ## Activity Log
 
@@ -93,6 +93,7 @@ start Phase 2. Preserve unrelated work.
 | 2026-07-01 | Codex | Completed Phase 1A Task 6: assumption-delta guidance | Updated `commands/dev-plan.md`; reviewed with `sed`; confirmed triggers with `rg "assumption-delta|Assumption Delta|platform|provider|auth method|source of truth|primary noun|accepted debt"` | Commit Task 6, then add stale-assumption pre-check |
 | 2026-07-01 | Codex | Completed Phase 1A Task 7: stale-assumption pre-check | Updated `commands/dev-plan.md`; reviewed with `sed`; confirmed guidance with `rg "Planning Pre-Check|No drift found|Planning drift|current repo state|File / Responsibility Map"` | Commit Task 7, then run Phase 1A review |
 | 2026-07-01 | Codex | Revised active plan with new robustness sections | Added `Global Constraints` and `File / Responsibility Map` to this plan; used as sample-plan validation for Phase 1A | Run Phase 1A review |
+| 2026-07-01 | Codex | Ran Phase 1A review | `git diff --check c0505e1..HEAD`; `scripts/check-skill-sync.sh`; `rg "Global Constraints|File / Responsibility Map|Files:|Interfaces:|Code and Command Specificity|Assumption Delta Check|Planning Pre-Check|self-review"` | Start Phase 2 |
 
 ## Phase 1: Upstream Delta Triage
 
@@ -231,10 +232,10 @@ Manual or integration checks:
 
 ### Phase Review Checklist
 
-- [ ] Phase goal met
-- [ ] Acceptance criteria covered or still tracked
-- [ ] Tests/checks completed or gaps listed
-- [ ] No blocking performance/security/code quality issues
+- [x] Phase goal met
+- [x] Acceptance criteria covered or still tracked
+- [x] Tests/checks completed or gaps listed
+- [x] No blocking performance/security/code quality issues
 
 ## Phase 2: PR Review Quality Updates
 

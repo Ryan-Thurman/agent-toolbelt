@@ -60,10 +60,11 @@ Each step has a single hard gate, so the commands are independently invocable:
 4. **Fix** (`/fix-plan`) — write the fix contract, apply the smallest change, and verify. Then hand
    to the dev + review back half. Gate: the verification contract is satisfied.
 
-## Invocation model
+## Command Entries
 
-- **User-invoked** entry points (a human starts these): `/bug-intake`, `/fix-plan`, `/handoff`.
-- **Model-invoked** sub-steps (these can run automatically inside the loop): `/reproduce`, `/rca`.
+- **Human-started command entries:** `/bug-intake`, `/fix-plan`, `/handoff`.
+- **Loop sub-steps:** `/reproduce` and `/rca` may run inside the diagnostic workflow when their gates
+  are reached.
 
 ## Escalation
 

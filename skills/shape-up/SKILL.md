@@ -49,11 +49,11 @@ contradictions, and missing decisions that would otherwise be silently committed
 - A decision is worth pinning as an ADR only if all three hold: hard to reverse, surprising without
   context, and the result of a real trade-off. Otherwise just decide and record it in the brief.
 
-## Invocation
+## Command Entry
 
-`shape-up` is **user-invoked** — a human pulls the trigger to shape a request. Its interrogation and
-contradiction-checking steps are model-driven within the session. It never auto-fires a planning or
-implementation step; the hard gate is mandatory.
+`/shape-up` is the human-started command entry point for shaping a request. The skill can still run
+when its model-facing description matches a fuzzy feature request, but it never auto-fires planning
+or implementation. The hard gate is mandatory.
 
 ## References
 

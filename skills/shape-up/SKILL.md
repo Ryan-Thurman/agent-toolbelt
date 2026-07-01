@@ -32,7 +32,8 @@ contradictions, and missing decisions that would otherwise be silently committed
    answer, focused on purpose, constraints, success criteria, and in/out of scope. Use the
    contradiction-hunting techniques to force precision on overloaded terms and edge cases.
 4. **Self-audit the draft brief**: internal consistency (do any parts contradict?), ambiguity (could
-   a requirement be read two ways? pick one), placeholder scan (no `TBD`/`TODO` left).
+   a requirement be read two ways? pick one), placeholder scan (no `TBD`/`TODO` left). Done means
+   there are no unresolved overloaded terms, no unanswered scope boundary, and no `TBD`.
 5. **Emit the brief** (`../../templates/shape-up-brief.md`) and **stop for approval** (the hard
    gate). Iterate until approved.
 6. **Hand off** (only after approval): `/dev-intake` to formalize the brief, then `/dev-plan`; or

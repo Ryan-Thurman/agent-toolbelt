@@ -12,6 +12,8 @@ unclear inside a pilot repo, start with `/workflow-router`.
 - `/enqueue-review` - push a PR onto the local review queue (producer half of review-queue; idempotent on head SHA).
 - `/review-queue-worker` - drain the local review queue: claim jobs and run `/pr-review --comment` on each (consumer half; drive with `/loop` or `/schedule`).
 - `/shape-up` - interrogate a vague request into an agreed brief before building.
+- `/tech-assess` - assess a technical backlog item before implementation: do/defer/reject/spike, options, risks, tests.
+- `/ticket-discover` - investigate a narrow implementation ticket by finding an existing precedent and producing a gap/test handoff.
 - `/to-issues` - slice an approved brief into vertical-slice tickets.
 - `/ticket-sync` - publish/sync sliced tickets to the repo's tracker (GitHub Issues / Jira / Azure Boards).
 - `/simplify` - actively clean up a diff/area and apply cleanups on opt-in.
@@ -102,6 +104,8 @@ Some commands overlap. Use these tables to pick the right one.
 | Command | Use it for |
 |---|---|
 | `/shape-up` | *Interrogate* a vague request into an agreed brief (one question at a time, repo-first, gated on approval). |
+| `/tech-assess` | Decide whether and how to do a technical backlog item before implementation: options, dependency/library decision, risks, tests, and next workflow. |
+| `/ticket-discover` | Turn a narrow ticket that references an existing precedent into a concrete gap analysis, test plan, and implementation handoff. |
 | `/dev-intake` | *Capture* a brief by making safe assumptions — lighter, no grilling. Compose: `/shape-up` -> `/dev-intake`. |
 | `/feature-fleshout` | The heavy, regulated, stakeholder version (Feature Master Record, gates). |
 | `/to-issues` | Slice an approved brief into vertical-slice tickets (dev lane). Use `/refine-to-tickets` for the regulated lane. |

@@ -26,6 +26,12 @@ workflow.
   minimal fix, and verification for a reported bug.
 - `shape-up/` - interrogate a vague request into an agreed brief before
   building (the front-door to the dev lanes).
+- `tech-backlog-assessment/` - assess technical backlog items before
+  implementation: do/defer/reject/spike, options, dependency choices, risks,
+  tests, and next workflow.
+- `ticket-discovery/` - investigate a narrow implementation ticket that points
+  to an existing precedent, compare source and target, and produce a concrete
+  implementation/test handoff.
 - `simplify/` - active code cleanup: apply high-conviction simplifications on
   opt-in (the counterpart to pr-review).
 - `cover/` - author/strengthen behavior-pinning tests for a diff, module, or bug

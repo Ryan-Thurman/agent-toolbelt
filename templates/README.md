@@ -13,6 +13,10 @@ folder. The normal first artifact is `feature-master-record.md`; see
 - `dev-implementation-plan.md` - phased dev-lite implementation plan.
 - `dev-phase-review.md` - phase review result and findings template.
 - `dev-pr-review.md` - final PR readiness review template.
+- `tech-backlog-assessment.md` - decision memo for technical backlog items
+  before implementation.
+- `ticket-discovery-brief.md` - precedent-backed discovery brief for narrow
+  implementation tickets.
 - `phase-file.md` - durable phase definition for phase-context workflow.
 - `phase-handoff.md` - phase closeout and reset-safety handoff, written with
   the `handoff` skill's compact, reference-first discipline.

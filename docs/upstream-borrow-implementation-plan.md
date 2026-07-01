@@ -36,22 +36,22 @@ Status: In Progress
 
 Current Phase: Phase 1A - Planning Robustness Upgrade
 
-Current Task: Decide code-in-plan strictness policy for Dev Lite
+Current Task: Add lightweight assumption-delta prompt to `/dev-plan`
 
 Current Branch: `feat/atb-namespace-install`
 
 Last Updated: 2026-07-01
 
-Last Completed Step: Added no-placeholder guidance and a self-review checklist to `/dev-plan`.
+Last Completed Step: Documented Dev Lite code-in-plan strictness policy.
 
-Next Step: Document the Dev Lite policy for exact test names/commands and when full code snippets are required.
+Next Step: Add lightweight assumption-delta guidance to `/dev-plan` for major planning assumption changes.
 
-Resume Instructions: Start from Phase 1A Task 5. The current branch is already
+Resume Instructions: Start from Phase 1A Task 6. The current branch is already
 `feat/atb-namespace-install`; do not create another branch unless the user asks.
-Task 4 is complete. Document the code-in-plan strictness policy in
-`commands/dev-plan.md`: exact test names/commands are required; full code
-snippets are required only for algorithmically specific or subagent-dispatched
-tasks. Preserve unrelated work.
+Task 5 is complete. Add assumption-delta guidance to `commands/dev-plan.md` for
+phases that introduce another platform/provider/auth method/source of truth,
+make required fields optional, or turn derived constants into user choice.
+Preserve unrelated work.
 
 ## Activity Log
 
@@ -65,6 +65,7 @@ tasks. Preserve unrelated work.
 | 2026-07-01 | Codex | Completed Phase 1A Task 2: File / Responsibility Map | Updated `templates/dev-implementation-plan.md` and `commands/dev-plan.md`; reviewed section/rules with `sed`; confirmed references with `rg "File / Responsibility Map|files/modules|map changed|explain the deviation"` | Commit Task 2, then start per-task Files/Interfaces |
 | 2026-07-01 | Codex | Completed Phase 1A Task 3: per-task Files/Interfaces | Updated task scaffolds in `templates/dev-implementation-plan.md` and `/dev-plan` rules; reviewed with `sed`; confirmed fields with `rg "Files:|Interfaces:|behavior-changing task|consumes|produces"` | Commit Task 3, then add no-placeholder checklist |
 | 2026-07-01 | Codex | Completed Phase 1A Task 4: no-placeholder self-review | Updated `commands/dev-plan.md`; reviewed with `sed`; confirmed checklist terms with `rg "TBD|placeholder|add tests|handle edge cases|self-review|File / Responsibility Map|Interfaces"` | Commit Task 4, then document code-in-plan policy |
+| 2026-07-01 | Codex | Completed Phase 1A Task 5: code-in-plan policy | Updated `commands/dev-plan.md`; reviewed with `sed`; confirmed policy terms with `rg "exact test names|check commands|full code snippets|algorithmically specific|fresh-context subagent|Code and Command Specificity"` | Commit Task 5, then add assumption-delta guidance |
 
 ## Phase 1: Upstream Delta Triage
 
@@ -160,11 +161,11 @@ constraints, test commands, or acceptance-criteria intent.
       references before plan approval.
       Status: Complete.
       Evidence: Updated `commands/dev-plan.md`; focused review confirmed the self-review checklist searches for `TBD`, placeholders, empty task fields, vague test language, map mismatches, and undefined interfaces before plan approval.
-- [ ] Task: Decide how strict code-in-plan should be for this repo.
+- [x] Task: Decide how strict code-in-plan should be for this repo.
       Test work: Document the policy: exact test names/commands are required; full code snippets are
       required only when the task is algorithmically specific or subagent-dispatched.
-      Status: Pending.
-      Evidence: Updated planning rules with a balanced standard.
+      Status: Complete.
+      Evidence: Updated `commands/dev-plan.md` with a `Code and Command Specificity` section requiring exact files/interfaces/tests/commands while reserving full code snippets for algorithmically specific, fragile data-shape, contract-heavy, or fresh-context subagent tasks.
 - [ ] Task: Add a lightweight assumption-delta prompt to `/dev-plan` for phases that introduce a
       second platform/provider/auth method/source of truth, make a required field optional, or turn a
       derived constant into user choice.

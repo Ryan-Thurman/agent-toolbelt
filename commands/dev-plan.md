@@ -43,6 +43,13 @@ Use this after `/dev-intake`.
 - Replace template placeholders before presenting the plan. A generated plan
   should not contain `TBD`, vague "add tests", "handle edge cases", or undefined
   file/interface references.
+- Require exact test names, check commands, or manual verification steps for
+  each task. Do not use generic test instructions when the repo has a known
+  command or file-level check.
+- Include full code snippets only when they materially reduce ambiguity: an
+  algorithmically specific task, a tricky data shape, or work that will be
+  dispatched to a fresh-context subagent. Otherwise, name files, interfaces,
+  commands, and acceptance criteria instead of embedding code.
 - Stop after producing the plan. Do not start implementation, file edits, or
   `/dev-start-phase` until the user approves the plan or explicitly asks to
   continue.
@@ -83,6 +90,20 @@ documentation files when they are relevant. Each behavior-changing task must
 include `Files`, `Interfaces`, and matching test work, and either use files from
 the map or explain why the map changed. Keep `Current State`, `Activity Log`,
 and `Resume Instructions` updated throughout the workflow.
+
+## Code and Command Specificity
+
+Plans are execution prompts, but they should stay lightweight:
+
+- Required: exact files, interfaces, test names, commands, expected check
+  results, and manual verification steps where automation is not practical.
+- Required: full code snippets only for algorithmically specific changes,
+  fragile data transformations, complex schemas/contracts, or tasks intended
+  for fresh-context subagent dispatch.
+- Avoid: broad implementation prose that restates the goal without naming
+  files, commands, interfaces, or acceptance criteria.
+- Avoid: embedding routine code when the file/interface/test contract is enough
+  for a local implementer to proceed.
 
 ## Plan Review Gate
 

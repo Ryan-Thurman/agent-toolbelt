@@ -107,6 +107,17 @@ Assign each finding a **bucket** (drives the verdict) and a finer **severity** (
 | **should-fix** | Real problem, fix soon; not merge-blocking on its own. | high / medium |
 | **nit** | Minor improvement/suggestion. | low |
 
+Bucket/verdict invariants:
+
+- Any single surviving `blocker` means `REQUEST CHANGES`; do not average it away because other
+  facets are clean.
+- `APPROVE` is allowed only when there are zero blockers. `should-fix` and `nit` findings may remain
+  in an approved report, but they must stay in their sections.
+- `NEEDS DISCUSSION` is for no-blocker reviews with an unresolved low-confidence question that must
+  be answered before approval. Do not use it as a softer name for `REQUEST CHANGES`.
+- Do not emit composite verdicts such as "approve with blockers" or "request changes, but optional."
+  The verdict is mechanical; nuance belongs in finding buckets and questions.
+
 Posting threshold: in light/standard, hide `nit`s unless there are no higher findings or the user
 asked for them.
 

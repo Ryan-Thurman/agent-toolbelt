@@ -17,17 +17,17 @@ reviewer** runs automatically with no one pressing the button.
 
 ## Two triggers, one reviewer
 
-Pick by host and appetite for infrastructure — they are not exclusive (a repo can wire both):
+Pick by host and appetite for infrastructure. They are not exclusive; a repo can wire both.
 
 | trigger | how it fires | fresh-context source | best for |
 |---|---|---|---|
 | **event (CI)** | the host's `PR opened/synchronize` event runs a headless `claude -p "/pr-review <n> --comment"` | each CI run is a brand-new process | **GitHub** repos — true event-driven, zero polling, no machine kept alive |
 | **poller** | `/review-on-open` lists open PRs and reviews the unseen ones; driven on an interval by `/loop` or `/schedule` | each `/pr-review` sub-run is a fresh sub-agent | **Azure Repos**, mixed hosts, or anywhere without a webhook→CI path; also good for local "watch my repos" |
 
-The decision rule: **if the host can run CI on the PR event, prefer the event path — the event already
-tells you the PR number, so it calls `/pr-review` directly and needs no ledger.** The poller exists
-for everything that can't (Azure Repos PRs without Pipelines wired, polling several repos at once, a
-laptop-side watcher). Both end in the same review.
+Decision rule: **if the host can run CI on the PR event, prefer the event path.** The event already
+tells you the PR number, so it calls `/pr-review` directly and needs no ledger. Use the poller for
+hosts without event CI, mixed-host watching, several repos at once, or a laptop-side watcher. Read
+`references/ci-event.md` for event setup and `references/poller.md` for poller execution.
 
 **Third trigger — a local push queue.** When the PR is opened by *another local agent* (not a remote
 host you'd poll), the cleanest ignition is push, not poll: the producing agent enqueues a job and a
@@ -76,31 +76,16 @@ hand-off; use the event/poller here for host-originated PRs. All three end in `/
 
 ## Flow (poller)
 
-Full mechanics: `references/poller.md`.
-1. **Detect host & list open PRs** via the provider layer — GitHub `gh pr list --json
-   number,headRefOid,author,…`; Azure `az repos pr list`. No host CLI → say so and stop (nothing to
-   poll).
-2. **Diff against the seen-ledger** (`.git/pr-review-seen.jsonl`): a PR is *due* if its `headRefOid` is
-   new or differs from the last reviewed SHA, and it doesn't already carry the review marker for this
-   SHA. Apply the self-loop guard. This yields the due list.
-3. **Honor `--max`** — take the first N due PRs (oldest-updated first); `log` the deferred remainder.
-4. **Review each in a fresh sub-agent** — run `/pr-review <pr> --comment` (with `--tier` if given)
-   per due PR. In a multi-PR poll, fan these out as parallel sub-agents so one slow review doesn't
-   block the rest.
-5. **Record the reviewed SHA** to the ledger so the next tick skips it. Print a one-line summary per
-   PR (verdict + finding count + reviewed SHA).
-
-To run it on a schedule, don't build a loop here — compose: `/loop 10m /review-on-open` (local) or a
-`/schedule` cloud routine (hands-off). See `references/poller.md` → "Scheduling".
+Read `references/poller.md` before running the poller. The short path is: detect host, list open
+PRs, compare each head SHA against the seen-ledger and marker, honor `--max`, run each due review in
+a fresh subagent, then append the reviewed SHA and print the summary.
 
 ## Setting up the event (CI) path
 
-You don't *run* a command for this — you commit a workflow. `templates/review-on-open-github.yml` is a
-copyable GitHub Actions workflow that, on `pull_request: [opened, synchronize, reopened]`, installs
-Claude Code and runs `claude -p "/pr-review ${PR} --comment"` headless. Full setup, required secrets,
-the untrusted-diff hardening, and the bot-skip guard: `references/ci-event.md`. For Azure Repos the
-equivalent is an Azure Pipeline on PR trigger calling the same headless command — sketched in the same
-reference; until that's wired, use the poller against Azure.
+Read `references/ci-event.md` before wiring the event path. `templates/review-on-open-github.yml` is
+the copyable GitHub Actions workflow for `pull_request: [opened, synchronize, reopened]`; the
+reference explains secrets, minimal permissions, untrusted-diff hardening, and the Azure Pipeline
+sketch. Until an event workflow is wired, use the poller.
 
 ## When to use vs related
 

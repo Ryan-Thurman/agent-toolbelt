@@ -28,6 +28,12 @@ Use this command for the core implementation loop.
   create a short task brief and report file outside tracked source. Put exact
   requirements and checks in the brief; ask the implementer to write the full
   report to the report file and return only a short status summary.
+- Use subagents only when the environment supports them and the user has
+  explicitly asked for delegation, parallel agents, or subagent-driven work.
+  Otherwise implement sequentially in the current session.
+- If delegating, specify owned files/modules, the task brief path, report file
+  path, checks to run, and whether the default/current model is sufficient or a
+  task-specific model override is justified.
 - After implementation, summarize changes and recommend a commit message.
 
 ## Required Steps
@@ -38,14 +44,16 @@ Use this command for the core implementation loop.
 4. Identify tests to add or update.
 5. If delegating or preserving context across a reset, create the task brief and
    report file outside tracked source.
-6. Update the plan document to mark the task `In Progress`.
-7. Implement the task.
-8. Add/update tests for behavior changes.
-9. Run or list the relevant checks/tests.
-10. Update the plan document with task status, evidence, checks, next step, and
+6. If delegating, state the owned files/modules, model choice or default-model
+   rationale, and sequential fallback.
+7. Update the plan document to mark the task `In Progress`.
+8. Implement the task.
+9. Add/update tests for behavior changes.
+10. Run or list the relevant checks/tests.
+11. Update the plan document with task status, evidence, checks, next step, and
    resume instructions.
-11. Summarize what changed.
-12. Recommend a commit message.
+12. Summarize what changed.
+13. Recommend a commit message.
 
 ## Output
 

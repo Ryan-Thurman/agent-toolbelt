@@ -65,6 +65,14 @@ delegated task completes cleanly, append one compact line to
 `.atb-work/dev-lite/progress.md` with the task name, commit range or changed
 files, checks run, and review result.
 
+When subagent tooling is available and explicitly authorized, delegate only
+bounded, non-overlapping tasks. The dispatch must include the task brief path,
+owned files or modules, expected report path, checks to run, and the sequential
+fallback if the subagent cannot proceed. Prefer the current/default model unless
+there is a clear task-specific reason to request a smaller or stronger model.
+If no subagent tool is available, perform the same task sequentially in the
+current session.
+
 ## After implementation
 
 Return:

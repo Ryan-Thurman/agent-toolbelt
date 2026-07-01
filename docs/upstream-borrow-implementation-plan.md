@@ -62,21 +62,21 @@ Status: In Progress
 
 Current Phase: Phase 3 - Workflow, Install, and Packaging Hardening
 
-Current Task: Add explicit subagent dispatch/model-selection guidance for Codex-capable runs
+Current Task: Add a "verify reach" rule to phase and PR review guidance
 
 Current Branch: `feat/atb-namespace-install`
 
 Last Updated: 2026-07-01
 
-Last Completed Step: Added Dev Lite `.atb-work/dev-lite/` scratch and progress ledger convention.
+Last Completed Step: Added optional Dev Lite subagent dispatch and model-selection guidance with sequential fallback.
 
-Next Step: Add explicit subagent dispatch/model-selection guidance for Codex-capable runs.
+Next Step: Add a "verify reach" rule to phase and PR review guidance.
 
-Resume Instructions: Start from Phase 3 Task 7. The current branch is already
+Resume Instructions: Start from Phase 3 Task 8. The current branch is already
 `feat/atb-namespace-install`; do not create another branch unless the user asks.
-Add explicit subagent dispatch/model-selection guidance for Codex-capable runs,
-while keeping the workflow usable without multi-agent support. Preserve
-unrelated work.
+Add a "verify reach" rule to phase and PR review guidance: reviewers must
+distinguish verified, failed, and not inferable from the available spec/diff.
+Preserve unrelated work.
 
 ## Activity Log
 
@@ -107,6 +107,7 @@ unrelated work.
 | 2026-07-01 | Codex | Completed Phase 3 Task 4: Dev Lite file-handoff guidance | Added optional task-brief/report-file guidance to `implementation-rules.md` and `/dev-implement-task`, plus review-package guidance to `review-rules.md` and `/dev-phase-review`; mirrored skill files under `.agents/`; exercised the pattern by writing `/private/tmp/agent-toolbelt-dev-lite-handoff-check/task-4-brief.md` and `/private/tmp/agent-toolbelt-dev-lite-handoff-check/task-4-review-package.diff`; validated with `scripts/check-skill-sync.sh`, `rg "File handoffs|review package|task brief|report file|outside tracked source" ...`, `wc -l` on the generated files, and `git diff --check` | Commit Task 4, then evaluate combined task review |
 | 2026-07-01 | Codex | Completed Phase 3 Task 5: combined task review contract | Updated Dev Lite review rules, `/dev-phase-review`, and `templates/dev-phase-review.md` to keep one review pass but require separate Acceptance / Spec and Code Quality verdicts; mirrored skill files under `.agents/`; exercised the output contract with `/private/tmp/agent-toolbelt-dev-lite-combined-review-check/sample-phase-review.md`; validated with `scripts/check-skill-sync.sh`, `rg "Combined Review Verdicts|Acceptance / Spec|Code Quality|one combined review pass|two verdicts" ...`, `rg "Acceptance / Spec:|Code Quality:" /private/tmp/agent-toolbelt-dev-lite-combined-review-check/sample-phase-review.md`, and `bash -n scripts/check-cursor-plugin-build.sh build-cursor-plugin.sh` | Commit Task 5, then add scratch/ledger conventions |
 | 2026-07-01 | Codex | Completed Phase 3 Task 6: scratch and ledger convention | Added `.atb-work/` to `.gitignore`; documented `.atb-work/dev-lite/` setup, self-ignore, optional `progress.md` ledger, and pre-commit `git status --short` check in Dev Lite skill guidance; mirrored skill files under `.agents/`; validated by creating `.atb-work/dev-lite/.gitignore` and `.atb-work/dev-lite/progress.md` and confirming `git status --short` stayed limited to tracked edits; also ran `scripts/check-skill-sync.sh`, `rg "Scratch and Ledger Convention|\\.atb-work/dev-lite|progress.md|git status --short|scratch workspace" ...`, and `git diff --check` | Commit Task 6, then add dispatch/model-selection guidance |
+| 2026-07-01 | Codex | Completed Phase 3 Task 7: subagent dispatch/model-selection guidance | Added optional subagent dispatch rules to Dev Lite skill guidance, `/dev-implement-task`, and implementation rules: sequential execution remains the default; subagents require an environment that supports them plus explicit user authorization; delegated tasks need owned files/modules, task brief path, report path, checks, short return contract, and sequential fallback; model overrides are only for task-specific reasons. Mirrored skill files under `.agents/`; validated with `scripts/check-skill-sync.sh`, `rg "Optional Subagent Dispatch|sequentially|explicitly asked|model override|default/current model|owned files/modules|sequential fallback" ...`, and `git diff --check` | Commit Task 7, then add verify-reach review guidance |
 
 ## Phase 1: Upstream Delta Triage
 
@@ -394,12 +395,15 @@ with special attention to Superpowers v6's lower-token subagent workflow.
       scratch workspace for task briefs, reports, review packages, and optional `progress.md`
       ledger files. Created sample scratch files under `.atb-work/dev-lite/` and confirmed
       `git status --short` did not show them.
-- [ ] Task: Add explicit subagent dispatch/model-selection guidance for Codex-capable runs, while keeping
+- [x] Task: Add explicit subagent dispatch/model-selection guidance for Codex-capable runs, while keeping
       the workflow usable without multi-agent support.
       Test work: Check command/skill text still has a sequential fallback and does not require unavailable
       tools.
-      Status: Pending.
-      Evidence: Updated dev-lite or worktree references.
+      Status: Complete.
+      Evidence: Updated Dev Lite skill guidance, implementation rules, and `/dev-implement-task`.
+      The workflow defaults to sequential execution, requires explicit user authorization before
+      subagent delegation, defines dispatch ownership/report/check fields, and treats model
+      overrides as task-specific rather than mandatory.
 - [ ] Task: Add a "verify reach" rule to phase and PR review guidance: reviewers must distinguish
       verified, failed, and not inferable from the available spec/diff.
       Test work: Review one sample report and confirm uncertain/non-inferable items do not silently pass.

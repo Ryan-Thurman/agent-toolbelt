@@ -28,6 +28,11 @@ Use this after `/dev-intake`.
   rules.
 - Put cross-task rules in `Global Constraints` once, then reference them from
   tasks only when a task needs a narrower or exceptional constraint.
+- Add a `File / Responsibility Map` before phase tasks. Name the files/modules
+  expected to be created, modified, or tested, and state each one's
+  responsibility.
+- Make task file choices trace back to the map. If a task needs a file not in
+  the map, update the map or explain the deviation in the task.
 - Identify dependencies and risks.
 - Avoid over-engineering.
 - Prefer the smallest useful implementation that satisfies the acceptance criteria.
@@ -65,8 +70,11 @@ per phase). For a freshly created plan, set Current State to `Status: Planning`,
 `Current Phase: Not Started`, `Next Step: Await user plan review`, and seed the
 Activity Log with a "Plan created" row. Fill `Global Constraints` with any
 cross-task rules from the brief or write `None beyond existing repo standards`
-when no special constraints apply. Each behavior-changing task must name its
-matching test work. Keep `Current State`, `Activity Log`, and `Resume
+when no special constraints apply. Fill `File / Responsibility Map` before
+writing phase tasks; include implementation, test, template, command, and
+documentation files when they are relevant. Each behavior-changing task must
+name its matching test work and either use files from the map or explain why the
+map changed. Keep `Current State`, `Activity Log`, and `Resume
 Instructions` updated throughout the workflow.
 
 ## Plan Review Gate

@@ -36,21 +36,21 @@ Status: In Progress
 
 Current Phase: Phase 1A - Planning Robustness Upgrade
 
-Current Task: Add required `File / Responsibility Map` to Dev Lite plans
+Current Task: Add per-task `Files` and `Interfaces` fields for behavior-changing tasks
 
 Current Branch: `feat/atb-namespace-install`
 
 Last Updated: 2026-07-01
 
-Last Completed Step: Added `Global Constraints` to the Dev Lite implementation plan template and `/dev-plan` rules.
+Last Completed Step: Added required `File / Responsibility Map` guidance to Dev Lite plans.
 
-Next Step: Add a pre-task `File / Responsibility Map` to `templates/dev-implementation-plan.md` and `commands/dev-plan.md`.
+Next Step: Add per-task `Files` and `Interfaces` fields to the task scaffold and `/dev-plan` guidance.
 
-Resume Instructions: Start from Phase 1A Task 2. The current branch is already
+Resume Instructions: Start from Phase 1A Task 3. The current branch is already
 `feat/atb-namespace-install`; do not create another branch unless the user asks.
-Add a `File / Responsibility Map` to the template and `/dev-plan` rules, then
-validate that generated plans must name file responsibilities before tasks.
-Preserve unrelated work.
+Task 2 is complete. Add per-task `Files` and `Interfaces` fields for
+behavior-changing tasks, then validate that task file choices trace back to the
+`File / Responsibility Map`. Preserve unrelated work.
 
 ## Activity Log
 
@@ -61,6 +61,7 @@ Preserve unrelated work.
 | 2026-07-01 | Codex | Started Phase 1 and wrote upstream delta report | `docs/upstream-delta-2026-07.md`; inspected upstream paths listed there | Review/commit Phase 1 |
 | 2026-07-01 | Codex | Completed Phase 1 triage checks | Path existence checks passed; `git diff --check -- docs/upstream-borrow-implementation-plan.md docs/upstream-delta-2026-07.md`; no code-looking source blocks found with `rg` | Commit Phase 1 and start Phase 1A |
 | 2026-07-01 | Codex | Completed Phase 1A Task 1: Global Constraints | Updated `templates/dev-implementation-plan.md` and `commands/dev-plan.md`; reviewed generated section/rules with `sed`; confirmed references with `rg "Global Constraints|None beyond existing repo standards|cross-task"` | Commit Task 1, then start File / Responsibility Map |
+| 2026-07-01 | Codex | Completed Phase 1A Task 2: File / Responsibility Map | Updated `templates/dev-implementation-plan.md` and `commands/dev-plan.md`; reviewed section/rules with `sed`; confirmed references with `rg "File / Responsibility Map|files/modules|map changed|explain the deviation"` | Commit Task 2, then start per-task Files/Interfaces |
 
 ## Phase 1: Upstream Delta Triage
 
@@ -141,11 +142,11 @@ constraints, test commands, or acceptance-criteria intent.
       Test work: Create or review one sample plan and verify cross-task rules are stated once and reused.
       Status: Complete.
       Evidence: Updated `templates/dev-implementation-plan.md` and `commands/dev-plan.md`; focused review confirmed the template has one reusable section and `/dev-plan` instructs agents to put cross-task rules there once.
-- [ ] Task: Add a required pre-task `File / Responsibility Map` so decomposition choices are explicit
+- [x] Task: Add a required pre-task `File / Responsibility Map` so decomposition choices are explicit
       before phases/tasks are written.
       Test work: Validate that each task's file list matches the map or explains a deviation.
-      Status: Pending.
-      Evidence: Updated template and command guidance.
+      Status: Complete.
+      Evidence: Updated `templates/dev-implementation-plan.md` and `commands/dev-plan.md`; focused review confirmed the map appears before phases and `/dev-plan` requires task file choices to trace back to it or explain deviations.
 - [ ] Task: Add per-task `Files` and `Interfaces` fields for behavior-changing tasks.
       Test work: Spot-check a generated plan: each task names created/modified/test files and what it
       consumes/produces for neighboring tasks.

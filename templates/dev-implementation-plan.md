@@ -13,6 +13,16 @@ every task unless a task needs a narrower constraint.
 
 - TBD
 
+## File / Responsibility Map
+
+Map the files or modules expected to change before writing phase tasks. Include
+new files, modified files, and test/support files. Each behavior-changing task
+should later name files from this map or explain why the plan changed.
+
+| File / Module | Responsibility | Expected Phase / Task | Interfaces or Consumers | Notes |
+|---|---|---|---|---|
+| TBD | TBD | TBD | TBD | TBD |
+
 ## Current State
 
 Status: Planning / In Progress / Blocked / Ready for PR / Complete

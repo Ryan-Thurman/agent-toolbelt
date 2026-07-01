@@ -33,6 +33,10 @@ Use this after `/dev-intake`.
   responsibility.
 - Make task file choices trace back to the map. If a task needs a file not in
   the map, update the map or explain the deviation in the task.
+- For each behavior-changing task, include `Files` and `Interfaces` fields.
+  `Files` names created/modified/test files from the map. `Interfaces` names
+  what the task consumes, produces, exports, calls, or changes for neighboring
+  tasks.
 - Identify dependencies and risks.
 - Avoid over-engineering.
 - Prefer the smallest useful implementation that satisfies the acceptance criteria.
@@ -73,9 +77,9 @@ cross-task rules from the brief or write `None beyond existing repo standards`
 when no special constraints apply. Fill `File / Responsibility Map` before
 writing phase tasks; include implementation, test, template, command, and
 documentation files when they are relevant. Each behavior-changing task must
-name its matching test work and either use files from the map or explain why the
-map changed. Keep `Current State`, `Activity Log`, and `Resume
-Instructions` updated throughout the workflow.
+include `Files`, `Interfaces`, and matching test work, and either use files from
+the map or explain why the map changed. Keep `Current State`, `Activity Log`,
+and `Resume Instructions` updated throughout the workflow.
 
 ## Plan Review Gate
 

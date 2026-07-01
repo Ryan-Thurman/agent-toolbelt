@@ -58,10 +58,14 @@ full phase block for each additional phase. -->
 ### Tasks
 
 - [ ] Task:
+      Files:
+      Interfaces:
       Test work:
       Status:
       Evidence:
 - [ ] Task:
+      Files:
+      Interfaces:
       Test work:
       Status:
       Evidence:
@@ -91,8 +95,18 @@ Manual or integration checks, if automation is not practical:
 
 ### Tasks
 
-- [ ]
-- [ ]
+- [ ] Task:
+      Files:
+      Interfaces:
+      Test work:
+      Status:
+      Evidence:
+- [ ] Task:
+      Files:
+      Interfaces:
+      Test work:
+      Status:
+      Evidence:
 
 ### Expected Commits
 
@@ -108,8 +122,18 @@ Manual or integration checks, if automation is not practical:
 
 ### Tasks
 
-- [ ]
-- [ ]
+- [ ] Task:
+      Files:
+      Interfaces:
+      Test work:
+      Status:
+      Evidence:
+- [ ] Task:
+      Files:
+      Interfaces:
+      Test work:
+      Status:
+      Evidence:
 
 ### Expected Commits
 
@@ -125,8 +149,18 @@ Manual or integration checks, if automation is not practical:
 
 ### Tasks
 
-- [ ]
-- [ ]
+- [ ] Task:
+      Files:
+      Interfaces:
+      Test work:
+      Status:
+      Evidence:
+- [ ] Task:
+      Files:
+      Interfaces:
+      Test work:
+      Status:
+      Evidence:
 
 ### Expected Commits
 

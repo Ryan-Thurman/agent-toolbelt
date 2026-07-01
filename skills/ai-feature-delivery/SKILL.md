@@ -14,6 +14,8 @@ back to it.
 
 - Ask for missing release, feature ID, owner, impacted systems, and required
   reviewers before declaring any gate ready.
+- Gate-ready completion bar: every gate-ready claim must state the feature ID,
+  release scope, reviewer list, test evidence, and doc-delta state.
 - Keep assumptions explicit. Do not invent regulatory, medical, security, or
   release claims.
 - Keep all controlled artifacts release-scoped with `REL-YYYY.MM` or

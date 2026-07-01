@@ -62,3 +62,7 @@ Always include:
 - Specific test coverage to add or strengthen.
 - Verification commands.
 - Risks, unknowns, and next workflow.
+
+Completion criterion: every referenced precedent is backed by an exact path,
+command, or explicit "not found" result. Do not hand off implementation until
+the source pattern and target gap can be traced to repo evidence.

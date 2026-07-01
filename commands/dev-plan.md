@@ -54,6 +54,9 @@ Use this after `/dev-intake`.
   platform/provider/auth method/source of truth, makes a required field
   optional, or turns a derived constant into user choice. Record the accepted
   assumption change, promoted primary noun, or explicit debt in the plan.
+- Before finalizing the `File / Responsibility Map`, compare the brief's
+  assumptions with current repo state. Record `No drift found` or list concrete
+  files/commands that changed the plan.
 - Stop after producing the plan. Do not start implementation, file edits, or
   `/dev-start-phase` until the user approves the plan or explicitly asks to
   continue.
@@ -78,6 +81,18 @@ For larger app ideas, use:
 7. Final PR Review
 
 Choose the model that fits the scope.
+
+## Planning Pre-Check
+
+Before finalizing files, interfaces, or phases:
+
+1. Inspect the current repo state for the areas named by the brief.
+2. Compare the brief's assumptions against the actual files, commands,
+   templates, public interfaces, and installed workflow structure.
+3. Record either `No drift found` or a short `Planning drift` note naming the
+   files or commands that changed the plan.
+4. Update the `File / Responsibility Map`, task files, interfaces, tests, and
+   risks to reflect any drift before asking for approval.
 
 ## Output
 

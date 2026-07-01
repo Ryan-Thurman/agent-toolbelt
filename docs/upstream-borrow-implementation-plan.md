@@ -36,22 +36,20 @@ Status: In Progress
 
 Current Phase: Phase 1A - Planning Robustness Upgrade
 
-Current Task: Add stale-assumption planning pre-check to `/dev-plan`
+Current Task: Phase 1A review
 
 Current Branch: `feat/atb-namespace-install`
 
 Last Updated: 2026-07-01
 
-Last Completed Step: Added lightweight assumption-delta guidance to `/dev-plan`.
+Last Completed Step: Added stale-assumption/codebase-drift planning pre-check guidance to `/dev-plan`.
 
-Next Step: Add stale-assumption/codebase-drift pre-check guidance to `/dev-plan`.
+Next Step: Run Phase 1A review, then address any findings before starting Phase 2.
 
-Resume Instructions: Start from Phase 1A Task 7. The current branch is already
+Resume Instructions: Start from Phase 1A review. The current branch is already
 `feat/atb-namespace-install`; do not create another branch unless the user asks.
-Task 6 is complete. Add a planning pre-check to compare the feature brief
-against current repo state before finalizing file/interface plans, then record
-either "no drift found" or concrete files that changed the plan. Preserve
-unrelated work.
+Task 7 is complete. Run a Phase 1A review, address any blocking findings, then
+start Phase 2. Preserve unrelated work.
 
 ## Activity Log
 
@@ -67,6 +65,7 @@ unrelated work.
 | 2026-07-01 | Codex | Completed Phase 1A Task 4: no-placeholder self-review | Updated `commands/dev-plan.md`; reviewed with `sed`; confirmed checklist terms with `rg "TBD|placeholder|add tests|handle edge cases|self-review|File / Responsibility Map|Interfaces"` | Commit Task 4, then document code-in-plan policy |
 | 2026-07-01 | Codex | Completed Phase 1A Task 5: code-in-plan policy | Updated `commands/dev-plan.md`; reviewed with `sed`; confirmed policy terms with `rg "exact test names|check commands|full code snippets|algorithmically specific|fresh-context subagent|Code and Command Specificity"` | Commit Task 5, then add assumption-delta guidance |
 | 2026-07-01 | Codex | Completed Phase 1A Task 6: assumption-delta guidance | Updated `commands/dev-plan.md`; reviewed with `sed`; confirmed triggers with `rg "assumption-delta|Assumption Delta|platform|provider|auth method|source of truth|primary noun|accepted debt"` | Commit Task 6, then add stale-assumption pre-check |
+| 2026-07-01 | Codex | Completed Phase 1A Task 7: stale-assumption pre-check | Updated `commands/dev-plan.md`; reviewed with `sed`; confirmed guidance with `rg "Planning Pre-Check|No drift found|Planning drift|current repo state|File / Responsibility Map"` | Commit Task 7, then run Phase 1A review |
 
 ## Phase 1: Upstream Delta Triage
 
@@ -174,12 +173,12 @@ constraints, test commands, or acceptance-criteria intent.
       promoted primary noun or accepted debt.
       Status: Complete.
       Evidence: Updated `commands/dev-plan.md` with a conditional `Assumption Delta Check`; focused review confirmed it only triggers on core assumption changes and records previous/new assumption, primary noun/source of truth, and accepted debt.
-- [ ] Task: Add a planning pre-check for stale assumptions: compare the feature brief against current
+- [x] Task: Add a planning pre-check for stale assumptions: compare the feature brief against current
       repo state before finalizing file/interface plans.
       Test work: Run on one local plan and confirm it either records "no drift found" or lists concrete
       files that changed the plan.
-      Status: Pending.
-      Evidence: Updated `/dev-plan` rules or implementation reference.
+      Status: Complete.
+      Evidence: Updated `commands/dev-plan.md` with a `Planning Pre-Check` requiring current repo-state inspection and either `No drift found` or a `Planning drift` note naming concrete files/commands that changed the plan.
 
 ### Expected Commits
 

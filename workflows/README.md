@@ -10,6 +10,10 @@ self-contained, copy-pasteable workflow docs or scripts.
   Cursor rules, slash commands, workflow recipes, and templates.
 - `dev-lite-feature-workflow.md` - lightweight feature/app loop from intake to
   phased implementation, phase review, and final PR review.
+- `tech-backlog-assessment-workflow.md` - decision workflow for technical
+  backlog items before implementation.
+- `ticket-discovery-workflow.md` - narrow workflow for tickets that point to an
+  existing precedent to copy or adapt.
 - `phase-context-workflow.md` - durable phase files, handoffs, and context
   packets so long agent work can survive `/clear` or `/compact`; composes
   `handoff` for phase closeout.

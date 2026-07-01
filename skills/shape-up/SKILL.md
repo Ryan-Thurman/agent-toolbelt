@@ -9,9 +9,6 @@ Turn a fuzzy request into a clear, agreed brief **before** anyone plans or write
 adversarial interrogation step that sits in front of the build lanes: it surfaces the assumptions,
 contradictions, and missing decisions that would otherwise be silently committed.
 
-> Lifts concepts (MIT) from mattpocock/skills (grilling, to-issues, to-prd, domain-modeling) and
-> obra/superpowers (brainstorming) — see **Credits**.
-
 ## Principles (always)
 
 - **One question at a time.** Never batch questions — asking several at once is bewildering. Walk
@@ -59,11 +56,3 @@ or implementation. The hard gate is mandatory.
 
 - `references/interrogation.md` — the question techniques, the contradiction/overloaded-term
   challenges, edge-case stress tests, and the brief self-audit.
-- `references/rct-acceleration.md` — *optional*: when the rct MCP tools are available, use the graph
-  to resolve the repo-first questions cheaply (file-reading fallback otherwise).
-
-## Credits
-
-Concepts adapted (MIT, reworded) from mattpocock/skills (the one-question-at-a-time grill, repo-first
-resolution, vertical-slice issues, the lean brief sections, domain-term contradiction checks) and
-obra/superpowers (scope-gate, recommended-answer questions, the hard approval gate, spec self-review).

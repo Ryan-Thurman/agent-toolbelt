@@ -14,8 +14,6 @@ This is **cross-cutting** — useful in any lane (Bug-to-Fix, Dev Lite, AI Featu
 or ad-hoc work). Reach for it *proactively* when a long task is about to lose its context, not only
 when asked.
 
-> Lifts the handoff concept (MIT) from mattpocock/skills — see **Credits**.
-
 ## Rules
 
 - **Reference, don't duplicate.** Point to existing artifacts (a durable state/plan file, PRDs,
@@ -56,8 +54,3 @@ what's-been-ruled-out, then continue from the next action. Don't re-litigate eli
 A handoff document containing: current state + a concrete next action, what's been tried/ruled out,
 references (not copies) to the durable state file and related artifacts, suggested next commands,
 and any blockers — secrets redacted, saved outside the workspace unless the project tracks handoffs.
-
-## Credits
-
-The handoff concept is adapted (MIT, reworded) from mattpocock/skills `handoff` (reference-don't-
-duplicate, redact, suggested-next-skills, save to a temp location).

@@ -13,7 +13,7 @@ reviewer** runs automatically with no one pressing the button.
 > This pack adds no review logic. Every path ends in `/pr-review … --comment` (the
 > `pr-review` skill). It reuses that pack's host-provider layer
 > (`skills/pr-review/references/providers.md`) and its opt-in / idempotent posting model
-> (`skills/pr-review/references/posting.md`). See **Credits**.
+> (`skills/pr-review/references/posting.md`).
 
 ## Two triggers, one reviewer
 
@@ -119,9 +119,3 @@ reference; until that's wired, use the poller against Azure.
 - `skills/pr-review/references/providers.md` — the host abstraction reused for PR listing and SHA reads.
 - `skills/pr-review/references/posting.md` — the opt-in / idempotent posting model `--comment` obeys.
 - `templates/review-on-open-github.yml` — the copyable workflow target repos drop into `.github/workflows/`.
-
-## Credits
-
-A trigger layer over the `pr-review` pack: it reuses that pack's provider layer (GitHub/Azure/git
-detection) and its posting model, and adds nothing to the review itself. The seen-ledger mirrors the
-shape of `pr-review`'s `.git/pr-review-rejections.jsonl` anti-noise store.

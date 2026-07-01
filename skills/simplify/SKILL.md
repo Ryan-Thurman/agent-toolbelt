@@ -10,8 +10,6 @@ and applies nothing*, simplify *drives the cleanup* — it proposes high-convict
 and applies them on opt-in. It is biased toward small, behavior-preserving deletions, not ambitious
 rewrites.
 
-> Lifts concepts (MIT) from pi-simplify and addyosmani/agent-skills — see **Credits**.
-
 ## Mutation Policy
 
 Default: report-only.
@@ -76,11 +74,3 @@ parallelize` (`/simplify`); `inspect | delete | inline | extract | refactor | gu
   keep-rule, and detection cues.
 - `references/apply-discipline.md` — the report-then-apply contract, the Chesterton's-Fence
   pre-removal checklist, behavior-preserving rules, red flags, and scope/ignore handling.
-- `references/rct-acceleration.md` — *optional*: when the rct MCP tools are available, use the graph
-  for reuse-search and caller checks (file-reading fallback otherwise).
-
-## Credits
-
-Concepts adapted (MIT, reworded) from pi-simplify (smell taxonomy, thin-wrapper detectors, risk
-tiers, rootIssue→consequence→benefit) and addyosmani/agent-skills (code-simplification discipline,
-Chesterton's Fence, the simplify-ignore mechanism).

@@ -72,6 +72,11 @@ retrieval-heavy steps (blast radius, callers, scope, localization) at a fraction
 of the tokens. It is strictly optional — every skill works by reading files
 directly when rct is not present.
 
+## Provenance
+
+Skill concept attribution lives in `../docs/skill-provenance.md` so runtime
+`SKILL.md` files stay focused on invocation, invariants, flow, and references.
+
 ## Canonical copies
 
 `skills/dev-lite-workflow/SKILL.md` is the **canonical** source. The repo also

@@ -13,9 +13,6 @@ replacement.
 > The name is deliberate: this *retrofits* a defined change onto existing code. It is **not** a
 > database migration, and it does **not** decide *what* the change is.
 
-> Lifts concepts (MIT) from addyosmani/agent-skills (deprecation-and-migration) and obra/superpowers
-> (using-git-worktrees, subagent-driven-development) — see **Credits**.
-
 ## Mutation Policy
 
 Default: report-only discovery.
@@ -89,10 +86,3 @@ Workflow runner isn't available, walk the sites sequentially from the plan.
 - `references/transform-and-verify.md` — worktree isolation, the strangler/adapter/feature-flag
   coexistence strategies, per-site + whole-suite verification, the no-silent-truncation rule, and
   the verify-zero-usage-before-removal gate.
-
-## Credits
-
-Concepts adapted (MIT, reworded) from addyosmani/agent-skills `deprecation-and-migration` (the
-incremental per-consumer migration loop, strangler/adapter/feature-flag patterns, verify-zero-usage-
-before-removal) and obra/superpowers `using-git-worktrees` + `subagent-driven-development` (isolation
-discipline, parallel subagent fan-out).

@@ -13,7 +13,7 @@ sharing the repo's object store but isolated on disk. This pack makes that a one
 collision-safe branch naming and a tidy, predictable layout.
 
 > Adds no review/build logic — it only manages checkouts. The agent still does its work inside the
-> worktree the normal way. See **Credits**.
+> worktree the normal way.
 
 ## When to use this (vs. not)
 
@@ -95,10 +95,3 @@ bash skills/worktree/bin/worktree.sh rm agent/fix-login --delete-branch
 - `references/cli.md` — every op, flag, exit behavior, and the repo/branch/base resolution rules.
 - `references/isolation.md` — the multi-agent contract, the polyrepo model, cleanup discipline, and
   when to prefer `Workflow`'s in-run `isolation: 'worktree'` instead.
-
-## Credits
-
-The "one worktree per unit of parallel work, prefer a managed worktree over hand-rolled `git
-worktree`, discard an unchanged worktree" discipline is the same one the `retrofit` pack uses for its
-fan-out, drawn from obra/superpowers' `using-git-worktrees` + `subagent-driven-development` patterns.
-This pack packages it as a standalone, session-to-session tool for the shared-directory case.

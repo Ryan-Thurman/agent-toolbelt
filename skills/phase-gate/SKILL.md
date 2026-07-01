@@ -104,9 +104,3 @@ The main agent runs this at a phase boundary, with the phase's work already push
 - `skills/pr-review/SKILL.md` — the reviewer the subagent runs (tiers, facets, `--comment` posting).
 - `workflows/phase-gate-team-workflow.md` · `workflows/phase-gate-solo-workflow.md` — the two
   phased-build loops this gate plugs into.
-
-## Credits
-
-A phase-boundary orchestration over the `pr-review` pack — it spawns the reviewer as a subagent,
-routes findings (to the host PR or back to the main agent), and in solo mode adds the fix+merge step.
-The review itself is entirely `pr-review`; the host posting reuses its provider/posting layers.

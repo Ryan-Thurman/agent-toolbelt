@@ -11,8 +11,6 @@ counterpart to the generative `ai-feature-delivery` skill; the two share a back 
 review), but their front halves are opposites — feature delivery asks "what should exist?", this
 asks "why is this broken, and what is the smallest change that fixes it?".
 
-> Lifts concepts (not prose) from several MIT-licensed skill packs — see **Credits** at the end.
-
 ## Principles (always)
 
 - **No fix without a confirmed root cause.** You may not propose or apply a fix until the
@@ -82,14 +80,3 @@ Each step has a single hard gate, so the commands are independently invocable:
 - `references/adversarial-confirmation.md` — the doubt cycle that confirms a root cause before you
   accept it (reuses the pr-review falsify-don't-verify pattern).
 - `references/severity.md` — SEV1–SEV4, auto-upgrade triggers, and the intake schema.
-- `references/rct-acceleration.md` — *optional*: when the rct MCP tools are available, use the graph
-  to localize the cause and bound the fix (file-reading fallback otherwise).
-
-## Credits
-
-Concepts adapted (MIT, reworded in our own voice) from: obra/superpowers (systematic-debugging,
-defense-in-depth, verification-before-completion), addyosmani/agent-skills (doubt-driven-development,
-debugging-and-error-recovery), mattpocock/skills (diagnosing-bugs, triage, handoff),
-Jeffallan/claude-skills (debugging-wizard), msitarzewski/agency-agents (minimal-change-engineer,
-incident-commander), VoltAgent/awesome-claude-code-subagents (debugger), and open-gsd/gsd-core
-(durable debug-file state model).

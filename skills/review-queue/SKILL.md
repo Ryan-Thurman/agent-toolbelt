@@ -12,8 +12,7 @@ local — no GitHub webhook, no CI, no API key — so it runs on your Claude Cod
 harness (Claude Code, Cursor, Codex) can produce or consume against the one shared queue.
 
 > Adds no review logic. The worker's whole job is to call `/pr-review … --comment` (the `pr-review`
-> pack) on each claimed item. This pack is the **ignition + hand-off**, not the reviewer. See
-> **Credits**.
+> pack) on each claimed item. This pack is the **ignition + hand-off**, not the reviewer.
 
 ## Why a queue (vs the poller / CI event)
 
@@ -94,9 +93,3 @@ atomic, you can safely run more than one worker.
 - `skills/review-on-open/SKILL.md` — the sibling triggers (CI event / host poller); this queue is the
   third, push-based trigger. All three end in `/pr-review --comment`.
 - `skills/pr-review/SKILL.md` — the reviewer every claimed job runs.
-
-## Credits
-
-A trigger/hand-off layer over the `pr-review` pack — it carries jobs, not findings; the review itself
-is entirely `pr-review`. The SHA-idempotency mirrors the `review-on-open` seen-ledger; the
-producer/consumer split is what lets a separate, fresh agent do the review.

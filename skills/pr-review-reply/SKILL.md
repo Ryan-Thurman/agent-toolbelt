@@ -13,7 +13,7 @@ back to the host is opt-in, confirmed, and idempotent.
 
 > Complements the `pr-review` pack — it reuses that pack's host-provider layer
 > (`skills/pr-review/references/providers.md`) and its opt-in/idempotent posting philosophy
-> (`skills/pr-review/references/posting.md`). See **Credits**.
+> (`skills/pr-review/references/posting.md`).
 
 ## Mutation Policy
 
@@ -91,9 +91,3 @@ idempotent.
   Azure Repos `az` / generic git).
 - `skills/pr-review/references/posting.md` — the opt-in, idempotent, confirm-first posting
   philosophy this pack mirrors for `--post`.
-
-## Credits
-
-Built to complement the `pr-review` pack: it reuses that pack's provider layer (GitHub/Azure/git
-detection and routing) and mirrors its opt-in + idempotent + confirm-first posting model for the
-reply direction. The triage statuses and the reply-block contract are defined here.

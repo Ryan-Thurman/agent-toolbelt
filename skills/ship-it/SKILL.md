@@ -8,9 +8,6 @@ description: Prepare a change for release with readiness checks, rollback, relea
 The lightweight release-readiness step that closes the dev lanes — they end at "PR merged," this
 takes it to "released safely." Every release should be **reversible, observable, and incremental**.
 
-> Lifts concepts (MIT) from addyosmani/agent-skills (shipping-and-launch) and gstack
-> (land-and-deploy, document-release) — see **Credits**.
-
 ## Mutation Policy
 
 Default: prepare the release package only.
@@ -66,9 +63,3 @@ it**. When unsure, ask before doing anything that deploys.
   performance, accessibility, infrastructure, docs), to scope to the change.
 - `references/rollout-and-rollback.md` — feature-flag lifecycle, the staged rollout sequence, the
   advance/hold/roll-back threshold table, the roll-back triggers, and the monitoring list.
-
-## Credits
-
-Concepts adapted (MIT, reworded) from addyosmani/agent-skills `shipping-and-launch` (pre-launch
-checklist, feature-flag lifecycle, staged rollout + decision thresholds, rollback triggers) and
-gstack `land-and-deploy` / `document-release` (the deploy-handoff boundary, release-notes/doc audit).

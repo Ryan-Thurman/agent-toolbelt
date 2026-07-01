@@ -9,9 +9,8 @@ Use this skill when a coding-agent task will span multiple phases or sessions
 and the user wants important context preserved in files instead of chat history.
 
 This skill is file-first. It does not require a daemon, TUI, or full agent
-orchestration system. A future `acc phase ...` CLI can automate the same
-operations, but the workflow must be useful today with normal file edits and git
-commands.
+orchestration system; the workflow must be useful with normal file edits and
+git commands.
 
 ## Core Principle
 

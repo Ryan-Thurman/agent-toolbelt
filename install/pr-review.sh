@@ -19,6 +19,15 @@ pack_pr_review() {
     skill pr-review "$f"
   done
 
+  # pr-review maintainability points at the shared smell taxonomy without
+  # registering the whole simplify skill as part of this pack.
+  _install "skills/simplify/references/smell-taxonomy.md" ".atb/skills/simplify/references/smell-taxonomy.md"
+  if harness_enabled cursor || harness_enabled codex; then
+    _install "skills/simplify/references/smell-taxonomy.md" ".agents/skills/simplify/references/smell-taxonomy.md"
+  else
+    gated=$((gated + 1))
+  fi
+
   template pr-review.md
 
   local e

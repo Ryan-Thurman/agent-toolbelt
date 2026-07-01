@@ -5,12 +5,19 @@ and safety. Set `"facet": "maintainability"` on every finding.
 
 ## What to flag
 
-- thin wrappers / identity helpers / pass-throughs that add indirection without buying clarity.
-- spaghetti growth: new ad-hoc conditionals or special-cases bolted onto unrelated flows.
-- file-size sprawl: a change pushing a file past ~1000 lines — ask to decompose first.
-- duplicated logic instead of reusing/extracting a helper.
+Use the shared smell vocabulary in `../../simplify/references/smell-taxonomy.md` as the baseline:
+complexity, duplication, coupling, state, errors, performance, maintainability, thin wrappers, and
+the compact Fowler-style cues. Treat those cues as heuristics, not hard violations; documented repo
+standards override the baseline.
+
+For PR review, prioritize smells introduced or worsened by the diff:
+
+- a change that makes a module materially harder to reason about.
+- new ad-hoc conditionals, special-cases, or state that point to a missing model.
+- duplicated logic instead of reusing or extracting a canonical helper.
+- feature logic leaking into the wrong layer or across a boundary.
 - cast-heavy / `any` / `unknown` / needless optionality that obscures the real contract.
-- over-complex code that a simpler structure would replace (but don't over-simplify away real cases).
+- file-size sprawl: a change pushing a file past ~1000 lines — ask to decompose first.
 
 ## Do NOT flag
 
@@ -20,7 +27,8 @@ and safety. Set `"facet": "maintainability"` on every finding.
 
 Be **ambitious** about structure: prefer findings where a restructuring deletes whole branches or
 layers ("code judo"), not just cosmetic cleanup. A maintainability blocker is a change that makes the
-codebase materially harder to reason about or maintain.
+codebase materially harder to reason about or maintain. Every finding still needs concrete evidence,
+a consequence, and a behavior-preserving direction for improvement.
 
 > Deep tier raises this facet to the full **thermo-nuclear** bar:
 > `../../../examples/thermo-nuclear-review.md`.

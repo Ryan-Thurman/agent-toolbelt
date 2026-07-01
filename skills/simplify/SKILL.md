@@ -18,7 +18,8 @@ rewrites.
   `safe`/`confirm` changes. This is the default, post-feature tool.
 - **`/code-smell`** — detect-only scan of a path/area (not diff-bound). Surfaces deeper structural
   smells ranked by `severity × confidence`. **Never auto-applies** — it hands findings to a human
-  (or to `/simplify` for the safe subset).
+  (or to `/simplify` for the safe subset). Use `/code-smell <path> --architecture` for no-code
+  architecture/deepening candidates.
 
 ## Principles (always)
 
@@ -32,10 +33,10 @@ rewrites.
 - **Report-then-apply.** Propose findings first; apply only what the user opts into, in a separate
   step. Never silently rewrite.
 - **Fewer, higher-conviction.** A short list of defensible deletions beats a flood of style nits.
-- **Don't duplicate the reviewer.** simplify shares the maintainability vocabulary that `pr-review`
-  uses (if that skill is also installed, its `facets/maintainability.md` is the reference) but owns
-  the *apply* side. Leave ambitious structural "code judo" rewrites to `pr-review --tier=deep`
-  (advisory); simplify stays small and safe.
+- **Keep one maintainability vocabulary.** `references/smell-taxonomy.md` is the shared source for
+  `/code-smell`, `/simplify`, and `pr-review` maintainability. This skill owns the *apply* side.
+  Leave ambitious structural "code judo" rewrites to `pr-review --tier=deep` (advisory);
+  simplify stays small and safe.
 - **Respect fences.** Honor `simplify-ignore` block markers and existing abstraction boundaries;
   be especially careful with error handling, security logic, migration files, and code that looks
   unused but is called via reflection/eval.
@@ -64,8 +65,9 @@ parallelize` (`/simplify`); `inspect | delete | inline | extract | refactor | gu
 
 ## References
 
-- `references/smell-taxonomy.md` — the smell families, the `/simplify` reuse/quality/efficiency
-  axes, the thin-wrapper taxonomy and its keep-rule, and detection cues.
+- `references/smell-taxonomy.md` — the shared smell families, compact Fowler-style baseline,
+  architecture/deepening mode, `/simplify` reuse/quality/efficiency axes, thin-wrapper taxonomy and
+  keep-rule, and detection cues.
 - `references/apply-discipline.md` — the report-then-apply contract, the Chesterton's-Fence
   pre-removal checklist, behavior-preserving rules, red flags, and scope/ignore handling.
 - `references/rct-acceleration.md` — *optional*: when the rct MCP tools are available, use the graph

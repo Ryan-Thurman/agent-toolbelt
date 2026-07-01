@@ -72,7 +72,8 @@ Routing guide:
   changed since the review): `/pr-review-reply` (run after `/pr-review`).
 - Release a merged change (readiness + rollback + notes + rollout): `/ship-it`.
 - Clean up / slim a diff after a feature (apply): `/simplify`.
-- Scan an area for structural smells (detect-only): `/code-smell`.
+- Scan an area for structural smells (detect-only): `/code-smell`; for architecture/deepening
+  candidates, use `/code-smell <path> --architecture`.
 - Apply one defined change across many sites (library swap / API rename / upgrade): `/retrofit`.
 - Isolate work so parallel agents in a shared polyrepo dir don't clobber each other's branch: `/worktree new`.
 - Root-cause only, no fix: `/rca --diagnose`.

@@ -47,8 +47,8 @@ The repository ships these toolsets:
   handoff, and release documentation.
 - `shape-up`: interrogate a vague request into an agreed brief before building —
   the front-door to the dev lanes.
-- `simplify`: actively clean up existing code, applying high-conviction
-  simplifications on opt-in — the active counterpart to `pr-review`.
+- `simplify`: actively clean up existing code on opt-in, plus `/code-smell`
+  detect-only scans for structural and architecture/deepening candidates.
 - `cover`: author and strengthen tests for a diff, module, or bug reproduction
   (behavior-pinning, applied on opt-in) + a detect-only coverage-gap scan.
 - `ship-it`: lightweight release readiness — go/no-go check, rollback plan,

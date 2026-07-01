@@ -29,11 +29,9 @@ tells you the PR number, so it calls `/pr-review` directly and needs no ledger. 
 hosts without event CI, mixed-host watching, several repos at once, or a laptop-side watcher. Read
 `references/ci-event.md` for event setup and `references/poller.md` for poller execution.
 
-**Third trigger — a local push queue.** When the PR is opened by *another local agent* (not a remote
-host you'd poll), the cleanest ignition is push, not poll: the producing agent enqueues a job and a
-worker claims it. That's the **`review-queue`** pack (`skills/review-queue/SKILL.md`) — fully local,
-no CI/webhook/API key, with atomic exactly-once claim and crash-safe leases. Use it for agent-to-agent
-hand-off; use the event/poller here for host-originated PRs. All three end in `/pr-review --comment`.
+**Third trigger — a local push queue.** When another local agent opens the PR, use the `review-queue`
+pack for agent-to-agent handoff instead of polling the host. Use the event or poller paths here for
+host-originated PRs. All three end in `/pr-review --comment`.
 
 ## Principles (always)
 

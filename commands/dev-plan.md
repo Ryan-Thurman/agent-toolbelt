@@ -22,6 +22,12 @@ Use this after `/dev-intake`.
 - Each task should be small enough for one focused commit.
 - Include test work inside each behavior-changing task, not only in a final
   hardening phase.
+- Add a `Global Constraints` section for rules that apply across tasks, such as
+  compatibility, security boundaries, migration limits, design-system
+  constraints, performance budgets, dependency restrictions, or licensing
+  rules.
+- Put cross-task rules in `Global Constraints` once, then reference them from
+  tasks only when a task needs a narrower or exceptional constraint.
 - Identify dependencies and risks.
 - Avoid over-engineering.
 - Prefer the smallest useful implementation that satisfies the acceptance criteria.
@@ -57,7 +63,9 @@ Create or update an Implementation Plan following the structure in
 blocks with the phases from the model you chose above (duplicate the phase block
 per phase). For a freshly created plan, set Current State to `Status: Planning`,
 `Current Phase: Not Started`, `Next Step: Await user plan review`, and seed the
-Activity Log with a "Plan created" row. Each behavior-changing task must name its
+Activity Log with a "Plan created" row. Fill `Global Constraints` with any
+cross-task rules from the brief or write `None beyond existing repo standards`
+when no special constraints apply. Each behavior-changing task must name its
 matching test work. Keep `Current State`, `Activity Log`, and `Resume
 Instructions` updated throughout the workflow.
 

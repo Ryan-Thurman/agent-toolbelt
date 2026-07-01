@@ -4,6 +4,15 @@
 
 ## Acceptance Criteria Coverage Strategy
 
+## Global Constraints
+
+List cross-task rules that every phase must preserve, such as compatibility,
+security boundaries, migration limits, design-system constraints, performance
+budgets, dependency restrictions, or licensing rules. Do not repeat these in
+every task unless a task needs a narrower constraint.
+
+- TBD
+
 ## Current State
 
 Status: Planning / In Progress / Blocked / Ready for PR / Complete

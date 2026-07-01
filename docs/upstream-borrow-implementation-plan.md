@@ -36,20 +36,20 @@ Status: In Progress
 
 Current Phase: Phase 1A - Planning Robustness Upgrade
 
-Current Task: Add `Global Constraints` to Dev Lite plan template and `/dev-plan`
+Current Task: Add required `File / Responsibility Map` to Dev Lite plans
 
 Current Branch: `feat/atb-namespace-install`
 
 Last Updated: 2026-07-01
 
-Last Completed Step: Completed Phase 1 upstream delta triage.
+Last Completed Step: Added `Global Constraints` to the Dev Lite implementation plan template and `/dev-plan` rules.
 
-Next Step: Begin Phase 1A by updating `templates/dev-implementation-plan.md` and `commands/dev-plan.md`.
+Next Step: Add a pre-task `File / Responsibility Map` to `templates/dev-implementation-plan.md` and `commands/dev-plan.md`.
 
-Resume Instructions: Start from Phase 1A Task 1. The current branch is already
+Resume Instructions: Start from Phase 1A Task 2. The current branch is already
 `feat/atb-namespace-install`; do not create another branch unless the user asks.
-Update `templates/dev-implementation-plan.md` and `commands/dev-plan.md` with a
-Global Constraints section/rule, then run a focused template/command review.
+Add a `File / Responsibility Map` to the template and `/dev-plan` rules, then
+validate that generated plans must name file responsibilities before tasks.
 Preserve unrelated work.
 
 ## Activity Log
@@ -60,6 +60,7 @@ Preserve unrelated work.
 | 2026-07-01 | Codex | Created implementation plan | `docs/upstream-borrow-implementation-plan.md` | Create branch and start Phase 1 |
 | 2026-07-01 | Codex | Started Phase 1 and wrote upstream delta report | `docs/upstream-delta-2026-07.md`; inspected upstream paths listed there | Review/commit Phase 1 |
 | 2026-07-01 | Codex | Completed Phase 1 triage checks | Path existence checks passed; `git diff --check -- docs/upstream-borrow-implementation-plan.md docs/upstream-delta-2026-07.md`; no code-looking source blocks found with `rg` | Commit Phase 1 and start Phase 1A |
+| 2026-07-01 | Codex | Completed Phase 1A Task 1: Global Constraints | Updated `templates/dev-implementation-plan.md` and `commands/dev-plan.md`; reviewed generated section/rules with `sed`; confirmed references with `rg "Global Constraints|None beyond existing repo standards|cross-task"` | Commit Task 1, then start File / Responsibility Map |
 
 ## Phase 1: Upstream Delta Triage
 
@@ -136,10 +137,10 @@ constraints, test commands, or acceptance-criteria intent.
 
 ### Tasks
 
-- [ ] Task: Add a `Global Constraints` section to the Dev Lite plan template and `/dev-plan` rules.
+- [x] Task: Add a `Global Constraints` section to the Dev Lite plan template and `/dev-plan` rules.
       Test work: Create or review one sample plan and verify cross-task rules are stated once and reused.
-      Status: Pending.
-      Evidence: Updated `templates/dev-implementation-plan.md` and `commands/dev-plan.md`.
+      Status: Complete.
+      Evidence: Updated `templates/dev-implementation-plan.md` and `commands/dev-plan.md`; focused review confirmed the template has one reusable section and `/dev-plan` instructs agents to put cross-task rules there once.
 - [ ] Task: Add a required pre-task `File / Responsibility Map` so decomposition choices are explicit
       before phases/tasks are written.
       Test work: Validate that each task's file list matches the map or explains a deviation.

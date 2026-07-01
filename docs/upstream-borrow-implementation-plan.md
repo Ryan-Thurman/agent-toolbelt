@@ -62,23 +62,23 @@ Status: In Progress
 
 Current Phase: Phase 3A - Skill Authoring and Architecture Review Discipline
 
-Current Task: Fold compact Fowler smell baseline into simplify/pr-review guidance
+Current Task: Evaluate architecture review command/mode scope
 
-Current Branch: `feat/atb-namespace-install`
+Current Branch: `feat/architecture-smell-guidance`
 
 Last Updated: 2026-07-01
 
-Last Completed Step: Added progressive-disclosure guidance and audited `pr-review/` for sprawl.
+Last Completed Step: Folded compact Fowler-style smell baseline into the shared maintainability
+taxonomy.
 
-Next Step: Fold the compact Fowler smell baseline into existing maintainability guidance without
-creating a second taxonomy.
+Next Step: Evaluate whether architecture review vocabulary should become a new detect-only command
+or a `/code-smell` mode.
 
-Resume Instructions: Start from Phase 3A Task 4. The current branch is already
-`feat/atb-namespace-install`; do not create another branch unless the user asks.
-Fold the compact Fowler smell baseline into existing `simplify`/`pr-review`
-maintainability guidance without duplicating the current taxonomy. Verify the
-final vocabulary labels smells as heuristics, not hard violations. Preserve
-unrelated work.
+Resume Instructions: Start from Phase 3A Task 5. The current branch is
+`feat/architecture-smell-guidance`; do not create another branch unless the user
+asks. Evaluate whether `improve-codebase-architecture` should become a new
+detect-only command or whether its vocabulary should be absorbed into
+`/code-smell` as an architecture review mode. Preserve unrelated work.
 
 ## Activity Log
 
@@ -117,6 +117,7 @@ unrelated work.
 | 2026-07-01 | Codex | Completed Phase 3A Task 1: skill-authoring checklist | Added `Skill authoring checklist` to `skills/README.md`, covering invocation choice, context load, trigger branches, progressive disclosure, completion criteria, single source of truth, no-op pruning, and sediment. Applied it to `shape-up/`: keep the model-invoked description because its fuzzy-idea/ticket trigger and bug/regulated-lane exclusions are distinct; keep `references/interrogation.md` behind a pointer and do not inline branch-only questioning techniques into `SKILL.md`. Validated with `rg "Skill authoring checklist|Decide invocation first|description pay|completion criteria|Prune no-ops|Applied check|shape-up" skills/README.md` and `git diff --check` | Commit Task 1, then audit model-invoked descriptions |
 | 2026-07-01 | Codex | Completed Phase 3A Task 2: model-invoked description audit | Audited `pr-review`, `review-on-open`, and `review-queue` descriptions. Branches: direct PR/branch/diff code review; host-triggered event/poller review automation; local producer/consumer queue handoff. Trimmed repeated/no-op trigger phrasing such as duplicated `PR review`/`reviewing a diff`, verbose PR event explanation, and repeated local/no-webhook wording while preserving distinct invocation coverage. Validated with frontmatter `sed`, `git diff --check`, and scoped diff review. | Commit Task 2, then add progressive-disclosure guidance |
 | 2026-07-01 | Codex | Completed Phase 3A Task 3: progressive-disclosure rule of thumb | Added branch-based progressive disclosure guidance to `skills/README.md`: inline what every invocation needs; move variant-specific detail, optional paths, schemas, examples, and provider/framework mechanics behind condition-specific `references/` pointers. Audited long skill `pr-review/`: keep tier choice, reviewer-safety, inputs, and short tier algorithms inline; future cleanup candidate is duplicated reference cataloging, keeping `## References` navigation-only while detailed provider/posting/tier/schema mechanics stay in references. Validated with `rg "progressive disclosure|variant-specific|pr-review/|reference cataloging|navigation only" skills/README.md` and `git diff --check`. | Commit Task 3, then fold compact Fowler smell baseline into maintainability guidance |
+| 2026-07-01 | Codex | Completed Phase 3A Task 4: compact Fowler smell baseline | Added the compact Fowler-style baseline to `skills/simplify/references/smell-taxonomy.md` as the shared maintainability vocabulary for `/code-smell`, `/simplify`, and `pr-review`. Added safety rules that the smells are heuristics, not hard violations, and documented repo standards override the baseline. Updated `skills/simplify/SKILL.md`, `skills/pr-review/facets/maintainability.md`, and `skills/pr-review/references/review-rubric.md` to point at the shared taxonomy instead of creating a second list. Validated with `rg "Mysterious name|Feature envy|heuristics, not hard violations|documented repo standards override|shared smell vocabulary|single source of truth"` and `git diff --check`. | Commit Task 4, then evaluate architecture review command/mode scope |
 
 ## Phase 1: Upstream Delta Triage
 
@@ -516,12 +517,16 @@ cheaper to carry in context, and sharper when reviewing architecture or code sme
       audited `pr-review/`: keep tier choice, safety, inputs, and short tier algorithms inline; use
       future edits to keep `## References` navigation-only and leave detailed provider, posting,
       tier, and schema mechanics in referenced files.
-- [ ] Task: Fold the compact Fowler smell baseline into `simplify`/`code-smell` or `pr-review`
+- [x] Task: Fold the compact Fowler smell baseline into `simplify`/`code-smell` or `pr-review`
       maintainability guidance without duplicating our existing taxonomy.
       Test work: Verify the final taxonomy has one source of truth and labels smells as heuristics, not
       hard violations.
-      Status: Pending.
-      Evidence: Updated `skills/simplify/references/smell-taxonomy.md` or PR review facet.
+      Status: Complete.
+      Evidence: Updated `skills/simplify/references/smell-taxonomy.md` as the single source of truth
+      with a compact Fowler-style baseline and safety rules: repo standards override the baseline,
+      and smells are heuristics rather than hard violations. Updated `skills/simplify/SKILL.md`,
+      `skills/pr-review/facets/maintainability.md`, and
+      `skills/pr-review/references/review-rubric.md` to point at the shared taxonomy.
 - [ ] Task: Evaluate whether `improve-codebase-architecture` should become a new detect-only command,
       or whether its vocabulary should be absorbed into `/code-smell` as an architecture review mode.
       Test work: Produce a no-code architecture candidate report for one small local area, or document

@@ -3,6 +3,16 @@
 What to look for. `/code-smell` scans by family; `/simplify` scans by axis. Treat cheap regex/lexical
 cues as untrusted leads to verify by reading, never as truth.
 
+This file is the shared maintainability vocabulary for `/code-smell`, `/simplify`, and the
+`pr-review` maintainability facet. Keep it as the single source of truth: other prompts may point
+here, but should not copy this taxonomy.
+
+## Baseline rules
+
+Use the smell names below as heuristics, not hard violations. A documented repo standard or local
+architecture note wins over the baseline; if the repo intentionally endorses a pattern, suppress the
+smell. Every finding still needs concrete evidence and a consequence.
+
 ## `/code-smell` families (structural scan)
 
 - **Complexity** — long functions, mixed responsibilities, deep nesting, boolean-flag control flow,
@@ -19,6 +29,26 @@ cues as untrusted leads to verify by reading, never as truth.
   blocking work.
 - **Maintainability** — debug remnants, commented-out code, TODO/HACK hiding required design,
   stringly-typed constants.
+
+## Compact Fowler-style baseline
+
+Use these as always-available maintainability cues when repo standards are missing or thin. Fold any
+hit back into the family list above rather than creating a separate report axis.
+
+- **Mysterious name** — a symbol name hides the concept or behavior it represents.
+- **Duplicated code** — the same logic shape appears in multiple places.
+- **Feature envy** — code spends more effort reaching into another module/object than using its own
+  data.
+- **Data clumps** — the same group of fields or parameters travels together and wants a named type.
+- **Primitive obsession** — strings, numbers, or booleans stand in for domain concepts with real
+  invariants.
+- **Repeated switches** — matching condition chains recur on the same kind of value.
+- **Shotgun surgery** — one logical change forces scattered edits across many files.
+- **Divergent change** — one module changes for unrelated reasons.
+- **Speculative generality** — abstractions, knobs, or hooks exist for needs that are not real yet.
+- **Message chains** — callers navigate through object/module internals they should not know.
+- **Middle man** — a wrapper mostly delegates without protecting an API, boundary, or policy.
+- **Refused bequest** — an inheritance/interface relationship is mostly ignored or worked around.
 
 Rank each by **severity** (high = likely bug/perf/user impact; medium = concrete maintenance cost;
 low = useful cleanup) **× confidence** (high only after reading enough to verify; medium for strong

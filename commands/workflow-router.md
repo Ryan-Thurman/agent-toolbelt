@@ -40,6 +40,12 @@ Routing guide:
   phase handoff needed: `/phase-create` -> `/phase-start` -> do the phase work
   -> `/phase-close` -> `/clear` or `/compact`.
 - Vague / underspecified request: `/shape-up` (then `/dev-intake` or `/to-issues`).
+- Technical backlog decision, dependency/library choice, or "should we do this?":
+  `/tech-assess` (then `/ticket-discover`, `/dev-plan`, `/implementation-plan`,
+  `/retrofit`, `/cover-gaps`, or no action).
+- Narrow implementation ticket that points to a precedent, such as "add X to Y;
+  Z already has it": `/ticket-discover` (then `/implementation-plan`, `/dev-plan`,
+  `/cover`, or `/retrofit`).
 - Broken behavior / bug (Bug-to-Fix): `/bug-intake` -> `/reproduce` -> `/rca`
   (or `/rca --diagnose` for read-only) -> `/fix-plan` -> `/dev-implement-task`
   -> `/cover` (lock the repro as a regression test) -> `/pr-review` -> `/ship-it`

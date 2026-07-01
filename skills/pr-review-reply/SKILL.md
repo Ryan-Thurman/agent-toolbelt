@@ -15,6 +15,13 @@ back to the host is opt-in, confirmed, and idempotent.
 > (`skills/pr-review/references/providers.md`) and its opt-in/idempotent posting philosophy
 > (`skills/pr-review/references/posting.md`). See **Credits**.
 
+## Mutation Policy
+
+Default: report-only.
+Edit files only when the user explicitly asks for follow-up code changes.
+Posting replies to the host requires confirmation through `--post` and must be
+idempotent.
+
 ## Principles (always)
 
 - **Re-review only what changed since the review.** Triage and resolution claims are grounded in the

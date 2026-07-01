@@ -16,6 +16,13 @@ replacement.
 > Lifts concepts (MIT) from addyosmani/agent-skills (deprecation-and-migration) and obra/superpowers
 > (using-git-worktrees, subagent-driven-development) — see **Credits**.
 
+## Mutation Policy
+
+Default: report-only discovery.
+Edit files only when the user explicitly asks to apply the defined
+transformation.
+Keep each applied slice behavior-preserving and verified before moving on.
+
 ## What this is and isn't
 
 - **It applies a *defined* transform.** You (or `/shape-up`) decide what the change is; retrofit

@@ -14,6 +14,13 @@ gh-vs-az *host* — here the abstraction is the *tracker*.
 > One flow, swappable tracker. The slicers decide *what* the tickets are; ticket-sync only decides
 > *where they live* and keeps them in sync.
 
+## Mutation Policy
+
+Default: dry-run preview.
+Modify remote tracker issues only after explicit confirmation.
+Edit local ticket files only to record tracker keys created during a confirmed
+apply; when offline, write a manifest instead.
+
 ## Principles (always)
 
 - **Provider-agnostic — one flow, swappable tracker.** Detect the provider once from `.tickets.md`

@@ -8,6 +8,13 @@ description: Investigate a narrow implementation ticket that references an exist
 Use this skill when a ticket is probably valid but under-specified, especially
 when it says another area already has the pattern to follow.
 
+## Mutation Policy
+
+Default: report-only.
+Edit files only when the user explicitly asks to continue after reviewing the
+brief.
+Do not change code or tests during discovery.
+
 Example:
 
 ```text
@@ -38,8 +45,6 @@ Hand off to implementation planning
   commands, CI hooks, test data, naming, and failure modes.
 - Keep the output concrete enough for a developer or agent to turn into an
   implementation plan.
-- Do not edit code or tests unless the user explicitly asks to continue after
-  reviewing the brief.
 - Prefer exact file paths, commands, and scenarios from the repo.
 - If the ticket turns into a broader "should we do this?" decision, hand off to
   `tech-backlog-assessment`.

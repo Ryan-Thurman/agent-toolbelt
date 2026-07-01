@@ -13,6 +13,12 @@ that turns a bug reproduction into a committed regression test.
 `cover` writes **tests only**. It never touches production code, and it never weakens an assertion to
 make a test go green.
 
+## Mutation Policy
+
+Default: report-only.
+Edit test files only when the user explicitly asks to apply selected tests.
+Never edit production code to make a test pass.
+
 ## Two modes
 
 - **`/cover`** — author/strengthen tests for a diff, a module, or a bug reproduction. Report the

@@ -12,6 +12,13 @@ three tiers.
 
 > **Status: all three tiers (`light`, `standard`, `deep`) are implemented.**
 
+## Mutation Policy
+
+Default: report-only.
+Edit files only when the user explicitly asks to apply review fixes.
+Posting inline PR comments requires confirmation through `--comment`; otherwise
+print the report.
+
 ## Principles (always)
 
 - **Report-first.** Produce findings. Applying fixes is a separate, explicit step — never edit code

@@ -11,6 +11,13 @@ takes it to "released safely." Every release should be **reversible, observable,
 > Lifts concepts (MIT) from addyosmani/agent-skills (shipping-and-launch) and gstack
 > (land-and-deploy, document-release) — see **Credits**.
 
+## Mutation Policy
+
+Default: prepare the release package only.
+Edit release artifacts only when the user explicitly asks.
+Running deploy, tag, push, or rollout commands requires explicit confirmation at
+each gate; if a pipeline owns deploy, stop at handoff.
+
 ## Principles (always)
 
 - **Rollback first.** The one thing teams skip. Do not call a change ready to release until there's

@@ -12,6 +12,12 @@ rewrites.
 
 > Lifts concepts (MIT) from pi-simplify and addyosmani/agent-skills — see **Credits**.
 
+## Mutation Policy
+
+Default: report-only.
+Edit files only when the user explicitly asks to apply selected cleanup.
+Never change behavior or edit tests to make cleanup pass.
+
 ## Two modes
 
 - **`/simplify`** — diff- or feature-scoped cleanup. Report → user selects → apply. Biased to

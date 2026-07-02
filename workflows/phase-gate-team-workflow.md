@@ -46,7 +46,7 @@ Feature complete
    ```
    - A fresh **review subagent** runs `/pr-review <pr> --comment`: it reviews the phase diff and
      **posts the findings as inline comments** on the PR — GitHub (`gh`) or Azure Repos (`az`), via the
-     `pr-review` provider layer (`skills/pr-review/references/providers.md`); it degrades to a printed
+     shared provider layer (`shared/contracts/references/providers.md`); it degrades to a printed
      report if no host CLI is present.
    - The gate then prints the verdict + counts and **stops**. It does **not** fix code and does **not**
      merge.

@@ -17,7 +17,8 @@ mode: it reports, it never edits.
 
 ## Rules
 
-- Read the skill's `references/smell-taxonomy.md`. **Detect-only — do not edit any files.**
+- Read `shared/contracts/references/maintainability-taxonomy.md`. **Detect-only — do not edit any
+  files.**
 - One cause-effect chain per smell: `smell → evidence → impact → recommendation`. No subjective
   style nits. Do not recommend large rewrites unless a small first slice is clear.
 - Treat lexical/regex cues as leads to verify by reading, not as truth.

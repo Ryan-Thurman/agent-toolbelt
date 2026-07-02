@@ -1,6 +1,6 @@
 ---
 name: cover
-description: Author and strengthen tests for a diff, a module, or a bug reproduction — behavior-pinning tests that capture current (or intended-and-agreed) behavior, applied on opt-in. For a bug repro, write the test that fails before the fix and passes after (a red→green regression lock). Detect the project's test framework first; never edit production code to make a test pass. For finding what's untested, use `/cover-gaps`; for a merge verdict use `/pr-review`.
+description: Author behavior-pinning tests for a diff, module, or bug reproduction, applied on opt-in. Use when adding regression coverage or strengthening tests. For finding untested areas use /cover-gaps; for a merge verdict use /pr-review.
 ---
 
 # cover
@@ -12,6 +12,12 @@ that turns a bug reproduction into a committed regression test.
 
 `cover` writes **tests only**. It never touches production code, and it never weakens an assertion to
 make a test go green.
+
+## Mutation Policy
+
+Default: report-only.
+Edit test files only when the user explicitly asks to apply selected tests.
+Never edit production code to make a test pass.
 
 ## Two modes
 
@@ -26,16 +32,11 @@ make a test go green.
 ## Principles (always)
 
 - **Pin behavior, not implementation.** Assert observable behavior — return values, outputs, errors,
-  side-effects, ordering — not private internals, call counts, or incidental structure. A test
-  coupled to implementation detail breaks on every refactor and locks nothing worth locking.
-- **A test that can't fail is worthless — falsify it.** Before counting a new test as coverage,
-  verify it actually fails when the behavior is broken (mutate the code or the expectation and watch
-  red). A test that passes no matter what the code does is noise. For a bug repro this is the red
-  step: confirm red on the buggy code *before* the fix lands.
-- **No flaky or nondeterministic tests.** No real network, no wall-clock/`now()`, no unseeded RNG, no
-  fixed-`sleep` races, no order-dependence. Pin time, seed randomness, isolate the filesystem, stub
-  the network, wait on the actual condition. If a behavior is inherently nondeterministic, call it
-  out rather than ship a flaky test.
+  side-effects, ordering — not private internals, call counts, or incidental structure.
+- **Prove the test protects something.** Falsify each new test and handle red→green regression locks
+  using `references/authoring.md`.
+- **Keep tests deterministic.** Use the determinism rules in `references/authoring.md`; call out any
+  behavior that cannot be tested reliably.
 - **Behavior-preserving — never edit production code.** `cover` adds and strengthens tests. It does
   not change production code to make a test pass, and **existing tests must still pass unmodified**.
   If a green requires a production edit, that's a fix (hand to the dev/bug-to-fix lane), not a test.
@@ -58,9 +59,8 @@ make a test go green.
 4. **Propose** each test with the behavior it pins, the risk it guards, and its kind (pinning vs.
    red→green regression lock). Stop here is the report. Flag any determinism hazards.
 5. **Apply on opt-in** (`references/authoring.md`): write the selected tests matching repo
-   conventions, **falsify each** (confirm it fails when the behavior is broken), confirm the full
-   existing suite still passes, and keep new tests deterministic. For a regression lock, confirm red
-   on the bug, then (after the fix) green.
+   conventions, falsify each, confirm the relevant suite still passes, and keep new tests
+   deterministic.
 
 ## Hand-offs
 

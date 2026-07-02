@@ -72,24 +72,37 @@ retrieval-heavy steps (blast radius, callers, scope, localization) at a fraction
 of the tokens. It is strictly optional — every skill works by reading files
 directly when rct is not present.
 
+## Provenance
+
+Skill concept attribution lives in `../docs/skill-provenance.md` so runtime
+`SKILL.md` files stay focused on invocation, invariants, flow, and references.
+
 ## Canonical copies
 
-`skills/dev-lite-workflow/SKILL.md` is the **canonical** source. The repo also
-ships `.agents/skills/dev-lite-workflow/SKILL.md` (the repo-scoped Codex copy);
-it must stay byte-identical. Edit the canonical file, then mirror the change.
-Run `scripts/check-skill-sync.sh` to verify the two copies match (also runnable
-in CI).
+`skills/dev-lite-workflow/` is the **canonical** source. The repo also ships
+`.agents/skills/dev-lite-workflow/` as the repo-scoped Codex copy; the full tree
+must stay byte-identical, including `SKILL.md`, `references/`, and
+`agents/openai.yaml`. Edit the canonical tree, then mirror the change. Run
+`scripts/check-skill-sync.sh` to verify the two copies match (also runnable in
+CI).
 
 ## Skill authoring checklist
 
 Use this checklist when creating or updating a skill:
 
-- Decide invocation first. Keep a `description` only when the agent should
-  discover and invoke the skill on its own; otherwise make the skill
-  user-invoked and route to it from docs or commands.
+- Keep runtime skills agent-invoked with a model-facing `description`. Human
+  entry points belong in `commands/`; do not add `disable-model-invocation` for
+  runtime skills unless a future support-only artifact explicitly needs it.
 - Make the description pay for its context load. Use leading words users and
   agents actually say, and keep distinct trigger branches rather than repeated
   synonyms.
+- Keep ownership clear: command files own argument syntax and user-facing entry
+  text; `SKILL.md` owns process, invariants, gates, mutation policy, and output
+  contracts; `agents/openai.yaml` owns host UI metadata; references own
+  provider/framework mechanics, long examples, and branch-only detail.
+- Keep `agents/openai.yaml` concise and generated from the cleaned description:
+  exactly `display_name`, `short_description`, and `default_prompt`, with no
+  optional icon/color fields unless the repo standardizes them.
 - Keep `SKILL.md` focused on steps and always-needed rules. Move branch-only
   reference behind a clearly worded pointer in `references/`.
 - Use progressive disclosure by branch: inline what every successful invocation
@@ -108,14 +121,12 @@ Use this checklist when creating or updating a skill:
 
 Applied check:
 
-- `shape-up/`: keep the model-invoked description because it has distinct
-  trigger branches for fuzzy ideas/tickets before Dev Lite planning, with clear
-  exclusions for bug and regulated feature lanes. Keep `references/interrogation.md`
-  behind a pointer because only the questioning branch needs those techniques;
-  do not inline it into `SKILL.md`.
+- `shape-up/`: keep the model-facing description because it has distinct trigger
+  branches for fuzzy ideas/tickets before Dev Lite planning, with clear
+  exclusions for bug and regulated feature lanes. Keep
+  `references/interrogation.md` behind a pointer because only the questioning
+  branch needs those techniques; do not inline it into `SKILL.md`.
 - `pr-review/`: keep tier choice, reviewer-safety, inputs, and short tier
-  algorithms inline because every invocation needs them to pick scope, intensity,
-  and output. Do not move the tier summaries yet; the long-skill audit found the
-  better cleanup candidate is duplicated reference cataloging. Future edits
-  should keep `## References` as navigation only and move detailed provider,
-  posting, tier, and schema mechanics into the referenced files.
+  skeletons inline because every invocation needs them to pick scope, intensity,
+  and output. Keep `## References` as navigation only; detailed provider,
+  posting, tier, rubric, and schema mechanics belong in the referenced files.

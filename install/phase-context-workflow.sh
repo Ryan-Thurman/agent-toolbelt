@@ -8,6 +8,7 @@ pack_phase_context_workflow() {
 
   skill handoff SKILL.md
   skill phase-context-workflow SKILL.md
+  skill phase-context-workflow references/lifecycle.md
 
   template phase-file.md
   template phase-handoff.md

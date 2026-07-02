@@ -24,7 +24,8 @@ standard/deep. Each finding belongs to exactly one facet.
 - Coverage *theater* (asserting trivia) is not a finding.
 
 **maintainability** — is the codebase healthier or messier after this?
-- use the shared smell vocabulary in `../../simplify/references/smell-taxonomy.md` as heuristics,
+- use the shared maintainability vocabulary in
+  `shared/contracts/references/maintainability-taxonomy.md` as heuristics,
   not hard violations; documented repo standards override the baseline.
 - abstraction quality; thin wrappers / identity helpers / pass-throughs that add indirection.
 - spaghetti growth: new ad-hoc conditionals/special-cases bolted onto unrelated flows.

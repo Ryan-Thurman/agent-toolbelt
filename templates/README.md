@@ -32,5 +32,7 @@ folder. The normal first artifact is `feature-master-record.md`; see
 - `gate-check-template.md` - lifecycle gate result.
 - `qa-handoff-template.md` - QA execution handoff.
 - `release-manifest-template.md` - release documentation allowlist.
-- `cursor-rules-*.mdc` - Cursor project-rule starters for process, dev, and
-  bridge behavior.
+- `cursor-rules-agent-toolbelt-router.mdc` - the default minimal Cursor
+  always-on router/guardrail rule.
+- `cursor-rules-*.mdc` - detailed Cursor project-rule starters for process,
+  dev, and bridge behavior, installed only with `--rules full`.

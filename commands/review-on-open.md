@@ -26,7 +26,7 @@ Parse the arguments as:
   per diff (`skills/pr-review/references/auto-tier.md`) — the right default for a bot.
 - **`--max=N`** — cap PRs reviewed this poll (token guardrail; default small, defer the rest and
   `log` them).
-- **`--host=auto|github|azure`** — override host detection (`skills/pr-review/references/providers.md`).
+- **`--host=auto|github|azure`** — override host detection (`shared/contracts/references/providers.md`).
 - **`--dry-run`** — list the PRs that *would* be reviewed (with the reason: new / head-changed) and
   stop. No review, no posting.
 

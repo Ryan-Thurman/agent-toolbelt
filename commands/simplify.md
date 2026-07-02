@@ -16,7 +16,8 @@ the ones you opt into. Biased toward small, behavior-preserving deletions — no
 
 ## Rules
 
-- Read the skill's `references/smell-taxonomy.md` and `references/apply-discipline.md`.
+- Read `shared/contracts/references/maintainability-taxonomy.md` and the skill's
+  `references/apply-discipline.md`.
 - **Make the case** for every candidate (`rootIssue → consequence → benefit`). Drop anything
   without a real, non-trivial consequence — "shorter" / "cleaner" is not one.
 - **Behavior-preserving only.** All existing tests must pass unmodified; if a change needs a test

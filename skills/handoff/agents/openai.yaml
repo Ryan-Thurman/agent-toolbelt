@@ -1,0 +1,3 @@
+display_name: "Handoff"
+short_description: "Write a compact, resumable handoff for another session, agent, or person."
+default_prompt: "Write a resumable handoff for this work."

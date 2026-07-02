@@ -1,0 +1,3 @@
+display_name: "Dev Lite Workflow"
+short_description: "Lightweight feature delivery from brief through phased implementation, review, and PR readiness."
+default_prompt: "Run the dev-lite workflow for this feature or app request."

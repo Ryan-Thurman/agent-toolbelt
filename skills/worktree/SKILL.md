@@ -1,6 +1,6 @@
 ---
 name: worktree
-description: Create, list, and remove isolated git worktrees so multiple agents can work a shared directory of repos without clobbering each other's branch. Each agent carves out its own worktree on its own branch (one checkout per task), works there, and removes it when done. Use when several agents/sessions share a polyrepo working dir and a plain `git checkout` in one would change the branch under another, or whenever a task wants an isolated checkout off the main tree. Pure bash + git — no runtime, no API.
+description: Create, list, and remove isolated git worktrees for multi-agent shared repo directories. Use when several sessions need separate branches, or when a task wants an isolated checkout without disturbing the main tree.
 ---
 
 # worktree
@@ -13,7 +13,7 @@ sharing the repo's object store but isolated on disk. This pack makes that a one
 collision-safe branch naming and a tidy, predictable layout.
 
 > Adds no review/build logic — it only manages checkouts. The agent still does its work inside the
-> worktree the normal way. See **Credits**.
+> worktree the normal way.
 
 ## When to use this (vs. not)
 
@@ -26,43 +26,16 @@ collision-safe branch naming and a tidy, predictable layout.
   pack is for **independent sessions** that the harness can't coordinate, where the worktree must
   outlive a single tool call.
 
-## The layout
-
-Worktrees live **outside** the repos, collected under the shared parent so they never pollute a
-repo's tree and are trivial to see/prune in one place:
-
-```
-<parent>/                      # your shared working dir
-  .worktrees/
-    repo-a/agent-fix-login/    # agent 1's isolated checkout of repo-a
-    repo-b/agent-perf-1/       # agent 2's isolated checkout of repo-b
-  repo-a/   <- main tree, branch untouched by the worktrees
-  repo-b/
-  …
-```
-
-`<parent>` is the directory that contains the repo's **main** working tree, so every repo under one
-shared dir routes to the same `.worktrees/`. Nothing inside any repo changes, so there is no
-`.gitignore` to manage.
-
 ## The CLI
 
-One shipped script — `bin/worktree.sh` (pure bash + `git`, nothing to install). Invoke it at its
-installed path:
+One shipped script — `bin/worktree.sh` (pure bash + `git`, nothing to install). Use:
 
 ```bash
 bash skills/worktree/bin/worktree.sh <op> …
 ```
 
-| op | what |
-|---|---|
-| `new [repo] [branch] [--task <slug>] [--from <ref>]` | create a worktree on a **new** branch; prints the path to `cd` into |
-| `list [repo]` / `list --all` | show worktrees for one repo, or across every repo under the parent (a `*` marks dirty) |
-| `rm <path-or-branch> [--force] [--delete-branch]` | remove a worktree (refuses if dirty unless `--force`) + prune |
-| `prune` | drop stale worktree metadata + tidy empty `.worktrees` dirs |
-
-Full contract, flags, and resolution rules: `references/cli.md`. The multi-agent discipline (claim,
-work, hand back) and how this relates to retrofit's fan-out: `references/isolation.md`.
+Read `references/cli.md` for every op, flag, exit behavior, and resolution rule.
+Read `references/isolation.md` for the shared-parent layout and the claim → work → hand back flow.
 
 ## Principles (always)
 
@@ -79,26 +52,8 @@ work, hand back) and how this relates to retrofit's fan-out: `references/isolati
   don't accumulate.
 - **The main tree is sacred.** `rm` refuses to remove the repo's main working tree.
 
-## Typical flow (one agent)
-
-```bash
-# 1. carve out an isolated checkout for this task
-bash skills/worktree/bin/worktree.sh new repo-a --task fix-login
-#    -> prints:  cd "<parent>/.worktrees/repo-a/agent-fix-login"
-# 2. cd into the printed path and do the work (edit, commit, push) on its own branch
-# 3. when merged/abandoned, remove it
-bash skills/worktree/bin/worktree.sh rm agent/fix-login --delete-branch
-```
-
 ## References
 
 - `references/cli.md` — every op, flag, exit behavior, and the repo/branch/base resolution rules.
 - `references/isolation.md` — the multi-agent contract, the polyrepo model, cleanup discipline, and
   when to prefer `Workflow`'s in-run `isolation: 'worktree'` instead.
-
-## Credits
-
-The "one worktree per unit of parallel work, prefer a managed worktree over hand-rolled `git
-worktree`, discard an unchanged worktree" discipline is the same one the `retrofit` pack uses for its
-fan-out, drawn from obra/superpowers' `using-git-worktrees` + `subagent-driven-development` patterns.
-This pack packages it as a standalone, session-to-session tool for the shared-directory case.

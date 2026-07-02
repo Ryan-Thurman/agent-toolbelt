@@ -1,0 +1,3 @@
+display_name: "Review Queue"
+short_description: "Queue local PR-review jobs with SQLite for producer and worker agents."
+default_prompt: "Set up or operate the local review queue."

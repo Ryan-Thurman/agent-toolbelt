@@ -12,7 +12,7 @@ the event workflow wired, you don't need the poller; the event already fires the
 
 ## 1. Detect host & list open PRs
 
-Detect the provider once (`skills/pr-review/references/providers.md`), then list open PRs through it.
+Detect the provider once (`shared/contracts/references/providers.md`), then list open PRs through it.
 The fields you need per PR: **number/id**, **head SHA**, **author**, **title**, **updated time**.
 
 ```bash

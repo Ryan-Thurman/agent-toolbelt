@@ -48,6 +48,17 @@ A worktree you created but never changed is cheap to remove — discard it rathe
 around (the same "an unchanged worktree is discarded" discipline the harness applies to managed
 worktrees).
 
+Typical single-agent flow:
+
+```bash
+# 1. carve out an isolated checkout for this task
+bash skills/worktree/bin/worktree.sh new repo-a --task fix-login
+#    -> prints:  cd "<parent>/.worktrees/repo-a/agent-fix-login"
+# 2. cd into the printed path and do the work (edit, commit, push) on its own branch
+# 3. when merged/abandoned, remove it
+bash skills/worktree/bin/worktree.sh rm agent/fix-login --delete-branch
+```
+
 ## When NOT to use this — prefer in-run `Workflow` isolation
 
 If your parallelism is **inside a single `Workflow` run** (you're fanning out N agents over N items

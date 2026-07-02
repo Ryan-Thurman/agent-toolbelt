@@ -1,6 +1,6 @@
 ---
 name: ai-feature-delivery
-description: Create and validate release-traceable feature delivery artifacts for regulated or cross-functional software work. Use when defining a feature, stewarding feature status, drafting SDD/doc-impact artifacts, slicing refinement tickets, checking gates, drafting stakeholder pings, planning dev work from feature context, reviewing PR traceability/doc deltas, preparing QA handoff, or controlling release documentation.
+description: Create release-traceable delivery artifacts for regulated or cross-functional software work. Use when defining feature records, SDD/doc-impact artifacts, refinement tickets, gate checks, stakeholder pings, QA handoff, PR traceability, or release documentation.
 ---
 
 # ai-feature-delivery
@@ -10,10 +10,16 @@ central object is the **Feature Master Record**: every SDD, ticket, test plan,
 document delta, QA handoff, and release manifest should derive from it or link
 back to it.
 
+Use `dev-lite-workflow` instead for practical dev work that does not need
+release traceability, controlled documents, stakeholder pings, QA handoff, or
+release packaging.
+
 ## Operating Rules
 
 - Ask for missing release, feature ID, owner, impacted systems, and required
   reviewers before declaring any gate ready.
+- Gate-ready completion bar: every gate-ready claim must state the feature ID,
+  release scope, reviewer list, test evidence, and doc-delta state.
 - Keep assumptions explicit. Do not invent regulatory, medical, security, or
   release claims.
 - Keep all controlled artifacts release-scoped with `REL-YYYY.MM` or

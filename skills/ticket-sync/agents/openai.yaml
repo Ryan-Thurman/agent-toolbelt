@@ -1,0 +1,3 @@
+display_name: "Ticket Sync"
+short_description: "Publish sliced ticket files to GitHub Issues, Jira, or Azure Boards with confirmation gates."
+default_prompt: "Sync these ticket files to the tracker."

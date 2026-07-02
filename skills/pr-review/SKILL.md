@@ -5,12 +5,17 @@ description: Review a PR, branch, or local diff with a tiered, multi-agent code-
 
 # pr-review
 
-A tiered, multi-agent code-review skill. Reviews a PR / branch / local diff and produces a
-prioritized, evidence-backed review with a merge verdict. Designed so that **different facets are
-reviewed by different sub-agents** (not one agent doing everything), and intensity scales across
-three tiers.
+A tiered code-review skill for PRs, branches, and local diffs. It produces a prioritized,
+evidence-backed review with a host-derived merge verdict. Intensity scales across three tiers, and
+standard/deep split review facets across separate sub-agents.
 
 > **Status: all three tiers (`light`, `standard`, `deep`) are implemented.**
+
+## Mutation Policy
+
+Default: report-only.
+Edit files only when the user explicitly asks to apply review fixes. Posting inline PR comments
+requires confirmation through `--comment`; otherwise print the report.
 
 ## Principles (always)
 
@@ -60,85 +65,48 @@ the **reviewed repo** (travels to every host/clone), is loaded **from the base b
 relax its own review), and is injected into the facet agents + applied host-side. Falls back cleanly
 to `CLAUDE.md`/`AGENTS.md` standards when absent. Copyable starter: `../../templates/pr-review.md`.
 
-## Cross-run anti-noise memory (all multi-agent tiers)
+## Tier And Memory Guidance
 
-When verification (standard critic / deep dual-judge) **refutes** a finding, it's recorded to a
-per-repo store (`.git/pr-review-rejections.jsonl`). On later runs, a finding the judge already threw
-out is **downranked and tagged** `⟲ previously rejected` — never hidden. Lowers repeat noise without
-suppressing a real regression. Full contract: `references/rejection-memory.md`.
-
-## Choosing a tier (from benchmark data)
-
-A frozen 3-tier benchmark on a real diff (`benchmarks/results.md`) measured what each step up
-actually buys:
-
-| tier | rel. token cost | what it buys | use when |
-|---|---|---|---|
-| **light** | 1× (~41k) | the headline blockers, fast, with severity floors | quick gut-check, docs/tests/config, tiny mechanical diffs |
-| **standard** | ~5.7× (~233k) | **breadth** + bounded one-hop reachability context | **normal production PRs (the sweet spot)** |
-| **deep** | ~8.2× (~335k) | **precision/calibration** via blast radius + dual judge | high-stakes / pre-merge / security-sensitive |
-
-Key result: **light → standard buys coverage; standard → deep buys correct severities, not new
-findings.** Deep's dual-judge re-reads cited code and re-rates — in the benchmark it downgraded a
-false blocker that light *and* standard had both raised, yielding the only calibrated verdict. So
-reach for deep only when a wrong or missed blocker is expensive; for routine review, standard's
-breadth at ~5× is the better trade. Findings all three tiers agree on are the highest-confidence ones.
+Use `references/auto-tier.md` for default tier selection and the deep-spend token
+guardrail. Use `references/rejection-memory.md` when verification refutes a
+finding: later runs may downrank and tag the same finding, but must never hide
+it. Benchmark cost/impact rationale lives in `references/benchmarking.md` and
+`benchmarks/results.md`.
 
 ## Light tier (active)
 
-A single generalist pass with the review facets applied as internal lenses. Fast gut-check.
+A single generalist pass for fast gut-checks.
 
-1. **Resolve target & acquire the diff** per `references/targets-and-diff.md`. If the diff is empty,
-   say "No changes to review." and stop.
-2. **Load project standards** — read `CLAUDE.md` / `AGENTS.md` at the repo root if present, and the
-   per-repo **`.pr-review.md`** from the base branch if present (`references/repo-config.md`): apply
-   its Context/Budgets as you review, and its severity-overrides / do-not-flag to the findings.
-3. **Review the diff in one pass**, sweeping these lenses (full rubric: `references/review-rubric.md`):
-   - correctness/bugs · security · performance · tests · maintainability · standards · re-entry context.
-   - Apply the anti-noise rules above. Read full files for context; flag only changed lines.
-   - Apply any **`--focus-note`** as priority context only: inspect it early, but keep all changed
-     lines in scope and derive severity/verdict from findings.
-   - Apply the severity floors before suppressing nits: runtime/security consequences are at least
-     `should-fix` unless proven unreachable, and blockers when reachable on valid/user-controlled paths.
-   - Weight any **`--focus`** / Emphasis facet harder and lower its threshold a notch.
-   - Pull in the **per-language checklist** lenses for the diff's languages (`references/lang-checklists.md`).
-4. **Emit findings** in the schema from `references/finding-schema.md` (empty list if clean).
-5. **Derive the verdict and render** per `references/output-format.md` (with the `repo-config:` footer
-   if the config affected anything):
-   - `REQUEST CHANGES` when blockers remain; `NEEDS DISCUSSION` when no blockers remain but an
-     approval-blocking question needs an answer; otherwise `APPROVE`.
-   - Default output: a markdown report. With `--comment` on a PR target, also post inline
-     (`references/posting.md`).
+1. Resolve the target and acquire a line-anchored diff using `references/targets-and-diff.md`. If
+   empty, say "No changes to review." and stop.
+2. Load project standards and the base-branch `.pr-review.md` policy using `references/repo-config.md`.
+3. Review the changed lines once, applying `references/review-rubric.md`,
+   `references/lang-checklists.md`, any `--focus` / `--focus-note`, and host-side repo-config
+   overrides.
+4. Emit findings using `references/finding-schema.md`.
+5. Derive the verdict and render using `references/output-format.md`; when confirmed with
+   `--comment`, post inline using `references/posting.md`.
 
 ## Standard tier (active)
 
-Multi-agent fan-out. The orchestrator never reviews code itself — it sets up context, spawns one
-**facet sub-agent per dimension in parallel** (Task tool), then aggregates and verifies.
+Multi-agent fan-out for normal production code review. The orchestrator sets up context, spawns one
+facet sub-agent per selected dimension in parallel, then aggregates, verifies, thresholds, and
+renders. Use the full algorithm in `references/fan-out.md`.
 
-Full algorithm: `references/fan-out.md`. In short:
-1. Setup: resolve target + diff + load standards (as light).
-2. Build the bounded standard reachability sketch for changed public/exported/API or
-   boundary-sensitive code.
-3. Select facets: base {correctness, tests, standards, maintainability} + auto-add
-   {security, performance} by change signal, plus any facets implied by `--focus` or `--focus-note`.
-4. Spawn facet sub-agents in parallel — each = `facets/_shared.md` + `facets/<facet>.md` + the diff
-   + reachability sketch + standards; each returns a JSON findings array (`references/finding-schema.md`).
-5. Aggregate + dedup (same file/overlapping lines + same root cause).
-6. Self-reflect critic pass (falsify-don't-verify): drop only the demonstrably wrong; downgrade the
-   weak; re-apply severity floors before thresholding; default to keep.
-7. Synthesize re-entry notes.
-8. Threshold + host-derived verdict + render (`references/output-format.md`).
+Compact flow: resolve target, freeze the diff, load standards and repo config, build the standard
+reachability sketch, select facets, run facet agents, aggregate and dedup findings, run the critic,
+apply repo-config overrides and rejection memory, then render/post per `references/output-format.md`
+and `references/posting.md`.
 
 ## Deep tier (active)
 
-The standard fan-out plus maximum coverage and adversarial verification. Full algorithm:
-`references/deep-tier.md`. In short, on top of standard:
-- prestep: **blast-radius map** (importers + tests of changed symbols) passed to every facet.
-- **all** facets run; maintainability uses `facets/maintainability-deep.md` (**thermo-nuclear** bar,
-  `../../examples/thermo-nuclear-review.md`); **spec-alignment** runs when a spec/issue is linked.
-- verification is the **dual-judge + tiebreaker** loop (`references/dual-judge.md`) with re-location
-  repair — replacing the single critic.
-- adds a requirements/spec coverage table; prints the token-usage footer.
+Maximum-coverage review for large, risky, hot-path, or high-blast-radius changes. It extends the
+standard fan-out with the upgrades in `references/deep-tier.md`.
+
+Compact flow: run standard setup, add the blast-radius map, run all facets, use the deep
+maintainability bar and spec-alignment when applicable, replace the single critic with
+`references/dual-judge.md`, render requirements/spec coverage when available, and include the
+token-usage footer from `references/output-format.md`.
 
 ## References
 
@@ -153,5 +121,3 @@ The standard fan-out plus maximum coverage and adversarial verification. Full al
 - `references/rejection-memory.md` — cross-run anti-noise memory (downrank previously-rejected findings).
 - `references/output-format.md` — verdict derivation + the markdown report layout.
 - `references/posting.md` — inline PR-comment posting (`--comment`).
-- `references/rct-acceleration.md` — *optional*: when the rct MCP tools are available, ground the
-  review in the graph's blast-radius / unupdated-caller signals (diff-only review otherwise).

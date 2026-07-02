@@ -40,7 +40,7 @@ Parse them as:
 ## Steps
 
 1. **Fetch threads** (`skills/pr-review-reply/references/thread-roundtrip.md` → "Fetch threads per
-   host"). Detect the provider (`skills/pr-review/references/providers.md`): GitHub via
+   host"). Detect the provider (`shared/contracts/references/providers.md`): GitHub via
    `gh pr view --json reviews,comments` + `gh api .../pulls/<n>/comments`; Azure Repos via the
    `pullRequestThreads` API. Keep only OPEN, human threads; skip resolved/outdated and your own prior
    replies. No host CLI / no open PR → **degrade to report-only** and say so.

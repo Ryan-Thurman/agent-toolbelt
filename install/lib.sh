@@ -21,6 +21,7 @@ gated=0          # files skipped because their harness was not selected
 # Entries are "pack<TAB>name". Reset per target by install.sh.
 INSTALLED_COMMANDS=()
 INSTALLED_SKILLS=()
+INSTALLED_SHARED_CONTRACTS=()
 
 # ---- Harness gating -----------------------------------------------------------
 
@@ -54,7 +55,7 @@ ensure_dir() {
   fi
 }
 
-# The shared, harness-agnostic folders (skills/ templates/ workflows/ examples/)
+# The shared, harness-agnostic folders (skills/ templates/ workflows/ examples/ shared/)
 # are installed under .atb/ in the target so they don't collide with a brownfield
 # project's own top-level dirs. Content shipped by the packs still refers to them by
 # their *source* path (e.g. `skills/pr-review/references/foo.md`), so we rewrite those
@@ -63,7 +64,7 @@ ensure_dir() {
 # relative distance is unchanged and they still resolve. Matching only at a path
 # boundary ([start | space | ` | ( | =]) skips relative refs (preceded by `/`) and
 # makes the rewrite idempotent (an existing `.atb/` prefix is preceded by `/`).
-ATB_REWRITE='s#(^|[[:space:](=`])(skills|templates|workflows|examples)/#\1.atb/\2/#g'
+ATB_REWRITE='s#(^|[[:space:](=`])(skills|templates|workflows|examples|shared)/#\1.atb/\2/#g'
 
 # install_copy <src> <dest> — copy while rewriting shared-folder refs to .atb/.
 install_copy() {
@@ -137,15 +138,30 @@ cmd_cursor() {
 }
 
 # rule_local <name.mdc> — a Cursor rule shipped from .cursor/rules/ (Dev Lite pack).
+# Installed only in --rules full mode; minimal mode relies on the generated router rule.
 rule_local() {
-  if harness_enabled cursor; then _install ".cursor/rules/$1" ".cursor/rules/$1"; else gated=$((gated + 1)); fi
+  if harness_enabled cursor && [ "${RULE_MODE:-minimal}" = "full" ]; then
+    _install ".cursor/rules/$1" ".cursor/rules/$1"
+  else
+    gated=$((gated + 1))
+  fi
   return 0
 }
 
 # rule_tmpl <src.mdc> <dest.mdc> — a Cursor rule shipped from templates/ (AI Feature Delivery).
+# Installed only in --rules full mode; minimal mode relies on the generated router rule.
 rule_tmpl() {
-  if harness_enabled cursor; then _install "templates/$1" ".cursor/rules/$2"; else gated=$((gated + 1)); fi
+  if harness_enabled cursor && [ "${RULE_MODE:-minimal}" = "full" ]; then
+    _install "templates/$1" ".cursor/rules/$2"
+  else
+    gated=$((gated + 1))
+  fi
   return 0
+}
+
+# _skill_metadata <pack> <dest-root> — install host metadata next to a skill copy.
+_skill_metadata() {
+  _install "skills/$1/agents/openai.yaml" "$2/agents/openai.yaml"
 }
 
 # skill <pack> <rel> — canonical skills/ copy (always; commands reference it by path),
@@ -155,8 +171,14 @@ rule_tmpl() {
 # an auto-discovery root, so it never double-registers.) SKILL.md is a cross-agent standard.
 skill() {
   _install "skills/$1/$2" ".atb/skills/$1/$2"
+  if [ "$2" = "SKILL.md" ]; then
+    _skill_metadata "$1" ".atb/skills/$1"
+  fi
   if harness_enabled cursor || harness_enabled codex; then
     _install "skills/$1/$2" ".agents/skills/$1/$2"
+    if [ "$2" = "SKILL.md" ]; then
+      _skill_metadata "$1" ".agents/skills/$1"
+    fi
   else
     gated=$((gated + 1))
   fi
@@ -168,7 +190,17 @@ skill() {
 # cursor is selected (AI Feature Delivery is Cursor-first; no Codex-only case to cover).
 skill_shared() {
   _install "skills/$1/$2" ".atb/skills/$1/$2"
-  if harness_enabled cursor; then _install "skills/$1/$2" ".agents/skills/$1/$2"; else gated=$((gated + 1)); fi
+  if [ "$2" = "SKILL.md" ]; then
+    _skill_metadata "$1" ".atb/skills/$1"
+  fi
+  if harness_enabled cursor; then
+    _install "skills/$1/$2" ".agents/skills/$1/$2"
+    if [ "$2" = "SKILL.md" ]; then
+      _skill_metadata "$1" ".agents/skills/$1"
+    fi
+  else
+    gated=$((gated + 1))
+  fi
   _record_skill "$1"
   return 0
 }
@@ -178,6 +210,24 @@ skill_shared() {
 template() { _install "templates/$1" ".atb/templates/$1"; }
 workflow() { _install "workflows/$1" ".atb/workflows/$1"; }
 example()  { _install "examples/$1"  ".atb/examples/$1"; }
+
+# shared_contract <rel> — support-only contracts consumed by multiple packs.
+# These are not skills and are not installed under .agents/.
+shared_contract() {
+  local rel="$1" e
+  for e in "${INSTALLED_SHARED_CONTRACTS[@]:-}"; do
+    [ "$e" = "manifest.json" ] && break
+  done
+  if [ "${e:-}" != "manifest.json" ]; then
+    _install "shared/contracts/manifest.json" ".atb/shared/contracts/manifest.json"
+    INSTALLED_SHARED_CONTRACTS+=("manifest.json")
+  fi
+  for e in "${INSTALLED_SHARED_CONTRACTS[@]:-}"; do
+    [ "$e" = "$rel" ] && return 0
+  done
+  _install "shared/contracts/$rel" ".atb/shared/contracts/$rel"
+  INSTALLED_SHARED_CONTRACTS+=("$rel")
+}
 
 # hook_json <src> — the Cursor hooks manifest (cursor only). install_file skips an existing
 # .cursor/hooks.json (no --force), so we never clobber hooks you already have — merge manually.
@@ -191,6 +241,14 @@ hook_json() {
 hook_script() {
   if harness_enabled cursor; then _install "hooks/$1" ".cursor/hooks/$1"; else gated=$((gated + 1)); fi
   return 0
+}
+
+# write_cursor_router_rule — in minimal Cursor rule mode, install one small always-on
+# router/guardrail rule instead of every workflow's detailed project rules.
+write_cursor_router_rule() {
+  harness_enabled cursor || return 0
+  [ "${RULE_MODE:-minimal}" = "minimal" ] || return 0
+  _install "templates/cursor-rules-agent-toolbelt-router.mdc" ".cursor/rules/agent-toolbelt-router.mdc"
 }
 
 # ---- AGENTS.md pointer --------------------------------------------------------

@@ -1,7 +1,8 @@
 # Installation
 
-Everything installs through one entry point — `./install.sh` — which answers three
-questions: **which packs**, **which harness(es)**, and **into which folder**:
+Everything installs through one entry point — `./install.sh` — which answers the
+core questions: **which packs**, **which harness(es)**, and **into which folder**
+plus optional Cursor rule mode:
 
 ```sh
 ./install.sh --harness <cursor|claude|codex|all> <pack ...|all> <target-folder>
@@ -18,6 +19,7 @@ Other shapes:
 ```sh
 ./install.sh --list                                          # list the available packs
 ./install.sh --harness cursor ai-feature-delivery ~/pilot    # one pack, one harness
+./install.sh --harness cursor --rules full all ~/pilot       # every Cursor project rule
 ./install.sh --harness cursor,claude bug-to-fix simplify shape-up ~/project
 ./install.sh --harness all all ~/project                     # every pack, every harness
 ```
@@ -43,6 +45,31 @@ written:
 | `codex`  | skills into `.agents/skills/` |
 | _always_ | the shared `.atb/` folder: the canonical `.atb/skills/` tree (commands reference it by path), plus `.atb/templates/`, `.atb/workflows/`, `.atb/examples/` |
 
+## Cursor rule modes
+
+Cursor installs default to **minimal** project rules:
+
+```sh
+./install.sh --harness cursor all /path/to/project
+```
+
+Minimal mode writes one small always-on router/guardrail rule at
+`.cursor/rules/agent-toolbelt-router.mdc`. It keeps always-injected context small
+and points the agent to the matching installed command or skill when a task needs
+workflow-specific detail.
+
+Use **full** mode only for dedicated pilot or workflow-heavy repos where every
+pack's detailed Cursor project rules should be always-on:
+
+```sh
+./install.sh --harness cursor --rules full all /path/to/pilot
+```
+
+The installer is non-destructive: switching an existing project back to minimal
+does not delete older `.cursor/rules/*.mdc` files from a previous full install.
+Remove stale project rules manually if you want the smaller footprint in an
+already-installed repo.
+
 **No top-level clutter.** The harness-agnostic artifacts live under a single hidden
 `.atb/` folder in the target rather than as bare `skills/`, `templates/`, `workflows/`,
 and `examples/` folders at the project root, so they never collide with (or get mistaken
@@ -54,9 +81,9 @@ while relative refs are unaffected because the four folders move together.
 installer writes that one native copy for either harness (a separate `.cursor/skills/`
 would make Cursor list every skill twice). The canonical `.atb/skills/` tree is *not*
 an auto-discovery root, so it never double-registers — it exists only because the
-commands reference it by path. Each `SKILL.md` carries `name`/`description`
-frontmatter, so Cursor surfaces them as first-class, on-demand skills alongside the
-`/commands`.
+commands reference it by path. Each skill copy includes `SKILL.md` frontmatter plus
+`agents/openai.yaml` UI metadata, so hosts can surface them as first-class,
+on-demand skills alongside the `/commands`.
 
 When `cursor` or `codex` is selected, the installer also writes an **`AGENTS.md`
 pointer** at the target — a marker-delimited "Available workflows" block listing the
@@ -73,9 +100,9 @@ tooling works both inside a single repo and across the whole application:
 ./install.sh --sweep --harness cursor all /path/to/parent
 ```
 
-Each level is a full, self-contained install — its own `.atb/` folder (commands
-reference the skills tree by path), `AGENTS.md`, and `.cursor/rules` — so a repo opened
-on its own carries its guardrails.
+Each level is a self-contained install — its own `.atb/` folder (commands
+reference the skills tree by path), `AGENTS.md`, and selected `.cursor/rules` mode
+— so a repo opened on its own carries its guardrails.
 
 **Multi-root caveat (verified against Cursor):** in a Cursor multi-root workspace,
 only the **top root's `AGENTS.md`** reliably loads into context (nested per-repo
@@ -101,7 +128,8 @@ ln -s "$(pwd)/build/cursor-plugin/agent-toolbelt" ~/.cursor/plugins/local/agent-
 
 Notes:
 - **Skills** are the reliable, self-contained unit here — Cursor auto-discovers them
-  globally and surfaces them on demand. This is the main reason to use the plugin.
+  globally and surfaces them on demand with the same `agents/openai.yaml` metadata
+  shipped by per-repo installs. This is the main reason to use the plugin.
 - **Rules are omitted by default**: most of the repo's rules are `alwaysApply: true`,
   and a user-scoped plugin would fire them in *every* project. Pass `--with-rules` only
   if you want that. For scoped, per-project rules, use the per-repo `install.sh` instead.

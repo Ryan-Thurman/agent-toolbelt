@@ -12,15 +12,22 @@ review.
 
 ## Quick start
 
-Everything installs through one entry point — `./install.sh` — which answers three
-questions: **which packs**, **which harness(es)**, and **into which folder**:
+Everything installs through one entry point — `./install.sh` — which answers the
+core questions: **which packs**, **which harness(es)**, and **into which folder**
+plus optional Cursor rule mode:
 
 ```sh
 ./install.sh --harness <cursor|claude|codex|all> <pack ...|all> <target-folder>
 
 ./install.sh --harness cursor all /path/to/project   # the common case
+./install.sh --harness cursor --rules full all /path/to/pilot
 ./install.sh --list                                  # list available packs
 ```
+
+For Cursor, the default rule mode is `minimal`: one small always-on router rule
+that points the agent to installed commands and skills. Use `--rules full` only
+for dedicated pilot repos that should receive every pack's detailed project rules
+as always-on Cursor context.
 
 After install, open the target folder and run `/workflow-router` from chat. Full
 install mechanics — harness selection, polyrepo `--sweep`, the private Cursor

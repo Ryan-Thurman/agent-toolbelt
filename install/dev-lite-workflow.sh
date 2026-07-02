@@ -16,6 +16,8 @@ pack_dev_lite_workflow() {
   skill dev-lite-workflow references/implementation-rules.md
   skill dev-lite-workflow references/review-rules.md
   skill dev-lite-workflow references/commit-rules.md
+  skill dev-lite-workflow references/command-surfaces.md
+  skill dev-lite-workflow references/execution-support.md
   skill dev-lite-workflow references/standalone-use.md
 
   template dev-feature-brief.md

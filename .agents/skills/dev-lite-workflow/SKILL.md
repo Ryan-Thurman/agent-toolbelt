@@ -77,8 +77,6 @@ branch unless the user explicitly asks.
 
 ## Commands
 
-The portable command prompts live in `../../commands/`:
-
 - `/dev-intake` creates or updates a Feature Brief.
 - `/dev-plan` creates a phased Implementation Plan.
 - `/dev-start-phase` prepares the next phase before coding.
@@ -87,25 +85,8 @@ The portable command prompts live in `../../commands/`:
 - `/dev-fix-review-issues` fixes only phase review findings.
 - `/dev-pr-review` performs final PR readiness review.
 
-These command files install as real slash commands in Cursor
-(`.cursor/commands/`) and Claude Code (`.claude/commands/`). In Codex they are
-reusable prompt references rather than registered slash commands, so invoke this
-skill directly instead:
-
-```text
-$dev-lite-workflow
-Run a dev-lite PR readiness review for the current diff. Context: [bug or feature summary].
-```
-
-You can also invoke the skill through `/skills` and then ask for the specific
-action by name, such as "run the PR readiness review" or "run a phase review."
-
-Use the matching templates in `../../templates/` for persistent artifacts:
-
-- `dev-feature-brief.md`
-- `dev-implementation-plan.md`
-- `dev-phase-review.md`
-- `dev-pr-review.md`
+Load `references/command-surfaces.md` only when you need host-specific command
+installation details, Codex invocation wording, or the template list.
 
 ## Planning Approval Gate
 
@@ -177,6 +158,8 @@ Lite must still work sequentially in the current session by default.
 - `references/review-rules.md` — phase review evaluation and finding
   classification (also used for the final PR readiness review).
 - `references/commit-rules.md` — commit cadence and message conventions.
+- `references/command-surfaces.md` — command files, host command surfaces,
+  Codex invocation, and templates.
 - `references/execution-support.md` — scratch workspace, optional recovery
   ledger, and explicit subagent dispatch.
 - `references/standalone-use.md` — running the review steps by themselves for a

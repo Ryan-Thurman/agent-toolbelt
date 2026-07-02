@@ -69,6 +69,7 @@ The [wiki](wiki/Home.md) is the deep dive. Quick map:
 | [Utilities](wiki/Utilities.md) | Simplify, Cover, Ship It, Retrofit, Handoff, Ticket Sync |
 | [Phase → Command Map](docs/phase-command-map.md) | Which commands each workflow phase uses (Mermaid diagrams) |
 | [docs/tutorial.md](docs/tutorial.md) | Guided first install and first feature walkthrough |
+| [Release Versioning](docs/release-versioning.md) | Repo release hygiene: license, changelog, and tag version policy |
 
 ## Packs
 

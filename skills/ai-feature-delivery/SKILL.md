@@ -10,6 +10,10 @@ central object is the **Feature Master Record**: every SDD, ticket, test plan,
 document delta, QA handoff, and release manifest should derive from it or link
 back to it.
 
+Use `dev-lite-workflow` instead for practical dev work that does not need
+release traceability, controlled documents, stakeholder pings, QA handoff, or
+release packaging.
+
 ## Operating Rules
 
 - Ask for missing release, feature ID, owner, impacted systems, and required

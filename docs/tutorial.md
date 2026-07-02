@@ -28,23 +28,25 @@ process.
 From this repo:
 
 ```sh
-./install.sh --dry-run dev-lite-workflow /path/to/project
+./install.sh --dry-run --harness all dev-lite-workflow /path/to/project
 ```
 
 The dry run shows the files that would be installed:
 
 - `.cursor/commands/dev-*.md`
-- `.cursor/rules/dev-lite-*.mdc`
+- `.cursor/rules/agent-toolbelt-router.mdc`
 - `.claude/commands/dev-*.md`
 - `.agents/skills/dev-lite-workflow/SKILL.md`
+- `.agents/skills/dev-lite-workflow/agents/openai.yaml`
 - `.atb/skills/dev-lite-workflow/SKILL.md`
+- `.atb/skills/dev-lite-workflow/agents/openai.yaml`
 - `.atb/templates/dev-*.md`
 - `.atb/workflows/dev-lite-feature-workflow.md`
 
 ### 2. Install Dev Lite
 
 ```sh
-./install.sh dev-lite-workflow /path/to/project
+./install.sh --harness all dev-lite-workflow /path/to/project
 ```
 
 Use `--force` only when replacing a previous install.
@@ -102,7 +104,7 @@ clearing chat history.
 From this repo:
 
 ```sh
-./install.sh --dry-run phase-context-workflow /path/to/project
+./install.sh --dry-run --harness all phase-context-workflow /path/to/project
 ```
 
 The dry run shows:
@@ -112,18 +114,22 @@ The dry run shows:
 - `.claude/commands/handoff.md`
 - `.claude/commands/phase-*.md`
 - `.agents/skills/handoff/SKILL.md`
+- `.agents/skills/handoff/agents/openai.yaml`
 - `.agents/skills/phase-context-workflow/SKILL.md`
-- `skills/handoff/SKILL.md`
-- `skills/phase-context-workflow/SKILL.md`
-- `templates/phase-file.md`
-- `templates/phase-handoff.md`
-- `templates/context-packet.md`
-- `workflows/phase-context-workflow.md`
+- `.agents/skills/phase-context-workflow/agents/openai.yaml`
+- `.atb/skills/handoff/SKILL.md`
+- `.atb/skills/handoff/agents/openai.yaml`
+- `.atb/skills/phase-context-workflow/SKILL.md`
+- `.atb/skills/phase-context-workflow/agents/openai.yaml`
+- `.atb/templates/phase-file.md`
+- `.atb/templates/phase-handoff.md`
+- `.atb/templates/context-packet.md`
+- `.atb/workflows/phase-context-workflow.md`
 
 ### 2. Install Phase Context
 
 ```sh
-./install.sh phase-context-workflow /path/to/project
+./install.sh --harness all phase-context-workflow /path/to/project
 ```
 
 Use `--force` only when replacing a previous install.
@@ -170,30 +176,33 @@ release eligibility need traceability back to a Feature Master Record.
 From this repo:
 
 ```sh
-./install.sh --dry-run ai-feature-delivery /path/to/pilot-folder
+./install.sh --dry-run --harness all ai-feature-delivery /path/to/pilot-folder
 ```
 
 The dry run shows the files that would be installed:
 
 - `.cursor/commands/*.md`
-- `.cursor/rules/*.mdc`
-- `skills/*/SKILL.md`
-- `templates/*.md`
-- `workflows/*.md`
+- `.cursor/rules/agent-toolbelt-router.mdc`
+- `.agents/skills/*/SKILL.md`
+- `.agents/skills/*/agents/openai.yaml`
+- `.atb/skills/*/SKILL.md`
+- `.atb/skills/*/agents/openai.yaml`
+- `.atb/templates/*.md`
+- `.atb/workflows/*.md`
 
 Existing files are skipped by default during a real install.
 
 ### 2. Install into the pilot folder
 
 ```sh
-./install.sh ai-feature-delivery /path/to/pilot-folder
+./install.sh --harness all ai-feature-delivery /path/to/pilot-folder
 ```
 
 Use `--force` only when you intentionally want to replace previously installed
 files:
 
 ```sh
-./install.sh --force ai-feature-delivery /path/to/pilot-folder
+./install.sh --force --harness all ai-feature-delivery /path/to/pilot-folder
 ```
 
 On macOS, a non-developer pilot user can double-click `install.command`, which

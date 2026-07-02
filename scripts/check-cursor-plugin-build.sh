@@ -88,6 +88,10 @@ while IFS= read -r src; do
     echo "plugin build missing skill: skills/$skill_name/SKILL.md" >&2
     exit 1
   fi
+  if [ ! -f "$OUT/skills/$skill_name/agents/openai.yaml" ]; then
+    echo "plugin build missing skill metadata: skills/$skill_name/agents/openai.yaml" >&2
+    exit 1
+  fi
 done < <(find "$ROOT/skills" -mindepth 2 -maxdepth 2 -name SKILL.md | sort)
 
 if [ ! -f "$OUT/shared/contracts/manifest.json" ]; then

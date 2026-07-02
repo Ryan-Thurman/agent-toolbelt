@@ -1,41 +1,65 @@
 # agent-toolbelt
 
-Reusable AI-agent commands, skills, workflows, and templates for software
-delivery work.
+Reusable commands, skills, workflows, and templates for AI-assisted software
+delivery.
 
-The lanes are different shapes: `ai-feature-delivery` / `dev-lite-workflow` are
-**generative** (start from an idea), while `bug-to-fix` is **diagnostic** (start
-from broken behavior). `shape-up` shapes a fuzzy request before either; `pr-review`,
-`simplify`, and `cover` are the review / cleanup / test-authoring utilities; `ship-it`
-is the release step at the tail. They share a back half — dev implementation and PR
-review.
+Use this repo when you want to install a repeatable agent workflow into a
+project instead of re-writing prompts and handoffs from scratch. The toolbelt
+can install into Cursor, Claude Code, Codex-style skill folders, or all three.
+
+Most packs fall into one of these jobs:
+
+- Start new work: `shape-up`, `dev-lite-workflow`, `ai-feature-delivery`
+- Investigate broken behavior: `bug-to-fix`, `ticket-discovery`
+- Review and harden changes: `pr-review`, `pr-review-reply`, `phase-gate`
+- Improve code or tests: `simplify`, `cover`, `retrofit`
+- Keep long work resumable: `phase-context-workflow`, `handoff`
+- Prepare to ship: `ship-it`
 
 ## Quick start
 
-Everything installs through one entry point — `./install.sh` — which answers the
-core questions: **which packs**, **which harness(es)**, and **into which folder**
-plus optional Cursor rule mode:
+Everything installs through one entry point: `./install.sh`.
+
+Choose:
+
+1. One or more harnesses: `cursor`, `claude`, `codex`, or `all`
+2. One or more packs: for example `dev-lite-workflow`, `pr-review`, or `all`
+3. A target project folder
 
 ```sh
 ./install.sh --harness <cursor|claude|codex|all> <pack ...|all> <target-folder>
 
-./install.sh --harness cursor all /path/to/project   # the common case
+./install.sh --harness cursor all /path/to/project
 ./install.sh --harness cursor --rules full all /path/to/pilot
-./install.sh --list                                  # list available packs
+./install.sh --harness cursor,claude dev-lite-workflow pr-review /path/to/project
+./install.sh --harness codex bug-to-fix simplify /path/to/project
+./install.sh --list
 ```
 
-For Cursor, the default rule mode is `minimal`: one small always-on router rule
-that points the agent to installed commands and skills. Use `--rules full` only
-for dedicated pilot repos that should receive every pack's detailed project rules
-as always-on Cursor context.
+For Cursor, the default rule mode is `minimal`. It installs one small always-on
+router rule that points the agent to the installed commands and skills. Use
+`--rules full` only for dedicated pilot repos that should receive every pack's
+detailed project rules as always-on Cursor context.
 
-After install, open the target folder and run `/workflow-router` from chat. Full
-install mechanics — harness selection, polyrepo `--sweep`, the private Cursor
-plugin — are in the [Installation](wiki/Installation.md) guide.
+After install, open the target folder in your agent tool and run
+`/workflow-router` from chat. Full install mechanics, including polyrepo
+`--sweep` and the private Cursor plugin, are in the
+[Installation](wiki/Installation.md) guide.
+
+## Which path should I start with?
+
+| Goal | Start with |
+|---|---|
+| Build a normal feature with lightweight structure | `dev-lite-workflow` |
+| Turn a vague idea into an approved brief first | `shape-up` |
+| Run a deep code review on a PR or local diff | `pr-review` |
+| Diagnose a bug before fixing it | `bug-to-fix` |
+| Keep a long implementation safe across context resets | `phase-context-workflow` |
+| Install every available command and workflow | `all` |
 
 ## Documentation
 
-The **[wiki](wiki/Home.md)** is the deep dive. Quick map:
+The [wiki](wiki/Home.md) is the deep dive. Quick map:
 
 | Page | Covers |
 |---|---|
@@ -47,6 +71,9 @@ The **[wiki](wiki/Home.md)** is the deep dive. Quick map:
 | [docs/tutorial.md](docs/tutorial.md) | Guided first install and first feature walkthrough |
 
 ## Packs
+
+Packs are installable bundles. Most include slash commands, skills, templates,
+or workflow docs.
 
 | Pack | What it does |
 |---|---|
@@ -66,7 +93,7 @@ The **[wiki](wiki/Home.md)** is the deep dive. Quick map:
 | `cover` | Author/strengthen behavior-pinning tests + a detect-only coverage-gap scan. |
 | `ship-it` | Lightweight release readiness: go/no-go, rollback plan, release notes, rollout plan. |
 | `retrofit` | Apply one defined change across every site that needs it — discover, transform, verify. |
-| `worktree` | Isolated git worktrees so parallel agents share a polyrepo dir without clobbering each other's branch — one worktree per task, collision-safe naming. |
+| `worktree` | Isolated git worktrees so parallel agents share a polyrepo dir without clobbering each other's branch. |
 | `ticket-sync` | Provider-agnostic adapter: publish tickets to GitHub Issues, Jira, or Azure Boards. |
 | `handoff` | Cross-cutting `/handoff` that writes a resumable handoff so a fresh agent can continue. |
 | `cursor-hooks` | Project-level Cursor hooks: doc-sync gate on `git commit`, `/pr-review` nudge on `git push`. |
@@ -75,9 +102,10 @@ The **[wiki](wiki/Home.md)** is the deep dive. Quick map:
 
 ```text
 agent-toolbelt/
-  install.sh        single installer entry point (./install.sh --harness <list> <pack...> <target>)
+  install.sh        single installer entry point
   install/          per-pack file lists (install/<pack>.sh) + shared install/lib.sh
-  build-cursor-plugin.sh  assemble a private, user-scoped Cursor plugin from the packs
+  build-cursor-plugin.sh
+                    assemble a private, user-scoped Cursor plugin from the packs
   docs/             user-facing setup and usage docs
   commands/         slash commands and reusable command prompts
   skills/           agent skills with operating instructions

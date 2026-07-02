@@ -54,6 +54,8 @@ for (const key of ["name", "description", "version", "author"]) {
 
 cmd_count="$(find "$OUT/commands" -maxdepth 1 -type f -name '*.md' | wc -l | tr -d ' ')"
 skill_count="$(find "$OUT/skills" -mindepth 2 -maxdepth 2 -name SKILL.md | wc -l | tr -d ' ')"
+source_cmd_count="$(find "$ROOT/commands" -maxdepth 1 -type f -name '*.md' | wc -l | tr -d ' ')"
+source_skill_count="$(find "$ROOT/skills" -mindepth 2 -maxdepth 2 -name SKILL.md | wc -l | tr -d ' ')"
 
 if [ "$cmd_count" -eq 0 ]; then
   echo "plugin build contains no commands" >&2
@@ -63,6 +65,31 @@ if [ "$skill_count" -eq 0 ]; then
   echo "plugin build contains no skills" >&2
   exit 1
 fi
+if [ "$cmd_count" -ne "$source_cmd_count" ]; then
+  echo "plugin command count mismatch: source=$source_cmd_count build=$cmd_count" >&2
+  exit 1
+fi
+if [ "$skill_count" -ne "$source_skill_count" ]; then
+  echo "plugin skill count mismatch: source=$source_skill_count build=$skill_count" >&2
+  exit 1
+fi
+
+while IFS= read -r src; do
+  rel="${src#"$ROOT/commands/"}"
+  if [ ! -f "$OUT/commands/$rel" ]; then
+    echo "plugin build missing command: commands/$rel" >&2
+    exit 1
+  fi
+done < <(find "$ROOT/commands" -maxdepth 1 -type f -name '*.md' | sort)
+
+while IFS= read -r src; do
+  skill_name="$(basename "$(dirname "$src")")"
+  if [ ! -f "$OUT/skills/$skill_name/SKILL.md" ]; then
+    echo "plugin build missing skill: skills/$skill_name/SKILL.md" >&2
+    exit 1
+  fi
+done < <(find "$ROOT/skills" -mindepth 2 -maxdepth 2 -name SKILL.md | sort)
+
 if [ ! -f "$OUT/shared/contracts/manifest.json" ]; then
   echo "plugin build is missing shared contracts manifest" >&2
   exit 1

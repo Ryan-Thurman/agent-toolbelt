@@ -1,0 +1,3 @@
+display_name: "PR Review Reply"
+short_description: "Triage PR review threads, re-review touched code, and draft per-thread replies."
+default_prompt: "Handle these PR review comments."

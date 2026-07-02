@@ -6,7 +6,6 @@ set -u
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 status=0
 description_limit=45
-metadata_required_skills="dev-lite-workflow pr-review bug-to-fix shape-up simplify cover ship-it handoff"
 
 for skill_md in "$ROOT"/skills/*/SKILL.md; do
   skill_rel="${skill_md#"$ROOT"/}"
@@ -95,14 +94,10 @@ for skill_md in "$ROOT"/skills/*/SKILL.md; do
   done
 
   metadata_file="$skill_dir/agents/openai.yaml"
-  case " $metadata_required_skills " in
-    *" $skill_name "*)
-      if [ ! -f "$metadata_file" ]; then
-        echo "! $skill_rel: missing agents/openai.yaml metadata" >&2
-        status=1
-      fi
-      ;;
-  esac
+  if [ ! -f "$metadata_file" ]; then
+    echo "! $skill_rel: missing agents/openai.yaml metadata" >&2
+    status=1
+  fi
 
   if [ -f "$metadata_file" ]; then
     for key in display_name short_description default_prompt; do

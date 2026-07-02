@@ -1,0 +1,3 @@
+display_name: "Review On Open"
+short_description: "Trigger PR review automation when a PR opens or updates."
+default_prompt: "Set up review-on-open automation for this repository."

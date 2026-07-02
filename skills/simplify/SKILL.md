@@ -10,13 +10,31 @@ and applies nothing*, simplify *drives the cleanup* — it proposes high-convict
 and applies them on opt-in. It is biased toward small, behavior-preserving deletions, not ambitious
 rewrites.
 
+Use it after feature work, before PR, or when the user explicitly asks to simplify. Use `pr-review`
+for verdicts.
+
 ## Mutation Policy
 
 Default: report-only.
 Edit files only when the user explicitly asks to apply selected cleanup.
 Never change behavior or edit tests to make cleanup pass.
 
-## Two modes
+## Core principles
+
+- **Make the case — `rootIssue → consequence → benefit`.** Every candidate states the underlying
+  flaw, what it leads to if left alone, and the concrete win of fixing it. If you cannot name a
+  real, non-trivial consequence, do not flag it.
+- **Behavior-preserving.** Same output, errors, side-effects, and ordering. All existing tests must
+  still pass without modification.
+- **Report-then-apply.** Propose findings first; apply only what the user opts into, in a separate
+  step. Never silently rewrite.
+- **Fewer, higher-conviction.** A short list of defensible deletions beats a flood of style nits.
+- **Use the shared vocabulary.** Load `shared/contracts/references/maintainability-taxonomy.md` for
+  smell families, `/simplify` axes, risk/action vocabulary, thin-wrapper rules, and detection cues.
+- **Respect fences and boundaries.** Honor `simplify-ignore` block markers and existing abstraction
+  boundaries; be careful around error handling, security logic, migration files, and dynamic callers.
+
+## Mode routing
 
 - **`/simplify`** — diff- or feature-scoped cleanup. Report → user selects → apply. Biased to
   `safe`/`confirm` changes. This is the default, post-feature tool.
@@ -24,38 +42,6 @@ Never change behavior or edit tests to make cleanup pass.
   smells ranked by `severity × confidence`. **Never auto-applies** — it hands findings to a human
   (or to `/simplify` for the safe subset). Use `/code-smell <path> --architecture` for no-code
   architecture/deepening candidates.
-
-## Principles (always)
-
-- **Make the case — `rootIssue → consequence → benefit`.** Every candidate states the underlying
-  flaw, what it leads to if left alone, and the concrete win of fixing it. **If you cannot name a
-  real, non-trivial consequence, do not flag it.** "Slightly shorter" / "a bit cleaner" is not a
-  consequence. Each item must survive *"what actually goes wrong if we leave this?"*
-- **Behavior-preserving.** Same output, errors, side-effects, and ordering. **All existing tests
-  must still pass without modification** — if a "simplification" needs test edits, you changed
-  behavior; back it out.
-- **Report-then-apply.** Propose findings first; apply only what the user opts into, in a separate
-  step. Never silently rewrite.
-- **Fewer, higher-conviction.** A short list of defensible deletions beats a flood of style nits.
-- **Keep one maintainability vocabulary.**
-  `shared/contracts/references/maintainability-taxonomy.md` is the shared source for `/code-smell`,
-  `/simplify`, and `pr-review` maintainability. This skill owns the *apply* side. Leave ambitious
-  structural "code judo" rewrites to `pr-review --tier=deep` (advisory); simplify stays small and
-  safe.
-- **Respect fences.** Honor `simplify-ignore` block markers and existing abstraction boundaries;
-  be especially careful with error handling, security logic, migration files, and code that looks
-  unused but is called via reflection/eval.
-
-## Risk tiers (drive what gets applied)
-
-- **safe** — apply by default (dead code, debug remnants like `console.log`/`debugger`).
-- **confirm** — apply after the user confirms (reuse swaps, thin-wrapper inlines, hacky patterns,
-  efficiency fixes).
-- **review** — user looks first (commented-out code, anything ambiguous).
-
-Each finding carries an `action` verb that bounds the edit: `delete | inline | refactor |
-parallelize` (`/simplify`); `inspect | delete | inline | extract | refactor | guard`
-(`/code-smell`).
 
 ## Flow
 
@@ -66,12 +52,12 @@ parallelize` (`/simplify`); `inspect | delete | inline | extract | refactor | gu
    anything without a real consequence.
 4. **Report** the findings list (no prose dump). Stop here for `/code-smell`.
 5. **Apply on opt-in** (`/simplify`) following `references/apply-discipline.md`: one change at a
-   time, run tests after each, revert on failure, keep cleanup commits separate.
+   time, run relevant tests, revert on failure, keep cleanup commits separate.
 
-## References
+## Reference map
 
-- `shared/contracts/references/maintainability-taxonomy.md` — the shared smell families, compact Fowler-style baseline,
-  architecture/deepening mode, `/simplify` reuse/quality/efficiency axes, thin-wrapper taxonomy and
-  keep-rule, and detection cues.
+- `shared/contracts/references/maintainability-taxonomy.md` — shared smell families, compact
+  Fowler-style baseline, architecture/deepening mode, `/simplify` axes, risk/action vocabulary,
+  thin-wrapper rules, and detection cues.
 - `references/apply-discipline.md` — the report-then-apply contract, the Chesterton's-Fence
   pre-removal checklist, behavior-preserving rules, red flags, and scope/ignore handling.

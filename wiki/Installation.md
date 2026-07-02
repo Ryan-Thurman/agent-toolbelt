@@ -81,9 +81,9 @@ while relative refs are unaffected because the four folders move together.
 installer writes that one native copy for either harness (a separate `.cursor/skills/`
 would make Cursor list every skill twice). The canonical `.atb/skills/` tree is *not*
 an auto-discovery root, so it never double-registers — it exists only because the
-commands reference it by path. Each `SKILL.md` carries `name`/`description`
-frontmatter, so Cursor surfaces them as first-class, on-demand skills alongside the
-`/commands`.
+commands reference it by path. Each skill copy includes `SKILL.md` frontmatter plus
+`agents/openai.yaml` UI metadata, so hosts can surface them as first-class,
+on-demand skills alongside the `/commands`.
 
 When `cursor` or `codex` is selected, the installer also writes an **`AGENTS.md`
 pointer** at the target — a marker-delimited "Available workflows" block listing the
@@ -128,7 +128,8 @@ ln -s "$(pwd)/build/cursor-plugin/agent-toolbelt" ~/.cursor/plugins/local/agent-
 
 Notes:
 - **Skills** are the reliable, self-contained unit here — Cursor auto-discovers them
-  globally and surfaces them on demand. This is the main reason to use the plugin.
+  globally and surfaces them on demand with the same `agents/openai.yaml` metadata
+  shipped by per-repo installs. This is the main reason to use the plugin.
 - **Rules are omitted by default**: most of the repo's rules are `alwaysApply: true`,
   and a user-scoped plugin would fire them in *every* project. Pass `--with-rules` only
   if you want that. For scoped, per-project rules, use the per-repo `install.sh` instead.

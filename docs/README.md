@@ -6,6 +6,8 @@ Start here:
 
 - `tutorial.md` - guided first install and first feature walkthrough.
 - `phase-command-map.md` - which commands each workflow phase uses, at a glance.
+- `release-versioning.md` - repo release hygiene: license, changelog, and tag
+  version policy.
 
 Reference docs elsewhere in the repo:
 

@@ -105,6 +105,14 @@ for skill_md in "$ROOT"/skills/*/SKILL.md; do
       if [ "$key_count" -ne 1 ]; then
         echo "! ${metadata_file#"$ROOT"/}: expected exactly one $key field" >&2
         status=1
+      else
+        value="$(sed -n "s/^$key:[[:space:]]*//p" "$metadata_file")"
+        case "$value" in
+          ""|\"\"|\'\')
+            echo "! ${metadata_file#"$ROOT"/}: $key must not be empty" >&2
+            status=1
+            ;;
+        esac
       fi
     done
 

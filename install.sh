@@ -192,7 +192,7 @@ done
 install_into_target() {
   TARGET="$1"
   created=0; updated=0; skipped=0; gated=0
-  INSTALLED_COMMANDS=(); INSTALLED_SKILLS=()
+  INSTALLED_COMMANDS=(); INSTALLED_SKILLS=(); INSTALLED_SHARED_CONTRACTS=()
 
   if [ ! -d "$TARGET" ]; then
     if [ "$DRY_RUN" = "1" ]; then

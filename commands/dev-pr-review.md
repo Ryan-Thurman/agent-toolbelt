@@ -34,6 +34,14 @@ Review the final implementation against:
 - Tests/checks
 - Final diff
 
+If this review is delegated to a separate agent session, preserve independence.
+Give the reviewer scoped intent, plan sections, standing review rules, diff, and
+test/check evidence only. Withhold the coding agent's transcript, self-summary,
+implementation report, and claims about how the work was done.
+
+Check in order: done-when / acceptance evidence, scope completeness, contract
+drift, track boundaries, then ordinary code review.
+
 ## Review Areas
 
 ### Correctness
@@ -96,6 +104,8 @@ Notes, Plan Document Updates, and the Suggested PR Description. Distinguish
 Verified, Failed, and Not Inferable items; do not count Not Inferable as a pass
 when it affects PR readiness. Treat missing feasible tests as a Should Fix issue
 by default, or Blocking when core behavior, permissions, or data safety is
-unverified. In Branch / PR Notes, state the current branch, whether it is safe
-to open a PR, and the recommended PR command (when the host CLI is available) or
-PR title/body for manual creation.
+unverified. Cite the done-when or acceptance clauses verified, and make each
+request-changes finding name the specific plan, acceptance, contract, or
+boundary clause violated. In Branch / PR Notes, state the current branch,
+whether it is safe to open a PR, and the recommended PR command (when the host
+CLI is available) or PR title/body for manual creation.

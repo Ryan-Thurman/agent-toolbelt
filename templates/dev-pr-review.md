@@ -8,6 +8,15 @@ Use one:
 - Needs Fixes
 - Blocked
 
+## Done-When / Acceptance Clauses Verified
+
+List the clauses that were verified and the evidence used. Do not list a clause
+as verified when it is only Not Inferable.
+
+| Clause | Status | Evidence |
+|---|---|---|
+| ... | Verified / Failed / Not Inferable | ... |
+
 ## Acceptance Criteria Matrix
 
 | Criteria | Status | Evidence / Notes |
@@ -36,6 +45,9 @@ Not Inferable items, state the exact evidence needed next.
 ### Should Fix
 
 ### Nice to Have
+
+Each request-changes finding should cite the specific plan, acceptance,
+contract, or boundary clause violated.
 
 ## Required Fixes
 

@@ -25,8 +25,9 @@ when asked.
 - **Tailor to the next focus.** If told what the next session will do, shape the handoff toward it.
 - **Keep it compact** — a few screens, not a transcript. For a long task, a ≤2K-token summary plus
   references is the target.
-- **Save outside the workspace** unless the project tracks handoffs — write to a temp location so it
-  isn't accidentally committed.
+- **Save outside the workspace** unless the project tracks handoffs. In
+  `phase-context-workflow`, use the phase handoff file; otherwise write to a
+  temp location so it isn't accidentally committed.
 
 ## Steps
 
@@ -42,7 +43,9 @@ when asked.
 3. **Capture what's been tried and ruled out**, the suspected direction, and the relevant
    files/logs/metrics to check — by reference.
 4. **List suggested next skills/commands** the next session should invoke.
-5. **Keep it compact** and save it (outside the workspace unless the project tracks handoffs).
+5. **Keep it compact** and save it: use the phase handoff path when
+   `phase-context-workflow` owns the handoff, otherwise save outside the
+   workspace.
 
 ## Resume protocol (for whoever picks it up)
 
@@ -53,4 +56,5 @@ what's-been-ruled-out, then continue from the next action. Don't re-litigate eli
 
 A handoff document containing: current state + a concrete next action, what's been tried/ruled out,
 references (not copies) to the durable state file and related artifacts, suggested next commands,
-and any blockers — secrets redacted, saved outside the workspace unless the project tracks handoffs.
+and any blockers — secrets redacted, saved to the tracked phase handoff when
+that workflow owns it, otherwise outside the workspace.

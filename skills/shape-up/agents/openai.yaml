@@ -1,0 +1,3 @@
+display_name: "Shape Up"
+short_description: "Turn a fuzzy request into a tight, approved brief before planning or implementation."
+default_prompt: "Shape this request into an approved brief."

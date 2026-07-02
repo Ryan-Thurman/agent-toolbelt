@@ -1,0 +1,3 @@
+display_name: "Cover"
+short_description: "Author behavior-pinning tests for a diff, module, or bug reproduction on opt-in."
+default_prompt: "Propose tests that pin this behavior."

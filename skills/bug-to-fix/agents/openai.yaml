@@ -1,0 +1,3 @@
+display_name: "Bug To Fix"
+short_description: "Diagnostic bug workflow from triage and reproduction through root cause, minimal fix, and verification."
+default_prompt: "Diagnose this bug and drive it to a verified fix."

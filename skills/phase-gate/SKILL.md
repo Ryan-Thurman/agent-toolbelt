@@ -34,9 +34,8 @@ Read `references/modes.md` when executing either flow.
   window and returns only its findings. This is what makes "another agent reviews, feedback comes back
   to me" work in one session.
 - **Post the review to the PR — both flows.** The subagent posts its findings as inline PR comments
-  (`/pr-review --comment`) on GitHub or Azure in both modes, so the review is on the PR either way.
-  `--no-post` is the only exception (report-only). Posting is outward-facing and is the configured
-  intent of this gate.
+  (`/pr-review --comment`) in both modes; `--no-post` is the report-only exception. Posting is
+  outward-facing and is the configured intent of this gate.
 - **Report-first; the reviewer never edits.** The review subagent only produces findings and posts
   them. Applying fixes is always the **main agent's** job (solo mode) or a **human's** (team mode) — a
   reviewer that edits is a different, riskier tool.
@@ -56,9 +55,7 @@ The main agent runs this at a phase boundary, with the phase's work already push
 The review subagent resolves and acquires the phase diff through `pr-review`.
 
 1. **Spawn the review subagent.** One Task sub-agent, review-only (must not edit code): instruct it to
-   run `/pr-review <pr> --comment --tier=<t>` — it reviews the phase diff, **posts the findings inline**
-   to the GitHub/Azure PR, and **returns the findings** (verdict + blockers/non-blockers with
-   `file:line` + the concrete fix). With `--no-post`, drop `--comment` (report-only, posts nothing).
+   run `/pr-review <pr> --comment --tier=<t>`. With `--no-post`, drop `--comment`.
 2. **Route by mode.** Follow `references/modes.md`: team mode stops after posting; solo mode fixes
    blockers, optionally rereviews, then merges through `references/merge.md`.
 3. **Finish at a hard boundary.** Team mode ends at human review handoff. Solo mode ends only after
@@ -72,8 +69,7 @@ The review subagent resolves and acquires the phase diff through `pr-review`.
 - **`--no-post`** — report-only: don't post to the PR (dry run / no host CLI). Posting is otherwise
   always on for both modes.
 - **`--tier=light|standard|deep`** — review depth (passthrough to `pr-review`; omit → auto-tier).
-  For phase PRs, prefer the default auto-tier or explicit `standard` for normal logic phases; reserve
-  explicit `light` for low-risk/mechanical phases and explicit `deep` for high-stakes surfaces.
+  Load `references/modes.md` for phase-specific tier guidance.
 - **`--rereview`** — after fixing blockers (solo/report), run one confirming re-review before merge.
 
 ## References

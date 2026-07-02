@@ -118,6 +118,10 @@ agent-toolbelt/
 
 Each major folder has a `README.md` describing what belongs there.
 
+## License
+
+MIT. See [LICENSE](LICENSE).
+
 ## Repository safety
 
 This public repo is meant to contain reusable prompts, skills, workflow docs,

@@ -39,6 +39,10 @@ Read `references/modes.md` when executing either flow.
 - **Report-first; the reviewer never edits.** The review subagent only produces findings and posts
   them. Applying fixes is always the **main agent's** job (solo mode) or a **human's** (team mode) — a
   reviewer that edits is a different, riskier tool.
+- **Keep delegated context independent.** For Dev Lite phase PRs, apply
+  `skills/dev-lite-workflow/references/review-rules.md`: give the reviewer the
+  scoped brief, scoped plan sections, standing rules, diff, and test evidence,
+  not the coding agent's private reasoning or self-summary.
 - **Single pass by default.** One review per phase (`--rereview` opts into a confirming second pass
   after blocker fixes; see below). Don't loop-until-clean unless asked.
 - **Team mode (default) never merges.** The gate posts the agent's review to the PR and **stops**. The

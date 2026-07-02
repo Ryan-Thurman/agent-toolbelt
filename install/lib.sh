@@ -159,6 +159,11 @@ rule_tmpl() {
   return 0
 }
 
+# _skill_metadata <pack> <dest-root> — install host metadata next to a skill copy.
+_skill_metadata() {
+  _install "skills/$1/agents/openai.yaml" "$2/agents/openai.yaml"
+}
+
 # skill <pack> <rel> — canonical skills/ copy (always; commands reference it by path),
 # plus the agent-native .agents/skills/ copy when cursor or codex is selected. Cursor AND
 # Codex both auto-discover skills under .agents/skills/, so one copy serves both — writing a
@@ -166,8 +171,14 @@ rule_tmpl() {
 # an auto-discovery root, so it never double-registers.) SKILL.md is a cross-agent standard.
 skill() {
   _install "skills/$1/$2" ".atb/skills/$1/$2"
+  if [ "$2" = "SKILL.md" ]; then
+    _skill_metadata "$1" ".atb/skills/$1"
+  fi
   if harness_enabled cursor || harness_enabled codex; then
     _install "skills/$1/$2" ".agents/skills/$1/$2"
+    if [ "$2" = "SKILL.md" ]; then
+      _skill_metadata "$1" ".agents/skills/$1"
+    fi
   else
     gated=$((gated + 1))
   fi
@@ -179,7 +190,17 @@ skill() {
 # cursor is selected (AI Feature Delivery is Cursor-first; no Codex-only case to cover).
 skill_shared() {
   _install "skills/$1/$2" ".atb/skills/$1/$2"
-  if harness_enabled cursor; then _install "skills/$1/$2" ".agents/skills/$1/$2"; else gated=$((gated + 1)); fi
+  if [ "$2" = "SKILL.md" ]; then
+    _skill_metadata "$1" ".atb/skills/$1"
+  fi
+  if harness_enabled cursor; then
+    _install "skills/$1/$2" ".agents/skills/$1/$2"
+    if [ "$2" = "SKILL.md" ]; then
+      _skill_metadata "$1" ".agents/skills/$1"
+    fi
+  else
+    gated=$((gated + 1))
+  fi
   _record_skill "$1"
   return 0
 }

@@ -79,11 +79,12 @@ Skill concept attribution lives in `../docs/skill-provenance.md` so runtime
 
 ## Canonical copies
 
-`skills/dev-lite-workflow/SKILL.md` is the **canonical** source. The repo also
-ships `.agents/skills/dev-lite-workflow/SKILL.md` (the repo-scoped Codex copy);
-it must stay byte-identical. Edit the canonical file, then mirror the change.
-Run `scripts/check-skill-sync.sh` to verify the two copies match (also runnable
-in CI).
+`skills/dev-lite-workflow/` is the **canonical** source. The repo also ships
+`.agents/skills/dev-lite-workflow/` as the repo-scoped Codex copy; the full tree
+must stay byte-identical, including `SKILL.md`, `references/`, and
+`agents/openai.yaml`. Edit the canonical tree, then mirror the change. Run
+`scripts/check-skill-sync.sh` to verify the two copies match (also runnable in
+CI).
 
 ## Skill authoring checklist
 
@@ -97,8 +98,11 @@ Use this checklist when creating or updating a skill:
   synonyms.
 - Keep ownership clear: command files own argument syntax and user-facing entry
   text; `SKILL.md` owns process, invariants, gates, mutation policy, and output
-  contracts; references own provider/framework mechanics, long examples, and
-  branch-only detail.
+  contracts; `agents/openai.yaml` owns host UI metadata; references own
+  provider/framework mechanics, long examples, and branch-only detail.
+- Keep `agents/openai.yaml` concise and generated from the cleaned description:
+  exactly `display_name`, `short_description`, and `default_prompt`, with no
+  optional icon/color fields unless the repo standardizes them.
 - Keep `SKILL.md` focused on steps and always-needed rules. Move branch-only
   reference behind a clearly worded pointer in `references/`.
 - Use progressive disclosure by branch: inline what every successful invocation

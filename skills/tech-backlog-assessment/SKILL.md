@@ -9,6 +9,13 @@ Use this skill when the user has a technical backlog item and needs a decision
 memo before implementation. The work is discovery and recommendation, not code
 changes.
 
+## Mutation Policy
+
+Default: report-only.
+Edit files only when the user explicitly asks to implement after accepting the
+recommendation.
+Do not change code while producing the assessment memo.
+
 ## Scope
 
 Good fits:
@@ -51,8 +58,6 @@ Next workflow handoff
   compatibility, observability, rollback, security, licensing, and test gaps.
 - If current package metadata, CVEs, license, support status, or ecosystem health
   affects the recommendation, verify it from primary/current sources.
-- Do not edit files unless the user explicitly asks to implement after accepting
-  the recommendation.
 
 ## Investigation Checklist
 
@@ -86,3 +91,8 @@ Always include:
 - Proposed implementation shape if accepted.
 - Test strategy and verification commands.
 - Risks, open questions, and next workflow.
+
+Completion criterion: the assessment is done only when it states confidence,
+rejected options, concrete repo evidence, test strategy, risks, and the next
+workflow. If any required evidence is missing, say what was searched and why the
+recommendation still holds or remains a `Spike`.

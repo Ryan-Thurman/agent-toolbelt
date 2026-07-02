@@ -1,0 +1,3 @@
+display_name: "Ship It"
+short_description: "Prepare release readiness, rollback, release notes, and rollout monitoring for a change."
+default_prompt: "Prepare this change for release."

@@ -1,0 +1,21 @@
+{
+  "name": "agent-toolbelt-shared-contracts",
+  "description": "Support-only contracts consumed by multiple agent-toolbelt packs.",
+  "references": [
+    {
+      "path": "references/providers.md",
+      "owner": "shared/contracts",
+      "consumers": ["phase-gate", "pr-review-reply", "review-on-open"]
+    },
+    {
+      "path": "references/posting.md",
+      "owner": "shared/contracts",
+      "consumers": ["pr-review-reply", "review-on-open"]
+    },
+    {
+      "path": "references/maintainability-taxonomy.md",
+      "owner": "shared/contracts",
+      "consumers": ["pr-review", "simplify"]
+    }
+  ]
+}

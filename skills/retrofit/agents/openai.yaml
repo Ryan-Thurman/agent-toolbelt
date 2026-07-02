@@ -1,0 +1,3 @@
+display_name: "Retrofit"
+short_description: "Apply one defined mechanical change across every required site in a codebase."
+default_prompt: "Retrofit this change across the codebase."

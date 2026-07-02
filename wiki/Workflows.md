@@ -99,9 +99,10 @@ Common commands:
 
 Which harnesses receive files is controlled by `--harness` (see [Choosing
 harnesses](Installation.md#choosing-harnesses)). Note that the AI Feature Delivery
-pack ships Cursor-only commands and rules, so installing it with `--harness claude`
-writes only its shared `.atb/skills/`, `.atb/templates/`, and `.atb/workflows/` (the installer
-prints a note for each pack that contributes nothing harness-specific).
+pack ships Cursor-only commands and optional full-mode rules, so installing it
+with `--harness claude` writes only its shared `.atb/skills/`, `.atb/templates/`,
+and `.atb/workflows/` (the installer prints a note for each pack that contributes
+nothing harness-specific).
 
 ## Bug to Fix
 

@@ -1,0 +1,3 @@
+display_name: "Tech Backlog Assessment"
+short_description: "Assess technical backlog items before implementation with evidence, risks, and next workflow."
+default_prompt: "Assess this technical backlog item."

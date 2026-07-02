@@ -1,0 +1,3 @@
+display_name: "Phase Gate"
+short_description: "Synchronous PR-review gate at a phased-build boundary with isolated review and routing."
+default_prompt: "Run a phase gate review for this phase PR."

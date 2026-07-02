@@ -1,6 +1,6 @@
 ---
 name: ship-it
-description: Prepare a change for release safely — readiness check, rollback plan, release notes, and a rollout/monitor plan. Pipeline-aware: prepares and hands off when an external CI/CD owns the deploy, or walks the rollout when you own it. Use after a PR is merged/approved and you're about to release. Not for regulated release-manifest/doc-control work (use ai-feature-delivery).
+description: Prepare a change for release with readiness checks, rollback, release notes, and rollout monitoring. Use after PR merge or approval. Pipeline-aware; not for regulated release-manifest or doc-control work.
 ---
 
 # ship-it
@@ -8,8 +8,12 @@ description: Prepare a change for release safely — readiness check, rollback p
 The lightweight release-readiness step that closes the dev lanes — they end at "PR merged," this
 takes it to "released safely." Every release should be **reversible, observable, and incremental**.
 
-> Lifts concepts (MIT) from addyosmani/agent-skills (shipping-and-launch) and gstack
-> (land-and-deploy, document-release) — see **Credits**.
+## Mutation Policy
+
+Default: prepare the release package only.
+Edit release artifacts only when the user explicitly asks.
+Running deploy, tag, push, or rollout commands requires explicit confirmation at
+each gate; if a pipeline owns deploy, stop at handoff.
 
 ## Principles (always)
 
@@ -59,9 +63,3 @@ it**. When unsure, ask before doing anything that deploys.
   performance, accessibility, infrastructure, docs), to scope to the change.
 - `references/rollout-and-rollback.md` — feature-flag lifecycle, the staged rollout sequence, the
   advance/hold/roll-back threshold table, the roll-back triggers, and the monitoring list.
-
-## Credits
-
-Concepts adapted (MIT, reworded) from addyosmani/agent-skills `shipping-and-launch` (pre-launch
-checklist, feature-flag lifecycle, staged rollout + decision thresholds, rollback triggers) and
-gstack `land-and-deploy` / `document-release` (the deploy-handoff boundary, release-notes/doc audit).

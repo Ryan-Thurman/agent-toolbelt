@@ -1,0 +1,31 @@
+---
+description: agent-toolbelt workflow router and guardrails
+alwaysApply: true
+---
+
+# agent-toolbelt Router
+
+Use installed agent-toolbelt workflows when the task clearly matches one. Prefer
+the matching slash command or skill over re-creating the workflow from memory.
+
+Use `/workflow-router` when the right workflow is unclear.
+
+Common matches:
+
+- Feature or app work needing brief, flows, acceptance criteria, phased
+  implementation, commits, and reviews: `dev-lite-workflow`.
+- Traceable feature delivery with formal docs, gates, QA, and release artifacts:
+  `ai-feature-delivery`.
+- Code review: `pr-review`.
+- Debugging from symptom to fix: `bug-to-fix`.
+- Review comment follow-up: `pr-review-reply`.
+- Phase gate or merge readiness: `phase-gate`.
+
+General guardrails:
+
+- Respect existing repo instructions and project conventions.
+- Keep edits scoped to the user's task.
+- Avoid destructive git or filesystem actions unless explicitly requested.
+- Run relevant checks when practical; otherwise say what was not run and why.
+- Put workflow-specific procedures, rubrics, and checklists in the matching skill
+  context instead of applying them to unrelated chats.

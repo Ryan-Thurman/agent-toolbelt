@@ -1,6 +1,6 @@
 ---
 name: bug-to-fix
-description: Diagnose and fix a reported bug — triage, reproduce, root-cause analysis, minimal fix, and verification. Use when a bug ticket or defect arrives, when something is broken/throwing/failing/slow and needs investigation, when you need an RCA / root-cause analysis, or when turning a confirmed bug into a verified fix and PR.
+description: Diagnose and fix reported bugs through triage, reproduction, root-cause analysis, minimal repair, and verification. Use for bug tickets, broken/failing/slow behavior, RCA requests, or turning a confirmed defect into a verified fix.
 ---
 
 # bug-to-fix
@@ -10,8 +10,6 @@ fix** through triage → reproduce → root-cause → minimal fix → verify. It
 counterpart to the generative `ai-feature-delivery` skill; the two share a back half (dev +
 review), but their front halves are opposites — feature delivery asks "what should exist?", this
 asks "why is this broken, and what is the smallest change that fixes it?".
-
-> Lifts concepts (not prose) from several MIT-licensed skill packs — see **Credits** at the end.
 
 ## Principles (always)
 
@@ -60,10 +58,11 @@ Each step has a single hard gate, so the commands are independently invocable:
 4. **Fix** (`/fix-plan`) — write the fix contract, apply the smallest change, and verify. Then hand
    to the dev + review back half. Gate: the verification contract is satisfied.
 
-## Invocation model
+## Command Entries
 
-- **User-invoked** entry points (a human starts these): `/bug-intake`, `/fix-plan`, `/handoff`.
-- **Model-invoked** sub-steps (these can run automatically inside the loop): `/reproduce`, `/rca`.
+- **Human-started command entries:** `/bug-intake`, `/fix-plan`, `/handoff`.
+- **Loop sub-steps:** `/reproduce` and `/rca` may run inside the diagnostic workflow when their gates
+  are reached.
 
 ## Escalation
 
@@ -81,14 +80,3 @@ Each step has a single hard gate, so the commands are independently invocable:
 - `references/adversarial-confirmation.md` — the doubt cycle that confirms a root cause before you
   accept it (reuses the pr-review falsify-don't-verify pattern).
 - `references/severity.md` — SEV1–SEV4, auto-upgrade triggers, and the intake schema.
-- `references/rct-acceleration.md` — *optional*: when the rct MCP tools are available, use the graph
-  to localize the cause and bound the fix (file-reading fallback otherwise).
-
-## Credits
-
-Concepts adapted (MIT, reworded in our own voice) from: obra/superpowers (systematic-debugging,
-defense-in-depth, verification-before-completion), addyosmani/agent-skills (doubt-driven-development,
-debugging-and-error-recovery), mattpocock/skills (diagnosing-bugs, triage, handoff),
-Jeffallan/claude-skills (debugging-wizard), msitarzewski/agency-agents (minimal-change-engineer,
-incident-commander), VoltAgent/awesome-claude-code-subagents (debugger), and open-gsd/gsd-core
-(durable debug-file state model).

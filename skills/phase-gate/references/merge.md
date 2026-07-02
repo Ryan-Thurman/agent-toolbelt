@@ -18,7 +18,7 @@ merged. If the host CLI is missing or the merge is refused (protections, conflic
 
 ## Provider-aware merge
 
-Detect the host the same way `pr-review` does (`skills/pr-review/references/providers.md`):
+Detect the host with the shared provider contract (`shared/contracts/references/providers.md`):
 
 ```bash
 url="$(git remote get-url origin 2>/dev/null)"

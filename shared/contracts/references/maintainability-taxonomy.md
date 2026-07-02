@@ -1,9 +1,9 @@
-# Smell taxonomy and detection cues
+# Maintainability Taxonomy
 
 What to look for. `/code-smell` scans by family; `/simplify` scans by axis. Treat cheap regex/lexical
 cues as untrusted leads to verify by reading, never as truth.
 
-This file is the shared maintainability vocabulary for `/code-smell`, `/simplify`, and the
+This shared contract is the maintainability vocabulary for `/code-smell`, `/simplify`, and the
 `pr-review` maintainability facet. Keep it as the single source of truth: other prompts may point
 here, but should not copy this taxonomy.
 

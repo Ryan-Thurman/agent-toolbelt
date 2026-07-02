@@ -1,0 +1,3 @@
+display_name: "Worktree"
+short_description: "Create, list, and remove isolated git worktrees for multi-agent shared repository work."
+default_prompt: "Create or manage an isolated worktree for this task."

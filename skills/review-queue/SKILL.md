@@ -1,6 +1,6 @@
 ---
 name: review-queue
-description: Local SQLite-backed queue for handing PR-review jobs from PR-opening agents to review workers. A producer enqueues a PR; a worker claims jobs and runs /pr-review --comment. Use for local agent-to-agent PR review when webhooks, CI, or API keys are unavailable or unwanted. Provides atomic exactly-once claims, crash-safe leases, and dead-lettering.
+description: Queue PR-review jobs locally with SQLite. Use when PR-opening agents need review workers without webhooks, CI, or API keys. Producers enqueue PRs; workers claim jobs and run /pr-review --comment.
 ---
 
 # review-queue
@@ -12,8 +12,7 @@ local — no GitHub webhook, no CI, no API key — so it runs on your Claude Cod
 harness (Claude Code, Cursor, Codex) can produce or consume against the one shared queue.
 
 > Adds no review logic. The worker's whole job is to call `/pr-review … --comment` (the `pr-review`
-> pack) on each claimed item. This pack is the **ignition + hand-off**, not the reviewer. See
-> **Credits**.
+> pack) on each claimed item. This pack is the **ignition + hand-off**, not the reviewer.
 
 ## Why a queue (vs the poller / CI event)
 
@@ -32,22 +31,12 @@ work *originates from another local agent*:
 `/loop` session or a `/schedule` routine). What the queue removes is *remote polling*; it does not
 remove the need for a live consumer. If no agent is producing locally, prefer the CI event or poller.
 
-## The store & the CLI
+## Store And CLI
 
-State is one SQLite file — `$REVIEW_QUEUE_DB`, else `~/.review-queue/queue.db` (user-global, so a
-producer in repo X and a worker session elsewhere share it). All access goes through the shipped
-**`review-queue` CLI** (`bin/review-queue.sh`, pure bash + `sqlite3` — no runtime to install). Full
-contract, schema, and flags: `references/cli.md`. The operations:
-
-| op | who | what |
-|---|---|---|
-| `enqueue --repo --target --sha [--tier] [--reason] [--by]` | producer | push a job; **idempotent on (repo, target, head_sha)** — same commit is a no-op (`duplicate`) |
-| `claim [--worker] [--lease]` | consumer | **atomic** dequeue of the oldest pending job → JSON (`[]` if none) |
-| `complete <id> --verdict [--findings]` | consumer | mark reviewed |
-| `requeue <id>` | consumer | return to pending on error (or dead-letter if attempts exhausted) |
-| `list [--status]` / `stats` | either | inspect |
-
-Invoke it at its installed path: `bash skills/review-queue/bin/review-queue.sh <op> …`.
+State is one SQLite file: `$REVIEW_QUEUE_DB`, else `~/.review-queue/queue.db`.
+All access goes through the shipped `review-queue` CLI
+(`bin/review-queue.sh`, pure bash + `sqlite3`). Load `references/cli.md` for
+the schema, subcommands, flags, output formats, and env overrides.
 
 ## Principles (always)
 
@@ -70,14 +59,9 @@ Invoke it at its installed path: `bash skills/review-queue/bin/review-queue.sh <
 
 ## The two lanes
 
-**Producer** — wherever an agent finishes opening/updating a PR (e.g. end of `ship-it`, a dev PR step,
-or a manual `/enqueue-review`), it enqueues:
-
-```bash
-bash skills/review-queue/bin/review-queue.sh enqueue \
-  --repo "$(basename "$(git rev-parse --show-toplevel)")" \
-  --target 142 --sha "$(git rev-parse HEAD)" --tier standard --by ship-it
-```
+**Producer** — wherever an agent finishes opening/updating a PR (e.g. end of
+`ship-it`, a dev PR step, or a manual `/enqueue-review`), it enqueues through
+`references/cli.md`.
 
 **Consumer** — the worker drains the queue (`/review-queue-worker`, full loop in
 `references/worker.md`): `claim` → if a job, run `/pr-review <target> --comment` in a fresh sub-agent →
@@ -94,9 +78,3 @@ atomic, you can safely run more than one worker.
 - `skills/review-on-open/SKILL.md` — the sibling triggers (CI event / host poller); this queue is the
   third, push-based trigger. All three end in `/pr-review --comment`.
 - `skills/pr-review/SKILL.md` — the reviewer every claimed job runs.
-
-## Credits
-
-A trigger/hand-off layer over the `pr-review` pack — it carries jobs, not findings; the review itself
-is entirely `pr-review`. The SHA-idempotency mirrors the `review-on-open` seen-ledger; the
-producer/consumer split is what lets a separate, fresh agent do the review.

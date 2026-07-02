@@ -18,7 +18,7 @@ Reasoning:
 ## No-Code Candidate Report
 
 Area scanned: `commands/code-smell.md` plus
-`skills/simplify/references/smell-taxonomy.md`.
+`shared/contracts/references/maintainability-taxonomy.md`.
 
 Candidate: absorb architecture review into `/code-smell --architecture`.
 
@@ -27,7 +27,7 @@ Strength: strong.
 Files:
 
 - `commands/code-smell.md`
-- `skills/simplify/references/smell-taxonomy.md`
+- `shared/contracts/references/maintainability-taxonomy.md`
 - `skills/simplify/SKILL.md`
 - `commands/README.md`
 - `commands/workflow-router.md`

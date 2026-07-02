@@ -1,6 +1,6 @@
 ---
 name: shape-up
-description: Interrogate a vague feature request into a tight, agreed brief before any building — one question at a time, resolving from the codebase first, surfacing contradictions and missing decisions. Use to shape a fuzzy idea or ticket before /dev-intake or /dev-plan. For broken behavior use bug-to-fix; for heavy regulated features use ai-feature-delivery.
+description: Shape a vague feature request into a tight, agreed brief before building. Use for fuzzy ideas or tickets before /dev-intake or /dev-plan. For broken behavior use bug-to-fix; for regulated features use ai-feature-delivery.
 ---
 
 # shape-up
@@ -8,9 +8,6 @@ description: Interrogate a vague feature request into a tight, agreed brief befo
 Turn a fuzzy request into a clear, agreed brief **before** anyone plans or writes code. It is the
 adversarial interrogation step that sits in front of the build lanes: it surfaces the assumptions,
 contradictions, and missing decisions that would otherwise be silently committed.
-
-> Lifts concepts (MIT) from mattpocock/skills (grilling, to-issues, to-prd, domain-modeling) and
-> obra/superpowers (brainstorming) — see **Credits**.
 
 ## Principles (always)
 
@@ -35,7 +32,8 @@ contradictions, and missing decisions that would otherwise be silently committed
    answer, focused on purpose, constraints, success criteria, and in/out of scope. Use the
    contradiction-hunting techniques to force precision on overloaded terms and edge cases.
 4. **Self-audit the draft brief**: internal consistency (do any parts contradict?), ambiguity (could
-   a requirement be read two ways? pick one), placeholder scan (no `TBD`/`TODO` left).
+   a requirement be read two ways? pick one), placeholder scan (no `TBD`/`TODO` left). Done means
+   there are no unresolved overloaded terms, no unanswered scope boundary, and no `TBD`.
 5. **Emit the brief** (`../../templates/shape-up-brief.md`) and **stop for approval** (the hard
    gate). Iterate until approved.
 6. **Hand off** (only after approval): `/dev-intake` to formalize the brief, then `/dev-plan`; or
@@ -49,21 +47,13 @@ contradictions, and missing decisions that would otherwise be silently committed
 - A decision is worth pinning as an ADR only if all three hold: hard to reverse, surprising without
   context, and the result of a real trade-off. Otherwise just decide and record it in the brief.
 
-## Invocation
+## Command Entry
 
-`shape-up` is **user-invoked** — a human pulls the trigger to shape a request. Its interrogation and
-contradiction-checking steps are model-driven within the session. It never auto-fires a planning or
-implementation step; the hard gate is mandatory.
+`/shape-up` is the human-started command entry point for shaping a request. The skill can still run
+when its model-facing description matches a fuzzy feature request, but it never auto-fires planning
+or implementation. The hard gate is mandatory.
 
 ## References
 
 - `references/interrogation.md` — the question techniques, the contradiction/overloaded-term
   challenges, edge-case stress tests, and the brief self-audit.
-- `references/rct-acceleration.md` — *optional*: when the rct MCP tools are available, use the graph
-  to resolve the repo-first questions cheaply (file-reading fallback otherwise).
-
-## Credits
-
-Concepts adapted (MIT, reworded) from mattpocock/skills (the one-question-at-a-time grill, repo-first
-resolution, vertical-slice issues, the lean brief sections, domain-term contradiction checks) and
-obra/superpowers (scope-gate, recommended-answer questions, the hard approval gate, spec self-review).

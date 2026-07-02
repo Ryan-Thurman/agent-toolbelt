@@ -89,12 +89,16 @@ in CI).
 
 Use this checklist when creating or updating a skill:
 
-- Decide invocation first. Keep a `description` only when the agent should
-  discover and invoke the skill on its own; otherwise make the skill
-  user-invoked and route to it from docs or commands.
+- Keep runtime skills agent-invoked with a model-facing `description`. Human
+  entry points belong in `commands/`; do not add `disable-model-invocation` for
+  runtime skills unless a future support-only artifact explicitly needs it.
 - Make the description pay for its context load. Use leading words users and
   agents actually say, and keep distinct trigger branches rather than repeated
   synonyms.
+- Keep ownership clear: command files own argument syntax and user-facing entry
+  text; `SKILL.md` owns process, invariants, gates, mutation policy, and output
+  contracts; references own provider/framework mechanics, long examples, and
+  branch-only detail.
 - Keep `SKILL.md` focused on steps and always-needed rules. Move branch-only
   reference behind a clearly worded pointer in `references/`.
 - Use progressive disclosure by branch: inline what every successful invocation
@@ -113,14 +117,12 @@ Use this checklist when creating or updating a skill:
 
 Applied check:
 
-- `shape-up/`: keep the model-invoked description because it has distinct
-  trigger branches for fuzzy ideas/tickets before Dev Lite planning, with clear
-  exclusions for bug and regulated feature lanes. Keep `references/interrogation.md`
-  behind a pointer because only the questioning branch needs those techniques;
-  do not inline it into `SKILL.md`.
+- `shape-up/`: keep the model-facing description because it has distinct trigger
+  branches for fuzzy ideas/tickets before Dev Lite planning, with clear
+  exclusions for bug and regulated feature lanes. Keep
+  `references/interrogation.md` behind a pointer because only the questioning
+  branch needs those techniques; do not inline it into `SKILL.md`.
 - `pr-review/`: keep tier choice, reviewer-safety, inputs, and short tier
-  algorithms inline because every invocation needs them to pick scope, intensity,
-  and output. Do not move the tier summaries yet; the long-skill audit found the
-  better cleanup candidate is duplicated reference cataloging. Future edits
-  should keep `## References` as navigation only and move detailed provider,
-  posting, tier, and schema mechanics into the referenced files.
+  skeletons inline because every invocation needs them to pick scope, intensity,
+  and output. Keep `## References` as navigation only; detailed provider,
+  posting, tier, rubric, and schema mechanics belong in the referenced files.

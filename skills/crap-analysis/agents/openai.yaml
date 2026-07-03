@@ -1,0 +1,3 @@
+display_name: "CRAP Analysis"
+short_description: "Configure and run CRAP analysis via repo commands — deterministic review and opt-in refactor."
+default_prompt: "Run CRAP analysis on my uncommitted changes."

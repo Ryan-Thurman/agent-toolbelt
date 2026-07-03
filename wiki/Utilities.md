@@ -8,6 +8,7 @@ test authoring, release, codebase-wide change, handoff, and tracker sync.
 - [Ship It](#ship-it) — release readiness.
 - [Retrofit](#retrofit) — one change across many sites.
 - [Worktree](#worktree) — isolated worktrees for parallel agents.
+- [CRAP Analysis](#crap-analysis) — complexity + coverage risk via repo-configured commands.
 - [Handoff](#handoff) — resumable handoffs.
 - [Ticket Sync](#ticket-sync) — publish tickets to a tracker.
 
@@ -112,6 +113,27 @@ dirty tree or unmerged branch without `--force`). Pure bash + git — no runtime
 Scope boundary: this is for **cross-session** work the harness can't coordinate. Parallel fan-out
 *inside a single `Workflow` run* should use the tool's `isolation: 'worktree'` (auto-cleanup)
 instead — the same discipline `retrofit` uses for its in-run transforms.
+
+## CRAP Analysis
+
+The `crap-analysis` tool orchestrates CRAP (complexity + coverage) checks using **commands the repo
+defines** — no embedded analyzer, no language lock-in. A wizard hydrates `.crap-analysis.json`;
+a bash orchestrator runs coverage and analysis **once** per invocation; review is **deterministic**.
+
+```sh
+./install.sh --harness all crap-analysis /path/to/project
+```
+
+- `/crap-config` — wizard: collect analysis, coverage, verify commands, output paths, threshold;
+  write `.crap-analysis.json`.
+- `/do-crap-analysis` — run on uncommitted changes: orchestrator `execute --changed`, read report
+  JSON, apply fixed PASS/REFACTOR/ERROR templates. **Detect-only** — never edits source.
+- `/crap-refactor` — apply-on-opt-in: read refactor brief, change source/tests, run verify once,
+  re-review.
+
+Config is loaded from the base branch (a working branch cannot silently weaken thresholds). When
+CRAP exceeds threshold, the agent **must** read the refactor brief markdown into context before
+prompting the user toward `/crap-refactor`.
 
 ## Handoff
 

@@ -1,6 +1,7 @@
-# DESC: tiered multi-agent PR/code review (light/standard/deep): command, skill tree, config sample, examples
+# DESC: tiered multi-agent PR/code review (light/standard/deep): commands (incl. /pr-review-init config generator), skill tree, config sample, examples
 pack_pr_review() {
   cmd pr-review
+  cmd pr-review-init
 
   local f
   for f in \
@@ -10,7 +11,8 @@ pack_pr_review() {
     facets/_shared.md facets/correctness.md facets/maintainability-deep.md \
     facets/maintainability.md facets/performance.md facets/security.md \
     facets/spec-alignment.md facets/standards.md facets/tests.md \
-    references/auto-tier.md references/benchmarking.md references/deep-tier.md \
+    references/auto-tier.md references/benchmarking.md references/config-init.md \
+    references/deep-tier.md \
     references/dual-judge.md references/fan-out.md references/finding-schema.md \
     references/lang-checklists.md references/output-format.md references/posting.md \
     references/providers.md references/rejection-memory.md references/repo-config.md \

@@ -74,6 +74,7 @@ Routing guide:
 - QA package: `/qa-handoff`.
 - Release documentation: `/release-manifest`, then `/release-doc-check`.
 - General PR/code review: `/pr-review --tier=light|standard|deep`.
+- Pin what reviews should prioritize in a repo (draft `.pr-review.md`): `/pr-review-init`.
 - Respond to a human reviewer's PR threads (triage + reply, re-review only what
   changed since the review): `/pr-review-reply` (run after `/pr-review`).
 - Release a merged change (readiness + rollback + notes + rollout): `/ship-it`.

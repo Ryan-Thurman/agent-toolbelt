@@ -7,6 +7,7 @@ For a guided command path, see `../docs/tutorial.md`. If the next command is
 unclear inside a pilot repo, start with `/workflow-router`.
 
 - `/pr-review` - run the tiered PR/code review workflow.
+- `/pr-review-init` - draft a repo's `.pr-review.md` review-priorities config by mining repo evidence (docs, burn history, rejection memory).
 - `/pr-review-reply` - round-trip a PR review: read reviewer threads, triage, re-review only since-SHA changes, reply per-thread.
 - `/review-on-open` - auto-review trigger: poll open PRs and fire `/pr-review --comment` on the unseen ones (drive with `/loop` or `/schedule`); GitHub Actions event template ships alongside.
 - `/enqueue-review` - push a PR onto the local review queue (producer half of review-queue; idempotent on head SHA).
@@ -72,6 +73,7 @@ Some commands overlap. Use these tables to pick the right one.
 | Command | Use it for |
 |---|---|
 | `/pr-review` | Deep, tiered, multi-agent code review (bugs, security, perf, tests, maintainability, standards). The heavy code-quality pass. |
+| `/pr-review-init` | Draft the repo's `.pr-review.md` (per-repo review priorities that `/pr-review` loads) from repo evidence — docs, revert/hotfix history, review threads, rejection memory. Draft only; the team prunes and commits. |
 | `/pr-review-reply` | The round-trip: answer a human reviewer's PR threads — triage each (`answered`/`changed`/`needs-follow-up`), re-review only the code changed since the review, reply per-thread. Run after `/pr-review`. |
 | `/review-on-open` | The trigger: auto-fire `/pr-review --comment` in a fresh agent when a PR is opened/updated. Host-agnostic poller (drive with `/loop` / `/schedule`); ships a GitHub Actions event workflow too. Doesn't review itself — it invokes `/pr-review` for you. |
 | `/enqueue-review` · `/review-queue-worker` | Push-based trigger: a producer agent enqueues a PR onto a local SQLite queue (`/enqueue-review`); a worker claims jobs and runs `/pr-review --comment` on each (`/review-queue-worker`, drive with `/loop` / `/schedule`). Decoupled, fully local — no CI/webhook/API key. |

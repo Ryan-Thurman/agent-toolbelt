@@ -7,7 +7,8 @@ The AI Feature Delivery installer copies the relevant templates into a pilot
 folder. The normal first artifact is `feature-master-record.md`; see
 `../docs/tutorial.md` for the full path.
 
-- `pr-review.md` - per-repo review priority config.
+- `pr-review.md` - per-repo review priority config (blank starter; `/pr-review-init`
+  drafts one from repo evidence instead).
 - `dev-feature-brief.md` - lightweight feature/app brief with flows and
   acceptance criteria.
 - `dev-implementation-plan.md` - phased dev-lite implementation plan.

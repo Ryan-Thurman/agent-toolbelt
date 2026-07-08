@@ -19,10 +19,12 @@ and do not write to the host. If the host CLI is absent, posting degrades to the
 same report-only path.
 
 `--tier=light|standard|deep` passes through to `pr-review`. Omit it to use
-auto-tier. For phase PRs, prefer auto-tier or explicit `standard` for normal
-logic phases; reserve `light` for low-risk docs/tests/config/mechanical phases
-and `deep` for high-stakes surfaces such as auth, payments, migrations, public
-APIs, or security-sensitive code.
+auto-tier. For in-loop phase gates prefer explicit **`standard`**: deep buys
+severity calibration (dual-judge), which you re-buy anyway at the final
+pre-merge review — pay for it once, at the end, not per phase. Reserve `light`
+for low-risk docs/tests/config/mechanical phases, and `deep` for the final
+merge-gating review or phases touching high-stakes surfaces (auth, payments,
+migrations, breaking public-API changes, security-sensitive code).
 
 Host detection follows the shared provider contract:
 `shared/contracts/references/providers.md`.

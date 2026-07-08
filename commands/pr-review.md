@@ -34,7 +34,9 @@ Parse them as:
 
 Before reviewing, load the target repo's **`.pr-review.md`** if present (from the base branch) for
 per-project priorities — domain/scale context, always-run facets, budgets, severity overrides,
-do-not-flag, minimum tier (`skills/pr-review/references/repo-config.md`).
+do-not-flag, minimum tier (`skills/pr-review/references/repo-config.md`). If absent and the run hits
+a situation the config would solve, the report footer nudges once toward `/pr-review-init`
+(`skills/pr-review/references/output-format.md` → "No-config nudge").
 
 Then follow the `pr-review` skill:
 1. Resolve the target and acquire the diff (`skills/pr-review/references/targets-and-diff.md`).

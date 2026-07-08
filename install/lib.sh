@@ -251,19 +251,13 @@ write_cursor_router_rule() {
   _install "templates/cursor-rules-agent-toolbelt-router.mdc" ".cursor/rules/agent-toolbelt-router.mdc"
 }
 
-# ---- AGENTS.md pointer --------------------------------------------------------
+# ---- Root instruction pointers ------------------------------------------------
 
 AGENTS_BEGIN="<!-- BEGIN agent-toolbelt -->"
 AGENTS_END="<!-- END agent-toolbelt -->"
 
-# write_agents_md <packs...> — write/update an "Available workflows" block in
-# $TARGET/AGENTS.md listing the commands and skills installed for the given packs.
-# Only runs when cursor or codex is selected (the AGENTS.md-consuming harnesses).
-# Idempotent: replaces the marked block in place, appends if absent, creates if missing.
-write_agents_md() {
-  harness_enabled cursor || harness_enabled codex || return 0
-
-  local f="$TARGET/AGENTS.md" p e block cmds sk
+toolbelt_workflows_block() {
+  local p e block cmds sk
   block="$AGENTS_BEGIN"$'\n'"## Available workflows"$'\n'
   block="$block"$'\n'"Installed by agent-toolbelt. Reach for these when the task matches the description."$'\n'
   for p in "$@"; do
@@ -280,9 +274,19 @@ write_agents_md() {
     [ -n "$sk" ]   && block="${block}"$'\n'"Skills:"$'\n'"$sk"
   done
   block="$block$AGENTS_END"$'\n'
+  printf '%s' "$block"
+}
+
+# write_marked_pointer_file <file> <display-name> <packs...> — write/update the
+# generated "Available workflows" block without disturbing user-authored content.
+write_marked_pointer_file() {
+  local f="$1" display="$2" block tmp blkfile
+  shift 2
+  block="$(toolbelt_workflows_block "$@"; printf x)"
+  block="${block%x}"
 
   if [ "$DRY_RUN" = "1" ]; then
-    if [ -f "$f" ]; then echo "~ would update AGENTS.md block: $f"; else echo "+ would create AGENTS.md: $f"; fi
+    if [ -f "$f" ]; then echo "~ would update $display block: $f"; else echo "+ would create $display: $f"; fi
     return 0
   fi
 
@@ -298,7 +302,6 @@ write_agents_md() {
   # Splice the block in place. The block is read from a temp file rather than an
   # awk -v var: BSD/macOS awk rejects a literal newline in a -v value ("newline in
   # string"), which would break every re-install over an existing AGENTS.md.
-  local tmp blkfile
   blkfile="$(mktemp "$(dirname "$f")/.atb-block.XXXXXX")" || exit 1
   printf '%s' "$block" > "$blkfile" || { rm -f "$blkfile"; exit 1; }
   tmp="$(mktemp "$(dirname "$f")/.AGENTS.md.XXXXXX")" || { rm -f "$blkfile"; exit 1; }
@@ -310,4 +313,19 @@ write_agents_md() {
   ' "$f" > "$tmp" && mv "$tmp" "$f" || { rm -f "$tmp" "$blkfile"; exit 1; }
   rm -f "$blkfile"
   echo "~ updated: $f"; updated=$((updated + 1)); return 0
+}
+
+# write_agents_md <packs...> — write/update an "Available workflows" block in
+# $TARGET/AGENTS.md listing the commands and skills installed for the given packs.
+# Only runs when cursor or codex is selected (the AGENTS.md-consuming harnesses).
+write_agents_md() {
+  harness_enabled cursor || harness_enabled codex || return 0
+  write_marked_pointer_file "$TARGET/AGENTS.md" "AGENTS.md" "$@"
+}
+
+# write_claude_md <packs...> — same pointer block for Claude Code, which reads
+# CLAUDE.md rather than AGENTS.md.
+write_claude_md() {
+  harness_enabled claude || return 0
+  write_marked_pointer_file "$TARGET/CLAUDE.md" "CLAUDE.md" "$@"
 }

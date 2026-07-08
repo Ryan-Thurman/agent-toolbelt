@@ -44,7 +44,7 @@ cat > "$OUT/.cursor-plugin/plugin.json" <<JSON
 {
   "name": "$NAME",
   "description": "Reusable AI-agent commands, skills, and rules for software delivery (private build).",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "author": { "name": "$(git -C "$ROOT" config user.name 2>/dev/null || echo "local")" }
 }
 JSON

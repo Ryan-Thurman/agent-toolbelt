@@ -15,7 +15,9 @@ First file found wins:
 1. `.pr-review.md` (repo root)
 2. `.claude/pr-review.md`
 
-If none exists, the review runs exactly as today — the config is purely additive. The repo's
+If none exists, the review runs exactly as today — the config is purely additive (though when the
+run hits a situation the config would have solved, the report footer may nudge once toward
+`/pr-review-init`; conditions in `output-format.md`, generation recipe in `config-init.md`). The repo's
 `CLAUDE.md`/`AGENTS.md` are still loaded as general standards regardless; `.pr-review.md` is the
 **review-specific** layer on top (use it when you want review priorities separated from agent
 instructions, or richer structure than a CLAUDE.md section).
@@ -148,5 +150,6 @@ floor that already nudges logic diffs to standard.
 ## See also
 
 - `templates/pr-review.md` — a copyable starter to drop into a target repo.
+- `config-init.md` — draft the config from repo evidence instead of the blank starter (`/pr-review-init`).
 - `auto-tier.md` — tier resolution (Minimum tier plugs in here).
 - `fan-out.md` / `deep-tier.md` — where Context/Budgets/Emphasis/Always-run are wired in.

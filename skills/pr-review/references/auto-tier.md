@@ -13,14 +13,23 @@ Explicit `--tier=<x>` always wins. Auto-selection only fills the default, and th
 
 ```bash
 files=$(git diff "$base" --name-only | wc -l)
-added=$(git diff "$base" --numstat | awk '{a+=$1} END{print a+0}')   # added lines
+added=$(git diff "$base" --numstat | awk '{a+=$1} END{print a+0}')   # added lines (all paths)
 paths=$(git diff "$base" --name-only)
+# production-source subset: the same two counts restricted to paths NOT matching the
+# low-risk globs below (docs/tests/config/lockfiles/snapshots) → prod_files, prod_added
 ```
 
-- **size** — `files` changed and `added` lines.
+- **size** — `prod_files` changed and `prod_added` lines, i.e. **production source only**. Tests,
+  docs, and lockfiles count toward risk *classification* (low-risk-only) but not toward size: a
+  phase-sized PR that bundles implementation + tests + docs should be sized by its logic mass, not
+  its total churn — 250 production lines with 300 lines of tests/docs is not a "large" diff.
 - **hot-path hit** — any changed path matching the risk globs:
   `auth login session security payment billing crypto token secret password permission acl`
-  `*/migrations/* *.sql */api/* */routes/* */middleware/*` and **public API / exported surface**.
+  `*/migrations/* *.sql */api/* */routes/* */middleware/*`, or a change to an **existing
+  public/exported surface** — modifying or removing an exported function's signature, contract, or
+  observable behavior. Merely *adding* a new exported helper is not a hot-path hit (that's routine
+  feature work — the production-logic floor already holds it at standard); the trigger is breaking
+  or bending a surface someone may already depend on.
 - **low-risk-only** — every changed path is docs/config/test/lockfile:
   `*.md *.mdx docs/* *.txt LICENSE* *.lock package-lock.json *.snap` and `*test* *spec* __tests__/*`
   with no production source touched.
@@ -38,11 +47,12 @@ First matching rule wins, top to bottom:
 | 1 | low-risk-only (docs/test/config) **and** no hot-path hit | **light** |
 | 2 | tiny mechanical/non-production: `added ≤ 15`, `files ≤ 2`, no hot-path hit, **and no logic-bearing production hunk** | **light** |
 | 3 | hot-path hit (security/auth/payment/migration/public API) | **deep** |
-| 4 | large: `added > 400` **or** `files > 20` | **deep** |
+| 4 | large: `prod_added > 400` **or** `prod_files > 20` (production source only) | **deep** |
 | 5 | everything else (the common case) | **standard** |
 
-State the choice and the trigger in the report header, e.g. `tier: standard (auto — 7 files, 180
-added lines, no hot paths)` — auto-selection is never silent, so the user can correct it.
+State the choice and the trigger in the report header, and when the raw and production counts
+diverge, show both so the sizing is auditable, e.g. `tier: standard (auto — 610 added lines, 190
+production; no hot paths)` — auto-selection is never silent, so the user can correct it.
 
 **Production-logic floor.** A production logic change floors auto-tier at **standard**, even when it
 is tiny. Light remains for docs/tests/config and mechanical edits where a single pass is enough.

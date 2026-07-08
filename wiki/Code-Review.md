@@ -27,8 +27,9 @@ Install it into a project for Cursor, Claude Code, and Codex skill use:
 ```
 
 Use `--dry-run` to preview and `--force` only when replacing a previous install.
-The installer adds the `/pr-review` command, the full `pr-review` skill tree, the
-`templates/pr-review.md` config sample, and the `examples/` reference material. On
+The installer adds the `/pr-review` and `/pr-review-init` commands, the full
+`pr-review` skill tree, the `templates/pr-review.md` config sample, and the
+`examples/` reference material. On
 macOS, double-click `install.command` and follow the prompts.
 
 Run it with:
@@ -45,8 +46,14 @@ Useful options:
 - Add `--focus=<facet>` to emphasize correctness, security, performance, tests,
   maintainability, standards, or another supported review facet.
 
-Target repos can copy `templates/pr-review.md` to `.pr-review.md` to declare
-local review priorities.
+Target repos declare local review priorities in a `.pr-review.md` at their
+root — domain context, always-run facets, concrete budgets, severity overrides,
+do-not-flag suppressions, and a minimum tier. Draft one from repo evidence with
+`/pr-review-init` (it mines the docs, revert/hotfix history, review threads, and
+rejection memory, then leaves a draft for the team to prune and commit), or copy
+`templates/pr-review.md` as a blank starter. When a review runs in a repo
+without one and hits a situation the config would solve, the report footer
+nudges once toward the generator.
 
 ## PR Review Reply
 

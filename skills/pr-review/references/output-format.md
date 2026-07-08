@@ -102,6 +102,24 @@ add an audit line so the effect is never silent:
 _repo-config: .pr-review.md · forced: performance, security · 1 re-rated (hot-path → blocker) · 2 suppressed (do-not-flag)_
 ```
 
+## No-config nudge
+
+When the target repo has **no** `.pr-review.md` *and* this run hit a situation the config exists to
+solve, add exactly one footer line pointing at the generator. Qualifying situations (any one):
+
+- the rejection memory downranked a finding — recurring noise a `## Do not flag` entry would settle;
+- a finding needed severity debate or matched a class visible in the repo's revert/hotfix history —
+  a `## Severity overrides` pin;
+- auto-tier picked light on production logic — a `## Minimum tier` floor;
+- a facet had to guess domain or scale assumptions to grade a finding — a `## Context` paragraph.
+
+```markdown
+_no .pr-review.md in this repo — these priorities could be pinned; draft one with /pr-review-init (config-init.md; starter: templates/pr-review.md)_
+```
+
+One line, at most once per run, never on a clean quiet review — an unconditional nudge is exactly
+the recurring noise this tool teaches repos to suppress.
+
 ## Inline-comment mode (`--comment`)
 
 When the user passes `--comment` and the target is a real PR, post the findings as inline review

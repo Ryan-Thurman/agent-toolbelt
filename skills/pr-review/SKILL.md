@@ -63,7 +63,10 @@ Tiers say *how hard to look*; a target repo's optional **`.pr-review.md`** says 
 concrete budgets, severity overrides, accepted-pattern suppressions, and a minimum tier. It lives in
 the **reviewed repo** (travels to every host/clone), is loaded **from the base branch** (a PR can't
 relax its own review), and is injected into the facet agents + applied host-side. Falls back cleanly
-to `CLAUDE.md`/`AGENTS.md` standards when absent. Copyable starter: `../../templates/pr-review.md`.
+to `CLAUDE.md`/`AGENTS.md` standards when absent. Copyable starter: `../../templates/pr-review.md`;
+better, draft one from repo evidence with **`/pr-review-init`** (`references/config-init.md`). When a
+run in a config-less repo hits a situation the config solves, the report footer nudges once toward
+the generator (`references/output-format.md` → "No-config nudge").
 
 ## Tier And Memory Guidance
 
@@ -113,6 +116,7 @@ token-usage footer from `references/output-format.md`.
 - `references/providers.md` — host abstraction: GitHub (`gh`) / Azure Repos (`az`) / generic git.
 - `references/targets-and-diff.md` — resolve PR/branch/local target; acquire & format the diff.
 - `references/repo-config.md` — per-repo `.pr-review.md` priorities (context/budgets/facets/min-tier).
+- `references/config-init.md` — `/pr-review-init`: draft `.pr-review.md` by mining repo evidence.
 - `references/auto-tier.md` — auto-select the tier from the diff + the deep-spend token guardrail.
 - `references/review-rubric.md` — the six facet lenses + anti-noise rules + severity definitions.
 - `references/finding-schema.md` — the structured finding contract.

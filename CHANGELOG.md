@@ -1,5 +1,45 @@
 # Changelog
 
+## v0.2.0 - 2026-07-07
+
+New CRAP-analysis pack, a `/pr-review-init` config generator, and Claude Code
+`CLAUDE.md` pointer support in the installer.
+
+### Added
+
+- Added the `crap-analysis` pack: a skill plus `/do-crap-analysis`,
+  `/crap-config`, and `/crap-refactor` commands for wizard-driven config,
+  deterministic complexity/coverage scoring, review, and opt-in refactors,
+  with a config template and reference docs.
+- Added the `/pr-review-init` command to the `pr-review` pack: drafts a
+  `.pr-review.md` repo config from repository evidence instead of starting
+  from a blank template.
+- Added a `CLAUDE.md` pointer block to `claude`-harness installs so Claude Code
+  picks up the installed toolbelt the same way `AGENTS.md` serves other
+  harnesses.
+
+### Changed
+
+- Tuned `pr-review` auto-tier selection and `phase-gate` mode guidance for
+  phase-sized PRs, and added an output footer that nudges toward
+  `/pr-review-init` when a repo has no review config.
+- Updated README, wiki (Installation, Code-Review, new Utilities page), and
+  tutorial docs to cover the new pack, command, and install behavior.
+
+### Upgrade / deploy notes
+
+- No migrations or runtime services are required.
+- Rerun `./install.sh --harness <cursor|claude|codex|all> <pack ...|all>
+  <target-folder>` in target projects to pick up the new pack and the
+  `CLAUDE.md` pointer block.
+
+### Rollback
+
+- Revert the release commit and retag from the prior known-good commit if the
+  changelog or release metadata is wrong.
+- For installed target projects, rerun the installer from `v0.1.0` with
+  `--force` if release files were already copied out.
+
 ## v0.1.0 - 2026-07-02
 
 First public release of `agent-toolbelt`: reusable commands, skills, workflows,

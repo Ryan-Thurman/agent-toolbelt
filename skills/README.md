@@ -47,6 +47,9 @@ workflow.
   branch: one worktree per task on its own branch, collision-safe auto-naming,
   collected under `<parent>/.worktrees/`, with tidy cleanup. For independent
   sessions; in-run fan-out should use `Workflow`'s `isolation: 'worktree'`.
+- `crap-analysis/` - language-agnostic CRAP analysis orchestration: wizard-hydrated
+  `.crap-analysis.json`, single-run command execution via `bin/crap-analysis.sh`,
+  deterministic report review, and opt-in refactor via `/crap-refactor`.
 - `handoff/` - cross-cutting: write a resumable handoff so a fresh agent or
   person can continue without context loss (any lane).
 - `ticket-sync/` - provider-agnostic issue-tracker adapter: publish the tickets

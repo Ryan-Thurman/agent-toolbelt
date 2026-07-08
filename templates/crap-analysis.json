@@ -1,0 +1,34 @@
+{
+  "$schema": "agent-toolbelt/crap-analysis/v1",
+  "version": 1,
+  "defaults": {
+    "threshold": 30,
+    "outputDir": "reports/crap"
+  },
+  "targets": {
+    "api": {
+      "src": "packages/api/src",
+      "commands": {
+        "coverage": "npm run test:coverage --workspace packages/api",
+        "analysis": "npm run crap:analyze -- --target api --highest",
+        "verify": "npm run crap:analyze -- --target api --coverage"
+      },
+      "outputs": {
+        "report": "reports/crap/api.json",
+        "refactorBrief": "reports/crap/api.refactor.md"
+      }
+    },
+    "shared": {
+      "src": "packages/shared/src",
+      "commands": {
+        "coverage": "npm run test:coverage --workspace packages/shared",
+        "analysis": "npm run crap:analyze -- --target shared --highest",
+        "verify": "npm run crap:analyze -- --target shared --coverage"
+      },
+      "outputs": {
+        "report": "reports/crap/shared.json",
+        "refactorBrief": "reports/crap/shared.refactor.md"
+      }
+    }
+  }
+}

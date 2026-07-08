@@ -1,0 +1,22 @@
+{
+  "$schema": "agent-toolbelt/crap-analysis/v1",
+  "version": 1,
+  "defaults": {
+    "threshold": 16,
+    "outputDir": "reports/crap"
+  },
+  "targets": {
+    "api": {
+      "src": "packages/api/src",
+      "commands": {
+        "coverage": "echo coverage-ran",
+        "analysis": "echo analysis-ran",
+        "verify": "echo verify-ran"
+      },
+      "outputs": {
+        "report": "reports/crap/api.json",
+        "refactorBrief": "reports/crap/api.refactor.md"
+      }
+    }
+  }
+}

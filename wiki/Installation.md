@@ -85,10 +85,12 @@ commands reference it by path. Each skill copy includes `SKILL.md` frontmatter p
 `agents/openai.yaml` UI metadata, so hosts can surface them as first-class,
 on-demand skills alongside the `/commands`.
 
-When `cursor` or `codex` is selected, the installer also writes an **`AGENTS.md`
-pointer** at the target — a marker-delimited "Available workflows" block listing the
-installed commands and skills so the agent discovers them. It is regenerated
-idempotently and never disturbs the rest of your `AGENTS.md`.
+When `cursor` or `codex` is selected, the installer writes an **`AGENTS.md`
+pointer** at the target. When `claude` is selected, it writes the same generated
+block to **`CLAUDE.md`**, because Claude Code reads that file rather than
+`AGENTS.md`. Both files use a marker-delimited "Available workflows" block
+listing the installed commands and skills so the agent discovers them. The block
+is regenerated idempotently and never disturbs the rest of either file.
 
 ## Polyrepo / `--sweep`
 
@@ -101,8 +103,8 @@ tooling works both inside a single repo and across the whole application:
 ```
 
 Each level is a self-contained install — its own `.atb/` folder (commands
-reference the skills tree by path), `AGENTS.md`, and selected `.cursor/rules` mode
-— so a repo opened on its own carries its guardrails.
+reference the skills tree by path), root instruction pointer files, and selected
+`.cursor/rules` mode — so a repo opened on its own carries its guardrails.
 
 **Multi-root caveat (verified against Cursor):** in a Cursor multi-root workspace,
 only the **top root's `AGENTS.md`** reliably loads into context (nested per-repo

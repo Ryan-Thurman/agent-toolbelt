@@ -36,6 +36,8 @@ The dry run shows the files that would be installed:
 - `.cursor/commands/dev-*.md`
 - `.cursor/rules/agent-toolbelt-router.mdc`
 - `.claude/commands/dev-*.md`
+- `CLAUDE.md`
+- `AGENTS.md`
 - `.agents/skills/dev-lite-workflow/SKILL.md`
 - `.agents/skills/dev-lite-workflow/agents/openai.yaml`
 - `.atb/skills/dev-lite-workflow/SKILL.md`

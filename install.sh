@@ -187,8 +187,8 @@ for p in "${selected[@]}"; do
 done
 
 # install_into_target <dir> — install all selected packs into <dir>.
-# Resets the per-target counters/records so each target's summary + AGENTS.md block
-# reflect only its own install.
+# Resets the per-target counters/records so each target's summary + root pointer
+# blocks reflect only its own install.
 install_into_target() {
   TARGET="$1"
   created=0; updated=0; skipped=0; gated=0
@@ -218,6 +218,7 @@ install_into_target() {
   done
   write_cursor_router_rule
   write_agents_md "${selected[@]}"
+  write_claude_md "${selected[@]}"
 
   if [ "$DRY_RUN" = "1" ]; then
     echo "  (dry run) $TARGET"

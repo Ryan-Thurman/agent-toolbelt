@@ -1,0 +1,34 @@
+{
+  "target": "api",
+  "threshold": 16,
+  "passed": false,
+  "summary": {
+    "totalFunctions": 2,
+    "exceedingThreshold": 1,
+    "maxCrap": { "value": 42.5, "riskLevel": "High" }
+  },
+  "functions": [
+    {
+      "qualifiedName": "processOrder",
+      "filePath": "packages/api/src/orders.ts",
+      "startLine": 88,
+      "cyclomaticComplexity": 14,
+      "coveragePercent": 25.0,
+      "crap": 42.5,
+      "riskLevel": "High",
+      "threshold": 16,
+      "exceeds": true
+    },
+    {
+      "qualifiedName": "validateInput",
+      "filePath": "packages/api/src/orders.ts",
+      "startLine": 12,
+      "cyclomaticComplexity": 3,
+      "coveragePercent": 95.0,
+      "crap": 3.0,
+      "riskLevel": "Low",
+      "threshold": 16,
+      "exceeds": false
+    }
+  ]
+}

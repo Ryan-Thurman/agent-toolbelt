@@ -25,6 +25,9 @@ unclear inside a pilot repo, start with `/workflow-router`.
 - `/ship-it` - prepare a merged change for release (readiness, rollback, notes, rollout).
 - `/retrofit` - apply one defined change across every site (library swap, API rename, upgrade).
 - `/worktree` - create/list/remove an isolated git worktree so parallel agents in a shared polyrepo dir don't clobber each other's branch.
+- `/crap-config` - wizard: hydrate `.crap-analysis.json` with analysis, coverage, verify commands and output paths.
+- `/do-crap-analysis` - run CRAP analysis on uncommitted changes (orchestrator executes commands once; deterministic review).
+- `/crap-refactor` - apply behavior-preserving refactor from the brief after `/do-crap-analysis` flagged REFACTOR (opt-in).
 - `/bug-intake` - triage a bug report and open a durable investigation.
 - `/reproduce` - establish a manual or automated reproduction before RCA.
 - `/rca` - root-cause a reproduced bug (`--diagnose` for read-only).

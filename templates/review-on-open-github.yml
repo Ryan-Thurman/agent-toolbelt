@@ -47,6 +47,12 @@ jobs:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           PR: ${{ github.event.pull_request.number }}
+        # Scope Bash to the verbs review uses. A bare `Bash` grants every command,
+        # including `gh pr merge`. Headless `-p` denies (never prompts) anything the
+        # allowlist misses, so each command review runs must be named. The `=`-joined
+        # form is required: --allowedTools is variadic and the space-separated form
+        # swallows the next argument.
         run: |
           claude -p "/pr-review $PR --comment" \
-            --allowedTools "Bash,Read,Grep,Glob,Task"
+            --allowedTools="Bash(gh auth status:*),Bash(gh pr view:*),Bash(gh pr diff:*),Bash(gh api:*),Bash(git diff:*),Bash(git log:*),Bash(git show:*),Bash(git status:*),Bash(git rev-parse:*),Bash(git merge-base:*),Bash(git symbolic-ref:*),Bash(git remote:*),Bash(git fetch:*),Bash(jq:*),Read,Grep,Glob,Task" \
+            --disallowedTools="Edit,Write,NotebookEdit,WebFetch,WebSearch"

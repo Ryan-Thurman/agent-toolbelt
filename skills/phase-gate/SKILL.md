@@ -80,7 +80,8 @@ The review subagent resolves and acquires the phase diff through `pr-review`.
 
 - `references/modes.md` — team vs solo flow, `--no-post`, tier guidance, and host detection.
 - `references/merge.md` — provider-aware merge of the phase PR (GitHub `gh` / Azure `az`), the
-  no-blockers precondition, and the never-touch-shared-history safety.
+  no-blockers precondition, the merge-only-what-was-reviewed checks, and the never-touch-shared-history
+  safety.
 - `skills/pr-review/SKILL.md` — the reviewer the subagent runs (tiers, facets, `--comment` posting).
 - `workflows/phase-gate-team-workflow.md` · `workflows/phase-gate-solo-workflow.md` — the two
   phased-build loops this gate plugs into.

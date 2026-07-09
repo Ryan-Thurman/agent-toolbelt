@@ -16,6 +16,42 @@ Never force-push or rewrite shared history to "merge"; use the host's merge so t
 merged. If the host CLI is missing or the merge is refused (protections, conflicts, required checks),
 **stop and report** — don't improvise a push to the base branch.
 
+## Merge only what was reviewed
+
+"No blockers" is a fact about the commit the reviewer read. Solo mode fixes blockers *between* the
+review and the merge, so by the time you merge, the tree has moved at least once. **Before merging,
+confirm the thing you are about to merge is the thing that was reviewed.** That is three separate
+checks, and each catches a different mistake:
+
+```bash
+# 1. Clean worktree — uncommitted changes are unreviewed changes; the PR doesn't contain them.
+git status --porcelain            # must be empty
+
+# 2. Right branch — a session that switched branches would merge a different PR.
+git rev-parse --abbrev-ref HEAD   # must equal the reviewed PR's head branch
+
+# 3. Right commit — a fix pushed after the review means the review adjudicated other code.
+git rev-parse HEAD                # must equal the SHA the review ran against
+```
+
+Record the head branch and SHA when the review subagent returns, and compare here. If any check fails,
+**re-review; do not merge.** A fix pass that landed after the review is exactly the code most likely
+to be wrong, and it is the code nothing has looked at.
+
+If the fix pass changed the tree, the honest sequence is fix → push → **re-review** (`--rereview`) →
+merge, not fix → push → merge on the strength of a verdict about the pre-fix commit.
+
+Then confirm the host agrees, since a merge is decided on the host's view of the PR, not yours:
+
+```bash
+gh pr view <pr> --json headRefOid --jq .headRefOid    # must equal the reviewed SHA
+```
+
+Expect this to lag: GitHub reports the pre-push head for a few seconds after a push. Re-read it a
+couple of times before concluding the PR really is at a different commit — and **never** loosen the
+SHA comparison to get past the lag. The comparison is the correctness rule; a retry is the
+accommodation.
+
 ## Provider-aware merge
 
 Detect the host with the shared provider contract (`shared/contracts/references/providers.md`):

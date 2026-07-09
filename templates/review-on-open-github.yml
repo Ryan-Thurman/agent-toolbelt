@@ -47,6 +47,9 @@ jobs:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           PR: ${{ github.event.pull_request.number }}
+        # Verb-scoped Bash only — bare "Bash" would grant ALL shell commands. No gh pr merge /
+        # gh pr review; posting rides on gh api under a token that cannot merge (contents: read).
         run: |
           claude -p "/pr-review $PR --comment" \
-            --allowedTools "Bash,Read,Grep,Glob,Task"
+            --allowedTools "Bash(gh pr view:*),Bash(gh pr diff:*),Bash(gh pr list:*),Bash(gh pr checks:*),Bash(gh api:*),Bash(gh auth status:*),Bash(git diff:*),Bash(git log:*),Bash(git show:*),Bash(git fetch:*),Bash(git rev-parse:*),Bash(git merge-base:*),Bash(git status:*),Bash(git symbolic-ref:*),Read,Grep,Glob,Task" \
+            --disallowedTools "Edit,Write,NotebookEdit,WebFetch"

@@ -37,15 +37,24 @@ jobs:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}     # read-scoped, for gh inside pr-review
           PR: ${{ github.event.pull_request.number }}
-        run: claude -p "/pr-review $PR --comment" --allowedTools "Bash,Read,Grep,Glob,Task"
+        run: |
+          claude -p "/pr-review $PR --comment" \
+            --allowedTools "Bash(gh pr view:*),Bash(gh pr diff:*),Bash(gh pr list:*),Bash(gh pr checks:*),Bash(gh api:*),Bash(gh auth status:*),Bash(git diff:*),Bash(git log:*),Bash(git show:*),Bash(git fetch:*),Bash(git rev-parse:*),Bash(git merge-base:*),Bash(git status:*),Bash(git symbolic-ref:*),Read,Grep,Glob,Task" \
+            --disallowedTools "Edit,Write,NotebookEdit,WebFetch"
 ```
 
 Notes:
 - **`claude -p "…"`** is headless (print) mode — one prompt, no interactive session. The prompt is
   just your existing slash command; `--comment` does the inline posting via the `pr-review` provider
   layer, which uses `gh` and the `GH_TOKEN` above.
-- **`--allowedTools`** keeps the unattended run from prompting for permission. List only what review
-  needs (no `Write`/`Edit` — a review never modifies code). Adjust to your org's policy.
+- **`--allowedTools`** keeps the unattended run from prompting for permission — under headless `-p`
+  an unmatched permission check is denied, not asked, so everything review runs must be pre-allowed.
+  Scope Bash entries to **verbs**: bare `Bash` in an allowlist grants *all* shell commands, not "the
+  Bash review needs". The list above covers exactly what `pr-review` runs to diff and post; it omits
+  `gh pr merge` and `gh pr review`. Posting rides on `Bash(gh api:*)`, which is why the workflow's
+  `permissions:` block is the real backstop — a `contents: read` token cannot merge no matter what a
+  malicious diff talks the reviewer into. (`skills/auto-agent-contract/references/invocation.md` §4
+  covers this boundary in depth for orchestrator-driven reviewers, which never post at all.)
 - The repo's `.pr-review.md` (if present) is picked up automatically by `pr-review` — per-repo
   priorities apply to the bot exactly as to a human-invoked review.
 

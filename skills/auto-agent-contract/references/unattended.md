@@ -1,7 +1,8 @@
 # Unattended mode
 
-Several packs in this toolbelt already say "unless the command is running in a configured unattended
-mode" and then decline to say what that mode *is*. This file says.
+Several packs in this toolbelt already lean on the idea — an unattended run posts by design
+(`review-on-open`), an unattended routine caps its per-wake spend (`review-queue`) — without ever
+defining the mode. This file defines it.
 
 **Unattended mode is set by the orchestrator, never inferred by the agent.** An agent cannot tell
 whether a human is watching, and one that guesses will guess wrong in the direction that skips the

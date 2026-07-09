@@ -103,6 +103,7 @@ buckets on round two.
   "mergeOnClose": true,
   "mergeStrategy": "squash",
   "checks": ["python3 -m unittest discover -s tests"],
+  "planVerify": [],
   "agents": { "…": "see references/invocation.md for flag semantics" },
   "roles": { "coder": "codex", "reviewer": "claude-opus", "closer": "codex" }
 }
@@ -112,6 +113,10 @@ buckets on round two.
 is what gets added to the write role's `Bash(...)` allowlist. A check the allowlist doesn't cover
 kills the coder (`references/invocation.md` §3).
 
+`planVerify` is separate and optional: commands `plan-validate` runs against the plan itself, from the
+repo root, before any phase executes. Use it for whatever proves the plan is coherent in *this* repo —
+a linter over the phase bodies, a check that each named file exists. It does not gate phases.
+
 Generate a starting config with `agent-runner init`, then edit. Don't hand-write the `agents` block —
 the flag semantics are unforgiving and the generated one is correct.
 
@@ -119,26 +124,48 @@ the flag semantics are unforgiving and the generated one is correct.
 
 ## Validating a plan
 
-There is currently **no `agent-runner plan validate`** — the commands are `run`, `status`, `pause`,
-`resume`, `unblock`, `logs`. A plan's first validation is the run that consumes it.
-
-So check the mechanical parts by eye before the first run:
+Validate with the runner. It uses the same parser that will execute the plan, so it cannot drift from
+the format:
 
 ```bash
-grep -cE '^## Phase [0-9]+: .+$' docs/plan.md   # count of phases the runner will see
-grep -cE '^Status: '             docs/plan.md   # must equal the phase count, all PENDING
-grep -nE '^Evidence: '           docs/plan.md   # nothing, on a plan that has not run yet
+agent-runner plan-validate                    # alias: plan-verify
+agent-runner plan-validate --plan docs/other-plan.md
+agent-runner plan-validate --verify 'python3 -m unittest discover -s tests'
+```
+
+It parses the plan, runs structural validation, and **does not register phases or run anything**. Then
+it runs the `planVerify` commands from `.agent-runner.json` (plus any repeated `--verify` one-shot),
+from the repo root. No `planVerify` configured → structural validation only, and it says so.
+
+Never reimplement `plan.py`'s regexes to check a plan yourself. Call this.
+
+### What it catches, and the one thing it doesn't
+
+Structural validation rejects a plan with **no phases at all** and any phase **missing its `Status:`
+marker**. `parse_plan_file` separately rejects **duplicate phase numbers**.
+
+It cannot catch a *partially* malformed plan. `### Phase 2:` or `## Phase Two:` doesn't match
+`PHASE_HEADING_RE`, so it is not a phase — it is prose inside the phase above it. With three good
+headings and one bad, the plan parses to three phases and validates clean. The runner then
+"completes" with the work undone.
+
+So read the count it prints back:
+
+```
+[agent-runner] plan parsed: docs/plan.md with 6 phase(s)
+```
+
+**Six is the number you have to recognise.** If you wrote seven phases, one of them is not a phase.
+
+Two things the runner has no opinion on, worth a glance before the first run:
+
+```bash
+grep -nE '^Evidence: ' docs/plan.md   # nothing, on a plan that has not run yet
 awk '/^## Phase /{exit} {n+=length($0)+1} END{print n " chars of plan context (bound: 4000)"}' docs/plan.md
 ```
 
-The first two counts disagreeing is the common failure: a heading that didn't match the regex is a
-phase the runner will never execute, and you find out when the plan "completes" early.
-
-`Evidence:` lines are expected on a plan that has already run — the closer writes them. They should
-appear in a plan you are *authoring* only if you wrote one by mistake.
-
-Do not reimplement `plan.py`'s regexes anywhere else — they will drift. If you need real validation,
-the right place to add it is the runner.
+`Evidence:` lines are expected on a plan that has already run — the closer writes them. They appear in
+a plan you are *authoring* only if you wrote one by mistake.
 
 ---
 

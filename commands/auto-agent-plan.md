@@ -46,22 +46,29 @@ before writing a line — the plan is parsed by regex and a malformed heading si
    `Acceptance Criteria:` block naming the command and what it must prove. **Never write an
    `Evidence:` line** — it is runner-owned, written by the closer.
 
-5. **Check the mechanics before you hand it over**, since there is no `agent-runner plan validate`:
+5. **Validate with the runner**, which parses the plan without registering or running it:
 
    ```bash
-   grep -cE '^## Phase [0-9]+: .+$' docs/plan.md   # phases the runner will see
-   grep -cE '^Status: '             docs/plan.md   # must equal the phase count, all PENDING
-   grep -nE '^Evidence: '           docs/plan.md   # nothing — the closer writes these
+   agent-runner plan-validate          # alias: plan-verify
+   ```
+
+   **Read the phase count it prints back and check it against the number of phases you wrote.**
+   Structural validation catches a plan with no phases, a phase missing its `Status:` marker, and
+   duplicate phase numbers. It cannot catch a *single* malformed heading — `### Phase 2:` or `## Phase
+   Two:` is not a phase, it is prose absorbed into the phase above it, and the plan validates clean
+   with that work missing. The count is the only place that shows.
+
+   Then glance at the two things the runner has no opinion on:
+
+   ```bash
+   grep -nE '^Evidence: ' docs/plan.md   # nothing — the closer writes these
    awk '/^## Phase /{exit} {n+=length($0)+1} END{print n " chars (bound: 4000)"}' docs/plan.md
    ```
 
-   The first two counts must match. A heading that missed the regex is a phase the runner never
-   executes, and the plan "completes" early with the work undone. Phase numbers must also be unique —
-   a duplicate raises `PlanError` at registration.
-
 6. **Write `docs/plan.md`, then stop.** Tell the user to read the phases, prune the ones they don't
-   want, and commit. **Never run `agent-runner run` yourself** — starting an unattended loop that
-   opens PRs and merges them is the user's decision, not the planner's.
+   want, and commit. `plan-validate` is safe to run and does not register anything, but **never run
+   `agent-runner run` yourself** — starting an unattended loop that opens PRs and merges them is the
+   user's decision, not the planner's.
 
 ## Anti-patterns
 

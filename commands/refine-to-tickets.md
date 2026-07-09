@@ -21,9 +21,14 @@ Steps:
    requirement, acceptance criteria, impacted repos/services, test expectation,
    doc delta status, dependencies, open questions, and a `Tracker` field (the
    tracker key once published, blank until then).
-4. Group tickets by dependency order where possible.
-5. End with Gate 2 readiness: `READY`, `READY_WITH_RISKS`, or `BLOCKED`.
-6. Publish (optional): hand off to `/ticket-sync` to create/update these in the
+4. Slice for green progress. Use vertical end-to-end slices by default. For a
+   wide mechanical refactor that cannot land as vertical slices, use an
+   expand -> migrate batches -> contract sequence, with each batch sized so CI
+   can stay green and the final contract ticket blocked by every migration
+   batch.
+5. Group tickets by dependency order where possible.
+6. End with Gate 2 readiness: `READY`, `READY_WITH_RISKS`, or `BLOCKED`.
+7. Publish (optional): hand off to `/ticket-sync` to create/update these in the
    configured tracker (GitHub Issues / Jira / Azure Boards). When the repo's
    `.tickets.md` sets `provider: jira`, map feature ID, release ID, acceptance
    criteria, and dependencies to the Jira fields per the ticket-sync config.

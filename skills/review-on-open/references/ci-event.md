@@ -65,7 +65,8 @@ Notes:
   `contents: read` the token cannot merge (merging needs `contents: write`); with
   `pull-requests: write` it can post, and it can also close or retitle the PR. Keep `permissions:`
   minimal and treat the allowlist as defense in depth, not as the thing standing between an injected
-  diff and your repo.
+  diff and your repo. (`skills/auto-agent-contract/references/invocation.md` §4 covers this boundary
+  in depth for orchestrator-driven reviewers, which never post at all.)
 - The repo's `.pr-review.md` (if present) is picked up automatically by `pr-review` — per-repo
   priorities apply to the bot exactly as to a human-invoked review.
 

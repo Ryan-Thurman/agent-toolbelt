@@ -1,0 +1,3 @@
+display_name: "Auto Agent Contract"
+short_description: "Invocation, convergence, merge, and plan rules for an orchestrator that shells into agent CLIs unattended."
+default_prompt: "Audit this orchestrator's agent CLI invocation for argv-size, flag-semantics, output-parsing, and reviewer-privilege problems."

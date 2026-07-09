@@ -12,6 +12,7 @@ Most packs fall into one of these jobs:
 - Start new work: `shape-up`, `dev-lite-workflow`, `ai-feature-delivery`
 - Investigate broken behavior: `bug-to-fix`, `ticket-discovery`
 - Review and harden changes: `pr-review`, `pr-review-reply`, `phase-gate`
+- Run agents unattended: `auto-agent-contract`
 - Improve code or tests: `simplify`, `cover`, `crap-analysis`, `retrofit`
 - Keep long work resumable: `phase-context-workflow`, `handoff`
 - Prepare to ship: `ship-it`
@@ -83,6 +84,7 @@ or workflow docs.
 | `review-on-open` | Trigger layer: auto-review on PR open/update, via GitHub Actions event or a host-agnostic poller. |
 | `review-queue` | Local, SQLite-backed work queue — a producer enqueues a PR, a worker runs `/pr-review --comment`. |
 | `phase-gate` | In-loop trigger: at each phase boundary a fresh subagent reviews the PR (team stop / solo merge). |
+| `auto-agent-contract` | Rules for an orchestrator *outside* the harness that shells into agent CLIs: invocation, convergence, merge, unattended mode, `/auto-agent-plan`. |
 | `bug-to-fix` | Diagnostic lane: triage → reproduce → root-cause → minimal fix → verify. |
 | `dev-lite-workflow` | Lightweight dev loop: brief → plan → task → commit → phase review → final PR review. |
 | `phase-context-workflow` | Durable phase files, handoffs, and context packets for safe `/clear` / `/compact`. |

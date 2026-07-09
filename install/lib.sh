@@ -256,22 +256,66 @@ write_cursor_router_rule() {
 AGENTS_BEGIN="<!-- BEGIN agent-toolbelt -->"
 AGENTS_END="<!-- END agent-toolbelt -->"
 
+# pack_section <pack> — the "### <pack>" entry for a pack installed this run,
+# built from the INSTALLED_* records. No leading or trailing blank line.
+pack_section() {
+  local p="$1" e out cmds sk
+  out="### $p"$'\n'"$(pack_desc "$p")"$'\n'
+  cmds=""
+  for e in "${INSTALLED_COMMANDS[@]:-}"; do
+    case "$e" in "$p"$'\t'*) cmds="$cmds- \`/${e#*$'\t'}\`"$'\n' ;; esac
+  done
+  sk=""
+  for e in "${INSTALLED_SKILLS[@]:-}"; do
+    case "$e" in "$p"$'\t'*) sk="$sk- \`.atb/skills/${e#*$'\t'}/\`"$'\n' ;; esac
+  done
+  [ -n "$cmds" ] && out="${out}"$'\n'"Commands:"$'\n'"$cmds"
+  [ -n "$sk" ]   && out="${out}"$'\n'"Skills:"$'\n'"$sk"
+  printf '%s' "$out"
+}
+
+# existing_pack_section <file> <pack> — that pack's "### <pack>" section, verbatim,
+# from the file's existing marker block. Empty if absent.
+existing_pack_section() {
+  awk -v b="$AGENTS_BEGIN" -v e="$AGENTS_END" -v h="### $2" '
+    $0==b {inb=1; next}
+    inb && $0==e {exit}
+    inb && /^### / { if ($0==h) sec=1; else if (sec) exit }
+    sec {print}
+  ' "$1"
+}
+
+# toolbelt_workflows_block <file> <packs...> — the full marker block, MERGED with
+# the block already in <file>: packs advertised there keep their position (and
+# their section text, unless reinstalled this run); packs new to this run are
+# appended. Installing one pack must not un-advertise the others.
 toolbelt_workflows_block() {
-  local p e block cmds sk
+  local f="$1"; shift
+  local p q sec seen block
   block="$AGENTS_BEGIN"$'\n'"## Available workflows"$'\n'
   block="$block"$'\n'"Installed by agent-toolbelt. Reach for these when the task matches the description."$'\n'
+  local all=()
+  if [ -f "$f" ] && grep -q "^$AGENTS_BEGIN\$" "$f"; then
+    while IFS= read -r p; do
+      [ -n "$p" ] && all+=("$p")
+    done < <(awk -v b="$AGENTS_BEGIN" -v e="$AGENTS_END" '
+      $0==b {inb=1; next} $0==e {inb=0} inb && /^### / {print substr($0,5)}' "$f")
+  fi
   for p in "$@"; do
-    block="$block"$'\n'"### $p"$'\n'"$(pack_desc "$p")"$'\n'
-    cmds=""
-    for e in "${INSTALLED_COMMANDS[@]:-}"; do
-      case "$e" in "$p"$'\t'*) cmds="$cmds- \`/${e#*$'\t'}\`"$'\n' ;; esac
-    done
-    sk=""
-    for e in "${INSTALLED_SKILLS[@]:-}"; do
-      case "$e" in "$p"$'\t'*) sk="$sk- \`.atb/skills/${e#*$'\t'}/\`"$'\n' ;; esac
-    done
-    [ -n "$cmds" ] && block="${block}"$'\n'"Commands:"$'\n'"$cmds"
-    [ -n "$sk" ]   && block="${block}"$'\n'"Skills:"$'\n'"$sk"
+    seen=0
+    for q in "${all[@]:-}"; do [ "$q" = "$p" ] && seen=1; done
+    [ "$seen" = "1" ] || all+=("$p")
+  done
+  for p in "${all[@]:-}"; do
+    [ -n "$p" ] || continue
+    seen=0
+    for q in "$@"; do [ "$q" = "$p" ] && seen=1; done
+    if [ "$seen" = "1" ]; then
+      sec="$(pack_section "$p")"
+    else
+      sec="$(existing_pack_section "$f" "$p")"
+    fi
+    [ -n "$sec" ] && block="$block"$'\n'"$sec"$'\n'
   done
   block="$block$AGENTS_END"$'\n'
   printf '%s' "$block"
@@ -282,7 +326,7 @@ toolbelt_workflows_block() {
 write_marked_pointer_file() {
   local f="$1" display="$2" block tmp blkfile
   shift 2
-  block="$(toolbelt_workflows_block "$@"; printf x)"
+  block="$(toolbelt_workflows_block "$f" "$@"; printf x)"
   block="${block%x}"
 
   if [ "$DRY_RUN" = "1" ]; then

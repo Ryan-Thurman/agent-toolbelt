@@ -22,6 +22,13 @@ workflow.
   exactly-once, crash-safe leases, dead-lettering) and runs `/pr-review --comment`
   on each. Fully local — no CI/webhook/API key. Drive the worker with `/loop` or
   `/schedule`.
+- `auto-agent-contract/` - the rules for an orchestrator that runs *outside* a
+  harness, shelling into agent CLIs (`claude -p`, `codex exec`) to code and
+  review with nobody watching: argv bounds, adversarial output parsing, per-CLI
+  flag semantics, the reviewer privilege boundary, review-loop convergence, merge
+  preconditions, and what changes when no human reads the report. Adds no review
+  logic — it consumes `pr-review`'s finding schema and host-derived verdict.
+  Ships `/auto-agent-plan`, which drafts the `agent-runner` execution plan.
 - `bug-to-fix/` - diagnostic lane: triage, reproduce, root-cause analysis,
   minimal fix, and verification for a reported bug.
 - `shape-up/` - interrogate a vague request into an agreed brief before

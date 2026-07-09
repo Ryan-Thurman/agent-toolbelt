@@ -27,6 +27,7 @@ TBD
 ## Technical Notes
 
 - Impacted repos/services: TBD
+- Slice type: vertical / expand / migrate batch / contract / verification
 - API/data contract changes: TBD
 - Config or migration needs: TBD
 - Observability/logging needs: TBD

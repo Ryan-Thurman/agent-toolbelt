@@ -128,6 +128,9 @@ Use this checklist when creating or updating a skill:
   job.
 - Prune no-ops and sediment: remove lines that do not change agent behavior,
   stale provenance notes, or branches no current workflow can reach.
+- Phrase the target behavior positively first. Keep prohibitions only for hard
+  safety guardrails, and pair each one with the action the agent should take
+  instead.
 
 Applied check:
 

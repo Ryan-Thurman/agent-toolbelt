@@ -35,6 +35,7 @@ reviews at a phase boundary, with a human in the session).
 | about to merge a PR an agent authored and reviewed | `references/merge.md` |
 | deciding what changes when no human is present | `references/unattended.md` |
 | writing a plan for `agent-runner` to execute | `references/plan-format.md` |
+| running Dev Lite-style implement/fix/review jobs with a caller-owned immutable plan | `$auto-agent-dev-lite` |
 
 ## Principles (always)
 

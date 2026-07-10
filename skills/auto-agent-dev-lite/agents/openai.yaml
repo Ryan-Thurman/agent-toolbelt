@@ -1,0 +1,6 @@
+interface:
+  display_name: "Auto Agent Dev Lite"
+  short_description: "Headless Dev Lite job contract."
+  default_prompt: "Use $auto-agent-dev-lite for a headless Dev Lite IMPLEMENT job with a caller-owned immutable plan."
+policy:
+  allow_implicit_invocation: false

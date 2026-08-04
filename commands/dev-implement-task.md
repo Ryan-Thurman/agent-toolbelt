@@ -19,6 +19,10 @@ Use this command for the core implementation loop.
 - Do not refactor unrelated code.
 - Follow existing project conventions.
 - Add or update tests in the same task if behavior changes.
+- Before any task mutation, verify each stated task precondition with read-only
+  checks. If a precondition is unmet or cannot be checked without side effects
+  or exposing a secret, stop and report the exact blocker; do not partially
+  implement the task.
 - If automated tests are not practical, state why and list the manual or
   integration check that covers the risk.
 - Update the Implementation Plan document before and after the task so the
@@ -42,18 +46,20 @@ Use this command for the core implementation loop.
 2. Restate the intended behavior.
 3. Identify files likely to change.
 4. Identify tests to add or update.
-5. If delegating or preserving context across a reset, create the task brief and
+5. Verify any stated task preconditions with read-only checks; stop if one is
+   unmet or unsafe to verify.
+6. If delegating or preserving context across a reset, create the task brief and
    report file outside tracked source.
-6. If delegating, state the owned files/modules, model choice or default-model
+7. If delegating, state the owned files/modules, model choice or default-model
    rationale, and sequential fallback.
-7. Update the plan document to mark the task `In Progress`.
-8. Implement the task.
-9. Add/update tests for behavior changes.
-10. Run or list the relevant checks/tests.
-11. Update the plan document with task status, evidence, checks, next step, and
+8. Update the plan document to mark the task `In Progress`.
+9. Implement the task.
+10. Add/update tests for behavior changes.
+11. Run or list the relevant checks/tests.
+12. Update the plan document with task status, evidence, checks, next step, and
    resume instructions.
-12. Summarize what changed.
-13. Recommend a commit message.
+13. Summarize what changed.
+14. Recommend a commit message.
 
 ## Output
 

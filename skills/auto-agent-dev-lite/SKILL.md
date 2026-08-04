@@ -37,6 +37,10 @@ For `IMPLEMENT` jobs:
 
 - Implement only the selected task or phase scope supplied by the caller.
 - Do not start future phases or adjacent tasks.
+- Verify any supplied task preconditions with read-only checks before mutation.
+  If one is unmet or cannot be verified without writes, network mutation, or
+  secret disclosure, stop and report it as a blocker; do not partially execute
+  the task.
 - Add or update tests with behavior changes when practical.
 - Run the requested checks when available; otherwise report the exact checks
   that still need to run.

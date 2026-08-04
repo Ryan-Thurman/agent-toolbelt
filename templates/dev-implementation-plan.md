@@ -64,7 +64,9 @@ log make the next state clear.
 
 <!-- Phases below are a starting scaffold. Rename, add, or remove phase blocks to
 match the phase model chosen in /dev-plan; the count is not fixed. Duplicate a
-full phase block for each additional phase. -->
+full phase block for each additional phase. Add `Preconditions:` to an
+individual task only when it relies on external setup, a prior-phase artifact,
+or runtime/configuration state that task order does not guarantee. -->
 
 ## Phase 1: Foundation
 

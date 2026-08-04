@@ -16,6 +16,10 @@ and references.
   `minimal-change-engineer` and `incident-commander`;
   VoltAgent/awesome-claude-code-subagents `debugger`; and open-gsd/gsd-core
   durable debug-file state patterns.
+- `dev-lite-workflow` and `auto-agent-dev-lite`: plan-scoped scratch state and
+  bounded handoff concepts adapted and reworded from obra/superpowers; selective
+  read-only task preconditions adapted from open-gsd/gsd-core. The local plan
+  remains the durable source of truth, and normal tasks carry no added gate.
 - `handoff`: handoff concept adapted and reworded from mattpocock/skills
   `handoff`, including reference-don't-duplicate, redact,
   suggested-next-skills, and temp-location guidance.
@@ -38,7 +42,8 @@ and references.
   taxonomy, thin-wrapper detectors, risk tiers, and
   rootIssue-to-consequence-to-benefit framing; plus addyosmani/agent-skills
   code-simplification discipline, Chesterton's Fence, and simplify-ignore
-  mechanics.
+  mechanics; plus mattpocock/skills hotspot-first scope selection for
+  architecture scans.
 - `worktree`: one-worktree-per-unit discipline, managed worktree preference, and
   unchanged-worktree discard patterns adapted from obra/superpowers
   `using-git-worktrees` and `subagent-driven-development`.

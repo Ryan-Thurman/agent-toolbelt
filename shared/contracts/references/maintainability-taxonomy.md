@@ -62,6 +62,14 @@ rewrites unless a small first slice is clear.
 Use this mode for no-code architecture review. It absorbs the useful `improve-codebase-architecture`
 vocabulary without adding a separate visual report command.
 
+Scope before scanning. A user-named module, subsystem, or pain point is the
+authoritative target. When no target is named, inspect a meaningful stretch of
+recent history and start with files or modules that change repeatedly; those
+hotspots are where a better seam is most likely to repay its cost. If history is
+scattered and no hotspot emerges, widen the scan and say how the scope was
+chosen. Do not turn a localized request into a repository-wide architecture
+program.
+
 Vocabulary:
 
 - **Module** — a coherent unit with an interface and implementation.

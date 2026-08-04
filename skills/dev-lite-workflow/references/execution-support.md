@@ -6,22 +6,32 @@ a recovery ledger, or delegated subagent execution.
 ## Scratch and Ledger Convention
 
 For temporary task briefs, implementer reports, review packages, and progress
-ledgers, use a repo-local scratch workspace instead of `.git/`:
+ledgers, use one repo-local scratch workspace per Implementation Plan instead of
+`.git/` or one shared Dev Lite directory:
 
 ```sh
-mkdir -p .atb-work/dev-lite
+mkdir -p .atb-work/dev-lite/<plan-slug>
 printf '*\n' > .atb-work/dev-lite/.gitignore
 ```
 
-Use `.atb-work/dev-lite/progress.md` as an optional recovery ledger for
-subagent-style execution. Record one compact line per completed task with the
-task name, commit range or changed files, checks run, and review result.
+Choose a stable `<plan-slug>` from the plan filename. If that directory already
+contains a ledger for another plan, add a short stable suffix derived from the
+plan path. Never reuse or clean a sibling plan's workspace.
+
+Use `.atb-work/dev-lite/<plan-slug>/progress.md` as an optional recovery ledger
+for delegated execution. Start it with the plan path, then record one compact
+line per completed task with the task name, commit range or changed files,
+checks run, and review result.
 
 The Implementation Plan remains the durable tracked source of truth; the ledger
 is only a local recovery aid after context loss.
 
 Before committing, run `git status --short`. If `.atb-work/` appears, stop and
 fix the scratch location or ignore before continuing.
+
+When the plan is finished and its final review is complete, remove only that
+plan's scratch directory. Git history and the tracked Implementation Plan are
+the durable record; sibling directories may belong to other active work.
 
 ## Optional Subagent Dispatch
 

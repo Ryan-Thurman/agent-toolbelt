@@ -37,6 +37,10 @@ Use this after `/dev-intake`.
   `Files` names created/modified/test files from the map. `Interfaces` names
   what the task consumes, produces, exports, calls, or changes for neighboring
   tasks.
+- Add a task `Preconditions` field only when the task depends on external
+  setup, a prior-phase artifact, or runtime/configuration state that task order
+  does not guarantee. State a concrete fact that can be checked read-only;
+  ordinary intra-plan ordering belongs in task dependencies instead.
 - Identify dependencies and risks.
 - Avoid over-engineering.
 - Prefer the smallest useful implementation that satisfies the acceptance criteria.
@@ -107,7 +111,9 @@ when no special constraints apply. Fill `File / Responsibility Map` before
 writing phase tasks; include implementation, test, template, command, and
 documentation files when they are relevant. Each behavior-changing task must
 include `Files`, `Interfaces`, and matching test work, and either use files from
-the map or explain why the map changed. Keep `Current State`, `Activity Log`,
+the map or explain why the map changed. Add `Preconditions` only for a task with
+an external, prior-phase, or runtime assumption; omit it for normal tasks. Keep
+`Current State`, `Activity Log`,
 `Resume Instructions`, and the State Reconciliation Checklist updated
 throughout the workflow.
 
@@ -171,6 +177,9 @@ Before presenting the plan, perform this self-review and fix any failures:
   the task explains why the map changed.
 - Confirm `Interfaces` entries name concrete inputs, outputs, exports,
   consumers, commands, templates, or contracts.
+- Confirm every stated task precondition is externally checkable without a
+  write or secret disclosure. Replace intra-plan preconditions with ordinary
+  task dependencies.
 - Confirm risks and acceptance criteria are represented in phases or explicitly
   deferred.
 - If the assumption-delta triggers appear, confirm the plan records the previous

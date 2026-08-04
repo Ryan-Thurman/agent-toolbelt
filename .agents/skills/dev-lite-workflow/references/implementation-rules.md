@@ -13,6 +13,10 @@ Before changing code:
 5. Identify the automated tests that should prove the behavior.
 6. If automated tests are not practical, explain why and identify the manual or
    integration check that will cover the risk.
+7. If the task declares preconditions, verify them with read-only checks before
+   marking the task in progress. Stop on an unmet prerequisite; if verification
+   would require a write, a secret disclosure, or another side effect, surface
+   the checkpoint instead of performing it.
 
 Do not implement future-phase work while completing the current task.
 
@@ -20,10 +24,21 @@ Do not implement future-phase work while completing the current task.
 
 Build out the test suite as implementation progresses.
 
+Discover the repository's real test commands and conventions from manifests,
+checked-in wrappers, test configuration, neighboring tests, contributor docs,
+and CI. Use a focused command in the edit loop and the full-suite command before
+completion; do not assume a package manager or test runner from examples.
+
 For every task that changes behavior, include the matching test work in the same
 task unless there is a clear, stated reason it cannot be automated yet. Prefer
 small tests near the changed code: unit tests for logic, component or integration
 tests for interactions, and browser/user-flow checks for critical UI behavior.
+
+Before writing or changing a test, name the production behavior or mutation
+that would make it fail. Prefer observing that expected failure before the
+implementation change. When a red-first run is not practical, record how the
+test's sensitivity was established instead of treating an immediately green
+test as sufficient evidence.
 
 Do not defer all test coverage to a final hardening phase. A final test phase
 may fill gaps, add regression coverage, and clean up brittle tests, but each
@@ -59,11 +74,13 @@ return only status, commits or changed files, a one-line test summary, and
 blockers or concerns. Exact values, command output, and longer reasoning belong
 in the file, not in the chat transcript.
 
-Prefer `.atb-work/dev-lite/` for these handoff files. Ensure the directory has
-a `.gitignore` containing `*` before writing scratch artifacts there. If a
-delegated task completes cleanly, append one compact line to
-`.atb-work/dev-lite/progress.md` with the task name, commit range or changed
-files, checks run, and review result.
+Prefer `.atb-work/dev-lite/<plan-slug>/` for these handoff files, where the slug
+is stable for the current Implementation Plan. If the path already belongs to a
+different plan, append a short stable suffix derived from the plan path rather
+than sharing state. Ensure `.atb-work/dev-lite/.gitignore` contains `*` before
+writing scratch artifacts. If a delegated task completes cleanly, append one
+compact line to that plan workspace's `progress.md` with the task name, commit
+range or changed files, checks run, and review result.
 
 When subagent tooling is available and explicitly authorized, delegate only
 bounded, non-overlapping tasks. The dispatch must include the task brief path,

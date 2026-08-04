@@ -100,13 +100,23 @@ for skill_md in "$ROOT"/skills/*/SKILL.md; do
   fi
 
   if [ -f "$metadata_file" ]; then
+    if grep -q '^interface:$' "$metadata_file"; then
+      metadata_prefix='  '
+      allowed_top_keys='^(interface|policy):'
+      allowed_metadata_keys='^(  (display_name|short_description|default_prompt|allow_implicit_invocation)):'
+    else
+      metadata_prefix=''
+      allowed_top_keys='^(display_name|short_description|default_prompt):'
+      allowed_metadata_keys='^(display_name|short_description|default_prompt):'
+    fi
+
     for key in display_name short_description default_prompt; do
-      key_count="$(grep -c "^$key:" "$metadata_file")"
+      key_count="$(grep -c "^${metadata_prefix}$key:" "$metadata_file")"
       if [ "$key_count" -ne 1 ]; then
         echo "! ${metadata_file#"$ROOT"/}: expected exactly one $key field" >&2
         status=1
       else
-        value="$(sed -n "s/^$key:[[:space:]]*//p" "$metadata_file")"
+        value="$(sed -n "s/^${metadata_prefix}$key:[[:space:]]*//p" "$metadata_file")"
         case "$value" in
           ""|\"\"|\'\')
             echo "! ${metadata_file#"$ROOT"/}: $key must not be empty" >&2
@@ -116,7 +126,7 @@ for skill_md in "$ROOT"/skills/*/SKILL.md; do
       fi
     done
 
-    extra_keys="$(grep -E '^[A-Za-z0-9_-]+:' "$metadata_file" | grep -Ev '^(display_name|short_description|default_prompt):' || true)"
+    extra_keys="$(grep -E '^[A-Za-z0-9_-]+:|^  [A-Za-z0-9_-]+:' "$metadata_file" | grep -Ev "$allowed_top_keys|$allowed_metadata_keys" || true)"
     if [ -n "$extra_keys" ]; then
       echo "! ${metadata_file#"$ROOT"/}: unexpected metadata keys:" >&2
       printf '%s\n' "$extra_keys" >&2

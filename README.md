@@ -94,6 +94,7 @@ or workflow docs.
 | `ticket-discovery` | Find a referenced precedent for a narrow ticket and produce a concrete gap/test handoff. |
 | `simplify` | Active cleanup plus `/code-smell` detect-only scans, including architecture/deepening candidates. |
 | `cover` | Author/strengthen behavior-pinning tests + a detect-only coverage-gap scan. |
+| `webapp-testing` | Browser/webapp verification: `/webapp-test` smoke checks, Playwright runs, QA evidence. |
 | `ship-it` | Lightweight release readiness: go/no-go, rollback plan, release notes, rollout plan. |
 | `retrofit` | Apply one defined change across every site that needs it — discover, transform, verify. |
 | `worktree` | Isolated git worktrees so parallel agents share a polyrepo dir without clobbering each other's branch. |

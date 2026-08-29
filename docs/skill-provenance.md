@@ -1,9 +1,8 @@
 # Skill Provenance
 
-This document records non-runtime attribution for skills whose concepts were
-adapted from other MIT-licensed skill packs or neighboring packs in this repo.
-Runtime `SKILL.md` files should stay focused on invocation, invariants, flow,
-and references.
+This document records non-runtime attribution for concepts adapted from external
+sources with explicit license handling and neighboring packs in this repo. Runtime
+`SKILL.md` files should stay focused on invocation, invariants, flow, and references.
 
 ## External Sources
 
@@ -47,6 +46,25 @@ and references.
 - `worktree`: one-worktree-per-unit discipline, managed worktree preference, and
   unchanged-worktree discard patterns adapted from obra/superpowers
   `using-git-worktrees` and `subagent-driven-development`.
+- Style/anti-slop contracts and `style-guide-init`: independently reworded concepts
+  from Scoville's anti-AI-slop skills and Wondel's clean-code materials (MIT), plus
+  Anthropic official review/simplification plugins (Apache-2.0) and the Google
+  TypeScript style-guide baseline when a target repository adopts it. Repository
+  evidence remains authoritative.
+- `pr-improve`: stable ledger, bounded rereview, scope guard, and convergence
+  concepts independently reworded from Trail of Bits `code-improver`. That source
+  is CC BY-SA 4.0; no upstream prose was copied.
+- `product-discovery`: evidence/assumption, opportunity-risk, experiment, and
+  threshold concepts adapted at a high level from Wondel product-oriented skills (MIT).
+- `test-case-design`: general QA/test-case concepts adapted at a high level from
+  gstack QA, Jeffallan `test-master`, and Anthropic `test-engineer` / `pr-test-analyzer`
+  materials (Apache-2.0 for Anthropic). Trail of Bits' CC BY-SA 4.0 testing handbook
+  is primarily specialized fuzzing/security tooling, not the main generic QA-case source.
+- `threat-model` and `security-audit`: design-time threat, code-review, and
+  verification concepts adapted at a high level from Anthropic code-modernization
+  security material (Apache-2.0) and Trail of Bits security/testing skills
+  (CC BY-SA 4.0; independently reworded concepts only, no prose copied).
+  Specialized active techniques remain out of the core packs.
 
 ## Internal Pack Relationships
 

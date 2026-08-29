@@ -1,0 +1,3 @@
+display_name: "Test Case Design"
+short_description: "Design prioritized, traceable QA test cases."
+default_prompt: "Use $test-case-design to design cases for this requirement."

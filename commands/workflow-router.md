@@ -40,6 +40,9 @@ Routing guide:
   phase handoff needed: `/phase-create` -> `/phase-start` -> do the phase work
   -> `/phase-close` -> `/clear` or `/compact`.
 - Vague / underspecified request: `/shape-up` (then `/dev-intake` or `/to-issues`).
+- Product opportunity needing evidence before a brief: `/product-discovery` -> `/shape-up`.
+- Repository conventions unclear or drifting: `/style-guide-init`, then use the approved style owner
+  in `/dev-implement-task` and `/pr-review`.
 - Technical backlog decision, dependency/library choice, or "should we do this?":
   `/tech-assess` (then `/ticket-discover`, `/dev-plan`, `/implementation-plan`,
   `/retrofit`, `/cover-gaps`, or no action).
@@ -68,12 +71,17 @@ Routing guide:
 - Scan an area for missing/weak coverage (detect-only, ranked by risk × likelihood):
   `/cover-gaps`.
 - Browser/user-flow verification: `/webapp-test`.
+- Requirements or risks needing a QA case set before authoring: `/test-case-design` -> `/cover` or
+  `/webapp-test` for selected cases.
+- Security-sensitive design before implementation: `/threat-model` -> `/test-case-design` or planning.
+- Bounded read-only security review: `/security-audit`; active testing needs written authorization.
 - Local diff review: `/review-diff`.
 - PR readiness: `/pr-ready-check`, then `/pr-traceability-review`.
 - Lifecycle gate: `/gate-check`.
 - QA package: `/qa-handoff`.
 - Release documentation: `/release-manifest`, then `/release-doc-check`.
 - General PR/code review: `/pr-review --tier=light|standard|deep`.
+- Apply accepted review findings in bounded rounds: `/pr-improve`.
 - Pin what reviews should prioritize in a repo (draft `.pr-review.md`): `/pr-review-init`.
 - Respond to a human reviewer's PR threads (triage + reply, re-review only what
   changed since the review): `/pr-review-reply` (run after `/pr-review`).

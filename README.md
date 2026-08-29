@@ -9,11 +9,11 @@ can install into Cursor, Claude Code, Codex-style skill folders, or all three.
 
 Most packs fall into one of these jobs:
 
-- Start new work: `shape-up`, `dev-lite-workflow`, `ai-feature-delivery`
+- Start new work: `product-discovery`, `shape-up`, `dev-lite-workflow`, `ai-feature-delivery`
 - Investigate broken behavior: `bug-to-fix`, `ticket-discovery`
-- Review and harden changes: `pr-review`, `pr-review-reply`, `phase-gate`
+- Review and harden changes: `pr-review`, `pr-improve`, `pr-review-reply`, `phase-gate`
 - Run agents unattended: `auto-agent-contract`
-- Improve code or tests: `simplify`, `cover`, `crap-analysis`, `retrofit`
+- Improve code or tests: `style-guide-init`, `simplify`, `test-case-design`, `cover`, `crap-analysis`, `retrofit`
 - Keep long work resumable: `phase-context-workflow`, `handoff`
 - Prepare to ship: `ship-it`
 
@@ -47,12 +47,33 @@ After install, open the target folder in your agent tool and run
 `--sweep` and the private Cursor plugin, are in the
 [Installation](wiki/Installation.md) guide.
 
+### First repository setup
+
+Installing the packs makes the workflows available; it does not invent project
+policy. Bootstrap these repository-owned files before relying on style-aware
+implementation and review:
+
+| File | Setup rule |
+|---|---|
+| Existing canonical style owner, or `STYLE_GUIDE.md` when none exists | Run `/style-guide-init`. Mine repository evidence, record the team's external baseline (for example, the Google TypeScript Style Guide), keep repo-specific TypeScript/React conventions local, and leave a new guide `Draft` until the team approves it. |
+| `.pr-review.md` | Run `/pr-review-init`. Keep only priorities supported by repository evidence, then have the team prune and commit the draft to the base branch. |
+| `AGENTS.md` for Cursor/Codex and `CLAUDE.md` for Claude Code | The installer creates or refreshes its marker-delimited workflow block. Preserve existing content and point to the canonical style owner instead of copying its rules. |
+
+Do not pre-create empty product-discovery, QA test-case, threat-model, or
+security-audit documents. Produce those from their templates only when real work
+invokes the corresponding workflow. `.atb-work/pr-improve/` is generated,
+gitignored scratch state and is never a repository policy file. See
+[First repository setup](wiki/Installation.md#first-repository-setup) for the
+completion checklist.
+
 ## Which path should I start with?
 
 | Goal | Start with |
 |---|---|
 | Build a normal feature with lightweight structure | `dev-lite-workflow` |
 | Turn a vague idea into an approved brief first | `shape-up` |
+| Decide whether an opportunity is ready to shape | `product-discovery` |
+| Establish repository coding conventions | `style-guide-init` |
 | Run a deep code review on a PR or local diff | `pr-review` |
 | Diagnose a bug before fixing it | `bug-to-fix` |
 | Keep a long implementation safe across context resets | `phase-context-workflow` |
@@ -80,6 +101,7 @@ or workflow docs.
 | Pack | What it does |
 |---|---|
 | `pr-review` | Tiered, multi-agent pull-request and diff review. |
+| `pr-improve` | Bounded finding-fix-rereview loop with a frozen scope and stable ledger. |
 | `pr-review-reply` | Round-trip half of `pr-review`: triage and answer a reviewer's PR threads (posting opt-in). |
 | `review-on-open` | Trigger layer: auto-review on PR open/update, via GitHub Actions event or a host-agnostic poller. |
 | `review-queue` | Local, SQLite-backed work queue — a producer enqueues a PR, a worker runs `/pr-review --comment`. |
@@ -90,10 +112,15 @@ or workflow docs.
 | `phase-context-workflow` | Durable phase files, handoffs, and context packets for safe `/clear` / `/compact`. |
 | `ai-feature-delivery` | Traceable feature delivery: design docs, tickets, tests, QA handoff, release docs. |
 | `shape-up` | Interrogate a vague request into an agreed brief before building. |
+| `product-discovery` | Evidence-led opportunity discovery before shaping a candidate feature. |
+| `style-guide-init` | Mine repository evidence into a canonical coding-style guide or update. |
 | `tech-backlog-assessment` | Decide whether and how to do technical backlog items before implementation. |
 | `ticket-discovery` | Find a referenced precedent for a narrow ticket and produce a concrete gap/test handoff. |
 | `simplify` | Active cleanup plus `/code-smell` detect-only scans, including architecture/deepening candidates. |
 | `cover` | Author/strengthen behavior-pinning tests + a detect-only coverage-gap scan. |
+| `test-case-design` | Report-only, prioritized QA test-case design that hands selected cases to test authors. |
+| `threat-model` | Design-time security model: assets, trust boundaries, abuse paths, mitigations, verification. |
+| `security-audit` | Bounded read-only code/config/dependency/secret-exposure security audit. |
 | `webapp-testing` | Browser/webapp verification: `/webapp-test` smoke checks, Playwright runs, QA evidence. |
 | `ship-it` | Lightweight release readiness: go/no-go, rollback plan, release notes, rollout plan. |
 | `retrofit` | Apply one defined change across every site that needs it — discover, transform, verify. |

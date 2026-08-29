@@ -1,0 +1,3 @@
+display_name: "Product Discovery"
+short_description: "Assess evidence before shaping a product idea."
+default_prompt: "Use $product-discovery to assess this opportunity before shaping."

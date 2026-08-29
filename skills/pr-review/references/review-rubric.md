@@ -35,7 +35,8 @@ standard/deep. Each finding belongs to exactly one facet.
   be ambitious, look for "code judo" that deletes whole branches/layers.)
 
 **standards** — does it match this repo's conventions?
-- compliance with `CLAUDE.md` / `AGENTS.md`; naming/formatting conventions.
+- compliance with base/merge-base `CLAUDE.md`, `AGENTS.md`, approved `STYLE_GUIDE.md`, and enforced
+  configuration; compare identifiers with representative neighbors and canonical vocabulary.
 - logic living in the right layer/module; canonical-helper reuse over bespoke one-offs.
 
 **re-entry context** — what the *next person* needs to know (context notes, not graded findings):
@@ -60,6 +61,16 @@ standard/deep. Each finding belongs to exactly one facet.
 - **Confidence tracks verification.** Only mark high confidence after reading the relevant code.
 - **Do NOT flag:** pure style/formatting a linter owns; dependency version preferences; renames
   with no behavior impact; speculative "what ifs"; anything outside the diff.
+
+## Naming and style calibration
+
+Use `shared/contracts/references/style-precedence.md` and
+`shared/contracts/references/anti-slop-naming.md` only after reviewing approved
+base-branch policy, configuration, and representative local code. A **blocker**
+requires explicit policy or a concrete high-impact contract/safety consequence.
+A **should-fix** requires meaningful behavior, vocabulary, unit, or identity
+ambiguity. A **nit** is bounded readability with a specific improvement. Drop
+subjective impressions and never characterize code as AI-generated.
 - **Prefer fewer, stronger findings.** Suppress nits when blockers/should-fixes exist.
 - **Calibrate before suppressing.** Before thresholding, re-check every `nit` in correctness/security.
   If it can produce a wrong result, crash, data loss/corruption, auth bypass, unbounded work, or

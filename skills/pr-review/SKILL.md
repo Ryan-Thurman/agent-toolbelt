@@ -82,7 +82,9 @@ A single generalist pass for fast gut-checks.
 
 1. Resolve the target and acquire a line-anchored diff using `references/targets-and-diff.md`. If
    empty, say "No changes to review." and stop.
-2. Load project standards and the base-branch `.pr-review.md` policy using `references/repo-config.md`.
+2. Load base/merge-base project standards, relevant configuration, representative neighbors, and the
+   base-branch `.pr-review.md` policy using `references/repo-config.md`. Apply shared style contracts
+   only where those sources leave a gap.
 3. Review the changed lines once, applying `references/review-rubric.md`,
    `references/lang-checklists.md`, any `--focus` / `--focus-note`, and host-side repo-config
    overrides.
@@ -119,6 +121,7 @@ token-usage footer from `references/output-format.md`.
 - `references/config-init.md` — `/pr-review-init`: draft `.pr-review.md` by mining repo evidence.
 - `references/auto-tier.md` — auto-select the tier from the diff + the deep-spend token guardrail.
 - `references/review-rubric.md` — the six facet lenses + anti-noise rules + severity definitions.
+- `benchmarks/style-contract/cases.md` — calibrated naming/anti-slop evaluation cases and controls.
 - `references/finding-schema.md` — the structured finding contract.
 - `references/fan-out.md` · `references/deep-tier.md` — standard / deep multi-agent orchestration.
 - `references/lang-checklists.md` — per-language checklists (`checklists/*.md`) injected by diff language.

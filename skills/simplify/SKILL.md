@@ -31,6 +31,8 @@ Never change behavior or edit tests to make cleanup pass.
 - **Fewer, higher-conviction.** A short list of defensible deletions beats a flood of style nits.
 - **Use the shared vocabulary.** Load `shared/contracts/references/maintainability-taxonomy.md` for
   smell families, `/simplify` axes, risk/action vocabulary, thin-wrapper rules, and detection cues.
+  Load `shared/contracts/references/anti-slop-naming.md` for concrete misleading-name,
+  narration-comment, and speculative-abstraction cues; never turn generic-name cues into regex bans.
 - **Respect fences and boundaries.** Honor `simplify-ignore` block markers and existing abstraction
   boundaries; be careful around error handling, security logic, migration files, and dynamic callers.
 
@@ -48,6 +50,7 @@ Never change behavior or edit tests to make cleanup pass.
 1. **Scope** the target (default: the working diff if dirty; or a named path/area for `/code-smell`).
 2. **Detect** candidates using `shared/contracts/references/maintainability-taxonomy.md`. For reuse
    candidates, search the codebase for the existing helper first and quote the symbol you'd use.
+   Use the anti-slop contract only where the consequence is concrete.
 3. **Make the case** for each (rootIssue → consequence → benefit) and assign a `risk` tier; drop
    anything without a real consequence.
 4. **Report** the findings list (no prose dump). Stop here for `/code-smell`.

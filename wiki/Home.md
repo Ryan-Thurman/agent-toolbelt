@@ -11,9 +11,9 @@ This wiki is the deep-dive companion to the [README](../README.md). Start with
 | Page | Covers |
 |---|---|
 | [Installation](Installation.md) | `install.sh`, harness selection, polyrepo `--sweep`, the private Cursor plugin |
-| [Workflows](Workflows.md) | The delivery lanes: Dev Lite, Phase Context, AI Feature Delivery, Bug to Fix, Shape Up |
-| [Code Review](Code-Review.md) | PR Review and its triggers: Review Reply, Review on Open, Review Queue, Phase Gate, Cursor Hooks |
-| [Utilities](Utilities.md) | Simplify, Cover, Ship It, Retrofit, Worktree, Handoff, Ticket Sync |
+| [Workflows](Workflows.md) | Product Discovery, Dev Lite, Phase Context, AI Feature Delivery, Bug to Fix, Shape Up, Threat Model |
+| [Code Review](Code-Review.md) | PR Review, PR Improve and triggers: Review Reply, Review on Open, Review Queue, Phase Gate, Cursor Hooks |
+| [Utilities](Utilities.md) | Style Guide Init, Simplify, Test Case Design, Cover, Security Audit, Ship It, Retrofit, Worktree, Handoff, Ticket Sync |
 | [Phase → Command Map](../docs/phase-command-map.md) | Which commands each workflow phase uses (with Mermaid diagrams) |
 
 ## What's included

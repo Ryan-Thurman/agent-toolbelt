@@ -7,12 +7,15 @@ For a guided command path, see `../docs/tutorial.md`. If the next command is
 unclear inside a pilot repo, start with `/workflow-router`.
 
 - `/pr-review` - run the tiered PR/code review workflow.
+- `/pr-improve` - apply accepted PR findings in bounded fix-and-rereview rounds.
 - `/pr-review-init` - draft a repo's `.pr-review.md` review-priorities config by mining repo evidence (docs, burn history, rejection memory).
 - `/pr-review-reply` - round-trip a PR review: read reviewer threads, triage, re-review only since-SHA changes, reply per-thread.
 - `/review-on-open` - auto-review trigger: poll open PRs and fire `/pr-review --comment` on the unseen ones (drive with `/loop` or `/schedule`); GitHub Actions event template ships alongside.
 - `/enqueue-review` - push a PR onto the local review queue (producer half of review-queue; idempotent on head SHA).
 - `/review-queue-worker` - drain the local review queue: claim jobs and run `/pr-review --comment` on each (consumer half; drive with `/loop` or `/schedule`).
 - `/shape-up` - interrogate a vague request into an agreed brief before building.
+- `/product-discovery` - assess an opportunity's evidence and risks before shaping.
+- `/style-guide-init` - mine repository evidence into a proposed coding-style owner.
 - `/tech-assess` - assess a technical backlog item before implementation: do/defer/reject/spike, options, risks, tests.
 - `/ticket-discover` - investigate a narrow implementation ticket by finding an existing precedent and producing a gap/test handoff.
 - `/to-issues` - slice an approved brief into vertical-slice tickets.
@@ -21,7 +24,10 @@ unclear inside a pilot repo, start with `/workflow-router`.
 - `/code-smell` - detect-only scan of an area for structural smells; use `--architecture` for
   no-code deepening candidates.
 - `/cover` - author/strengthen behavior-pinning tests for a diff/module/bug repro, on opt-in.
+- `/test-case-design` - produce prioritized QA cases from requirements and risks; writes no tests.
 - `/cover-gaps` - detect-only scan for missing/weak coverage, ranked by risk × likelihood.
+- `/threat-model` - analyze assets, trust boundaries, abuse paths, and mitigations before building.
+- `/security-audit` - run a bounded read-only code/config/dependency security audit.
 - `/ship-it` - prepare a merged change for release (readiness, rollback, notes, rollout).
 - `/retrofit` - apply one defined change across every site (library swap, API rename, upgrade).
 - `/worktree` - create/list/remove an isolated git worktree so parallel agents in a shared polyrepo dir don't clobber each other's branch.
@@ -76,6 +82,7 @@ Some commands overlap. Use these tables to pick the right one.
 | Command | Use it for |
 |---|---|
 | `/pr-review` | Deep, tiered, multi-agent code review (bugs, security, perf, tests, maintainability, standards). The heavy code-quality pass. |
+| `/pr-improve` | Fix accepted findings in bounded, scope-guarded rounds with a durable ledger; run after review. |
 | `/pr-review-init` | Draft the repo's `.pr-review.md` (per-repo review priorities that `/pr-review` loads) from repo evidence — docs, revert/hotfix history, review threads, rejection memory. Draft only; the team prunes and commits. |
 | `/pr-review-reply` | The round-trip: answer a human reviewer's PR threads — triage each (`answered`/`changed`/`needs-follow-up`), re-review only the code changed since the review, reply per-thread. Run after `/pr-review`. |
 | `/review-on-open` | The trigger: auto-fire `/pr-review --comment` in a fresh agent when a PR is opened/updated. Host-agnostic poller (drive with `/loop` / `/schedule`); ships a GitHub Actions event workflow too. Doesn't review itself — it invokes `/pr-review` for you. |
@@ -109,11 +116,13 @@ Some commands overlap. Use these tables to pick the right one.
 | Command | Use it for |
 |---|---|
 | `/shape-up` | *Interrogate* a vague request into an agreed brief (one question at a time, repo-first, gated on approval). |
+| `/product-discovery` | Assess evidence, assumptions, risks, and thresholds before deciding a candidate is ready to shape. |
 | `/tech-assess` | Decide whether and how to do a technical backlog item before implementation: options, dependency/library decision, risks, tests, and next workflow. |
 | `/ticket-discover` | Turn a narrow ticket that references an existing precedent into a concrete gap analysis, test plan, and implementation handoff. |
 | `/dev-intake` | *Capture* a brief by making safe assumptions — lighter, no grilling. Compose: `/shape-up` -> `/dev-intake`. |
 | `/feature-fleshout` | The heavy, regulated, stakeholder version (Feature Master Record, gates). |
 | `/to-issues` | Slice an approved brief into vertical-slice tickets (dev lane). Use `/refine-to-tickets` for the regulated lane. |
+| `/style-guide-init` | Mine repository policy, configuration, and local examples into a canonical style owner or draft. |
 
 **Cleaning up code**
 
@@ -129,8 +138,16 @@ Some commands overlap. Use these tables to pick the right one.
 | Command | Use it for |
 |---|---|
 | `/cover` | *Author/strengthen* behavior-pinning tests for a diff, module, or bug repro (red→green regression lock), on opt-in. Framework-detected, falsified, deterministic; lane-agnostic. Writes tests only. |
+| `/test-case-design` | *Design* prioritized QA cases from requirements and risks; report-only, then hand selected cases to `/cover` or `/webapp-test`. |
 | `/cover-gaps` | *Detect-only* scan for missing/weak coverage, ranked by risk × likelihood. Applies nothing — hands top gaps to `/cover`. |
 | `/write-tests` | Regulated AI Feature Delivery test planning/authoring tied to a feature/ticket's traceability and doc control. The gated lane; `/cover` is the standalone one. |
+
+**Security and architecture decisions**
+
+| Command | Use it for |
+|---|---|
+| `/threat-model` | Design-time assets, trust boundaries, attacker paths, mitigations, and verification. |
+| `/security-audit` | Bounded read-only security review; active testing requires written authorization. |
 
 **Diagnosing a bug (Bug-to-Fix lane)**
 

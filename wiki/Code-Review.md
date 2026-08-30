@@ -3,7 +3,13 @@
 `pr-review` is the review engine; the rest of this page is the triggers and
 round-trip tooling layered over it. All three triggers end in `/pr-review --comment`.
 
+For TypeScript/React changes, the review facets first use the shared baseline
+and may load the installed Vercel composition or React/Next performance
+specialist for the exact changed behavior. Those MIT-licensed references are
+conditional and never override repository policy or measured evidence.
+
 - [PR Review](#pr-review) — the tiered review engine.
+- [Code Quality Gate](#code-quality-gate) — the mandatory pre-PR quality verdict.
 - [PR Improve](#pr-improve) — bounded fix-and-rereview loop.
 - [PR Review Reply](#pr-review-reply) — answer a human reviewer's threads.
 - [Review on Open](#review-on-open) — event/poller trigger.
@@ -55,6 +61,42 @@ rejection memory, then leaves a draft for the team to prune and commit), or copy
 `templates/pr-review.md` as a blank starter. When a review runs in a repo
 without one and hits a situation the config would solve, the report footer
 nudges once toward the generator.
+
+## Code Quality Gate
+
+`code-quality-gate` is the pre-PR orchestration layer over the existing
+`simplify`, `pr-review`, and `pr-improve` owners. It freezes the current scope,
+discovers required repository checks, assesses every changed hunk against local
+style evidence and the shared anti-slop/maintainability contracts, then runs a
+focused standards and maintainability review.
+
+```sh
+./install.sh --harness all code-quality-gate /path/to/project
+```
+
+```text
+/code-quality-gate [--mode=report|apply] [--rounds N] [--scope path[,path]] [--disposition-json '<object>']
+```
+
+Report mode is the default and never edits tracked files. Apply mode is explicit,
+uses the frozen-scope `pr-improve` ledger, preserves simplify's behavior and
+test safety, and stops after three rounds by default. Its durable scratch report
+is `.atb-work/code-quality-gate/<target-slug>/report.md`, with exactly one of:
+`PASS`, `FAIL`, `CAPPED`, or `BLOCKED`. A cap is not a pass. PASS requires green
+required checks, unchanged scope, no unresolved blocker/should-fix/evidence-backed
+quality issue, verified fixes for accepted findings, and an explicit disposition
+for every nit. Its installed fingerprint script records the frozen diff and
+untracked content, then makes a PASS stale when either fingerprint changes.
+`--scope` creates partial evidence only; Dev Lite accepts only `coverage: final`.
+The gate covers only the current checked-out branch and local working tree
+(committed-since-merge-base, staged, unstaged, and untracked changes). Check out
+the intended branch first; use `/pr-review` for a named PR, remote branch, or
+other branch. Scope entries must be repository-relative worktree paths; absolute
+paths and `..` escapes are rejected.
+The gate judges observable code consequences and never attributes code to AI or a person.
+
+Dev Lite installs this pack and requires a recomputed, final-coverage PASS before
+it can report `Ready for PR`.
 
 ## PR Improve
 

@@ -16,6 +16,13 @@ speculative-abstraction cues. Report them only where the changed code has a conc
 maintenance, contract, or readability consequence; preserve the deep-tier behavior
 in `maintainability-deep.md`.
 
+For React component API or architecture changes, read
+`shared/contracts/references/typescript-react-baseline.md`. When the installed
+`vercel-composition-patterns` specialist applies, load only the matching rule selected by
+`skills/vercel-composition-patterns/references/rule-routing.md`. Treat its patterns as
+evidence-backed review cues, not universal prohibitions; verify the repository's React version
+and public API compatibility first.
+
 For PR review, prioritize smells introduced or worsened by the diff:
 
 - a change that makes a module materially harder to reason about.

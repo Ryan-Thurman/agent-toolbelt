@@ -205,6 +205,26 @@ skill_shared() {
   return 0
 }
 
+# skill_tree <pack> — install a complete skill reference tree without hand-listing
+# every file. The skill entrypoint installs its host metadata; agents/openai.yaml
+# is therefore skipped when walking the remaining source files.
+skill_tree() {
+  local pack="$1" root rel
+  root="$REPO_ROOT/skills/$pack"
+  if [ ! -d "$root" ]; then
+    echo "! missing skill tree: $root" >&2
+    exit 1
+  fi
+  skill "$pack" SKILL.md
+  while IFS= read -r rel; do
+    [ -n "$rel" ] || continue
+    case "$rel" in
+      SKILL.md|agents/openai.yaml) continue ;;
+    esac
+    skill "$pack" "$rel"
+  done < <(find "$root" -type f -print | sed "s#^$root/##" | sort)
+}
+
 # template <name>, workflow <name>, example <name> — shared artifacts (harness-agnostic).
 # Installed under .atb/ so they don't collide with the target project's own top-level dirs.
 template() { _install "templates/$1" ".atb/templates/$1"; }

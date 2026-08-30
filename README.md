@@ -11,9 +11,9 @@ Most packs fall into one of these jobs:
 
 - Start new work: `product-discovery`, `shape-up`, `dev-lite-workflow`, `ai-feature-delivery`
 - Investigate broken behavior: `bug-to-fix`, `ticket-discovery`
-- Review and harden changes: `pr-review`, `pr-improve`, `pr-review-reply`, `phase-gate`
+- Review and harden changes: `code-quality-gate`, `pr-review`, `pr-improve`, `pr-review-reply`, `phase-gate`
 - Run agents unattended: `auto-agent-contract`
-- Improve code or tests: `style-guide-init`, `simplify`, `test-case-design`, `cover`, `crap-analysis`, `retrofit`
+- Improve code or tests: `style-guide-init`, `simplify`, `test-case-design`, `cover`, `crap-analysis`, `retrofit`, `react-quality`
 - Keep long work resumable: `phase-context-workflow`, `handoff`
 - Prepare to ship: `ship-it`
 
@@ -75,6 +75,7 @@ completion checklist.
 | Decide whether an opportunity is ready to shape | `product-discovery` |
 | Establish repository coding conventions | `style-guide-init` |
 | Run a deep code review on a PR or local diff | `pr-review` |
+| Run the required pre-PR maintainability and anti-slop gate | `code-quality-gate` |
 | Diagnose a bug before fixing it | `bug-to-fix` |
 | Keep a long implementation safe across context resets | `phase-context-workflow` |
 | Install every available command and workflow | `all` |
@@ -101,6 +102,7 @@ or workflow docs.
 | Pack | What it does |
 |---|---|
 | `pr-review` | Tiered, multi-agent pull-request and diff review. |
+| `code-quality-gate` | Pre-PR gate: repository checks plus standards, maintainability, naming, deterministic diff evidence, and bounded fix/rereview. |
 | `pr-improve` | Bounded finding-fix-rereview loop with a frozen scope and stable ledger. |
 | `pr-review-reply` | Round-trip half of `pr-review`: triage and answer a reviewer's PR threads (posting opt-in). |
 | `review-on-open` | Trigger layer: auto-review on PR open/update, via GitHub Actions event or a host-agnostic poller. |
@@ -108,7 +110,7 @@ or workflow docs.
 | `phase-gate` | In-loop trigger: at each phase boundary a fresh subagent reviews the PR (team stop / solo merge). |
 | `auto-agent-contract` | Rules for an orchestrator *outside* the harness that shells into agent CLIs: invocation, convergence, merge, unattended mode, Dev Lite jobs, `/auto-agent-plan`. |
 | `bug-to-fix` | Diagnostic lane: triage → reproduce → root-cause → minimal fix → verify. |
-| `dev-lite-workflow` | Lightweight dev loop: brief → plan → task → commit → phase review → final PR review. |
+| `dev-lite-workflow` | Lightweight dev loop: brief → plan → task → commit → phase review → final-coverage code-quality-gate PASS → final PR review. |
 | `phase-context-workflow` | Durable phase files, handoffs, and context packets for safe `/clear` / `/compact`. |
 | `ai-feature-delivery` | Traceable feature delivery: design docs, tickets, tests, QA handoff, release docs. |
 | `shape-up` | Interrogate a vague request into an agreed brief before building. |
@@ -117,6 +119,9 @@ or workflow docs.
 | `tech-backlog-assessment` | Decide whether and how to do technical backlog items before implementation. |
 | `ticket-discovery` | Find a referenced precedent for a narrow ticket and produce a concrete gap/test handoff. |
 | `simplify` | Active cleanup plus `/code-smell` detect-only scans, including architecture/deepening candidates. |
+| `vercel-composition-patterns` | Conditional MIT-licensed React component API and composition references from Vercel Labs. |
+| `vercel-react-best-practices` | Conditional MIT-licensed React/Next.js performance references from Vercel Labs. |
+| `react-quality` | Convenience bundle that installs both Vercel React specialists; it adds no separate policy. |
 | `cover` | Author/strengthen behavior-pinning tests + a detect-only coverage-gap scan. |
 | `test-case-design` | Report-only, prioritized QA test-case design that hands selected cases to test authors. |
 | `threat-model` | Design-time security model: assets, trust boundaries, abuse paths, mitigations, verification. |

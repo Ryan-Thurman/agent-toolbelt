@@ -1,0 +1,3 @@
+display_name: "Style Guide Init"
+short_description: "Mine repository evidence into coding standards."
+default_prompt: "Use $style-guide-init to establish this repository's coding standards."

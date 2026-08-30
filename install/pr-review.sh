@@ -6,7 +6,7 @@ pack_pr_review() {
   local f
   for f in \
     SKILL.md \
-    benchmarks/results.md \
+    benchmarks/results.md benchmarks/style-contract/cases.md \
     checklists/README.md checklists/python.md checklists/sql.md checklists/typescript.md \
     facets/_shared.md facets/correctness.md facets/maintainability-deep.md \
     facets/maintainability.md facets/performance.md facets/security.md \
@@ -22,6 +22,9 @@ pack_pr_review() {
   done
 
   shared_contract references/maintainability-taxonomy.md
+  shared_contract references/style-precedence.md
+  shared_contract references/anti-slop-naming.md
+  shared_contract references/typescript-react-baseline.md
 
   template pr-review.md
 

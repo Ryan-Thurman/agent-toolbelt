@@ -4,13 +4,46 @@ Cross-cutting tools that support the [delivery lanes](Workflows.md): cleanup,
 test authoring, release, codebase-wide change, handoff, and tracker sync.
 
 - [Simplify](#simplify) — active code cleanup plus detect-only smell scans.
+- [Style Guide Init](#style-guide-init) — evidence-derived repository conventions.
+- [Test Case Design](#test-case-design) — report-only QA test design.
 - [Cover](#cover) — test authoring.
+- [Security Audit](#security-audit) — bounded read-only security review.
 - [Ship It](#ship-it) — release readiness.
 - [Retrofit](#retrofit) — one change across many sites.
 - [Worktree](#worktree) — isolated worktrees for parallel agents.
 - [CRAP Analysis](#crap-analysis) — complexity + coverage risk via repo-configured commands.
 - [Handoff](#handoff) — resumable handoffs.
 - [Ticket Sync](#ticket-sync) — publish tickets to a tracker.
+
+## Style Guide Init
+
+`style-guide-init` discovers existing instructions, enforced configuration, representative code/tests,
+and local vocabulary before proposing a canonical style owner. It updates an existing owner when
+present; otherwise it waits for explicit approval before creating `STYLE_GUIDE.md`.
+
+```sh
+./install.sh --harness all style-guide-init /path/to/project
+```
+
+## Test Case Design
+
+`test-case-design` turns requirements and risks into prioritized QA cases without writing tests. It
+covers relevant behavioral, boundary, state, failure, access, and UI states, then hands selected
+cases to `/cover` or `/webapp-test`.
+
+```sh
+./install.sh --harness all test-case-design /path/to/project
+```
+
+## Security Audit
+
+`security-audit` performs a bounded read-only review of code, configuration, dependencies, and
+secret exposure. It redacts sensitive values and requires written authorization immediately before
+any active test or probe.
+
+```sh
+./install.sh --harness all security-audit /path/to/project
+```
 
 ## Simplify
 

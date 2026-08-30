@@ -1,0 +1,3 @@
+display_name: "Threat Model"
+short_description: "Map design threats and security controls."
+default_prompt: "Use $threat-model to analyze this design before implementation."

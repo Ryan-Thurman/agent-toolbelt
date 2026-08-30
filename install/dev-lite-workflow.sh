@@ -20,6 +20,10 @@ pack_dev_lite_workflow() {
   skill dev-lite-workflow references/execution-support.md
   skill dev-lite-workflow references/standalone-use.md
 
+  shared_contract references/style-precedence.md
+  shared_contract references/anti-slop-naming.md
+  shared_contract references/typescript-react-baseline.md
+
   template dev-feature-brief.md
   template dev-implementation-plan.md
   template dev-phase-review.md

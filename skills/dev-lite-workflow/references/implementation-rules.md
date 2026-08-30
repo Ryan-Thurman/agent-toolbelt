@@ -4,6 +4,17 @@ How to carry out a single task within a phase. Load this when implementing.
 
 ## Before implementation
 
+### Style evidence packet
+
+Before changing code, read `shared/contracts/references/style-precedence.md` and
+`shared/contracts/references/anti-slop-naming.md`; for TypeScript or React, read
+`shared/contracts/references/typescript-react-baseline.md`. Record a compact,
+ephemeral packet in the task brief or plan notes containing policy sources,
+relevant configuration, two or three representative neighboring implementation
+and test files, canonical vocabulary, and local helper/boundary/error/test
+patterns. Record uncertainty; do not promote one unusual file into policy.
+Include this packet in every delegated or fresh-context task brief.
+
 Before changing code:
 
 1. Confirm the intended behavior.
@@ -91,6 +102,15 @@ If no subagent tool is available, perform the same task sequentially in the
 current session.
 
 ## After implementation
+
+### Changed-lines anti-slop review
+
+Before completion, inspect every changed hunk against
+`shared/contracts/references/anti-slop-naming.md`. Confirm names match local
+vocabulary and truthfully expose behavior, identity, units, and scope; comments
+add a non-obvious reason; new helpers/options have a current purpose; the diff
+does not include unrelated restyling; and tests pin observable behavior. Fix a
+concrete issue or record why the local convention overrides the fallback.
 
 Return:
 

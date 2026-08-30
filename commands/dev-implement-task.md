@@ -18,6 +18,10 @@ Use this command for the core implementation loop.
 - Do not jump ahead to future phase work.
 - Do not refactor unrelated code.
 - Follow existing project conventions.
+- Before coding, collect a compact style evidence packet: applicable policy/config,
+  two or three representative neighboring files/tests, canonical vocabulary, and
+  local helper/boundary/error/test patterns. Include it in any delegated or
+  fresh-context task brief.
 - Add or update tests in the same task if behavior changes.
 - Before any task mutation, verify each stated task precondition with read-only
   checks. If a precondition is unmet or cannot be checked without side effects
@@ -55,11 +59,13 @@ Use this command for the core implementation loop.
 8. Update the plan document to mark the task `In Progress`.
 9. Implement the task.
 10. Add/update tests for behavior changes.
-11. Run or list the relevant checks/tests.
-12. Update the plan document with task status, evidence, checks, next step, and
-   resume instructions.
-13. Summarize what changed.
-14. Recommend a commit message.
+11. Review changed lines for naming, narration comments, speculative helpers,
+    narrow scope, and behavior-pinning tests; local policy overrides generic rules.
+12. Run or list the relevant checks/tests.
+13. Update the plan document with task status, evidence, checks, next step, and
+    resume instructions.
+14. Summarize what changed.
+15. Recommend a commit message.
 
 ## Output
 

@@ -8,6 +8,8 @@ the [Phase → Command Map](../docs/phase-command-map.md).
 - [AI Feature Delivery](#ai-feature-delivery) — traceable, gated, cross-functional.
 - [Bug to Fix](#bug-to-fix) — the diagnostic lane.
 - [Shape Up](#shape-up) — interrogate a vague request before building.
+- [Product Discovery](#product-discovery) — evidence before deciding what to shape.
+- [Threat Model](#threat-model) — design-time security analysis.
 
 ## Dev Lite Workflow
 
@@ -133,6 +135,27 @@ Key ideas:
   the bug before dev, and keeps the automated failing-test path for when a test
   harness exists.
 - `/rca --diagnose` runs a read-only root-cause analysis that never edits files.
+
+## Product Discovery
+
+Use `product-discovery` before Shape Up when the open question is whether a candidate should be
+built at all. It separates evidence from assumptions, identifies value/usability/feasibility/viability
+risks, proposes the cheapest useful experiments, and sets observable success/failure thresholds.
+It hands only an evidenced candidate to `/shape-up`.
+
+```sh
+./install.sh --harness all product-discovery /path/to/project
+```
+
+## Threat Model
+
+Use `threat-model` before implementing a security-sensitive design. It maps assets, actors, flows,
+trust boundaries, abuse paths, mitigations, testable requirements, and residual risk. It is design
+analysis, not active testing.
+
+```sh
+./install.sh --harness all threat-model /path/to/project
+```
 
 ## Shape Up
 

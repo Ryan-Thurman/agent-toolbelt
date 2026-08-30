@@ -32,6 +32,51 @@ New here? Take the guided path:
 After install, open the target folder and run `/workflow-router` (or a specific
 pack's entry command) from chat.
 
+## First repository setup
+
+An installation provides agent workflows, templates, and pointers. The target
+repository still needs a small amount of repository-owned policy before agents
+can consistently implement and review code in its local style.
+
+### Baseline files
+
+| Artifact | Create or update | Ownership |
+|---|---|---|
+| The existing canonical style owner, or root `STYLE_GUIDE.md` when no owner exists | Run `/style-guide-init`. Use repository instructions, enforced configuration, representative code and tests, domain vocabulary, and accepted external standards as evidence. A newly created guide remains `Status: Draft` until maintainers approve it. | Team-owned and tracked. Keep the rules here, not duplicated in agent pointer files. |
+| Root `.pr-review.md` | Run `/pr-review-init`. Remove generic sections that lack evidence and review the resulting priorities before committing them to the base branch. | Team-owned and tracked. PR review reads the base-branch copy so a change cannot weaken its own review policy. |
+| Root `AGENTS.md` and/or `CLAUDE.md` | Let `install.sh` maintain its marker-delimited workflow block. Merge around existing content and add only a concise pointer to the canonical style owner when one is needed. | Installer-maintained pointer block plus any existing team-owned instructions. |
+
+An existing `CONTRIBUTING.md`, engineering handbook, or repository-specific
+standards document may already be the canonical style owner. Update that owner
+instead of adding a competing `STYLE_GUIDE.md`.
+
+### Conditional and generated artifacts
+
+Do not create empty documents to make the repository look complete:
+
+- Product-discovery reports, QA test cases, threat models, and security audits
+  are work artifacts. Create one from the corresponding installed template only
+  when a real request supplies evidence and scope, and place it according to the
+  repository's existing documentation convention.
+- `.atb-work/pr-improve/<target-slug>/` contains generated baselines, diffs, and
+  ledgers for a bounded improvement loop. It is scratch state and must remain
+  ignored.
+- Installed `.atb/`, `.cursor/`, and `.agents/` content is workflow machinery,
+  not a substitute for repository policy.
+
+Repository bootstrap is complete when:
+
+- exactly one canonical style owner is named, its evidence paths resolve, and
+  weak or conflicting conventions are recorded as decisions rather than facts;
+- the team baseline and any local TypeScript/React deviations are explicit,
+  without repeating formatter or linter configuration in prose;
+- `.pr-review.md` contains only repository-relevant priorities and is ready for
+  team review on the base branch;
+- agent instruction files point to policy instead of maintaining duplicate
+  copies; and
+- no placeholders, empty conditional artifacts, or accidentally tracked
+  `.atb-work/` files remain.
+
 ## Choosing harnesses
 
 `--harness` is required (there is no implicit default) and takes a comma-separated

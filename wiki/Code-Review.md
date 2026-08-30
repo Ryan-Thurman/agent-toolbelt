@@ -4,6 +4,7 @@
 round-trip tooling layered over it. All three triggers end in `/pr-review --comment`.
 
 - [PR Review](#pr-review) — the tiered review engine.
+- [PR Improve](#pr-improve) — bounded fix-and-rereview loop.
 - [PR Review Reply](#pr-review-reply) — answer a human reviewer's threads.
 - [Review on Open](#review-on-open) — event/poller trigger.
 - [Review Queue](#review-queue) — local push-queue trigger.
@@ -54,6 +55,23 @@ rejection memory, then leaves a draft for the team to prune and commit), or copy
 `templates/pr-review.md` as a blank starter. When a review runs in a repo
 without one and hits a situation the config would solve, the report footer
 nudges once toward the generator.
+
+## PR Improve
+
+Use `pr-improve` after a review produces accepted findings that need a controlled fix loop.
+
+```sh
+./install.sh --harness all pr-improve /path/to/project
+```
+
+It freezes the base and explicit scope, maintains stable finding IDs and decisions, requires
+behavior pins for behavior fixes, re-reviews after each bounded round, and reports clean convergence
+or capped/non-converged work honestly. Its baseline, diff, and ledger live in a guarded local
+`.atb-work/pr-improve/<target-slug>/` workspace. It never commits or pushes automatically.
+
+`pr-review` reads approved base/merge-base style sources and local evidence before generic naming
+guidance. Findings must state policy or consequence; a generic variable in a tiny scope is not a
+finding, and reports never characterize code as AI-generated.
 
 ## PR Review Reply
 

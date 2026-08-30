@@ -1,0 +1,3 @@
+display_name: "Security Audit"
+short_description: "Audit code and configuration security risks."
+default_prompt: "Use $security-audit to review this target's security risks."

@@ -7,7 +7,9 @@ yourself** — you set up context, spawn facet sub-agents, then aggregate, verif
 
 1. Resolve target + acquire the formatted, line-numbered diff (`targets-and-diff.md`).
    If empty → "No changes to review." and stop.
-2. Load project standards: read `CLAUDE.md` / `AGENTS.md` at the repo root if present.
+2. Load project standards from the base/merge-base: read `CLAUDE.md`, `AGENTS.md`, and approved
+   `STYLE_GUIDE.md` if present, then relevant formatter/linter/compiler/test configuration and two
+   or three representative neighboring files. Treat generic contracts as fallbacks, not policy.
 3. Load the **per-repo review config** `.pr-review.md` if present (`repo-config.md`) — **from the
    base/target branch**, not the PR head, so a PR can't relax its own review. Parse its sections
    (Context, Always-run, Emphasis, Budgets, Severity overrides, Do-not-flag, Minimum tier). If the PR
@@ -75,6 +77,8 @@ sub-agent gets a prompt composed of:
 - the **formatted diff**,
 - the **standard reachability sketch** when present,
 - the **project standards** text,
+- a compact style evidence packet (approved sources, config, representative neighbors, vocabulary,
+  and local boundary/error/test patterns),
 - the repo config's **Context + Budgets** (`repo-config.md`) — the domain/scale framing and the
   concrete bars to hold the diff to. If this facet is in **Emphasis** or **`--focus`**, also tell it
   to review more thoroughly and lower its reporting threshold one notch,

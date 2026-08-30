@@ -16,6 +16,21 @@
       "path": "references/maintainability-taxonomy.md",
       "owner": "shared/contracts",
       "consumers": ["pr-review", "simplify"]
+    },
+    {
+      "path": "references/style-precedence.md",
+      "owner": "shared/contracts",
+      "consumers": ["dev-lite-workflow", "pr-review", "style-guide-init"]
+    },
+    {
+      "path": "references/anti-slop-naming.md",
+      "owner": "shared/contracts",
+      "consumers": ["dev-lite-workflow", "pr-review", "simplify", "style-guide-init"]
+    },
+    {
+      "path": "references/typescript-react-baseline.md",
+      "owner": "shared/contracts",
+      "consumers": ["style-guide-init", "dev-lite-workflow", "pr-review"]
     }
   ]
 }

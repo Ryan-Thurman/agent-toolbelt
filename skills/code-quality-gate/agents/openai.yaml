@@ -1,0 +1,4 @@
+interface:
+  display_name: "Code Quality Gate"
+  short_description: "Verify pre-PR code quality evidence"
+  default_prompt: "Use $code-quality-gate to assess the current diff before PR readiness."

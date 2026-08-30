@@ -21,6 +21,7 @@ Other shapes:
 ./install.sh --harness cursor ai-feature-delivery ~/pilot    # one pack, one harness
 ./install.sh --harness cursor --rules full all ~/pilot       # every Cursor project rule
 ./install.sh --harness cursor,claude bug-to-fix simplify shape-up ~/project
+./install.sh --harness all react-quality ~/project
 ./install.sh --harness all all ~/project                     # every pack, every harness
 ```
 
@@ -63,6 +64,24 @@ Do not create empty documents to make the repository look complete:
   ignored.
 - Installed `.atb/`, `.cursor/`, and `.agents/` content is workflow machinery,
   not a substitute for repository policy.
+
+### React quality specialists
+
+Install `react-quality` to include the Vercel Labs composition and React/Next.js
+specialist skills, or install either pack separately:
+
+```sh
+./install.sh --harness all react-quality /path/to/project
+./install.sh --harness cursor vercel-react-best-practices /path/to/project
+```
+
+The packs preserve the substantive MIT-licensed upstream rules as progressive
+disclosure references. They are conditional guidance, not universal repository
+policy. The baseline routes component API work to
+`vercel-composition-patterns` and React/Next performance work to
+`vercel-react-best-practices` when those skills are installed. Check the
+repository's React/Next versions, runtime boundaries, local conventions, and
+concrete performance impact before applying a rule.
 
 Repository bootstrap is complete when:
 

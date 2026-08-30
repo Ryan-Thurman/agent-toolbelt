@@ -55,7 +55,8 @@ Routing guide:
   (optional, on release).
 - Lightweight / solo build (Dev Lite): `/dev-intake` -> `/dev-plan` ->
   `/dev-start-phase` -> `/dev-implement-task` -> `/dev-phase-review` ->
-  `/dev-fix-review-issues` (if needed) -> `/dev-pr-review` -> `/ship-it`
+  `/dev-fix-review-issues` (if needed) -> `/code-quality-gate` (must PASS) ->
+  `/dev-pr-review` -> `/ship-it`
   (optional, on release).
 - Raw idea or stakeholder request: `/feature-start`, then `/feature-fleshout`.
 - Existing feature with gaps: `/feature-fleshout`, `/steward-review`, or
@@ -81,12 +82,16 @@ Routing guide:
 - QA package: `/qa-handoff`.
 - Release documentation: `/release-manifest`, then `/release-doc-check`.
 - General PR/code review: `/pr-review --tier=light|standard|deep`.
+- Pre-PR maintainability, anti-slop, and repository-check verdict: `/code-quality-gate`;
+  use `--mode=apply` only when fixes are explicitly authorized.
 - Apply accepted review findings in bounded rounds: `/pr-improve`.
 - Pin what reviews should prioritize in a repo (draft `.pr-review.md`): `/pr-review-init`.
 - Respond to a human reviewer's PR threads (triage + reply, re-review only what
   changed since the review): `/pr-review-reply` (run after `/pr-review`).
 - Release a merged change (readiness + rollback + notes + rollout): `/ship-it`.
 - Clean up / slim a diff after a feature (apply): `/simplify`.
+- React component API/composition review: use `$vercel-composition-patterns` when installed.
+- React/Next performance review with concrete impact: use `$vercel-react-best-practices` when installed.
 - Scan an area for structural smells (detect-only): `/code-smell`; for architecture/deepening
   candidates, use `/code-smell <path> --architecture`.
 - Apply one defined change across many sites (library swap / API rename / upgrade): `/retrofit`.

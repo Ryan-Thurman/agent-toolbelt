@@ -191,6 +191,7 @@ Manual or integration checks, if automation is not practical:
 
 Before PR is marked ready, review:
 
+- Current `/code-quality-gate` `coverage: final` PASS evidence with recomputed fingerprints
 - Correctness
 - Acceptance criteria
 - App/feature flows
@@ -211,3 +212,7 @@ PR Target Branch: TBD
 PR URL: TBD
 
 Final PR Review Result: Not Started / Ready for PR / Needs Fixes / Blocked
+
+Code Quality Gate Result: Not Started / PASS / FAIL / CAPPED / BLOCKED
+
+Code Quality Gate Evidence Path:

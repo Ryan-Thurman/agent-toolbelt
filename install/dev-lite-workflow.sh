@@ -1,4 +1,5 @@
 # DESC: lightweight dev loop (Cursor + Claude + Codex): intake, plan, phases, reviews, PR readiness
+# DEPENDS: code-quality-gate
 pack_dev_lite_workflow() {
   local c
   for c in \

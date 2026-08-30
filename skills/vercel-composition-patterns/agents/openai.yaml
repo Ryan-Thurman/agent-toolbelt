@@ -1,0 +1,3 @@
+display_name: "Vercel Composition Patterns"
+short_description: "React composition patterns for maintainable component APIs."
+default_prompt: "Use $vercel-composition-patterns to review or design this React component API."

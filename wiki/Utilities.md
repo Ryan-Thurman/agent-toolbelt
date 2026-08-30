@@ -4,6 +4,9 @@ Cross-cutting tools that support the [delivery lanes](Workflows.md): cleanup,
 test authoring, release, codebase-wide change, handoff, and tracker sync.
 
 - [Simplify](#simplify) — active code cleanup plus detect-only smell scans.
+- [React quality specialists](#react-quality-specialists) — conditional Vercel
+  composition and React/Next performance references.
+- [Code Quality Gate](#code-quality-gate) — mandatory pre-PR quality evidence.
 - [Style Guide Init](#style-guide-init) — evidence-derived repository conventions.
 - [Test Case Design](#test-case-design) — report-only QA test design.
 - [Cover](#cover) — test authoring.
@@ -45,6 +48,30 @@ any active test or probe.
 ./install.sh --harness all security-audit /path/to/project
 ```
 
+## Code Quality Gate
+
+Use `code-quality-gate` when a change needs one mechanically checkable pre-PR
+quality verdict. It composes the existing cleanup, review, and fix-loop workflows
+without duplicating them: repository checks and local style evidence first, then
+changed-hunk anti-slop/simplification assessment and focused standards/
+maintainability review.
+
+```sh
+./install.sh --harness all code-quality-gate /path/to/project
+```
+
+`/code-quality-gate --mode=report` is read-only for tracked files. Explicit
+`--mode=apply` permits only unambiguous, behavior-preserving in-scope repairs
+for at most three rounds; structural tradeoffs and behavior changes need a
+recorded human choice. Neither mode commits or pushes. The durable report records
+`PASS`, `FAIL`, `CAPPED`, or `BLOCKED`; its installed fingerprint script makes a
+PASS valid only for the same frozen diff, untracked content, and scope. A narrowed
+scope is partial evidence, so Dev Lite requires a recomputed `coverage: final`
+PASS before PR readiness. The gate assesses only the current checked-out branch
+and local working tree; check out another branch before gating it, or use
+`/pr-review` for a named PR or remote target. Scope entries must be
+repository-relative worktree paths, never absolute paths or `..` escapes.
+
 ## Simplify
 
 The `simplify` tool is the active counterpart to `pr-review`: where review *finds* problems
@@ -61,6 +88,19 @@ and applies nothing, simplify *drives the cleanup* and applies it on opt-in.
 - `/code-smell` — detect-only scan of an area, ranked by severity × confidence; applies
   nothing. Use `/code-smell <path> --architecture` for no-code architecture/deepening
   candidates.
+
+## React quality specialists
+
+Install `react-quality` for both specialist skills:
+
+```sh
+./install.sh --harness all react-quality /path/to/project
+```
+
+Use `vercel-composition-patterns` for component API and composition decisions,
+and `vercel-react-best-practices` for evidence-backed React/Next performance
+work. Their copied MIT-licensed rule files are loaded selectively; local policy,
+framework version, runtime boundary, and concrete impact decide applicability.
 
 ## Cover
 

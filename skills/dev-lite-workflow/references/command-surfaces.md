@@ -12,6 +12,7 @@ The portable command prompts live in `../../commands/`:
 - `/dev-phase-review`
 - `/dev-fix-review-issues`
 - `/dev-pr-review`
+- `/code-quality-gate` (installed as a Dev Lite dependency)
 
 These command files install as real slash commands in Cursor
 (`.cursor/commands/`) and Claude Code (`.claude/commands/`). In Codex they are
@@ -32,3 +33,4 @@ Use the matching templates in `../../templates/` for persistent artifacts:
 - `dev-implementation-plan.md`
 - `dev-phase-review.md`
 - `dev-pr-review.md`
+- `code-quality-gate-report.md` (generated evidence template)

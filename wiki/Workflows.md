@@ -17,7 +17,7 @@ The Dev Lite Workflow is for practical feature or app delivery when you want a
 smaller loop than the full AI Feature Delivery process. It works from:
 
 ```text
-Idea -> Feature Brief -> Implementation Plan -> Task -> Commit -> Phase Review -> Final PR Review
+Idea -> Feature Brief -> Implementation Plan -> Task -> Commit -> Phase Review -> Code Quality Gate (PASS) -> Final PR Review
 ```
 
 Install it into a project for Cursor, Claude Code, and Codex skill use:
@@ -34,7 +34,9 @@ Use `--dry-run` to preview the install:
 
 The installer adds Cursor commands/rules, Claude commands, a repo-scoped
 `.agents/skills/dev-lite-workflow` Codex skill, shared `.atb/skills/` copy,
-templates, and the workflow playbook.
+templates, the workflow playbook, and the `code-quality-gate` dependency chain.
+Before Dev Lite reports `Ready for PR`, `/code-quality-gate` must produce current
+`PASS` evidence for the final diff; `FAIL`, `CAPPED`, or `BLOCKED` is a readiness blocker.
 
 In Cursor or Claude Code, start with `/dev-intake`, then `/dev-plan`. In Codex,
 invoke the skill with `/skills` or by mentioning `$dev-lite-workflow`, then ask
@@ -112,7 +114,7 @@ The `bug-to-fix` tool is the diagnostic lane: it takes a bug report from triage
 to a verified fix.
 
 ```text
-Bug report -> /bug-intake -> /reproduce -> /rca -> /fix-plan -> /dev-implement-task -> /pr-review
+Bug report -> /bug-intake -> /reproduce -> /rca -> /fix-plan -> /dev-implement-task -> /code-quality-gate -> /dev-pr-review
 ```
 
 Install it into a project for Cursor, Claude Code, and Codex skill use:

@@ -112,3 +112,23 @@ Do not approve a phase or PR if blocking issues remain.
 Treat missing feasible tests for behavior changes as a Should Fix issue by
 default, or Blocking when the missing coverage leaves core behavior,
 permissions, data safety, or high-risk edge cases unverified.
+
+## Mandatory pre-PR quality gate
+
+Before `Ready for PR`, run `/code-quality-gate` against the final branch diff.
+It gates only the current checked-out branch and local working tree, so check
+out the intended branch first; use `/pr-review` for a named PR or other branch.
+Read its generated `.atb-work/code-quality-gate/<target-slug>/report.md` and
+confirm `status: "PASS"` and `coverage: "final"`. Rerun
+`bash skills/code-quality-gate/scripts/fingerprint.sh` with the report's
+`base_sha` and `allowed_paths_file`;
+the recomputed `head_fingerprint` and `scope_fingerprint` must exactly match
+the report. A stale, partial, or mismatched PASS is not evidence for a later
+diff.
+
+If the gate reports `FAIL`, `CAPPED`, or `BLOCKED`, classify PR readiness as
+Blocking and name the report path plus the exact remaining finding, cap, or
+unblocker. Use `/code-quality-gate --mode=apply` only when implementation edits
+are already authorized; it reuses `/pr-improve`'s frozen scope and bounded
+convergence rules. Do not call the code AI-generated: the gate judges observable
+policy, naming, abstraction, comments, tests, and maintainability consequences.

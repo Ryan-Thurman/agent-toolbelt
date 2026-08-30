@@ -33,6 +33,10 @@ Never change behavior or edit tests to make cleanup pass.
   smell families, `/simplify` axes, risk/action vocabulary, thin-wrapper rules, and detection cues.
   Load `shared/contracts/references/anti-slop-naming.md` for concrete misleading-name,
   narration-comment, and speculative-abstraction cues; never turn generic-name cues into regex bans.
+- **Route React cleanup precisely.** For TypeScript or React changes, load
+  `shared/contracts/references/typescript-react-baseline.md`. If the installed specialist skills
+  apply, read only the matching composition or React/Next performance rule; verify versions and
+  require concrete impact before applying a performance cleanup.
 - **Respect fences and boundaries.** Honor `simplify-ignore` block markers and existing abstraction
   boundaries; be careful around error handling, security logic, migration files, and dynamic callers.
 

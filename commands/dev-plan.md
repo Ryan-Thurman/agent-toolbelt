@@ -82,7 +82,8 @@ For larger app ideas, use:
 4. Secondary Flows
 5. Error, Empty, and Loading States
 6. Tests and Hardening
-7. Final PR Review
+7. Code Quality Gate
+8. Final PR Review
 
 Choose the model that fits the scope.
 

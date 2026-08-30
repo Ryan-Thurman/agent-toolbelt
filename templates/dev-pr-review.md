@@ -51,6 +51,14 @@ contract, or boundary clause violated.
 
 ## Required Fixes
 
+## Code Quality Gate Evidence
+
+- Report path:
+- Status: PASS / FAIL / CAPPED / BLOCKED / Missing / Stale
+- Coverage: final / partial / unknown
+- Current base/head/scope fingerprints recomputed and verified: Yes / No
+- Blocking gate outcome or remaining disposition:
+
 ## Tests / Checks Reviewed
 
 ## Test Suite Changes

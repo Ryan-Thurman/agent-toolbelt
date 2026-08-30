@@ -7,6 +7,7 @@ For a guided command path, see `../docs/tutorial.md`. If the next command is
 unclear inside a pilot repo, start with `/workflow-router`.
 
 - `/pr-review` - run the tiered PR/code review workflow.
+- `/code-quality-gate` - run the mandatory pre-PR checks, anti-slop, maintainability, and bounded convergence gate.
 - `/pr-improve` - apply accepted PR findings in bounded fix-and-rereview rounds.
 - `/pr-review-init` - draft a repo's `.pr-review.md` review-priorities config by mining repo evidence (docs, burn history, rejection memory).
 - `/pr-review-reply` - round-trip a PR review: read reviewer threads, triage, re-review only since-SHA changes, reply per-thread.
@@ -21,6 +22,8 @@ unclear inside a pilot repo, start with `/workflow-router`.
 - `/to-issues` - slice an approved brief into vertical-slice tickets.
 - `/ticket-sync` - publish/sync sliced tickets to the repo's tracker (GitHub Issues / Jira / Azure Boards).
 - `/simplify` - actively clean up a diff/area and apply cleanups on opt-in.
+- `$vercel-composition-patterns` - conditional React component API/composition guidance.
+- `$vercel-react-best-practices` - conditional React/Next performance guidance.
 - `/code-smell` - detect-only scan of an area for structural smells; use `--architecture` for
   no-code deepening candidates.
 - `/cover` - author/strengthen behavior-pinning tests for a diff/module/bug repro, on opt-in.
@@ -82,6 +85,7 @@ Some commands overlap. Use these tables to pick the right one.
 | Command | Use it for |
 |---|---|
 | `/pr-review` | Deep, tiered, multi-agent code review (bugs, security, perf, tests, maintainability, standards). The heavy code-quality pass. |
+| `/code-quality-gate` | Required pre-PR verdict: freezes scope, fingerprints the diff/untracked content, runs required checks plus focused standards/maintainability review, and records PASS/FAIL/CAPPED/BLOCKED evidence. `--mode=report` never edits; `--mode=apply` is bounded and explicit. Dev Lite requires recomputed final coverage. |
 | `/pr-improve` | Fix accepted findings in bounded, scope-guarded rounds with a durable ledger; run after review. |
 | `/pr-review-init` | Draft the repo's `.pr-review.md` (per-repo review priorities that `/pr-review` loads) from repo evidence — docs, revert/hotfix history, review threads, rejection memory. Draft only; the team prunes and commits. |
 | `/pr-review-reply` | The round-trip: answer a human reviewer's PR threads — triage each (`answered`/`changed`/`needs-follow-up`), re-review only the code changed since the review, reply per-thread. Run after `/pr-review`. |
@@ -90,7 +94,7 @@ Some commands overlap. Use these tables to pick the right one.
 | `/review-diff` | Quick local-diff review before a PR — lighter than `/pr-review`. |
 | `/pr-ready-check` | Readiness checklist: is the change *ready to open or complete* a PR (summary, tests, risks)? Not code review. |
 | `/pr-traceability-review` | Does the PR trace to its feature record, ticket scope, docs, tests, and release metadata? Not code quality. |
-| `/dev-pr-review` | Dev Lite final readiness gate against the Feature Brief + plan + diff. |
+| `/dev-pr-review` | Dev Lite final readiness gate against the Feature Brief + plan + diff; requires a recomputed final-coverage code-quality-gate PASS. |
 
 **Checking documentation impact**
 

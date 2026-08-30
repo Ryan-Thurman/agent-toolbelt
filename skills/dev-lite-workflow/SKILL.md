@@ -33,6 +33,8 @@ Fix Issues -> Commit
 ↓
 Next Phase
 ↓
+Code Quality Gate (PASS)
+↓
 Final PR Review
 ↓
 Open PR
@@ -67,10 +69,11 @@ fix/<short-bug-name>
 Keep commits on that branch. After all phases are complete and blocking review
 issues are fixed:
 
-1. Run the final PR readiness review against the branch diff.
-2. Fix any Blocking findings and rerun the review.
-3. When the result is `Ready for PR`, push the branch if needed.
-4. Open a PR or provide the exact PR command and description for the user to run.
+1. Run `/code-quality-gate` and obtain recomputed `coverage: final` `PASS` evidence for the branch diff.
+2. Run the final PR readiness review against that same diff.
+3. Fix any Blocking findings, rerun the quality gate, and rerun readiness review.
+4. When the readiness result is `Ready for PR` and the quality gate is `PASS`, push the branch if needed.
+5. Open a PR or provide the exact PR command and description for the user to run.
 
 Do not merge the PR, squash, rebase public history, or push to the default
 branch unless the user explicitly asks.
@@ -84,6 +87,7 @@ branch unless the user explicitly asks.
 - `/dev-phase-review` reviews the completed phase.
 - `/dev-fix-review-issues` fixes only phase review findings.
 - `/dev-pr-review` performs final PR readiness review.
+- `/code-quality-gate` is the mandatory pre-PR maintainability and anti-slop gate.
 
 Load `references/command-surfaces.md` only when you need host-specific command
 installation details, Codex invocation wording, or the template list.
@@ -156,7 +160,7 @@ Lite must still work sequentially in the current session by default.
 - `references/implementation-rules.md` — before / during / after implementing a
   task, plus the test-suite rule.
 - `references/review-rules.md` — phase review evaluation and finding
-  classification (also used for the final PR readiness review).
+  classification (also used for the final PR readiness review and its quality-gate dependency).
 - `references/commit-rules.md` — commit cadence and message conventions.
 - `references/command-surfaces.md` — command files, host command surfaces,
   Codex invocation, and templates.

@@ -8,6 +8,10 @@ any). Read `shared/contracts/references/style-precedence.md` and
 `shared/contracts/references/anti-slop-naming.md`; hold the diff to **this repo's** documented
 conventions, using generic guidance only when local evidence does not decide the issue.
 
+For TypeScript or React changes, also read `shared/contracts/references/typescript-react-baseline.md`.
+If the installed Vercel specialists apply, use their exact conditional rule pointers for
+composition or React/Next performance. They supplement repository policy and never replace it.
+
 ## What to flag
 
 - violations of explicit rules in the repository's approved standards (the primary job).

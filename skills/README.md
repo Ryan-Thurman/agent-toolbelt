@@ -8,6 +8,7 @@ The AI Feature Delivery skills are installed into pilot repos by
 workflow.
 
 - `pr-review/` - tiered multi-agent PR/code review.
+- `code-quality-gate/` - mandatory pre-PR coordinator: repository checks, changed-hunk anti-slop and simplification assessment, standards/maintainability review, and bounded fix/rereview convergence. It owns the PASS/FAIL/CAPPED/BLOCKED evidence record, not duplicate review rules.
 - `pr-improve/` - bounded fix-and-rereview loop with frozen scope and durable ledger state.
 - `pr-review-reply/` - the round-trip half of pr-review: read a human
   reviewer's PR threads, triage each, re-review only the code changed since the
@@ -44,6 +45,10 @@ workflow.
   implementation/test handoff.
 - `simplify/` - active code cleanup: apply high-conviction simplifications on
   opt-in (the counterpart to pr-review).
+- `vercel-composition-patterns/` - conditionally loaded MIT-licensed React
+  component composition references from Vercel Labs.
+- `vercel-react-best-practices/` - conditionally loaded MIT-licensed React and
+  Next.js performance references from Vercel Labs.
 - `cover/` - author/strengthen behavior-pinning tests for a diff, module, or bug
   reproduction on opt-in, plus a detect-only coverage-gap scan; turns a bug repro
   into a committed red→green regression test (the active/detect pair).
@@ -71,7 +76,8 @@ workflow.
   `.tickets.md`. Idempotent (records the tracker key back), confirmation-gated
   with a dry-run preview, and degrades to a manifest when offline.
 - `dev-lite-workflow/` - lightweight dev workflow for feature/app ideas,
-  phased implementation, per-task commits, phase reviews, and final PR review.
+  phased implementation, per-task commits, phase reviews, final PR review, and
+  mandatory recomputed final-coverage code-quality-gate PASS before PR readiness.
 - `phase-context-workflow/` - durable phase context files, handoffs, and context
   packets for safe context resets during long agent work; composes `handoff`
   for phase closeout.
@@ -79,6 +85,12 @@ workflow.
   refinement tickets, QA handoff, and release document control.
 - `webapp-testing/` - browser/webapp verification for user-facing changes and
   QA evidence.
+
+The Vercel specialists preserve their substantive upstream rules under each
+skill's `references/rules/` tree. They are not universal policy: repository
+instructions, configuration, versions, runtime boundaries, and measured impact
+remain authoritative. Install them individually or use the `react-quality`
+convenience pack.
 
 ## Optional rct acceleration
 

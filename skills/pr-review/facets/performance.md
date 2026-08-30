@@ -3,6 +3,12 @@
 You review **only performance**. Follow `facets/_shared.md` for rules, schema, and safety.
 Set `"facet": "performance"` on every finding.
 
+For React or Next.js changes, read `shared/contracts/references/typescript-react-baseline.md`.
+When the installed `vercel-react-best-practices` specialist applies, load only the exact rule
+selected by `skills/vercel-react-best-practices/references/rule-routing.md`. Verify React/Next
+versions and runtime boundaries first. Its priorities do not override repository policy, and
+low-impact `js-*` guidance requires concrete hot-path, scale, or measurement evidence.
+
 ## What to flag
 
 - needless work: redundant computation, repeated queries, work inside a loop that could hoist out.

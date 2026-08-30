@@ -22,7 +22,6 @@ conventions, using generic guidance only when local evidence does not decide the
 - generic style opinions not backed by a project convention or a linter.
 - a generic name in a tiny unambiguous scope, or an unusual pattern established by representative
   local code.
-- any accusation that code looks AI-generated; name the concrete policy or consequence instead.
 - correctness/security/perf (other facets).
 - maintainability abstractions (maintainability facet) — you check *conformance*, not elegance.
 

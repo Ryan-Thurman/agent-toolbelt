@@ -54,6 +54,9 @@ sources with explicit license handling and neighboring packs in this repo. Runti
 - `pr-improve`: stable ledger, bounded rereview, scope guard, and convergence
   concepts independently reworded from Trail of Bits `code-improver`. That source
   is CC BY-SA 4.0; no upstream prose was copied.
+- `code-quality-gate`: local orchestration that composes `simplify`, `pr-review`,
+  and `pr-improve`; it reuses their source-attributed concepts and adds no copied
+  upstream review or simplification prose.
 - `product-discovery`: evidence/assumption, opportunity-risk, experiment, and
   threshold concepts adapted at a high level from Wondel product-oriented skills (MIT).
 - `test-case-design`: general QA/test-case concepts adapted at a high level from
@@ -65,12 +68,26 @@ sources with explicit license handling and neighboring packs in this repo. Runti
   security material (Apache-2.0) and Trail of Bits security/testing skills
   (CC BY-SA 4.0; independently reworded concepts only, no prose copied).
   Specialized active techniques remain out of the core packs.
+- `vercel-composition-patterns` and `vercel-react-best-practices`: substantial
+  rule files copied from Vercel Labs' MIT-licensed Agent Skills repository at
+  commit `063bee94c3f4df8453406c830b0a7df0f2860278`. Sources:
+  [composition-patterns](https://github.com/vercel-labs/agent-skills/tree/063bee94c3f4df8453406c830b0a7df0f2860278/skills/composition-patterns)
+  and
+  [react-best-practices](https://github.com/vercel-labs/agent-skills/tree/063bee94c3f4df8453406c830b0a7df0f2860278/skills/react-best-practices).
+  The upstream revision had no standalone LICENSE file; its README identifies
+  the repository as MIT and both source skill manifests declare MIT. Local
+  entrypoints adapt routing and applicability while preserving the rule files
+  under progressive-disclosure references.
 
 ## Internal Pack Relationships
 
 - `phase-gate`: phase-boundary orchestration over `pr-review`; it spawns the
   reviewer as a subagent, routes findings, and adds solo-mode fix and merge.
   Review logic and host posting remain owned by `pr-review`.
+- `code-quality-gate`: pre-PR orchestration over style evidence, repository
+  checks, `simplify`, `pr-review`, and `pr-improve`. It owns only the durable
+  PASS/FAIL/CAPPED/BLOCKED status contract; cleanup, findings, and convergence
+  mechanics remain owned by their existing packs.
 - `pr-review-reply`: complements `pr-review`; it reuses the provider layer and
   mirrors the opt-in, idempotent, confirm-first posting model for inbound review
   threads. Reply triage statuses and reply-block contracts are owned by

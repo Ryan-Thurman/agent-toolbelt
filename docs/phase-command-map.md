@@ -94,7 +94,7 @@ Four steps to a minimal fix, then the shared dev/review back half. Workflow:
 | 2 | Reproduce | `/reproduce` |
 | 3 | Root-cause | `/rca` (`/rca --diagnose` for read-only) |
 | 4 | Fix contract + apply | `/fix-plan` |
-| → | Implement + review | `/dev-implement-task`, `/pr-review` |
+| → | Implement + readiness | `/dev-implement-task`, `/code-quality-gate`, `/dev-pr-review` |
 
 State lives in a durable `bug-investigation.md`; use `/handoff` at any point.
 Three failed fixes = treat as an architecture problem, not a fourth attempt.
@@ -105,7 +105,7 @@ flowchart TD
     B2["2. Reproduce<br/>/reproduce"]
     B3["3. Root-cause<br/>/rca"]
     B4["4. Fix contract + apply<br/>/fix-plan"]
-    B5["Implement + review<br/>/dev-implement-task · /pr-review"]
+    B5["Implement + readiness<br/>/dev-implement-task · /code-quality-gate · /dev-pr-review"]
 
     B1 --> B2 --> B3 --> B4 --> B5 --> PR([Open PR])
     B4 -.->|3 failed fixes| ARCH{{"Escalate:<br/>architecture problem"}}

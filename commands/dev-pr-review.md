@@ -9,6 +9,20 @@ Perform a final PR readiness review for the completed feature or app.
 
 Use this after all phases are completed and phase review issues are fixed.
 
+Before a `Ready for PR` result, require current `PASS` evidence from
+`/code-quality-gate` for the same final diff. Read
+`.atb-work/code-quality-gate/<target-slug>/report.md` and require
+`coverage: "final"`. Rerun
+`bash skills/code-quality-gate/scripts/fingerprint.sh` with the report's
+`base_sha` and `allowed_paths_file`; its head and scope fingerprints
+must match the report. If it is missing, partial, stale, mismatched, or reports
+`FAIL`, `CAPPED`, or `BLOCKED`, record a Blocking readiness issue and do not
+report `Ready for PR`.
+
+The gate reviews only the currently checked-out branch and local working tree.
+For a PR, remote branch, or another local branch, check it out before obtaining
+or validating gate evidence; use `/pr-review` for a named external target.
+
 This review happens before opening or marking a PR ready. Do not push directly
 to `main`, `master`, or the repository default branch as part of this command
 unless the user explicitly asks for that exact behavior.
@@ -77,6 +91,10 @@ logging, dependency risks, and unsafe error handling.
 
 Look for readability, maintainability, duplication, naming, unnecessary
 complexity, poor abstractions, and inconsistent project conventions.
+
+Treat `/code-quality-gate` as the required evidence for this area. It must have
+run repository checks and a focused standards/maintainability review; do not
+silently replace it with a subjective quality opinion.
 
 ### UX / Product Quality
 

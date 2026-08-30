@@ -15,7 +15,8 @@ review" or "run a phase review."
 Do not push directly to `main`, `master`, or the repository default branch
 during this workflow unless the user explicitly asks for that exact behavior.
 Use a focused feature/fix branch and open a PR after final PR readiness review
-passes.
+passes and `/code-quality-gate` has recomputed `coverage: final` PASS evidence
+for the same diff.
 
 ## Workflow Summary
 
@@ -45,6 +46,8 @@ Commit fixes
 Next phase
 ↓
 Repeat
+↓
+/code-quality-gate (must PASS)
 ↓
 /dev-pr-review
 ↓
@@ -88,6 +91,7 @@ Create an Implementation Plan with:
 - Tests/checks tied to each behavior-changing task
 - Risks
 - Phase review checklist
+- Code-quality-gate evidence before final PR readiness
 - Final PR review plan
 
 Stop here for plan review. Do not begin implementation until the user approves
@@ -198,9 +202,22 @@ commit
 commit fixes
 ```
 
-## Step 10: Final PR Review
+## Step 10: Code Quality Gate
 
 After all phases are complete and review issues are fixed, run:
+
+```text
+/code-quality-gate
+```
+
+The final run must have `coverage: final`; `/dev-pr-review` recomputes the
+recorded fingerprints and blocks on a stale, partial, FAIL, CAPPED, or BLOCKED
+result. Use `--mode=apply` only for unambiguous, behavior-preserving fixes that
+are already authorized.
+
+## Step 11: Final PR Review
+
+After the final-coverage gate passes, run:
 
 ```text
 /dev-pr-review
@@ -221,7 +238,7 @@ The final PR review must check:
 
 Do not mark the PR ready if blocking issues remain.
 
-## Step 11: Open PR
+## Step 12: Open PR
 
 When the final PR review result is `Ready for PR`:
 

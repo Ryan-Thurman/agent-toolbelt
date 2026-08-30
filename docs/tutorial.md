@@ -40,8 +40,10 @@ The dry run shows the files that would be installed:
 - `AGENTS.md`
 - `.agents/skills/dev-lite-workflow/SKILL.md`
 - `.agents/skills/dev-lite-workflow/agents/openai.yaml`
+- `.agents/skills/code-quality-gate/SKILL.md`
 - `.atb/skills/dev-lite-workflow/SKILL.md`
 - `.atb/skills/dev-lite-workflow/agents/openai.yaml`
+- `.atb/skills/code-quality-gate/SKILL.md`
 - `.atb/templates/dev-*.md`
 - `.atb/workflows/dev-lite-feature-workflow.md`
 
@@ -85,7 +87,8 @@ The Dev Lite workflow now enforces these checkpoints:
 - Do not push directly to `main`, `master`, or the default branch unless the
   user explicitly approves that exact behavior.
 - Work from a focused `dev/...` or `fix/...` branch.
-- Run final PR readiness review before opening or marking a PR ready.
+- Run `/code-quality-gate` before final PR readiness; `/dev-pr-review` requires
+  recomputed final-coverage PASS evidence.
 
 The plan document should be updated after every meaningful step with current
 state, current task, evidence, tests/checks, blockers, next step, branch/PR
@@ -362,7 +365,7 @@ Use these shortcuts while piloting:
 
 - Raw idea: `/feature-start`, then `/feature-fleshout`.
 - Bug / broken behavior: `/bug-intake` -> `/reproduce` -> `/rca` -> `/fix-plan`
-  (then `/dev-implement-task` -> `/pr-review`). Use `/rca --diagnose` for a
+  (then `/dev-implement-task` -> `/code-quality-gate` -> `/dev-pr-review`). Use `/rca --diagnose` for a
   read-only root-cause analysis.
 - Unsure what is next: `/workflow-router`.
 - Existing feature health check: `/steward-review`.

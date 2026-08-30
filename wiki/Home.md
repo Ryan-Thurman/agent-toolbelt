@@ -12,7 +12,7 @@ This wiki is the deep-dive companion to the [README](../README.md). Start with
 |---|---|
 | [Installation](Installation.md) | `install.sh`, harness selection, polyrepo `--sweep`, the private Cursor plugin |
 | [Workflows](Workflows.md) | Product Discovery, Dev Lite, Phase Context, AI Feature Delivery, Bug to Fix, Shape Up, Threat Model |
-| [Code Review](Code-Review.md) | PR Review, PR Improve and triggers: Review Reply, Review on Open, Review Queue, Phase Gate, Cursor Hooks |
+| [Code Review](Code-Review.md) | Code Quality Gate, PR Review, PR Improve and triggers: Review Reply, Review on Open, Review Queue, Phase Gate, Cursor Hooks |
 | [Utilities](Utilities.md) | Style Guide Init, Simplify, Test Case Design, Cover, Security Audit, Ship It, Retrofit, Worktree, Handoff, Ticket Sync |
 | [Phase → Command Map](../docs/phase-command-map.md) | Which commands each workflow phase uses (with Mermaid diagrams) |
 
@@ -21,6 +21,9 @@ This wiki is the deep-dive companion to the [README](../README.md). Start with
 The repository ships these toolsets:
 
 - `pr-review`: a tiered, multi-agent pull-request and diff review workflow.
+- `code-quality-gate`: a mandatory pre-PR coordinator over repository checks,
+  changed-code anti-slop/simplification assessment, standards/maintainability
+  review, and bounded fix/rereview evidence.
 - `pr-review-reply`: the round-trip half of `pr-review` — read a human
   reviewer's PR threads, triage each, re-review only the code changed since the
   review, and reply per-thread (posting opt-in).
@@ -38,7 +41,8 @@ The repository ships these toolsets:
 - `bug-to-fix`: a diagnostic lane that takes a bug report through triage,
   reproduction, root-cause analysis, a minimal fix, and verification.
 - `dev-lite-workflow`: a lightweight development loop for app/feature ideas,
-  phased implementation, per-task commits, phase reviews, and final PR review.
+  phased implementation, per-task commits, phase reviews, final PR review, and
+  a required recomputed final-coverage code-quality-gate PASS before PR readiness.
 - `phase-context-workflow`: durable phase files, handoffs, and context packets
   for long agent work that needs safe `/clear` or `/compact` boundaries. It
   composes the cross-cutting `handoff` skill for phase closeout.
@@ -73,7 +77,7 @@ The repository ships these toolsets:
 The lanes are different shapes: `ai-feature-delivery` / `dev-lite-workflow` are
 **generative** (start from an idea), while `bug-to-fix` is **diagnostic** (start
 from broken behavior). `shape-up` shapes a fuzzy request before either; `pr-review`,
-`simplify`, and `cover` are the review / cleanup / test-authoring utilities; `ship-it`
+`code-quality-gate`, `simplify`, and `cover` are the review / cleanup / test-authoring utilities; `ship-it`
 is the release step at the tail. They share a back half — dev implementation and PR
 review.
 

@@ -35,6 +35,13 @@ pack_desc() {
   sed -n 's/^# DESC: //p' "$INSTALL_DIR/$1.sh" | head -1
 }
 
+# pack_dependencies <pack> — direct, whitespace-separated pack dependencies declared
+# by an install/<pack>.sh `# DEPENDS:` header. The headers keep dependency ownership
+# beside the pack's payload without loading pack code during resolution.
+pack_dependencies() {
+  sed -n 's/^# DEPENDS: //p' "$INSTALL_DIR/$1.sh" | head -1
+}
+
 # Dedup-on-add into the space-wrapped HARNESS_ENABLED list.
 _h_add() {
   case " $HARNESS_ENABLED " in *" $1 "*) ;; *) HARNESS_ENABLED="$HARNESS_ENABLED $1" ;; esac
@@ -150,18 +157,35 @@ for p in "${packs[@]}"; do
   fi
 done
 
-# Validate + de-duplicate (preserve order).
+# Validate and expand direct dependencies in post-order. Dependency packs are installed
+# before their consumers, so each consumer can point at an available runtime surface.
+# `resolving` detects declaration cycles without relying on Bash associative arrays.
 selected=()
-for p in "${expanded[@]}"; do
+resolving=()
+resolve_pack() {
+  local p="$1" dependency active
   if [ ! -f "$INSTALL_DIR/$p.sh" ]; then
     echo "install: unknown pack: $p" >&2
     echo "Run './install.sh --list' to see available packs." >&2
     exit 2
   fi
-  case " ${selected[*]:-} " in
-    *" $p "*) ;;
-    *) selected+=("$p") ;;
+  case " ${selected[*]:-} " in *" $p "*) return 0 ;; esac
+  case " ${resolving[*]:-} " in
+    *" $p "*)
+      echo "install: dependency cycle detected at pack: $p" >&2
+      exit 2
+      ;;
   esac
+  resolving+=("$p")
+  for dependency in $(pack_dependencies "$p"); do
+    resolve_pack "$dependency"
+  done
+  unset 'resolving[${#resolving[@]}-1]'
+  selected+=("$p")
+}
+
+for p in "${expanded[@]}"; do
+  resolve_pack "$p"
 done
 
 # --harness is required — no implicit default.
@@ -211,7 +235,11 @@ install_into_target() {
     "pack_${p//-/_}"
     touched=$(( (created + updated + skipped) - pre ))
     if [ "$touched" = 0 ]; then
-      echo "  ! $p installed nothing for harness '${HARNESS_ENABLED# }'" >&2
+      if [ -n "$(pack_dependencies "$p")" ]; then
+        echo "  note: $p is a dependency bundle; its payload was handled by declared dependencies"
+      else
+        echo "  ! $p installed nothing for harness '${HARNESS_ENABLED# }'" >&2
+      fi
     elif [ "$gated" -gt "$pre_g" ]; then
       echo "  note: $p skipped $((gated - pre_g)) file(s) not owned by the selected harness/scope"
     fi

@@ -7,4 +7,5 @@ pack_simplify() {
   skill simplify references/apply-discipline.md
   skill simplify references/rct-acceleration.md
   shared_contract references/maintainability-taxonomy.md
+  shared_contract references/anti-slop-naming.md
 }

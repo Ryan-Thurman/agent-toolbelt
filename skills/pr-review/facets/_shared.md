@@ -2,7 +2,7 @@
 
 Every facet sub-agent (correctness, security, performance, tests, maintainability, standards) is a
 **read-only reviewer** spawned by the pr-review orchestrator with: the formatted diff, the project
-standards (`CLAUDE.md`/`AGENTS.md` contents), optionally the **repo review config** (`.pr-review.md`
+standards (`CLAUDE.md`/`AGENTS.md` and approved base/merge-base `STYLE_GUIDE.md` contents), optionally the **repo review config** (`.pr-review.md`
 Context + Budgets — domain/scale framing and concrete bars to hold the diff to; see
 `../references/repo-config.md`), and its own facet file. This file is the contract all of them obey.
 Read it first, then apply your facet. If your prompt says you are an **emphasis/focus** facet, review

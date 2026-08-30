@@ -8,6 +8,7 @@ The AI Feature Delivery skills are installed into pilot repos by
 workflow.
 
 - `pr-review/` - tiered multi-agent PR/code review.
+- `pr-improve/` - bounded fix-and-rereview loop with frozen scope and durable ledger state.
 - `pr-review-reply/` - the round-trip half of pr-review: read a human
   reviewer's PR threads, triage each, re-review only the code changed since the
   review, and reply per-thread (posting opt-in, idempotent).
@@ -33,6 +34,8 @@ workflow.
   minimal fix, and verification for a reported bug.
 - `shape-up/` - interrogate a vague request into an agreed brief before
   building (the front-door to the dev lanes).
+- `product-discovery/` - evidence, assumptions, risks, and experiments before shaping a candidate.
+- `style-guide-init/` - mine repository evidence into a canonical coding-style guide or draft.
 - `tech-backlog-assessment/` - assess technical backlog items before
   implementation: do/defer/reject/spike, options, dependency choices, risks,
   tests, and next workflow.
@@ -44,6 +47,10 @@ workflow.
 - `cover/` - author/strengthen behavior-pinning tests for a diff, module, or bug
   reproduction on opt-in, plus a detect-only coverage-gap scan; turns a bug repro
   into a committed red→green regression test (the active/detect pair).
+- `test-case-design/` - report-only, prioritized QA test-case design that hands selected cases to
+  test-authoring or browser-verification workflows.
+- `threat-model/` - design-time security analysis of assets, boundaries, abuse paths, and controls.
+- `security-audit/` - bounded read-only code, configuration, dependency, and secret-exposure audit.
 - `ship-it/` - lightweight release readiness: go/no-go check, rollback plan,
   release notes, and rollout/monitor plan (pipeline-aware).
 - `retrofit/` - apply one defined change across every site (library swap, API

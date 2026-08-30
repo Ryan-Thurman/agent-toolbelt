@@ -11,6 +11,11 @@ complexity, duplication, coupling, state, errors, performance, maintainability, 
 the compact Fowler-style cues. Treat those cues as heuristics, not hard violations; documented repo
 standards override the baseline.
 
+Read `shared/contracts/references/anti-slop-naming.md` for narration-comment and
+speculative-abstraction cues. Report them only where the changed code has a concrete
+maintenance, contract, or readability consequence; preserve the deep-tier behavior
+in `maintainability-deep.md`.
+
 For PR review, prioritize smells introduced or worsened by the diff:
 
 - a change that makes a module materially harder to reason about.

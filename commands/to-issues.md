@@ -30,6 +30,11 @@ skill.
    the dependency relationships correct? should any slices merge or split?
 5. Order the tickets by dependency (blockers first) so the `Blocked by` references are real.
 
+6. Map source requirements to tickets and verification methods.
+   Report missing coverage, contradictory decisions, and cycles before finalizing.
+   Include setup, tests, and documentation in the slice that needs them.
+   Preserve approved ticket boundaries; changes need their owner’s decision.
+
 ## Output
 
 A dependency-ordered list of vertical-slice tickets following `templates/shape-up-issues.md`, each

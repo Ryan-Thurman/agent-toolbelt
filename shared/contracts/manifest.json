@@ -18,6 +18,7 @@
         "pr-review",
         "pr-review-reply",
         "product-discovery",
+        "product-outcome-review",
         "retrofit",
         "review-on-open",
         "review-queue",
@@ -26,11 +27,14 @@
         "ship-it",
         "simplify",
         "style-guide-init",
+        "system-design",
         "tech-backlog-assessment",
+        "tech-debt-discovery",
         "test-case-design",
         "threat-model",
         "ticket-discovery",
         "ticket-sync",
+        "user-research-synthesis",
         "vercel-composition-patterns",
         "vercel-react-best-practices",
         "webapp-testing",
@@ -92,6 +96,28 @@
         "simplify",
         "vercel-composition-patterns",
         "vercel-react-best-practices"
+      ]
+    },
+    {
+      "path": "references/evidence-quality.md",
+      "owner": "shared/contracts",
+      "consumers": [
+        "product-discovery",
+        "product-outcome-review",
+        "security-audit",
+        "system-design",
+        "tech-backlog-assessment",
+        "tech-debt-discovery",
+        "threat-model",
+        "user-research-synthesis"
+      ]
+    },
+    {
+      "path": "references/product-measurement.md",
+      "owner": "shared/contracts",
+      "consumers": [
+        "product-discovery",
+        "product-outcome-review"
       ]
     }
   ]

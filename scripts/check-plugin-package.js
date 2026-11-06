@@ -100,8 +100,8 @@ if (codex && codex.interface && (!Array.isArray(codex.interface.capabilities) ||
 const skillCount = fs.readdirSync(path.join(root, "skills"), { withFileTypes: true })
   .filter((entry) => entry.isDirectory() && fs.existsSync(path.join(root, "skills", entry.name, "SKILL.md")))
   .length;
-if (skillCount !== 29) {
-  errors.push(`expected 29 standard skills, found ${skillCount}`);
+if (skillCount !== 33) {
+  errors.push(`expected 33 standard skills, found ${skillCount}`);
 }
 for (const id of ["auto-agent-contract", "auto-agent-dev-lite"]) {
   if (fs.existsSync(path.join(root, "skills", id))) {
@@ -250,6 +250,34 @@ function checkInstall(args, target, label) {
   }
   return true;
 }
+// Each new capability must also work as a selected compatibility pack.
+for (const [id, template] of [
+  ["user-research-synthesis", "user-research-synthesis.md"],
+  ["product-outcome-review", "product-outcome-review.md"],
+  ["tech-debt-discovery", "tech-debt-register.md"],
+  ["system-design", "system-design.md"],
+]) {
+  const target = path.join(tempRoot, `selected-${id}`);
+  if (!checkInstall(["--harness", "all", id], target, id)) continue;
+  for (const relativePath of [
+    `.atb/skills/${id}/SKILL.md`,
+    `.agents/skills/${id}/SKILL.md`,
+    `.atb/templates/${template}`,
+    ".atb/shared/contracts/references/evidence-quality.md",
+    `.cursor/commands/${id}.md`,
+    `.claude/commands/${id}.md`,
+  ]) {
+    if (!fs.existsSync(path.join(target, relativePath))) errors.push(`${id} selected install is missing ${relativePath}`);
+  }
+  const installed = fs.readFileSync(path.join(target, ".agents", "skills", id, "SKILL.md"), "utf8");
+  if (!installed.includes(`.atb/templates/${template}`)) errors.push(`${id} template path was not rewritten for compatibility installation`);
+  if (id === "system-design" && !fs.existsSync(path.join(target, ".agents", "skills", "threat-model", "SKILL.md"))) {
+    errors.push("system-design selected install must include its threat-model dependency");
+  }
+  if (id === "product-outcome-review" && !fs.existsSync(path.join(target, ".atb", "shared", "contracts", "references", "product-measurement.md"))) {
+    errors.push("product-outcome-review selected install must include product measurement rules");
+  }
+}
 const standardTarget = path.join(tempRoot, "standard-install");
 if (checkInstall(["--harness", "all", "all"], standardTarget, "standard all-pack")) {
   for (const relativePath of [
@@ -282,7 +310,7 @@ if (checkInstall(["--harness", "all", "all"], standardTarget, "standard all-pack
     }
   }
   for (const host of [".cursor", ".claude"]) {
-    for (const command of ["workflow-router", "implementation-plan", "write-tests", "review-diff", "pr-ready-check", "role-review"]) {
+    for (const command of ["workflow-router", "implementation-plan", "write-tests", "review-diff", "pr-ready-check", "role-review", "plan-review", "user-research-synthesis", "product-outcome-review", "tech-debt-discovery", "system-design"]) {
       if (!fs.existsSync(path.join(standardTarget, host, "commands", `${command}.md`))) {
         errors.push(`shared command helper is missing from ${host}: ${command}`);
       }

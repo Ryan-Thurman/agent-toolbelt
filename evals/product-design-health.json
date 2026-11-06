@@ -1,0 +1,62 @@
+{
+  "format_version": 1,
+  "cases": [
+    {
+      "id": "research-counterexamples",
+      "skill": "user-research-synthesis",
+      "input": "fixtures/research/interviews.md",
+      "request": "Synthesize these notes for the invite setup question.",
+      "expectations": [
+        "Themes cite source IDs and distinguish observations from interpretations.",
+        "Repeated comments from P1 do not count as independent participants.",
+        "P3 remains counterevidence; missing P4 and sample limits remain visible."
+      ]
+    },
+    {
+      "id": "outcome-population-change",
+      "skill": "product-outcome-review",
+      "input": "fixtures/research/results.md",
+      "request": "Review the outcome and recommend the next decision.",
+      "expectations": [
+        "The review does not compare 20/100 and 40/400 as equivalent conversion populations.",
+        "Event changes and missing guardrails prevent an unqualified causal success verdict.",
+        "The next decision identifies specific missing evidence."
+      ]
+    },
+    {
+      "id": "design-and-threats",
+      "skill": "system-design",
+      "input": "fixtures/design/requirements.md",
+      "request": "Produce a design and linked attack review for these requirements.",
+      "expectations": [
+        "Design preserves the existing application, worker, and identity provider.",
+        "Threats and security requirements connect to tenant isolation and request replay.",
+        "No capacity, retention target, implemented control, or project approval is invented.",
+        "Design and threat report identify the same reviewed draft revision."
+      ]
+    },
+    {
+      "id": "plan-readiness",
+      "skill": "phased-delivery",
+      "input": "fixtures/design/plan.md",
+      "request": "Review this plan against its requirements without editing or implementing.",
+      "expectations": [
+        "Review identifies scope expansion, dependency cycle, missing requirement coverage, and missing integration evidence.",
+        "A completion claim without implementation evidence cannot establish readiness.",
+        "No product code or source plan is changed."
+      ]
+    },
+    {
+      "id": "debt-evidence",
+      "skill": "tech-debt-discovery",
+      "input": "fixtures/debt",
+      "request": "Find and prioritize useful maintenance work in this fixture.",
+      "expectations": [
+        "The retry consequence has evidence and a bounded completion condition.",
+        "The compatibility wrapper is not labeled debt solely because it is thin.",
+        "The report records unavailable history and metadata rather than recommending speculative library replacements.",
+        "The input files remain unchanged."
+      ]
+    }
+  ]
+}

@@ -153,7 +153,10 @@
       const tasks = [
         { skill: 'product-discovery', title: 'Plan a feature', hint: 'Clarify the problem' },
         { skill: 'bug-to-fix', title: 'Fix a bug', hint: 'Find the root cause' },
-        { skill: 'pr-review', title: 'Review a PR', hint: 'Check a change' }
+        { skill: 'pr-review', title: 'Review a PR', hint: 'Check a change' },
+        { skill: 'user-research-synthesis', title: 'Understand customers', hint: 'Connect research to evidence' },
+        { skill: 'tech-debt-discovery', title: 'Find technical debt', hint: 'Choose useful improvements' },
+        { skill: 'system-design', title: 'Design a system', hint: 'Document design and threats' }
       ];
       tasks.forEach((task) => {
         const skill = skillById.get(task.skill);

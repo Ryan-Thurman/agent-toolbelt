@@ -23,6 +23,9 @@ Start here:
   skill additions, and a narrower Vercel rule-scope design.
 - `skill-focus-review-2026-11-02.md` - product, QA, development, PR, lookup,
   and verification coverage; concrete instruction gaps and ordered priorities.
+- `skill-packaging-research-2026-11-06.md` - current coverage, proposed product,
+  technical health, system design, and security collections; source choices and implementation order.
+- `product-design-health-implementation-2026-11-06.md` - implemented skills, commands, workflow changes, portal updates, and verification limits for release `1.1.0`.
 - `knowledge-verification-deep-dive-2026-11-02.md` - two proposed evidence skills,
   shared evidence rules, upstream comparison, and evaluation/implementation design.
 - `readable-output-design-2026-11-02.md` - table and diagram defaults, concrete

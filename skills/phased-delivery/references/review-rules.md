@@ -9,6 +9,9 @@ Check in this order:
 
 1. Every phase or ticket acceptance clause is met or explicitly unresolved,
    with test or manual evidence. Distinguish verified, failed, and not inferable.
+   Trace behavior through implementation and component connections.
+   File existence, symbol presence, and implementer summaries do not prove runtime behavior.
+   Record the observation and revision; retain `Not verified` when execution evidence is unavailable.
 2. The diff stays within this phase's boundary. Any contract, schema, or API
    change beyond it has source approval; there is no next-ticket leakage.
 3. Tests, error paths, permissions, security, performance, UX, and maintainable

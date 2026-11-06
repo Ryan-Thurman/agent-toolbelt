@@ -3,7 +3,8 @@
 Agent Toolbelt owns reusable skills and workflows.
 Each target repository owns its delivery process and project requirements.
 
-The 2026-11-03 cleanup leaves 29 standard skills and two optional Auto Agent skills in this repository.
+Release `1.1.0` contains 33 standard skills and two optional Auto Agent skills.
+The 2026-11-03 cleanup established the shared and project ownership boundary.
 Release `1.0.0` includes this cleanup and its installation changes.
 Earlier cleanup work kept plugin versions at `0.2.0`.
 
@@ -16,6 +17,8 @@ Earlier cleanup work kept plugin versions at `0.2.0`.
 | Optional Auto Agent execution | Toolbelt | Both optional skills remain in the separate package within this repository. |
 | Forms, approval gates, and controlled records | Target project | The project defines required records, reviewers, evidence, and release policy. |
 | Discover delivery process | Discover repository | The existing Discover package owns its lifecycle skills, commands, templates, and workflows. |
+| Product research and outcomes | Toolbelt | Research synthesis, discovery, measurement, and outcome review supply reusable methods. |
+| System design and technical health | Toolbelt | Design documents, threat review, debt discovery, and selected assessment remain independent of project records. |
 | Knowledge lookup and information verification | Proposed Toolbelt work | The designs and evaluation cases exist. These skills are not implemented. |
 
 Read [the shared output rules](../shared/contracts/references/human-readable-output.md) for communication requirements.

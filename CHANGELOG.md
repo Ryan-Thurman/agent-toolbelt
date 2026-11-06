@@ -2,6 +2,29 @@
 
 ## Unreleased
 
+## v1.1.0 - 2026-11-06
+
+### Added
+
+- Added research synthesis, product outcome review, technical debt discovery, and system design skills. The standard plugin now contains 33 skills.
+- Added five compatibility commands, including `/plan-review`, with templates and installer support.
+- Added shared evidence and product measurement rules, plus product learning, technical health, design-security, and retrospective workflow guides.
+- Added behavioral evaluation fixtures for research, outcomes, design, planning, and debt discovery.
+
+### Changed
+
+- Added plan-readiness review, decision capture, requirement coverage, integration checks, and evidence freshness to existing delivery workflows.
+- Connected system design, threat requirements, control status, and implementation verification.
+- Updated the portal with six workflow guides, new task shortcuts, and the four new skills.
+
+### Fixed
+
+- Corrected technical assessment discovery text to describe one supplied item.
+- Required supplied acceptance criteria at every PR review depth.
+- Preserved intended assertions during regression falsification and required meaningful behavioral failure evidence.
+- Replaced universal release thresholds with project baselines, observation limits, and agreed response criteria.
+- Distinguished local static source analysis from active security testing and source uploads.
+
 ## v1.0.1 - 2026-11-06
 
 ### Fixed

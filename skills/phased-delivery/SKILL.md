@@ -1,6 +1,6 @@
 ---
 name: phased-delivery
-description: Plan and deliver a requirement in reviewable phases, one PR per phase. Use with a raw request, an existing plan, or approved tickets; when tickets are supplied, map one ticket to one phase and one PR.
+description: Review implementation plans or deliver requirements in reviewable phases, one PR per phase. Use with a raw request, existing plan, or approved tickets; preserve one ticket per phase and PR.
 ---
 
 # Phased Delivery
@@ -11,6 +11,8 @@ Before you write a response for the user, read
 Use this skill to turn approved scope into small, verifiable PRs with a human
 reviewing the plan and each PR. A small request may need only one phase. This is
 the interactive delivery lane, not the unattended Auto Agent runner.
+
+For plan-review requests, read `references/plan-readiness.md` and report without starting implementation.
 
 ## Choose the source of truth
 
@@ -45,7 +47,9 @@ Do not quietly split, combine, or expand tickets to make the workflow fit.
    dependency order, acceptance checks, and exact values the source fixes.
    Leave routine implementation bodies to execution; each step needs a
    checkable result rather than a transcript of future edits.
-2. **Get plan approval.** Show the proposed phase/PR map, dependency bases,
+2. **Check readiness and obtain needed approval.** Read `references/plan-readiness.md`.
+   Check requirement coverage, decisions, dependencies, connections, and verification before execution.
+   Show the proposed phase/PR map, dependency bases,
    and material assumptions. Wait for approval of this map before implementation
    unless the user has already approved these specific phase and PR boundaries.
    A general request to "start when ready" or an approved source ticket does not

@@ -7,6 +7,8 @@ Read this when starting or carrying out a phase.
    or commits, create or switch to a focused phase branch if currently on the
    default branch; stop if that cannot be done safely. For a stack, branch from
    the parent ticket branch and compare only against that branch.
+   Compare recorded completion with the actual revision, diff, and checks before reusing it.
+   Report stale evidence or missing work; do not redispatch completed tasks from memory alone.
 2. Fill missing *technical* context: affected files, interfaces, migrations,
    test locations and commands, operational risks, and implementation steps.
    Mark inferred details as such. Do not change acceptance criteria or release,

@@ -5,12 +5,12 @@ argument-hint: "[tickets-or-feature-context]"
 
 # /ticket-sync
 
-Take the ticket files produced by `/refine-to-tickets`, `/to-issues`, or `/bug-intake` and
+Take the ticket files produced by `/to-issues`, `/bug-intake`, or a project-owned workflow and
 create/update them in the repo's configured issue tracker using the `ticket-sync` skill. One flow,
 swappable tracker — GitHub Issues, Jira, or Azure Boards — chosen by the repo's `.tickets.md`.
 
 > **When to use vs related:** `/ticket-sync` is the optional *publish* step after a slicer. It does
-> not slice — run `/refine-to-tickets` (regulated lane), `/to-issues` (dev lane), or `/bug-intake`
+> not slice — run `/to-issues`, `/bug-intake`, or the target project's ticket workflow
 > (diagnostic) first. It mirrors how `/pr-review` abstracts the gh-vs-az host: here the abstraction
 > is the tracker.
 

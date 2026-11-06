@@ -4,13 +4,36 @@
 
 Compute the verdict mechanically from the findings — never let the model "decide" a fuzzy verdict:
 
-- `APPROVE` — zero blockers and no approval-blocking open questions (should-fix / nits may remain).
+- `APPROVE` — zero blockers, no approval-blocking open questions, and no required
+  review scope gaps (should-fix / nits may remain).
 - `REQUEST CHANGES` — one or more blockers.
 - `NEEDS DISCUSSION` — no blockers, but an open question / low-confidence finding that needs the
-  author's input before approving.
+  author's input before approving, or an incomplete required review scope.
 
-Invariant: **blockers > 0 ⇒ REQUEST CHANGES**; **blockers = 0 + approval-blocking question ⇒ NEEDS
-DISCUSSION**; **blockers = 0 + no approval-blocking question ⇒ APPROVE**. No composite verdicts.
+Invariant: **blockers > 0 ⇒ REQUEST CHANGES**; **blockers = 0 + an approval-blocking question or
+scope gap ⇒ NEEDS DISCUSSION**; **blockers = 0 + neither ⇒ APPROVE**. No composite verdicts.
+
+## Review coverage and limits
+
+Account for the requested scope separately from the finding counts. Record
+files actually inspected, deliberate exclusions, budget-withheld files still
+unread, unavailable content, and selected facets or critic/judge stages that
+failed or returned unusable results. A valid empty findings array means that
+stage completed; missing output does not. A slice made available on demand is
+covered only if it was actually inspected.
+
+Continue useful review of the available scope after a failure. A missing selected
+facet, failed required verification, or unreviewed in-scope file is an
+approval-blocking gap: retain `REQUEST CHANGES` when blockers exist, otherwise
+use `NEEDS DISCUSSION` until the gap is resolved or the user explicitly narrows
+the requested scope. Deliberate exclusions and optional tooling failures do not
+block approval when equivalent review evidence covers the agreed scope.
+
+Include a compact coverage/limits line in every report and posting summary.
+Name unresolved gaps and the next check that would close them. When coverage
+is incomplete and no findings remain, say "No issues found in the inspected
+scope" and list the gaps. Checks not run are unverified; do not invent passing
+test results or treat every unavailable optional test as a review blocker.
 
 ## Markdown report layout
 
@@ -46,7 +69,8 @@ _review-focus: <none | facet list and/or focus-note summary; focus is priority c
 
 Rules:
 - Order sections by severity; within a section, sort by severity then file.
-- If clean: render `**APPROVE**` with "No issues found in the changed lines." and skip empty sections.
+- If clean and the requested review scope is complete: render `**APPROVE**` with
+  "No issues found in the changed lines." and skip empty sections.
 - Lead the summary with *what the change does*, then the overall read — context before criticism.
 - Keep "What's working well" short and real; don't pad.
 

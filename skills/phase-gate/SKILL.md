@@ -5,6 +5,9 @@ description: Run a synchronous PR-review gate at a phased-build boundary. Use wh
 
 # phase-gate
 
+Before you write a response for the user, read
+`shared/contracts/references/human-readable-output.md`.
+
 A **synchronous, in-loop review gate** for a phased build loop (plan → build phase → open PR →
 **gate** → next phase). It removes the manual "stop and review the PR" step: at the phase boundary the
 main agent delegates the review to a **fresh subagent** (so the heavy review doesn't pollute the build
@@ -39,9 +42,10 @@ Read `references/modes.md` when executing either flow.
 - **Report-first; the reviewer never edits.** The review subagent only produces findings and posts
   them. Applying fixes is always the **main agent's** job (solo mode) or a **human's** (team mode) — a
   reviewer that edits is a different, riskier tool.
-- **Keep delegated context independent.** For Dev Lite phase PRs, apply
-  `skills/dev-lite-workflow/references/review-rules.md`: give the reviewer the
-  scoped brief, scoped plan sections, standing rules, diff, and test evidence,
+- **Keep delegated context independent.** For Phased Delivery PRs, apply
+  `skills/phased-delivery/references/review-rules.md`: give the reviewer the
+  source acceptance criteria, scoped plan sections, standing rules, this phase's
+  diff, and test evidence,
   not the coding agent's private reasoning or self-summary.
 - **Single pass by default.** One review per phase (`--rereview` opts into a confirming second pass
   after blocker fixes; see below). Don't loop-until-clean unless asked.

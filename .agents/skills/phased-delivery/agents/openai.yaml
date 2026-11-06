@@ -1,0 +1,4 @@
+interface:
+  display_name: "Phased Delivery"
+  short_description: "Deliver requirements or tickets as one PR per phase."
+  default_prompt: "Use $phased-delivery to plan and deliver this requirement as reviewable PRs."

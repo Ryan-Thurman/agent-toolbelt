@@ -1,5 +1,36 @@
 # Changelog
 
+## Unreleased
+
+## v1.0.0 - 2026-11-05
+
+### Added
+
+- Added native skills plugins for Cursor, Claude Code, and Codex, with 29 shared skills and a separate optional Auto Agent package.
+- Added an offline portal with search, category guidance, task shortcuts, expected results, workflows, and host setup instructions.
+- Added desktop and mobile browser checks, automated accessibility scans, and deterministic catalog and portal builds.
+- Added repository contribution guidance with evidence checkpoints and checks for changed conventions.
+
+### Changed
+
+- Replaced the `dev-lite-workflow` skill with `phased-delivery`. Each supplied ticket maps to one phase and one pull request.
+- Expanded `shape-up` to compare product requests with current behavior before shaping implementation work.
+- Updated review, testing, security, and handoff guidance. Added shared output rules and refreshed upstream provenance records.
+- Applied the selected portal design with a charcoal header, slate surfaces, distinct category icons, highlighted results, and amber actions.
+
+### Breaking changes
+
+- Removed the duplicate project lifecycle pack. Target repositories own their delivery forms, approval gates, and controlled records.
+- Retired the `ai-feature-delivery` pack selector and `--rules full` mode. Both return migration guidance before writing files.
+- Native plugins expose skills by default. Commands, rules, hooks, and unattended Auto Agent skills require their applicable optional installation paths.
+
+### Upgrade notes
+
+- Read [the migration guide](docs/project-workflow-boundary.md) before updating an existing project. Installed legacy files are not removed automatically.
+- Use `phased-delivery` for new delivery work. The `dev-lite-workflow` installer selector remains a compatibility alias.
+- Preview project installation changes with `--dry-run`. Preserve project-owned command adapters and instruction files.
+- All six plugin manifests and the Claude marketplace entries use version `1.0.0`.
+
 ## v0.2.0 - 2026-07-07
 
 New CRAP-analysis pack, a `/pr-review-init` config generator, and Claude Code

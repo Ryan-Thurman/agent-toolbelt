@@ -5,6 +5,9 @@ description: Author behavior-pinning tests for a diff, module, or bug reproducti
 
 # cover
 
+Before you write a response for the user, read
+`shared/contracts/references/human-readable-output.md`.
+
 The test-authoring lane the toolbelt lacks — the **active** counterpart to the detect-only
 `/cover-gaps`, mirroring the `simplify` ↔ `code-smell` split. Where `/cover-gaps` *finds* missing
 coverage and writes nothing, `cover` *authors the tests* and applies them on opt-in. It is the lane

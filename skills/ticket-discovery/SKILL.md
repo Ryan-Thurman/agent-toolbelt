@@ -5,6 +5,9 @@ description: Investigate a narrow implementation ticket that references an exist
 
 # ticket-discovery
 
+Before you write a response for the user, read
+`shared/contracts/references/human-readable-output.md`.
+
 Use this skill when a ticket is probably valid but under-specified, especially
 when it says another area already has the pattern to follow.
 

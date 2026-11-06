@@ -1,3 +1,4 @@
-display_name: "Vercel React Best Practices"
-short_description: "Conditional React and Next.js performance guidance."
-default_prompt: "Use $vercel-react-best-practices to review this React or Next.js change for evidence-backed performance issues."
+interface:
+  display_name: "Vercel React Best Practices"
+  short_description: "Conditional React and Next.js performance guidance."
+  default_prompt: "Use $vercel-react-best-practices to review this React or Next.js change for evidence-backed performance issues."

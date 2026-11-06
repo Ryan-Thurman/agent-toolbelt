@@ -1,3 +1,4 @@
-display_name: "PR Review"
-short_description: "Tiered code review for PRs, branches, or local diffs with evidence-backed findings."
-default_prompt: "Review this PR, branch, or local diff."
+interface:
+  display_name: "PR Review"
+  short_description: "Tiered code review for PRs, branches, or local diffs with evidence-backed findings."
+  default_prompt: "Review this PR, branch, or local diff."

@@ -1,3 +1,4 @@
-display_name: "Simplify"
-short_description: "Behavior-preserving cleanup proposals and opt-in application after feature work or before PR."
-default_prompt: "Find safe simplifications for this code or diff."
+interface:
+  display_name: "Simplify"
+  short_description: "Behavior-preserving cleanup proposals and opt-in application after feature work or before PR."
+  default_prompt: "Find safe simplifications for this code or diff."

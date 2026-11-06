@@ -1,5 +1,6 @@
 # DESC: lightweight pipeline-aware release readiness: checklist, rollback, notes, rollout
 pack_ship_it() {
+  shared_contract references/human-readable-output.md
   cmd ship-it
 
   skill ship-it SKILL.md

@@ -89,8 +89,8 @@ It computes:
 
 Rewrite the report after each assessment round. A consumer must rerun this
 script and treat PASS as stale when either fingerprint differs. Only final
-coverage PASS can satisfy a Dev Lite pre-PR gate; partial coverage may have its
-own PASS/FAIL status but cannot satisfy `/dev-pr-review`.
+coverage PASS can satisfy a policy-required pre-PR gate; partial coverage may
+have its own PASS/FAIL status but cannot prove the entire PR diff.
 
 ## Status decision
 

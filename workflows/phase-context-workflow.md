@@ -151,7 +151,7 @@ edits that require constant coordination.
 - `handoff` provides the handoff-writing rules. This workflow adds phase files,
   context packets, and repo-tracked handoff destinations for repeated phase
   boundaries.
-- `dev-lite-workflow` owns feature/app implementation. This workflow can wrap
+- `phased-delivery` owns requirement or ticket implementation. This workflow can wrap
   dev-lite phases when context reset safety matters.
 - `phase-gate` owns PR review at phase boundaries. Run it after a phase PR is
   open; it does not replace the phase handoff.

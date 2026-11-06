@@ -1,9 +1,12 @@
 ---
 name: ship-it
-description: Prepare a change for release with readiness checks, rollback, release notes, and rollout monitoring. Use after PR merge or approval. Pipeline-aware; not for regulated release-manifest or doc-control work.
+description: Prepare a change for release with readiness checks, rollback, release notes, and rollout monitoring. Use after PR merge or approval. Follow the project's release policy and deployment owner.
 ---
 
 # ship-it
+
+Before you write a response for the user, read
+`shared/contracts/references/human-readable-output.md`.
 
 The lightweight release-readiness step that closes the dev lanes — they end at "PR merged," this
 takes it to "released safely." Every release should be **reversible, observable, and incremental**.

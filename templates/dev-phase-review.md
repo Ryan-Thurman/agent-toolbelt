@@ -2,6 +2,10 @@
 
 ## Phase
 
+- Source ticket or requirement:
+- Work branch / PR target:
+- Parent PR, if stacked:
+
 ## Result
 
 Use one:
@@ -51,7 +55,7 @@ Not Inferable items, state the exact evidence needed next.
 Each request-changes finding should cite the specific plan, acceptance,
 contract, or boundary clause violated.
 
-## Required Fixes Before Next Phase
+## Required Fixes Before This Phase PR
 
 ## Tests / Checks Reviewed
 
@@ -64,7 +68,7 @@ Have.
 
 ## Plan Document Updates
 
-Summarize the phase status, review result, required fixes, next step, and resume
-instructions recorded in the Implementation Plan.
+Summarize the phase status, review result, required fixes, PR target, next step,
+and resume instructions recorded in the existing plan or execution record.
 
 ## Suggested Fix Commit Message

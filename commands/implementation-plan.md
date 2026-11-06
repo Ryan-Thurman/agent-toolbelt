@@ -1,43 +1,23 @@
 ---
-description: Create a concise implementation plan for a task or feature ticket
-argument-hint: "<ticket-or-task-context>"
+description: Plan a task or approved tickets with actions, reasons, and completion evidence
+argument-hint: "<task-ticket-or-approved-plan>"
 ---
 
 # /implementation-plan
 
-Create a concise implementation plan for the selected ticket or task.
-
-> **When to use vs related:** `/implementation-plan` produces a concise plan for
-> one ticket/task in the feature-delivery track. Use `/dev-plan` for a phased Dev
-> Lite build plan from a Feature Brief.
+Use `skills/phased-delivery/SKILL.md` to prepare the plan.
+This command is a planning entry point for the shared delivery workflow.
 
 **Arguments:** `$ARGUMENTS`
 
-Required output:
-1. Summary of the change
-2. Files/repos likely impacted
-3. Step-by-step implementation plan
-4. Test-first plan: what failing or missing test should prove the behavior
-5. Verification commands to run before PR
-6. Branch plan: current branch, whether a feature/fix branch is needed, and the
-   expected PR target branch
-7. Current state: status, current task, last completed step, next step, and
-   resume instructions
-8. Activity log entry for plan creation or update
-9. Risks
-10. Questions/blockers
+Reuse the supplied requirements, tickets, or approved plan.
+For supplied tickets, preserve one ticket per phase and PR.
+A small task can use one phase.
 
-Feature delivery awareness:
-- If feature metadata exists, include feature ID, target release, related SDD
-  section, doc delta required yes/no/unknown, QA evidence needed, and PR
-  traceability notes.
-- If doc delta is unknown, flag it before implementation.
-- If behavior changes but no test can be written, document the reason and the
-  manual or browser verification that will replace it.
-- Stop after producing the plan. Do not start implementation, file edits, or
-  branch pushes until the user approves the plan or explicitly asks to continue.
-- Do not plan direct pushes to `main`, `master`, or the repository default
-  branch unless the user explicitly asks for that exact behavior.
-- Keep the plan document current throughout execution. Every later dev command
-  should update current state, task status, evidence, checks, blockers, branch
-  or PR state, next step, and resume instructions.
+Show scope, affected owners and interfaces, dependencies, PR bases, and required checks.
+Present each step as **Do / Why / Done when**.
+Use `templates/phased-delivery-plan.md` only when no suitable plan exists.
+Preserve the target project's supplied evidence and review requirements.
+
+Complete the plan before implementation unless the user already approved its boundaries.
+Follow the shared skill's existing approval and implementation rules.

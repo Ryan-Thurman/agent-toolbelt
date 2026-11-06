@@ -1,35 +1,15 @@
 ---
-description: Create a lightweight feature brief from an app idea, feature idea, ticket, or product request
-argument-hint: "<feature-or-app-idea>"
+description: Clarify a raw requirement before phased delivery when no approved source exists
+argument-hint: "<requirement-or-idea>"
 ---
 
 # /dev-intake
 
-Create a concise development feature brief from the user's app idea, feature
-idea, ticket, or product request.
+Use `$phased-delivery` to clarify `$ARGUMENTS` only as much as planning needs.
+Inspect the repository and identify outcome, boundaries, acceptance evidence,
+material unknowns, and likely dependencies. Ask about decisions that would
+change scope; make explicit, reversible technical assumptions where appropriate.
+Use `templates/dev-feature-brief.md` only if a brief is genuinely useful.
 
-Use this command before planning implementation.
-
-**Arguments:** `$ARGUMENTS`
-
-## Input
-
-Use the user's provided idea, selected text, files, or ticket context as input.
-
-If details are missing, make safe assumptions and clearly mark them as
-assumptions. Do not block on minor missing details unless they are required to
-avoid building the wrong thing.
-
-## Output
-
-Create or update a Feature Brief following the structure in
-`templates/dev-feature-brief.md`. Fill every section and keep it concise.
-
-Guidance for specific sections:
-- **App or Feature Flows** — list the main flows step by step (e.g. open page ->
-  select item -> submit form -> validate -> show result).
-- **Acceptance Criteria** — checkbox format; each criterion specific, testable,
-  and tied to a flow.
-- **Suggested Assumptions** — list the assumptions that let planning continue
-  safely, and mark anything you assumed because a detail was missing.
-- **Risks** — likely product, technical, security, performance, or UX risks.
+If an approved plan or approved project ticket already supplies requirements,
+reuse it instead of creating a duplicate brief.

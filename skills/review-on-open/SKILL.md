@@ -5,6 +5,9 @@ description: Trigger /pr-review when a PR opens or updates. Use for GitHub Actio
 
 # review-on-open
 
+Before you write a response for the user, read
+`shared/contracts/references/human-readable-output.md`.
+
 The **trigger** layer for `pr-review`. The `pr-review` pack already knows *how* to review a PR and
 post inline findings (`/pr-review <pr> --comment`); this pack answers *when a fresh agent should
 start one* — so that when another agent (or a human) opens or updates a PR, a **new, isolated

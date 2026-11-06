@@ -1,15 +1,16 @@
 # workflows/
 
 Portable multi-step orchestrations — the "when X, do Y1→Y2→Y3" procedures.
-Folds in what might otherwise be playbooks/recipes: keep them here as
-self-contained, copy-pasteable workflow docs or scripts.
+The [offline portal](../portal/generated/index.html) owns discovery, examples,
+and the common workflow map; these files provide deeper copy-pasteable
+operational procedures for skills and the project installer.
 
-- `ai-feature-delivery-lifecycle.md` - Feature Master Record-centered delivery
-  lifecycle with refinement, development, QA, and release documentation gates.
-- `cursor-first-ai-feature-delivery.md` - how to package the delivery process as
-  Cursor rules, slash commands, workflow recipes, and templates.
-- `dev-lite-feature-workflow.md` - lightweight feature/app loop from intake to
-  phased implementation, phase review, and final PR review.
+`SKILL.md` remains the canonical behavior source. Commands are optional
+project-scoped compatibility UX, while workflow files hold reusable supporting
+detail rather than native plugin skill copies.
+
+- `phased-delivery-workflow.md` - requirement or ticket delivery as one PR per
+  phase, with human review and optional stacked PRs.
 - `tech-backlog-assessment-workflow.md` - decision workflow for technical
   backlog items before implementation.
 - `ticket-discovery-workflow.md` - narrow workflow for tickets that point to an
@@ -18,7 +19,7 @@ self-contained, copy-pasteable workflow docs or scripts.
   packets so long agent work can survive `/clear` or `/compact`; composes
   `handoff` for phase closeout.
 - `dev-ticket-to-pr.md` - bridge workflow from refined ticket through
-  implementation, tests, doc deltas, diff review, and PR traceability.
+  implementation, tests, project checks, and PR review.
 - `bug-to-fix-workflow.md` - diagnostic lane from bug report through triage,
   reproduction, root-cause analysis, minimal fix, and verification.
 - `retrofit-workflow.md` - apply one defined change across every site

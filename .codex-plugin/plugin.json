@@ -1,0 +1,28 @@
+{
+  "name": "agent-toolbelt",
+  "version": "1.0.0",
+  "description": "Reusable AI-agent skills for software delivery workflows.",
+  "author": {
+    "name": "Ryan Thurman",
+    "url": "https://github.com/Ryan-Thurman"
+  },
+  "homepage": "https://github.com/Ryan-Thurman/agent-toolbelt",
+  "repository": "https://github.com/Ryan-Thurman/agent-toolbelt",
+  "license": "MIT",
+  "keywords": ["developer-tools", "productivity", "software-delivery", "code-review"],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Agent Toolbelt",
+    "shortDescription": "Reusable skills for software delivery",
+    "longDescription": "A collection of composable skills, templates, and workflows for planning, implementing, testing, reviewing, and shipping software.",
+    "developerName": "Ryan Thurman",
+    "category": "Developer Tools",
+    "capabilities": ["Skills"],
+    "websiteURL": "https://github.com/Ryan-Thurman/agent-toolbelt",
+    "defaultPrompt": [
+      "Plan and implement a feature with the delivery workflow.",
+      "Review this change for correctness and maintainability.",
+      "Diagnose this bug and verify the smallest safe fix."
+    ]
+  }
+}

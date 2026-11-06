@@ -5,6 +5,9 @@ description: Create, list, and remove isolated git worktrees for multi-agent sha
 
 # worktree
 
+Before you write a response for the user, read
+`shared/contracts/references/human-readable-output.md`.
+
 A thin, safe wrapper over `git worktree` for the **multi-agent, shared-directory** case. When several
 agents (or sessions, or harnesses) operate on the same directory of repos, a plain `git checkout` /
 `git switch` in one agent's shell **moves the branch out from under** every other agent in that same

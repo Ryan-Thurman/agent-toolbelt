@@ -75,22 +75,27 @@ for pack in simplify pr-review pr-improve code-quality-gate; do
   fi
 done
 
-dev_lite_target="$TMP_ROOT/dev-lite"
-"$ROOT/install.sh" --harness all dev-lite-workflow "$dev_lite_target" >/dev/null
+phased_target="$TMP_ROOT/phased-delivery"
+"$ROOT/install.sh" --harness all phased-delivery "$phased_target" >/dev/null
 
 for path in \
   .cursor/commands/dev-pr-review.md \
-  .cursor/commands/code-quality-gate.md \
-  .atb/skills/dev-lite-workflow/SKILL.md \
-  .atb/skills/code-quality-gate/SKILL.md \
-  .atb/skills/simplify/SKILL.md \
-  .atb/skills/pr-review/SKILL.md \
-  .atb/skills/pr-improve/SKILL.md \
+  .atb/skills/phased-delivery/SKILL.md \
+  .atb/templates/phased-delivery-plan.md \
+  .atb/workflows/phased-delivery-workflow.md \
   .atb/templates/dev-pr-review.md \
-  .atb/templates/code-quality-gate-report.md
+  .agents/skills/phased-delivery/SKILL.md
 do
-  require_file "$dev_lite_target/$path"
+  require_file "$phased_target/$path"
 done
+if [ -e "$phased_target/.atb/skills/code-quality-gate/SKILL.md" ]; then
+  echo "phased-delivery unexpectedly installed the optional code-quality-gate" >&2
+  exit 1
+fi
+
+legacy_target="$TMP_ROOT/legacy-name"
+"$ROOT/install.sh" --harness all dev-lite-workflow "$legacy_target" >/dev/null
+require_file "$legacy_target/.atb/skills/phased-delivery/SKILL.md"
 
 fingerprint_repo="$TMP_ROOT/fingerprint-repo"
 mkdir -p "$fingerprint_repo"
@@ -152,4 +157,4 @@ if [ "$clean_first" = "$clean_second" ]; then
   exit 1
 fi
 
-echo "ok: code-quality-gate and dev-lite-workflow installs include dependency runtime surfaces"
+echo "ok: code-quality-gate dependencies, phased-delivery independence, and legacy alias installs verified"

@@ -1,53 +1,15 @@
 ---
-description: Prepare to implement the next phase from a lightweight implementation plan
-argument-hint: "<phase-name-or-plan-context>"
+description: Prepare the next phase or ticket PR for implementation
+argument-hint: "<phase-or-ticket>"
 ---
 
 # /dev-start-phase
 
-Prepare to implement the next phase from the Implementation Plan.
-
-Use this before coding a phase.
-
-**Arguments:** `$ARGUMENTS`
-
-## Rules
-
-- Do not implement yet unless explicitly asked.
-- Identify the current phase and its tasks.
-- Confirm the phase goal.
-- Identify likely files/modules impacted.
-- Identify risks and tests/checks.
-- Recommend the first task to implement.
-- Update the Implementation Plan current state with the selected phase,
-  recommended first task, branch state, and resume instructions.
-
-## Output
-
-# Phase Start
-
-## Phase Name
-
-## Goal
-
-## Tasks in This Phase
-
-- [ ] Task 1
-- [ ] Task 2
-
-## Files / Modules Likely Impacted
-
-## Dependencies
-
-## Risks
-
-## Test Plan
-
-## Recommended First Task
-
-## Notes Before Implementation
-
-## Plan Document Updates
-
-List the `Current State`, task status, and `Resume Instructions` updates made to
-the Implementation Plan.
+Use `$phased-delivery` to reconcile `$ARGUMENTS` with its source requirement,
+current repository state, dependencies, and plan. Confirm the ticket/phase
+boundary, branch, PR target, parent PR if stacked, acceptance criteria, checks,
+and material blockers. Create or switch to a focused phase branch before coding
+if currently on the default branch; stop if that cannot be done safely. Add
+needed file/interface/test context to the execution
+record without expanding the source scope. Do not code unless implementation was
+also requested or already approved.

@@ -1,5 +1,7 @@
 # DESC: author/strengthen tests (apply on opt-in) + detect-only coverage-gap scan
 pack_cover() {
+  cmd write-tests
+  shared_contract references/human-readable-output.md
   cmd cover
   cmd cover-gaps
 

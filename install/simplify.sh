@@ -1,5 +1,6 @@
 # DESC: active code cleanup (apply on opt-in) + detect-only smell scan
 pack_simplify() {
+  shared_contract references/human-readable-output.md
   cmd simplify
   cmd code-smell
 

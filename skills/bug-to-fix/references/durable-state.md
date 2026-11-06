@@ -28,7 +28,8 @@ Resolved investigations can move to a `resolved/` subfolder. Pick a `<slug>` fro
 | **Resolution** | OVERWRITE | firms up as the cause/fix/verification become clear. |
 
 `next_action` must be concrete and executable: *"Add logging at line 47 of auth.js before
-`jwt.verify()` to observe the token value"* — never *"continue investigating."*
+`jwt.verify()` to observe whether the token is present and its non-sensitive shape"* — never
+*"continue investigating."* Record only redacted evidence in the file.
 
 ## Status field
 

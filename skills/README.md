@@ -1,90 +1,25 @@
 # skills/
 
-Agent **skills** you want to keep or adapt — each in its own subfolder with a
-`SKILL.md`. Lifted from reviewed repos or written from scratch.
+Agent **skills** live in one canonical folder per skill, each with a `SKILL.md`.
+The native plugin exposes the 29 canonical skills across Cursor, Claude Code,
+and Codex. Use the [offline portal](../portal/generated/index.html) for the
+complete searchable catalog, taxonomy, examples, and workflow map; use the
+[generated audit](../docs/skill-taxonomy-audit.md) for completeness and
+recommendations. This page documents authoring, provenance, and copy ownership,
+not a manually maintained second skill catalog.
 
-The AI Feature Delivery skills are installed into pilot repos by
-`../install.sh ai-feature-delivery`. See `../docs/tutorial.md` for the first-run
-workflow.
+The unattended runner skills live in the separate
+[Auto Agent plugin](../plugins/agent-toolbelt-auto-agent/README.md) and are not
+part of this standard skill tree.
 
-- `pr-review/` - tiered multi-agent PR/code review.
-- `code-quality-gate/` - mandatory pre-PR coordinator: repository checks, changed-hunk anti-slop and simplification assessment, standards/maintainability review, and bounded fix/rereview convergence. It owns the PASS/FAIL/CAPPED/BLOCKED evidence record, not duplicate review rules.
-- `pr-improve/` - bounded fix-and-rereview loop with frozen scope and durable ledger state.
-- `pr-review-reply/` - the round-trip half of pr-review: read a human
-  reviewer's PR threads, triage each, re-review only the code changed since the
-  review, and reply per-thread (posting opt-in, idempotent).
-- `review-on-open/` - the trigger layer for pr-review: auto-run a fresh
-  `/pr-review --comment` when a PR is opened or updated. Two triggers — a
-  GitHub Actions event workflow (the PR event fires a headless review) and a
-  host-agnostic poller (`/loop` or `/schedule`) that reviews open PRs unseen at
-  their current head SHA. Idempotent; adds no review logic.
-- `review-queue/` - the push-based third trigger: a local, SQLite-backed work
-  queue (pure bash + `sqlite3`, no runtime) that decouples PR-opening agents from
-  the reviewer. A producer agent enqueues a PR; a worker claims jobs (atomic,
-  exactly-once, crash-safe leases, dead-lettering) and runs `/pr-review --comment`
-  on each. Fully local — no CI/webhook/API key. Drive the worker with `/loop` or
-  `/schedule`.
-- `auto-agent-contract/` - the rules for an orchestrator that runs *outside* a
-  harness, shelling into agent CLIs (`claude -p`, `codex exec`) to code and
-  review with nobody watching: argv bounds, adversarial output parsing, per-CLI
-  flag semantics, the reviewer privilege boundary, review-loop convergence, merge
-  preconditions, and what changes when no human reads the report. Adds no review
-  logic — it consumes `pr-review`'s finding schema and host-derived verdict.
-  Ships `/auto-agent-plan`, which drafts the `agent-runner` execution plan.
-- `bug-to-fix/` - diagnostic lane: triage, reproduce, root-cause analysis,
-  minimal fix, and verification for a reported bug.
-- `shape-up/` - interrogate a vague request into an agreed brief before
-  building (the front-door to the dev lanes).
-- `product-discovery/` - evidence, assumptions, risks, and experiments before shaping a candidate.
-- `style-guide-init/` - mine repository evidence into a canonical coding-style guide or draft.
-- `tech-backlog-assessment/` - assess technical backlog items before
-  implementation: do/defer/reject/spike, options, dependency choices, risks,
-  tests, and next workflow.
-- `ticket-discovery/` - investigate a narrow implementation ticket that points
-  to an existing precedent, compare source and target, and produce a concrete
-  implementation/test handoff.
-- `simplify/` - active code cleanup: apply high-conviction simplifications on
-  opt-in (the counterpart to pr-review).
-- `vercel-composition-patterns/` - conditionally loaded MIT-licensed React
-  component composition references from Vercel Labs.
-- `vercel-react-best-practices/` - conditionally loaded MIT-licensed React and
-  Next.js performance references from Vercel Labs.
-- `cover/` - author/strengthen behavior-pinning tests for a diff, module, or bug
-  reproduction on opt-in, plus a detect-only coverage-gap scan; turns a bug repro
-  into a committed red→green regression test (the active/detect pair).
-- `test-case-design/` - report-only, prioritized QA test-case design that hands selected cases to
-  test-authoring or browser-verification workflows.
-- `threat-model/` - design-time security analysis of assets, boundaries, abuse paths, and controls.
-- `security-audit/` - bounded read-only code, configuration, dependency, and secret-exposure audit.
-- `ship-it/` - lightweight release readiness: go/no-go check, rollback plan,
-  release notes, and rollout/monitor plan (pipeline-aware).
-- `retrofit/` - apply one defined change across every site (library swap, API
-  rename, framework upgrade): discover, transform in isolation, verify
-  exhaustively. Opt-in; orchestrated fan-out.
-- `worktree/` - isolated git worktrees (pure bash + git, no runtime) so multiple
-  agents can work a shared directory of repos without clobbering each other's
-  branch: one worktree per task on its own branch, collision-safe auto-naming,
-  collected under `<parent>/.worktrees/`, with tidy cleanup. For independent
-  sessions; in-run fan-out should use `Workflow`'s `isolation: 'worktree'`.
-- `crap-analysis/` - language-agnostic CRAP analysis orchestration: wizard-hydrated
-  `.crap-analysis.json`, single-run command execution via `bin/crap-analysis.sh`,
-  deterministic report review, and opt-in refactor via `/crap-refactor`.
-- `handoff/` - cross-cutting: write a resumable handoff so a fresh agent or
-  person can continue without context loss (any lane).
-- `ticket-sync/` - provider-agnostic issue-tracker adapter: publish the tickets
-  the slicers produce to GitHub Issues, Jira, or Azure Boards via a repo-local
-  `.tickets.md`. Idempotent (records the tracker key back), confirmation-gated
-  with a dry-run preview, and degrades to a manifest when offline.
-- `dev-lite-workflow/` - lightweight dev workflow for feature/app ideas,
-  phased implementation, per-task commits, phase reviews, final PR review, and
-  mandatory recomputed final-coverage code-quality-gate PASS before PR readiness.
-- `phase-context-workflow/` - durable phase context files, handoffs, and context
-  packets for safe context resets during long agent work; composes `handoff`
-  for phase closeout.
-- `ai-feature-delivery/` - release-traceable feature definition, design docs,
-  refinement tickets, QA handoff, and release document control.
-- `webapp-testing/` - browser/webapp verification for user-facing changes and
-  QA evidence.
+`style-guide-init` derives and maintains contribution/style guidance from repo
+evidence. It distinguishes policy, enforcement, observations and conflicts, and
+ships a local checkpoint helper for changed-input detection. See
+[`repository-conventions-design.md`](../docs/repository-conventions-design.md)
+for usage, maintenance limits and related approaches.
+
+Project-specific delivery skills belong to their project repositories.
+See the [ownership boundary](../docs/project-workflow-boundary.md).
 
 The Vercel specialists preserve their substantive upstream rules under each
 skill's `references/rules/` tree. They are not universal policy: repository
@@ -108,12 +43,15 @@ Skill concept attribution lives in `../docs/skill-provenance.md` so runtime
 
 ## Canonical copies
 
-`skills/dev-lite-workflow/` is the **canonical** source. The repo also ships
-`.agents/skills/dev-lite-workflow/` as the repo-scoped Codex copy; the full tree
+`skills/phased-delivery/` is the **canonical** source. The repo also ships
+`.agents/skills/phased-delivery/` as the repo-scoped Codex copy; the full tree
 must stay byte-identical, including `SKILL.md`, `references/`, and
 `agents/openai.yaml`. Edit the canonical tree, then mirror the change. Run
 `scripts/check-skill-sync.sh` to verify the two copies match (also runnable in
 CI).
+
+The repository's `.cursor/commands/dev-*.md` files also mirror their canonical
+`commands/dev-*.md` sources. The same check detects command drift.
 
 ## Skill authoring checklist
 
@@ -129,6 +67,9 @@ Use this checklist when creating or updating a skill:
   text; `SKILL.md` owns process, invariants, gates, mutation policy, and output
   contracts; `agents/openai.yaml` owns host UI metadata; references own
   provider/framework mechanics, long examples, and branch-only detail.
+- Keep project-specific work and personal conventions in the target project's
+  instruction owner. Shared skills should select formal traceability from the
+  task's requirements, rather than from nearby artifacts or an installed pack.
 - Keep `agents/openai.yaml` concise and generated from the cleaned description:
   exactly `display_name`, `short_description`, and `default_prompt`, with no
   optional icon/color fields unless the repo standardizes them.
@@ -142,6 +83,12 @@ Use this checklist when creating or updating a skill:
   provider." If the condition is vague or every branch needs the material, keep
   it inline.
 - State completion criteria that let the agent tell done from not done.
+- Use the [human-readable output contract](../shared/contracts/references/human-readable-output.md)
+  when defining outputs: tables for structured findings and comparisons,
+  diagrams for relationships, and actions with a reason and completion check
+  for plans. Apply its ASD-STE100 rules to all new text for the user.
+  All standard skills load this reference. New skills must include its runtime
+  pointer and installer dependency.
 - Keep one source of truth for each behavior. Do not repeat the same rule in the
   description, body, commands, and references unless each copy has a distinct
   job.
@@ -154,8 +101,8 @@ Use this checklist when creating or updating a skill:
 Applied check:
 
 - `shape-up/`: keep the model-facing description because it has distinct trigger
-  branches for fuzzy ideas/tickets before Dev Lite planning, with clear
-  exclusions for bug and regulated feature lanes. Keep
+  branches for fuzzy ideas/tickets before Phased Delivery planning, with clear
+  exclusions for bug diagnosis and project-owned delivery rules. Keep
   `references/interrogation.md` behind a pointer because only the questioning
   branch needs those techniques; do not inline it into `SKILL.md`.
 - `pr-review/`: keep tier choice, reviewer-safety, inputs, and short tier

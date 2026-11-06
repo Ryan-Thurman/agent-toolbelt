@@ -9,8 +9,8 @@ Take a merged or approved change from "done" to "released safely" using the `shi
 release should be reversible, observable, and incremental.
 
 > **When to use vs related:** `/ship-it` is the lightweight launch-readiness step at the tail of the
-> Dev Lite / Bug-to-Fix lanes. For regulated release work (release manifests, controlled-doc
-> eligibility) use `/release-manifest` + `/release-doc-check`. For PR-open readiness use
+> Phased Delivery / Bug-to-Fix lanes. Follow the target project's release and document requirements.
+> For PR-open readiness use
 > `/dev-pr-review` / `/pr-ready-check`.
 
 **Arguments:** `$ARGUMENTS`

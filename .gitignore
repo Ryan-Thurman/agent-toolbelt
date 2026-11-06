@@ -1,5 +1,10 @@
 .DS_Store
 
+# Portal browser checks use local development dependencies and generated evidence.
+/node_modules/
+/test-results/
+/playwright-report/
+
 # Build output (e.g. the assembled Cursor plugin) is generated, not source.
 /build/
 

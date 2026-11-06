@@ -1,0 +1,24 @@
+{
+  "name": "agent-toolbelt-auto-agent",
+  "version": "1.0.0",
+  "description": "Optional unattended agent-runner skills for Agent Toolbelt.",
+  "author": {
+    "name": "Ryan Thurman",
+    "url": "https://github.com/Ryan-Thurman"
+  },
+  "homepage": "https://github.com/Ryan-Thurman/agent-toolbelt",
+  "repository": "https://github.com/Ryan-Thurman/agent-toolbelt",
+  "license": "MIT",
+  "keywords": ["agent-orchestration", "unattended", "developer-tools"],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Agent Toolbelt Auto Agent",
+    "shortDescription": "Optional skills for an unattended agent runner",
+    "longDescription": "Runner invocation, plan format, review convergence, and merge boundaries for unattended agent jobs. Install Agent Toolbelt alongside it for the shared review and delivery skills.",
+    "developerName": "Ryan Thurman",
+    "category": "Developer Tools",
+    "capabilities": ["Skills"],
+    "websiteURL": "https://github.com/Ryan-Thurman/agent-toolbelt",
+    "defaultPrompt": ["Audit this unattended agent runner contract."]
+  }
+}

@@ -1,12 +1,10 @@
 # Tutorial: Install and Use the Workflow Packs
 
-This walkthrough shows the two install paths in `agent-toolbelt`:
+This walkthrough shows the shared install paths in `agent-toolbelt`:
 
-- Dev Lite Workflow: a lightweight feature/app loop for practical development.
+- Phased Delivery: a requirement or ticket loop with one human-reviewed PR per phase.
 - Phase Context Workflow: durable phase files, handoffs, and context packets
   for safe context resets during long agent work.
-- AI Feature Delivery: the fuller traceable feature-delivery pack for
-  cross-functional or regulated work.
 
 ## Prerequisites
 
@@ -14,21 +12,22 @@ This walkthrough shows the two install paths in `agent-toolbelt`:
 - A target repo or pilot folder where the commands, rules, templates, skills,
   and workflows should be installed.
 - Cursor or Claude Code for slash-command style use.
-- Codex can use repo-scoped skills from `.agents/skills`; invoke the Dev Lite
-  skill with `/skills` or `$dev-lite-workflow`.
+- Codex can use repo-scoped skills from `.agents/skills`; invoke Phased
+  Delivery with `/skills` or `$phased-delivery`.
 
-## Dev Lite Workflow
+## Phased Delivery
 
-Use Dev Lite when you want to take an app idea, feature, bug fix, or small
-ticket through a practical dev loop without the heavier release-documentation
-process.
+Use Phased Delivery when you have a raw requirement, an approved plan, or a set
+of tickets ready for implementation. For supplied approved
+tickets, each ticket is one phase and one PR. The agent adds technical
+steps and repository context without changing ticket scope.
 
-### 1. Preview the Dev Lite install
+### 1. Preview the install
 
 From this repo:
 
 ```sh
-./install.sh --dry-run --harness all dev-lite-workflow /path/to/project
+./install.sh --dry-run --harness all phased-delivery /path/to/project
 ```
 
 The dry run shows the files that would be installed:
@@ -38,47 +37,45 @@ The dry run shows the files that would be installed:
 - `.claude/commands/dev-*.md`
 - `CLAUDE.md`
 - `AGENTS.md`
-- `.agents/skills/dev-lite-workflow/SKILL.md`
-- `.agents/skills/dev-lite-workflow/agents/openai.yaml`
-- `.agents/skills/code-quality-gate/SKILL.md`
-- `.atb/skills/dev-lite-workflow/SKILL.md`
-- `.atb/skills/dev-lite-workflow/agents/openai.yaml`
-- `.atb/skills/code-quality-gate/SKILL.md`
-- `.atb/templates/dev-*.md`
-- `.atb/workflows/dev-lite-feature-workflow.md`
+- `.agents/skills/phased-delivery/SKILL.md`
+- `.agents/skills/phased-delivery/agents/openai.yaml`
+- `.atb/skills/phased-delivery/SKILL.md`
+- `.atb/skills/phased-delivery/agents/openai.yaml`
+- `.atb/templates/phased-delivery-plan.md`
+- `.atb/workflows/phased-delivery-workflow.md`
 
-### 2. Install Dev Lite
+### 2. Install Phased Delivery
 
 ```sh
-./install.sh --harness all dev-lite-workflow /path/to/project
+./install.sh --harness all phased-delivery /path/to/project
 ```
 
 Use `--force` only when replacing a previous install.
 
-In Cursor or Claude Code, start with:
+In Cursor or Claude Code, start with `/dev-plan` when the source is already
+approved; `/dev-intake` is optional for raw, unclear requirements:
 
 ```text
-/dev-intake
 /dev-plan
 ```
 
 In Codex, use the skill instead of slash commands:
 
 ```text
-$dev-lite-workflow
-Create a dev-lite feature brief and implementation plan for this request: ...
+$phased-delivery
+Plan these approved tickets as stacked PRs, one ticket per phase: ...
 ```
 
 For a standalone bug-fix review in Codex:
 
 ```text
-$dev-lite-workflow
+$phased-delivery
 Run a PR readiness review for this bug fix against the current diff.
 ```
 
-### 3. Dev Lite Operating Rules
+### 3. Phased Delivery Operating Rules
 
-The Dev Lite workflow now enforces these checkpoints:
+Phased Delivery keeps these checkpoints:
 
 - Stop after the implementation plan so the user can review and approve it.
 - Build out tests as implementation progresses; behavior-changing tasks should
@@ -87,8 +84,11 @@ The Dev Lite workflow now enforces these checkpoints:
 - Do not push directly to `main`, `master`, or the default branch unless the
   user explicitly approves that exact behavior.
 - Work from a focused `dev/...` or `fix/...` branch.
-- Run `/code-quality-gate` before final PR readiness; `/dev-pr-review` requires
-  recomputed final-coverage PASS evidence.
+- Review and open one PR for each phase; a human reviews and merges it.
+- For stacked ticket PRs, target the parent ticket branch and verify the child
+  base and diff after the parent merges.
+- Run `/code-quality-gate` when repository policy, user request, or risk calls
+  for it; it is not a universal prerequisite.
 
 The plan document should be updated after every meaningful step with current
 state, current task, evidence, tests/checks, blockers, next step, branch/PR
@@ -100,7 +100,7 @@ Use Phase Context when an agent session is getting long, a phase boundary is
 coming up, or you want to safely use `/clear` or `/compact` without losing the
 work state.
 
-It can wrap Dev Lite, AI Feature Delivery, bug fixing, or ad-hoc implementation.
+It can wrap Phased Delivery, bug fixing, or ad-hoc implementation.
 The key rule is simple: write the context you still need into files before
 clearing chat history.
 
@@ -171,228 +171,13 @@ After the handoff says `Safe To Clear: Yes`, start the next session from:
 Use `/phase-status <room>` whenever you need to see which phase files and
 handoffs exist.
 
-## AI Feature Delivery Pack
 
-Use AI Feature Delivery when requirements, tickets, tests, docs, QA handoff, and
-release eligibility need traceability back to a Feature Master Record.
+## Project-owned delivery
 
-### 1. Preview the AI Feature Delivery install
+The target repository owns its forms, approval gates, and controlled records.
+Toolbelt accepts approved requirements and tickets from that process.
+It supplies shared planning, implementation, tests, review, and release methods.
 
-From this repo:
-
-```sh
-./install.sh --dry-run --harness all ai-feature-delivery /path/to/pilot-folder
-```
-
-The dry run shows the files that would be installed:
-
-- `.cursor/commands/*.md`
-- `.cursor/rules/agent-toolbelt-router.mdc`
-- `.agents/skills/*/SKILL.md`
-- `.agents/skills/*/agents/openai.yaml`
-- `.atb/skills/*/SKILL.md`
-- `.atb/skills/*/agents/openai.yaml`
-- `.atb/templates/*.md`
-- `.atb/workflows/*.md`
-
-Existing files are skipped by default during a real install.
-
-### 2. Install into the pilot folder
-
-```sh
-./install.sh --harness all ai-feature-delivery /path/to/pilot-folder
-```
-
-Use `--force` only when you intentionally want to replace previously installed
-files:
-
-```sh
-./install.sh --force --harness all ai-feature-delivery /path/to/pilot-folder
-```
-
-On macOS, a non-developer pilot user can double-click `install.command`, which
-asks which pack(s) to install and then for the target folder (drag it into the
-Terminal prompt and press Enter).
-
-### 3. Open the target in Cursor
-
-Open `/path/to/pilot-folder` in Cursor. The main entry points are:
-
-- `/workflow-router` when you are unsure what to run next.
-- `/feature-start` when starting from a raw idea or stakeholder request.
-- `/feature-fleshout` when the feature exists but still has gaps.
-
-For a first run, use:
-
-```text
-/feature-start REL-2026.09 FEAT-1234 patient alert routing
-```
-
-The command should create or help fill a Feature Master Record using
-`templates/feature-master-record.md`.
-
-### 4. Flesh out the feature package
-
-Run:
-
-```text
-/feature-fleshout
-```
-
-Expected outputs:
-
-- Stakeholder questions.
-- Risks and assumptions.
-- Impacted systems and repos.
-- Release target checks.
-- Gate 1 readiness notes.
-
-If owners or answers are missing, run:
-
-```text
-/draft-pings
-```
-
-Use the generated text as a human-approved draft. Do not treat a ping as sent
-unless an external messaging integration actually sent it.
-
-### 5. Draft design and document impacts
-
-Run:
-
-```text
-/sdd-draft
-/doc-impact
-```
-
-This should produce or update:
-
-- An SDD from the Feature Master Record.
-- A document impact map for CDP, SRS, SAD, SDD, and other controlled docs.
-
-If code or ticket changes happen later, run:
-
-```text
-/doc-delta
-```
-
-That command checks whether the implementation changed the required docs.
-
-### 6. Refine into implementation tickets
-
-Run:
-
-```text
-/refine-to-tickets
-```
-
-Each ticket should preserve:
-
-- Feature ID.
-- Release ID.
-- Master-record section.
-- SDD or requirement reference.
-- Acceptance criteria.
-- Test expectation.
-- Document delta status.
-
-Before development begins, run:
-
-```text
-/gate-check
-```
-
-Use the result to decide whether the feature is ready for the next lifecycle
-phase or still needs clarification.
-
-### 7. Carry a ticket through development
-
-For an implementation ticket, use the dev workflow:
-
-```text
-/start-dev-from-feature
-/implementation-plan
-```
-
-Stop after `/implementation-plan` and review the plan before implementation.
-Once approved, implement the change in small steps and update matching tests as
-behavior changes. Keep the implementation plan current with current state,
-current task, evidence, checks, blockers, branch/PR state, next step, and resume
-instructions.
-
-Work from a focused feature/fix branch. Do not push directly to `main`,
-`master`, or the default branch unless that exact behavior was explicitly
-approved.
-
-Verify with the commands that match the work:
-
-```text
-/webapp-test
-/dev-doc-delta-check
-/review-diff
-/pr-ready-check
-/pr-traceability-review
-```
-
-Use `/webapp-test` only for browser or user-flow changes. For non-UI work,
-record it as not applicable.
-
-Run `/pr-ready-check` and `/pr-traceability-review` before opening or marking a
-PR ready. Those checks should block unapproved default-branch work and stale
-implementation plans.
-
-### 8. Prepare QA and release docs
-
-After the PR is traceable and ready for QA, run:
-
-```text
-/qa-handoff
-```
-
-For release documentation, run:
-
-```text
-/release-manifest
-/release-doc-check
-```
-
-Only documents marked `APPROVED_FOR_RELEASE` should be included in the release
-package. Future-release material should be explicitly withheld.
-
-## Command Shortcuts
-
-Use these shortcuts while piloting:
-
-- Raw idea: `/feature-start`, then `/feature-fleshout`.
-- Bug / broken behavior: `/bug-intake` -> `/reproduce` -> `/rca` -> `/fix-plan`
-  (then `/dev-implement-task` -> `/code-quality-gate` -> `/dev-pr-review`). Use `/rca --diagnose` for a
-  read-only root-cause analysis.
-- Unsure what is next: `/workflow-router`.
-- Existing feature health check: `/steward-review`.
-- Stakeholder follow-up drafts: `/draft-pings`.
-- Design and controlled docs: `/sdd-draft`, `/doc-impact`, `/doc-delta`.
-- Ticket slicing: `/refine-to-tickets`.
-- Dev execution: `/start-dev-from-feature`, `/implementation-plan`,
-  `/write-tests`.
-- Browser verification: `/webapp-test`.
-- PR readiness: `/review-diff`, `/pr-ready-check`,
-  `/pr-traceability-review`.
-- Role-specific review gate: `/role-review` (product, engineering, design, QA,
-  security, or release).
-- QA and release: `/qa-handoff`, `/release-manifest`,
-  `/release-doc-check`.
-
-## Recommended First Pilot
-
-Keep the first pilot narrow:
-
-1. Pick one feature with a known release target.
-2. Create one Feature Master Record.
-3. Draft one SDD and one doc-impact map.
-4. Refine two or three implementation tickets.
-5. Take one ticket through the dev-to-PR workflow.
-6. Generate the QA handoff.
-7. Generate the release manifest and run the release doc check.
-
-The system is working when the feature, tickets, tests, docs, QA package, and
-release manifest all point back to the same feature ID and release ID.
+Read [the ownership and migration guide](project-workflow-boundary.md) before updating a project with local workflow adaptations.
+The installer preserves existing files by default.
+Review differences and project ownership before using `--force`.

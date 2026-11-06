@@ -3,34 +3,96 @@
   "description": "Support-only contracts consumed by multiple agent-toolbelt packs.",
   "references": [
     {
+      "path": "references/human-readable-output.md",
+      "owner": "shared/contracts",
+      "consumers": [
+        "bug-to-fix",
+        "code-quality-gate",
+        "cover",
+        "crap-analysis",
+        "handoff",
+        "phase-context-workflow",
+        "phase-gate",
+        "phased-delivery",
+        "pr-improve",
+        "pr-review",
+        "pr-review-reply",
+        "product-discovery",
+        "retrofit",
+        "review-on-open",
+        "review-queue",
+        "security-audit",
+        "shape-up",
+        "ship-it",
+        "simplify",
+        "style-guide-init",
+        "tech-backlog-assessment",
+        "test-case-design",
+        "threat-model",
+        "ticket-discovery",
+        "ticket-sync",
+        "vercel-composition-patterns",
+        "vercel-react-best-practices",
+        "webapp-testing",
+        "worktree"
+      ]
+    },
+    {
       "path": "references/providers.md",
       "owner": "shared/contracts",
-      "consumers": ["phase-gate", "pr-review-reply", "review-on-open"]
+      "consumers": [
+        "phase-gate",
+        "pr-review-reply",
+        "review-on-open"
+      ]
     },
     {
       "path": "references/posting.md",
       "owner": "shared/contracts",
-      "consumers": ["pr-review-reply", "review-on-open"]
+      "consumers": [
+        "pr-review-reply",
+        "review-on-open"
+      ]
     },
     {
       "path": "references/maintainability-taxonomy.md",
       "owner": "shared/contracts",
-      "consumers": ["code-quality-gate", "pr-review", "simplify"]
+      "consumers": [
+        "code-quality-gate",
+        "pr-review",
+        "simplify"
+      ]
     },
     {
       "path": "references/style-precedence.md",
       "owner": "shared/contracts",
-      "consumers": ["code-quality-gate", "dev-lite-workflow", "pr-review", "style-guide-init"]
+      "consumers": [
+        "code-quality-gate",
+        "pr-review",
+        "style-guide-init"
+      ]
     },
     {
       "path": "references/anti-slop-naming.md",
       "owner": "shared/contracts",
-      "consumers": ["code-quality-gate", "dev-lite-workflow", "pr-review", "simplify", "style-guide-init"]
+      "consumers": [
+        "code-quality-gate",
+        "pr-review",
+        "simplify",
+        "style-guide-init"
+      ]
     },
     {
       "path": "references/typescript-react-baseline.md",
       "owner": "shared/contracts",
-      "consumers": ["code-quality-gate", "style-guide-init", "dev-lite-workflow", "pr-review", "simplify", "vercel-composition-patterns", "vercel-react-best-practices"]
+      "consumers": [
+        "code-quality-gate",
+        "style-guide-init",
+        "pr-review",
+        "simplify",
+        "vercel-composition-patterns",
+        "vercel-react-best-practices"
+      ]
     }
   ]
 }

@@ -5,6 +5,9 @@ description: Apply React composition patterns when designing or reviewing compon
 
 # React composition patterns
 
+Before you write a response for the user, read
+`shared/contracts/references/human-readable-output.md`.
+
 Use these rules for component API and architecture decisions. Repository policy,
 enforced configuration, existing public contracts, and repeated local patterns
 win over this upstream reference.

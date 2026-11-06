@@ -28,6 +28,8 @@ location (no batch object) plus a PR-level summary thread.
 
 - **Summary** = the report header: what the change does, the **host-derived verdict**, and the
   bucket counts (`N blockers · M should-fix · …`). Include the token-usage footer line.
+- Include the coverage/limits line from `output-format.md` so a partial review
+  retains its scope gaps when posted.
 - **One inline comment per surviving finding** at/above the posting threshold (below).
 - Each inline comment body =
   ```

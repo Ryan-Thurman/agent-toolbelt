@@ -5,6 +5,9 @@ description: Model assets, trust boundaries, attacker paths, mitigations, and ve
 
 # threat-model
 
+Before you write a response for the user, read
+`shared/contracts/references/human-readable-output.md`.
+
 Create a design-time security model before implementation. It is analytical and
 does not perform active testing.
 

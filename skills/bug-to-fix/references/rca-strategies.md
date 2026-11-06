@@ -21,8 +21,17 @@ Observe the symptom → find the immediate cause (what code directly does this?)
 that → keep tracing up (what value was passed?) → find the **original trigger**. **Never fix where
 the error appears** if it originates upstream. When manual tracing stalls, instrument: add
 uniquely-tagged logs (`[DEBUG-a4f2] …`) so cleanup is a single grep; log *before* the dangerous
-operation; print full context (inputs, env, timestamps). Use `console.error` (or the equivalent
-that actually surfaces) in tests.
+operation; print only the fields needed to test the hypothesis, with credentials and sensitive
+values masked. Use `console.error` (or the equivalent that actually surfaces) in tests.
+
+## Redact diagnostic evidence
+
+Before recording evidence in the investigation file or quoting it in a report, mask tokens,
+passwords, cookies, connection strings, auth headers, and sensitive user data. Logs, HAR files,
+stack traces, and environment dumps can carry these values even when the command itself does not.
+Show commands using variable names in place of credential values; quote only the output that
+establishes the symptom or tests the hypothesis. If masking removes the signal needed to diagnose
+the bug, explain the missing signal and ask how the user wants to provide it securely.
 
 ## Strategy decision tree
 

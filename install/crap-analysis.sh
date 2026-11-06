@@ -1,5 +1,6 @@
 # DESC: CRAP analysis — wizard config, single-run orchestration, deterministic review, opt-in refactor
 pack_crap_analysis() {
+  shared_contract references/human-readable-output.md
   cmd crap-config
   cmd do-crap-analysis
   cmd crap-refactor

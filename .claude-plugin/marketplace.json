@@ -1,0 +1,38 @@
+{
+  "name": "agent-toolbelt",
+  "owner": {
+    "name": "Ryan Thurman"
+  },
+  "metadata": {
+    "description": "Reusable AI-agent skills for software delivery workflows.",
+    "version": "1.0.0"
+  },
+  "plugins": [
+    {
+      "name": "agent-toolbelt",
+      "source": "./",
+      "description": "Reusable AI-agent skills for software delivery workflows.",
+      "version": "1.0.0",
+      "author": {
+        "name": "Ryan Thurman"
+      },
+      "homepage": "https://github.com/Ryan-Thurman/agent-toolbelt",
+      "repository": "https://github.com/Ryan-Thurman/agent-toolbelt",
+      "license": "MIT",
+      "category": "Developer Tools"
+    },
+    {
+      "name": "agent-toolbelt-auto-agent",
+      "source": "./plugins/agent-toolbelt-auto-agent",
+      "description": "Optional unattended agent-runner skills for Agent Toolbelt.",
+      "version": "1.0.0",
+      "author": {
+        "name": "Ryan Thurman"
+      },
+      "homepage": "https://github.com/Ryan-Thurman/agent-toolbelt",
+      "repository": "https://github.com/Ryan-Thurman/agent-toolbelt",
+      "license": "MIT",
+      "category": "Developer Tools"
+    }
+  ]
+}

@@ -9,7 +9,7 @@ Triage an incoming bug and open a durable investigation using the `bug-to-fix` s
 entry point of the diagnostic workflow.
 
 > **When to use vs related:** `/bug-intake` starts a *bug* investigation (broken behavior). For a
-> new capability use `/feature-start` (AI Feature Delivery) or `/dev-intake` (Dev Lite). After
+> new capability use `/shape-up` for scope or `/dev-intake` for Phased Delivery. After
 > intake, continue with `/reproduce`.
 
 **Arguments:** `$ARGUMENTS`
@@ -32,7 +32,8 @@ entry point of the diagnostic workflow.
 3. **Dedup** against `bug-knowledge-base.md` and any "won't fix" / out-of-scope record, matching by
    concept not keyword. If this bug or a decision about it already exists, surface that and stop.
 4. **Seed the durable file** from `templates/bug-investigation.md`: fill **Symptoms** (which becomes
-   IMMUTABLE), set `severity`, `trigger` (the report verbatim), and `status: gathering`. Choose a
+   IMMUTABLE), set `severity`, `trigger` (the report with credentials and sensitive user data
+   redacted), and `status: gathering`. Choose a
    descriptive `<slug>`.
 5. **Set the next action**: point `Current Focus.next_action` at reproduction.
 

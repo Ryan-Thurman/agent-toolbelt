@@ -1,3 +1,4 @@
-display_name: "Ticket Discovery"
-short_description: "Investigate a narrow precedent-based implementation ticket and produce a handoff without editing code."
-default_prompt: "Investigate this implementation ticket."
+interface:
+  display_name: "Ticket Discovery"
+  short_description: "Investigate a narrow precedent-based implementation ticket and produce a handoff without editing code."
+  default_prompt: "Investigate this implementation ticket."

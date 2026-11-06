@@ -1,29 +1,87 @@
 ---
 name: style-guide-init
-description: Establish or refresh evidence-derived repository coding standards and a style-guide proposal. Use when a repository needs a canonical style owner or implementation conventions are unclear.
+description: Extract and maintain repository contribution guidance from code, tooling, tests, CI, and documented policy. Use to create or refresh contribution/style guides, explain how to contribute, or assess convention drift; not for routine code review.
 ---
 
-# style-guide-init
+# Repository contribution guidance
 
-Establish a repository's style evidence and propose a compact canonical owner.
-This skill does not invent a style guide from generic preferences.
+Before you write a response for the user, read
+`shared/contracts/references/human-readable-output.md`.
 
-## Steps
+Derive how to work in this repository, then maintain that guidance against new
+evidence. Preserve the `style-guide-init` name for existing callers. A repeated
+implementation is evidence of practice, not automatic approval of a standard.
 
-1. Read `shared/contracts/references/style-precedence.md`. When extracting naming,
-   comments, or abstraction conventions, also read
-   `shared/contracts/references/anti-slop-naming.md`. For TypeScript or React, read
-   `shared/contracts/references/typescript-react-baseline.md`.
-2. Discover existing `AGENTS.md`, `CLAUDE.md`, `CONTRIBUTING.md`, style and architecture
-   documents; formatter, linter, compiler, test, and CI configuration; then inspect
-   representative neighboring production code and tests.
-3. Extract repeated evidence for vocabulary, helpers, module boundaries, errors,
-   comments, and test idioms. Mark weak or conflicting evidence as uncertain.
-4. If a canonical style owner exists, propose a focused update to that file. If none
-   exists, present the evidence and proposed `STYLE_GUIDE.md` content, then wait for
-   explicit opt-in before creating it. Do not duplicate its rules in `AGENTS.md`.
-5. Produce the artifact using `templates/repository-style-guide.md`. Include evidence
-   paths and uncertainty notes so a maintainer can review every non-obvious rule.
+## Choose the operation
+
+- **Explain or draft:** inspect the requested scope and return guidance without
+  changing files. `--print` always takes this path.
+- **Create or update:** a request to write the guide authorizes the relevant doc
+  edits and evidence checkpoint. Use the existing documentation owner and format;
+  otherwise default to `CONTRIBUTING.md`. Use `STYLE_GUIDE.md` for a specifically
+  requested style-only guide. Do not require another approval for authorized edits.
+- **Check:** report changed inputs and affected guidance without writing files.
+- **Refresh:** re-evaluate changed inputs and affected claims. Apply doc changes
+  when requested; an audit-only request returns the proposed patch.
+
+The compatibility command owns flags; natural-language requests work as well.
+This skill changes documentation and its checkpoint, not source/configuration,
+CI settings, branch protections, or release state. Do not install automation
+unless requested. Follow governing instructions while proposing corrections.
+
+## Derive the guide
+
+1. Establish scope, Git revision and working-tree state, existing guide owners,
+   and applicable root/subtree instructions. Read
+   `shared/contracts/references/style-precedence.md`. Discover formatter,
+   linter, compiler, package/task, test, CI, PR-template and ownership files.
+2. Read [references/extraction.md](references/extraction.md). Trace a representative
+   change through implementation, tests and required checks. Include active and
+   older areas where their practices differ; record unsampled areas. Validate
+   commands from their definitions and relevant CI; record actual execution
+   separately. Repository scripts are code: inspect before running, and stay
+   within the task's execution authority.
+3. Classify each claim as **documented policy**, **enforced**, **observed**,
+   **proposed**, or **conflicted**. Record source paths/symbols, scope, confidence
+   and counterexamples. A new branch or frequent pattern cannot override an
+   approved policy. Show stale commands or contradictions with current evidence;
+   preserve intent and leave policy decisions unresolved when the evidence cannot
+   settle them. Generic advice is never an extracted repository convention.
+4. Write only useful contribution decisions: setup, where changes belong,
+   representative code/test idioms, verification commands, generated-file handling,
+   documentation impact, and submission workflow. Reuse the existing style owner
+   for detailed rules. Link from README/agent entry files when useful and authorized;
+   keep one owner per fact. Use `templates/repository-contribution-guide.md` or,
+   for style-only work, `templates/repository-style-guide.md`.
+5. Verify cited paths and command definitions, inspect the scoped doc diff, and
+   record unresolved choices and coverage. For persisted guidance, read
+   [references/maintenance.md](references/maintenance.md) and capture a checkpoint
+   after reviewing the final sources and outputs. A checkpoint detects changes;
+   it does not certify that a guide is correct or approved.
+
+When naming or TypeScript/React guidance needs a fallback, consult
+`shared/contracts/references/anti-slop-naming.md` or
+`shared/contracts/references/typescript-react-baseline.md` as applicable. Label
+fallbacks as proposals unless the repository has adopted them.
+
+## Maintenance
+
+For refresh/check, read [references/maintenance.md](references/maintenance.md).
+Use `scripts/conventions_state.py` to compare a recorded snapshot with the current
+checkout, including new/deleted files and uncommitted edits. Re-read affected
+evidence and counterexamples before changing text. Changes mean **review needed**,
+not **documentation wrong**; unchanged fingerprints mean only **covered inputs
+unchanged**. Without a usable checkpoint, establish a baseline through inspection
+and report the missing historical comparison.
+
+## Completion
+
+Return the guide/draft or drift report, source scope and revision, evidence and
+conflicts, commands actually run with results, and remaining gaps. For a write,
+report artifact/checkpoint paths and what changed. Keep adopted requirements
+distinct from observed conventions, and retain a no-change result when it is
+supported. Do not claim full coverage from a sample or command success from a
+configuration read.
 
 ## Completion
 

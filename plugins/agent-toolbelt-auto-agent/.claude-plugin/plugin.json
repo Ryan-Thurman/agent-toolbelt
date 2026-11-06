@@ -1,0 +1,14 @@
+{
+  "name": "agent-toolbelt-auto-agent",
+  "version": "1.0.0",
+  "description": "Optional unattended agent-runner skills for Agent Toolbelt.",
+  "author": {
+    "name": "Ryan Thurman",
+    "url": "https://github.com/Ryan-Thurman"
+  },
+  "homepage": "https://github.com/Ryan-Thurman/agent-toolbelt",
+  "repository": "https://github.com/Ryan-Thurman/agent-toolbelt",
+  "license": "MIT",
+  "keywords": ["agent-orchestration", "unattended", "developer-tools"],
+  "skills": "./skills/"
+}

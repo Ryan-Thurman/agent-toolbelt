@@ -1,105 +1,13 @@
 ---
-description: Implement exactly one task from the current lightweight dev phase
-argument-hint: "<task-name-or-task-context>"
+description: Implement a bounded step within the current phased-delivery PR
+argument-hint: "<phase-or-ticket-step>"
 ---
 
 # /dev-implement-task
 
-Implement exactly one task from the current phase.
-
-Use this command for the core implementation loop.
-
-**Arguments:** `$ARGUMENTS`
-
-## Rules
-
-- Implement one task only.
-- Keep the change scoped to the selected task.
-- Do not jump ahead to future phase work.
-- Do not refactor unrelated code.
-- Follow existing project conventions.
-- Before coding, collect a compact style evidence packet: applicable policy/config,
-  two or three representative neighboring files/tests, canonical vocabulary, and
-  local helper/boundary/error/test patterns. Include it in any delegated or
-  fresh-context task brief.
-- Add or update tests in the same task if behavior changes.
-- Before any task mutation, verify each stated task precondition with read-only
-  checks. If a precondition is unmet or cannot be checked without side effects
-  or exposing a secret, stop and report the exact blocker; do not partially
-  implement the task.
-- If automated tests are not practical, state why and list the manual or
-  integration check that covers the risk.
-- Update the Implementation Plan document before and after the task so the
-  current task, status, evidence, checks, next step, and resume instructions are
-  durable.
-- When another agent will implement the task, or when context may be cleared,
-  create a short task brief and report file outside tracked source. Put exact
-  requirements and checks in the brief; ask the implementer to write the full
-  report to the report file and return only a short status summary.
-- Use subagents only when the environment supports them and the user has
-  explicitly asked for delegation, parallel agents, or subagent-driven work.
-  Otherwise implement sequentially in the current session.
-- If delegating, specify owned files/modules, the task brief path, report file
-  path, checks to run, and whether the default/current model is sufficient or a
-  task-specific model override is justified.
-- After implementation, summarize changes and recommend a commit message.
-
-## Required Steps
-
-1. Identify the selected task.
-2. Restate the intended behavior.
-3. Identify files likely to change.
-4. Identify tests to add or update.
-5. Verify any stated task preconditions with read-only checks; stop if one is
-   unmet or unsafe to verify.
-6. If delegating or preserving context across a reset, create the task brief and
-   report file outside tracked source.
-7. If delegating, state the owned files/modules, model choice or default-model
-   rationale, and sequential fallback.
-8. Update the plan document to mark the task `In Progress`.
-9. Implement the task.
-10. Add/update tests for behavior changes.
-11. Review changed lines for naming, narration comments, speculative helpers,
-    narrow scope, and behavior-pinning tests; local policy overrides generic rules.
-12. Run or list the relevant checks/tests.
-13. Update the plan document with task status, evidence, checks, next step, and
-    resume instructions.
-14. Summarize what changed.
-15. Recommend a commit message.
-
-## Output
-
-# Task Completion Summary
-
-## Task
-
-## Intended Behavior
-
-## What Changed
-
-## Files Changed
-
-## Tests Added / Updated
-
-If none, explain why automated coverage was not practical for this task.
-
-## Checks to Run
-
-## Acceptance Criteria Impact
-
-## Risks / Notes
-
-## Plan Document Updates
-
-Summarize the Implementation Plan updates made for current state, task status,
-evidence, checks, and resume instructions.
-
-## Suggested Commit Message
-
-Use this format:
-
-```text
-feat: add [task summary]
-```
-
-or another appropriate conventional commit prefix.
+Use `$phased-delivery` and its `references/implementation-rules.md` for
+`$ARGUMENTS`. Implement only the selected phase or ticket's work, discover the
+needed technical context, add relevant tests, and run focused checks. Verify
+external preconditions read-only before mutation. Update the existing plan or
+execution record with changed files, evidence, risks, and next action. A step
+does not require its own commit; keep commits coherent and the PR reviewable.

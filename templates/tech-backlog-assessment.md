@@ -19,11 +19,11 @@ dependencies, CI/deploy constraints>
 
 ## Options Considered
 
-| Option | Pros | Cons | Risk | Effort | Notes |
-|---|---|---|---|---|---|
-| Status quo |  |  |  |  |  |
-| Option A |  |  |  |  |  |
-| Option B |  |  |  |  |  |
+| Option | Benefit | Cost, risk, and effort | Decision and reason |
+|---|---|---|---|
+| Status quo |  |  |  |
+| Option A |  |  |  |
+| Option B |  |  |  |
 
 ## Package / Library Decision
 
@@ -41,7 +41,13 @@ framework upgrade. Otherwise write `Not applicable`.
 
 ## Proposed Implementation Shape
 
-<smallest sensible implementation or spike shape; no code>
+Describe the smallest useful implementation or spike. Each step explains its
+purpose and the evidence needed to finish; use a dependency diagram if helpful.
+Keep implementation code in the development step.
+
+| Step | Do | Why | Done when |
+|---|---|---|---|
+| 1 | <bounded action> | <task-specific reason> | <observable result> |
 
 ## Test Strategy
 

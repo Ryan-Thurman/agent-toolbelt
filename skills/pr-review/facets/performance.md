@@ -17,9 +17,12 @@ low-impact `js-*` guidance requires concrete hot-path, scale, or measurement evi
   parallel; missing pagination/streaming for large data.
 - memory: unbounded caches/collections, large allocations in hot paths, leaks (unreleased
   resources, lingering listeners/timers).
-- database: a new query path with no supporting index, full-table scans, `SELECT *` over wide
-  tables, an unbounded result set, a transaction held open across I/O, or a lock scope widened on a
-  hot table. (N+1 is covered under algorithmic.)
+- database: a new query path whose filter/join/sort cannot use an appropriate index, a costly scan
+  on a realistically sized table, `SELECT *` over wide tables, an unbounded result set, a transaction
+  held open across I/O, or a lock scope widened on a hot table. Check query shape, selectivity,
+  representative plan evidence when available, and index write cost before recommending an index.
+  For connection pressure, compare per-instance pool size with the database connection budget and
+  expected instance count. (N+1 is covered under algorithmic.)
 - ETL / data pipelines: per-row work where a set-based operation fits; a step made non-idempotent so
   a failure forces a full re-run instead of a resumable batch; loss of chunking/streaming/partitioning
   so the job's cost scales with total data rather than batch size.

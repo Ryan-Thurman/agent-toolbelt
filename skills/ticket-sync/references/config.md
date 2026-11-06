@@ -67,15 +67,18 @@ How ticket-template fields land in the tracker. Left = ticket field, right = tra
 
 ## Field-mapping rules
 
-The mapping turns the slicer ticket templates into tracker payloads. The two real source templates:
+The mapping turns ticket files into tracker payloads. Supported sources include:
 
-- **`templates/refinement-ticket-template.md`** (from `/refine-to-tickets`) — `Feature`, `Release`,
-  `Requirement`, `Acceptance Criteria`, `Test Expectations`, `Doc Delta Required` / `Document
-  Updates`, `Dependencies`, plus `Title` / `Description`.
+- **Project-owned ticket files** — use the fields declared in the repository's mapping.
+  Preserve supplied requirement, release, testing, document, and dependency fields.
 - **`templates/shape-up-issues.md`** (from `/to-issues`) — `What to build`, `Acceptance criteria`,
   `Blocked by`, optional `Parent`.
 
 Defaults when a mapping is unspecified:
+
+Map optional project fields only when the input supplies them.
+Do not require feature IDs, release IDs, or document-delta fields for ordinary tickets.
+
 - **Title** ← the ticket title.
 - **Description / body** ← the description / "What to build", with **Acceptance criteria** appended as
   a checklist and **Test expectation** under a "Testing" heading.

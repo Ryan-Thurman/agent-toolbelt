@@ -1,5 +1,6 @@
 # DESC: apply one defined change across every site (library swap, API rename, upgrade): discover/transform/verify
 pack_retrofit() {
+  shared_contract references/human-readable-output.md
   cmd retrofit
 
   skill retrofit SKILL.md

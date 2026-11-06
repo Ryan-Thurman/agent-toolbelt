@@ -1,9 +1,12 @@
 ---
 name: tech-backlog-assessment
-description: Assess technical backlog items before implementation: decide do/defer/reject/spike, compare options such as packages or library switches, define risks, test strategy, and the next workflow.
+description: "Assess technical backlog items before implementation: decide do/defer/reject/spike, compare options such as packages or library switches, define risks, test strategy, and the next workflow."
 ---
 
 # tech-backlog-assessment
+
+Before you write a response for the user, read
+`shared/contracts/references/human-readable-output.md`.
 
 Use this skill when the user has a technical backlog item and needs a decision
 memo before implementation. The work is discovery and recommendation, not code

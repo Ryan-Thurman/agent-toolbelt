@@ -46,14 +46,18 @@ This same fingerprint is the `--comment` idempotency marker (`posting.md`).
   "title": "Session token compared with non-constant-time equality",
   "rootIssue": "`token === stored` short-circuits on first mismatch.",
   "reason": "refuted",            // why it was dropped — see "What to record"
+  "evidence": "<code location and observation that refuted this claim>",
   "rejectedAtCommit": "<HEAD sha at rejection time>",
-  "rejectedOn": "<ISO date>",     // get from `git log -1 --format=%cI` or pass in; do not invent
+  "rejectedOn": "<ISO date>",     // actual rejection date from the host clock, not the commit date
   "count": 1                       // bumped when the same fingerprint is rejected again
 }
 ```
 
 Append with a real JSON tool (`jq -c`), one object per line. On a repeat rejection of an existing
 fingerprint, bump `count` and refresh `rejectedOn` instead of adding a duplicate line.
+Preserve the falsifying observation and its code reference when writing a new
+record so the next run can inspect why it was rejected. Older records without
+`evidence` remain readable; do not fabricate missing historical evidence.
 
 ## What to record — and what NOT to
 

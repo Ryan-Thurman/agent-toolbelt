@@ -6,6 +6,17 @@ sources with explicit license handling and neighboring packs in this repo. Runti
 
 ## External Sources
 
+- ASD-STE100 language: local guidance uses official Issue 9 source passages.
+  Sources: [official site](https://www.asd-ste100.org/),
+  [FAQ](https://asd-ste100.org/STE_faq.html), and
+  [standard](https://www.asd-ste100.org/assets/files/ASD-STE100_ISSUE9.pdf).
+  Reviewed indexed official passages on 2026-11-02. Direct requests returned HTTP 403.
+  The local rules summarize selected requirements. The standard and dictionary remain authoritative.
+- Human-readable output: independently written guidance from the user's
+  table/diagram and action/rationale requirements, informed by the presentation
+  approach in [ayghri/i-have-adhd](https://github.com/ayghri/i-have-adhd/blob/main/skills/i-have-adhd/SKILL.md)
+  (MIT; inspected 2026-11-02 at mutable `main`). No upstream prose or code was
+  copied. The local contract does not activate its persistent session mode.
 - `bug-to-fix`: concepts adapted and reworded from obra/superpowers
   `systematic-debugging`, `defense-in-depth`, and
   `verification-before-completion`; addyosmani/agent-skills
@@ -14,11 +25,13 @@ sources with explicit license handling and neighboring packs in this repo. Runti
   Jeffallan/claude-skills `debugging-wizard`; msitarzewski/agency-agents
   `minimal-change-engineer` and `incident-commander`;
   VoltAgent/awesome-claude-code-subagents `debugger`; and open-gsd/gsd-core
-  durable debug-file state patterns.
-- `dev-lite-workflow` and `auto-agent-dev-lite`: plan-scoped scratch state and
+  durable debug-file state patterns. The diagnostic evidence redaction rule is
+  adapted from mattpocock/skills `diagnosing-bugs` at commit `c55ee46073ed`.
+- `phased-delivery` and the legacy `auto-agent-dev-lite`: plan-scoped scratch state and
   bounded handoff concepts adapted and reworded from obra/superpowers; selective
-  read-only task preconditions adapted from open-gsd/gsd-core. The local plan
-  remains the durable source of truth, and normal tasks carry no added gate.
+  read-only task preconditions adapted from open-gsd/gsd-core. The source
+  requirement or ticket remains authoritative; the execution plan tracks
+  branches, checks, PRs, and handoffs without adding a gate to ordinary tasks.
 - `handoff`: handoff concept adapted and reworded from mattpocock/skills
   `handoff`, including reference-don't-duplicate, redact,
   suggested-next-skills, and temp-location guidance.
@@ -51,6 +64,12 @@ sources with explicit license handling and neighboring packs in this repo. Runti
   Anthropic official review/simplification plugins (Apache-2.0) and the Google
   TypeScript style-guide baseline when a target repository adopts it. Repository
   evidence remains authoritative.
+- Contribution-guide maintenance in `style-guide-init`: independently written
+  evidence classification, scoped file-fingerprint checkpoints and incremental
+  claim refresh. Related inspected sources are Anthropic's `claude-md-improver`,
+  Scoville's project-context cleanup and GSD's brownfield onboarding; source
+  comparisons and primary industry references are in
+  `repository-conventions-design.md`. No upstream prompt or code was copied.
 - `pr-improve`: stable ledger, bounded rereview, scope guard, and convergence
   concepts independently reworded from Trail of Bits `code-improver`. That source
   is CC BY-SA 4.0; no upstream prose was copied.
@@ -80,6 +99,13 @@ sources with explicit license handling and neighboring packs in this repo. Runti
   under progressive-disclosure references.
 
 ## Internal Pack Relationships
+
+The [October 2026 maintenance review](upstream-delta-2026-10.md) records pinned
+source evidence for lean phase plans (Superpowers), temporary handoff resolution
+(Matt Pocock), explicit review limits (Kodus, Trail of Bits, and GSD), host-owned
+provider settings (PR-Agent), and rejection diagnostics (Gentle Pi). These are
+independently worded adaptations; existing copied Vercel rules retain their
+original pin and attribution.
 
 - `phase-gate`: phase-boundary orchestration over `pr-review`; it spawns the
   reviewer as a subagent, routes findings, and adds solo-mode fix and merge.

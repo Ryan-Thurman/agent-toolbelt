@@ -1,5 +1,6 @@
 # DESC: durable phase context files, handoffs, and context packets; includes handoff for safe /clear or /compact boundaries
 pack_phase_context_workflow() {
+  shared_contract references/human-readable-output.md
   cmd handoff
   cmd phase-create
   cmd phase-start

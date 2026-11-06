@@ -1,5 +1,9 @@
 # Skill Improvement Master Plan
 
+> Current ownership: See [the migration guide](project-workflow-boundary.md).
+> The 2026-11-03 cleanup removed the project lifecycle pack from Toolbelt.
+> Earlier inventories and implementation records below describe their original state.
+
 Date: 2026-07-01
 
 This master plan merges the two skill review passes into one working plan. When

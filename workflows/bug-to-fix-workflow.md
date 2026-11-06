@@ -1,7 +1,7 @@
 # Bug-to-Fix Workflow
 
 The diagnostic lane: take a bug report and drive it to a verified fix. Backed by the `bug-to-fix`
-skill (`skills/bug-to-fix/SKILL.md`). Use this instead of the AI Feature Delivery or Dev Lite lanes
+skill (`skills/bug-to-fix/SKILL.md`). Use this instead of the feature-implementation workflow
 when the entry point is **broken behavior**, not a new capability.
 
 Each step keeps a durable investigation file (`templates/bug-investigation.md`) updated **before**

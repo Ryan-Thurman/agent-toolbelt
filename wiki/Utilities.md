@@ -6,7 +6,7 @@ test authoring, release, codebase-wide change, handoff, and tracker sync.
 - [Simplify](#simplify) — active code cleanup plus detect-only smell scans.
 - [React quality specialists](#react-quality-specialists) — conditional Vercel
   composition and React/Next performance references.
-- [Code Quality Gate](#code-quality-gate) — mandatory pre-PR quality evidence.
+- [Code Quality Gate](#code-quality-gate) — policy- or risk-driven pre-PR quality evidence.
 - [Style Guide Init](#style-guide-init) — evidence-derived repository conventions.
 - [Test Case Design](#test-case-design) — report-only QA test design.
 - [Cover](#cover) — test authoring.
@@ -66,8 +66,8 @@ for at most three rounds; structural tradeoffs and behavior changes need a
 recorded human choice. Neither mode commits or pushes. The durable report records
 `PASS`, `FAIL`, `CAPPED`, or `BLOCKED`; its installed fingerprint script makes a
 PASS valid only for the same frozen diff, untracked content, and scope. A narrowed
-scope is partial evidence, so Dev Lite requires a recomputed `coverage: final`
-PASS before PR readiness. The gate assesses only the current checked-out branch
+scope is partial evidence, so a policy-required final-diff gate needs a
+recomputed `coverage: final` PASS. The gate assesses only the current checked-out branch
 and local working tree; check out another branch before gating it, or use
 `/pr-review` for a named PR or remote target. Scope entries must be
 repository-relative worktree paths, never absolute paths or `..` escapes.
@@ -143,8 +143,7 @@ It is **pipeline-aware**: when an external CI/CD pipeline you don't control owns
 common org setup), `/ship-it` prepares the release package and **hands off** — it does not run
 deploy steps, and frames the monitor plan as the watch-list for after the pipeline deploys. When
 *you* own the deploy, it walks the staged rollout and proposes the exact commands, never executing
-a deploy without explicit confirmation. It's the lightweight sibling of the regulated
-`/release-manifest` + `/release-doc-check` path.
+a deploy without explicit confirmation. Project-owned release and document approvals remain with the target repository.
 
 ## Retrofit
 
@@ -226,9 +225,9 @@ captures what's been ruled out, redacts secrets, and stays compact. It's bundled
 ## Ticket Sync
 
 The `ticket-sync` tool is a **provider-agnostic issue-tracker adapter**. The lanes already slice work
-into tickets (`/refine-to-tickets`, `/to-issues`, `/bug-intake`) but only ever as local markdown or
+into tickets (`/to-issues`, `/bug-intake`, or project-owned workflows) but only ever as local markdown or
 GitHub Issues; `/ticket-sync` publishes those same ticket files to whichever tracker a repo declares
-— **GitHub Issues, Jira, or Azure Boards** — so `/refine-to-tickets` can land its tickets in Jira
+— **GitHub Issues, Jira, or Azure Boards** — so approved local tickets can be published to Jira
 instead of staying as markdown. It mirrors how `pr-review` abstracts the gh-vs-az *host*; here the
 abstraction is the *tracker*.
 

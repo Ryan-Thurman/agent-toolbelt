@@ -1,12 +1,14 @@
 ---
 name: ticket-sync
-description: Publish sliced ticket files to the repo-declared tracker: GitHub Issues, Jira, or Azure Boards. Use after refine-to-tickets, to-issues, or bug-intake. Provider-agnostic, idempotent, confirmation-gated, and manifest-only when offline.
+description: "Publish approved ticket files to the repository's tracker: GitHub Issues, Jira, or Azure Boards. Use after to-issues, bug-intake, or a project-owned ticket workflow. Preview changes, preserve tracker keys, and write a manifest when offline."
 ---
 
 # ticket-sync
 
-The lanes already SLICE work into tickets — `/refine-to-tickets` (regulated), `/to-issues` (dev
-lane), `/bug-intake` (diagnostic) — but only ever as local markdown or GitHub Issues. ticket-sync is
+Before you write a response for the user, read
+`shared/contracts/references/human-readable-output.md`.
+
+Workflows such as `/to-issues`, `/bug-intake`, and project-owned ticket preparation produce local ticket files. ticket-sync is
 the **adapter** that takes those same ticket files and publishes them to whichever tracker the repo
 declares: **GitHub Issues, Jira, or Azure Boards**. It mirrors how `pr-review` abstracts the
 gh-vs-az *host* — here the abstraction is the *tracker*.
@@ -75,5 +77,5 @@ apply; when offline, write a manifest instead.
 ## See also
 
 - `templates/tickets-config.md` — a copyable `.tickets.md` starter to drop into a target repo.
-- `/refine-to-tickets`, `/to-issues`, `/bug-intake` — the slicers that produce the ticket files this
+- `/to-issues`, `/bug-intake`, and project-owned workflows — the sources that produce the ticket files this
   publishes; ticket-sync is the optional publish step after them.

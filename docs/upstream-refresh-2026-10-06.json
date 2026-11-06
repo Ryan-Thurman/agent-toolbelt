@@ -1,0 +1,289 @@
+{
+  "checked_on": "2026-10-06",
+  "baseline": "Local clone HEADs before this refresh (previous review: 2026-09-24).",
+  "summary": {
+    "updated": 19,
+    "current": 11,
+    "cloned": 3,
+    "unavailable": 1
+  },
+  "repositories": [
+    {
+      "path": "repos/pull-request-repos/ai-pr-review",
+      "remote": "https://github.com/snarktank/ai-pr-review",
+      "branch": "main",
+      "before": "93e07cf60bc0b3a19d3b7c3595935d3f03c5bc3d",
+      "after": "93e07cf60bc0b3a19d3b7c3595935d3f03c5bc3d",
+      "status": "current"
+    },
+    {
+      "path": "repos/pull-request-repos/codeql",
+      "remote": "https://github.com/github/codeql.git",
+      "branch": "main",
+      "before": null,
+      "after": "36994cdec4ffab77993ac386c85cf551e28f552f",
+      "status": "cloned",
+      "note": "Fresh shallow reference clone; no prior local delta baseline."
+    },
+    {
+      "path": "repos/pull-request-repos/gentle-pi",
+      "remote": "https://github.com/Gentleman-Programming/gentle-pi",
+      "branch": "main",
+      "before": "8035114a57b832d35ed503beeb6b87ab99ffa5a4",
+      "after": "ed536d4f35caa38132a40274d4d515fe52a2f11b",
+      "status": "updated"
+    },
+    {
+      "path": "repos/pull-request-repos/kodus-ai",
+      "remote": "https://github.com/kodustech/kodus-ai",
+      "branch": "main",
+      "before": "9d35bc3e2c0467dfb9ceb0fb15af9dbb8e2063d9",
+      "after": "c2ac14f4d09544f26d7a1745aca2dbbdf413fb62",
+      "status": "updated"
+    },
+    {
+      "path": "repos/pull-request-repos/open-code-review",
+      "remote": "https://github.com/spencermarx/open-code-review",
+      "branch": "main",
+      "before": "fee6905939eaa804dfd90d815cecbcb26f600d32",
+      "after": "fee6905939eaa804dfd90d815cecbcb26f600d32",
+      "status": "current"
+    },
+    {
+      "path": "repos/pull-request-repos/open-code-review-alibaba",
+      "remote": "https://github.com/alibaba/open-code-review",
+      "branch": "main",
+      "before": "486022daaf14f7142275eddb9b3cacc3cc5dadfa",
+      "after": "182898cf522da3d04157b422752d028417974e19",
+      "status": "updated"
+    },
+    {
+      "path": "repos/pull-request-repos/pi-code-preview",
+      "remote": "https://github.com/rezamonangg/pi-code-preview",
+      "branch": "main",
+      "before": "bf65e96cf459b11d40563a719e28f1a137303890",
+      "after": "bf65e96cf459b11d40563a719e28f1a137303890",
+      "status": "current"
+    },
+    {
+      "path": "repos/pull-request-repos/pi-extensions",
+      "remote": "https://github.com/MattDevy/pi-extensions",
+      "branch": "main",
+      "before": "86cbbbb1d65eeca88ce2f820dd958301625e394c",
+      "after": "86cbbbb1d65eeca88ce2f820dd958301625e394c",
+      "status": "current"
+    },
+    {
+      "path": "repos/pull-request-repos/pi-extensions-dreki",
+      "remote": "https://github.com/dreki-gg/pi-extensions",
+      "branch": "main",
+      "before": "b75b356784fe9ef2cedca0d209fd82503b6d9ab0",
+      "after": "b75b356784fe9ef2cedca0d209fd82503b6d9ab0",
+      "status": "current"
+    },
+    {
+      "path": "repos/pull-request-repos/pi-extensions-haphazard",
+      "remote": "https://github.com/HaphazardDev/pi-extensions",
+      "branch": "main",
+      "before": "812d65d8bdeba95a1ad687674471e4c62080955b",
+      "after": "812d65d8bdeba95a1ad687674471e4c62080955b",
+      "status": "current"
+    },
+    {
+      "path": "repos/pull-request-repos/pi-packages",
+      "remote": "https://github.com/nielpattin/pi-packages",
+      "branch": "main",
+      "before": "c01be3e021bf73bff60a2023bc10aaf6b5f4d101",
+      "after": "c01be3e021bf73bff60a2023bc10aaf6b5f4d101",
+      "status": "current"
+    },
+    {
+      "path": "repos/pull-request-repos/pi-simplify",
+      "remote": "https://github.com/geminixiang/pi-simplify",
+      "branch": "main",
+      "before": "42aedb33866069ad5b9110315e8904ad1018594a",
+      "after": "42aedb33866069ad5b9110315e8904ad1018594a",
+      "status": "current"
+    },
+    {
+      "path": "repos/pull-request-repos/pr-agent",
+      "remote": "https://github.com/The-PR-Agent/pr-agent",
+      "branch": "main",
+      "before": "02718aeec22324ff6f29c263e934fe4290cde6c5",
+      "after": "99b72f62abb4c6dc7ebde98818dc535cf54d8023",
+      "status": "updated"
+    },
+    {
+      "path": "repos/pull-request-repos/semgrep",
+      "remote": "https://github.com/semgrep/semgrep.git",
+      "branch": "develop",
+      "before": null,
+      "after": "57cfaa2f3d5e1ab5bea05b37a4a407f8cbf2a54e",
+      "status": "cloned",
+      "note": "Fresh shallow reference clone; no prior local delta baseline."
+    },
+    {
+      "path": "repos/pull-request-repos/supi",
+      "remote": "https://github.com/mrclrchtr/supi",
+      "branch": "main",
+      "before": "0a93e06745248067620a118548055ffebabbdbff",
+      "after": "f53309bd735687e21ef4a92e5624a45b11ed53a2",
+      "status": "updated"
+    },
+    {
+      "path": "repos/pull-request-repos/visual-explainer",
+      "remote": "https://github.com/nicobailon/visual-explainer",
+      "branch": "main",
+      "before": "7163c3e10660912e0b89e1af465db9f387282b88",
+      "after": "0cc6f15452c455a05fb7fceb036d0da31387c69c",
+      "status": "updated"
+    },
+    {
+      "path": "repos/skills-repo/agency-agents",
+      "remote": "https://github.com/msitarzewski/agency-agents.git",
+      "branch": "main",
+      "before": "053ddbbf392a1688fc7043d81529f47ef2cf86c8",
+      "after": "5baafd5f1452e9785c413065b033ec083ab27757",
+      "status": "updated"
+    },
+    {
+      "path": "repos/skills-repo/agent-skills-addyosmani",
+      "remote": "https://github.com/addyosmani/agent-skills.git",
+      "branch": "main",
+      "before": "bcab6a1b8503100e8618c3b4e32cc78de43de769",
+      "after": "1401c8b8030e023baeebb31781a6653fe8e93026",
+      "status": "updated"
+    },
+    {
+      "path": "repos/skills-repo/awesome-claude-code-subagents",
+      "remote": "https://github.com/VoltAgent/awesome-claude-code-subagents.git",
+      "branch": "main",
+      "before": "82b73821baa7a911d5b14cfb6da238b7f0db6b42",
+      "after": "721e9734670bfaf7283194e234ebb88e94c82dcd",
+      "status": "updated"
+    },
+    {
+      "path": "repos/skills-repo/awesome-claude-skills",
+      "remote": "https://github.com/ComposioHQ/awesome-claude-skills.git",
+      "branch": "master",
+      "before": "be2a406907dbc61b73e6827ded415c96139d13a2",
+      "after": "be2a406907dbc61b73e6827ded415c96139d13a2",
+      "status": "current"
+    },
+    {
+      "path": "repos/skills-repo/claude-code-best-practice",
+      "remote": "https://github.com/shanraisshan/claude-code-best-practice.git",
+      "branch": "main",
+      "before": "36d47e76457781b3bf280cc92cdcd9a745920b5f",
+      "after": "c8602b2a2ca09933503f888be8f0304e62067886",
+      "status": "updated"
+    },
+    {
+      "path": "repos/skills-repo/claude-plugins-official",
+      "remote": "https://github.com/anthropics/claude-plugins-official.git",
+      "branch": "main",
+      "before": "ad30d62cd52ad0d0af1beda1eab7f61c601045d0",
+      "after": "d4226d062928f8d9505dbdeadd10217d23361052",
+      "status": "updated"
+    },
+    {
+      "path": "repos/skills-repo/claude-skills-jeffallan",
+      "remote": "https://github.com/Jeffallan/claude-skills.git",
+      "branch": "main",
+      "before": "882ef55e377dbf9a4dbe496bb41ac6ccd0e555cf",
+      "after": "1be15d8064f88fc25216442406d40add8fd23b53",
+      "status": "updated"
+    },
+    {
+      "path": "repos/skills-repo/cursor-plugins",
+      "remote": "https://github.com/cursor/plugins.git",
+      "branch": "main",
+      "before": "fadd23794c0075468eb8964b0fd93e06e09486ad",
+      "after": "9f451cf875ad1239912762f67741e8e5ba6ac0f1",
+      "status": "updated"
+    },
+    {
+      "path": "repos/skills-repo/gsd-core",
+      "remote": "https://github.com/open-gsd/gsd-core.git",
+      "branch": "next",
+      "before": "f4b6abb48e7814f333f25e2427980ad8bf8d9423",
+      "after": "82f7acdfa7f65438d723ffb97316673d886fc5e6",
+      "status": "updated"
+    },
+    {
+      "path": "repos/skills-repo/gstack",
+      "remote": "https://github.com/garrytan/gstack.git",
+      "branch": "main",
+      "before": "730a1017d1a15a8c0c214b820b3865b6e2a32547",
+      "after": "7697fb2981733186ce541789a56cda532f27587b",
+      "status": "updated"
+    },
+    {
+      "path": "repos/skills-repo/scoville-code-anti-ai-slop",
+      "remote": "https://github.com/benjaminstelzer/scoville-code.git",
+      "branch": "main",
+      "before": "465b04942253845f4fa799454442a5025f451a0d",
+      "after": "254ff39cec46dbf0dd5ff89662100a08e571120c",
+      "status": "updated",
+      "note": "Upstream renamed to scoville-code; local directory retained, origin corrected."
+    },
+    {
+      "path": "repos/skills-repo/scoville-scribe-anti-ai-slop",
+      "remote": "https://github.com/benjaminstelzer/scoville-scribe-anti-ai-slop.git",
+      "branch": "main",
+      "before": "0ec79a89a75682dc84858be345cd444e42481596",
+      "after": "0ec79a89a75682dc84858be345cd444e42481596",
+      "status": "unavailable",
+      "note": "Fetch returned Repository not found. Last local revision retained; scoville-suite added as a related active source, not a verified Scribe successor."
+    },
+    {
+      "path": "repos/skills-repo/scoville-suite",
+      "remote": "https://github.com/benjaminstelzer/scoville-suite.git",
+      "branch": "main",
+      "before": null,
+      "after": "6ad3e20fd1d83c71eca2506f97997a71beb937b4",
+      "status": "cloned",
+      "note": "Fresh shallow reference clone; no prior local delta baseline."
+    },
+    {
+      "path": "repos/skills-repo/skills-mattpocock",
+      "remote": "https://github.com/mattpocock/skills.git",
+      "branch": "main",
+      "before": "c55ee46073ed923f86ce59a5eb3b6d895095d1b7",
+      "after": "6fd947921b935b7e1e69293a200400f0fdd5c15f",
+      "status": "updated"
+    },
+    {
+      "path": "repos/skills-repo/superpowers",
+      "remote": "https://github.com/obra/superpowers.git",
+      "branch": "main",
+      "before": "5bf4e78011075bcfc0dc295f0724994cd123ee71",
+      "after": "8ca22dba9a94f28898bbce59f2537ff4d87c747d",
+      "status": "updated"
+    },
+    {
+      "path": "repos/skills-repo/trailofbits-skills",
+      "remote": "https://github.com/trailofbits/skills.git",
+      "branch": "main",
+      "before": "0cc1c73a5e96749ab32d7ea5e14892fafa6972ae",
+      "after": "82fe8226252622fa807643bdca1710901198553a",
+      "status": "updated"
+    },
+    {
+      "path": "repos/skills-repo/vercel-agent-skills",
+      "remote": "https://github.com/vercel-labs/agent-skills.git",
+      "branch": "main",
+      "before": "063bee94c3f4df8453406c830b0a7df0f2860278",
+      "after": "063bee94c3f4df8453406c830b0a7df0f2860278",
+      "status": "current"
+    },
+    {
+      "path": "repos/skills-repo/wondelai-skills",
+      "remote": "https://github.com/wondelai/skills.git",
+      "branch": "main",
+      "before": "c172996495bed0fcd26896a9416b2093fd7073f0",
+      "after": "c172996495bed0fcd26896a9416b2093fd7073f0",
+      "status": "current"
+    }
+  ]
+}

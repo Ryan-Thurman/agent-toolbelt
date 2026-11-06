@@ -1,3 +1,4 @@
-display_name: "Shape Up"
-short_description: "Turn a fuzzy request into a tight, approved brief before planning or implementation."
-default_prompt: "Shape this request into an approved brief."
+interface:
+  display_name: "Shape Up"
+  short_description: "Compare a product ask with current behavior, or shape an approved brief."
+  default_prompt: "Use $shape-up to review this ask against the current system or shape it into an approved brief, as requested."

@@ -13,6 +13,9 @@
   --accent-soft: #fbf0dd;
   --accent-ink: #ffffff;
   --hero: #24272d;
+  --task-surface: #ffffff;
+  --task-line: #d9dde3;
+  --task-hover: #f7f7f7;
   --warm: #465e92;
   --warm-soft: #e7ecf4;
   --tone-ink: #3e4b60;
@@ -43,6 +46,9 @@
   --accent-soft: #303947;
   --accent-ink: #24272d;
   --hero: #22262d;
+  --task-surface: #383838;
+  --task-line: #5c5c5c;
+  --task-hover: #414141;
   --warm: #f3d17f;
   --warm-soft: #303947;
   --tone-ink: #efc372;
@@ -125,8 +131,8 @@ h4 { margin-bottom: 8px; }
 .task-group { min-width: 0; }
 .task-group-title { margin: 0 0 8px; color: var(--muted); font-size: 11px; font-weight: 600; }
 .task-shortcuts { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
-.task-shortcut { position: relative; display: flex; min-height: 125px; flex-direction: column; align-items: start; gap: 7px; border: 1px solid var(--line); border-radius: 10px; padding: 14px; background: var(--paper-raised); color: var(--ink); text-align: left; transition: transform .15s ease, border-color .15s ease; }
-.task-shortcut:hover { transform: translateY(-2px); border-color: var(--accent); }
+.task-shortcut { position: relative; display: flex; min-height: 125px; flex-direction: column; align-items: start; gap: 7px; border: 1px solid var(--task-line); border-radius: 10px; padding: 14px; background: var(--task-surface); color: var(--ink); text-align: left; transition: transform .15s ease, border-color .15s ease; }
+.task-shortcut:hover { transform: translateY(-2px); border-color: var(--accent); background: var(--task-hover); }
 .task-identity { display: flex; align-items: center; gap: 7px; padding-right: 8px; }
 .task-shortcut .category-icon { width: 28px; height: 28px; border-radius: 7px; background: var(--tone-soft); }
 .task-shortcut .category-icon svg { width: 18px; height: 18px; }

@@ -49,3 +49,11 @@ Home, filtered results, and workflow screenshots were reviewed for the changed v
 
 This review does not establish improved task-completion time or full accessibility conformance.
 Those conclusions require separate user and accessibility testing.
+
+The `1.1.2` refinement gives dark-theme task cards a neutral gray surface (`#383838`) against the blue-gray hero.
+Their border is `#5c5c5c`; the hover surface is `#414141`.
+Light-theme task cards remain white.
+The category markers, grouping, and skill destinations remain the same.
+Package checks and all eight browser cases passed for this refinement.
+Desktop and mobile dark-theme home screenshots were visually reviewed.
+The local log is `.atb-work/portal-gray-cards-2026-11-06/package-check.log`.

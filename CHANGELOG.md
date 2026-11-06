@@ -2,6 +2,13 @@
 
 ## Unreleased
 
+## v1.1.2 - 2026-11-06
+
+### Changed
+
+- Raised dark-theme task cards onto a lighter neutral gray surface with clearer borders and a distinct hover state.
+- Kept light-theme task surfaces white and retained the existing category markers and action colors.
+
 ## v1.1.1 - 2026-11-06
 
 ### Changed

@@ -6,4 +6,5 @@ pack_user_research_synthesis() {
   cmd user-research-synthesis
   skill user-research-synthesis SKILL.md
   template user-research-synthesis.md
+  workflow product-learning-workflow.md
 }

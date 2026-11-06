@@ -11,12 +11,12 @@ Choose from workflows that are actually installed.
 **Arguments:** `$ARGUMENTS`
 
 | Task | Shared owner |
+| --- | --- |
 | Synthesize customer research | `user-research-synthesis` |
 | Select an opportunity or experiment | `product-discovery` |
 | Assess customer outcomes after an experiment or release | `product-outcome-review` |
 | Discover maintenance work across a repository | `tech-debt-discovery` |
 | Document architecture and review attack paths | `system-design`, then `threat-model` |
-| --- | --- |
 | Compare an ask with current behavior, or clarify scope | `shape-up` |
 | Review a plan, or deliver approved requirements or tickets | `phased-delivery` |
 | Reproduce and repair a defect | `bug-to-fix` |

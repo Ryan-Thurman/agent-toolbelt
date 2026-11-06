@@ -7,4 +7,5 @@ pack_product_outcome_review() {
   cmd product-outcome-review
   skill product-outcome-review SKILL.md
   template product-outcome-review.md
+  workflow product-learning-workflow.md
 }

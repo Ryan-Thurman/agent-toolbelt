@@ -18,7 +18,8 @@ verification. It is expensive — see `benchmarks/results.md` for whether the ex
 
 Run **all** facets: correctness, security, performance, tests, standards, and **maintainability via
 `facets/maintainability-deep.md`** (thermo-nuclear bar). Add **spec-alignment**
-(`facets/spec-alignment.md`) when a spec / issue / design doc is linked. (Deep already runs
+(`facets/spec-alignment.md`) when supplied intent (spec, issue, ticket, or design doc) includes
+checkable acceptance criteria. (Deep already runs
 everything, so repo **Always run** is a no-op here; **Emphasis**/`--focus` still tell a facet to go
 deeper and lower its threshold.)
 
@@ -42,8 +43,9 @@ to the rejection memory (`rejection-memory.md`), same as the standard critic doe
 
 ## 5. Requirements / spec coverage
 
-If spec-alignment ran, render its coverage assessment as a table (requirement → met/partial/missing/
-extra → file:line). Otherwise skip.
+When intent supplies acceptance criteria, the orchestrator renders the coverage table described in
+`fan-out.md`: each clause → `Verified`, `Failed`, or `Not verified` → evidence and `file:line`.
+Keep it separate from the spec-alignment findings array. Otherwise skip.
 
 ## 6. Re-entry notes, repo-config overrides, rejection memory, threshold, verdict, render
 

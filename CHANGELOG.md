@@ -9,6 +9,13 @@
 - Darkened task cards to charcoal gray and used soft black for the navigation header and hero.
 - Changed the dark-theme library background, raised surfaces, and borders to neutral grays.
 
+### Fixed
+
+- Restored the `/workflow-router` table header so that the new routing rows render.
+- Aligned the deep PR review coverage step with the orchestrator-owned acceptance-criteria table.
+- Added the product learning workflow to the selected research synthesis and outcome review installs.
+- Updated the installation guide to 33 skills.
+
 ## v1.1.2 - 2026-11-06
 
 ### Changed

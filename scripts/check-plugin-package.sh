@@ -10,6 +10,7 @@ command -v node >/dev/null 2>&1 || {
   echo "node is required for cross-host plugin checks" >&2
   exit 1
 }
+node "$ROOT/scripts/test-release-version.js"
 node "$ROOT/scripts/check-plugin-package.js" "$ROOT"
 
 echo "Running catalog and generated-audit checks..."

@@ -7,7 +7,10 @@ const { ROOT, discoverCanonicalSkills, loadCatalog } = require('./catalog-lib');
 const { validate } = require('./validate-catalog');
 
 const REPOSITORY_URL = 'https://github.com/Ryan-Thurman/agent-toolbelt';
-const SOURCE_FILES = ['index.html', 'styles.css', 'app.js'];
+const SOURCE_FILES = [
+  'index.html', 'styles.css', 'app.js', 'brand-icon.svg',
+  'favicon.svg', 'favicon-16.png', 'favicon-32.png', 'favicon-48.png'
+];
 
 function prepareOutputDirectory(output, generatedFiles) {
   let outputStat = null;

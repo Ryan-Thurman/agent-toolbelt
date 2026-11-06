@@ -2,10 +2,12 @@
 
 ## Unreleased
 
-## v1.0.0 - 2026-11-05
+## v1.0.0 - 2026-11-06
 
 ### Added
 
+- Added GitHub Pages publication after stable version increases on `main`. Package and browser checks must pass before publication.
+- Replaced the portal's AT initials with the command buckle brand icon. Added SVG and 16, 32, and 48-pixel PNG favicons.
 - Added native skills plugins for Cursor, Claude Code, and Codex, with 29 shared skills and a separate optional Auto Agent package.
 - Added an offline portal with search, category guidance, task shortcuts, expected results, workflows, and host setup instructions.
 - Added desktop and mobile browser checks, automated accessibility scans, and deterministic catalog and portal builds.

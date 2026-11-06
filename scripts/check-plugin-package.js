@@ -5,6 +5,7 @@ const fs = require("fs");
 const os = require("os");
 const path = require("path");
 const { spawnSync } = require("child_process");
+const { STABLE_VERSION } = require("./check-release-version");
 
 const root = path.resolve(process.argv[2] || path.join(__dirname, ".."));
 const errors = [];
@@ -24,10 +25,17 @@ function readJson(relativePath) {
 }
 
 const cursor = readJson(".cursor-plugin/plugin.json");
+const expectedVersion = cursor?.version;
+if (typeof expectedVersion !== "string" || !STABLE_VERSION.test(expectedVersion)) {
+  errors.push("Cursor manifest must define a stable major.minor.patch release version");
+}
 const claude = readJson(".claude-plugin/plugin.json");
 const codex = readJson(".codex-plugin/plugin.json");
 const claudeMarketplace = readJson(".claude-plugin/marketplace.json");
 const codexMarketplace = readJson(".agents/plugins/marketplace.json");
+if (claudeMarketplace?.metadata?.version !== expectedVersion) {
+  errors.push(`Claude marketplace metadata version must be ${expectedVersion}`);
+}
 const autoAgentRoot = "plugins/agent-toolbelt-auto-agent";
 const catalog = readJson("catalog/agent-toolbelt.json");
 const projectBoundary = catalog?.tooling_audit?.find((entry) => entry.id === "project-workflow-boundary");
@@ -50,8 +58,8 @@ for (const [host, manifest] of manifests) {
   if (manifest.name !== "agent-toolbelt") {
     errors.push(`${host} manifest name must be agent-toolbelt`);
   }
-  if (manifest.version !== "1.0.0") {
-    errors.push(`${host} manifest version must be 1.0.0`);
+  if (manifest.version !== expectedVersion) {
+    errors.push(`${host} manifest version must be ${expectedVersion}`);
   }
   if (!manifest.author || manifest.author.name !== "Ryan Thurman") {
     errors.push(`${host} manifest author must be Ryan Thurman`);
@@ -111,8 +119,8 @@ if (!fs.existsSync(path.join(root, autoAgentRoot, "commands", "auto-agent-plan.m
 }
 for (const [host, manifest] of autoAgentManifests) {
   if (!manifest) continue;
-  if (manifest.name !== "agent-toolbelt-auto-agent" || manifest.version !== "1.0.0" || manifest.skills !== "./skills/") {
-    errors.push(`${host} Auto Agent manifest must identify the opt-in 1.0.0 skills package`);
+  if (manifest.name !== "agent-toolbelt-auto-agent" || manifest.version !== expectedVersion || manifest.skills !== "./skills/") {
+    errors.push(`${host} Auto Agent manifest must identify the opt-in ${expectedVersion} skills package`);
   }
 }
 
@@ -127,8 +135,8 @@ function checkCatalog(catalog, relativePath, sourceResolver, manifestPath) {
     errors.push(`${relativePath} must contain an agent-toolbelt entry`);
     return;
   }
-  if (entry.version && entry.version !== "1.0.0") {
-    errors.push(`${relativePath} plugin version must be 1.0.0`);
+  if ((relativePath === ".claude-plugin/marketplace.json" || entry.version !== undefined) && entry.version !== expectedVersion) {
+    errors.push(`${relativePath} plugin version must be ${expectedVersion}`);
   }
   if (entry.description && entry.description !== "Reusable AI-agent skills for software delivery workflows.") {
     errors.push(`${relativePath} plugin description must describe the skills-only surface`);
@@ -169,6 +177,9 @@ function checkPrivateCatalog(catalog, relativePath, manifestPath) {
     errors.push(`${relativePath} must contain the opt-in Auto Agent entry`);
     return;
   }
+  if ((relativePath === ".claude-plugin/marketplace.json" || entry.version !== undefined) && entry.version !== expectedVersion) {
+    errors.push(`${relativePath} Auto Agent version must be ${expectedVersion}`);
+  }
   const source = typeof entry.source === "string" ? entry.source : entry.source && entry.source.path;
   const resolved = source && path.resolve(root, source);
   if (resolved !== path.join(root, autoAgentRoot) || !fs.existsSync(path.join(resolved, manifestPath))) {
@@ -198,7 +209,7 @@ if (build.status !== 0) {
   errors.push(`Cursor build failed: ${build.stderr || build.stdout}`.trim());
 } else {
   const builtManifest = readJsonFrom(tempRoot, ".cursor-plugin/plugin.json");
-  if (!builtManifest || builtManifest.name !== "agent-toolbelt" || builtManifest.version !== "1.0.0") {
+  if (!builtManifest || builtManifest.name !== "agent-toolbelt" || builtManifest.version !== expectedVersion) {
     errors.push("Cursor build manifest is not aligned with the root plugin");
   }
   const builtSkills = fs.readdirSync(path.join(tempRoot, "skills"), { withFileTypes: true })

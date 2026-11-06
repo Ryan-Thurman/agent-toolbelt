@@ -63,6 +63,16 @@ For screenshots of both themes at desktop and mobile sizes, run
 `npm run portal:screenshots`. Read [the visual review guide](docs/portal-visual-review.md)
 for screenshot paths, the HTML report, and the local browser startup option.
 
+### Publish the portal
+
+The [portal workflow](.github/workflows/portal.yml) checks pull requests and pushes to `main`.
+It publishes `portal/generated/` only when the release version increases on `main` and all package checks pass.
+The version in `.cursor-plugin/plugin.json` is the comparison source.
+All six plugin manifests and the Claude marketplace versions must agree.
+
+Before the first publication, select **Settings → Pages → Build and deployment → Source → GitHub Actions** in this repository.
+Read [the hosting guide](docs/portal-hosting.md) for the release gate and first-publication requirements.
+
 Most packs fall into one of these jobs:
 
 - Start new work: `product-discovery`, `shape-up`, `phased-delivery`

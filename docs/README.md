@@ -10,6 +10,7 @@ Start here:
 - `project-workflow-boundary.md` - shared workflow ownership and project-lifecycle migration.
 - `toolbelt-cleanup-2026-11-03.md` - cleanup scope, validation results, and remaining release checks.
 - `portal-visual-review.md` - Playwright setup, theme screenshots, browser checks, and review evidence.
+- `portal-color-review-2026-11-06.md` - Mobbin comparisons, category labels, neutral surfaces, and task grouping for release `1.1.1`.
 - `portal-hosting.md` - GitHub Pages setup, version-gated publication, and release requirements.
 - `tutorial.md` - guided first install and first feature walkthrough.
 - `phase-command-map.md` - which commands each workflow phase uses, at a glance.

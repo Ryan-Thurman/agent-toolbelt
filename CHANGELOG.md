@@ -2,6 +2,16 @@
 
 ## Unreleased
 
+## v1.1.1 - 2026-11-06
+
+### Changed
+
+- Grouped task shortcuts into exploration/planning and improvement/verification rows.
+- Replaced broad category-colored surfaces with neutral cards and explicit category labels.
+- Reserved amber for actions, selection, and branding. Technical improvement now uses green category markers.
+- Balanced workflow choices into three desktop columns and reduced repeated card emphasis.
+- Recorded a Mobbin reference comparison and checked both themes at desktop and mobile sizes.
+
 ## v1.1.0 - 2026-11-06
 
 ### Added

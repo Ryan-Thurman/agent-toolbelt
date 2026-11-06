@@ -57,3 +57,17 @@ The category markers, grouping, and skill destinations remain the same.
 Package checks and all eight browser cases passed for this refinement.
 Desktop and mobile dark-theme home screenshots were visually reviewed.
 The local log is `.atb-work/portal-gray-cards-2026-11-06/package-check.log`.
+
+The `1.1.3` refinement darkens the gray task cards and replaces blue-gray page surfaces with neutral grays.
+
+| Dark-theme area | Surface |
+| --- | --- |
+| Navigation header | `#191919` soft black. |
+| Hero | `#1e1e1e` soft black. |
+| Task cards | `#2a2a2a` charcoal gray. |
+| Skill library background | `#151515` very dark gray. |
+| Raised library surfaces | `#242424` neutral gray. |
+
+The local check log is `.atb-work/portal-dark-surfaces-2026-11-06/package-check.log`.
+The package check and all eight browser cases passed.
+Desktop and mobile dark-theme home screenshots and the desktop light-theme home screenshot were visually reviewed.

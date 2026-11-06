@@ -2,6 +2,13 @@
 
 ## Unreleased
 
+## v1.1.3 - 2026-11-06
+
+### Changed
+
+- Darkened task cards to charcoal gray and used soft black for the navigation header and hero.
+- Changed the dark-theme library background, raised surfaces, and borders to neutral grays.
+
 ## v1.1.2 - 2026-11-06
 
 ### Changed

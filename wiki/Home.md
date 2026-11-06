@@ -1,27 +1,31 @@
 # agent-toolbelt wiki
 
-Reusable AI-agent commands, skills, workflows, and templates for software
-delivery work.
+Agent Toolbelt is an independent, general-purpose collection of reusable
+skills for software delivery. It has no AI-SDLC or team-workspace dependency.
 
-This wiki is the deep-dive companion to the [README](../README.md). Start with
-[Installation](Installation.md), then pick a lane.
+The [README](../README.md) is the concise entry point and the
+[generated portal](../portal/generated/index.html) owns discovery, taxonomy,
+examples, and the common workflow map. This wiki is the deeper operational and
+compatibility guide. Individual `SKILL.md` files remain canonical for behavior;
+commands and hooks are optional project-scoped compatibility surfaces.
 
 ## Pages
 
 | Page | Covers |
 |---|---|
-| [Installation](Installation.md) | `install.sh`, harness selection, polyrepo `--sweep`, the private Cursor plugin |
-| [Workflows](Workflows.md) | Product Discovery, Dev Lite, Phase Context, AI Feature Delivery, Bug to Fix, Shape Up, Threat Model |
+| [Installation](Installation.md) | `install.sh`, cross-host skills plugin, harness selection, polyrepo `--sweep` |
+| [Workflows](Workflows.md) | Product Discovery, Phased Delivery, Phase Context, Bug to Fix, Shape Up, Threat Model |
 | [Code Review](Code-Review.md) | Code Quality Gate, PR Review, PR Improve and triggers: Review Reply, Review on Open, Review Queue, Phase Gate, Cursor Hooks |
 | [Utilities](Utilities.md) | Style Guide Init, Simplify, Test Case Design, Cover, Security Audit, Ship It, Retrofit, Worktree, Handoff, Ticket Sync |
 | [Phase → Command Map](../docs/phase-command-map.md) | Which commands each workflow phase uses (with Mermaid diagrams) |
+| [Skill taxonomy audit](../docs/skill-taxonomy-audit.md) | Generated skill classification, completeness, and recommendations |
 
 ## What's included
 
 The repository ships these toolsets:
 
 - `pr-review`: a tiered, multi-agent pull-request and diff review workflow.
-- `code-quality-gate`: a mandatory pre-PR coordinator over repository checks,
+- `code-quality-gate`: an opt-in or policy-required pre-PR coordinator over repository checks,
   changed-code anti-slop/simplification assessment, standards/maintainability
   review, and bounded fix/rereview evidence.
 - `pr-review-reply`: the round-trip half of `pr-review` — read a human
@@ -40,15 +44,12 @@ The repository ships these toolsets:
   the findings back so the main agent fixes and merges (solo, `--merge`).
 - `bug-to-fix`: a diagnostic lane that takes a bug report through triage,
   reproduction, root-cause analysis, a minimal fix, and verification.
-- `dev-lite-workflow`: a lightweight development loop for app/feature ideas,
-  phased implementation, per-task commits, phase reviews, final PR review, and
-  a required recomputed final-coverage code-quality-gate PASS before PR readiness.
+- `phased-delivery`: human-guided implementation from a requirement or approved
+  tickets, one reviewable PR per phase; each approved ticket is
+  one phase and one PR, including approved stacked PRs.
 - `phase-context-workflow`: durable phase files, handoffs, and context packets
   for long agent work that needs safe `/clear` or `/compact` boundaries. It
   composes the cross-cutting `handoff` skill for phase closeout.
-- `ai-feature-delivery`: a traceable feature-delivery workflow for turning a
-  feature idea into design docs, implementation tickets, test evidence, QA
-  handoff, and release documentation.
 - `shape-up`: interrogate a vague request into an agreed brief before building —
   the front-door to the dev lanes.
 - `simplify`: actively clean up existing code on opt-in, plus `/code-smell`
@@ -65,7 +66,7 @@ The repository ships these toolsets:
   branch, collision-safe naming, for independent sessions.
 - `ticket-sync`: a provider-agnostic issue-tracker adapter that publishes the
   tickets the slicers produce to GitHub Issues, Jira, or Azure Boards — so
-  `/refine-to-tickets` and `/to-issues` can land their work in the tracker, not
+  project ticket workflows and `/to-issues` can land their work in the tracker, not
   just local markdown.
 - `handoff`: a small, cross-cutting `/handoff` that writes a resumable handoff so
   a fresh agent — or a teammate — can continue work without context loss. Bundled
@@ -74,24 +75,24 @@ The repository ships these toolsets:
   into Cursor's agent loop — a doc-sync gate on `git commit` and a `/pr-review`
   nudge on `git push` (Cursor-only; advisory and fail-open).
 
-The lanes are different shapes: `ai-feature-delivery` / `dev-lite-workflow` are
-**generative** (start from an idea), while `bug-to-fix` is **diagnostic** (start
-from broken behavior). `shape-up` shapes a fuzzy request before either; `pr-review`,
-`code-quality-gate`, `simplify`, and `cover` are the review / cleanup / test-authoring utilities; `ship-it`
-is the release step at the tail. They share a back half — dev implementation and PR
-review.
+`phased-delivery` owns shared implementation and PR boundaries.
+`bug-to-fix` owns defect diagnosis. Project repositories own their lifecycle
+records and approvals. Review, test, and release methods remain shared Toolbelt skills.
 
 ## Repository layout
 
 ```text
 agent-toolbelt/
+  portal/generated/ offline discovery portal (catalog, examples, workflows)
+  catalog/          canonical discovery metadata and tooling lifecycle audit
   install.sh        single installer entry point (./install.sh --harness <list> <pack...> <target>)
   install/          per-pack file lists (install/<pack>.sh) + shared install/lib.sh
   build-cursor-plugin.sh  assemble a private, user-scoped Cursor plugin from the packs
   docs/             user-facing setup and usage docs
   commands/         slash commands and reusable command prompts
   skills/           agent skills with operating instructions
-  hooks/            Cursor hook scripts + hooks.json (cursor-hooks pack)
+  optional/cursor-hooks/
+                    Opt-in Cursor hook scripts + hooks.json (cursor-hooks pack)
   workflows/        multi-step workflow playbooks
   templates/        reusable starting files and Cursor rules
   examples/         worked reference material

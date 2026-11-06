@@ -1,5 +1,12 @@
 # PR Readiness Review
 
+Review one phase or ticket PR. For a stack, compare this branch with its parent
+branch rather than the default branch.
+
+- Phase / source ticket:
+- Parent ticket / PR, if stacked:
+- Work branch / PR target:
+
 ## Result
 
 Use one:
@@ -51,10 +58,11 @@ contract, or boundary clause violated.
 
 ## Required Fixes
 
-## Code Quality Gate Evidence
+## Required Quality Gate Evidence, If Applicable
 
 - Report path:
-- Status: PASS / FAIL / CAPPED / BLOCKED / Missing / Stale
+- Why required (repository policy, user request, or phase risk):
+- Status: PASS / FAIL / CAPPED / BLOCKED / Missing / Stale / Not required
 - Coverage: final / partial / unknown
 - Current base/head/scope fingerprints recomputed and verified: Yes / No
 - Blocking gate outcome or remaining disposition:
@@ -83,13 +91,14 @@ Have.
 ## Branch / PR Notes
 
 - Current branch:
+- PR target branch and parent PR:
 - Default-branch push avoided: Yes / No / User-approved exception
 - Ready to open PR: Yes / No
 - Recommended PR command or manual PR title/body:
 
 ## Plan Document Updates
 
-Summarize the Implementation Plan updates made for PR readiness result,
+Summarize the existing plan or execution record updates made for PR readiness result,
 branch/PR state, required fixes, next step, and resume instructions.
 
 ## Suggested PR Description

@@ -1,5 +1,6 @@
 # DESC: in-loop phase-boundary PR-review gate: a subagent reviews each phase PR, then posts to host (team) or feeds back + merges (solo)
 pack_phase_gate() {
+  shared_contract references/human-readable-output.md
   cmd phase-gate
 
   skill phase-gate SKILL.md

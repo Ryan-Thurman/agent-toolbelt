@@ -9,8 +9,11 @@ the rule that representative local conventions fill gaps.
 
 ## Evidence
 
-List configuration and representative code/test paths. Note conflicting or weak
-evidence; do not make it policy until reviewed.
+Record scope, baseline revision, working-tree state and sampled/excluded areas.
+List configuration and representative code/test paths and symbols. Classify
+non-obvious claims as Documented policy, Enforced, Observed, Proposed or Conflicted;
+retain confidence, counterexamples and decisions. A configured check is not proof
+that it ran; repeated practice is not automatic policy adoption.
 
 ## Domain Vocabulary and Naming
 
@@ -33,3 +36,9 @@ folders, state, CSS, framework boundaries, and test choices local.
 ## Uncertainties and Review Decisions
 
 Questions, rejected rules, and the evidence needed to settle each one.
+
+## Maintenance
+
+Existing guide owner, evidence checkpoint path if used, and scoped check/refresh
+instructions. Re-evaluate affected claims before advancing a checkpoint; a file
+fingerprint check detects input changes and does not validate policy or meaning.

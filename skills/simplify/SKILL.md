@@ -1,9 +1,12 @@
 ---
 name: simplify
-description: Apply behavior-preserving cleanup on opt-in: delete dead code, inline thin wrappers, reuse helpers, and fix small inefficiencies. Use after feature work, before PR, or when asked to simplify. For verdicts use pr-review.
+description: "Apply behavior-preserving cleanup on opt-in: delete dead code, inline thin wrappers, reuse helpers, and fix small inefficiencies. Use after feature work, before PR, or when asked to simplify. For verdicts use pr-review."
 ---
 
 # simplify
+
+Before you write a response for the user, read
+`shared/contracts/references/human-readable-output.md`.
 
 The **active** counterpart to `pr-review`. Where pr-review is a passive gate that *finds problems
 and applies nothing*, simplify *drives the cleanup* — it proposes high-conviction simplifications

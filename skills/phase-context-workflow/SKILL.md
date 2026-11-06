@@ -5,6 +5,9 @@ description: Manage durable phase context for long coding-agent work. Use when p
 
 # phase-context-workflow
 
+Before you write a response for the user, read
+`shared/contracts/references/human-readable-output.md`.
+
 Use this skill when a coding-agent task will span multiple phases or sessions
 and the user wants important context preserved in files instead of chat history.
 
@@ -89,7 +92,7 @@ context until the next session has durable state.
   with the next action, capture ruled-out paths, redact secrets, and keep the
   summary compact. This skill adds the repeated phase lifecycle and repo-tracked
   `.acc/phases/<room>/phase-NN-handoff.md` destination.
-- Use `dev-lite-workflow` for feature/app delivery. This skill can wrap
+- Use `phased-delivery` for requirement or ticket implementation. This skill can wrap
   dev-lite phases when context reset safety matters.
 - Use `phase-gate` after opening a phase PR when the phase needs a fresh
   review subagent and PR comments.

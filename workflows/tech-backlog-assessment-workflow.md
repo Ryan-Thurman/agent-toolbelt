@@ -33,7 +33,7 @@ Spike? -> create bounded spike plan and evidence target
 - A straightforward ticket that names an existing precedent to copy. Use
   `/ticket-discover`.
 - A confirmed bug. Use the bug-to-fix lane.
-- A feature that already needs a build plan. Use Dev Lite or Feature Delivery.
+- A feature that already needs an implementation plan. Use Phased Delivery or the target project's workflow.
 
 ## Completion Criteria
 

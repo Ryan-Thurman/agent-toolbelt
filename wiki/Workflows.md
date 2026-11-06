@@ -1,50 +1,56 @@
 # Workflows
 
-The delivery lanes. For a per-phase command breakdown with Mermaid diagrams, see
+The delivery lanes. The [offline portal](../portal/generated/index.html) owns
+discovery, examples, and the common workflow map; this page provides deeper
+operational guidance. For a per-phase command breakdown with Mermaid diagrams, see
 the [Phase → Command Map](../docs/phase-command-map.md).
 
-- [Dev Lite Workflow](#dev-lite-workflow) — lightweight feature/app delivery loop.
+- [Phased Delivery](#phased-delivery) — requirements or tickets to one PR per phase.
 - [Phase Context Workflow](#phase-context-workflow) — durable state across resets.
-- [AI Feature Delivery](#ai-feature-delivery) — traceable, gated, cross-functional.
 - [Bug to Fix](#bug-to-fix) — the diagnostic lane.
-- [Shape Up](#shape-up) — interrogate a vague request before building.
+- [Shape Up](#shape-up) — review current-state gaps or shape an approved brief.
 - [Product Discovery](#product-discovery) — evidence before deciding what to shape.
 - [Threat Model](#threat-model) — design-time security analysis.
 
-## Dev Lite Workflow
+## Phased Delivery
 
-The Dev Lite Workflow is for practical feature or app delivery when you want a
-smaller loop than the full AI Feature Delivery process. It works from:
+Phased Delivery turns a raw requirement or existing approved plan into
+human-reviewed PRs. It reuses supplied approved tickets:
+**one ticket = one phase = one PR**. The agent fills in technical context such
+as files, interfaces, tests, and checks without changing ticket scope.
 
 ```text
-Idea -> Feature Brief -> Implementation Plan -> Task -> Commit -> Phase Review -> Code Quality Gate (PASS) -> Final PR Review
+Source requirement or tickets -> phase/PR map -> plan approval -> implement
+-> verify and review phase -> open its PR -> human review/merge or approved stack
 ```
 
 Install it into a project for Cursor, Claude Code, and Codex skill use:
 
 ```sh
-./install.sh --harness all dev-lite-workflow /path/to/project
+./install.sh --harness all phased-delivery /path/to/project
 ```
 
 Use `--dry-run` to preview the install:
 
 ```sh
-./install.sh --dry-run --harness all dev-lite-workflow /path/to/project
+./install.sh --dry-run --harness all phased-delivery /path/to/project
 ```
 
-The installer adds Cursor commands/rules, Claude commands, a repo-scoped
-`.agents/skills/dev-lite-workflow` Codex skill, shared `.atb/skills/` copy,
-templates, the workflow playbook, and the `code-quality-gate` dependency chain.
-Before Dev Lite reports `Ready for PR`, `/code-quality-gate` must produce current
-`PASS` evidence for the final diff; `FAIL`, `CAPPED`, or `BLOCKED` is a readiness blocker.
+The installer adds legacy `/dev-*` Cursor and Claude command shortcuts, a
+repo-scoped `.agents/skills/phased-delivery` Codex skill, a shared
+`.atb/skills/` copy, templates, and the workflow playbook. The former
+`dev-lite-workflow` pack name remains an explicit compatibility alias. Quality
+gates are applied when repository policy, the user, or the phase's risk requires
+them; they are not a universal pre-PR dependency.
 
-In Cursor or Claude Code, start with `/dev-intake`, then `/dev-plan`. In Codex,
-invoke the skill with `/skills` or by mentioning `$dev-lite-workflow`, then ask
+In Cursor or Claude Code, use `/dev-plan` with an approved source, adding
+`/dev-intake` only for an unclear raw requirement. In Codex, invoke the skill
+with `/skills` or by mentioning `$phased-delivery`, then ask
 for the action you want:
 
 ```text
-$dev-lite-workflow
-Run a PR readiness review for this bug fix against the current diff.
+$phased-delivery
+Plan these approved tickets as stacked PRs, one ticket per phase.
 ```
 
 ## Phase Context Workflow
@@ -67,46 +73,8 @@ It adds `/handoff`, `/phase-create`, `/phase-start`, `/phase-close`, and
 handoffs, and context packets. `/phase-close` reuses the `handoff` rules
 (reference durable artifacts, lead with the next action, capture ruled-out
 paths, redact secrets, keep it compact) but saves into the tracked phase
-directory. It pairs well with `dev-lite-workflow` for phased implementation and
+directory. It pairs well with `phased-delivery` for phased implementation and
 with `phase-gate` when each phase opens its own PR.
-
-## AI Feature Delivery
-
-The AI Feature Delivery System is for cross-functional feature work where
-requirements, tickets, tests, docs, QA handoff, and release eligibility need to
-stay connected.
-
-Start with:
-
-- `.atb/workflows/ai-feature-delivery-lifecycle.md` for the full lifecycle and gates.
-- `.atb/workflows/dev-ticket-to-pr.md` for the implementation-ticket-to-PR path.
-- `.atb/skills/ai-feature-delivery/SKILL.md` for agent operating rules.
-- `.atb/skills/webapp-testing/SKILL.md` for browser/user-flow verification.
-- `.atb/templates/feature-master-record.md` for the central traceability record.
-
-Common commands:
-
-- `/workflow-router` - choose the smallest useful next command.
-- `/feature-start` and `/feature-fleshout` - define and complete a feature
-  package.
-- `/sdd-draft`, `/doc-impact`, and `/doc-delta` - manage design and controlled
-  document impacts.
-- `/refine-to-tickets` - slice feature work into traceable implementation
-  tickets.
-- `/start-dev-from-feature`, `/implementation-plan`, `/write-tests`,
-  `/webapp-test`, `/review-diff`, `/pr-ready-check`, and
-  `/pr-traceability-review` - carry a ticket through development and PR review.
-- `/role-review` - run a product, engineering, design, QA, security, or release
-  review gate from one role's point of view.
-- `/qa-handoff`, `/release-manifest`, and `/release-doc-check` - prepare QA and
-  release documentation.
-
-Which harnesses receive files is controlled by `--harness` (see [Choosing
-harnesses](Installation.md#choosing-harnesses)). Note that the AI Feature Delivery
-pack ships Cursor-only commands and optional full-mode rules, so installing it
-with `--harness claude` writes only its shared `.atb/skills/`, `.atb/templates/`,
-and `.atb/workflows/` (the installer prints a note for each pack that contributes
-nothing harness-specific).
 
 ## Bug to Fix
 
@@ -161,16 +129,19 @@ analysis, not active testing.
 
 ## Shape Up
 
-The `shape-up` tool interrogates a vague request into an agreed brief **before** anyone
-plans or writes code — the front-door to the dev lanes.
+The `shape-up` tool can compare a product ask with current system behavior in a
+report-only gap review, or interrogate a vague request into an agreed brief
+before delivery.
 
 ```sh
 ./install.sh --harness all shape-up /path/to/project
 ```
 
-It grills the request one question at a time (resolving from the codebase first, each
-question with a recommended answer), hunts contradictions and overloaded terms, and emits
-a lean brief — gated on your approval. Then it hands off: `/shape-up` -> `/dev-intake` ->
-`/dev-plan`, or `/to-issues` to slice the brief into vertical-slice tickets. It is lighter
-than `/feature-fleshout` (no gates/compliance) and complements `/dev-intake` (which captures
-a brief but does not grill).
+In gap-review mode it maps each requested outcome to evidence of current behavior,
+flags partial or unknown coverage, and prioritizes unanswered questions. It does
+not require brief approval or start a delivery plan. In interactive shaping mode
+it asks one question at a time (resolving from the codebase first), hunts
+contradictions, and emits a lean brief gated on your approval. An approved brief
+goes directly to `$phased-delivery` or `/dev-plan`; use `/to-issues` first when
+you want vertical-slice tickets. `/dev-intake` remains for unclear raw requests
+that have no approved brief, plan, or ticket.

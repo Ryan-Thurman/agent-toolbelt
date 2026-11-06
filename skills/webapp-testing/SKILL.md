@@ -5,6 +5,9 @@ description: Verify browser and web application behavior for user-facing changes
 
 # webapp-testing
 
+Before you write a response for the user, read
+`shared/contracts/references/human-readable-output.md`.
+
 Use this skill to verify webapp behavior from the user's point of view. Prefer
 existing project test commands and official tool help over inventing a custom
 browser harness.

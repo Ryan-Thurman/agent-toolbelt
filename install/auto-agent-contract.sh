@@ -1,13 +1,39 @@
-# DESC: rules for a headless orchestrator that shells into agent CLIs to code and review: invocation, convergence, merge, unattended mode, Dev Lite jobs, + /auto-agent-plan
+# DESC: optional private package for unattended agent-runner work and /auto-agent-plan
+# PRIVATE: true
+_auto_agent_skill() {
+  local name="$1" rel="$2" src="plugins/agent-toolbelt-auto-agent/skills/$1/$2"
+  _install "$src" ".atb/skills/$name/$rel"
+  if [ "$rel" = "SKILL.md" ]; then
+    _install "plugins/agent-toolbelt-auto-agent/skills/$name/agents/openai.yaml" ".atb/skills/$name/agents/openai.yaml"
+  fi
+  if harness_enabled cursor || harness_enabled codex; then
+    _install "$src" ".agents/skills/$name/$rel"
+    if [ "$rel" = "SKILL.md" ]; then
+      _install "plugins/agent-toolbelt-auto-agent/skills/$name/agents/openai.yaml" ".agents/skills/$name/agents/openai.yaml"
+    fi
+  else
+    gated=$((gated + 1))
+  fi
+  _record_skill "$name"
+}
+
+_auto_agent_command() {
+  local did=0 src="plugins/agent-toolbelt-auto-agent/commands/auto-agent-plan.md"
+  if harness_enabled cursor; then _install "$src" ".cursor/commands/auto-agent-plan.md"; did=1; else gated=$((gated + 1)); fi
+  if harness_enabled claude; then _install "$src" ".claude/commands/auto-agent-plan.md"; did=1; else gated=$((gated + 1)); fi
+  [ "$did" = 1 ] && _record_command auto-agent-plan
+  return 0
+}
+
 pack_auto_agent_contract() {
-  cmd auto-agent-plan
+  _auto_agent_command
 
-  skill auto-agent-contract SKILL.md
-  skill auto-agent-contract references/invocation.md
-  skill auto-agent-contract references/convergence.md
-  skill auto-agent-contract references/merge.md
-  skill auto-agent-contract references/unattended.md
-  skill auto-agent-contract references/plan-format.md
+  _auto_agent_skill auto-agent-contract SKILL.md
+  _auto_agent_skill auto-agent-contract references/invocation.md
+  _auto_agent_skill auto-agent-contract references/convergence.md
+  _auto_agent_skill auto-agent-contract references/merge.md
+  _auto_agent_skill auto-agent-contract references/unattended.md
+  _auto_agent_skill auto-agent-contract references/plan-format.md
 
-  skill auto-agent-dev-lite SKILL.md
+  _auto_agent_skill auto-agent-dev-lite SKILL.md
 }

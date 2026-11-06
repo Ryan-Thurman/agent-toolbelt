@@ -31,6 +31,15 @@ available_packs() {
   done | sort
 }
 
+default_packs() {
+  local p
+  for p in $(available_packs); do
+    if ! grep -Eq '^# (PRIVATE: true|ALIAS: .+)$' "$INSTALL_DIR/$p.sh"; then
+      printf '%s\n' "$p"
+    fi
+  done
+}
+
 pack_desc() {
   sed -n 's/^# DESC: //p' "$INSTALL_DIR/$1.sh" | head -1
 }
@@ -75,9 +84,8 @@ Usage:
 Options:
   --harness <list>  REQUIRED. Comma list of harnesses to install for:
                     cursor, claude, codex, or all (repeatable).
-  --rules <mode>    Cursor rule mode: minimal (default) or full.
-                    minimal installs one small router/guardrail rule; full
-                    installs every pack's project rules.
+  --rules minimal  Install the shared Cursor routing rule (default).
+                    Project process rules belong to the target repository.
   --sweep           target is a parent dir: install into it AND each child git
                     repo, with the selected Cursor rule mode at each level.
   --list            list the available packs and exit
@@ -87,7 +95,7 @@ Options:
 
 Examples:
   ./install.sh --harness cursor pr-review ~/work/my-project
-  ./install.sh --harness cursor --rules full ai-feature-delivery ~/pilot
+  ./install.sh --harness cursor phased-delivery pr-review ~/project
   ./install.sh --harness cursor,claude bug-to-fix simplify ~/work/my-project
   ./install.sh --harness all all ~/work/my-project
   ./install.sh --sweep --harness cursor all ~/work/my-monorepo-parent
@@ -146,8 +154,8 @@ fi
 TARGET="${positionals[${#positionals[@]}-1]}"
 packs=("${positionals[@]:0:${#positionals[@]}-1}")
 
-# Expand 'all'.
-all_packs=$(available_packs)
+# Expand 'all' to the standard packs. Private packs remain explicit opt-ins.
+all_packs=$(default_packs)
 expanded=()
 for p in "${packs[@]}"; do
   if [ "$p" = "all" ]; then
@@ -164,6 +172,11 @@ selected=()
 resolving=()
 resolve_pack() {
   local p="$1" dependency active
+  if [ "$p" = "ai-feature-delivery" ]; then
+    echo "install: ai-feature-delivery is project-owned and is no longer a Toolbelt pack." >&2
+    echo "Use phased-delivery for shared implementation, or the target project's delivery package." >&2
+    exit 2
+  fi
   if [ ! -f "$INSTALL_DIR/$p.sh" ]; then
     echo "install: unknown pack: $p" >&2
     echo "Run './install.sh --list' to see available packs." >&2
@@ -197,8 +210,9 @@ if [ "$HARNESS_GIVEN" = "0" ]; then
 fi
 normalize_harness
 case "$RULE_MODE" in
-  minimal|full) ;;
-  *) echo "install: unknown --rules mode: '$RULE_MODE' (valid: minimal, full)" >&2; exit 2 ;;
+  minimal) ;;
+  full) echo "install: --rules full is retired. Project process rules belong to the target repository." >&2; exit 2 ;;
+  *) echo "install: unknown --rules mode: '$RULE_MODE' (valid: minimal)" >&2; exit 2 ;;
 esac
 
 # shellcheck source=install/lib.sh

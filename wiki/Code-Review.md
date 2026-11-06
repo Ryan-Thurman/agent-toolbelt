@@ -9,7 +9,7 @@ specialist for the exact changed behavior. Those MIT-licensed references are
 conditional and never override repository policy or measured evidence.
 
 - [PR Review](#pr-review) — the tiered review engine.
-- [Code Quality Gate](#code-quality-gate) — the mandatory pre-PR quality verdict.
+- [Code Quality Gate](#code-quality-gate) — a policy- or risk-driven pre-PR quality verdict.
 - [PR Improve](#pr-improve) — bounded fix-and-rereview loop.
 - [PR Review Reply](#pr-review-reply) — answer a human reviewer's threads.
 - [Review on Open](#review-on-open) — event/poller trigger.
@@ -87,7 +87,8 @@ required checks, unchanged scope, no unresolved blocker/should-fix/evidence-back
 quality issue, verified fixes for accepted findings, and an explicit disposition
 for every nit. Its installed fingerprint script records the frozen diff and
 untracked content, then makes a PASS stale when either fingerprint changes.
-`--scope` creates partial evidence only; Dev Lite accepts only `coverage: final`.
+`--scope` creates partial evidence only; a policy-required final-diff gate
+needs `coverage: final`.
 The gate covers only the current checked-out branch and local working tree
 (committed-since-merge-base, staged, unstaged, and untracked changes). Check out
 the intended branch first; use `/pr-review` for a named PR, remote branch, or
@@ -95,8 +96,8 @@ other branch. Scope entries must be repository-relative worktree paths; absolute
 paths and `..` escapes are rejected.
 The gate judges observable code consequences and never attributes code to AI or a person.
 
-Dev Lite installs this pack and requires a recomputed, final-coverage PASS before
-it can report `Ready for PR`.
+Phased Delivery uses this pack when repository policy, user request, or phase
+risk requires it; it is not a universal prerequisite for every PR.
 
 ## PR Improve
 
@@ -290,4 +291,4 @@ Both are **advisory** (worst case they prompt; never hard-block) and **fail-open
 hook error allows the action). Bypass per-action with `[skip-docs]` / `[skip-review]` in
 the command, or disable entirely with `TOOLBELT_DOC_CHECK=0` / `TOOLBELT_REVIEW_NUDGE=0`.
 If the target already has a `.cursor/hooks.json`, the installer **skips** it rather than
-clobber your hooks — merge the two entries from `hooks/hooks.json` by hand.
+clobber your hooks — merge the two entries from `optional/cursor-hooks/hooks.json` by hand.

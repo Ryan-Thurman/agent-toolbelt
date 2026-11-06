@@ -8,7 +8,7 @@ argument-hint: "[what the next session will focus on]"
 Write a handoff document so a fresh agent — or a teammate — can pick up exactly where this session
 left off, using the `handoff` skill. Context loss is the most common cause of multi-agent and
 multi-session failure; this command prevents it. Cross-cutting: useful in any lane (Bug-to-Fix, Dev
-Lite, AI Feature Delivery, Retrofit, or ad-hoc work).
+Lite, project-owned delivery, Retrofit, or ad-hoc work).
 
 **Arguments:** `$ARGUMENTS`
 
@@ -17,6 +17,8 @@ Lite, AI Feature Delivery, Retrofit, or ad-hoc work).
 - **Reference, don't duplicate.** Point to existing artifacts (a durable state/plan file, PRDs,
   ADRs, issues, commits, diffs) by path or URL instead of copying their content.
 - **Lead with the next action** — one concrete next step, not "continue."
+- **Record the working state and checks.** Include the branch, whether changes are committed,
+  and exact verification commands with outcomes.
 - **Redact secrets.** No API keys, passwords, tokens, or PII in the handoff.
 - **Tailor to the next focus.** If arguments describe what the next session will do, shape the
   handoff toward that.
@@ -27,24 +29,28 @@ Lite, AI Feature Delivery, Retrofit, or ad-hoc work).
 
 1. **Locate the live state.** If the lane keeps a durable state file, it is the primary source —
    reference and summarize it rather than restating everything: the bug-investigation file
-   (Bug-to-Fix), the implementation plan (Dev Lite / AI Feature Delivery), or the retrofit plan
+   (Bug-to-Fix), the implementation plan (Phased Delivery / project-owned delivery), or the retrofit plan
    (Retrofit). If none exists, synthesize the state from the session.
-2. **Summarize current state**: what the task is, what's done, what's in flight, and the single
-   concrete **next action**.
+2. **Summarize current state**: what the task is, what's done, what's in flight, the branch and
+   working-tree state, and the single concrete **next action**.
 3. **Capture what's been tried and ruled out** (so the next agent doesn't repeat it), the suspected
    direction, and the relevant files/logs/metrics to check — by reference.
-4. **List suggested next skills/commands** the next session should invoke.
-5. **Keep it compact** — a few screens, not a transcript. For a long task, a ≤2K-token summary plus
+4. **Record verification**: exact commands, outcomes, and checks still needed. Mark results stale
+   if the code changed after the check.
+5. **List suggested next skills/commands** the next session should invoke.
+6. **Keep it compact** — a few screens, not a transcript. For a long task, a ≤2K-token summary plus
    references is the target.
 
 ## Resume protocol (for whoever picks it up)
 
-Read the durable state file first (its `status` / Current State), then the handoff's next-action and
-what's-been-ruled-out, then continue from the next action. Don't re-litigate eliminated paths.
+Read the durable state file first (its `status` / Current State), then the handoff's next action and
+what's been ruled out. Compare the recorded branch and working-tree state with `git status`; rerun
+checks whose recorded result is missing or stale before relying on them. Continue from the next
+action without re-litigating eliminated paths.
 
 ## Output
 
 A handoff document (saved outside the workspace unless the project tracks handoffs) containing:
-current state + concrete next action, what's been tried/ruled out, references (not copies) to the
-investigation file and related artifacts, suggested next commands, and any blockers — with secrets
-redacted.
+current state + concrete next action, branch and working-tree state, exact verification commands
+and outcomes, what's been tried/ruled out, references (not copies) to the investigation file and
+related artifacts, suggested next commands, and any blockers — with secrets redacted.

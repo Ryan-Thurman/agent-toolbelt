@@ -38,7 +38,7 @@ Success signal: <how we will know it is done>
 
 ## Gap Analysis
 
-| Area | Precedent Has | Target Has | Action |
+| Area | Precedent Has | Target Has | Action and why |
 |---|---|---|---|
 | Test setup |  |  | Reuse / adapt / create |
 | Fixtures |  |  | Reuse / adapt / create |
@@ -48,7 +48,11 @@ Success signal: <how we will know it is done>
 
 ## Recommended Approach
 
-<smallest sensible adaptation strategy>
+Describe the smallest useful adaptation, preserving the source ticket's scope.
+
+| Step | Do | Why | Done when |
+|---|---|---|---|
+| 1 | <bounded adaptation> | <gap it closes> | <observable evidence> |
 
 ## Coverage To Add
 

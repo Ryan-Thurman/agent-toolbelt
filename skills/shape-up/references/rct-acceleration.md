@@ -25,8 +25,8 @@ the graph answers most "how does it work today / what would this touch" question
 
 ## Caveats
 
-- The graph supplies *what exists and what depends on what*; you still supply the judgment (the
-  grill, the contradiction calls, the brief). rct does not replace the interrogation — it makes the
-  repo-first half cheap.
+- The graph supplies *what exists and what depends on what*; you still supply the judgment
+  (gap classification or interactive questions and brief). It does not replace
+  source verification or product decisions.
 - Verify against the actual file for any detail the graph elides, and if rct flags a stale/edited
   index for a result, read that file directly.

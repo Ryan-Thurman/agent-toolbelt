@@ -1,14 +1,31 @@
 # Installation
 
-Everything installs through one entry point — `./install.sh` — which answers the
-core questions: **which packs**, **which harness(es)**, and **into which folder**
-plus optional Cursor rule mode:
+The native cross-host plugin is the primary installation path. The repository
+root exposes 29 skills for Cursor, Claude Code, and Codex from one canonical
+tree. For a local clone:
+
+```sh
+cursor-agent --plugin-dir /path/to/agent-toolbelt
+claude --plugin-dir /path/to/agent-toolbelt
+codex plugin marketplace add /path/to/agent-toolbelt
+codex plugin add agent-toolbelt@agent-toolbelt
+```
+
+Use `/skill-name` in Cursor, `/agent-toolbelt:skill-name` in Claude Code, and
+`$skill-name` or `/skills` in Codex. The [offline portal](../portal/generated/index.html)
+owns discovery and examples; this page covers installation and compatibility.
+
+## Optional project-scoped compatibility install
+
+`./install.sh` remains available when a project needs local commands, templates,
+workflow files, rules, or opt-in hooks. It answers **which packs**, **which
+harness(es)**, and **into which folder**, plus optional Cursor rule mode:
 
 ```sh
 ./install.sh --harness <cursor|claude|codex|all> <pack ...|all> <target-folder>
 ```
 
-The most common command — install every pack into one project for Cursor:
+The most common command — install every standard pack into one project for Cursor:
 
 ```sh
 ./install.sh --harness cursor all /path/to/project
@@ -18,14 +35,13 @@ Other shapes:
 
 ```sh
 ./install.sh --list                                          # list the available packs
-./install.sh --harness cursor ai-feature-delivery ~/pilot    # one pack, one harness
-./install.sh --harness cursor --rules full all ~/pilot       # every Cursor project rule
+./install.sh --harness cursor phased-delivery ~/pilot    # one pack, one harness
 ./install.sh --harness cursor,claude bug-to-fix simplify shape-up ~/project
 ./install.sh --harness all react-quality ~/project
 ./install.sh --harness all all ~/project                     # every pack, every harness
 ```
 
-New here? Take the guided path:
+New to the compatibility installer? Take the guided path:
 
 - `docs/tutorial.md` — a first install and first feature walkthrough.
 - `docs/README.md` — the documentation map.
@@ -122,39 +138,13 @@ Minimal mode writes one small always-on router/guardrail rule at
 and points the agent to the matching installed command or skill when a task needs
 workflow-specific detail.
 
-Use **full** mode only for dedicated pilot or workflow-heavy repos where every
-pack's detailed Cursor project rules should be always-on:
+The former `--rules full` mode is retired.
+The target repository owns process rules, forms, and approval requirements.
 
-```sh
-./install.sh --harness cursor --rules full all /path/to/pilot
-```
-
-The installer is non-destructive: switching an existing project back to minimal
-does not delete older `.cursor/rules/*.mdc` files from a previous full install.
-Remove stale project rules manually if you want the smaller footprint in an
-already-installed repo.
-
-**No top-level clutter.** The harness-agnostic artifacts live under a single hidden
-`.atb/` folder in the target rather than as bare `skills/`, `templates/`, `workflows/`,
-and `examples/` folders at the project root, so they never collide with (or get mistaken
-for) a brownfield project's own directories. The packs still ship their content with
-`.atb/…` references — the installer rewrites the absolute-from-root paths as it copies,
-while relative refs are unaffected because the four folders move together.
-
-**Skills:** Cursor and Codex both auto-discover skills under `.agents/skills/`, so the
-installer writes that one native copy for either harness (a separate `.cursor/skills/`
-would make Cursor list every skill twice). The canonical `.atb/skills/` tree is *not*
-an auto-discovery root, so it never double-registers — it exists only because the
-commands reference it by path. Each skill copy includes `SKILL.md` frontmatter plus
-`agents/openai.yaml` UI metadata, so hosts can surface them as first-class,
-on-demand skills alongside the `/commands`.
-
-When `cursor` or `codex` is selected, the installer writes an **`AGENTS.md`
-pointer** at the target. When `claude` is selected, it writes the same generated
-block to **`CLAUDE.md`**, because Claude Code reads that file rather than
-`AGENTS.md`. Both files use a marker-delimited "Available workflows" block
-listing the installed commands and skills so the agent discovers them. The block
-is regenerated idempotently and never disturbs the rest of either file.
+The installer does not delete rules from earlier installations.
+Review each old rule against its owner before removing it.
+Preserve project-owned rules and local changes.
+Read [the migration guide](../docs/project-workflow-boundary.md) before an update.
 
 ## Polyrepo / `--sweep`
 
@@ -180,14 +170,78 @@ application* in a multi-root workspace, promote those rules to **Cursor User Rul
 (Settings → Rules, Skills, Subagents → User) instead of relying on a repo's
 `.cursor/rules`.
 
-## Private Cursor plugin (one global install)
+## Cross-host plugin (Cursor, Claude Code, and Codex)
+
+The repository root is the canonical skills-only plugin package. It contains
+native manifests for all three hosts and one shared `skills/` tree, exposing 29
+on-demand skills, 0 commands, and 0 hooks; no committed skill copies are
+generated. The root `commands/` remain available through `install.sh`. The
+`cursor-hooks` pack remains available through `install.sh`, but its manifest and
+scripts live under `optional/cursor-hooks/` so installing the plugin does not
+enable hooks automatically.
+
+### Local clone
+
+Use the host-native local plugin entry points:
+
+```sh
+# Cursor — load for one session
+cursor-agent --plugin-dir /path/to/agent-toolbelt
+
+# Claude Code — load for one session
+claude --plugin-dir /path/to/agent-toolbelt
+
+# Codex — add the repo-local marketplace, then install its entry
+codex plugin marketplace add /path/to/agent-toolbelt
+codex plugin add agent-toolbelt@agent-toolbelt
+```
+
+The Claude and Codex marketplace catalogs both have a standard root entry and
+an optional Auto Agent entry. For
+GitHub-backed installation, replace the local path with
+`Ryan-Thurman/agent-toolbelt` in each host's marketplace-add command:
+
+```sh
+claude plugin marketplace add Ryan-Thurman/agent-toolbelt
+codex plugin marketplace add Ryan-Thurman/agent-toolbelt
+```
+
+Cursor's public marketplace requires review and a manual submission at
+`https://cursor.com/marketplace/publish`; publishing has not been performed.
+Until approval, use `cursor-agent --plugin-dir` or a local plugin link.
+
+Validate the package and all catalogs from the repository root:
+
+```sh
+scripts/check-plugin-package.sh
+```
+
+This check verifies the three manifests, aligned version and identity metadata,
+both catalog source paths, all 29 canonical skills, and that default plugin
+payloads do not include hooks or always-on rules. Claude's installed validator is
+run as part of the check. Run the repository check script from the clone rather
+than relying on an installation-specific validator path.
+
+### Optional Auto Agent package
+
+The unattended runner contract and its legacy Dev Lite adapter live in the separate
+[Auto Agent plugin](../plugins/agent-toolbelt-auto-agent/README.md). Neither the
+standard native plugin nor `install.sh all` includes those skills. Install
+`agent-toolbelt-auto-agent@agent-toolbelt` explicitly from the Codex or Claude
+marketplace, load its directory in Cursor, or use the compatibility installer:
+
+```sh
+./install.sh --harness all auto-agent-contract /path/to/project
+```
+
+### Private Cursor plugin build (one global install)
 
 Instead of installing into each repo, you can bundle the toolbelt as a **private,
 user-scoped Cursor plugin** — its skills become available in *every* project from a
 single install, with nothing published. `build-cursor-plugin.sh` assembles the plugin:
 
 ```sh
-./build-cursor-plugin.sh                       # skills + commands (recommended)
+./build-cursor-plugin.sh                       # skills-only frozen Cursor package
 ln -s "$(pwd)/build/cursor-plugin/agent-toolbelt" ~/.cursor/plugins/local/agent-toolbelt
 # then enable "agent-toolbelt" in Cursor → Settings → Plugins, and run Developer: Reload Window
 ```
@@ -199,9 +253,9 @@ Notes:
 - **Rules are omitted by default**: most of the repo's rules are `alwaysApply: true`,
   and a user-scoped plugin would fire them in *every* project. Pass `--with-rules` only
   if you want that. For scoped, per-project rules, use the per-repo `install.sh` instead.
-- **Commands** are included for the `/command` UX, but some reference skill files by
-  project-relative `.atb/skills/...` paths; for the full command-driven flow with those
-  references resolving, a per-repo `install.sh --harness cursor` is still the way.
+- **Commands** are intentionally not included in the global plugin build. Use the
+  project-scoped `install.sh --harness cursor` flow for the `/command` UX and its
+  project-local `.atb/` paths.
 
 The symlink picks up rebuilds live (Reload Window); `build/` is gitignored.
 
@@ -210,7 +264,7 @@ Each pack's file list lives in `install/<pack>.sh`; the shared logic is in
 previous install:
 
 ```sh
-./install.sh --dry-run --harness cursor ai-feature-delivery /path/to/pilot-folder
+./install.sh --dry-run --harness cursor phased-delivery /path/to/pilot-folder
 ```
 
 On macOS, non-developer pilot users can double-click `install.command`, which

@@ -1,3 +1,4 @@
-display_name: "Style Guide Init"
-short_description: "Mine repository evidence into coding standards."
-default_prompt: "Use $style-guide-init to establish this repository's coding standards."
+interface:
+  display_name: "Repository Contribution Guide"
+  short_description: "Extract repo conventions and maintain contribution guidance."
+  default_prompt: "Use $style-guide-init to derive or refresh this repository's contribution guide from current evidence."

@@ -14,7 +14,9 @@ place to *look*, not a finding to emit verbatim.
 - broad `GRANT` / a migration widening permissions; secrets or PII in seed data.
 
 ## performance
-- a new query path with **no supporting index** on its filter/join/sort columns; full-table scan.
+- a new query path whose filter/join/sort lacks a useful index on realistic data; a costly scan
+  supported by query shape, selectivity, table size, or a representative plan. An index on a
+  low-selectivity predicate, leading wildcard, or transformed column may not help and adds write cost.
 - `SELECT *` over wide tables; unbounded result set with no `LIMIT`/pagination.
 - index added on a hot table **without `CONCURRENTLY`** (Postgres) — locks writes during the migration.
 - a transaction held open across application I/O; lock scope widened on a hot table.

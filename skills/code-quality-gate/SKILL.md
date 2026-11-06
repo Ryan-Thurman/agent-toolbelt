@@ -1,9 +1,12 @@
 ---
 name: code-quality-gate
-description: Run the pre-PR quality gate that verifies repository checks and changed-code maintainability, naming, and simplification evidence. Use before PR readiness or when Dev Lite requires a quality verdict; not for broad cleanup or a standalone review.
+description: Run a focused pre-PR quality gate when repository policy, user request, or change risk calls for repository checks and changed-code maintainability evidence; not for broad cleanup.
 ---
 
 # code-quality-gate
+
+Before you write a response for the user, read
+`shared/contracts/references/human-readable-output.md`.
 
 Orchestrate the existing quality owners into one current, durable verdict. This
 is not another simplifier or taxonomy: `/simplify` owns behavior-preserving
@@ -55,5 +58,6 @@ Write the status record defined in `references/gate-contract.md` and report one
 of `PASS`, `FAIL`, `CAPPED`, or `BLOCKED`. PASS requires green required checks,
 an unchanged frozen scope, no unresolved blocker/should-fix/evidence-backed
 quality issue, an explicit disposition for every nit, and a verified fix for
-every accepted finding. Partial-scope PASS evidence never satisfies Dev Lite
-readiness. Do not infer or label AI authorship; judge only observable consequences.
+every accepted finding. Partial-scope PASS evidence never satisfies a consumer
+that requires final-diff coverage. Do not infer or label AI authorship; judge
+only observable consequences.

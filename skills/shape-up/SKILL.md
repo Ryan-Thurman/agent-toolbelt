@@ -1,28 +1,42 @@
 ---
 name: shape-up
-description: Shape a vague feature request into a tight, agreed brief before building. Use for fuzzy ideas or tickets before /dev-intake or /dev-plan. For broken behavior use bug-to-fix; for regulated features use ai-feature-delivery.
+description: Compare a product ask with current system behavior, or shape a vague request into an approved brief. Use for requirement gaps and fuzzy ideas. Route defects to bug-to-fix; preserve delivery rules owned by the target project.
 ---
 
 # shape-up
 
-Turn a fuzzy request into a clear, agreed brief **before** anyone plans or writes code. It is the
-adversarial interrogation step that sits in front of the build lanes: it surfaces the assumptions,
-contradictions, and missing decisions that would otherwise be silently committed.
+Before you write a response for the user, read
+`shared/contracts/references/human-readable-output.md`.
 
-## Principles (always)
+Choose the mode from the user's request:
 
-- **One question at a time.** Never batch questions — asking several at once is bewildering. Walk
-  the design tree depth-first, resolving dependencies one by one.
+- **Current-state gap review:** The user asks what the system does today, how an ask differs,
+  or what questions are missing. Produce an evidence-backed, report-only comparison using
+  `references/current-state-gap.md`. Do not require a shaping interview or brief approval.
+- **Interactive shaping:** The user wants an ambiguous idea turned into an agreed brief.
+  Resolve repository facts first, then use `references/interrogation.md` to surface assumptions,
+  contradictions, and missing decisions. The approved brief can go straight to Phased Delivery.
+
+If the user asks for both, report the current-state gaps first and use them to focus the
+interactive questions. Neither mode authorizes implementation on its own.
+
+## Shared principles
+
 - **Resolve from the repo before asking the human.** If a question can be answered by reading the
   code or docs, do that instead. Only escalate to the user what the code genuinely can't answer.
-- **Don't lead — recommend.** Each question carries your recommended answer (and multiple choice
-  when it fits), so the user confirms or redirects rather than being led blind.
-- **Hunt contradictions.** Cross-check what the user says against the code and against itself;
-  surface mismatches immediately rather than smoothing them over.
-- **Hard gate.** Do not invoke any planning/implementation skill or write code until you have
-  presented the brief and the user has approved it — for every request, however simple it seems.
+- **Separate facts from proposals.** Cite current behavior and distinguish a demonstrated gap
+  from an inference or an area you could not inspect. Surface contradictions explicitly.
+- **Stay in discovery.** Do not edit code or invoke implementation from Shape Up.
 
-## Flow
+## Current-state gap review
+
+Follow `references/current-state-gap.md`. Compare each requested outcome with observed
+behavior, classify it as covered, partial, missing, or unknown, and report evidence,
+impact, and decision questions. Answer known questions from the repository. Do not invent
+requirements to close a gap or turn the review into a delivery plan. If the user later
+chooses to shape the ask, carry the evidence and open decisions into the brief.
+
+## Interactive shaping flow
 
 1. **Scope-gate first.** If the request is really several independent subsystems, say so and
    propose decomposing it. Don't spend questions refining the details of something that needs
@@ -36,24 +50,31 @@ contradictions, and missing decisions that would otherwise be silently committed
    there are no unresolved overloaded terms, no unanswered scope boundary, and no `TBD`.
 5. **Emit the brief** (`../../templates/shape-up-brief.md`) and **stop for approval** (the hard
    gate). Iterate until approved.
-6. **Hand off** (only after approval): `/dev-intake` to formalize the brief, then `/dev-plan`; or
-   `/to-issues` to slice it into vertical-slice tickets. If the request turns out to be broken
-   behavior, route to `/bug-intake` instead.
+6. **Hand off** (only after approval): pass the approved brief directly to
+   `$phased-delivery` (or `/dev-plan` on hosts using commands), which maps it to
+   phases and PRs. Use `/to-issues` first only when tickets are wanted; those
+   tickets become the delivery scope. If this is broken behavior, route to
+   `/bug-intake` instead.
 
 ## Stop conditions
 
-- A **shared understanding** is reached and the brief is approved.
+- In gap-review mode, the evidence-backed comparison and prioritized decision
+  questions are delivered; approval is not required to finish the report.
+- In shaping mode, a **shared understanding** is reached and the brief is approved.
 - Escalate to the user only what the repo can't resolve; otherwise keep resolving from the code.
 - A decision is worth pinning as an ADR only if all three hold: hard to reverse, surprising without
   context, and the result of a real trade-off. Otherwise just decide and record it in the brief.
 
 ## Command Entry
 
-`/shape-up` is the human-started command entry point for shaping a request. The skill can still run
-when its model-facing description matches a fuzzy feature request, but it never auto-fires planning
-or implementation. The hard gate is mandatory.
+`/shape-up` is the command entry point for either mode. The skill can also run when
+its description matches a gap review or fuzzy request. The approval gate applies
+only to interactive shaping before planning; a report-only review ends with its
+findings and does not auto-start delivery.
 
 ## References
 
 - `references/interrogation.md` — the question techniques, the contradiction/overloaded-term
   challenges, edge-case stress tests, and the brief self-audit.
+- `references/current-state-gap.md` — evidence and output rules for report-only
+  requirement-versus-system reviews.

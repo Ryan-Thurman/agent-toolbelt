@@ -5,6 +5,9 @@ description: Frame a product opportunity with evidence, assumptions, risks, expe
 
 # product-discovery
 
+Before you write a response for the user, read
+`shared/contracts/references/human-readable-output.md`.
+
 Decide whether a candidate is sufficiently evidenced to shape. This skill is
 discovery, not a replacement for the approved implementation brief.
 

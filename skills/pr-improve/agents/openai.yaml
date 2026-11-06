@@ -1,3 +1,4 @@
-display_name: "PR Improve"
-short_description: "Improve a PR in bounded verified rounds."
-default_prompt: "Use $pr-improve to address accepted PR findings within scope."
+interface:
+  display_name: "PR Improve"
+  short_description: "Improve a PR in bounded verified rounds."
+  default_prompt: "Use $pr-improve to address accepted PR findings within scope."

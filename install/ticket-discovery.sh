@@ -3,6 +3,7 @@ pack_ticket_discovery() {
   cmd ticket-discover
 
   skill ticket-discovery SKILL.md
+  shared_contract references/human-readable-output.md
 
   template ticket-discovery-brief.md
 

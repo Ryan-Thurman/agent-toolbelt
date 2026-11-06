@@ -1,5 +1,6 @@
 # DESC: diagnostic lane: triage, reproduce, root-cause analysis, minimal fix, verification
 pack_bug_to_fix() {
+  shared_contract references/human-readable-output.md
   local c
   for c in bug-intake reproduce rca fix-plan handoff; do
     cmd "$c"

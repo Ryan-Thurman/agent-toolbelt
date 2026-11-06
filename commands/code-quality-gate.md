@@ -1,5 +1,5 @@
 ---
-description: Run the mandatory pre-PR quality gate: repository checks plus anti-slop, simplification, standards, and maintainability evidence
+description: Run a focused pre-PR quality gate when policy, user request, or risk calls for it
 argument-hint: "[--mode=report|apply] [--rounds N] [--scope path[,path]] [--disposition-json '<object>']"
 ---
 
@@ -22,7 +22,7 @@ Modes:
   choice.
 
 `--rounds N` defaults to `3`. `--scope` narrows the frozen scope and produces
-`coverage: partial`; it cannot satisfy Dev Lite readiness. Scope entries must
+`coverage: partial`; it cannot satisfy a final-diff gate requirement. Scope entries must
 resolve to repository-relative paths within this worktree: reject absolute paths
 and any `..` escape. Omit it for final coverage of every changed and untracked path.
 

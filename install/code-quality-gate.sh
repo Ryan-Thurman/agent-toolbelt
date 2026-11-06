@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
-# DESC: mandatory pre-PR maintainability and anti-slop gate with bounded convergence
+# DESC: policy- or risk-driven pre-PR maintainability gate with bounded convergence
 # DEPENDS: simplify pr-review pr-improve
 pack_code_quality_gate() {
+  shared_contract references/human-readable-output.md
   cmd code-quality-gate
   skill code-quality-gate SKILL.md
   skill code-quality-gate references/gate-contract.md

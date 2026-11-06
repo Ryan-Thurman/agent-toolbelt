@@ -1,0 +1,1788 @@
+{
+  "schema_version": 1,
+  "catalog": {
+    "id": "agent-toolbelt",
+    "display_name": "Agent Toolbelt",
+    "description": "General-purpose software delivery skills for planning, building, testing, reviewing, and shipping.",
+    "host_compatibility": {
+      "default_hosts": [
+        "cursor",
+        "claude-code",
+        "codex"
+      ],
+      "hosts": [
+        {
+          "id": "cursor",
+          "name": "Cursor",
+          "implicit_matching": true,
+          "invocation_template": "/{skill_id}",
+          "browser_hint": "Skills can be selected implicitly or invoked manually with /skill-name.",
+          "local_install_commands": [
+            "cursor-agent --plugin-dir /path/to/agent-toolbelt"
+          ],
+          "installation": "Install or submit the repository as a Cursor plugin."
+        },
+        {
+          "id": "claude-code",
+          "name": "Claude Code",
+          "implicit_matching": true,
+          "invocation_template": "/agent-toolbelt:{skill_id}",
+          "browser_hint": "Plugin skills can match implicitly or be invoked manually with /agent-toolbelt:skill-name.",
+          "local_install_commands": [
+            "claude --plugin-dir /path/to/agent-toolbelt"
+          ],
+          "installation": "Install from a local clone or add the repository to a Claude marketplace."
+        },
+        {
+          "id": "codex",
+          "name": "Codex",
+          "implicit_matching": true,
+          "invocation_template": "${skill_id}",
+          "browser_hint": "Skills can match implicitly; invoke directly with $skill-name or browse with /skills.",
+          "local_install_commands": [
+            "codex plugin marketplace add /path/to/agent-toolbelt",
+            "codex plugin add agent-toolbelt@agent-toolbelt"
+          ],
+          "installation": "Add the repository to a Codex marketplace, then install agent-toolbelt."
+        }
+      ],
+      "native_skill_surface": "skills/*/SKILL.md",
+      "workflow_membership_note": "A skill may support a workflow without appearing as one of its primary stages; membership is discoverability metadata, not an exact stage partition."
+    },
+    "categories": [
+      "Discovery & Planning",
+      "Feature Delivery",
+      "Debugging & Repair",
+      "Review & Quality",
+      "Security & Risk",
+      "Codebase Improvement",
+      "Testing & Verification",
+      "Agent Operations"
+    ],
+    "category_guidance": {
+      "Discovery & Planning": "Clarify the problem, shape scope, and choose a grounded starting point.",
+      "Feature Delivery": "Carry a bounded feature from plan through implementation and release readiness.",
+      "Debugging & Repair": "Reproduce failures, find causes, and land a verified fix.",
+      "Review & Quality": "Evaluate changes, address findings, and prove maintainability before review.",
+      "Security & Risk": "Model threats and inspect sensitive changes for exploitable gaps.",
+      "Codebase Improvement": "Reduce complexity, modernize structure, and protect behavior during refactors.",
+      "Testing & Verification": "Design and execute checks that make expected behavior observable.",
+      "Agent Operations": "Bound, coordinate, checkpoint, and hand off agent work safely."
+    },
+    "discovery_tags": [
+      "planning",
+      "bug-debugging",
+      "review",
+      "testing",
+      "security",
+      "refactor",
+      "documentation",
+      "release",
+      "automation",
+      "react-frontend"
+    ],
+    "surface_note": "Commands, hooks, installers, build helpers, and internal repository copies are compatibility or tooling surfaces, not native plugin skills."
+  },
+  "skills": [
+    {
+      "id": "bug-to-fix",
+      "category": "Debugging & Repair",
+      "tags": [
+        "bug",
+        "reproduction",
+        "root-cause",
+        "bug-debugging"
+      ],
+      "primary_purpose": "Turn a reported defect into a reproducible, diagnosed, verified fix.",
+      "use_when": [
+        "A bug report needs reproduction, root-cause analysis, a minimal patch, and regression evidence."
+      ],
+      "avoid_when": [
+        "The request is a new feature or a broad refactor without a concrete defect."
+      ],
+      "preferred_context": "Issue report, reproduction steps, expected and actual behavior, logs, and relevant code.",
+      "expected_outputs": [
+        "Reproduction case",
+        "Root-cause explanation",
+        "Fix and regression test"
+      ],
+      "example_prompts": [
+        "Investigate this report, reproduce it, and make the smallest verified fix.",
+        "Find the root cause of this failing behavior and add regression coverage."
+      ],
+      "related_skills": [
+        "cover",
+        "webapp-testing",
+        "code-quality-gate"
+      ],
+      "workflow_membership": [
+        "bug-fixing"
+      ],
+      "documentation_completeness": {
+        "status": "complete",
+        "notes": "Canonical skill and agent metadata are present."
+      },
+      "recommended_changes": []
+    },
+    {
+      "id": "code-quality-gate",
+      "category": "Review & Quality",
+      "tags": [
+        "quality-gate",
+        "maintainability",
+        "pre-pr",
+        "review"
+      ],
+      "primary_purpose": "Verify pre-PR code quality evidence before a change enters review.",
+      "use_when": [
+        "A branch needs a pre-PR quality verdict covering correctness, maintainability, tests, and risk."
+      ],
+      "avoid_when": [
+        "You only need a narrow syntax check, focused test command, or release-only checklist."
+      ],
+      "preferred_context": "Diff, repository conventions, validation commands, test results, and known risk areas.",
+      "expected_outputs": [
+        "Quality findings",
+        "Blocking and non-blocking risks",
+        "Pre-PR readiness recommendation"
+      ],
+      "example_prompts": [
+        "Run the repository quality gate on this change and report blockers.",
+        "Assess whether this branch is ready for review, including tests and maintainability."
+      ],
+      "related_skills": [
+        "pr-review",
+        "cover",
+        "phase-gate"
+      ],
+      "workflow_membership": [
+        "feature-delivery",
+        "bug-fixing",
+        "pr-review",
+        "codebase-improvement",
+        "security-sensitive-change"
+      ],
+      "documentation_completeness": {
+        "status": "complete",
+        "notes": "Canonical skill and agent metadata are present."
+      },
+      "recommended_changes": []
+    },
+    {
+      "id": "cover",
+      "category": "Testing & Verification",
+      "tags": [
+        "tests",
+        "regression",
+        "behavior",
+        "testing"
+      ],
+      "primary_purpose": "Add or improve focused test coverage for the behavior changed by a task.",
+      "use_when": [
+        "A fix or feature needs regression protection and executable evidence of expected behavior."
+      ],
+      "avoid_when": [
+        "The repository has no testable seam and a test would only duplicate implementation details."
+      ],
+      "preferred_context": "Acceptance criteria, changed code paths, existing test conventions, and failure cases.",
+      "expected_outputs": [
+        "Focused tests",
+        "Coverage rationale",
+        "Test execution results"
+      ],
+      "example_prompts": [
+        "Add focused regression coverage for this bug fix.",
+        "Identify the highest-value tests for this change and implement them."
+      ],
+      "related_skills": [
+        "bug-to-fix",
+        "test-case-design",
+        "webapp-testing"
+      ],
+      "workflow_membership": [
+        "feature-delivery",
+        "bug-fixing",
+        "security-sensitive-change",
+        "codebase-improvement"
+      ],
+      "documentation_completeness": {
+        "status": "complete",
+        "notes": "Canonical skill and agent metadata are present."
+      },
+      "recommended_changes": []
+    },
+    {
+      "id": "crap-analysis",
+      "category": "Codebase Improvement",
+      "tags": [
+        "complexity",
+        "coverage",
+        "risk",
+        "refactor"
+      ],
+      "primary_purpose": "Identify code with combined complexity and weak coverage so improvement effort is prioritized.",
+      "use_when": [
+        "A codebase needs evidence-based prioritization of risky, complex, or under-tested areas."
+      ],
+      "avoid_when": [
+        "A single failing behavior needs diagnosis rather than structural risk analysis."
+      ],
+      "preferred_context": "Complexity measurements, coverage reports, hotspots, and repository constraints.",
+      "expected_outputs": [
+        "Prioritized hotspots",
+        "Risk explanation",
+        "Improvement candidates"
+      ],
+      "example_prompts": [
+        "Analyze this repository for high-risk complexity and coverage gaps.",
+        "Prioritize refactoring targets using complexity and test evidence."
+      ],
+      "related_skills": [
+        "simplify",
+        "retrofit",
+        "code-quality-gate"
+      ],
+      "workflow_membership": [
+        "codebase-improvement"
+      ],
+      "documentation_completeness": {
+        "status": "complete",
+        "notes": "Canonical skill and agent metadata are present."
+      },
+      "recommended_changes": []
+    },
+    {
+      "id": "phased-delivery",
+      "category": "Feature Delivery",
+      "tags": [
+        "feature",
+        "planning",
+        "phases",
+        "tickets",
+        "review"
+      ],
+      "primary_purpose": "Deliver approved requirements or tickets in reviewable phases, one PR per phase.",
+      "use_when": [
+        "A requirement, plan, or approved project ticket set needs implementation through human-reviewed PRs."
+      ],
+      "avoid_when": [
+        "The request is only to define requirements, or an unattended runner owns execution and merge."
+      ],
+      "preferred_context": "Source requirement or approved tickets, acceptance criteria, dependencies, repository state, and PR branch strategy.",
+      "expected_outputs": [
+        "Phase-to-PR map",
+        "Implementation and verification evidence",
+        "One reviewable PR per phase or ticket"
+      ],
+      "example_prompts": [
+        "Use Phased Delivery to implement these approved tickets as stacked PRs, one ticket per PR.",
+        "Plan and deliver this requirement in reviewable phases."
+      ],
+      "related_skills": [
+        "product-discovery",
+        "shape-up",
+        "phase-gate",
+        "handoff"
+      ],
+      "workflow_membership": [
+        "feature-delivery"
+      ],
+      "documentation_completeness": {
+        "status": "complete",
+        "notes": "Canonical skill and agent metadata are present."
+      },
+      "recommended_changes": []
+    },
+    {
+      "id": "handoff",
+      "category": "Agent Operations",
+      "tags": [
+        "handoff",
+        "resumability",
+        "context",
+        "documentation"
+      ],
+      "primary_purpose": "Produce a concise, evidence-backed handoff that lets another agent resume work safely.",
+      "use_when": [
+        "Work may pause, transfer ownership, or cross an agent/session boundary."
+      ],
+      "avoid_when": [
+        "The task is complete and needs only a user-facing summary."
+      ],
+      "preferred_context": "Plan, current state, changed files, decisions, checks, blockers, and next action.",
+      "expected_outputs": [
+        "Durable progress record",
+        "Evidence links",
+        "Explicit resume instructions"
+      ],
+      "example_prompts": [
+        "Write a resumable handoff for the current implementation state.",
+        "Capture decisions, checks, risks, and the exact next step for another agent."
+      ],
+      "related_skills": [
+        "phase-context-workflow",
+        "worktree"
+      ],
+      "workflow_membership": [],
+      "documentation_completeness": {
+        "status": "complete",
+        "notes": "Canonical skill and agent metadata are present."
+      },
+      "recommended_changes": []
+    },
+    {
+      "id": "phase-context-workflow",
+      "category": "Agent Operations",
+      "tags": [
+        "phases",
+        "context",
+        "resumability",
+        "documentation"
+      ],
+      "primary_purpose": "Maintain durable context and boundaries across a multi-phase implementation.",
+      "use_when": [
+        "A task spans phases, agents, or context windows and must retain state without redoing work."
+      ],
+      "avoid_when": [
+        "The change is small enough to complete in one uninterrupted session."
+      ],
+      "preferred_context": "Approved plan, phase state, acceptance criteria, evidence, and deferred scope.",
+      "expected_outputs": [
+        "Phase state",
+        "Activity log",
+        "Resume and reconciliation instructions"
+      ],
+      "example_prompts": [
+        "Set up durable phase context for this multi-step implementation.",
+        "Reconcile the plan, progress, evidence, and next task before continuing."
+      ],
+      "related_skills": [
+        "handoff",
+        "phase-gate",
+        "phased-delivery"
+      ],
+      "workflow_membership": [],
+      "documentation_completeness": {
+        "status": "complete",
+        "notes": "Canonical skill and agent metadata are present."
+      },
+      "recommended_changes": []
+    },
+    {
+      "id": "phase-gate",
+      "category": "Review & Quality",
+      "tags": [
+        "phase",
+        "review",
+        "gates"
+      ],
+      "primary_purpose": "Review whether a delivery phase met its evidence and acceptance criteria before proceeding.",
+      "use_when": [
+        "A phased task needs an explicit checkpoint before the next implementation or release step."
+      ],
+      "avoid_when": [
+        "There is no phase boundary or the work has no defined acceptance evidence."
+      ],
+      "preferred_context": "Phase plan, completed work, checks, acceptance criteria, risks, and deferred items.",
+      "expected_outputs": [
+        "Gate decision",
+        "Evidence summary",
+        "Corrections or next-phase conditions"
+      ],
+      "example_prompts": [
+        "Review this phase against its acceptance criteria and decide whether it can close.",
+        "Run a phase gate and list required corrections before continuing."
+      ],
+      "related_skills": [
+        "code-quality-gate",
+        "handoff",
+        "phase-context-workflow"
+      ],
+      "workflow_membership": [
+        "pr-review"
+      ],
+      "documentation_completeness": {
+        "status": "complete",
+        "notes": "Canonical skill and agent metadata are present."
+      },
+      "recommended_changes": []
+    },
+    {
+      "id": "pr-improve",
+      "category": "Review & Quality",
+      "tags": [
+        "pr",
+        "fix",
+        "rereview",
+        "review"
+      ],
+      "primary_purpose": "Apply review-driven improvements and verify that a pull request is stronger after feedback.",
+      "use_when": [
+        "A pull request has actionable findings that need implementation and re-checking."
+      ],
+      "avoid_when": [
+        "No review findings exist or the task is a fresh implementation."
+      ],
+      "preferred_context": "Pull request diff, review findings, repository checks, and unresolved threads.",
+      "expected_outputs": [
+        "Implemented review fixes",
+        "Updated tests or docs",
+        "Rereview evidence"
+      ],
+      "example_prompts": [
+        "Apply the actionable review findings on this pull request and rerun checks.",
+        "Improve this PR from the review comments, preserving intent and documenting tradeoffs."
+      ],
+      "related_skills": [
+        "pr-review",
+        "pr-review-reply",
+        "code-quality-gate"
+      ],
+      "workflow_membership": [
+        "pr-review"
+      ],
+      "documentation_completeness": {
+        "status": "complete",
+        "notes": "Canonical skill and agent metadata are present."
+      },
+      "recommended_changes": []
+    },
+    {
+      "id": "pr-review-reply",
+      "category": "Review & Quality",
+      "tags": [
+        "review-comments",
+        "threads",
+        "pr",
+        "review"
+      ],
+      "primary_purpose": "Respond to pull request review threads with concise evidence and clear disposition.",
+      "use_when": [
+        "Review comments need replies that explain fixes, decisions, or justified non-changes."
+      ],
+      "avoid_when": [
+        "The pull request has not been reviewed or needs implementation rather than communication."
+      ],
+      "preferred_context": "Review thread, changed code, check results, and project conventions.",
+      "expected_outputs": [
+        "Thread responses",
+        "Evidence references",
+        "Explicit unresolved decisions"
+      ],
+      "example_prompts": [
+        "Draft evidence-backed replies to the open review threads.",
+        "Respond to these PR comments and distinguish fixes from justified non-changes."
+      ],
+      "related_skills": [
+        "pr-review",
+        "pr-improve",
+        "handoff"
+      ],
+      "workflow_membership": [
+        "pr-review"
+      ],
+      "documentation_completeness": {
+        "status": "complete",
+        "notes": "Canonical skill and agent metadata are present."
+      },
+      "recommended_changes": []
+    },
+    {
+      "id": "pr-review",
+      "category": "Review & Quality",
+      "tags": [
+        "pr",
+        "code-review",
+        "risk",
+        "review"
+      ],
+      "primary_purpose": "Review a change for correctness, regressions, maintainability, and delivery risk.",
+      "use_when": [
+        "A pull request or diff needs an independent, evidence-backed review."
+      ],
+      "avoid_when": [
+        "The request is only to implement a known change and no review is needed yet."
+      ],
+      "preferred_context": "Diff, base branch, issue or acceptance criteria, tests, and repository conventions.",
+      "expected_outputs": [
+        "Prioritized findings",
+        "Evidence and severity",
+        "Approval or correction recommendation"
+      ],
+      "example_prompts": [
+        "Review this PR for correctness, regressions, and maintainability.",
+        "Perform a risk-focused code review of this diff and report actionable findings first."
+      ],
+      "related_skills": [
+        "pr-improve",
+        "pr-review-reply",
+        "code-quality-gate",
+        "security-audit"
+      ],
+      "workflow_membership": [
+        "feature-delivery",
+        "pr-review",
+        "codebase-improvement",
+        "security-sensitive-change"
+      ],
+      "documentation_completeness": {
+        "status": "complete",
+        "notes": "Canonical skill and agent metadata are present."
+      },
+      "recommended_changes": []
+    },
+    {
+      "id": "product-discovery",
+      "category": "Discovery & Planning",
+      "tags": [
+        "opportunity",
+        "evidence",
+        "experiments",
+        "planning"
+      ],
+      "primary_purpose": "Turn an opportunity or problem into evidence-backed scope and a useful next decision.",
+      "use_when": [
+        "The desired outcome, user problem, or evidence is unclear before implementation."
+      ],
+      "avoid_when": [
+        "Acceptance criteria and implementation scope are already settled."
+      ],
+      "preferred_context": "User problem, stakeholders, evidence, constraints, alternatives, and decision horizon.",
+      "expected_outputs": [
+        "Problem framing",
+        "Evidence and assumptions",
+        "Decision-ready opportunity brief"
+      ],
+      "example_prompts": [
+        "Explore this product problem and produce a decision-ready brief.",
+        "Identify assumptions, evidence gaps, and the smallest useful experiment for this idea."
+      ],
+      "related_skills": [
+        "shape-up",
+        "ticket-discovery",
+        "phased-delivery"
+      ],
+      "workflow_membership": [
+        "feature-delivery"
+      ],
+      "documentation_completeness": {
+        "status": "complete",
+        "notes": "Canonical skill and agent metadata are present."
+      },
+      "recommended_changes": []
+    },
+    {
+      "id": "retrofit",
+      "category": "Codebase Improvement",
+      "tags": [
+        "migration",
+        "upgrade",
+        "mechanical-change",
+        "refactor"
+      ],
+      "primary_purpose": "Plan and execute a safe, repeatable retrofit across an existing codebase.",
+      "use_when": [
+        "An existing repository needs a dependency, convention, API, or structural migration."
+      ],
+      "avoid_when": [
+        "The task is a new feature with no existing surface to migrate."
+      ],
+      "preferred_context": "Inventory, compatibility constraints, migration stages, automated transforms, and rollback plan.",
+      "expected_outputs": [
+        "Migration plan",
+        "Incremental changes",
+        "Compatibility and verification evidence"
+      ],
+      "example_prompts": [
+        "Plan a safe retrofit of this repository to the new API.",
+        "Inventory the migration surface, apply the change incrementally, and verify compatibility."
+      ],
+      "related_skills": [
+        "simplify",
+        "cover",
+        "code-quality-gate"
+      ],
+      "workflow_membership": [
+        "codebase-improvement"
+      ],
+      "documentation_completeness": {
+        "status": "complete",
+        "notes": "Canonical skill and agent metadata are present."
+      },
+      "recommended_changes": []
+    },
+    {
+      "id": "review-on-open",
+      "category": "Review & Quality",
+      "tags": [
+        "automation",
+        "pr",
+        "trigger",
+        "review"
+      ],
+      "primary_purpose": "Define or operate a review trigger that evaluates changes when a work item opens.",
+      "use_when": [
+        "A repository wants consistent automated or agent-assisted review at pull request creation."
+      ],
+      "avoid_when": [
+        "The request is a one-off manual code review without automation needs."
+      ],
+      "preferred_context": "Repository event, diff scope, permissions, review policy, and reporting destination.",
+      "expected_outputs": [
+        "Trigger behavior",
+        "Review scope and policy",
+        "Failure and reporting handling"
+      ],
+      "example_prompts": [
+        "Design the review-on-open behavior for this repository.",
+        "Check the existing open-PR review automation for safe scope and clear reporting."
+      ],
+      "related_skills": [
+        "review-queue",
+        "pr-review",
+        "phase-context-workflow"
+      ],
+      "workflow_membership": [
+        "pr-review"
+      ],
+      "documentation_completeness": {
+        "status": "complete",
+        "notes": "Canonical skill and agent metadata are present."
+      },
+      "recommended_changes": []
+    },
+    {
+      "id": "review-queue",
+      "category": "Review & Quality",
+      "tags": [
+        "queue",
+        "sqlite",
+        "pr",
+        "review",
+        "automation"
+      ],
+      "primary_purpose": "Organize review work into a durable queue with explicit state and ownership.",
+      "use_when": [
+        "Many changes need review tracking beyond a single interactive session."
+      ],
+      "avoid_when": [
+        "There is only one small diff and no queue or persistence is needed."
+      ],
+      "preferred_context": "Review candidates, priority, ownership, state transitions, and persistence constraints.",
+      "expected_outputs": [
+        "Queue model",
+        "Prioritized review list",
+        "State and retry behavior"
+      ],
+      "example_prompts": [
+        "Design a durable review queue for these pull requests.",
+        "Inspect the review queue state and identify the next safe review jobs."
+      ],
+      "related_skills": [
+        "review-on-open",
+        "pr-review",
+        "phase-context-workflow"
+      ],
+      "workflow_membership": [
+        "pr-review"
+      ],
+      "documentation_completeness": {
+        "status": "complete",
+        "notes": "Canonical skill and agent metadata are present."
+      },
+      "recommended_changes": []
+    },
+    {
+      "id": "security-audit",
+      "category": "Security & Risk",
+      "tags": [
+        "security",
+        "audit",
+        "read-only"
+      ],
+      "primary_purpose": "Find and prioritize security weaknesses using a bounded, evidence-backed audit.",
+      "use_when": [
+        "A repository, change, or configuration needs a security-focused inspection."
+      ],
+      "avoid_when": [
+        "The task is general quality review with no security-sensitive surface."
+      ],
+      "preferred_context": "Trust boundaries, sensitive data, dependencies, configuration, findings policy, and safe test scope.",
+      "expected_outputs": [
+        "Security findings",
+        "Severity and evidence",
+        "Remediation recommendations"
+      ],
+      "example_prompts": [
+        "Run a bounded security audit of this change and prioritize findings.",
+        "Inspect this repository for exploitable configuration and dependency risks."
+      ],
+      "related_skills": [
+        "threat-model",
+        "pr-review",
+        "cover"
+      ],
+      "workflow_membership": [
+        "security-sensitive-change"
+      ],
+      "documentation_completeness": {
+        "status": "complete",
+        "notes": "Canonical skill and agent metadata are present."
+      },
+      "recommended_changes": []
+    },
+    {
+      "id": "shape-up",
+      "category": "Discovery & Planning",
+      "tags": [
+        "brief",
+        "scope",
+        "shaping",
+        "gap-review"
+      ],
+      "primary_purpose": "Compare a product ask with current system behavior or shape an idea into an approved brief.",
+      "use_when": [
+        "A product ask needs an evidence-backed current-state and gap review.",
+        "A feature needs scope, constraints, and solution shaping before delivery."
+      ],
+      "avoid_when": [
+        "The request is already fully specified and needs delivery rather than discovery, or is a straightforward defect fix."
+      ],
+      "preferred_context": "Product ask, repository behavior, tests and documentation, constraints, risks, and open decisions.",
+      "expected_outputs": [
+        "Evidence-backed current-state gap report or approved shaped brief",
+        "Scope boundary and unanswered questions"
+      ],
+      "example_prompts": [
+        "Review this requirement against the current system and tell me what gaps and questions we are missing.",
+        "Shape this idea into a bounded delivery brief."
+      ],
+      "related_skills": [
+        "product-discovery",
+        "phased-delivery",
+        "ticket-discovery"
+      ],
+      "workflow_membership": [
+        "feature-delivery"
+      ],
+      "documentation_completeness": {
+        "status": "complete",
+        "notes": "Canonical skill and agent metadata are present."
+      },
+      "recommended_changes": []
+    },
+    {
+      "id": "ship-it",
+      "category": "Feature Delivery",
+      "tags": [
+        "release",
+        "rollback",
+        "rollout"
+      ],
+      "primary_purpose": "Prepare and execute a controlled release with verification, rollout, and rollback awareness.",
+      "use_when": [
+        "A tested change needs release readiness, deployment sequencing, or post-release checks."
+      ],
+      "avoid_when": [
+        "The code is still being shaped or has not passed its required validation."
+      ],
+      "preferred_context": "Release artifact, environment, deployment procedure, monitoring, rollback, and ownership.",
+      "expected_outputs": [
+        "Release checklist",
+        "Rollout and rollback plan",
+        "Post-release verification"
+      ],
+      "example_prompts": [
+        "Prepare this change for a safe release and include rollback checks.",
+        "Create the rollout, monitoring, and post-release verification plan for this feature."
+      ],
+      "related_skills": [
+        "code-quality-gate",
+        "cover",
+        "handoff"
+      ],
+      "workflow_membership": [
+        "feature-delivery"
+      ],
+      "documentation_completeness": {
+        "status": "complete",
+        "notes": "Canonical skill and agent metadata are present."
+      },
+      "recommended_changes": []
+    },
+    {
+      "id": "simplify",
+      "category": "Codebase Improvement",
+      "tags": [
+        "cleanup",
+        "dead-code",
+        "refactor"
+      ],
+      "primary_purpose": "Reduce unnecessary complexity while preserving observable behavior.",
+      "use_when": [
+        "A code path is overcomplicated, duplicated, stale, or difficult to maintain."
+      ],
+      "avoid_when": [
+        "The primary need is a new behavior or an unbounded redesign."
+      ],
+      "preferred_context": "Target code, behavior contract, tests, dependency graph, and a narrow cleanup boundary.",
+      "expected_outputs": [
+        "Simplified implementation",
+        "Behavior-preservation evidence",
+        "Removed complexity"
+      ],
+      "example_prompts": [
+        "Simplify this module without changing its public behavior.",
+        "Find safe dead-code and duplication reductions in this area and verify them."
+      ],
+      "related_skills": [
+        "crap-analysis",
+        "retrofit",
+        "code-quality-gate"
+      ],
+      "workflow_membership": [
+        "codebase-improvement"
+      ],
+      "documentation_completeness": {
+        "status": "complete",
+        "notes": "Canonical skill and agent metadata are present."
+      },
+      "recommended_changes": []
+    },
+    {
+      "id": "style-guide-init",
+      "category": "Discovery & Planning",
+      "tags": [
+        "style",
+        "conventions",
+        "repository",
+        "documentation"
+      ],
+      "primary_purpose": "Derive and maintain contribution guidance from repository policy, tooling, CI, and observed code/test conventions.",
+      "use_when": [
+        "A repository needs contribution or style guidance created, checked for drift, or refreshed against current evidence."
+      ],
+      "avoid_when": [
+        "Existing conventions are clear and the task only needs a local implementation."
+      ],
+      "preferred_context": "Applicable policies, representative source/tests, task definitions, CI, existing doc owners, and any prior evidence checkpoint.",
+      "expected_outputs": [
+        "Contribution or style guide",
+        "Classified evidence and unresolved conflicts",
+        "Scoped drift report and evidence checkpoint"
+      ],
+      "example_prompts": [
+        "Create a contribution guide from the actual code, tests, tooling and CI, flagging stale written guidance.",
+        "Check what changed since this guide was reviewed and refresh only the affected conventions."
+      ],
+      "related_skills": [
+        "code-quality-gate",
+        "simplify",
+        "phased-delivery"
+      ],
+      "workflow_membership": [
+        "codebase-improvement"
+      ],
+      "documentation_completeness": {
+        "status": "complete",
+        "notes": "Canonical skill and agent metadata are present."
+      },
+      "recommended_changes": []
+    },
+    {
+      "id": "tech-backlog-assessment",
+      "category": "Discovery & Planning",
+      "tags": [
+        "backlog",
+        "decision",
+        "spike",
+        "planning"
+      ],
+      "primary_purpose": "Assess technical backlog items and recommend an evidence-backed order of work.",
+      "use_when": [
+        "A backlog contains competing maintenance, risk, or architecture items that need prioritization."
+      ],
+      "avoid_when": [
+        "A single item already has clear scope and priority."
+      ],
+      "preferred_context": "Backlog items, impact, effort, risk, dependencies, evidence, and team constraints.",
+      "expected_outputs": [
+        "Assessment",
+        "Prioritized backlog",
+        "Spikes or decisions needed"
+      ],
+      "example_prompts": [
+        "Assess this technical backlog and recommend the next highest-value work.",
+        "Compare these maintenance items by risk, effort, dependencies, and evidence."
+      ],
+      "related_skills": [
+        "product-discovery",
+        "crap-analysis",
+        "ticket-discovery"
+      ],
+      "workflow_membership": [],
+      "documentation_completeness": {
+        "status": "complete",
+        "notes": "Canonical skill and agent metadata are present."
+      },
+      "recommended_changes": []
+    },
+    {
+      "id": "test-case-design",
+      "category": "Testing & Verification",
+      "tags": [
+        "qa",
+        "test-design",
+        "requirements",
+        "testing"
+      ],
+      "primary_purpose": "Design high-value test cases from behavior, requirements, risks, and edge conditions.",
+      "use_when": [
+        "A feature or fix needs a deliberate test strategy before tests are implemented."
+      ],
+      "avoid_when": [
+        "The needed regression test is obvious and can be added directly."
+      ],
+      "preferred_context": "Requirements, acceptance criteria, state transitions, failure modes, and test harness.",
+      "expected_outputs": [
+        "Test matrix",
+        "Boundary and negative cases",
+        "Traceability to behavior"
+      ],
+      "example_prompts": [
+        "Design the test cases for this feature, including edge and failure paths.",
+        "Turn these acceptance criteria into a prioritized executable test matrix."
+      ],
+      "related_skills": [
+        "cover",
+        "webapp-testing"
+      ],
+      "workflow_membership": [
+        "feature-delivery",
+        "security-sensitive-change"
+      ],
+      "documentation_completeness": {
+        "status": "complete",
+        "notes": "Canonical skill and agent metadata are present."
+      },
+      "recommended_changes": []
+    },
+    {
+      "id": "threat-model",
+      "category": "Security & Risk",
+      "tags": [
+        "threat-model",
+        "trust-boundary",
+        "mitigations",
+        "security"
+      ],
+      "primary_purpose": "Identify threats, trust boundaries, and mitigations before or during a security-sensitive change.",
+      "use_when": [
+        "A change handles credentials, personal data, privileged actions, network boundaries, or untrusted input."
+      ],
+      "avoid_when": [
+        "The change has no meaningful security boundary or sensitive data flow."
+      ],
+      "preferred_context": "Architecture, assets, actors, data flows, trust boundaries, abuse cases, and mitigations.",
+      "expected_outputs": [
+        "Threat model",
+        "Prioritized abuse cases",
+        "Mitigation and verification plan"
+      ],
+      "example_prompts": [
+        "Threat-model this feature, focusing on trust boundaries and abuse cases.",
+        "Map sensitive data flows and propose mitigations before implementation."
+      ],
+      "related_skills": [
+        "security-audit",
+        "pr-review",
+        "test-case-design"
+      ],
+      "workflow_membership": [
+        "security-sensitive-change"
+      ],
+      "documentation_completeness": {
+        "status": "complete",
+        "notes": "Canonical skill and agent metadata are present."
+      },
+      "recommended_changes": []
+    },
+    {
+      "id": "ticket-discovery",
+      "category": "Discovery & Planning",
+      "tags": [
+        "ticket",
+        "precedent",
+        "gap-analysis",
+        "planning"
+      ],
+      "primary_purpose": "Investigate existing work and evidence to clarify or improve a delivery ticket.",
+      "use_when": [
+        "A ticket is ambiguous, duplicates prior work, or needs repository and history investigation."
+      ],
+      "avoid_when": [
+        "The issue already contains sufficient context and acceptance criteria."
+      ],
+      "preferred_context": "Ticket, repository history, related issues, code ownership, and current behavior.",
+      "expected_outputs": [
+        "Clarified ticket",
+        "Related precedent",
+        "Open questions and acceptance gaps"
+      ],
+      "example_prompts": [
+        "Investigate this ticket and identify precedent, scope gaps, and next questions.",
+        "Clarify this issue using repository history and related work."
+      ],
+      "related_skills": [
+        "product-discovery",
+        "shape-up",
+        "tech-backlog-assessment"
+      ],
+      "workflow_membership": [
+        "feature-delivery"
+      ],
+      "documentation_completeness": {
+        "status": "complete",
+        "notes": "Canonical skill and agent metadata are present."
+      },
+      "recommended_changes": []
+    },
+    {
+      "id": "ticket-sync",
+      "category": "Feature Delivery",
+      "tags": [
+        "ticket",
+        "tracking",
+        "synchronization",
+        "automation"
+      ],
+      "primary_purpose": "Synchronize delivery status and evidence between implementation work and a tracking system.",
+      "use_when": [
+        "A project needs ticket state, links, or progress evidence kept aligned with repository work."
+      ],
+      "avoid_when": [
+        "No external tracker is in scope or the source of truth is already local."
+      ],
+      "preferred_context": "Ticket identifiers, repository state, tracker policy, credentials boundary, and update rules.",
+      "expected_outputs": [
+        "Sync plan or updates",
+        "Traceability links",
+        "Conflict and ownership notes"
+      ],
+      "example_prompts": [
+        "Plan the safe synchronization between this change and its delivery ticket.",
+        "Reconcile repository progress with the tracker and report conflicts."
+      ],
+      "related_skills": [
+        "ticket-discovery",
+        "handoff",
+        "phased-delivery"
+      ],
+      "workflow_membership": [],
+      "documentation_completeness": {
+        "status": "complete",
+        "notes": "Canonical skill and agent metadata are present."
+      },
+      "recommended_changes": []
+    },
+    {
+      "id": "vercel-composition-patterns",
+      "category": "Codebase Improvement",
+      "tags": [
+        "react",
+        "composition",
+        "api-design",
+        "react-frontend",
+        "refactor"
+      ],
+      "primary_purpose": "Apply maintainable component composition patterns to React and frontend code.",
+      "use_when": [
+        "A React component API has conditionals, duplication, or composition problems."
+      ],
+      "avoid_when": [
+        "The repository is not using the relevant frontend patterns or the issue is unrelated to component design."
+      ],
+      "preferred_context": "Component tree, public API, state ownership, rendering behavior, and existing design conventions.",
+      "expected_outputs": [
+        "Composition recommendation",
+        "Focused refactor",
+        "Behavior-preservation checks"
+      ],
+      "example_prompts": [
+        "Improve this React component API using composition patterns.",
+        "Refactor this component to remove prop-driven branching while preserving behavior."
+      ],
+      "related_skills": [
+        "vercel-react-best-practices",
+        "simplify",
+        "code-quality-gate"
+      ],
+      "workflow_membership": [
+        "codebase-improvement"
+      ],
+      "documentation_completeness": {
+        "status": "complete",
+        "notes": "Canonical skill and agent metadata are present."
+      },
+      "recommended_changes": []
+    },
+    {
+      "id": "vercel-react-best-practices",
+      "category": "Codebase Improvement",
+      "tags": [
+        "react",
+        "nextjs",
+        "performance",
+        "react-frontend"
+      ],
+      "primary_purpose": "Review React or Next.js implementation choices for performance and maintainability.",
+      "use_when": [
+        "A React or Next.js change needs targeted performance, rendering, data-fetching, or bundle guidance."
+      ],
+      "avoid_when": [
+        "The codebase is not React/Next.js or the review concern is unrelated to frontend performance."
+      ],
+      "preferred_context": "Component and route structure, data flow, bundle behavior, rendering boundaries, and measurements.",
+      "expected_outputs": [
+        "Prioritized frontend findings",
+        "Implementation recommendations",
+        "Validation approach"
+      ],
+      "example_prompts": [
+        "Review this Next.js change against practical performance best practices.",
+        "Identify the highest-impact React rendering and data-fetching improvements here."
+      ],
+      "related_skills": [
+        "vercel-composition-patterns",
+        "webapp-testing",
+        "code-quality-gate"
+      ],
+      "workflow_membership": [
+        "codebase-improvement"
+      ],
+      "documentation_completeness": {
+        "status": "complete",
+        "notes": "Canonical skill and agent metadata are present."
+      },
+      "recommended_changes": []
+    },
+    {
+      "id": "webapp-testing",
+      "category": "Testing & Verification",
+      "tags": [
+        "browser",
+        "playwright",
+        "qa",
+        "testing",
+        "react-frontend"
+      ],
+      "primary_purpose": "Exercise a web application through realistic browser flows and report observable failures.",
+      "use_when": [
+        "A web UI change needs end-to-end verification across navigation, interaction, state, or responsive behavior."
+      ],
+      "avoid_when": [
+        "The change is purely backend or a unit test provides sufficient evidence."
+      ],
+      "preferred_context": "Running app, test account or fixture, target flows, browser tooling, and expected states.",
+      "expected_outputs": [
+        "Browser test or reproduction",
+        "Screenshots/logs where useful",
+        "Failure and verification report"
+      ],
+      "example_prompts": [
+        "Test this web flow end to end and report any observable failures.",
+        "Exercise the changed UI in a browser across the critical user paths."
+      ],
+      "related_skills": [
+        "cover",
+        "test-case-design",
+        "bug-to-fix"
+      ],
+      "workflow_membership": [
+        "feature-delivery",
+        "bug-fixing"
+      ],
+      "documentation_completeness": {
+        "status": "complete",
+        "notes": "Canonical skill and agent metadata are present."
+      },
+      "recommended_changes": []
+    },
+    {
+      "id": "worktree",
+      "category": "Agent Operations",
+      "tags": [
+        "git",
+        "isolation",
+        "multi-agent",
+        "automation"
+      ],
+      "primary_purpose": "Create and manage isolated Git worktrees for parallel or safely bounded work.",
+      "use_when": [
+        "Work needs repository isolation, parallel agents, or a disposable implementation directory."
+      ],
+      "avoid_when": [
+        "The task is a tiny local edit and additional worktree state would add risk."
+      ],
+      "preferred_context": "Repository status, branch policy, worktree path, ownership, and cleanup expectations.",
+      "expected_outputs": [
+        "Isolated worktree",
+        "Branch and ownership record",
+        "Safe cleanup or handoff instructions"
+      ],
+      "example_prompts": [
+        "Set up an isolated worktree for this implementation and record its ownership.",
+        "Inspect active worktrees and prepare a safe workspace for the next agent."
+      ],
+      "related_skills": [
+        "handoff",
+        "phase-context-workflow"
+      ],
+      "workflow_membership": [],
+      "documentation_completeness": {
+        "status": "complete",
+        "notes": "Canonical skill and agent metadata are present."
+      },
+      "recommended_changes": []
+    }
+  ],
+  "workflows": [
+    {
+      "id": "feature-delivery",
+      "name": "Feature delivery",
+      "purpose": "Move a bounded product or engineering idea from discovery through implementation, verification, review, and release readiness.",
+      "stages": [
+        {
+          "skill": "product-discovery",
+          "rationale": "Clarify the user problem and evidence before committing to a solution.",
+          "example_invocation": "Explore this problem and produce a decision-ready brief.",
+          "next_steps": [
+            "shape-up"
+          ]
+        },
+        {
+          "skill": "shape-up",
+          "rationale": "Bound appetite, solution direction, rabbit holes, and explicit exclusions.",
+          "example_invocation": "Shape this brief into a bounded implementation scope.",
+          "next_steps": [
+            "phased-delivery"
+          ]
+        },
+        {
+          "skill": "phased-delivery",
+          "rationale": "Turn approved scope into independently reviewable phases, one PR per phase or ticket.",
+          "example_invocation": "Deliver this requirement in phased PRs, reusing its approved tickets.",
+          "next_steps": [
+            "test-case-design",
+            "pr-review"
+          ]
+        },
+        {
+          "skill": "code-quality-gate",
+          "rationale": "Check implementation quality, risks, and readiness using repository evidence.",
+          "example_invocation": "Run the quality gate on this feature branch.",
+          "next_steps": [
+            "pr-review"
+          ]
+        },
+        {
+          "skill": "pr-review",
+          "rationale": "Perform an independent review before release work.",
+          "example_invocation": "Review this feature diff for correctness and regressions.",
+          "next_steps": [
+            "ship-it"
+          ]
+        },
+        {
+          "skill": "ship-it",
+          "rationale": "Prepare rollout, monitoring, rollback, and post-release verification.",
+          "example_invocation": "Prepare this change for a safe release.",
+          "next_steps": [
+            "handoff"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "bug-fixing",
+      "name": "Bug fixing",
+      "purpose": "Move a concrete defect from reproduction through diagnosis, regression coverage, review, and release.",
+      "stages": [
+        {
+          "skill": "bug-to-fix",
+          "rationale": "Establish a reproducible failure and smallest defensible fix.",
+          "example_invocation": "Reproduce this bug, find its root cause, and fix it.",
+          "next_steps": [
+            "cover"
+          ]
+        },
+        {
+          "skill": "cover",
+          "rationale": "Prevent recurrence with focused behavior-level coverage.",
+          "example_invocation": "Add regression coverage for this failure.",
+          "next_steps": [
+            "webapp-testing",
+            "code-quality-gate"
+          ]
+        },
+        {
+          "skill": "webapp-testing",
+          "rationale": "Exercise user-visible flows when the defect crosses the browser boundary.",
+          "example_invocation": "Verify the fixed browser flow end to end.",
+          "next_steps": [
+            "code-quality-gate"
+          ]
+        },
+        {
+          "skill": "code-quality-gate",
+          "rationale": "Confirm the fix is scoped, maintainable, and sufficiently verified.",
+          "example_invocation": "Run the quality gate for this bug fix.",
+          "next_steps": [
+            "pr-review"
+          ]
+        },
+        {
+          "skill": "pr-review",
+          "rationale": "Check for regressions or unintended behavior before shipping.",
+          "example_invocation": "Review the bug-fix diff and regression test.",
+          "next_steps": [
+            "ship-it"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "pr-review",
+      "name": "Pull request review",
+      "purpose": "Review, improve, and close feedback on a pull request with explicit evidence and communication.",
+      "stages": [
+        {
+          "skill": "pr-review",
+          "rationale": "Find correctness, regression, maintainability, and risk issues independently.",
+          "example_invocation": "Review this PR and prioritize actionable findings.",
+          "next_steps": [
+            "pr-improve",
+            "pr-review-reply"
+          ]
+        },
+        {
+          "skill": "pr-improve",
+          "rationale": "Implement accepted findings and verify the changes.",
+          "example_invocation": "Apply the actionable findings and rerun checks.",
+          "next_steps": [
+            "phase-gate"
+          ]
+        },
+        {
+          "skill": "phase-gate",
+          "rationale": "Confirm review corrections and evidence are complete before closeout.",
+          "example_invocation": "Run the review phase gate.",
+          "next_steps": [
+            "pr-review-reply"
+          ]
+        },
+        {
+          "skill": "pr-review-reply",
+          "rationale": "Reply to each thread with evidence or a clear disposition.",
+          "example_invocation": "Draft replies for all open review threads.",
+          "next_steps": [
+            "handoff"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "codebase-improvement",
+      "name": "Codebase improvement and refactor",
+      "purpose": "Prioritize and execute bounded maintainability, migration, and structural improvements with behavior evidence.",
+      "stages": [
+        {
+          "skill": "crap-analysis",
+          "rationale": "Use complexity and coverage signals to choose high-value targets.",
+          "example_invocation": "Find the riskiest complexity and coverage hotspots.",
+          "next_steps": [
+            "simplify",
+            "retrofit"
+          ]
+        },
+        {
+          "skill": "simplify",
+          "rationale": "Remove unnecessary complexity within a narrow behavior boundary.",
+          "example_invocation": "Simplify this module without changing behavior.",
+          "next_steps": [
+            "retrofit",
+            "cover"
+          ]
+        },
+        {
+          "skill": "retrofit",
+          "rationale": "Handle migrations and compatibility changes incrementally.",
+          "example_invocation": "Plan and execute this repository retrofit safely.",
+          "next_steps": [
+            "cover",
+            "code-quality-gate"
+          ]
+        },
+        {
+          "skill": "cover",
+          "rationale": "Protect behavior while structural changes land.",
+          "example_invocation": "Add coverage for the refactored behavior.",
+          "next_steps": [
+            "code-quality-gate"
+          ]
+        },
+        {
+          "skill": "code-quality-gate",
+          "rationale": "Confirm the improvement reduced risk without introducing regressions.",
+          "example_invocation": "Run the quality gate on this refactor.",
+          "next_steps": [
+            "pr-review"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "security-sensitive-change",
+      "name": "Security-sensitive change",
+      "purpose": "Design, implement, test, and review changes involving sensitive data, privilege, or trust boundaries.",
+      "stages": [
+        {
+          "skill": "threat-model",
+          "rationale": "Identify assets, trust boundaries, abuse cases, and mitigations before coding.",
+          "example_invocation": "Threat-model this feature and its data flows.",
+          "next_steps": [
+            "test-case-design",
+            "security-audit"
+          ]
+        },
+        {
+          "skill": "test-case-design",
+          "rationale": "Turn threats and requirements into negative, boundary, and regression cases.",
+          "example_invocation": "Design security-focused test cases for this change.",
+          "next_steps": [
+            "cover"
+          ]
+        },
+        {
+          "skill": "cover",
+          "rationale": "Make critical protections executable and regression-resistant.",
+          "example_invocation": "Implement tests for the security invariants.",
+          "next_steps": [
+            "security-audit"
+          ]
+        },
+        {
+          "skill": "security-audit",
+          "rationale": "Inspect the resulting implementation and configuration for exploitable gaps.",
+          "example_invocation": "Audit this security-sensitive diff and prioritize findings.",
+          "next_steps": [
+            "code-quality-gate"
+          ]
+        },
+        {
+          "skill": "code-quality-gate",
+          "rationale": "Check evidence, maintainability, and release readiness across the risk boundary.",
+          "example_invocation": "Run the quality gate with security risks in scope.",
+          "next_steps": [
+            "pr-review"
+          ]
+        },
+        {
+          "skill": "pr-review",
+          "rationale": "Provide independent final review of correctness and residual risk.",
+          "example_invocation": "Review this security-sensitive PR for residual risk.",
+          "next_steps": [
+            "ship-it"
+          ]
+        }
+      ]
+    }
+  ],
+  "tooling_audit": [
+    {
+      "id": "auto-agent-package",
+      "label": "Optional Auto Agent plugin",
+      "kind": "optional-plugin",
+      "lifecycle": "optional-compatibility",
+      "native_skill_surface": false,
+      "paths": [
+        "plugins/agent-toolbelt-auto-agent",
+        "install/auto-agent-contract.sh"
+      ],
+      "absent_paths": [
+        "skills/auto-agent-contract",
+        "skills/auto-agent-dev-lite",
+        "commands/auto-agent-plan.md"
+      ],
+      "purpose": "Keep unattended runner contracts available as an explicit opt-in package, separate from standard skill discovery and all-pack installation.",
+      "recommendation": "Maintain independent plugin validation and require explicit installation for private runner workflows."
+    },
+    {
+      "id": "project-installer",
+      "label": "install.sh, install/*.sh, and install/lib.sh",
+      "kind": "installer",
+      "lifecycle": "still-required",
+      "native_skill_surface": false,
+      "paths": [
+        "install.sh",
+        "install",
+        "install/lib.sh"
+      ],
+      "purpose": "Install project-scoped commands, templates, workflows, and compatibility files for existing repositories.",
+      "recommendation": "Keep as the legacy/project installer; it remains separate from native plugin skill discovery."
+    },
+    {
+      "id": "command-surface",
+      "label": "commands/",
+      "kind": "commands",
+      "lifecycle": "optional-compatibility",
+      "native_skill_surface": false,
+      "paths": [
+        "commands"
+      ],
+      "purpose": "Provide project-scoped command prompts for the existing install workflow.",
+      "recommendation": "Keep for install.sh consumers, but keep commands suppressed in native Cursor, Claude Code, and Codex plugin manifests."
+    },
+    {
+      "id": "cursor-hooks",
+      "label": "optional/cursor-hooks/",
+      "kind": "hooks",
+      "lifecycle": "optional-compatibility",
+      "native_skill_surface": false,
+      "paths": [
+        "optional/cursor-hooks"
+      ],
+      "purpose": "Preserve opt-in Cursor hook behavior without enabling hooks through native plugin discovery.",
+      "recommendation": "Keep opt-in and project-installer-managed; do not make it a default plugin component."
+    },
+    {
+      "id": "cursor-build",
+      "label": "build-cursor-plugin.sh and scripts/check-cursor-plugin-build.sh",
+      "kind": "build-helper",
+      "lifecycle": "still-required",
+      "native_skill_surface": false,
+      "paths": [
+        "build-cursor-plugin.sh",
+        "scripts/check-cursor-plugin-build.sh"
+      ],
+      "purpose": "Build and verify the skills-only Cursor package with its required support resources.",
+      "recommendation": "Keep as a repeatable packaging and validation path."
+    },
+    {
+      "id": "plugin-checks",
+      "label": "scripts/check-plugin-package.js and scripts/check-plugin-package.sh",
+      "kind": "validator",
+      "lifecycle": "still-required",
+      "native_skill_surface": false,
+      "paths": [
+        "scripts/check-plugin-package.js",
+        "scripts/check-plugin-package.sh",
+        "scripts/check-catalog.sh",
+        "scripts/check-portal.sh"
+      ],
+      "purpose": "Validate native manifests, catalogs, package inventory, and host-specific plugin contracts.",
+      "recommendation": "Keep as release checks; add catalog checks as a separate Phase 1 surface."
+    },
+    {
+      "id": "skill-sync",
+      "label": "scripts/check-skill-shape.sh and scripts/check-skill-sync.sh",
+      "kind": "validator",
+      "lifecycle": "still-required",
+      "native_skill_surface": false,
+      "paths": [
+        "scripts/check-skill-shape.sh",
+        "scripts/check-skill-sync.sh"
+      ],
+      "purpose": "Protect canonical skill shape and the repository's internal compatibility mirror.",
+      "recommendation": "Keep until the installer and sync contract no longer requires the mirror."
+    },
+    {
+      "id": "internal-skill-copy",
+      "label": ".agents/skills/phased-delivery/",
+      "kind": "internal-copy",
+      "lifecycle": "optional-compatibility",
+      "native_skill_surface": false,
+      "paths": [
+        ".agents/skills/phased-delivery"
+      ],
+      "purpose": "Maintain the repository-local Phased Delivery skill copy used by existing tooling and checks.",
+      "recommendation": "Keep only for the established compatibility contract; do not add additional duplicated skill trees."
+    },
+    {
+      "id": "native-plugin-metadata",
+      "label": ".cursor-plugin/, .claude-plugin/, .codex-plugin/, and .agents/plugins/",
+      "kind": "host-metadata",
+      "lifecycle": "still-required",
+      "native_skill_surface": false,
+      "paths": [
+        ".cursor-plugin",
+        ".claude-plugin",
+        ".codex-plugin",
+        ".agents/plugins"
+      ],
+      "purpose": "Describe and index the skills-only native plugin for the three supported hosts.",
+      "recommendation": "Keep manifests and marketplace metadata aligned; these are plugin metadata, not additional skill copies."
+    },
+    {
+      "id": "legacy-root-hooks",
+      "label": "root hooks/ discovery",
+      "kind": "hooks",
+      "lifecycle": "deprecated",
+      "native_skill_surface": false,
+      "absent_paths": [
+        "hooks/hooks.json",
+        "hooks/doc-sync-guard.sh",
+        "hooks/review-nudge.sh"
+      ],
+      "purpose": "Historical root-level hook discovery that could unintentionally enable behavior in plugin contexts.",
+      "recommendation": "Do not restore; the optional/cursor-hooks location preserves explicit compatibility behavior."
+    },
+    {
+      "id": "old-plugin-duplicates",
+      "label": "Committed duplicated plugin skill trees",
+      "kind": "internal-copy",
+      "lifecycle": "removable",
+      "native_skill_surface": false,
+      "absent_paths": [
+        ".cursor/skills",
+        ".claude/skills",
+        ".agents/skills/agent-toolbelt"
+      ],
+      "purpose": "Avoid duplicate copies that drift from skills/*/SKILL.md.",
+      "recommendation": "Do not add; use host manifests, build validation, and the canonical root skill tree."
+    },
+    {
+      "id": "macos-installer-wrapper",
+      "label": "install.command",
+      "kind": "installer-wrapper",
+      "lifecycle": "optional-compatibility",
+      "native_skill_surface": false,
+      "paths": [
+        "install.command"
+      ],
+      "purpose": "Offer a double-click macOS entry point for the project-scoped installer.",
+      "recommendation": "Keep as an optional convenience; direct install.sh remains the documented cross-platform path."
+    },
+    {
+      "id": "contributor-harness-config",
+      "label": ".cursor/commands/ and .cursor/rules/",
+      "kind": "contributor-configuration",
+      "lifecycle": "optional-compatibility",
+      "native_skill_surface": false,
+      "paths": [
+        ".cursor/commands",
+        ".cursor/rules"
+      ],
+      "purpose": "Provide repo-local contributor and developer configuration for maintaining the collection.",
+      "recommendation": "Keep as repository contributor configuration; do not treat it as native plugin payload."
+    },
+    {
+      "id": "support-content",
+      "label": "templates/, workflows/, and examples/",
+      "kind": "support-content",
+      "lifecycle": "still-required",
+      "native_skill_surface": false,
+      "paths": [
+        "templates",
+        "workflows",
+        "examples"
+      ],
+      "purpose": "Supply referenced templates, workflow playbooks, and worked examples used by skills and the project installer.",
+      "recommendation": "Keep canonical support content; validate references and avoid duplicating it in the portal."
+    },
+    {
+      "id": "operational-documentation",
+      "label": "wiki/ and docs/",
+      "kind": "documentation",
+      "lifecycle": "still-required",
+      "native_skill_surface": false,
+      "paths": [
+        "wiki",
+        "docs"
+      ],
+      "purpose": "Document installation, ownership, operational compatibility, workflow detail, and generated audits.",
+      "recommendation": "Keep deeper guidance here; the portal owns discovery and the README remains the entry point."
+    },
+    {
+      "id": "maintainer-research",
+      "label": "notes/ and repos/",
+      "kind": "maintainer-research",
+      "lifecycle": "optional-compatibility",
+      "native_skill_surface": false,
+      "paths": [
+        "notes",
+        "repos"
+      ],
+      "purpose": "Hold maintainer research, update helpers, and repository-local source material behind the public skill surface.",
+      "recommendation": "Keep only as maintainer tooling and research; do not expose it as plugin skill content."
+    },
+    {
+      "id": "portal-catalog",
+      "label": "catalog/, portal/, and generated taxonomy audit",
+      "kind": "discovery-tooling",
+      "lifecycle": "still-required",
+      "native_skill_surface": false,
+      "paths": [
+        "catalog",
+        "portal",
+        "docs/skill-taxonomy-audit.md"
+      ],
+      "purpose": "Provide deterministic discovery metadata, the offline capability portal, and the comprehensive generated classification audit.",
+      "recommendation": "Keep as the discovery source; derive it from canonical skill metadata and validate generated output."
+    },
+    {
+      "id": "project-workflow-boundary",
+      "label": "Project-owned delivery boundary",
+      "kind": "documentation",
+      "lifecycle": "still-required",
+      "native_skill_surface": false,
+      "paths": [
+        "docs/project-workflow-boundary.md"
+      ],
+      "absent_paths": [
+        "skills/ai-feature-delivery",
+        "install/ai-feature-delivery.sh",
+        "workflows/ai-feature-delivery-lifecycle.md",
+        "workflows/cursor-first-ai-feature-delivery.md",
+        "commands/feature-start.md",
+        "commands/feature-fleshout.md",
+        "commands/steward-review.md",
+        "commands/draft-pings.md",
+        "commands/sdd-draft.md",
+        "commands/doc-impact.md",
+        "commands/doc-delta.md",
+        "commands/refine-to-tickets.md",
+        "commands/start-dev-from-feature.md",
+        "commands/dev-doc-delta-check.md",
+        "commands/pr-traceability-review.md",
+        "commands/gate-check.md",
+        "commands/qa-handoff.md",
+        "commands/release-manifest.md",
+        "commands/release-doc-check.md",
+        "templates/feature-master-record.md",
+        "templates/sdd-template.md",
+        "templates/doc-impact-template.md",
+        "templates/clarification-queue-template.md",
+        "templates/steward-review-template.md",
+        "templates/refinement-ticket-template.md",
+        "templates/pr-traceability-review-template.md",
+        "templates/gate-check-template.md",
+        "templates/qa-handoff-template.md",
+        "templates/release-manifest-template.md",
+        "templates/implementation-plan-template.md",
+        "templates/cursor-rules-000-core-process.mdc",
+        "templates/cursor-rules-010-doc-control.mdc",
+        "templates/cursor-rules-020-gates.mdc",
+        "templates/cursor-rules-030-traceability.mdc",
+        "templates/cursor-rules-040-stakeholder-pings.mdc",
+        "templates/cursor-rules-050-pr-review.mdc",
+        "templates/cursor-rules-100-dev-core.mdc",
+        "templates/cursor-rules-130-testing.mdc",
+        "templates/cursor-rules-150-pr-hygiene.mdc",
+        "templates/cursor-rules-200-dev-feature-traceability.mdc"
+      ],
+      "purpose": "Keep project-specific lifecycle sources in their project repository while preserving shared Toolbelt methods.",
+      "recommendation": "Use project-owned adapters for forms, approvals, and controlled records; import shared skills without replacing those adapters."
+    }
+  ]
+}

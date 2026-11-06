@@ -1,0 +1,209 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Agent Toolbelt: reusable software delivery skills for Cursor, Claude Code, and Codex.">
+  <title>Agent Toolbelt — Skills for software delivery</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to content</a>
+  <header class="site-header">
+    <div class="shell header-inner">
+      <a class="brand" href="#start" aria-label="Agent Toolbelt home">
+        <span class="brand-mark" aria-hidden="true">AT</span>
+        <span>Agent Toolbelt</span>
+      </a>
+      <nav class="top-nav" aria-label="Primary navigation">
+        <a href="#skills">Skill library</a>
+        <a href="#workflows">Workflows</a>
+        <a href="#hosts">Setup</a>
+        <a href="#capabilities">About</a>
+      </nav>
+      <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Use dark theme" aria-pressed="false">Dark mode</button>
+    </div>
+  </header>
+
+  <main id="main-content">
+    <section class="hero" id="start" aria-labelledby="hero-title">
+      <div class="shell hero-grid">
+        <div class="hero-copy">
+          <p class="eyebrow"><span class="status-dot" aria-hidden="true"></span> From task to next step</p>
+          <h1 id="hero-title">Your next task.<br><span>The right skill.</span></h1>
+          <p class="hero-lede">Find what to use, when to use it, and what you will get.</p>
+          <p class="library-overview" aria-label="Library overview"><span><strong id="skill-count">29</strong> skills</span><span><strong id="workflow-count">5</strong> workflows</span><span><strong id="host-count">3</strong> agent hosts</span></p>
+        </div>
+        <section class="task-entry" aria-labelledby="task-entry-title">
+          <h2 id="task-entry-title">Start with a task</h2>
+          <div class="task-shortcuts" id="task-shortcuts"></div>
+          <p>Choose a task to see a starting skill and its instructions.</p>
+        </section>
+      </div>
+    </section>
+
+    <section class="section finder" id="skills" aria-labelledby="finder-title">
+      <div class="shell">
+        <div class="section-heading finder-heading">
+          <div>
+            <h2 id="finder-title">Skill library</h2>
+            <p class="catalog-intro">Choose a category. Compare each skill by its purpose and result.</p>
+          </div>
+          <a class="inline-link" href="#start-here">Explore workflows <span aria-hidden="true">↗</span></a>
+        </div>
+        <div class="catalog-layout">
+          <aside class="catalog-sidebar" aria-label="Filter skills">
+            <div class="filter-block">
+              <div class="filter-label-row">
+                <span class="filter-label">Categories</span>
+              </div>
+              <div class="chip-list" id="category-filters" role="group" aria-label="Filter by category"></div>
+            </div>
+            <div class="filter-block intent-filters">
+              <span class="filter-label">Intent and tags</span>
+              <div class="chip-list" id="tag-filters" role="group" aria-label="Filter by tag"></div>
+            </div>
+            <div class="sidebar-hosts">
+              <p class="filter-label">Available in</p>
+              <div class="host-list" id="hero-hosts"></div>
+              <a class="inline-link" href="#hosts">View setup instructions <span aria-hidden="true">↗</span></a>
+            </div>
+          </aside>
+          <div class="catalog-content">
+            <div class="finder-controls">
+              <label class="search-label" for="skill-search">What do you need to do?</label>
+              <label class="search-field" for="skill-search">
+                <svg class="search-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4.5 4.5"/></svg>
+                <span class="sr-only">Search skills</span>
+                <input id="skill-search" type="search" placeholder="Search skills, tasks, or keywords…" autocomplete="off" aria-keyshortcuts="Control+k Meta+k">
+                <button class="clear-search" id="clear-search" type="button" aria-label="Clear search" hidden>Clear</button>
+                <kbd class="search-shortcut" aria-hidden="true">Ctrl / ⌘ K</kbd>
+              </label>
+            </div>
+            <details class="discovery-walkthrough">
+              <summary id="walkthrough-title">Explore the categories <span>Find where to start</span></summary>
+              <div class="walkthrough-heading">
+                <p>Choose a category to see its purpose and skills. Your search and tag filters also apply here.</p>
+              </div>
+              <div class="category-buckets" id="category-buckets" role="group" aria-label="Skill capability buckets"></div>
+              <section class="category-bucket-panel" id="category-bucket-panel" aria-labelledby="category-bucket-panel-title" hidden>
+                <div class="category-bucket-panel-heading">
+                  <div>
+                    <p class="eyebrow">Category skills</p>
+                    <h4 id="category-bucket-panel-title"></h4>
+                  </div>
+                  <p id="category-bucket-panel-description" aria-live="polite"></p>
+                </div>
+                <div class="category-bucket-skills" id="category-bucket-skills"></div>
+              </section>
+            </details>
+            <div class="results-bar" aria-live="polite">
+              <p id="result-summary">Showing all skills</p>
+              <a class="inline-link results-hint" href="#browse">Browse results <span aria-hidden="true">↓</span></a>
+              <button class="text-button" id="clear-filters" type="button">Reset filters</button>
+            </div>
+            <div id="browse" class="browse-results">
+              <div class="skills-grid" id="skills-grid" aria-live="polite"></div>
+            </div>
+            <div class="empty-state" id="empty-state" hidden>
+              <p class="eyebrow">No matching skills</p>
+              <h3>Try another word or clear a filter.</h3>
+              <p>Search checks skill names, descriptions, tags, and example prompts.</p>
+              <button class="button button-secondary" id="empty-clear" type="button">Clear search and filters</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section start-here" id="start-here" aria-labelledby="start-here-title">
+      <div class="shell">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Start here</p>
+            <h2 id="start-here-title">Start with a workflow.</h2>
+          </div>
+          <p class="section-intro">Choose a task to see its sequence of skills.</p>
+        </div>
+        <div class="start-grid" id="start-here-list"></div>
+      </div>
+    </section>
+
+    <section class="section host-guidance" id="hosts" aria-labelledby="hosts-title">
+      <div class="shell">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Setup</p>
+            <h2 id="hosts-title">Use skills in your agent host.</h2>
+          </div>
+          <p class="section-intro">An agent host runs your skills. Choose your host below for installation commands.</p>
+        </div>
+        <div class="host-setup-grid" id="host-setup-list"></div>
+      </div>
+    </section>
+
+    <section class="section workflows" id="workflows" aria-labelledby="workflows-title">
+      <div class="shell">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Common workflows</p>
+            <h2 id="workflows-title">Follow a task from start to finish.</h2>
+          </div>
+          <p class="section-intro">Each stage uses a skill from the library. Select a skill to see its instructions and example prompts.</p>
+        </div>
+        <div class="workflow-list" id="workflow-list"></div>
+      </div>
+    </section>
+
+    <section class="section capabilities" id="capabilities" aria-labelledby="capabilities-title">
+      <div class="shell">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Capabilities</p>
+            <h2 id="capabilities-title">Skills and supporting tools.</h2>
+          </div>
+          <p class="section-intro">The plugin contains the skill library. Installers, commands, hooks, and build tools support installation and maintenance.</p>
+        </div>
+        <div class="capability-columns">
+          <article class="capability-card plugin-capability">
+            <span class="capability-icon" aria-hidden="true">29</span>
+            <h3>Plugin skills</h3>
+            <p>Reusable skills for planning, building, testing, reviewing, debugging, security, and release work across Cursor, Claude Code, and Codex.</p>
+            <a class="inline-link" href="#skills">Browse all skills <span aria-hidden="true">→</span></a>
+          </article>
+          <div class="tooling-card">
+            <div class="tooling-heading">
+              <div>
+                <span class="eyebrow">Compatibility inventory</span>
+                <h3>Optional utilities and legacy surfaces</h3>
+              </div>
+              <span class="tooling-count" id="tooling-count"></span>
+            </div>
+            <div class="tooling-groups" id="tooling-groups"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="shell footer-inner">
+      <p><strong>Agent Toolbelt</strong> is an independent, general-purpose skill collection.</p>
+      <p>Source paths stay canonical in <code>skills/&lt;id&gt;/SKILL.md</code>.</p>
+    </div>
+  </footer>
+
+  <dialog class="detail-dialog" id="skill-dialog" aria-labelledby="detail-title">
+    <div class="dialog-inner">
+      <div class="dialog-topbar">
+        <span class="dialog-kicker" id="detail-kicker">Skill details</span>
+        <button class="icon-button" id="detail-close" type="button" aria-label="Close skill details">×</button>
+      </div>
+      <div id="skill-detail"></div>
+    </div>
+  </dialog>
+
+  <script src="data.js"></script>
+  <script src="app.js" defer></script>
+</body>
+</html>

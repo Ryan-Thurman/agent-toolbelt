@@ -8,9 +8,8 @@ argument-hint: "<approved-brief-or-context>"
 Slice an agreed brief into implementation-ready, **vertical-slice** tickets using the `shape-up`
 skill.
 
-> **When to use vs related:** `/to-issues` is the lightweight slicer for the dev lane (use after
-> `/shape-up`). For the regulated feature-delivery lane with traceability to a Feature Master
-> Record, use `/refine-to-tickets` instead.
+> Use after `/shape-up` to slice an approved brief. Preserve supplied project
+> requirements and ticket fields without adding another delivery lifecycle.
 
 **Arguments:** `$ARGUMENTS`
 
@@ -34,6 +33,7 @@ skill.
 ## Output
 
 A dependency-ordered list of vertical-slice tickets following `templates/shape-up-issues.md`, each
-demoable on its own, ready to hand to `/dev-plan` or `/dev-implement-task`. Optionally publish them to
+demoable on its own, ready to hand to `$phased-delivery` (or `/dev-plan`),
+which maps each selected ticket to one phase and one PR. Optionally publish them to
 the repo's configured tracker (GitHub Issues / Jira / Azure Boards) via `/ticket-sync`, which preserves
 the dependency order as "Blocked by" links.

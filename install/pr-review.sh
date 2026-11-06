@@ -1,7 +1,11 @@
 # DESC: tiered multi-agent PR/code review (light/standard/deep): commands (incl. /pr-review-init config generator), skill tree, config sample, examples
 pack_pr_review() {
+  shared_contract references/human-readable-output.md
   cmd pr-review
   cmd pr-review-init
+  cmd review-diff
+  cmd pr-ready-check
+  cmd role-review
 
   local f
   for f in \

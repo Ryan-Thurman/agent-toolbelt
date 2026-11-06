@@ -1,3 +1,4 @@
-display_name: "Phase Context Workflow"
-short_description: "Durable phase context for resumable long-running coding-agent work."
-default_prompt: "Set up durable phase context for this work."
+interface:
+  display_name: "Phase Context Workflow"
+  short_description: "Durable phase context for resumable long-running coding-agent work."
+  default_prompt: "Set up durable phase context for this work."

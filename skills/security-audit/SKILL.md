@@ -5,6 +5,9 @@ description: Perform a read-only security audit of code, configuration, dependen
 
 # security-audit
 
+Before you write a response for the user, read
+`shared/contracts/references/human-readable-output.md`.
+
 Audit a bounded target for security risks. Default behavior is read-only review.
 
 ## Steps

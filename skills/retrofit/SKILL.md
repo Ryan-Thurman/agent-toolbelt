@@ -5,6 +5,9 @@ description: Apply one defined change across every required site, such as a libr
 
 # retrofit
 
+Before you write a response for the user, read
+`shared/contracts/references/human-readable-output.md`.
+
 Apply **one defined transformation across the whole codebase**, everywhere it's needed, without
 missing a site and without breaking the build along the way. The classic targets: a library swap
 (moment → dayjs), an API/symbol rename across N call sites, a framework upgrade, a pattern

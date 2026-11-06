@@ -96,14 +96,14 @@ done
 grep -q '.atb/skills/vercel-react-best-practices' "$bundle_target/.atb/shared/contracts/references/typescript-react-baseline.md"
 
 composed_target="$TMP_ROOT/composed"
-"$ROOT/install.sh" --harness all pr-review simplify dev-lite-workflow code-quality-gate "$composed_target" >/dev/null
+"$ROOT/install.sh" --harness all pr-review simplify phased-delivery code-quality-gate "$composed_target" >/dev/null
 for path in \
   .atb/shared/contracts/references/typescript-react-baseline.md \
   .atb/skills/pr-review/facets/performance.md \
   .atb/skills/pr-review/facets/maintainability.md \
   .atb/skills/pr-review/facets/standards.md \
   .atb/skills/simplify/SKILL.md \
-  .atb/skills/dev-lite-workflow/SKILL.md \
+  .atb/skills/phased-delivery/SKILL.md \
   .atb/skills/code-quality-gate/SKILL.md
 do
   require_file "$composed_target/$path"

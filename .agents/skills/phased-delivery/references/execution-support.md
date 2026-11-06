@@ -1,0 +1,63 @@
+# Execution Support
+
+Load this reference only when a Phased Delivery run needs temporary scratch artifacts,
+a recovery ledger, or delegated subagent execution.
+
+## Scratch and Ledger Convention
+
+For temporary task briefs, implementer reports, review packages, and progress
+ledgers, use one repo-local scratch workspace per Implementation Plan instead of
+`.git/` or one shared delivery directory:
+
+```sh
+mkdir -p .atb-work/phased-delivery/<plan-slug>
+printf '*\n' > .atb-work/phased-delivery/.gitignore
+```
+
+Choose a stable `<plan-slug>` from the plan filename. If that directory already
+contains a ledger for another plan, add a short stable suffix derived from the
+plan path. Never reuse or clean a sibling plan's workspace.
+
+Use `.atb-work/phased-delivery/<plan-slug>/progress.md` as an optional recovery ledger
+for delegated execution. Start it with the plan path, then record one compact
+line per completed task with the task name, commit range or changed files,
+checks run, and review result.
+
+The source plan or small execution record remains the durable source of truth; the ledger
+is only a local recovery aid after context loss.
+
+Before committing, run `git status --short`. If `.atb-work/` appears, stop and
+fix the scratch location or ignore before continuing.
+
+When the plan is finished and its PR handoffs are complete, remove only that
+plan's scratch directory. Git history and the tracked Implementation Plan are
+the durable record; sibling directories may belong to other active work.
+
+## Optional Subagent Dispatch
+
+Phased Delivery must work without multi-agent tooling. Run tasks sequentially in the
+current session by default.
+
+When the current environment supports subagents and the user has explicitly
+asked for delegation, parallel agents, or a subagent-driven run, delegate only
+bounded work with clear ownership:
+
+- Use one task brief per delegated task.
+- Name the files or module boundaries the subagent owns.
+- Tell the subagent it is not alone in the codebase and must preserve unrelated
+  edits.
+- Ask for a short return message: status, changed files or commits, checks run,
+  and blockers or concerns. Longer evidence belongs in the report file.
+- Do not delegate the immediate critical-path task if the next local step is
+  blocked on its result; do that work locally.
+
+Model selection should be explicit only when the tool supports it and there is
+a task-specific reason:
+
+- Mechanical single-file or copy-editing tasks: fastest/cheapest capable model.
+- Normal implementation or integration tasks: default/current coding model.
+- Architecture, security, cross-cutting correctness, or final review: strongest
+  appropriate available model.
+
+If no subagent tool or model override is available, record the intended split
+only as guidance and continue sequentially.

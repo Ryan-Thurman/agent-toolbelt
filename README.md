@@ -1,51 +1,120 @@
-# agent-toolbelt
+# Agent Toolbelt
 
-Reusable commands, skills, workflows, and templates for AI-assisted software
-delivery.
+Agent Toolbelt is an independent, general-purpose collection of reusable skills
+for software delivery. It has no AI-SDLC or team-workspace dependency.
 
-Use this repo when you want to install a repeatable agent workflow into a
-project instead of re-writing prompts and handoffs from scratch. The toolbelt
-can install into Cursor, Claude Code, Codex-style skill folders, or all three.
+The native plugin is the primary installation path: one canonical `skills/`
+tree, 29 on-demand skills, and support for Cursor, Claude Code, and Codex.
+
+## What belongs here
+
+Agent Toolbelt is the source for your reusable workflows and skills.
+Project repositories own the rules and content specific to those projects.
+
+| Content | Owner |
+|---|---|
+| Reusable planning, development, QA, review, research, and release methods | Agent Toolbelt, as those capabilities are implemented |
+| Shared output formats and ASD-STE100 writing rules | Agent Toolbelt |
+| Optional unattended workflows and reusable personal workflows | Agent Toolbelt; optional packages can have separate installation choices |
+| Project forms, required approvals, internal references, and workspace automation | The project repository |
+| Project adaptations of shared workflows | The project repository; shared methods retain their Toolbelt source |
+
+Installed copies consume this library. Update reusable behavior here and
+project-specific behavior in its project owner.
+
+## Start with the native plugin
+
+For a local clone, load the skills in the host you use:
+
+```sh
+# Cursor
+cursor-agent --plugin-dir /path/to/agent-toolbelt
+
+# Claude Code
+claude --plugin-dir /path/to/agent-toolbelt
+
+# Codex
+codex plugin marketplace add /path/to/agent-toolbelt
+codex plugin add agent-toolbelt@agent-toolbelt
+```
+
+Invocation is host-specific: Cursor uses `/skill-name`, Claude Code uses
+`/agent-toolbelt:skill-name`, and Codex uses `$skill-name` or `/skills`.
+Natural-language requests can also match skills implicitly. The [generated
+portal](portal/generated/index.html) is the rich capability reference with
+examples, workflow sequences, filters, and host guidance.
+
+Before sharing a clone, run the full package check:
+
+```sh
+npm ci
+npx playwright install chromium
+./scripts/check-plugin-package.sh
+```
+
+To rebuild or open the offline portal:
+
+```sh
+./scripts/build-portal.sh
+open portal/generated/index.html   # macOS; use your browser on other hosts
+```
+
+For screenshots of both themes at desktop and mobile sizes, run
+`npm run portal:screenshots`. Read [the visual review guide](docs/portal-visual-review.md)
+for screenshot paths, the HTML report, and the local browser startup option.
 
 Most packs fall into one of these jobs:
 
-- Start new work: `product-discovery`, `shape-up`, `dev-lite-workflow`, `ai-feature-delivery`
+- Start new work: `product-discovery`, `shape-up`, `phased-delivery`
 - Investigate broken behavior: `bug-to-fix`, `ticket-discovery`
 - Review and harden changes: `code-quality-gate`, `pr-review`, `pr-improve`, `pr-review-reply`, `phase-gate`
-- Run agents unattended: `auto-agent-contract`
+- Run agents unattended (optional private package): `auto-agent-contract`
 - Improve code or tests: `style-guide-init`, `simplify`, `test-case-design`, `cover`, `crap-analysis`, `retrofit`, `react-quality`
 - Keep long work resumable: `phase-context-workflow`, `handoff`
 - Prepare to ship: `ship-it`
 
-## Quick start
+## Optional project-scoped compatibility install
 
-Everything installs through one entry point: `./install.sh`.
+The compatibility workflow uses one entry point: `./install.sh`.
+
+Use `install.sh` when you specifically want project-local commands, templates,
+workflow files, rules, or opt-in hooks in an existing repository. It is a
+compatibility path and does not replace native plugin installation.
 
 Choose:
 
 1. One or more harnesses: `cursor`, `claude`, `codex`, or `all`
-2. One or more packs: for example `dev-lite-workflow`, `pr-review`, or `all`
+2. One or more packs: for example `phased-delivery`, `pr-review`, or `all`
 3. A target project folder
 
 ```sh
 ./install.sh --harness <cursor|claude|codex|all> <pack ...|all> <target-folder>
 
 ./install.sh --harness cursor all /path/to/project
-./install.sh --harness cursor --rules full all /path/to/pilot
-./install.sh --harness cursor,claude dev-lite-workflow pr-review /path/to/project
+./install.sh --harness cursor,claude phased-delivery pr-review /path/to/project
 ./install.sh --harness codex bug-to-fix simplify /path/to/project
 ./install.sh --list
 ```
 
-For Cursor, the default rule mode is `minimal`. It installs one small always-on
-router rule that points the agent to the installed commands and skills. Use
-`--rules full` only for dedicated pilot repos that should receive every pack's
-detailed project rules as always-on Cursor context.
+`phased-delivery` is the canonical pack and skill. The old
+`dev-lite-workflow` pack selector remains an explicit compatibility alias;
+its installed skill is `$phased-delivery`. The `/dev-*` command names remain
+available as shortcuts for the new workflow.
+
+The private [Auto Agent package](plugins/agent-toolbelt-auto-agent/README.md)
+is excluded from the native plugin and `all` compatibility installs. Install it
+explicitly only when needed:
+
+```sh
+./install.sh --harness all auto-agent-contract /path/to/project
+```
+
+Cursor installs use one minimal routing rule. Project process rules belong to
+the target repository. The former `--rules full` option is retired.
 
 After install, open the target folder in your agent tool and run
-`/workflow-router` from chat. Full install mechanics, including polyrepo
-`--sweep` and the private Cursor plugin, are in the
-[Installation](wiki/Installation.md) guide.
+`/workflow-router` from chat. Full compatibility mechanics, including
+polyrepo `--sweep`, are in the [Installation](wiki/Installation.md) guide.
 
 ### First repository setup
 
@@ -70,24 +139,33 @@ completion checklist.
 
 | Goal | Start with |
 |---|---|
-| Build a normal feature with lightweight structure | `dev-lite-workflow` |
+| Deliver a requirement or tickets as human-reviewed PRs | `phased-delivery` |
+| Compare a product ask with current behavior and find gaps or missing questions | `shape-up` (gap review) |
 | Turn a vague idea into an approved brief first | `shape-up` |
 | Decide whether an opportunity is ready to shape | `product-discovery` |
 | Establish repository coding conventions | `style-guide-init` |
 | Run a deep code review on a PR or local diff | `pr-review` |
-| Run the required pre-PR maintainability and anti-slop gate | `code-quality-gate` |
+| Run a policy- or risk-driven pre-PR maintainability gate | `code-quality-gate` |
 | Diagnose a bug before fixing it | `bug-to-fix` |
 | Keep a long implementation safe across context resets | `phase-context-workflow` |
-| Install every available command and workflow | `all` |
+| Install the standard commands and workflows | `all` |
 
 ## Documentation
 
-The [wiki](wiki/Home.md) is the deep dive. Quick map:
+The [generated portal](portal/generated/index.html) owns discovery, taxonomy,
+examples, and the common workflow map. The [wiki](wiki/Home.md) and `docs/`
+own deeper operational and compatibility guidance; `SKILL.md` remains the
+canonical behavior and instruction source. The generated audit is the
+comprehensive classification and recommendation record.
+
+Quick map:
 
 | Page | Covers |
 |---|---|
-| [Installation](wiki/Installation.md) | `install.sh`, harness selection, polyrepo `--sweep`, private Cursor plugin |
-| [Workflows](wiki/Workflows.md) | Dev Lite, Phase Context, AI Feature Delivery, Bug to Fix, Shape Up |
+| [Installation](wiki/Installation.md) | Native plugin setup, `install.sh` compatibility path, harness selection, polyrepo `--sweep` |
+| [Portal](portal/generated/index.html) | Searchable skill discovery, taxonomy, examples, workflows, and host invocation guidance |
+| [Skill taxonomy audit](docs/skill-taxonomy-audit.md) | Generated classification, documentation completeness, and recommendations |
+| [Workflows](wiki/Workflows.md) | Phased Delivery, Phase Context, Bug to Fix, Shape Up |
 | [Code Review](wiki/Code-Review.md) | PR Review + triggers: Review Reply, Review on Open, Review Queue, Phase Gate, Cursor Hooks |
 | [Utilities](wiki/Utilities.md) | Simplify, Cover, Ship It, Retrofit, Handoff, Ticket Sync |
 | [Phase → Command Map](docs/phase-command-map.md) | Which commands each workflow phase uses (Mermaid diagrams) |
@@ -99,46 +177,27 @@ The [wiki](wiki/Home.md) is the deep dive. Quick map:
 Packs are installable bundles. Most include slash commands, skills, templates,
 or workflow docs.
 
-| Pack | What it does |
+Project-specific delivery processes belong to their project repositories.
+See the [ownership and migration guide](docs/project-workflow-boundary.md).
+
+| Area | Representative packs |
 |---|---|
-| `pr-review` | Tiered, multi-agent pull-request and diff review. |
-| `code-quality-gate` | Pre-PR gate: repository checks plus standards, maintainability, naming, deterministic diff evidence, and bounded fix/rereview. |
-| `pr-improve` | Bounded finding-fix-rereview loop with a frozen scope and stable ledger. |
-| `pr-review-reply` | Round-trip half of `pr-review`: triage and answer a reviewer's PR threads (posting opt-in). |
-| `review-on-open` | Trigger layer: auto-review on PR open/update, via GitHub Actions event or a host-agnostic poller. |
-| `review-queue` | Local, SQLite-backed work queue — a producer enqueues a PR, a worker runs `/pr-review --comment`. |
-| `phase-gate` | In-loop trigger: at each phase boundary a fresh subagent reviews the PR (team stop / solo merge). |
-| `auto-agent-contract` | Rules for an orchestrator *outside* the harness that shells into agent CLIs: invocation, convergence, merge, unattended mode, Dev Lite jobs, `/auto-agent-plan`. |
-| `bug-to-fix` | Diagnostic lane: triage → reproduce → root-cause → minimal fix → verify. |
-| `dev-lite-workflow` | Lightweight dev loop: brief → plan → task → commit → phase review → final-coverage code-quality-gate PASS → final PR review. |
-| `phase-context-workflow` | Durable phase files, handoffs, and context packets for safe `/clear` / `/compact`. |
-| `ai-feature-delivery` | Traceable feature delivery: design docs, tickets, tests, QA handoff, release docs. |
-| `shape-up` | Interrogate a vague request into an agreed brief before building. |
-| `product-discovery` | Evidence-led opportunity discovery before shaping a candidate feature. |
-| `style-guide-init` | Mine repository evidence into a canonical coding-style guide or update. |
-| `tech-backlog-assessment` | Decide whether and how to do technical backlog items before implementation. |
-| `ticket-discovery` | Find a referenced precedent for a narrow ticket and produce a concrete gap/test handoff. |
-| `simplify` | Active cleanup plus `/code-smell` detect-only scans, including architecture/deepening candidates. |
-| `vercel-composition-patterns` | Conditional MIT-licensed React component API and composition references from Vercel Labs. |
-| `vercel-react-best-practices` | Conditional MIT-licensed React/Next.js performance references from Vercel Labs. |
-| `react-quality` | Convenience bundle that installs both Vercel React specialists; it adds no separate policy. |
-| `cover` | Author/strengthen behavior-pinning tests + a detect-only coverage-gap scan. |
-| `test-case-design` | Report-only, prioritized QA test-case design that hands selected cases to test authors. |
-| `threat-model` | Design-time security model: assets, trust boundaries, abuse paths, mitigations, verification. |
-| `security-audit` | Bounded read-only code/config/dependency/secret-exposure security audit. |
-| `webapp-testing` | Browser/webapp verification: `/webapp-test` smoke checks, Playwright runs, QA evidence. |
-| `ship-it` | Lightweight release readiness: go/no-go, rollback plan, release notes, rollout plan. |
-| `retrofit` | Apply one defined change across every site that needs it — discover, transform, verify. |
-| `worktree` | Isolated git worktrees so parallel agents share a polyrepo dir without clobbering each other's branch. |
-| `crap-analysis` | CRAP analysis via repo-configured commands: wizard setup, single-run orchestration, deterministic review, opt-in refactor. |
-| `ticket-sync` | Provider-agnostic adapter: publish tickets to GitHub Issues, Jira, or Azure Boards. |
-| `handoff` | Cross-cutting `/handoff` that writes a resumable handoff so a fresh agent can continue. |
-| `cursor-hooks` | Project-level Cursor hooks: doc-sync gate on `git commit`, `/pr-review` nudge on `git push`. |
+| Discover and plan | `product-discovery`, `shape-up`, `phased-delivery` |
+| Debug and repair | `bug-to-fix`, `ticket-discovery` |
+| Review and improve | `pr-review`, `code-quality-gate`, `pr-improve`, `simplify`, `retrofit` |
+| Test and secure | `cover`, `test-case-design`, `webapp-testing`, `threat-model`, `security-audit` |
+| Operate and release | `phase-context-workflow`, `handoff`, `ship-it`, `worktree`, `ticket-sync` |
+| Specialists and compatibility | `vercel-*`, `crap-analysis`, `cursor-hooks`, `react-quality` |
+
+The portal and generated audit contain the complete skill and workflow
+inventory; this summary keeps the README an entry point.
 
 ## Repository layout
 
 ```text
 agent-toolbelt/
+  portal/generated/ offline discovery portal (catalog, examples, workflows)
+  catalog/          canonical discovery metadata and tooling lifecycle audit
   install.sh        single installer entry point
   install/          per-pack file lists (install/<pack>.sh) + shared install/lib.sh
   build-cursor-plugin.sh
@@ -146,7 +205,10 @@ agent-toolbelt/
   docs/             user-facing setup and usage docs
   commands/         slash commands and reusable command prompts
   skills/           agent skills with operating instructions
-  hooks/            Cursor hook scripts + hooks.json (cursor-hooks pack)
+  plugins/agent-toolbelt-auto-agent/
+                    Optional private Auto Agent plugin and compatibility pack
+  optional/cursor-hooks/
+                    Opt-in Cursor hook scripts + hooks.json (cursor-hooks pack)
   workflows/        multi-step workflow playbooks
   templates/        reusable starting files and Cursor rules
   examples/         worked reference material

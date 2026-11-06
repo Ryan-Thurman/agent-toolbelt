@@ -8,14 +8,19 @@ alwaysApply: true
 Use installed agent-toolbelt workflows when the task clearly matches one. Prefer
 the matching slash command or skill over re-creating the workflow from memory.
 
-Use `/workflow-router` when the right workflow is unclear.
+Use `/workflow-router` when it is installed and the right workflow is unclear.
+Otherwise choose a matching installed skill directly.
+
+Select the lane from the user's request and the target project's requirements.
+Existing tickets, feature documents, or available skills alone do not require
+a formal lifecycle. Clear bounded changes can use direct implementation and
+relevant checks; use phased delivery for coordinated phase/PR work.
 
 Common matches:
 
 - Feature or app work needing brief, flows, acceptance criteria, phased
-  implementation, commits, and reviews: `dev-lite-workflow`.
-- Traceable feature delivery with formal docs, gates, QA, and release artifacts:
-  `ai-feature-delivery`.
+  implementation, commits, and reviews: `phased-delivery`.
+- Project-specific lifecycle, forms, and approvals: follow the target project's workflow owner.
 - Code review: `pr-review`.
 - Debugging from symptom to fix: `bug-to-fix`.
 - Review comment follow-up: `pr-review-reply`.

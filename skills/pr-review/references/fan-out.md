@@ -166,8 +166,8 @@ can flip the verdict away from `REQUEST CHANGES` while still showing the item.
 
 - Apply the posting threshold: hide `nit`s unless there are no higher findings or the user asked,
   after the critic has performed the calibration pass above.
-- Derive the verdict mechanically (`output-format.md`): blockers request changes; no blockers plus
-  approval-blocking questions needs discussion; no blockers and no such questions approves.
+- Derive the verdict mechanically from findings and requested-scope completion
+  using `output-format.md`.
 - Render the markdown report (`output-format.md`), including the Re-entry notes section, the
   `memory:` footer if anything was downranked, and the `repo-config:` footer if `.pr-review.md`
   forced facets / re-rated / suppressed anything.
@@ -175,5 +175,7 @@ can flip the verdict away from `REQUEST CHANGES` while still showing the item.
 
 ## Failure handling
 
-If a facet sub-agent fails or returns unparseable output, note it in the report ("⚠️ <facet> review
-incomplete") and proceed with the others — never block the whole review on one facet.
+If a facet or verification agent fails or returns unparseable output, retain
+completed results and proceed with the others. Report the missing stage and
+apply the coverage/limits verdict rules in `output-format.md`; a failed stage
+is not a clean result.

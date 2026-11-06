@@ -1,0 +1,32 @@
+{
+  "name": "agent-toolbelt",
+  "interface": {
+    "displayName": "Agent Toolbelt"
+  },
+  "plugins": [
+    {
+      "name": "agent-toolbelt",
+      "source": {
+        "source": "local",
+        "path": "./"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Developer Tools"
+    },
+    {
+      "name": "agent-toolbelt-auto-agent",
+      "source": {
+        "source": "local",
+        "path": "./plugins/agent-toolbelt-auto-agent"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Developer Tools"
+    }
+  ]
+}

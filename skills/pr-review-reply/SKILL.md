@@ -1,9 +1,12 @@
 ---
 name: pr-review-reply
-description: Handle the PR-review round-trip: read reviewer threads, triage each one, re-review only touched code, and draft per-thread replies. Use to address PR comments, answer review feedback, or close a /pr-review loop.
+description: "Handle the PR-review round-trip: read reviewer threads, triage each one, re-review only touched code, and draft per-thread replies. Use to address PR comments, answer review feedback, or close a /pr-review loop."
 ---
 
 # pr-review-reply
+
+Before you write a response for the user, read
+`shared/contracts/references/human-readable-output.md`.
 
 The conversational other-half of `pr-review`. Where `pr-review` produces a **one-shot** review,
 `pr-review-reply` handles the **round-trip**: read a human reviewer's open threads, re-review only

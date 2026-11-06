@@ -5,6 +5,9 @@ description: Run CRAP analysis via repo-configured commands — wizard setup, si
 
 # crap-analysis
 
+Before you write a response for the user, read
+`shared/contracts/references/human-readable-output.md`.
+
 Language-agnostic CRAP analysis orchestration. Each repo configures its own analysis, coverage, and
 verify commands in `.crap-analysis.json`. This skill runs those commands **once** when instructed,
 **waits** for completion, **reads** the produced report and refactor brief, and applies a

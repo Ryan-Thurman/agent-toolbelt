@@ -5,6 +5,9 @@ description: Queue PR-review jobs locally with SQLite. Use when PR-opening agent
 
 # review-queue
 
+Before you write a response for the user, read
+`shared/contracts/references/human-readable-output.md`.
+
 A **local producer/consumer work queue** for PR review. It's the push-based sibling of the
 `review-on-open` triggers: instead of polling a host or waiting on a CI event, the agent that **just
 opened or updated a PR enqueues a job**, and a separate **worker** claims jobs and reviews them. Fully

@@ -5,6 +5,9 @@ description: Review or improve React and Next.js performance when components, da
 
 # React and Next.js performance
 
+Before you write a response for the user, read
+`shared/contracts/references/human-readable-output.md`.
+
 Use this as a conditional performance reference for React or Next.js changes.
 Repository policy, measured budgets, enforced configuration, runtime
 constraints, and local patterns win over upstream guidance.

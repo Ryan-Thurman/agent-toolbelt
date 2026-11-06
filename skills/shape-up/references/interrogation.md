@@ -1,6 +1,7 @@
 # Interrogation techniques
 
-How to grill a request into clarity. Load this during a `/shape-up` session.
+How to grill a request into clarity. Load this for interactive shaping, not for
+a report-only current-state gap review.
 
 ## The cardinal rule
 

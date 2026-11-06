@@ -1,6 +1,6 @@
 ---
 status: gathering   # gathering | investigating | fixing | verifying | awaiting_human_verify | resolved
-trigger: ""          # the bug report, verbatim
+trigger: ""          # the bug report, with credentials and sensitive user data redacted
 severity: ""         # SEV1 | SEV2 | SEV3 | SEV4 (see skills/bug-to-fix/references/severity.md)
 created: YYYY-MM-DD
 updated: YYYY-MM-DD
@@ -12,12 +12,13 @@ updated: YYYY-MM-DD
 THE FILE IS THE DEBUGGING BRAIN. Update it BEFORE each action, not after — if the
 session resets mid-action, this file must show what was about to happen.
 Section update rules:
-  Symptoms            IMMUTABLE after intake (the bug never changes; only our understanding does)
+  Symptoms            IMMUTABLE after redacted intake (the bug never changes; only our understanding does)
   Current Focus       OVERWRITE before every action
   Eliminated          APPEND only (never re-investigate a disproven hypothesis)
   Evidence            APPEND only
   Reasoning checkpoint GATE — fill all 5 fields with concrete answers before any fix
   Resolution          OVERWRITE as understanding evolves
+Redact credentials and sensitive user data from this file, including logs and reproduction commands.
 -->
 
 ## Symptoms

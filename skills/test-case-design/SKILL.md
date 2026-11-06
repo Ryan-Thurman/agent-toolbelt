@@ -5,6 +5,9 @@ description: Turn requirements and risks into prioritized, executable QA test ca
 
 # test-case-design
 
+Before you write a response for the user, read
+`shared/contracts/references/human-readable-output.md`.
+
 Design an evidence-based test case set. This skill reports cases; it does not edit
 tests or production code.
 

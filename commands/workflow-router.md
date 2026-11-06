@@ -1,102 +1,32 @@
 ---
-description: Pick the right toolbelt command, skill, or workflow for the current work
+description: Choose the smallest installed workflow for the current task
 argument-hint: "<goal-or-current-state>"
 ---
 
 # /workflow-router
 
-Route the current goal to the smallest useful command, skill, or workflow.
+Read the target repository's instructions and the user's requested outcome.
+Choose from workflows that are actually installed.
 
 **Arguments:** `$ARGUMENTS`
 
-Steps:
-1. Identify the work type: discovery, planning, implementation, testing,
-   review, QA, release, or handoff.
-2. Check whether feature metadata exists: feature ID, release ID, ticket,
-   Feature Master Record, doc impact map, QA plan, or PR.
-3. Recommend the next 1-3 commands to run, in order, with a one-line reason for
-   each.
-4. If the work is ambiguous, ask only the questions needed to choose the next
-   command.
-5. Do not run a heavy workflow when a narrower command is enough.
+| Task | Shared owner |
+| --- | --- |
+| Compare an ask with current behavior, or clarify scope | `shape-up` |
+| Plan and implement approved requirements or tickets | `phased-delivery` |
+| Reproduce and repair a defect | `bug-to-fix` |
+| Assess a technical investment or dependency | `tech-backlog-assessment` |
+| Find an existing precedent for a narrow ticket | `ticket-discovery` |
+| Design cases, write tests, or verify a browser flow | `test-case-design`, `cover`, or `webapp-testing` |
+| Review a change or address findings | `pr-review`, `pr-improve`, or `pr-review-reply` |
+| Prepare a release or a resumable handoff | `ship-it` or `handoff` |
 
-If the request itself is vague or underspecified, shape it first with `/shape-up`
-(interrogate -> agreed brief), then pick a track below.
+A clear small change can proceed directly with relevant checks.
+Use a phase plan when coordinated PR boundaries help the task.
+Use project-owned workflows when the project's requirements call for them.
+The project owns its forms, approval gates, and release records.
+Nearby documents or an installed skill do not select a project lifecycle.
 
-Pick the track first — is this a new capability or broken behavior?
-- **Bug-to-Fix** (broken behavior: a bug ticket / defect needs diagnosis and a
-  fix): use the `/bug-*` chain below.
-- **Dev Lite** (new capability, lightweight solo or small build, no
-  cross-functional traceability needed): use the `/dev-*` chain below.
-- **AI Feature Delivery** (new capability, cross-functional work where
-  requirements, tickets, tests, docs, QA, and release eligibility must stay
-  linked): use the feature-delivery commands below.
-- **Phase Context** (long agent work where planning, implementation, test,
-  review, or PR prep should survive `/clear` or `/compact`): use the
-  `/phase-*` chain below, usually alongside Dev Lite or implementation work.
-
-Routing guide:
-- Long agent session, Agent Command Center work, context reset boundary, or
-  phase handoff needed: `/phase-create` -> `/phase-start` -> do the phase work
-  -> `/phase-close` -> `/clear` or `/compact`.
-- Vague / underspecified request: `/shape-up` (then `/dev-intake` or `/to-issues`).
-- Product opportunity needing evidence before a brief: `/product-discovery` -> `/shape-up`.
-- Repository conventions unclear or drifting: `/style-guide-init`, then use the approved style owner
-  in `/dev-implement-task` and `/pr-review`.
-- Technical backlog decision, dependency/library choice, or "should we do this?":
-  `/tech-assess` (then `/ticket-discover`, `/dev-plan`, `/implementation-plan`,
-  `/retrofit`, `/cover-gaps`, or no action).
-- Narrow implementation ticket that points to a precedent, such as "add X to Y;
-  Z already has it": `/ticket-discover` (then `/implementation-plan`, `/dev-plan`,
-  `/cover`, or `/retrofit`).
-- Broken behavior / bug (Bug-to-Fix): `/bug-intake` -> `/reproduce` -> `/rca`
-  (or `/rca --diagnose` for read-only) -> `/fix-plan` -> `/dev-implement-task`
-  -> `/cover` (lock the repro as a regression test) -> `/pr-review` -> `/ship-it`
-  (optional, on release).
-- Lightweight / solo build (Dev Lite): `/dev-intake` -> `/dev-plan` ->
-  `/dev-start-phase` -> `/dev-implement-task` -> `/dev-phase-review` ->
-  `/dev-fix-review-issues` (if needed) -> `/code-quality-gate` (must PASS) ->
-  `/dev-pr-review` -> `/ship-it`
-  (optional, on release).
-- Raw idea or stakeholder request: `/feature-start`, then `/feature-fleshout`.
-- Existing feature with gaps: `/feature-fleshout`, `/steward-review`, or
-  `/draft-pings`.
-- Design/document work: `/sdd-draft`, `/doc-impact`, or `/doc-delta`.
-- Ticket slicing: `/refine-to-tickets`.
-- Publish sliced tickets to a tracker (GitHub Issues / Jira / Azure Boards): `/ticket-sync`.
-- Starting implementation: `/start-dev-from-feature`, then
-  `/implementation-plan`.
-- Behavior change needing tests (regulated, traceable lane): `/write-tests`.
-- Author/strengthen tests for a diff/module, or lock a bug repro as a regression
-  test (standalone, apply on opt-in): `/cover`.
-- Scan an area for missing/weak coverage (detect-only, ranked by risk × likelihood):
-  `/cover-gaps`.
-- Browser/user-flow verification: `/webapp-test`.
-- Requirements or risks needing a QA case set before authoring: `/test-case-design` -> `/cover` or
-  `/webapp-test` for selected cases.
-- Security-sensitive design before implementation: `/threat-model` -> `/test-case-design` or planning.
-- Bounded read-only security review: `/security-audit`; active testing needs written authorization.
-- Local diff review: `/review-diff`.
-- PR readiness: `/pr-ready-check`, then `/pr-traceability-review`.
-- Lifecycle gate: `/gate-check`.
-- QA package: `/qa-handoff`.
-- Release documentation: `/release-manifest`, then `/release-doc-check`.
-- General PR/code review: `/pr-review --tier=light|standard|deep`.
-- Pre-PR maintainability, anti-slop, and repository-check verdict: `/code-quality-gate`;
-  use `--mode=apply` only when fixes are explicitly authorized.
-- Apply accepted review findings in bounded rounds: `/pr-improve`.
-- Pin what reviews should prioritize in a repo (draft `.pr-review.md`): `/pr-review-init`.
-- Respond to a human reviewer's PR threads (triage + reply, re-review only what
-  changed since the review): `/pr-review-reply` (run after `/pr-review`).
-- Release a merged change (readiness + rollback + notes + rollout): `/ship-it`.
-- Clean up / slim a diff after a feature (apply): `/simplify`.
-- React component API/composition review: use `$vercel-composition-patterns` when installed.
-- React/Next performance review with concrete impact: use `$vercel-react-best-practices` when installed.
-- Scan an area for structural smells (detect-only): `/code-smell`; for architecture/deepening
-  candidates, use `/code-smell <path> --architecture`.
-- Apply one defined change across many sites (library swap / API rename / upgrade): `/retrofit`.
-- Isolate work so parallel agents in a shared polyrepo dir don't clobber each other's branch: `/worktree new`.
-- Root-cause only, no fix: `/rca --diagnose`.
-- Pause or transfer work to a fresh session/agent: `/handoff`.
-- Repeated phase boundaries or planned context resets: `/phase-status`, then
-  `/phase-start` or `/phase-close`.
+Give the next one to three actions with a reason for each.
+Name missing capabilities instead of recommending absent commands.
+Resolve repository facts before asking the user for a decision.

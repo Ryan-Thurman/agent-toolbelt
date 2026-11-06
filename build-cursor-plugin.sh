@@ -3,9 +3,9 @@
 #
 #   ./build-cursor-plugin.sh [--with-rules] [output-dir]
 #
-# Assembles a Cursor plugin (skills/ + commands/ [+ rules/] + .cursor-plugin/plugin.json)
-# from this repo. The plugin is user-scoped once linked into ~/.cursor/plugins/local/,
-# so its skills are available in every project — no per-repo install.
+# Assembles a Cursor skills plugin (skills/ [+ rules/] + .cursor-plugin/plugin.json)
+# from this repo. The repository itself is also a native Cursor, Claude Code, and
+# Codex plugin; this build is the optional frozen/user-scoped Cursor package.
 #
 # By DEFAULT rules are NOT bundled: most of this repo's rules are `alwaysApply: true`,
 # and a user-scoped plugin would fire them in EVERY project. Skills are on-demand and
@@ -36,25 +36,18 @@ done
 
 echo "Building Cursor plugin into: $OUT"
 rm -rf "$OUT"
-mkdir -p "$OUT/.cursor-plugin" "$OUT/skills" "$OUT/commands" "$OUT/shared"
+mkdir -p "$OUT/.cursor-plugin" "$OUT/skills" "$OUT/shared"
 [ "$WITH_RULES" = "1" ] && mkdir -p "$OUT/rules"
 
 # --- Manifest -----------------------------------------------------------------
-cat > "$OUT/.cursor-plugin/plugin.json" <<JSON
-{
-  "name": "$NAME",
-  "description": "Reusable AI-agent commands, skills, and rules for software delivery (private build).",
-  "version": "0.2.0",
-  "author": { "name": "$(git -C "$ROOT" config user.name 2>/dev/null || echo "local")" }
-}
-JSON
-
-# --- Commands (*.md) ----------------------------------------------------------
-cmd_count=0
-for f in "$ROOT"/commands/*.md; do
-  [ -f "$f" ] || continue
-  cp "$f" "$OUT/commands/" && cmd_count=$((cmd_count + 1))
-done
+# Keep the assembled package on the same metadata contract as the tracked root
+# plugin. The manifest intentionally declares skills only: commands, hooks, and
+# always-on rules are opt-in project-install features, not global plugin defaults.
+if [ ! -f "$ROOT/.cursor-plugin/plugin.json" ]; then
+  echo "build-cursor-plugin: missing tracked Cursor manifest" >&2
+  exit 1
+fi
+cp "$ROOT/.cursor-plugin/plugin.json" "$OUT/.cursor-plugin/plugin.json"
 
 # --- Skills (each pack dir with a SKILL.md) -----------------------------------
 skill_count=0
@@ -68,6 +61,14 @@ done
 if [ -d "$ROOT/shared/contracts" ]; then
   cp -R "$ROOT/shared/contracts" "$OUT/shared/"
 fi
+
+# Skills refer to these support documents by their repository-root paths. Include
+# them in the frozen package so those references work from the plugin cache.
+for support_dir in templates workflows examples docs; do
+  if [ -d "$ROOT/$support_dir" ]; then
+    cp -R "$ROOT/$support_dir" "$OUT/"
+  fi
+done
 
 # --- Rules (*.mdc) — opt-in only ----------------------------------------------
 # From templates/cursor-rules-*.mdc (strip the cursor-rules- prefix) and .cursor/rules/.
@@ -84,7 +85,7 @@ if [ "$WITH_RULES" = "1" ]; then
   done
 fi
 
-echo "Done: $cmd_count commands, $skill_count skills, $rule_count rules$([ "$WITH_RULES" = 1 ] || echo ' (rules omitted; pass --with-rules to include always-on rules globally)')."
+echo "Done: $skill_count skills, 0 commands, $rule_count rules$([ "$WITH_RULES" = 1 ] || echo ' (rules omitted; pass --with-rules to include always-on rules globally)')."
 echo
 echo "Install privately (user-scoped, all projects):"
 echo "  ln -s \"$OUT\" ~/.cursor/plugins/local/$NAME"

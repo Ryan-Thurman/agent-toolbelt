@@ -56,4 +56,5 @@ deep cost is explicit in every run. If `--comment` was passed, post inline per `
 
 ## Failure handling
 
-Same as standard — isolate a failed facet/judge, note it, proceed.
+Same as standard — retain completed results, identify a failed facet/judge,
+and apply the coverage/limits verdict rules in `output-format.md`.

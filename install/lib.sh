@@ -131,31 +131,9 @@ cmd() {
   return 0
 }
 
-# cmd_cursor <name> — a slash command for Cursor only (AI Feature Delivery pack).
+# cmd_cursor <name> — a slash command for Cursor only.
 cmd_cursor() {
   if harness_enabled cursor; then _install "commands/$1.md" ".cursor/commands/$1.md"; _record_command "$1"; else gated=$((gated + 1)); fi
-  return 0
-}
-
-# rule_local <name.mdc> — a Cursor rule shipped from .cursor/rules/ (Dev Lite pack).
-# Installed only in --rules full mode; minimal mode relies on the generated router rule.
-rule_local() {
-  if harness_enabled cursor && [ "${RULE_MODE:-minimal}" = "full" ]; then
-    _install ".cursor/rules/$1" ".cursor/rules/$1"
-  else
-    gated=$((gated + 1))
-  fi
-  return 0
-}
-
-# rule_tmpl <src.mdc> <dest.mdc> — a Cursor rule shipped from templates/ (AI Feature Delivery).
-# Installed only in --rules full mode; minimal mode relies on the generated router rule.
-rule_tmpl() {
-  if harness_enabled cursor && [ "${RULE_MODE:-minimal}" = "full" ]; then
-    _install "templates/$1" ".cursor/rules/$2"
-  else
-    gated=$((gated + 1))
-  fi
   return 0
 }
 
@@ -187,7 +165,7 @@ skill() {
 }
 
 # skill_shared <pack> <rel> — canonical skills/ copy plus the native .agents/skills/ copy when
-# cursor is selected (AI Feature Delivery is Cursor-first; no Codex-only case to cover).
+# Cursor is selected for a Cursor-only compatibility pack.
 skill_shared() {
   _install "skills/$1/$2" ".atb/skills/$1/$2"
   if [ "$2" = "SKILL.md" ]; then
@@ -252,14 +230,14 @@ shared_contract() {
 # hook_json <src> — the Cursor hooks manifest (cursor only). install_file skips an existing
 # .cursor/hooks.json (no --force), so we never clobber hooks you already have — merge manually.
 hook_json() {
-  if harness_enabled cursor; then _install "hooks/$1" ".cursor/hooks.json"; else gated=$((gated + 1)); fi
+  if harness_enabled cursor; then _install "optional/cursor-hooks/$1" ".cursor/hooks.json"; else gated=$((gated + 1)); fi
   return 0
 }
 
 # hook_script <name> — a Cursor hook script under .cursor/hooks/ (cursor only). hooks.json
 # invokes these via `bash .cursor/hooks/<name>`, so no executable bit is required.
 hook_script() {
-  if harness_enabled cursor; then _install "hooks/$1" ".cursor/hooks/$1"; else gated=$((gated + 1)); fi
+  if harness_enabled cursor; then _install "optional/cursor-hooks/$1" ".cursor/hooks/$1"; else gated=$((gated + 1)); fi
   return 0
 }
 

@@ -3,37 +3,26 @@
 Fill-in-the-blank starting files — scaffolds you copy and adapt (config stubs,
 SKILL.md skeletons, prompt templates, etc.). Placeholders, not finished work.
 
-The AI Feature Delivery installer copies the relevant templates into a pilot
-folder. The normal first artifact is `feature-master-record.md`; see
-`../docs/tutorial.md` for the full path.
+The selected pack installs its templates under `.atb/templates/`.
+Use an existing suitable plan before creating another document.
 
 - `pr-review.md` - per-repo review priority config (blank starter; `/pr-review-init`
   drafts one from repo evidence instead).
 - `dev-feature-brief.md` - lightweight feature/app brief with flows and
   acceptance criteria.
-- `dev-implementation-plan.md` - phased dev-lite implementation plan.
+- `phased-delivery-plan.md` - source-aware phase/PR execution plan when no suitable plan exists.
 - `dev-phase-review.md` - phase review result and findings template.
-- `dev-pr-review.md` - final PR readiness review template.
+- `dev-pr-review.md` - per-phase PR readiness review template.
 - `tech-backlog-assessment.md` - decision memo for technical backlog items
   before implementation.
 - `ticket-discovery-brief.md` - precedent-backed discovery brief for narrow
   implementation tickets.
+- `repository-contribution-guide.md` - contribution guidance with classified
+  evidence, command verification, scope and maintenance notes.
+- `repository-style-guide.md` - style-only guidance owned separately when needed.
 - `phase-file.md` - durable phase definition for phase-context workflow.
 - `phase-handoff.md` - phase closeout and reset-safety handoff, written with
   the `handoff` skill's compact, reference-first discipline.
 - `context-packet.md` - compact source-of-truth packet for fresh sessions.
-- `feature-master-record.md` - central feature traceability record.
-- `sdd-template.md` - release-scoped software design document.
-- `doc-impact-template.md` - controlled-document delta map.
-- `clarification-queue-template.md` - owned questions and draft pings.
-- `steward-review-template.md` - recurring feature health review.
-- `pr-traceability-review-template.md` - PR versus ticket/doc/test/release check.
-- `refinement-ticket-template.md` - implementation-ready ticket scaffold.
-- `implementation-plan-template.md` - dev plan with feature delivery metadata.
-- `gate-check-template.md` - lifecycle gate result.
-- `qa-handoff-template.md` - QA execution handoff.
-- `release-manifest-template.md` - release documentation allowlist.
 - `cursor-rules-agent-toolbelt-router.mdc` - the default minimal Cursor
   always-on router/guardrail rule.
-- `cursor-rules-*.mdc` - detailed Cursor project-rule starters for process,
-  dev, and bridge behavior, installed only with `--rules full`.

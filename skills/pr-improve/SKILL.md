@@ -5,6 +5,9 @@ description: Iteratively fix an agreed PR review ledger within a frozen scope an
 
 # pr-improve
 
+Before you write a response for the user, read
+`shared/contracts/references/human-readable-output.md`.
+
 Improve a change through a bounded, evidence-preserving review loop. This is
 distinct from `pr-review` (findings only) and `simplify` (small cleanup).
 

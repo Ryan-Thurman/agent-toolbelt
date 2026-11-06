@@ -1,22 +1,31 @@
+---
+description: Index of the Agent Toolbelt commands and guidance for choosing an entry point.
+---
+
 # commands/
 
-Slash commands and reusable command snippets worth saving. One `.md` per
-command (Claude Code command format), or short shell snippets you reuse.
+Project-scoped slash commands and reusable command snippets worth saving. These
+files support the legacy `install.sh` compatibility workflow; they are not
+native plugin skills, and native plugin manifests intentionally suppress
+command discovery. Canonical behavior lives in each skill's `SKILL.md`.
+
+Use the [offline portal](../portal/generated/index.html) for discovery,
+taxonomy, examples, and common workflow sequences.
 
 For a guided command path, see `../docs/tutorial.md`. If the next command is
 unclear inside a pilot repo, start with `/workflow-router`.
 
 - `/pr-review` - run the tiered PR/code review workflow.
-- `/code-quality-gate` - run the mandatory pre-PR checks, anti-slop, maintainability, and bounded convergence gate.
+- `/code-quality-gate` - run a policy- or risk-driven pre-PR checks, maintainability, and bounded convergence gate.
 - `/pr-improve` - apply accepted PR findings in bounded fix-and-rereview rounds.
 - `/pr-review-init` - draft a repo's `.pr-review.md` review-priorities config by mining repo evidence (docs, burn history, rejection memory).
 - `/pr-review-reply` - round-trip a PR review: read reviewer threads, triage, re-review only since-SHA changes, reply per-thread.
 - `/review-on-open` - auto-review trigger: poll open PRs and fire `/pr-review --comment` on the unseen ones (drive with `/loop` or `/schedule`); GitHub Actions event template ships alongside.
 - `/enqueue-review` - push a PR onto the local review queue (producer half of review-queue; idempotent on head SHA).
 - `/review-queue-worker` - drain the local review queue: claim jobs and run `/pr-review --comment` on each (consumer half; drive with `/loop` or `/schedule`).
-- `/shape-up` - interrogate a vague request into an agreed brief before building.
+- `/shape-up` - review a product ask against current behavior, or shape a vague request into an agreed brief.
 - `/product-discovery` - assess an opportunity's evidence and risks before shaping.
-- `/style-guide-init` - mine repository evidence into a proposed coding-style owner.
+- `/style-guide-init` - derive, check, and refresh evidence-backed contribution/style guidance.
 - `/tech-assess` - assess a technical backlog item before implementation: do/defer/reject/spike, options, risks, tests.
 - `/ticket-discover` - investigate a narrow implementation ticket by finding an existing precedent and producing a gap/test handoff.
 - `/to-issues` - slice an approved brief into vertical-slice tickets.
@@ -42,39 +51,24 @@ unclear inside a pilot repo, start with `/workflow-router`.
 - `/rca` - root-cause a reproduced bug (`--diagnose` for read-only).
 - `/fix-plan` - turn a confirmed root cause into the smallest verified fix.
 - `/handoff` - write a resumable handoff so a fresh session can continue.
-- `/dev-intake` - create a lightweight feature brief from an idea or ticket.
-- `/dev-plan` - create a phased implementation plan for dev-lite work.
-- `/dev-start-phase` - prepare the next dev-lite phase before coding.
-- `/dev-implement-task` - implement exactly one planned task.
-- `/dev-phase-review` - review a completed dev-lite phase before continuing.
+- `/dev-intake` - clarify a raw requirement when no approved plan or ticket exists.
+- `/dev-plan` - map approved scope to phases and one PR per phase or ticket.
+- `/dev-start-phase` - prepare a phase branch, target, checks, and dependencies.
+- `/dev-implement-task` - implement a bounded step within one phase or ticket.
+- `/dev-phase-review` - review one phase against its source and PR base.
 - `/dev-fix-review-issues` - fix only the latest phase review findings.
-- `/dev-pr-review` - run final PR readiness review for the dev-lite workflow.
+- `/dev-pr-review` - check readiness of the current phase or ticket PR.
 - `/phase-create` - create or update a durable phase file.
 - `/phase-start` - create a context packet for a fresh or reset phase session.
 - `/phase-close` - write a phase handoff before clearing or compacting context.
 - `/phase-status` - summarize phase files and handoff state for a room.
 - `/workflow-router` - choose the smallest useful toolbelt command or workflow.
-- `/feature-start` - create a Feature Master Record and Gate 1 questions.
-- `/feature-fleshout` - flesh out stakeholder questions, risks, and Gate 1 readiness.
-- `/steward-review` - review feature health, blockers, stale actions, and next actions.
-- `/draft-pings` - draft stakeholder follow-up messages from owned open items.
-- `/sdd-draft` - draft or update an SDD from the master record.
-- `/doc-impact` - map CDP/SRS/SAD/SDD impacts.
-- `/doc-delta` - check whether implementation or ticket changes require doc updates.
-- `/refine-to-tickets` - slice a feature package into traceable tickets.
-- `/start-dev-from-feature` - bridge a refined feature/ticket into dev execution.
 - `/implementation-plan` - create a concise implementation plan.
 - `/write-tests` - plan or write tests for behavior changes.
 - `/webapp-test` - plan or run browser/webapp verification for user-facing changes.
-- `/dev-doc-delta-check` - bridge dev work back to required document deltas.
 - `/review-diff` - review a local diff before PR.
 - `/pr-ready-check` - check whether implementation is ready for PR.
-- `/pr-traceability-review` - compare PRs to tickets, docs, tests, and release metadata.
-- `/role-review` - run a product, engineering, design, QA, security, or release review gate.
-- `/gate-check` - validate readiness for a lifecycle gate.
-- `/qa-handoff` - build a QA execution package.
-- `/release-manifest` - create or update a release documentation manifest.
-- `/release-doc-check` - validate docs against release eligibility rules.
+- `/role-review` - run a product, engineering, design, QA, security, or release review.
 
 ## Choosing between similar commands
 
@@ -85,31 +79,22 @@ Some commands overlap. Use these tables to pick the right one.
 | Command | Use it for |
 |---|---|
 | `/pr-review` | Deep, tiered, multi-agent code review (bugs, security, perf, tests, maintainability, standards). The heavy code-quality pass. |
-| `/code-quality-gate` | Required pre-PR verdict: freezes scope, fingerprints the diff/untracked content, runs required checks plus focused standards/maintainability review, and records PASS/FAIL/CAPPED/BLOCKED evidence. `--mode=report` never edits; `--mode=apply` is bounded and explicit. Dev Lite requires recomputed final coverage. |
+| `/code-quality-gate` | Optional unless policy or risk requires it: freezes scope, fingerprints the diff/untracked content, runs required checks plus focused standards/maintainability review, and records PASS/FAIL/CAPPED/BLOCKED evidence. `--mode=report` never edits; `--mode=apply` is bounded and explicit. |
 | `/pr-improve` | Fix accepted findings in bounded, scope-guarded rounds with a durable ledger; run after review. |
 | `/pr-review-init` | Draft the repo's `.pr-review.md` (per-repo review priorities that `/pr-review` loads) from repo evidence — docs, revert/hotfix history, review threads, rejection memory. Draft only; the team prunes and commits. |
 | `/pr-review-reply` | The round-trip: answer a human reviewer's PR threads — triage each (`answered`/`changed`/`needs-follow-up`), re-review only the code changed since the review, reply per-thread. Run after `/pr-review`. |
 | `/review-on-open` | The trigger: auto-fire `/pr-review --comment` in a fresh agent when a PR is opened/updated. Host-agnostic poller (drive with `/loop` / `/schedule`); ships a GitHub Actions event workflow too. Doesn't review itself — it invokes `/pr-review` for you. |
 | `/enqueue-review` · `/review-queue-worker` | Push-based trigger: a producer agent enqueues a PR onto a local SQLite queue (`/enqueue-review`); a worker claims jobs and runs `/pr-review --comment` on each (`/review-queue-worker`, drive with `/loop` / `/schedule`). Decoupled, fully local — no CI/webhook/API key. |
-| `/review-diff` | Quick local-diff review before a PR — lighter than `/pr-review`. |
+| `/review-diff` | Local-diff entry to the shared `pr-review` process; preserves tier and focus options. |
 | `/pr-ready-check` | Readiness checklist: is the change *ready to open or complete* a PR (summary, tests, risks)? Not code review. |
-| `/pr-traceability-review` | Does the PR trace to its feature record, ticket scope, docs, tests, and release metadata? Not code quality. |
-| `/dev-pr-review` | Dev Lite final readiness gate against the Feature Brief + plan + diff; requires a recomputed final-coverage code-quality-gate PASS. |
-
-**Checking documentation impact**
-
-| Command | Use it for |
-|---|---|
-| `/doc-impact` | Up-front map of which controlled docs (CDP/SRS/SAD/SDD) a feature will touch. |
-| `/doc-delta` | Formal check that a ticket/PR's changes *require* controlled-doc updates. |
-| `/dev-doc-delta-check` | Lightweight in-dev / pre-PR bridge to keep code aligned with controlled docs. |
+| `/dev-pr-review` | Readiness review for one Phased Delivery PR against its source acceptance criteria, own diff, and correct base. |
 
 **Planning implementation**
 
 | Command | Use it for |
 |---|---|
-| `/dev-plan` | Phased Dev Lite build plan from a Feature Brief. |
-| `/implementation-plan` | Concise single-ticket plan in the feature-delivery track. |
+| `/dev-plan` | Source-aware phase/PR map; an approved project ticket becomes one phase and one PR. |
+| `/implementation-plan` | Concise single-ticket plan for supplied requirements or tickets. |
 | `/phase-create` | Durable phase file for a bounded implementation phase that must survive context resets. |
 | `/phase-start` | Context packet for a fresh or reset session starting a phase. |
 | `/phase-close` | Phase handoff before clearing, compacting, or transferring context. |
@@ -119,14 +104,12 @@ Some commands overlap. Use these tables to pick the right one.
 
 | Command | Use it for |
 |---|---|
-| `/shape-up` | *Interrogate* a vague request into an agreed brief (one question at a time, repo-first, gated on approval). |
+| `/shape-up` | Compare an ask with current system behavior in a report-only gap review, or shape a vague request into an approved brief. |
 | `/product-discovery` | Assess evidence, assumptions, risks, and thresholds before deciding a candidate is ready to shape. |
 | `/tech-assess` | Decide whether and how to do a technical backlog item before implementation: options, dependency/library decision, risks, tests, and next workflow. |
 | `/ticket-discover` | Turn a narrow ticket that references an existing precedent into a concrete gap analysis, test plan, and implementation handoff. |
-| `/dev-intake` | *Capture* a brief by making safe assumptions — lighter, no grilling. Compose: `/shape-up` -> `/dev-intake`. |
-| `/feature-fleshout` | The heavy, regulated, stakeholder version (Feature Master Record, gates). |
-| `/to-issues` | Slice an approved brief into vertical-slice tickets (dev lane). Use `/refine-to-tickets` for the regulated lane. |
-| `/style-guide-init` | Mine repository policy, configuration, and local examples into a canonical style owner or draft. |
+| `/dev-intake` | Clarify an unclear raw requirement entering Phased Delivery; skip it when an approved brief, plan, or ticket already exists. |
+| `/style-guide-init` | Derive contribution/style guidance from repository evidence, then check and refresh affected claims as inputs change. |
 
 **Cleaning up code**
 
@@ -144,7 +127,7 @@ Some commands overlap. Use these tables to pick the right one.
 | `/cover` | *Author/strengthen* behavior-pinning tests for a diff, module, or bug repro (red→green regression lock), on opt-in. Framework-detected, falsified, deterministic; lane-agnostic. Writes tests only. |
 | `/test-case-design` | *Design* prioritized QA cases from requirements and risks; report-only, then hand selected cases to `/cover` or `/webapp-test`. |
 | `/cover-gaps` | *Detect-only* scan for missing/weak coverage, ranked by risk × likelihood. Applies nothing — hands top gaps to `/cover`. |
-| `/write-tests` | Regulated AI Feature Delivery test planning/authoring tied to a feature/ticket's traceability and doc control. The gated lane; `/cover` is the standalone one. |
+| `/write-tests` | Use `test-case-design` for case planning or `cover` for test authoring. |
 
 **Security and architecture decisions**
 
@@ -172,5 +155,4 @@ The Bug-to-Fix lane hands off to the shared back half: `/fix-plan` → `/dev-imp
 | Command | Use it for |
 |---|---|
 | `/ship-it` | Lightweight launch readiness: go/no-go check, rollback plan, release notes, rollout/monitor plan. Pipeline-aware — hands off when external CI/CD owns the deploy. |
-| `/release-manifest` + `/release-doc-check` | The regulated path: release manifests + controlled-doc eligibility (AI Feature Delivery). |
 | `/dev-pr-review` / `/pr-ready-check` | Earlier gate — is the change ready to *open/complete a PR* (not to release). |

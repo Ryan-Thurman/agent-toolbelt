@@ -1,45 +1,17 @@
-# Dev Ticket to PR Workflow
+# Ticket to PR
 
-Use this when a developer or agent picks up an implementation ticket and needs
-to carry it through a reviewable PR while preserving feature traceability.
+Use the shared delivery workflow to implement approved requirements or tickets.
+The target project owns its source records and required approvals.
 
-## Steps
+| Step | Do | Why | Done when |
+| --- | --- | --- | --- |
+| 1 | Read the approved ticket and repository instructions. | Establish the task's scope. | Acceptance criteria, constraints, and missing decisions are clear. |
+| 2 | Use `phased-delivery` or `/dev-plan`. | Define reviewable PR boundaries. | Each selected ticket has one phase, branch, PR base, and evidence plan. |
+| 3 | Complete the approved phase. | Deliver the required behavior. | Relevant tests and repository checks pass, or unresolved gaps are explicit. |
+| 4 | Review the phase's own diff. | Find regressions and scope changes. | Blocking findings are resolved and required evidence is current. |
+| 5 | Open the phase PR when authorized. | Enable the project's review process. | The PR names its source, checks, risks, and next action. |
 
-1. Run `/start-dev-from-feature`.
-2. Run `/implementation-plan`.
-3. Stop for plan review. Do not implement until the user approves the plan,
-   asks to continue, or names the first task.
-4. Confirm the current branch. If work is on `main`, `master`, or the
-   repository default branch, create or ask to create a focused feature/fix
-   branch.
-5. Implement the change in small steps.
-6. Update the implementation plan after each meaningful step with current
-   state, task status, evidence, checks, blockers, next step, and resume
-   instructions.
-7. Write or update matching tests as part of each behavior-changing step.
-8. Re-run targeted tests after each meaningful change.
-9. Run `/webapp-test` for browser/user-flow changes.
-10. Run `/dev-doc-delta-check`.
-11. Update SDD/SRS/SAD/CDP or QA handoff material if required.
-12. Run `/review-diff`.
-13. Run `/pr-ready-check`.
-14. Run `/pr-traceability-review`.
-15. Create the PR with summary, tests, risks, and doc updates.
-
-## Completion Criteria
-
-- Ticket scope maps to the Feature Master Record.
-- Acceptance criteria are covered or explicitly deferred.
-- Tests are added/updated or a waiver is documented.
-- Browser/user-flow evidence is captured for user-facing changes or explicitly
-  marked not applicable.
-- Required doc deltas are complete or blocking.
-- Release target and feature ID are preserved.
-- Known risks and QA notes are recorded.
-- Commands run and verification gaps are recorded.
-- Implementation plan current state, task status, evidence, checks, blockers,
-  next step, and resume instructions are up to date.
-- Work is on a feature/fix branch, not `main`, `master`, or the repository
-  default branch, unless direct default-branch work was explicitly approved.
-- PR readiness and traceability checks pass before the PR is opened or marked
-  ready.
+Keep the plan current after meaningful changes.
+Preserve project-owned requirement, ticket, document, and release references when supplied.
+Use `webapp-testing` for browser evidence when it applies.
+A human owns merge decisions unless the user explicitly authorizes another policy.

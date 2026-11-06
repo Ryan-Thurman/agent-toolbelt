@@ -49,7 +49,11 @@ function render(root = ROOT) {
   }
   lines.push('', '## Compatibility and tooling audit', '', '| Surface | Paths | Kind | Lifecycle | Native skill surface | Purpose | Recommendation |', '| --- | --- | --- | --- | --- | --- | --- |');
   for (const entry of catalog.tooling_audit) {
-    const paths = [...(entry.paths || []).map((item) => `\`${item}\``), ...(entry.absent_paths || []).map((item) => `absent: \`${item}\``)];
+    const paths = [
+      ...(entry.paths || []).map((item) => `\`${item}\``),
+      ...(entry.optional_paths || []).map((item) => `optional: \`${item}\``),
+      ...(entry.absent_paths || []).map((item) => `absent: \`${item}\``)
+    ];
     lines.push(`| ${cell(entry.label)} | ${list(paths)} | ${cell(entry.kind)} | ${cell(entry.lifecycle)} | ${entry.native_skill_surface ? 'Yes' : 'No'} | ${cell(entry.purpose)} | ${cell(entry.recommendation)} |`);
   }
   lines.push('', '## Canonical metadata derived for this audit', '', '| Skill | Canonical description | Display name | Short description | Default prompt |', '| --- | --- | --- | --- | --- |');

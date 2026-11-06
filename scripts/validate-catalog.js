@@ -252,16 +252,24 @@ function validate(root = ROOT) {
       if (typeof entry.native_skill_surface !== 'boolean') errors.push(`tooling audit ${entry.id || '<missing>'}: native_skill_surface must be boolean`);
       const prefix = `tooling audit ${entry.id || '<missing>'}`;
       const paths = entry.paths == null ? [] : entry.paths;
+      const optionalPaths = entry.optional_paths == null ? [] : entry.optional_paths;
       const absentPaths = entry.absent_paths == null ? [] : entry.absent_paths;
       validateStringArray(errors, prefix, 'paths', paths, true);
+      const validOptionalPaths = validateStringArray(errors, prefix, 'optional_paths', optionalPaths, true);
       validateStringArray(errors, prefix, 'absent_paths', absentPaths, true);
-      if (!paths.length && !absentPaths.length) errors.push(`${prefix}: paths or absent_paths must identify an audited surface`);
+      if (!paths.length && !optionalPaths.length && !absentPaths.length) errors.push(`${prefix}: paths, optional_paths, or absent_paths must identify an audited surface`);
       for (const relativePath of paths) {
         const resolved = path.resolve(root, relativePath);
         if (resolved !== root && !resolved.startsWith(`${root}${path.sep}`)) {
           errors.push(`${prefix}: path escapes repository root: ${relativePath}`);
         } else if (!fs.existsSync(resolved)) {
           errors.push(`${prefix}: required path is missing: ${relativePath}`);
+        }
+      }
+      for (const relativePath of validOptionalPaths ? optionalPaths : []) {
+        const resolved = path.resolve(root, relativePath);
+        if (resolved !== root && !resolved.startsWith(`${root}${path.sep}`)) {
+          errors.push(`${prefix}: optional path escapes repository root: ${relativePath}`);
         }
       }
       for (const relativePath of absentPaths) {

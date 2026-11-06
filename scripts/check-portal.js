@@ -24,7 +24,10 @@ function checkSamePageAnchors(html, label) {
 
 function check(outputDirectory, root = ROOT) {
   const output = path.resolve(outputDirectory);
-  const requiredFiles = ['index.html', 'styles.css', 'app.js', 'data.js'];
+  const requiredFiles = [
+    'index.html', 'styles.css', 'app.js', 'data.js', 'brand-icon.svg',
+    'favicon.svg', 'favicon-16.png', 'favicon-32.png', 'favicon-48.png'
+  ];
   requiredFiles.forEach((file) => assert(fs.existsSync(path.join(output, file)), `missing generated portal file: ${file}`));
   const index = fs.readFileSync(path.join(output, 'index.html'), 'utf8');
   const styles = fs.readFileSync(path.join(output, 'styles.css'), 'utf8');

@@ -1,0 +1,77 @@
+name: Portal checks and publication
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    name: Validate portal and release version
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    outputs:
+      version_increased: ${{ steps.version.outputs.version_increased }}
+      version: ${{ steps.version.outputs.version }}
+    steps:
+      - name: Check out the complete history
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: '24'
+          cache: npm
+
+      - name: Check the version increase
+        id: version
+        env:
+          RELEASE_BEFORE_SHA: ${{ github.event.before || github.event.pull_request.base.sha }}
+          RELEASE_AFTER_SHA: ${{ github.sha }}
+        run: node scripts/check-release-version.js
+
+      - name: Install development dependencies
+        run: npm ci
+
+      - name: Install Chromium and its system dependencies
+        run: npx playwright install --with-deps chromium
+
+      - name: Validate the release package and portal
+        run: ./scripts/check-plugin-package.sh
+
+      - name: Upload the checked portal
+        if: github.event_name == 'push' && steps.version.outputs.version_increased == 'true'
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: portal/generated
+
+  deploy:
+    name: Publish the versioned portal
+    needs: check
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main' && needs.check.outputs.version_increased == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    concurrency:
+      group: github-pages
+      cancel-in-progress: false
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Configure GitHub Pages
+        uses: actions/configure-pages@v5
+
+      - name: Publish the portal
+        id: deployment
+        uses: actions/deploy-pages@v4

@@ -280,3 +280,49 @@ All eight browser tests and 12 automated accessibility scans passed in the teste
 The selected A preview also contains this revision.
 The extra image `.atb-work/portal/screenshots/desktop-dark/catalog.png` shows the corrected fills and a hovered debugging filter.
 Rendered fill values are recorded in `.atb-work/portal-ink-slate-2026-11-05/rendered-fills.json`.
+
+## Command buckle brand icon — 2026-11-05
+
+The user selected concept A, the command buckle.
+The symbol combines a command chevron with a belt buckle in charcoal and amber.
+It replaces the AT initials in the portal header.
+The home link retains its accessible name; the image is decorative beside the product name.
+
+| Asset | Purpose |
+| --- | --- |
+| `portal/src/brand-icon.svg` | The portal header uses this scalable icon. |
+| `portal/src/favicon.svg` | Browsers can use this scalable favicon. |
+| `portal/src/favicon-16.png` | A 16-pixel PNG favicon is available. |
+| `portal/src/favicon-32.png` | A 32-pixel PNG favicon is available. |
+| `portal/src/favicon-48.png` | A 48-pixel PNG favicon is available. |
+
+The portal build copies all five assets to `portal/generated/`.
+Output and freshness checks include these files.
+No remote assets are required.
+
+The original concept study used Mobbin references from
+[Linear](https://mobbin.com/screens/212fda35-366e-4dc0-a1d1-3b679659d6ab),
+[Replit](https://mobbin.com/screens/de9d3a10-54ee-4b13-ac53-08f0b540102e), and
+[GitHub](https://mobbin.com/screens/1d9b1ddc-2ddb-4cee-9acc-3f23c24ec01c).
+The icon uses original geometry.
+
+`PLAYWRIGHT_SINGLE_PROCESS=1 ./scripts/check-portal.sh` passed.
+All eight browser tests and 12 automated accessibility scans passed in the tested states.
+The standard screenshots show the selected icon in both themes and viewport sizes.
+
+## GitHub Pages workflow verification — 2026-11-06
+
+The publication workflow targets `main` and requires a stable version increase.
+The [hosting guide](portal-hosting.md) defines the gate and the one-time Pages setting.
+
+| Check | Result | Evidence or limit |
+| --- | --- | --- |
+| Release gate fixtures | Passed | Cases cover unchanged versions, increases, decreases, invalid inputs, missing notes, legacy releases, commit history, and workflow outputs. |
+| Actual repository comparison | Passed | The local `origin/main` reference reports `0.2.0`; committed `HEAD` reports `1.0.0`. Comparing `HEAD` with itself skips publication. |
+| Full package checks | Passed | The run included eight browser tests and 12 automated accessibility scans with `PLAYWRIGHT_SINGLE_PROCESS=1`. |
+| Hosted path check | Passed | A local HTTP server served `/agent-toolbelt/`. All 29 skills, the brand image, four favicon references, search, and dialog navigation worked. |
+| Workflow YAML | Parsed | The local check confirmed triggers, branch filters, job dependency, and permission declarations. This is not a GitHub runner execution. |
+| Actionlint | Not run | The tool could not be downloaded because terminal DNS resolution was unavailable. |
+| GitHub Pages activation and deployment | Not verified | GitHub CLI access was unavailable. Repository Pages settings and a live deployment could not be confirmed. |
+
+The hosted-path screenshot and result are under `.atb-work/pages-deployment-2026-11-06/`.

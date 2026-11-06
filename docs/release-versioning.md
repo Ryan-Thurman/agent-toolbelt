@@ -65,8 +65,16 @@ implementation detail.
 
 For each release:
 
-1. Update `CHANGELOG.md`.
-2. Confirm docs match the installer and pack list.
-3. Commit the changelog and any release docs.
-4. Tag the release, for example `git tag v0.1.0`.
-5. Push the branch and tag.
+1. Increase the version in all six plugin manifests and the Claude marketplace entries.
+2. Add the matching release heading and notes to `CHANGELOG.md`.
+3. Confirm docs match the installer and pack list.
+4. Run `./scripts/check-plugin-package.sh`.
+5. Commit the release changes and merge them into `main`.
+6. Confirm that the portal workflow publishes the checked `portal/generated/` artifact.
+7. Tag the released commit, for example `git tag v1.0.1`.
+8. Push the release tag.
+
+The [portal publication workflow](portal-hosting.md) compares versions before and after each push to `main`.
+An unchanged version runs checks without publication.
+A decreased version or a missing release heading fails the check.
+Tags identify releases; they do not bypass the publication gate.

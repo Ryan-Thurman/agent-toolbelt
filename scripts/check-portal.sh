@@ -15,7 +15,7 @@ node --check "$ROOT_DIR/portal/src/app.js"
 node "$ROOT_DIR/scripts/test-portal-app.js"
 node "$ROOT_DIR/scripts/test-portal-browser.js"
 
-for file in index.html styles.css app.js data.js; do
+for file in index.html styles.css app.js data.js brand-icon.svg favicon.svg favicon-16.png favicon-32.png favicon-48.png; do
   if ! cmp -s "$TEMP_DIR/generated/$file" "$ROOT_DIR/portal/generated/$file"; then
     echo "generated portal is stale: $file" >&2
     exit 1

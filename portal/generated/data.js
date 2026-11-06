@@ -1835,7 +1835,9 @@ window.AGENT_TOOLBELT_DATA = {
       "lifecycle": "optional-compatibility",
       "native_skill_surface": false,
       "paths": [
-        ".cursor/commands",
+        ".cursor/commands"
+      ],
+      "optional_paths": [
         ".cursor/rules"
       ],
       "purpose": "Provide repo-local contributor and developer configuration for maintaining the collection.",
@@ -1874,12 +1876,12 @@ window.AGENT_TOOLBELT_DATA = {
       "kind": "maintainer-research",
       "lifecycle": "optional-compatibility",
       "native_skill_surface": false,
-      "paths": [
+      "optional_paths": [
         "notes",
         "repos"
       ],
-      "purpose": "Hold maintainer research, update helpers, and repository-local source material behind the public skill surface.",
-      "recommendation": "Keep only as maintainer tooling and research; do not expose it as plugin skill content."
+      "purpose": "Hold local maintainer research and source material when these ignored directories are present.",
+      "recommendation": "Keep these directories optional and local. Do not require or publish them as plugin content."
     },
     {
       "id": "portal-catalog",

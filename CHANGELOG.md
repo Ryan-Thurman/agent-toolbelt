@@ -2,6 +2,13 @@
 
 ## Unreleased
 
+## v1.0.1 - 2026-11-06
+
+### Fixed
+
+- Fixed catalog validation in fresh checkouts. Local Cursor rules and ignored maintainer research directories are optional.
+- Added checks for absent and present optional paths. Required repository files must still exist.
+
 ## v1.0.0 - 2026-11-06
 
 ### Added

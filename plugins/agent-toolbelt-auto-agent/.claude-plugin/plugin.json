@@ -1,6 +1,6 @@
 {
   "name": "agent-toolbelt-auto-agent",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Optional unattended agent-runner skills for Agent Toolbelt.",
   "author": {
     "name": "Ryan Thurman",

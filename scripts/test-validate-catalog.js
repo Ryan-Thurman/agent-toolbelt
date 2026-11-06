@@ -54,6 +54,34 @@ function expectValidationFailure(label, mutate, pattern) {
   }
 }
 
+{
+  const root = makeFixture();
+  try {
+    const localPaths = ['.cursor/rules', 'notes', 'repos'];
+    for (const relativePath of localPaths) {
+      assert(!fs.existsSync(path.join(root, relativePath)), `${relativePath} must be absent from the clean fixture`);
+    }
+    assert.deepStrictEqual(validate(root), [], 'catalog must validate without local maintainer directories');
+    for (const relativePath of localPaths) fs.mkdirSync(path.join(root, relativePath), { recursive: true });
+    assert.deepStrictEqual(validate(root), [], 'local maintainer directories must remain optional when present');
+    assert(render(root).includes('optional: `notes`'), 'audit must label optional paths');
+  } finally {
+    fs.rmSync(root, { recursive: true, force: true });
+  }
+}
+
+expectValidationFailure(
+  'optional path outside repository',
+  (root) => { const c = readCatalog(root); c.tooling_audit[0].optional_paths = ['../outside']; writeCatalog(root, c); },
+  /optional path escapes repository root/
+);
+
+expectValidationFailure(
+  'malformed optional paths',
+  (root) => { const c = readCatalog(root); c.tooling_audit[0].optional_paths = 'notes'; writeCatalog(root, c); },
+  /optional_paths must be an array/
+);
+
 expectValidationFailure(
   'missing canonical skill',
   (root) => fs.rmSync(path.join(root, 'skills', 'cover'), { recursive: true }),

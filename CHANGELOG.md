@@ -2,6 +2,13 @@
 
 ## Unreleased
 
+## v1.1.5 - 2026-11-06
+
+### Changed
+
+- Enlarged workflow step numbers and badges, with stronger text and border contrast.
+- Removed leading zeros from workflow step numbers.
+
 ## v1.1.4 - 2026-11-06
 
 ### Changed

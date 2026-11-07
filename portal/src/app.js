@@ -415,7 +415,7 @@
             applyCategory(stageElement, skill.category);
             identity.append(categoryIcon(skill.category), createElement('span', 'stage-category', skill.category));
           }
-          const number = createElement('span', 'stage-number', String(index + 1).padStart(2, '0'));
+          const number = createElement('span', 'stage-number', String(index + 1));
           identity.appendChild(number);
           stageElement.appendChild(identity);
           const title = createElement('h4', 'stage-title');

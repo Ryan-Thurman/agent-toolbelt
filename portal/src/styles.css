@@ -281,7 +281,7 @@ h4 { margin-bottom: 8px; }
 .stage-identity .category-icon { width: 29px; height: 29px; border-radius: 7px; background: var(--tone-soft); }
 .stage-identity .category-icon svg { width: 18px; height: 18px; }
 .stage-category { color: var(--tone-ink); font-size: 10px; font-weight: 700; line-height: 1.4; }
-.stage-number { display: inline-flex; width: 42px; height: 42px; flex-shrink: 0; align-items: center; justify-content: center; margin-left: auto; border: 3px solid #ffffff; border-radius: 50%; background: #151515; color: #ffffff; font-size: 20px; font-weight: 800; font-variant-numeric: tabular-nums; line-height: 1; text-align: center; }
+.stage-number { display: inline-flex; width: 32px; height: 32px; flex-shrink: 0; align-items: center; justify-content: center; margin-left: auto; border: 2px solid #ffffff; border-radius: 50%; background: #151515; color: #ffffff; font-size: 16px; font-weight: 800; font-variant-numeric: tabular-nums; line-height: 1; text-align: center; }
 .stage-title { margin: 0 0 8px; }
 .stage-skill { display: block; border: 0; padding: 0; background: transparent; color: var(--accent); cursor: pointer; font-size: 16px; font-weight: 750; line-height: 1.4; text-align: left; }
 .stage-skill:hover { color: var(--accent-deep); text-decoration: underline; }

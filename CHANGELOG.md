@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+## v1.1.7 - 2026-11-06
+
+### Changed
+
+- Reduced workflow number circles to 32 pixels and their text to 16 pixels, with proportional white borders.
+
 ## v1.1.6 - 2026-11-06
 
 ### Changed

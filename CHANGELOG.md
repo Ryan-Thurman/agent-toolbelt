@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+## v1.1.6 - 2026-11-06
+
+### Changed
+
+- Changed workflow number badges to circles with centered numbers and thicker white borders.
+
 ## v1.1.5 - 2026-11-06
 
 ### Changed

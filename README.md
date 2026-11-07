@@ -4,7 +4,7 @@ Agent Toolbelt is an independent, general-purpose collection of reusable skills
 for software delivery. It has no AI-SDLC or team-workspace dependency.
 
 The native plugin is the primary installation path: one canonical `skills/`
-tree, 29 on-demand skills, and support for Cursor, Claude Code, and Codex.
+tree, 33 on-demand skills, and support for Cursor, Claude Code, and Codex.
 
 ## What belongs here
 
@@ -75,10 +75,12 @@ Read [the hosting guide](docs/portal-hosting.md) for the release gate and first-
 
 Most packs fall into one of these jobs:
 
-- Start new work: `product-discovery`, `shape-up`, `phased-delivery`
+- Understand customers and results: `user-research-synthesis`, `product-discovery`, `product-outcome-review`
+- Start new work: `shape-up`, `system-design`, `phased-delivery`
 - Investigate broken behavior: `bug-to-fix`, `ticket-discovery`
 - Review and harden changes: `code-quality-gate`, `pr-review`, `pr-improve`, `pr-review-reply`, `phase-gate`
 - Run agents unattended (optional private package): `auto-agent-contract`
+- Discover maintenance work: `tech-debt-discovery`, `tech-backlog-assessment`
 - Improve code or tests: `style-guide-init`, `simplify`, `test-case-design`, `cover`, `crap-analysis`, `retrofit`, `react-quality`
 - Keep long work resumable: `phase-context-workflow`, `handoff`
 - Prepare to ship: `ship-it`

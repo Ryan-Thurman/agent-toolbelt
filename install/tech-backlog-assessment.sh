@@ -3,7 +3,9 @@ pack_tech_backlog_assessment() {
   cmd tech-assess
 
   skill tech-backlog-assessment SKILL.md
+  skill tech-backlog-assessment references/version-delta.md
   shared_contract references/human-readable-output.md
+  shared_contract references/evidence-quality.md
 
   template tech-backlog-assessment.md
 

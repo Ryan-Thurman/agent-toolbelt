@@ -3,7 +3,7 @@ pack_phased_delivery() {
   local c
   for c in \
     dev-intake dev-plan dev-start-phase dev-implement-task dev-phase-review \
-    dev-fix-review-issues dev-pr-review implementation-plan workflow-router
+    dev-fix-review-issues dev-pr-review implementation-plan plan-review workflow-router
   do
     cmd "$c"
   done
@@ -15,6 +15,7 @@ pack_phased_delivery() {
   skill phased-delivery references/command-surfaces.md
   skill phased-delivery references/execution-support.md
   skill phased-delivery references/standalone-use.md
+  skill phased-delivery references/plan-readiness.md
   shared_contract references/human-readable-output.md
 
   template dev-feature-brief.md

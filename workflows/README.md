@@ -11,6 +11,10 @@ detail rather than native plugin skill copies.
 
 - `phased-delivery-workflow.md` - requirement or ticket delivery as one PR per
   phase, with human review and optional stacked PRs.
+- `product-learning-workflow.md` - research synthesis, opportunity decisions, experiments, and outcome review.
+- `tech-debt-workflow.md` - debt discovery, selected assessment, authorized repair, and baseline verification.
+- `system-design-workflow.md` - design documents, threat review, security requirements, and implementation evidence.
+- `delivery-retrospective-workflow.md` - evidence-backed process improvements after delivery.
 - `tech-backlog-assessment-workflow.md` - decision workflow for technical
   backlog items before implementation.
 - `ticket-discovery-workflow.md` - narrow workflow for tickets that point to an

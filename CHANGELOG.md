@@ -2,6 +2,60 @@
 
 ## Unreleased
 
+## v1.1.3 - 2026-11-06
+
+### Changed
+
+- Darkened task cards to charcoal gray and used soft black for the navigation header and hero.
+- Changed the dark-theme library background, raised surfaces, and borders to neutral grays.
+
+### Fixed
+
+- Restored the `/workflow-router` table header so that the new routing rows render.
+- Aligned the deep PR review coverage step with the orchestrator-owned acceptance-criteria table.
+- Added the product learning workflow to the selected research synthesis and outcome review installs.
+- Updated the installation guide to 33 skills.
+
+## v1.1.2 - 2026-11-06
+
+### Changed
+
+- Raised dark-theme task cards onto a lighter neutral gray surface with clearer borders and a distinct hover state.
+- Kept light-theme task surfaces white and retained the existing category markers and action colors.
+
+## v1.1.1 - 2026-11-06
+
+### Changed
+
+- Grouped task shortcuts into exploration/planning and improvement/verification rows.
+- Replaced broad category-colored surfaces with neutral cards and explicit category labels.
+- Reserved amber for actions, selection, and branding. Technical improvement now uses green category markers.
+- Balanced workflow choices into three desktop columns and reduced repeated card emphasis.
+- Recorded a Mobbin reference comparison and checked both themes at desktop and mobile sizes.
+
+## v1.1.0 - 2026-11-06
+
+### Added
+
+- Added research synthesis, product outcome review, technical debt discovery, and system design skills. The standard plugin now contains 33 skills.
+- Added five compatibility commands, including `/plan-review`, with templates and installer support.
+- Added shared evidence and product measurement rules, plus product learning, technical health, design-security, and retrospective workflow guides.
+- Added behavioral evaluation fixtures for research, outcomes, design, planning, and debt discovery.
+
+### Changed
+
+- Added plan-readiness review, decision capture, requirement coverage, integration checks, and evidence freshness to existing delivery workflows.
+- Connected system design, threat requirements, control status, and implementation verification.
+- Updated the portal with six workflow guides, new task shortcuts, and the four new skills.
+
+### Fixed
+
+- Corrected technical assessment discovery text to describe one supplied item.
+- Required supplied acceptance criteria at every PR review depth.
+- Preserved intended assertions during regression falsification and required meaningful behavioral failure evidence.
+- Replaced universal release thresholds with project baselines, observation limits, and agreed response criteria.
+- Distinguished local static source analysis from active security testing and source uploads.
+
 ## v1.0.1 - 2026-11-06
 
 ### Fixed

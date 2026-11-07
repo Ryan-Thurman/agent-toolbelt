@@ -15,6 +15,11 @@ Use an existing suitable plan before creating another document.
 - `dev-pr-review.md` - per-phase PR readiness review template.
 - `tech-backlog-assessment.md` - decision memo for technical backlog items
   before implementation.
+- `tech-debt-register.md` - evidence-backed debt candidates, priority reasons, and completion conditions.
+- `user-research-synthesis.md` - research themes, counterexamples, evidence, and sample limits.
+- `product-measurement-plan.md` - metric definitions, baseline, population, guardrails, and experiment limits.
+- `product-outcome-review.md` - hypothesis comparison and the next product decision.
+- `system-design.md` - architecture, alternatives, linked threats, and verification requirements.
 - `ticket-discovery-brief.md` - precedent-backed discovery brief for narrow
   implementation tickets.
 - `repository-contribution-guide.md` - contribution guidance with classified

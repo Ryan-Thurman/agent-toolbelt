@@ -267,54 +267,6 @@ window.AGENT_TOOLBELT_DATA = {
       "source_url": "https://github.com/Ryan-Thurman/agent-toolbelt/blob/main/skills/crap-analysis/SKILL.md"
     },
     {
-      "id": "phased-delivery",
-      "display_name": "Phased Delivery",
-      "short_description": "Deliver requirements or tickets as one PR per phase.",
-      "default_prompt": "Use $phased-delivery to plan and deliver this requirement as reviewable PRs.",
-      "description": "Plan and deliver a requirement in reviewable phases, one PR per phase. Use with a raw request, an existing plan, or approved tickets; when tickets are supplied, map one ticket to one phase and one PR.",
-      "category": "Feature Delivery",
-      "tags": [
-        "feature",
-        "planning",
-        "phases",
-        "tickets",
-        "review"
-      ],
-      "primary_purpose": "Deliver approved requirements or tickets in reviewable phases, one PR per phase.",
-      "use_when": [
-        "A requirement, plan, or approved project ticket set needs implementation through human-reviewed PRs."
-      ],
-      "avoid_when": [
-        "The request is only to define requirements, or an unattended runner owns execution and merge."
-      ],
-      "preferred_context": "Source requirement or approved tickets, acceptance criteria, dependencies, repository state, and PR branch strategy.",
-      "expected_outputs": [
-        "Phase-to-PR map",
-        "Implementation and verification evidence",
-        "One reviewable PR per phase or ticket"
-      ],
-      "example_prompts": [
-        "Use Phased Delivery to implement these approved tickets as stacked PRs, one ticket per PR.",
-        "Plan and deliver this requirement in reviewable phases."
-      ],
-      "related_skills": [
-        "product-discovery",
-        "shape-up",
-        "phase-gate",
-        "handoff"
-      ],
-      "workflow_membership": [
-        "feature-delivery"
-      ],
-      "documentation_completeness": {
-        "status": "complete",
-        "notes": "Canonical skill and agent metadata are present."
-      },
-      "recommended_changes": [],
-      "source_path": "skills/phased-delivery/SKILL.md",
-      "source_url": "https://github.com/Ryan-Thurman/agent-toolbelt/blob/main/skills/phased-delivery/SKILL.md"
-    },
-    {
       "id": "handoff",
       "display_name": "Handoff",
       "short_description": "Write a compact, resumable handoff for another session, agent, or person.",
@@ -447,6 +399,59 @@ window.AGENT_TOOLBELT_DATA = {
       "source_url": "https://github.com/Ryan-Thurman/agent-toolbelt/blob/main/skills/phase-gate/SKILL.md"
     },
     {
+      "id": "phased-delivery",
+      "display_name": "Phased Delivery",
+      "short_description": "Deliver requirements or tickets as one PR per phase.",
+      "default_prompt": "Use $phased-delivery to plan and deliver this requirement as reviewable PRs.",
+      "description": "Review implementation plans or deliver requirements in reviewable phases, one PR per phase. Use with a raw request, existing plan, or approved tickets; preserve one ticket per phase and PR.",
+      "category": "Feature Delivery",
+      "tags": [
+        "feature",
+        "planning",
+        "phases",
+        "tickets",
+        "review"
+      ],
+      "primary_purpose": "Deliver approved requirements or tickets in reviewable phases, one PR per phase.",
+      "use_when": [
+        "A requirement, plan, or approved project ticket set needs implementation through human-reviewed PRs.",
+        "An existing implementation plan needs a report-only readiness check before execution."
+      ],
+      "avoid_when": [
+        "The request is only to define requirements, or an unattended runner owns execution and merge."
+      ],
+      "preferred_context": "Source requirement or approved tickets, acceptance criteria, dependencies, repository state, and PR branch strategy.",
+      "expected_outputs": [
+        "Phase-to-PR map",
+        "Implementation and verification evidence",
+        "One reviewable PR per phase or ticket",
+        "Plan readiness and requirement coverage"
+      ],
+      "example_prompts": [
+        "Use Phased Delivery to implement these approved tickets as stacked PRs, one ticket per PR.",
+        "Plan and deliver this requirement in reviewable phases.",
+        "Review this plan for missing requirements and disconnected components."
+      ],
+      "related_skills": [
+        "product-discovery",
+        "shape-up",
+        "phase-gate",
+        "handoff"
+      ],
+      "workflow_membership": [
+        "feature-delivery",
+        "product-learning",
+        "security-sensitive-change"
+      ],
+      "documentation_completeness": {
+        "status": "complete",
+        "notes": "Canonical skill and agent metadata are present."
+      },
+      "recommended_changes": [],
+      "source_path": "skills/phased-delivery/SKILL.md",
+      "source_url": "https://github.com/Ryan-Thurman/agent-toolbelt/blob/main/skills/phased-delivery/SKILL.md"
+    },
+    {
       "id": "pr-improve",
       "display_name": "PR Improve",
       "short_description": "Improve a PR in bounded verified rounds.",
@@ -491,52 +496,6 @@ window.AGENT_TOOLBELT_DATA = {
       "recommended_changes": [],
       "source_path": "skills/pr-improve/SKILL.md",
       "source_url": "https://github.com/Ryan-Thurman/agent-toolbelt/blob/main/skills/pr-improve/SKILL.md"
-    },
-    {
-      "id": "pr-review-reply",
-      "display_name": "PR Review Reply",
-      "short_description": "Triage PR review threads, re-review touched code, and draft per-thread replies.",
-      "default_prompt": "Handle these PR review comments.",
-      "description": "Handle the PR-review round-trip: read reviewer threads, triage each one, re-review only touched code, and draft per-thread replies. Use to address PR comments, answer review feedback, or close a /pr-review loop.",
-      "category": "Review & Quality",
-      "tags": [
-        "review-comments",
-        "threads",
-        "pr",
-        "review"
-      ],
-      "primary_purpose": "Respond to pull request review threads with concise evidence and clear disposition.",
-      "use_when": [
-        "Review comments need replies that explain fixes, decisions, or justified non-changes."
-      ],
-      "avoid_when": [
-        "The pull request has not been reviewed or needs implementation rather than communication."
-      ],
-      "preferred_context": "Review thread, changed code, check results, and project conventions.",
-      "expected_outputs": [
-        "Thread responses",
-        "Evidence references",
-        "Explicit unresolved decisions"
-      ],
-      "example_prompts": [
-        "Draft evidence-backed replies to the open review threads.",
-        "Respond to these PR comments and distinguish fixes from justified non-changes."
-      ],
-      "related_skills": [
-        "pr-review",
-        "pr-improve",
-        "handoff"
-      ],
-      "workflow_membership": [
-        "pr-review"
-      ],
-      "documentation_completeness": {
-        "status": "complete",
-        "notes": "Canonical skill and agent metadata are present."
-      },
-      "recommended_changes": [],
-      "source_path": "skills/pr-review-reply/SKILL.md",
-      "source_url": "https://github.com/Ryan-Thurman/agent-toolbelt/blob/main/skills/pr-review-reply/SKILL.md"
     },
     {
       "id": "pr-review",
@@ -589,6 +548,52 @@ window.AGENT_TOOLBELT_DATA = {
       "source_url": "https://github.com/Ryan-Thurman/agent-toolbelt/blob/main/skills/pr-review/SKILL.md"
     },
     {
+      "id": "pr-review-reply",
+      "display_name": "PR Review Reply",
+      "short_description": "Triage PR review threads, re-review touched code, and draft per-thread replies.",
+      "default_prompt": "Handle these PR review comments.",
+      "description": "Handle the PR-review round-trip: read reviewer threads, triage each one, re-review only touched code, and draft per-thread replies. Use to address PR comments, answer review feedback, or close a /pr-review loop.",
+      "category": "Review & Quality",
+      "tags": [
+        "review-comments",
+        "threads",
+        "pr",
+        "review"
+      ],
+      "primary_purpose": "Respond to pull request review threads with concise evidence and clear disposition.",
+      "use_when": [
+        "Review comments need replies that explain fixes, decisions, or justified non-changes."
+      ],
+      "avoid_when": [
+        "The pull request has not been reviewed or needs implementation rather than communication."
+      ],
+      "preferred_context": "Review thread, changed code, check results, and project conventions.",
+      "expected_outputs": [
+        "Thread responses",
+        "Evidence references",
+        "Explicit unresolved decisions"
+      ],
+      "example_prompts": [
+        "Draft evidence-backed replies to the open review threads.",
+        "Respond to these PR comments and distinguish fixes from justified non-changes."
+      ],
+      "related_skills": [
+        "pr-review",
+        "pr-improve",
+        "handoff"
+      ],
+      "workflow_membership": [
+        "pr-review"
+      ],
+      "documentation_completeness": {
+        "status": "complete",
+        "notes": "Canonical skill and agent metadata are present."
+      },
+      "recommended_changes": [],
+      "source_path": "skills/pr-review-reply/SKILL.md",
+      "source_url": "https://github.com/Ryan-Thurman/agent-toolbelt/blob/main/skills/pr-review-reply/SKILL.md"
+    },
+    {
       "id": "product-discovery",
       "display_name": "Product Discovery",
       "short_description": "Assess evidence before shaping a product idea.",
@@ -621,10 +626,13 @@ window.AGENT_TOOLBELT_DATA = {
       "related_skills": [
         "shape-up",
         "ticket-discovery",
-        "phased-delivery"
+        "phased-delivery",
+        "user-research-synthesis",
+        "product-outcome-review"
       ],
       "workflow_membership": [
-        "feature-delivery"
+        "feature-delivery",
+        "product-learning"
       ],
       "documentation_completeness": {
         "status": "complete",
@@ -633,6 +641,52 @@ window.AGENT_TOOLBELT_DATA = {
       "recommended_changes": [],
       "source_path": "skills/product-discovery/SKILL.md",
       "source_url": "https://github.com/Ryan-Thurman/agent-toolbelt/blob/main/skills/product-discovery/SKILL.md"
+    },
+    {
+      "id": "product-outcome-review",
+      "display_name": "Product Outcome Review",
+      "short_description": "Assess customer outcomes after an experiment or release.",
+      "default_prompt": "Use $product-outcome-review to assess this result against the original hypothesis.",
+      "description": "Review whether an experiment or released change improved its original customer problem. Compare hypotheses, baselines, populations, guardrails, and uncertainty; use ship-it for immediate release health.",
+      "category": "Discovery & Planning",
+      "tags": [
+        "product",
+        "metrics",
+        "evidence",
+        "verification"
+      ],
+      "primary_purpose": "Assess whether an experiment or release improved the original customer problem.",
+      "use_when": [
+        "Results need comparison with the original hypothesis, baseline, population, and guardrails."
+      ],
+      "avoid_when": [
+        "An immediate release failure requires operational recovery or bug diagnosis."
+      ],
+      "preferred_context": "Original hypothesis, event definitions, baseline, results, exposure dates, populations, and data limits.",
+      "expected_outputs": [
+        "Outcome comparison",
+        "Uncertainty and counterevidence",
+        "Continue, revise, stop, or gather-evidence decision"
+      ],
+      "example_prompts": [
+        "Did this experiment improve the original customer problem?",
+        "Review activation results after the signup population changed."
+      ],
+      "related_skills": [
+        "product-discovery",
+        "user-research-synthesis",
+        "ship-it"
+      ],
+      "workflow_membership": [
+        "product-learning"
+      ],
+      "documentation_completeness": {
+        "status": "complete",
+        "notes": "Canonical skill, metadata, template, command, and compatibility installer are present."
+      },
+      "recommended_changes": [],
+      "source_path": "skills/product-outcome-review/SKILL.md",
+      "source_url": "https://github.com/Ryan-Thurman/agent-toolbelt/blob/main/skills/product-outcome-review/SKILL.md"
     },
     {
       "id": "retrofit",
@@ -854,7 +908,8 @@ window.AGENT_TOOLBELT_DATA = {
         "ticket-discovery"
       ],
       "workflow_membership": [
-        "feature-delivery"
+        "feature-delivery",
+        "product-learning"
       ],
       "documentation_completeness": {
         "status": "complete",
@@ -899,7 +954,8 @@ window.AGENT_TOOLBELT_DATA = {
         "handoff"
       ],
       "workflow_membership": [
-        "feature-delivery"
+        "feature-delivery",
+        "product-learning"
       ],
       "documentation_completeness": {
         "status": "complete",
@@ -1001,10 +1057,58 @@ window.AGENT_TOOLBELT_DATA = {
       "source_url": "https://github.com/Ryan-Thurman/agent-toolbelt/blob/main/skills/style-guide-init/SKILL.md"
     },
     {
+      "id": "system-design",
+      "display_name": "System Design",
+      "short_description": "Create design documents with linked threat reviews.",
+      "default_prompt": "Use $system-design to document this architecture and review its attack paths.",
+      "description": "Produce or review a system design document with alternatives, interfaces, failure behavior, and a linked threat review. Use for architecture decisions; use phased-delivery for implementation planning.",
+      "category": "Discovery & Planning",
+      "tags": [
+        "architecture",
+        "security",
+        "planning",
+        "evidence"
+      ],
+      "primary_purpose": "Produce a system design document with alternatives and a linked threat review.",
+      "use_when": [
+        "Architecture decisions need documented interfaces, data flows, failure behavior, and security requirements."
+      ],
+      "avoid_when": [
+        "A small bounded edit needs no architecture decision, or implementation planning is already sufficient."
+      ],
+      "preferred_context": "Requirements, current system evidence, constraints, architecture sources, and project-owned document format.",
+      "expected_outputs": [
+        "System design document",
+        "Linked threat review",
+        "Security requirements and readiness findings"
+      ],
+      "example_prompts": [
+        "Design this service and review its attack paths.",
+        "Review this architecture for unanswered decisions, failure behavior, and security requirements."
+      ],
+      "related_skills": [
+        "threat-model",
+        "security-audit",
+        "phased-delivery",
+        "test-case-design"
+      ],
+      "workflow_membership": [
+        "security-sensitive-change",
+        "feature-delivery"
+      ],
+      "documentation_completeness": {
+        "status": "complete",
+        "notes": "Canonical skill, metadata, template, command, and compatibility installer are present."
+      },
+      "recommended_changes": [],
+      "source_path": "skills/system-design/SKILL.md",
+      "source_url": "https://github.com/Ryan-Thurman/agent-toolbelt/blob/main/skills/system-design/SKILL.md"
+    },
+    {
       "id": "tech-backlog-assessment",
       "display_name": "Tech Backlog Assessment",
-      "short_description": "Assess technical backlog items before implementation with evidence, risks, and next workflow.",
-      "default_prompt": "Assess this technical backlog item.",
+      "short_description": "Assess one technical investment before implementation.",
+      "default_prompt": "Use $tech-backlog-assessment to assess this item and compare its alternatives.",
       "description": "Assess technical backlog items before implementation: decide do/defer/reject/spike, compare options such as packages or library switches, define risks, test strategy, and the next workflow.",
       "category": "Discovery & Planning",
       "tags": [
@@ -1013,29 +1117,31 @@ window.AGENT_TOOLBELT_DATA = {
         "spike",
         "planning"
       ],
-      "primary_purpose": "Assess technical backlog items and recommend an evidence-backed order of work.",
+      "primary_purpose": "Assess one supplied technical item and recommend Do, Defer, Reject, or Spike.",
       "use_when": [
-        "A backlog contains competing maintenance, risk, or architecture items that need prioritization."
+        "A supplied maintenance item, library choice, migration, or test investment needs an evidence-backed decision."
       ],
       "avoid_when": [
-        "A single item already has clear scope and priority."
+        "The task is repository-wide debt discovery or an already authorized mechanical transformation."
       ],
-      "preferred_context": "Backlog items, impact, effort, risk, dependencies, evidence, and team constraints.",
+      "preferred_context": "Supplied item, repository evidence, alternatives, compatibility, risks, tests, and constraints.",
       "expected_outputs": [
-        "Assessment",
-        "Prioritized backlog",
-        "Spikes or decisions needed"
+        "Decision memo",
+        "Options and confidence",
+        "Test strategy and next workflow"
       ],
       "example_prompts": [
-        "Assess this technical backlog and recommend the next highest-value work.",
-        "Compare these maintenance items by risk, effort, dependencies, and evidence."
+        "Should we replace this library or keep the current implementation?",
+        "Assess this upgrade using official version changes and actual API usage."
       ],
       "related_skills": [
-        "product-discovery",
-        "crap-analysis",
+        "tech-debt-discovery",
+        "retrofit",
         "ticket-discovery"
       ],
-      "workflow_membership": [],
+      "workflow_membership": [
+        "codebase-improvement"
+      ],
       "documentation_completeness": {
         "status": "complete",
         "notes": "Canonical skill and agent metadata are present."
@@ -1043,6 +1149,53 @@ window.AGENT_TOOLBELT_DATA = {
       "recommended_changes": [],
       "source_path": "skills/tech-backlog-assessment/SKILL.md",
       "source_url": "https://github.com/Ryan-Thurman/agent-toolbelt/blob/main/skills/tech-backlog-assessment/SKILL.md"
+    },
+    {
+      "id": "tech-debt-discovery",
+      "display_name": "Technical Debt Discovery",
+      "short_description": "Find evidence-backed maintenance work across a repository.",
+      "default_prompt": "Use $tech-debt-discovery to find and prioritize maintenance work in this repository.",
+      "description": "Find and prioritize technical debt across a repository using code, history, tests, dependencies, and operational evidence. Use for maintenance discovery; use tech-backlog-assessment to decide one supplied item.",
+      "category": "Codebase Improvement",
+      "tags": [
+        "technical-debt",
+        "modernization",
+        "planning",
+        "evidence"
+      ],
+      "primary_purpose": "Discover and prioritize technical debt using repository and operational evidence.",
+      "use_when": [
+        "The repository needs a bounded maintenance backlog with consequences and priority reasons."
+      ],
+      "avoid_when": [
+        "One supplied item already needs an options decision; use technical assessment."
+      ],
+      "preferred_context": "Repository revision, scoped paths, history period, tests, dependencies, operations, and existing debt records.",
+      "expected_outputs": [
+        "Debt register",
+        "Priority and confidence reasons",
+        "Selected assessment candidates and coverage limits"
+      ],
+      "example_prompts": [
+        "Find the highest-value maintenance work in this repository.",
+        "Review code organization and dependencies for demonstrated maintenance costs."
+      ],
+      "related_skills": [
+        "tech-backlog-assessment",
+        "simplify",
+        "crap-analysis",
+        "retrofit"
+      ],
+      "workflow_membership": [
+        "codebase-improvement"
+      ],
+      "documentation_completeness": {
+        "status": "complete",
+        "notes": "Canonical skill, metadata, template, command, and compatibility installer are present."
+      },
+      "recommended_changes": [],
+      "source_path": "skills/tech-debt-discovery/SKILL.md",
+      "source_url": "https://github.com/Ryan-Thurman/agent-toolbelt/blob/main/skills/tech-debt-discovery/SKILL.md"
     },
     {
       "id": "test-case-design",
@@ -1123,7 +1276,8 @@ window.AGENT_TOOLBELT_DATA = {
       "related_skills": [
         "security-audit",
         "pr-review",
-        "test-case-design"
+        "test-case-design",
+        "system-design"
       ],
       "workflow_membership": [
         "security-sensitive-change"
@@ -1225,6 +1379,52 @@ window.AGENT_TOOLBELT_DATA = {
       "recommended_changes": [],
       "source_path": "skills/ticket-sync/SKILL.md",
       "source_url": "https://github.com/Ryan-Thurman/agent-toolbelt/blob/main/skills/ticket-sync/SKILL.md"
+    },
+    {
+      "id": "user-research-synthesis",
+      "display_name": "User Research Synthesis",
+      "short_description": "Connect customer themes to evidence and limits.",
+      "default_prompt": "Use $user-research-synthesis to analyze this research and preserve counterexamples.",
+      "description": "Synthesize interviews, surveys, usability notes, and customer feedback into evidence-linked themes and counterexamples. Use to understand supplied research before product decisions; use product-discovery to choose an opportunity.",
+      "category": "Discovery & Planning",
+      "tags": [
+        "product",
+        "research",
+        "evidence",
+        "planning"
+      ],
+      "primary_purpose": "Connect customer research to themes, counterexamples, and bounded product implications.",
+      "use_when": [
+        "Interviews, surveys, usability notes, or feedback need synthesis before a product decision."
+      ],
+      "avoid_when": [
+        "The opportunity is already understood and only implementation planning remains."
+      ],
+      "preferred_context": "Research question, source IDs, dates, participant sample, and permitted evidence.",
+      "expected_outputs": [
+        "Evidence-linked themes",
+        "Counterexamples and sample limits",
+        "Open research questions"
+      ],
+      "example_prompts": [
+        "Synthesize these interviews and preserve conflicting accounts.",
+        "Find themes in this feedback without inventing population prevalence."
+      ],
+      "related_skills": [
+        "product-discovery",
+        "product-outcome-review",
+        "shape-up"
+      ],
+      "workflow_membership": [
+        "product-learning"
+      ],
+      "documentation_completeness": {
+        "status": "complete",
+        "notes": "Canonical skill, metadata, template, command, and compatibility installer are present."
+      },
+      "recommended_changes": [],
+      "source_path": "skills/user-research-synthesis/SKILL.md",
+      "source_url": "https://github.com/Ryan-Thurman/agent-toolbelt/blob/main/skills/user-research-synthesis/SKILL.md"
     },
     {
       "id": "vercel-composition-patterns",
@@ -1413,6 +1613,63 @@ window.AGENT_TOOLBELT_DATA = {
   ],
   "workflows": [
     {
+      "id": "product-learning",
+      "name": "Product decisions and learning",
+      "purpose": "Connect research, opportunity decisions, experiments, and customer outcome evidence. Use only the stages needed for the decision.",
+      "stages": [
+        {
+          "skill": "user-research-synthesis",
+          "rationale": "Understand source evidence, counterexamples, and sample limits.",
+          "example_invocation": "Synthesize this customer research.",
+          "next_steps": [
+            "product-discovery"
+          ]
+        },
+        {
+          "skill": "product-discovery",
+          "rationale": "Choose an opportunity or experiment with measurement and decision conditions.",
+          "example_invocation": "Compare these opportunities and define the next experiment.",
+          "next_steps": [
+            "shape-up",
+            "product-outcome-review"
+          ]
+        },
+        {
+          "skill": "shape-up",
+          "rationale": "Clarify selected implementation scope when a brief is needed.",
+          "example_invocation": "Shape this selected opportunity into a brief.",
+          "next_steps": [
+            "phased-delivery"
+          ]
+        },
+        {
+          "skill": "phased-delivery",
+          "rationale": "Deliver approved scope with acceptance evidence.",
+          "example_invocation": "Deliver the approved brief in reviewable phases.",
+          "next_steps": [
+            "ship-it",
+            "product-outcome-review"
+          ]
+        },
+        {
+          "skill": "ship-it",
+          "rationale": "Assess immediate release readiness and health when a release is involved.",
+          "example_invocation": "Prepare this change for release using project thresholds.",
+          "next_steps": [
+            "product-outcome-review"
+          ]
+        },
+        {
+          "skill": "product-outcome-review",
+          "rationale": "Determine whether the original customer problem improved.",
+          "example_invocation": "Review this experiment against its hypothesis and baseline.",
+          "next_steps": [
+            "product-discovery"
+          ]
+        }
+      ]
+    },
+    {
       "id": "feature-delivery",
       "name": "Feature delivery",
       "purpose": "Move a bounded product or engineering idea from discovery through implementation, verification, review, and release readiness.",
@@ -1558,9 +1815,27 @@ window.AGENT_TOOLBELT_DATA = {
     },
     {
       "id": "codebase-improvement",
-      "name": "Codebase improvement and refactor",
-      "purpose": "Prioritize and execute bounded maintainability, migration, and structural improvements with behavior evidence.",
+      "name": "Technical health and modernization",
+      "purpose": "Discover maintenance costs, assess selected items, and verify authorized improvements against their baseline.",
       "stages": [
+        {
+          "skill": "tech-debt-discovery",
+          "rationale": "Find demonstrated maintenance costs and report scoped evidence.",
+          "example_invocation": "Find and prioritize debt in this repository.",
+          "next_steps": [
+            "tech-backlog-assessment"
+          ]
+        },
+        {
+          "skill": "tech-backlog-assessment",
+          "rationale": "Decide whether a selected item warrants implementation or further evidence.",
+          "example_invocation": "Assess this selected debt item and its alternatives.",
+          "next_steps": [
+            "simplify",
+            "retrofit",
+            "phased-delivery"
+          ]
+        },
         {
           "skill": "crap-analysis",
           "rationale": "Use complexity and coverage signals to choose high-value targets.",
@@ -1608,15 +1883,33 @@ window.AGENT_TOOLBELT_DATA = {
     },
     {
       "id": "security-sensitive-change",
-      "name": "Security-sensitive change",
-      "purpose": "Design, implement, test, and review changes involving sensitive data, privilege, or trust boundaries.",
+      "name": "System design and security",
+      "purpose": "Document architecture, review attack paths, and connect security requirements to implementation evidence.",
       "stages": [
+        {
+          "skill": "system-design",
+          "rationale": "Create the design record and linked threat review before implementation.",
+          "example_invocation": "Document this system and its attack paths.",
+          "next_steps": [
+            "threat-model"
+          ]
+        },
         {
           "skill": "threat-model",
           "rationale": "Identify assets, trust boundaries, abuse cases, and mitigations before coding.",
           "example_invocation": "Threat-model this feature and its data flows.",
           "next_steps": [
             "test-case-design",
+            "security-audit"
+          ]
+        },
+        {
+          "skill": "phased-delivery",
+          "rationale": "Plan accepted requirements and preserve threat-to-verification links.",
+          "example_invocation": "Plan the accepted design and security requirements.",
+          "next_steps": [
+            "test-case-design",
+            "cover",
             "security-audit"
           ]
         },

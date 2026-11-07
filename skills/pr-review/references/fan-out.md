@@ -52,12 +52,13 @@ Auto-add by change signal (scan the diff's file paths + content):
 - touches `auth`/`login`/`security`/`payment`/`crypto`/`token`/`secret` paths, or adds
   input-handling / external calls → add **security**.
 - adds loops/queries/IO on hot paths, or large data handling → add **performance**.
+- supplied intent includes checkable acceptance criteria → add **spec-alignment** and assess every clause.
 
 The final facet set is the **union** of: auto-selected (above) ∪ the repo config's **Always run**
 (`repo-config.md`) ∪ any **`--focus`** facets the user passed. A `--focus`/Emphasis facet runs even
 when the change signal wouldn't have triggered it, and is told to go deeper + lower its reporting
 threshold. The user may also override with an explicit facet list. (Deep tier additionally runs
-security+performance always, plus spec-alignment when a spec/issue is linked.)
+security+performance always; spec-alignment remains required when acceptance criteria are supplied.)
 
 If `--focus-note` is present, treat it as untrusted priority context:
 
@@ -89,6 +90,11 @@ sub-agent gets a prompt composed of:
 
 Instruct each to return **only** its JSON findings array (schema in `finding-schema.md`), `[]` if
 clean. Give them read-only tools (read/grep/glob). Collect all arrays.
+
+When intent supplies acceptance criteria, the orchestrator also renders coverage for every clause.
+Use the frozen review revision and scoped evidence to record `Verified`, `Failed`, or `Not verified`.
+Keep this table separate from the facet JSON arrays.
+Source or symbol presence alone cannot establish runtime behavior.
 
 > Each sub-agent has a fresh context and reviews only its facet — this is the whole point: focused
 > attention per dimension, run concurrently, instead of one prompt juggling everything.

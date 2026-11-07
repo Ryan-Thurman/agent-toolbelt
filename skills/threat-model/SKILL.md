@@ -7,6 +7,7 @@ description: Model assets, trust boundaries, attacker paths, mitigations, and ve
 
 Before you write a response for the user, read
 `shared/contracts/references/human-readable-output.md`.
+Read `shared/contracts/references/evidence-quality.md` when establishing threat and control evidence.
 
 Create a design-time security model before implementation. It is analytical and
 does not perform active testing.
@@ -21,6 +22,9 @@ does not perform active testing.
    plan. Record residual risk, assumptions, and decisions needing an owner.
 4. Hand the resulting requirements to planning, `/test-case-design`, or `/shape-up`
    as appropriate.
+   Record the reviewed design revision and stable threat-to-requirement-to-verification links.
+   Distinguish proposed controls from observed implementation and verified behavior.
+   Give important threats a disposition and owner or unassigned status.
 
 ## Completion
 

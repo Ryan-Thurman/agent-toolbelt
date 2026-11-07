@@ -54,10 +54,14 @@ This is the bug-to-fix hand-off: `/reproduce` gave you a reproduction; turn it i
 
 > A test that can't fail is worthless.
 
-After writing, prove the test can fail: temporarily break the behavior under test (change a return
-value, flip a condition, mutate the expected value) and confirm the test goes **red**, then restore.
-If it stays green, the test asserts nothing meaningful — fix the assertion or drop it. This is the
-single highest-value check; do it for every test you add.
+Preserve the intended assertion. Prefer running the test against the pre-fix revision in an isolated workspace.
+Otherwise, use a bounded behavior mutation only within an authorized isolated copy.
+Confirm that the mutation actually landed and the test failed for the intended symptom.
+A changed expected literal or a setup error cannot establish regression detection.
+Restore temporary changes even after failure and verify restoration.
+Keep user changes intact; this experiment does not authorize production edits outside test authoring.
+If a safe behavioral check cannot run, report `Not verified` and explain the limit.
+A test that stays green requires investigation of the mutation, path, and assertion before drawing a conclusion.
 
 ## Determinism rules (no flaky tests)
 

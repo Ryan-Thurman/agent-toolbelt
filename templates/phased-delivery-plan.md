@@ -11,6 +11,15 @@ Keep the project's approved requirements and tickets as the scope authorities.
 - Scope exclusions:
 - Plan approval / decision:
 - Open product or release questions:
+- Agreed decisions, delegated technical choices, and deferred ideas:
+
+## Plan readiness
+
+| Source requirement | Owning phase and work | Integration dependency | Verification method | Coverage or unresolved gap |
+|---|---|---|---|---|
+
+Record `Ready`, `Needs revision`, or `Not verified` with reasons.
+Preserve source scope and approved project ticket boundaries.
 
 ## Phase / PR map
 
@@ -34,6 +43,7 @@ branch and PR target explicitly, including the parent branch for a stack.
 - Next action and owner:
 - Blockers or material assumptions:
 - Last updated:
+- Last verified revision and evidence freshness:
 
 ## Phase 1: [ticket ID or phase title]
 

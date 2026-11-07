@@ -50,9 +50,9 @@ function check(outputDirectory, root = ROOT) {
   const payload = readPayload(output);
   assert(payload && payload.skills && payload.workflows, 'generated data payload is incomplete');
   const canonical = discoverCanonicalSkills(root).skills;
-  assert.strictEqual(payload.skills.length, 29, 'generated portal must contain 29 standard skills');
+  assert.strictEqual(payload.skills.length, 33, 'generated portal must contain 33 standard skills');
   assert.strictEqual(JSON.stringify(Array.from(payload.skills, (skill) => skill.id).sort()), JSON.stringify(canonical.map((skill) => skill.id).sort()), 'generated skill IDs must match canonical IDs');
-  assert.strictEqual(payload.workflows.length, 5, 'generated portal must contain five workflows');
+  assert.strictEqual(payload.workflows.length, 6, 'generated portal must contain six workflows');
   assert.strictEqual(JSON.stringify(Object.keys(payload.category_guidance)), JSON.stringify(Array.from(payload.categories)), 'generated category guidance must cover the catalog taxonomy exactly');
   payload.categories.forEach((category) => assert(payload.category_guidance[category].trim(), `generated category guidance is empty: ${category}`));
   assert(payload.hosts.length === 3 && payload.hosts.every((host) => host.id && host.name && host.invocation_template && host.invocation_template.includes('{skill_id}') && host.local_install_commands && host.local_install_commands.length), 'generated host records are incomplete');

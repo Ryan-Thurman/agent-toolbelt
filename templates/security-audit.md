@@ -14,3 +14,12 @@ Status: Read-only | Authorized active scope: <reference>
 Describe locations and types; redact all sensitive values.
 
 ## Residual Risk and Next Actions
+
+## Design Requirement Verification
+
+When a linked design or threat report exists, reconcile its requirements against the inspected revision.
+
+| Threat and requirement IDs | Control and implementation evidence | Verification observation | Status | Remaining risk |
+|---|---|---|---|---|
+
+Use `Verified`, `Failed`, or `Not verified`.

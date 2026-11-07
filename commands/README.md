@@ -25,6 +25,11 @@ unclear inside a pilot repo, start with `/workflow-router`.
 - `/review-queue-worker` - drain the local review queue: claim jobs and run `/pr-review --comment` on each (consumer half; drive with `/loop` or `/schedule`).
 - `/shape-up` - review a product ask against current behavior, or shape a vague request into an agreed brief.
 - `/product-discovery` - assess an opportunity's evidence and risks before shaping.
+- `/user-research-synthesis` - connect customer research to themes, counterexamples, and sample limits.
+- `/product-outcome-review` - assess whether an experiment or release improved its original customer problem.
+- `/tech-debt-discovery` - find and prioritize evidence-backed maintenance work across a repository.
+- `/system-design` - produce a design document with a linked threat review and security requirements.
+- `/plan-review` - review requirement coverage, decisions, dependencies, connections, and verification before execution.
 - `/style-guide-init` - derive, check, and refresh evidence-backed contribution/style guidance.
 - `/tech-assess` - assess a technical backlog item before implementation: do/defer/reject/spike, options, risks, tests.
 - `/ticket-discover` - investigate a narrow implementation ticket by finding an existing precedent and producing a gap/test handoff.

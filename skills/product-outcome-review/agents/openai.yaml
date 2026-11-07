@@ -1,0 +1,4 @@
+interface:
+  display_name: "Product Outcome Review"
+  short_description: "Assess customer outcomes after an experiment or release."
+  default_prompt: "Use $product-outcome-review to assess this result against the original hypothesis."

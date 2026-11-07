@@ -18,7 +18,7 @@
     'Debugging & Repair': { tone: 'orange', path: 'M8 8h8v7a4 4 0 0 1-8 0V8Zm2-3h4l2 3H8l2-3ZM3 11h5m8 0h5M3 16h5m8 0h5M6 3l3 3m9-3-3 3M12 8v11' },
     'Review & Quality': { tone: 'indigo', path: 'M21 11v1a9 9 0 1 1-5.3-8.2M8 11l4 4L22 5' },
     'Security & Risk': { tone: 'rose', path: 'M12 3 4 6v6c0 5 8 9 8 9s8-4 8-9V6l-8-3Zm-4 9 3 3 5-6' },
-    'Codebase Improvement': { tone: 'amber', path: 'm12 3 9 5-9 5-9-5 9-5Zm-9 9 9 5 9-5M3 16l9 5 9-5' },
+    'Codebase Improvement': { tone: 'green', path: 'm12 3 9 5-9 5-9-5 9-5Zm-9 9 9 5 9-5M3 16l9 5 9-5' },
     'Testing & Verification': { tone: 'cyan', path: 'M9 3h6m-5 0v7l-5 8a2 2 0 0 0 2 3h10a2 2 0 0 0 2-3l-5-8V3M8 14h8' },
     'Agent Operations': { tone: 'slate', path: 'M4 4h16v16H4zM7 8l3 3-3 3m6 1h4' }
   };
@@ -150,25 +150,53 @@
     function renderTaskShortcuts() {
       const target = byId('task-shortcuts');
       target.replaceChildren();
-      const tasks = [
-        { skill: 'product-discovery', title: 'Plan a feature', hint: 'Clarify the problem' },
-        { skill: 'bug-to-fix', title: 'Fix a bug', hint: 'Find the root cause' },
-        { skill: 'pr-review', title: 'Review a PR', hint: 'Check a change' }
+      const groups = [
+        {
+          id: 'explore-plan',
+          title: 'Explore and plan',
+          tasks: [
+            { skill: 'user-research-synthesis', title: 'Understand customers', hint: 'Connect research to evidence' },
+            { skill: 'product-discovery', title: 'Plan a feature', hint: 'Clarify the problem' },
+            { skill: 'system-design', title: 'Design a system', hint: 'Document design and threats' }
+          ]
+        },
+        {
+          id: 'improve-verify',
+          title: 'Improve and verify',
+          tasks: [
+            { skill: 'bug-to-fix', title: 'Fix a bug', hint: 'Find the root cause' },
+            { skill: 'tech-debt-discovery', title: 'Find technical debt', hint: 'Choose useful improvements' },
+            { skill: 'pr-review', title: 'Review a PR', hint: 'Check a change' }
+          ]
+        }
       ];
-      tasks.forEach((task) => {
-        const skill = skillById.get(task.skill);
-        if (!skill) return;
-        const button = createElement('button', 'task-shortcut');
-        button.type = 'button';
-        button.dataset.openSkill = skill.id;
-        applyCategory(button, skill.category);
-        button.appendChild(categoryIcon(skill.category));
-        button.appendChild(createElement('strong', '', task.title));
-        button.appendChild(createElement('span', 'task-hint', task.hint));
-        const arrow = createElement('span', 'task-arrow', '↗');
-        arrow.setAttribute('aria-hidden', 'true');
-        button.appendChild(arrow);
-        target.appendChild(button);
+      groups.forEach((group) => {
+        const section = createElement('section', 'task-group');
+        section.dataset.taskGroup = group.id;
+        const heading = createElement('h3', 'task-group-title', group.title);
+        heading.id = `task-group-${group.id}`;
+        section.setAttribute('aria-labelledby', heading.id);
+        section.appendChild(heading);
+        const choices = createElement('div', 'task-shortcuts');
+        group.tasks.forEach((task) => {
+          const skill = skillById.get(task.skill);
+          if (!skill) return;
+          const button = createElement('button', 'task-shortcut');
+          button.type = 'button';
+          button.dataset.openSkill = skill.id;
+          applyCategory(button, skill.category);
+          const identity = createElement('span', 'task-identity');
+          identity.append(categoryIcon(skill.category), createElement('span', 'task-category', skill.category));
+          button.appendChild(identity);
+          button.appendChild(createElement('strong', '', task.title));
+          button.appendChild(createElement('span', 'task-hint', task.hint));
+          const arrow = createElement('span', 'task-arrow', '↗');
+          arrow.setAttribute('aria-hidden', 'true');
+          button.appendChild(arrow);
+          choices.appendChild(button);
+        });
+        section.appendChild(choices);
+        target.appendChild(section);
       });
     }
 

@@ -1,0 +1,4 @@
+interface:
+  display_name: "User Research Synthesis"
+  short_description: "Connect customer themes to evidence and limits."
+  default_prompt: "Use $user-research-synthesis to analyze this research and preserve counterexamples."

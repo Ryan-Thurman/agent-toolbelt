@@ -2,7 +2,7 @@
 
 Use Playwright to capture the portal and check its behavior in a browser.
 The portal itself remains an offline HTML page. The browser tools are development dependencies.
-The current design uses task shortcuts, category colors, and highlighted result summaries.
+The current design uses grouped task shortcuts, labeled category colors, neutral cards, and amber actions.
 The dated records below describe each design revision.
 
 ## Install and run
@@ -39,7 +39,7 @@ Each successful run replaces images with the same names. Check the current repor
 
 The suite checks the catalog, category expansion, combined filters, empty results, detail dialogs, focus return, theme persistence, and horizontal overflow.
 It also checks search visibility, mobile navigation, filter reset, filter focus, and the search keyboard shortcut.
-The main catalog flow also checks all three task shortcuts and their keyboard focus return.
+The main catalog flow also checks all six task shortcuts and their keyboard focus return.
 It also checks for page errors and remote requests in the main flow.
 Automated axe scans cover the catalog, selected filters, and the open skill dialog in each project.
 These scans include text contrast. They do not establish full accessibility conformance.

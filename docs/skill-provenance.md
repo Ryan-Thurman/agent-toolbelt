@@ -124,3 +124,17 @@ original pin and attribution.
 - `review-queue`: trigger and handoff layer over `pr-review`; it carries jobs,
   not findings. SHA idempotency mirrors `review-on-open` ledger behavior, and
   the producer/consumer split lets a separate fresh agent do the review.
+
+## Product, design, and technical health additions — 2026-11-06
+
+The four new skills and shared references use independently written procedures.
+No upstream prompt prose, runtime code, private project skill, or internal register was copied.
+
+- Research synthesis and outcome review use general methods informed by Anthropic knowledge-work plugins and PM Skills.
+- Debt discovery and version analysis use general methods informed by Anthropic technical debt and modernization sources.
+- System design uses architecture coverage informed by arc42, C4, and OWASP threat modeling.
+- Plan readiness, decision records, and verification use concepts from Superpowers and OpenGSD Core.
+
+Selected primary sources were browser-read at mutable branch URLs on November 6.
+Exact source links, license observations, and adaptation limits are in [the research record](skill-packaging-research-2026-11-06.md).
+Existing copied Vercel rules retain their earlier attribution and revision.

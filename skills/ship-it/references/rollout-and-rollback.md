@@ -15,6 +15,9 @@ State both:
 
 ## Feature-flag lifecycle (decouple deploy from release)
 
+The percentages, durations, and cleanup interval below are examples.
+Select actual stages and observation windows from project policy, traffic, and risk.
+
 ```
 1. DEPLOY with flag OFF   → code is in production but inactive
 2. ENABLE for team/beta   → internal testing in the production environment
@@ -23,8 +26,9 @@ State both:
 5. CLEAN UP               → remove the flag and the dead path after full rollout
 ```
 
-Rules: every flag has an owner and an expiry; clean up within ~2 weeks of full rollout; test both
-flag states in CI; don't nest flags.
+Give each flag an owner and a project-appropriate expiry.
+Test supported flag states and record cleanup criteria.
+Treat the example cleanup interval as illustrative.
 
 ## Staged rollout sequence
 
@@ -41,15 +45,21 @@ For a low-risk change you own, big-bang + watch is fine — but still have the r
 
 ## Advance / hold / roll-back thresholds
 
-| Metric | Advance (green) | Hold + investigate (yellow) | Roll back (red) |
-|---|---|---|---|
-| Error rate | within 10% of baseline | 10–100% above | > 2× baseline |
-| P95 latency | within 20% of baseline | 20–50% above | > 50% above |
-| Client JS errors | no new error types | new errors < 0.1% of sessions | new errors > 0.1% of sessions |
-| Business metric | neutral/positive | decline < 5% (may be noise) | decline > 5% |
+Use the project's agreed release policy and baseline for the named deployment.
+Record metric definitions, denominators, comparison windows, traffic or sample limits, and authorized response owners.
 
-**Roll back immediately** if: error rate > 2× baseline, P95 latency > 50% up, user reports spike,
-data-integrity issue, or a security vulnerability is discovered.
+| Decision | Required basis |
+|---|---|
+| Advance | Required flows and checks pass within the project's observation and error limits. |
+| Hold | Evidence is insufficient, populations differ, or a material anomaly needs investigation. |
+| Recover | An agreed trigger fires and the authorized owner selects the applicable recovery procedure. |
+
+A zero-error baseline or a small sample cannot support an unqualified relative-rate threshold.
+Keep data-integrity and security response consistent with the project's incident policy.
+Record missing triggers instead of inventing universal percentages or observation periods.
+A business metric change alone does not establish release causation.
+Use an available `product-outcome-review` for the longer-term customer decision.
+These checks do not expand deployment or rollback authority.
 
 ## What to monitor
 

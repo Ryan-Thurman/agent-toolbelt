@@ -12,8 +12,13 @@ Choose from workflows that are actually installed.
 
 | Task | Shared owner |
 | --- | --- |
+| Synthesize customer research | `user-research-synthesis` |
+| Select an opportunity or experiment | `product-discovery` |
+| Assess customer outcomes after an experiment or release | `product-outcome-review` |
+| Discover maintenance work across a repository | `tech-debt-discovery` |
+| Document architecture and review attack paths | `system-design`, then `threat-model` |
 | Compare an ask with current behavior, or clarify scope | `shape-up` |
-| Plan and implement approved requirements or tickets | `phased-delivery` |
+| Review a plan, or deliver approved requirements or tickets | `phased-delivery` |
 | Reproduce and repair a defect | `bug-to-fix` |
 | Assess a technical investment or dependency | `tech-backlog-assessment` |
 | Find an existing precedent for a narrow ticket | `ticket-discovery` |

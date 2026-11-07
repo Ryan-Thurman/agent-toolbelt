@@ -8,4 +8,5 @@ pack_ship_it() {
   skill ship-it references/rollout-and-rollback.md
 
   template release-notes.md
+  workflow delivery-retrospective-workflow.md
 }

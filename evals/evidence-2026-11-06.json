@@ -1,0 +1,47 @@
+{
+  "date": "2026-11-06",
+  "evaluation_mode": "Explicit skill execution by isolated subagents; not automatic host routing.",
+  "model": "Inherited session model; exact model version was not recorded.",
+  "source_hashes": {
+    "evals/fixtures/debt/README.md": "40d3f8dfd8ebcd80d11bb89842c111692a75045bf624ce07d4eb72c9aad34e71",
+    "evals/fixtures/debt/src/format.js": "d68448e6c1e5b7bcff1c2926a630e861e105ab575535b75ccc7f4f7342cec245",
+    "evals/fixtures/debt/src/invitations.js": "66036760ab8311f01e918f8fa2208a225e9bfb9195e37d22758b9088de82a02a",
+    "evals/fixtures/debt/src/public-api.js": "fdd0d3ef6ccab43547a6ae678e70976bc173bcb5f42311b3de1b8f9b31dc2cde",
+    "evals/fixtures/design/plan.md": "9152e013fe232dd54915bfc69ad90c40e2fb212abc8d7b83937e8c8090fc4560",
+    "evals/fixtures/design/requirements.md": "100068cbd825f9bc3f9d47adcf156bbb7ead8507fa9eee5d5475a3af1bcdc4e0",
+    "evals/fixtures/research/interviews.md": "523133c29842e9b71438e9e38f0ad0ac9542e682077baebefc23f53dc5819301",
+    "evals/fixtures/research/results.md": "2e63b6edcc2db986cb48a0ae331707568db5fe8d10bd89c33df85c50d2fc80ad",
+    "shared/contracts/references/evidence-quality.md": "960d7f2859e5f2103824cfd02d60f2774bcef941d8acb899de045df5daf54aba",
+    "shared/contracts/references/product-measurement.md": "0e6135cdd2a3543c88abf2d91570ee8f95bb9b56b4bc2723263b665780a70d6b",
+    "skills/phased-delivery/SKILL.md": "8726eb0b0b335443e4cbe4e52544c48c3d0fba9dd755624a9d7fe8654447b8e5",
+    "skills/phased-delivery/references/plan-readiness.md": "b11614b06b49815373c20b835a11338eea088ebb536c10951fc6f054f47303c0",
+    "skills/product-outcome-review/SKILL.md": "4c08dc1d3bb8ffda71295de70367f81b04ae5f5e01e4ef9505325e05bda10764",
+    "skills/system-design/SKILL.md": "49f544832d809d2a25f08e09ed6481d8d30d45871513acf7915c19fd44e003f8",
+    "skills/tech-debt-discovery/SKILL.md": "728ae373c795cca0aabf94ddd0f71dcdacb6a92af2ed4b18d23a31c54e3d28c0",
+    "skills/threat-model/SKILL.md": "f419dc66da289d9f13db521c2b7526e45c31d61fec2003ec7c6868f220000549",
+    "skills/user-research-synthesis/SKILL.md": "d6fc01a1d02999df9a233fc947f292410e9faa3ebdd2ac1977dea22a7d1fe7b6"
+  },
+  "local_artifacts": ".atb-work/skill-evals-2026-11-06/",
+  "cases": [
+    {
+      "id": "research-counterexamples",
+      "status": "Passed after template-path clarification"
+    },
+    {
+      "id": "outcome-population-change",
+      "status": "Passed after template-path clarification"
+    },
+    {
+      "id": "design-and-threats",
+      "status": "Passed after template-path clarification"
+    },
+    {
+      "id": "plan-readiness",
+      "status": "Passed"
+    },
+    {
+      "id": "debt-evidence",
+      "status": "Passed after template-path and handoff correction"
+    }
+  ]
+}

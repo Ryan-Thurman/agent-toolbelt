@@ -10,6 +10,7 @@ Start here:
 - `project-workflow-boundary.md` - shared workflow ownership and project-lifecycle migration.
 - `toolbelt-cleanup-2026-11-03.md` - cleanup scope, validation results, and remaining release checks.
 - `portal-visual-review.md` - Playwright setup, theme screenshots, browser checks, and review evidence.
+- `portal-color-review-2026-11-06.md` - Mobbin comparisons, category labels, neutral surfaces, and task grouping for release `1.1.1`.
 - `portal-hosting.md` - GitHub Pages setup, version-gated publication, and release requirements.
 - `tutorial.md` - guided first install and first feature walkthrough.
 - `phase-command-map.md` - which commands each workflow phase uses, at a glance.
@@ -23,6 +24,9 @@ Start here:
   skill additions, and a narrower Vercel rule-scope design.
 - `skill-focus-review-2026-11-02.md` - product, QA, development, PR, lookup,
   and verification coverage; concrete instruction gaps and ordered priorities.
+- `skill-packaging-research-2026-11-06.md` - current coverage, proposed product,
+  technical health, system design, and security collections; source choices and implementation order.
+- `product-design-health-implementation-2026-11-06.md` - implemented skills, commands, workflow changes, portal updates, and verification limits for release `1.1.0`.
 - `knowledge-verification-deep-dive-2026-11-02.md` - two proposed evidence skills,
   shared evidence rules, upstream comparison, and evaluation/implementation design.
 - `readable-output-design-2026-11-02.md` - table and diagram defaults, concrete

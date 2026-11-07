@@ -1,4 +1,4 @@
 interface:
   display_name: "Tech Backlog Assessment"
-  short_description: "Assess technical backlog items before implementation with evidence, risks, and next workflow."
-  default_prompt: "Assess this technical backlog item."
+  short_description: "Assess one technical investment before implementation."
+  default_prompt: "Use $tech-backlog-assessment to assess this item and compare its alternatives."

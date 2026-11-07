@@ -7,6 +7,7 @@ description: Perform a read-only security audit of code, configuration, dependen
 
 Before you write a response for the user, read
 `shared/contracts/references/human-readable-output.md`.
+Read `shared/contracts/references/evidence-quality.md` when assessing findings and control status.
 
 Audit a bounded target for security risks. Default behavior is read-only review.
 
@@ -20,6 +21,8 @@ Audit a bounded target for security risks. Default behavior is read-only review.
    or compliance.
 3. Report remediation, verification, confidence, and residual risk without printing
    secret values. Treat suspected secrets as sensitive evidence.
+   When a design or threat report exists, reconcile its requirements and threat IDs against implementation evidence.
+   Record each required control as Verified, Failed, or Not verified with the inspected revision and evidence.
 4. Stop before active testing. Proceed only when the user gives written scope and
    authorization immediately before the requested active action.
 

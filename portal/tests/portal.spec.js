@@ -33,23 +33,24 @@ test.beforeEach(async ({ page }) => {
   page.on('pageerror', (error) => problems.errors.push(error.message));
   page.on('request', (request) => { if (/^https?:/.test(request.url())) problems.remoteRequests.push(request.url()); });
   await page.goto(portalURL);
-  await expect(page.locator('#skills-grid .skill-card')).toHaveCount(29);
+  await expect(page.locator('#skills-grid .skill-card')).toHaveCount(33);
   await page.evaluate(() => document.fonts.ready);
 });
 
 test('readable catalog, filters, and skill details', async ({ page }, testInfo) => {
   const { errors, remoteRequests } = diagnostics.get(page);
 
-  await expect(page.locator('#result-summary')).toHaveText('Showing all 29 skills');
+  await expect(page.locator('#result-summary')).toHaveText('Showing all 33 skills');
   await expect(page.locator('html')).toHaveAttribute('data-theme', testInfo.project.use.colorScheme);
   await expect(page.getByRole('searchbox', { name: 'Search skills' })).toBeInViewport();
   await expect(page.getByRole('navigation', { name: 'Primary navigation' })).toBeVisible();
-  await expect(page.locator('#skill-count')).toHaveText('29');
+  await expect(page.locator('#skill-count')).toHaveText('33');
   await expect(page.getByRole('button', { name: 'Reset filters', exact: true })).toBeVisible();
   await checkLayout(page);
   await capture(page, testInfo, 'home');
   await checkAccessibility(page, testInfo, 'catalog');
   await checkTaskShortcuts(page);
+  await checkProductDesignWorkflows(page);
 
   const guide = page.locator('.discovery-walkthrough');
   await expect(guide).not.toHaveAttribute('open');
@@ -96,12 +97,12 @@ test('readable catalog, filters, and skill details', async ({ page }, testInfo) 
   await search.fill('no-such-skill-908172');
   await expect(page.locator('#empty-state')).toBeVisible();
   await page.locator('#empty-clear').click();
-  await expect(page.locator('#skills-grid .skill-card')).toHaveCount(29);
+  await expect(page.locator('#skills-grid .skill-card')).toHaveCount(33);
 
   await page.locator('#category-filters').getByRole('button', { name: 'Review & Quality', exact: true }).click();
   await expect(page.locator('#result-summary')).toContainText('match your filters');
   await page.getByRole('button', { name: 'Reset filters', exact: true }).click();
-  await expect(page.locator('#result-summary')).toHaveText('Showing all 29 skills');
+  await expect(page.locator('#result-summary')).toHaveText('Showing all 33 skills');
 
   await page.locator('#workflows').scrollIntoViewIfNeeded();
   await capture(page, testInfo, 'workflows');
@@ -119,7 +120,7 @@ test('theme preference persists and keyboard focus is visible', async ({ page },
   await expect(toggle).toHaveAccessibleName(`Use ${initial} theme`);
   await page.reload();
   await expect(page.locator('html')).toHaveAttribute('data-theme', next);
-  await expect(page.locator('#skills-grid .skill-card')).toHaveCount(29);
+  await expect(page.locator('#skills-grid .skill-card')).toHaveCount(33);
   await page.keyboard.press('Tab');
   const skip = page.getByRole('link', { name: 'Skip to content' });
   await expect(skip).toBeFocused();
@@ -139,6 +140,9 @@ async function checkTaskShortcuts(page) {
     { id: 'product-discovery', title: 'Product Discovery' },
     { id: 'bug-to-fix', title: 'Bug To Fix' },
     { id: 'pr-review', title: 'PR Review' },
+    { id: 'user-research-synthesis', title: 'User Research Synthesis' },
+    { id: 'tech-debt-discovery', title: 'Technical Debt Discovery' },
+    { id: 'system-design', title: 'System Design' },
   ];
   for (const task of tasks) {
     const shortcut = page.locator(`#task-shortcuts [data-open-skill="${task.id}"]`);
@@ -149,4 +153,23 @@ async function checkTaskShortcuts(page) {
     await expect(page.getByRole('dialog')).toBeHidden();
     await expect(shortcut).toBeFocused();
   }
+}
+
+
+async function checkProductDesignWorkflows(page) {
+  await expect(page.locator('#workflow-count')).toHaveText('6');
+  const learning = page.locator('#workflow-product-learning');
+  await learning.scrollIntoViewIfNeeded();
+  const outcome = learning.locator('.stage-skill[data-open-skill="product-outcome-review"]');
+  await outcome.click();
+  await expect(page.locator('#detail-title')).toHaveText('Product Outcome Review');
+  await expect(page.getByRole('dialog')).toContainText('population');
+  await page.keyboard.press('Escape');
+  await expect(outcome).toBeFocused();
+  const architecture = page.locator('#workflow-security-sensitive-change');
+  await expect(architecture.locator('.stage-skill').first()).toHaveText('System Design');
+  await expect(architecture.locator('.stage-skill[data-open-skill="threat-model"]')).toHaveText('Threat Model');
+  const improvement = page.locator('#workflow-codebase-improvement');
+  await expect(improvement.locator('.stage-skill').first()).toHaveText('Technical Debt Discovery');
+  await expect(improvement.locator('.stage-skill[data-open-skill="tech-backlog-assessment"]')).toHaveText('Tech Backlog Assessment');
 }

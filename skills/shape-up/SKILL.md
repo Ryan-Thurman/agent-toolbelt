@@ -45,7 +45,11 @@ chooses to shape the ask, carry the evidence and open decisions into the brief.
 3. **Grill** (see `references/interrogation.md`): one question per message, each with a recommended
    answer, focused on purpose, constraints, success criteria, and in/out of scope. Use the
    contradiction-hunting techniques to force precision on overloaded terms and edge cases.
-4. **Self-audit the draft brief**: internal consistency (do any parts contradict?), ambiguity (could
+4. **Review design readiness.** Separate agreed decisions, delegated technical choices, deferred ideas, and unresolved questions.
+   Check whether another implementer would need a consequential guess before planning.
+   Resolve repository facts and delegated choices directly.
+   Use an independent reviewer when risk, scope, and authorized delegation justify the cost.
+   **Self-audit the draft brief**: internal consistency (do any parts contradict?), ambiguity (could
    a requirement be read two ways? pick one), placeholder scan (no `TBD`/`TODO` left). Done means
    there are no unresolved overloaded terms, no unanswered scope boundary, and no `TBD`.
 5. **Emit the brief** (`../../templates/shape-up-brief.md`) and **stop for approval** (the hard

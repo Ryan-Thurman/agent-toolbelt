@@ -1,7 +1,7 @@
 # Installation
 
 The native cross-host plugin is the primary installation path. The repository
-root exposes 29 skills for Cursor, Claude Code, and Codex from one canonical
+root exposes 33 skills for Cursor, Claude Code, and Codex from one canonical
 tree. For a local clone:
 
 ```sh
@@ -173,7 +173,7 @@ application* in a multi-root workspace, promote those rules to **Cursor User Rul
 ## Cross-host plugin (Cursor, Claude Code, and Codex)
 
 The repository root is the canonical skills-only plugin package. It contains
-native manifests for all three hosts and one shared `skills/` tree, exposing 29
+native manifests for all three hosts and one shared `skills/` tree, exposing 33
 on-demand skills, 0 commands, and 0 hooks; no committed skill copies are
 generated. The root `commands/` remain available through `install.sh`. The
 `cursor-hooks` pack remains available through `install.sh`, but its manifest and
@@ -217,7 +217,7 @@ scripts/check-plugin-package.sh
 ```
 
 This check verifies the three manifests, aligned version and identity metadata,
-both catalog source paths, all 29 canonical skills, and that default plugin
+both catalog source paths, all 33 canonical skills, and that default plugin
 payloads do not include hooks or always-on rules. Claude's installed validator is
 run as part of the check. Run the repository check script from the clone rather
 than relying on an installation-specific validator path.

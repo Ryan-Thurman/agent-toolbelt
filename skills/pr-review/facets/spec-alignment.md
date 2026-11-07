@@ -1,4 +1,4 @@
-# Facet: spec-alignment (deep, only when a spec/issue is linked)
+# Facet: spec-alignment (standard or deep when intent supplies acceptance criteria)
 
 You review **only whether the change matches its stated intent**. Follow `facets/_shared.md` for
 rules, schema, and safety. Set `"facet": "spec-alignment"` on every finding.
@@ -18,9 +18,10 @@ description, or a ticket. If none is provided, emit `[]` — this facet only run
 
 ## What to produce
 
-Findings as usual, **plus** a compact requirements-coverage assessment the orchestrator will render
-as a table: for each requirement / acceptance criterion → `met | partial | missing | extra`, with
-the `file:line` that satisfies it (or "—").
+Return findings in the existing JSON finding schema.
+Keep the orchestrator's findings-array contract unchanged.
+The orchestrator owns the compact coverage table for every supplied acceptance criterion.
+Use evidence from the frozen review revision and distinguish verified, failed, and not verified behavior.
 
 ## Do NOT flag
 

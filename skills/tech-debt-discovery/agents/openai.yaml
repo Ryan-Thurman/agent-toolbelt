@@ -1,0 +1,4 @@
+interface:
+  display_name: "Technical Debt Discovery"
+  short_description: "Find evidence-backed maintenance work across a repository."
+  default_prompt: "Use $tech-debt-discovery to find and prioritize maintenance work in this repository."

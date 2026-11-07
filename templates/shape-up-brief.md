@@ -19,6 +19,9 @@ Only if scope warrants; keep them tight.
 
 ## Implementation Decisions
 
+Distinguish agreed decisions, delegated technical choices, and analyst assumptions.
+Link source documents and retain agreed exclusions.
+
 The modules to build or modify, architectural decisions, schema changes, and API contracts.
 
 Do **not** include specific file paths or code snippets — they go stale quickly. Describe behavior
@@ -36,6 +39,7 @@ What this work explicitly does not include.
 ## Open Questions
 
 Anything unresolved, each with a recommended default.
+Before approval, resolve questions whose wrong answer would materially change the scope or plan.
 
 ## Further Notes
 

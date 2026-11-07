@@ -17,6 +17,14 @@ slice is demoable or verifiable by itself.
 
 The ticket(s) that must land first, or "None - can start immediately."
 
+## Source, boundaries, and verification
+
+Link the source requirements and agreed exclusions.
+Name the observable result and verification method for each acceptance criterion.
+Include required setup, tests, and documentation within this slice.
+Identify integration points needed for the complete behavior.
+Keep approved project ticket fields and scope authoritative.
+
 ## Parent
 
 Optional — the brief or epic this slice belongs to.

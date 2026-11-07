@@ -10,7 +10,7 @@ const { categoryBucketState, categorySkillIds, filterSkills, invocationFor, pars
 
 const payload = normalizePortalPayload();
 
-assert.strictEqual(payload.skills.length, 29, 'app fixture must contain 29 standard skills');
+assert.strictEqual(payload.skills.length, 33, 'app fixture must contain 33 standard skills');
 assert.deepStrictEqual(payload.discovery_tags, ['planning', 'bug-debugging', 'review', 'testing', 'security', 'refactor', 'documentation', 'release', 'automation', 'react-frontend'], 'discovery tags should be curated by the catalog');
 payload.discovery_tags.forEach((tag) => assert(payload.skills.some((skill) => skill.tags.includes(tag)), `discovery tag should be used: ${tag}`));
 assert.deepStrictEqual(Object.keys(payload.category_guidance), payload.categories, 'each catalog category should have one guidance summary');

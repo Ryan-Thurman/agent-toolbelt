@@ -7,10 +7,13 @@ description: "Assess technical backlog items before implementation: decide do/de
 
 Before you write a response for the user, read
 `shared/contracts/references/human-readable-output.md`.
+Read `shared/contracts/references/evidence-quality.md` when evaluating the item.
 
 Use this skill when the user has a technical backlog item and needs a decision
 memo before implementation. The work is discovery and recommendation, not code
 changes.
+
+Paths beginning `templates/` or `shared/` refer to the Toolbelt root. Compatibility installers rewrite them under the target’s `.atb/`.
 
 ## Mutation Policy
 
@@ -30,6 +33,8 @@ Good fits:
 
 Use `ticket-discovery` instead when the ticket is narrow and already names a
 precedent to copy or adapt.
+Use an available `tech-debt-discovery` to discover repository candidates before selecting an item.
+For source-to-target upgrades, read `references/version-delta.md`.
 
 ## Workflow
 

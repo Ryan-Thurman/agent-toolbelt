@@ -50,7 +50,7 @@ test('readable catalog, filters, and skill details', async ({ page }, testInfo) 
   await capture(page, testInfo, 'home');
   await checkAccessibility(page, testInfo, 'catalog');
   await checkTaskShortcuts(page);
-  await checkProductDesignWorkflows(page);
+  await checkProductDesignWorkflows(page, testInfo);
 
   const guide = page.locator('.discovery-walkthrough');
   await expect(guide).not.toHaveAttribute('open');
@@ -104,7 +104,10 @@ test('readable catalog, filters, and skill details', async ({ page }, testInfo) 
   await page.getByRole('button', { name: 'Reset filters', exact: true }).click();
   await expect(page.locator('#result-summary')).toHaveText('Showing all 33 skills');
 
-  await page.locator('#workflows').scrollIntoViewIfNeeded();
+  await page.locator('#workflows .section-heading').evaluate((element) => {
+    const headerHeight = document.querySelector('.site-header').getBoundingClientRect().height;
+    window.scrollTo({ top: element.getBoundingClientRect().top + window.scrollY - headerHeight - 20, behavior: 'instant' });
+  });
   await capture(page, testInfo, 'workflows');
   await checkLayout(page);
   expect(errors).toEqual([]);
@@ -156,10 +159,32 @@ async function checkTaskShortcuts(page) {
 }
 
 
-async function checkProductDesignWorkflows(page) {
+async function checkProductDesignWorkflows(page, testInfo) {
   await expect(page.locator('#workflow-count')).toHaveText('6');
   const learning = page.locator('#workflow-product-learning');
   await learning.scrollIntoViewIfNeeded();
+  const stages = learning.getByRole('list', { name: 'Product decisions and learning stages' });
+  await expect(stages.getByRole('listitem')).toHaveCount(6);
+  const firstStage = stages.getByRole('listitem').first();
+  await expect(firstStage.locator('.stage-category')).toHaveText('Discovery & Planning');
+  await expect(firstStage.locator('.stage-output')).toContainText('Evidence-linked themes');
+  const prompt = firstStage.locator('.stage-prompt');
+  await expect(prompt.locator('.stage-example')).toBeHidden();
+  await prompt.locator('summary').click();
+  await expect(prompt.locator('.stage-example')).toHaveText('Synthesize this customer research.');
+  await expect(prompt.locator('.stage-example')).toBeVisible();
+  await checkAccessibility(page, testInfo, 'workflow-example');
+  await prompt.locator('summary').click();
+  const first = learning.locator('.workflow-start');
+  await first.click();
+  await expect(page.locator('#detail-title')).toHaveText('User Research Synthesis');
+  await page.keyboard.press('Escape');
+  await expect(first).toBeFocused();
+  const handoff = firstStage.locator('.next-link[data-open-skill="product-discovery"]');
+  await handoff.click();
+  await expect(page.locator('#detail-title')).toHaveText('Product Discovery');
+  await page.keyboard.press('Escape');
+  await expect(handoff).toBeFocused();
   const outcome = learning.locator('.stage-skill[data-open-skill="product-outcome-review"]');
   await outcome.click();
   await expect(page.locator('#detail-title')).toHaveText('Product Outcome Review');

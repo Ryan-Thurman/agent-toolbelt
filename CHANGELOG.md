@@ -2,6 +2,15 @@
 
 ## Unreleased
 
+## v1.1.4 - 2026-11-06
+
+### Changed
+
+- Rebuilt workflow guides as numbered stage cards with named category markers and visible skill outputs.
+- Added a first-skill action, clearer possible handoffs, and expandable example prompts.
+- Used wider responsive stage layouts and retained the approved neutral dark palette.
+- Added browser coverage for workflow entry, handoff navigation, prompt expansion, and accessible stage lists.
+
 ## v1.1.3 - 2026-11-06
 
 ### Changed

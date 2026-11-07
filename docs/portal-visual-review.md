@@ -3,6 +3,7 @@
 Use Playwright to capture the portal and check its behavior in a browser.
 The portal itself remains an offline HTML page. The browser tools are development dependencies.
 The current design uses grouped task shortcuts, labeled category colors, neutral cards, and amber actions.
+Workflow guides use numbered stage cards with visible outputs and expandable example prompts.
 The dated records below describe each design revision.
 
 ## Install and run
@@ -40,8 +41,9 @@ Each successful run replaces images with the same names. Check the current repor
 The suite checks the catalog, category expansion, combined filters, empty results, detail dialogs, focus return, theme persistence, and horizontal overflow.
 It also checks search visibility, mobile navigation, filter reset, filter focus, and the search keyboard shortcut.
 The main catalog flow also checks all six task shortcuts and their keyboard focus return.
+Workflow checks cover stage lists, prompt expansion, first-skill navigation, next-skill navigation, and focus return.
 It also checks for page errors and remote requests in the main flow.
-Automated axe scans cover the catalog, selected filters, and the open skill dialog in each project.
+Automated axe scans cover the catalog, selected filters, the open skill dialog, and an expanded workflow prompt in each project.
 These scans include text contrast. They do not establish full accessibility conformance.
 
 The images are review evidence. They are not approved pixel comparison baselines.
@@ -326,3 +328,33 @@ The [hosting guide](portal-hosting.md) defines the gate and the one-time Pages s
 | GitHub Pages activation and deployment | Not verified | GitHub CLI access was unavailable. Repository Pages settings and a live deployment could not be confirmed. |
 
 The hosted-path screenshot and result are under `.atb-work/pages-deployment-2026-11-06/`.
+
+## Workflow stage cards — 2026-11-06
+
+The user found the workflow guides difficult to scan because white text dominated the cards.
+Version `1.1.4` gives each stage a clear category, output, and set of possible next skills.
+The approved charcoal surfaces remain in use.
+
+| Area | Change | Purpose |
+| --- | --- | --- |
+| Stage identity | A colored top border, icon, and category name identify each stage. | Match the category markers used in the skill library. |
+| Reading order | Numbered cards use three desktop columns, two tablet columns, and one mobile column. | Give descriptions more horizontal space. |
+| Skill outputs | Each stage shows the first expected output from the catalog. | Show what the skill can produce before users open its details. |
+| Example prompts | Native disclosure controls show prompts on demand. | Keep prompts available while reducing the initial text. |
+| Navigation | Amber skill titles, next-skill buttons, and a first-skill action open existing detail dialogs. | Make available actions visible. |
+| Branches | Handoff controls are labeled “Possible next skills.” | Preserve optional stages and alternate paths from the catalog. |
+
+The numbered guide does not require users to complete every stage.
+The controls open skill instructions; they do not execute a workflow.
+All expected outputs remain available in the skill detail dialog.
+
+| Check | Result | Evidence or limit |
+| --- | --- | --- |
+| Complete package check | Passed with `PLAYWRIGHT_SINGLE_PROCESS=1`. | The check included catalog validation, generated files, installer checks, browser tests, and plugin validation. |
+| Browser behavior | All eight tests passed in both themes and viewport sizes. | New checks cover stage lists, prompt expansion, navigation, and focus return. |
+| Automated accessibility | All 16 scans found no violations in the tested states. | Full accessibility conformance and manual assistive technology use remain unverified. |
+| Visual review | Desktop screenshots were inspected in both themes. The dark mobile screenshot was also inspected. | The screenshots are review evidence, not approved image comparison baselines. |
+| Browser process mode | Local checks used Chromium single-process mode. | Standard Chromium process mode remains unverified in this environment. |
+
+The standard screenshot paths contain this revision.
+Before images and command logs are under `.atb-work/portal-workflow-review-2026-11-06/`.

@@ -2,6 +2,51 @@
 
 ## Unreleased
 
+## v1.1.9 - 2026-11-08
+
+### Changed
+
+- Replaced workflow stage cards with a numbered vertical timeline.
+- Moved small step numbers to the far left on a connecting line.
+- Placed each skill output and example prompt beside its stage description.
+- Showed handoff links only for branches and exits that the timeline does not already show.
+
+## v1.1.8 - 2026-11-08
+
+### Changed
+
+- Moved workflow step numbers to the left of each stage card's category marker.
+- Gave the skill-detail close button a neutral border, centered symbol, and one focus ring.
+- Gave example-prompt Copy buttons a visible amber border.
+
+## v1.1.7 - 2026-11-06
+
+### Changed
+
+- Reduced workflow number circles to 32 pixels and their text to 16 pixels, with proportional white borders.
+
+## v1.1.6 - 2026-11-06
+
+### Changed
+
+- Changed workflow number badges to circles with centered numbers and thicker white borders.
+
+## v1.1.5 - 2026-11-06
+
+### Changed
+
+- Enlarged workflow step numbers and badges, with stronger text and border contrast.
+- Removed leading zeros from workflow step numbers.
+
+## v1.1.4 - 2026-11-06
+
+### Changed
+
+- Rebuilt workflow guides as numbered stage cards with named category markers and visible skill outputs.
+- Added a first-skill action, clearer possible handoffs, and expandable example prompts.
+- Used wider responsive stage layouts and retained the approved neutral dark palette.
+- Added browser coverage for workflow entry, handoff navigation, prompt expansion, and accessible stage lists.
+
 ## v1.1.3 - 2026-11-06
 
 ### Changed

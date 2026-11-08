@@ -389,36 +389,80 @@
         const article = createElement('article', 'workflow-card');
         article.id = `workflow-${workflow.id}`;
         const firstSkill = skillById.get(workflow.stages[0].skill);
-        if (firstSkill) applyCategory(article, firstSkill.category);
         const header = createElement('div', 'workflow-card-header');
         if (firstSkill) header.appendChild(categoryIcon(firstSkill.category));
-        const headerCopy = createElement('div');
+        const headerCopy = createElement('div', 'workflow-heading');
         headerCopy.append(createElement('h3', '', workflow.name), createElement('p', '', workflow.purpose));
         header.appendChild(headerCopy);
-        header.appendChild(createElement('code', 'workflow-id', workflow.id));
+        const meta = createElement('div', 'workflow-meta');
+        meta.appendChild(createElement('span', 'workflow-count', `${workflow.stages.length} stages`));
+        if (firstSkill) {
+          const first = createElement('button', 'workflow-start', 'View first skill →');
+          first.type = 'button';
+          first.dataset.openSkill = firstSkill.id;
+          meta.appendChild(first);
+        }
+        header.appendChild(meta);
         article.appendChild(header);
-        const stages = createElement('div', 'workflow-stages');
+        const stages = createElement('ol', 'workflow-stages');
+        stages.setAttribute('role', 'list');
+        stages.setAttribute('aria-label', `${workflow.name} stages`);
         workflow.stages.forEach((stage, index) => {
-          const stageElement = createElement('div', 'workflow-stage');
-          stageElement.appendChild(createElement('span', 'stage-number', String(index + 1).padStart(2, '0')));
+          const stageElement = createElement('li', 'workflow-stage');
           const skill = skillById.get(stage.skill);
+          if (skill) applyCategory(stageElement, skill.category);
+          const number = createElement('span', 'stage-number', String(index + 1));
+          number.setAttribute('aria-hidden', 'true');
+          stageElement.appendChild(number);
+
+          const main = createElement('div', 'stage-main');
+          const title = createElement('h4', 'stage-title');
           const stageButton = createElement('button', 'stage-skill', skill ? skill.display_name : stage.skill);
           stageButton.type = 'button';
           stageButton.dataset.openSkill = stage.skill;
-          stageElement.appendChild(stageButton);
-          stageElement.appendChild(createElement('p', 'stage-rationale', stage.rationale));
-          const example = createElement('p', 'stage-example', `“${stage.example_invocation}”`);
-          stageElement.appendChild(example);
-          if (stage.next_steps.length) {
+          stageButton.id = `${workflow.id}-stage-${index + 1}`;
+          title.appendChild(stageButton);
+          stageElement.setAttribute('aria-labelledby', stageButton.id);
+          main.appendChild(title);
+          if (skill) {
+            const identity = createElement('div', 'stage-identity');
+            identity.append(categoryIcon(skill.category), createElement('span', 'stage-category', skill.category));
+            main.appendChild(identity);
+          }
+          main.appendChild(createElement('p', 'stage-rationale', stage.rationale));
+          stageElement.appendChild(main);
+
+          const aside = createElement('div', 'stage-aside');
+          if (skill && skill.expected_outputs.length) {
+            const output = createElement('div', 'stage-output');
+            output.append(createElement('span', 'stage-label', 'Output'), createElement('p', '', skill.expected_outputs[0]));
+            aside.appendChild(output);
+          }
+          const prompt = createElement('details', 'stage-prompt');
+          prompt.appendChild(createElement('summary', '', 'Example prompt'));
+          prompt.appendChild(createElement('p', 'stage-example', stage.example_invocation));
+          aside.appendChild(prompt);
+          // The timeline already shows the following stage; list only branches and exits.
+          const followingSkill = workflow.stages[index + 1] && workflow.stages[index + 1].skill;
+          const branches = stage.next_steps.filter((nextId) => nextId !== followingSkill);
+          if (branches.length) {
+            const handoff = createElement('div', 'stage-handoff');
+            handoff.appendChild(createElement('span', 'stage-label', followingSkill ? 'Can also lead to' : 'After this workflow'));
             const next = createElement('div', 'stage-next');
-            stage.next_steps.forEach((nextId) => {
-              const nextButton = createElement('button', 'next-link', `Next: ${skillById.has(nextId) ? skillById.get(nextId).display_name : nextId}`);
+            branches.forEach((nextId) => {
+              const nextButton = createElement('button', 'next-link');
               nextButton.type = 'button';
               nextButton.dataset.openSkill = nextId;
+              nextButton.appendChild(createElement('span', '', skillById.has(nextId) ? skillById.get(nextId).display_name : nextId));
+              const arrow = createElement('span', 'next-arrow', '→');
+              arrow.setAttribute('aria-hidden', 'true');
+              nextButton.appendChild(arrow);
               next.appendChild(nextButton);
             });
-            stageElement.appendChild(next);
+            handoff.appendChild(next);
+            aside.appendChild(handoff);
           }
+          stageElement.appendChild(aside);
           stages.appendChild(stageElement);
         });
         article.appendChild(stages);

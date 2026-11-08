@@ -3,7 +3,7 @@
 Use Playwright to capture the portal and check its behavior in a browser.
 The portal itself remains an offline HTML page. The browser tools are development dependencies.
 The current design uses grouped task shortcuts, labeled category colors, neutral cards, and amber actions.
-Workflow guides use numbered stage cards with visible outputs and expandable example prompts.
+Workflow guides use a numbered vertical timeline with visible outputs and expandable example prompts.
 The dated records below describe each design revision.
 
 ## Install and run
@@ -358,3 +358,26 @@ All expected outputs remain available in the skill detail dialog.
 
 The standard screenshot paths contain this revision.
 Before images and command logs are under `.atb-work/portal-workflow-review-2026-11-06/`.
+
+## Workflow timeline — 2026-11-08
+
+The user found the stage cards difficult to read.
+Large number badges, colored borders, boxed outputs, and repeated handoff buttons competed with the skill names.
+Version `1.1.9` replaces the card grid with a vertical timeline.
+
+| Area | Change | Purpose |
+| --- | --- | --- |
+| Order | Small step numbers sit at the far left on a connecting line. | Show sequence without a dominant badge. |
+| Stage content | The skill name, category marker, and description occupy the left column. | Make the skill name the first item to read. |
+| Output and prompt | The first expected output and the example prompt occupy the right column. | Keep the result next to its stage without a separate box. |
+| Handoffs | Links appear only for branches and exits that are not the following stage. | Remove links that repeat the timeline order. |
+| Mobile | The output and prompt move below the description. The number line remains. | Keep one readable column on small screens. |
+
+The catalog `next_steps` data is unchanged.
+The skill detail dialog still lists every related skill.
+
+| Check | Result | Evidence or limit |
+| --- | --- | --- |
+| Complete package check | Passed with `PLAYWRIGHT_SINGLE_PROCESS=1`. | The check included catalog validation, generated files, installers, browser tests, and plugin validation. |
+| Browser behavior | All eight tests passed in both themes and viewport sizes. | A test confirms that a following-stage handoff is not repeated and that a branch link opens its skill. |
+| Visual review | Desktop dark, desktop light, and mobile dark screenshots of the feature delivery workflow were inspected. | The screenshots are review evidence, not approved image comparison baselines. |

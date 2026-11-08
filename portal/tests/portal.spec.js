@@ -180,9 +180,11 @@ async function checkProductDesignWorkflows(page, testInfo) {
   await expect(page.locator('#detail-title')).toHaveText('User Research Synthesis');
   await page.keyboard.press('Escape');
   await expect(first).toBeFocused();
-  const handoff = firstStage.locator('.next-link[data-open-skill="product-discovery"]');
+  // The timeline shows the following stage, so only branches appear as handoff links.
+  await expect(firstStage.locator('.next-link')).toHaveCount(0);
+  const handoff = stages.getByRole('listitem').nth(1).locator('.next-link[data-open-skill="product-outcome-review"]');
   await handoff.click();
-  await expect(page.locator('#detail-title')).toHaveText('Product Discovery');
+  await expect(page.locator('#detail-title')).toHaveText('Product Outcome Review');
   await page.keyboard.press('Escape');
   await expect(handoff).toBeFocused();
   const outcome = learning.locator('.stage-skill[data-open-skill="product-outcome-review"]');

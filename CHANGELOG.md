@@ -2,6 +2,15 @@
 
 ## Unreleased
 
+## v1.1.9 - 2026-11-08
+
+### Changed
+
+- Replaced workflow stage cards with a numbered vertical timeline.
+- Moved small step numbers to the far left on a connecting line.
+- Placed each skill output and example prompt beside its stage description.
+- Showed handoff links only for branches and exits that the timeline does not already show.
+
 ## v1.1.8 - 2026-11-08
 
 ### Changed

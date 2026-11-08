@@ -2,6 +2,14 @@
 
 ## Unreleased
 
+## v1.1.8 - 2026-11-08
+
+### Changed
+
+- Moved workflow step numbers to the left of each stage card's category marker.
+- Gave the skill-detail close button a neutral border, centered symbol, and one focus ring.
+- Gave example-prompt Copy buttons a visible amber border.
+
 ## v1.1.7 - 2026-11-06
 
 ### Changed

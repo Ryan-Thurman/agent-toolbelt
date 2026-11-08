@@ -411,12 +411,11 @@
           const stageElement = createElement('li', 'workflow-stage');
           const skill = skillById.get(stage.skill);
           const identity = createElement('div', 'stage-identity');
+          identity.appendChild(createElement('span', 'stage-number', String(index + 1)));
           if (skill) {
             applyCategory(stageElement, skill.category);
             identity.append(categoryIcon(skill.category), createElement('span', 'stage-category', skill.category));
           }
-          const number = createElement('span', 'stage-number', String(index + 1));
-          identity.appendChild(number);
           stageElement.appendChild(identity);
           const title = createElement('h4', 'stage-title');
           const stageButton = createElement('button', 'stage-skill', skill ? skill.display_name : stage.skill);

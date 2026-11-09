@@ -8,6 +8,7 @@ pack_review_on_open() {
   skill review-on-open references/ci-event.md
   shared_contract references/providers.md
   shared_contract references/posting.md
+  shared_contract references/operation-retries.md
 
   template review-on-open-github.yml
 }

@@ -2,12 +2,12 @@
 
 The delivery lanes. The [offline portal](../portal/generated/index.html) owns
 discovery, examples, and the common workflow map; this page provides deeper
-operational guidance. For a per-phase command breakdown with Mermaid diagrams, see
-the [Phase → Command Map](../docs/phase-command-map.md).
+operational guidance. Each workflow below identifies its commands and completion boundaries.
 
 - [Phased Delivery](#phased-delivery) — requirements or tickets to one PR per phase.
 - [Phase Context Workflow](#phase-context-workflow) — durable state across resets.
 - [Bug to Fix](#bug-to-fix) — the diagnostic lane.
+- [System Design](#system-design) — architecture questions, design documents, diagrams, and decisions.
 - [Shape Up](#shape-up) — review current-state gaps or shape an approved brief.
 - [Product Discovery](#product-discovery) — evidence before deciding what to shape.
 - [Threat Model](#threat-model) — design-time security analysis.
@@ -18,6 +18,11 @@ Phased Delivery turns a raw requirement or existing approved plan into
 human-reviewed PRs. It reuses supplied approved tickets:
 **one ticket = one phase = one PR**. The agent fills in technical context such
 as files, interfaces, tests, and checks without changing ticket scope.
+
+Behavior changes use the [shared TDD procedure](../shared/contracts/references/test-driven-development.md).
+Each selected behavior starts with an observed failing test, then the smallest implementation that passes it.
+Plan unit tests for important branches, boundaries, and errors.
+Use existing coverage tools and report uncovered behavior or unmeasured coverage.
 
 ```text
 Source requirement or tickets -> phase/PR map -> plan approval -> implement
@@ -105,6 +110,35 @@ Key ideas:
   the bug before dev, and keeps the automated failing-test path for when a test
   harness exists.
 - `/rca --diagnose` runs a read-only root-cause analysis that never edits files.
+
+## System Design
+
+Use `system-design` when a team member has architecture questions or needs a design document.
+Start with the scoped question, existing requirements, and current implementation evidence.
+The skill compares viable approaches and asks focused questions about consequential unknowns.
+It checks responsibilities, interfaces, data ownership, quality constraints, failure paths, operations, cost, and verification.
+
+For example:
+
+```text
+$system-design
+Help our team work through this architecture question and compare the options.
+Record the design, diagrams, decision reasons, and important open questions.
+```
+
+The selected output can be an answer, a repository map, a design document, or an architecture decision record.
+Full design proposals retain a linked threat review for the same revision.
+Focused explanations and existing repository maps do not require a new threat report.
+Records preserve their actual approval state and link to replacement decisions when choices change.
+Design readiness identifies remaining decisions and evidence gaps; it does not grant implementation authority.
+
+The compatibility installation includes design and decision-record templates:
+
+```sh
+./install.sh --harness all system-design /path/to/project
+```
+
+Keep generated internal documents in the project's designated location or outside the public Toolbelt repository.
 
 ## Product Discovery
 

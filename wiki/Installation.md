@@ -43,8 +43,7 @@ Other shapes:
 
 New to the compatibility installer? Take the guided path:
 
-- `docs/tutorial.md` — a first install and first feature walkthrough.
-- `docs/README.md` — the documentation map.
+- `wiki/Workflows.md` — the shared workflow entry points.
 
 After install, open the target folder and run `/workflow-router` (or a specific
 pack's entry command) from chat.
@@ -144,7 +143,7 @@ The target repository owns process rules, forms, and approval requirements.
 The installer does not delete rules from earlier installations.
 Review each old rule against its owner before removing it.
 Preserve project-owned rules and local changes.
-Read [the migration guide](../docs/project-workflow-boundary.md) before an update.
+Read [the ownership boundary](../README.md#what-belongs-here) before an update.
 
 ## Polyrepo / `--sweep`
 

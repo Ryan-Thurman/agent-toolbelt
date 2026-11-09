@@ -403,16 +403,18 @@ window.AGENT_TOOLBELT_DATA = {
       "display_name": "Phased Delivery",
       "short_description": "Deliver requirements or tickets as one PR per phase.",
       "default_prompt": "Use $phased-delivery to plan and deliver this requirement as reviewable PRs.",
-      "description": "Review implementation plans or deliver requirements in reviewable phases, one PR per phase. Use with a raw request, existing plan, or approved tickets; preserve one ticket per phase and PR.",
+      "description": "Review implementation plans or deliver requirements through test-first implementation in reviewable phases, one PR per phase. Use with a raw request, existing plan, or approved tickets; preserve one ticket per phase and PR.",
       "category": "Feature Delivery",
       "tags": [
         "feature",
         "planning",
         "phases",
         "tickets",
+        "testing",
+        "tdd",
         "review"
       ],
-      "primary_purpose": "Deliver approved requirements or tickets in reviewable phases, one PR per phase.",
+      "primary_purpose": "Deliver approved requirements or tickets through test-first implementation in reviewable phases, one PR per phase.",
       "use_when": [
         "A requirement, plan, or approved project ticket set needs implementation through human-reviewed PRs.",
         "An existing implementation plan needs a report-only readiness check before execution."
@@ -425,11 +427,13 @@ window.AGENT_TOOLBELT_DATA = {
         "Phase-to-PR map",
         "Implementation and verification evidence",
         "One reviewable PR per phase or ticket",
-        "Plan readiness and requirement coverage"
+        "Plan readiness and requirement coverage",
+        "Red/green test evidence and unit-test coverage gaps"
       ],
       "example_prompts": [
         "Use Phased Delivery to implement these approved tickets as stacked PRs, one ticket per PR.",
         "Plan and deliver this requirement in reviewable phases.",
+        "Implement this feature test-first and cover its important unit-test branches.",
         "Review this plan for missing requirements and disconnected components."
       ],
       "related_skills": [
@@ -1059,32 +1063,45 @@ window.AGENT_TOOLBELT_DATA = {
     {
       "id": "system-design",
       "display_name": "System Design",
-      "short_description": "Create design documents with linked threat reviews.",
-      "default_prompt": "Use $system-design to document this architecture and review its attack paths.",
-      "description": "Produce or review a system design document with alternatives, interfaces, failure behavior, and a linked threat review. Use for architecture decisions; use phased-delivery for implementation planning.",
+      "short_description": "Discuss architecture, compare options, and document decisions.",
+      "default_prompt": "Use $system-design to work through this architecture question and produce the design documents, decisions, and diagrams needed.",
+      "description": "Work through system design questions, compare options, and create or review architecture documents, diagrams, and decision records. Also map implemented architecture; use phased-delivery for implementation planning.",
       "category": "Discovery & Planning",
       "tags": [
         "architecture",
+        "documentation",
+        "adr",
+        "diagrams",
         "security",
         "planning",
         "evidence"
       ],
-      "primary_purpose": "Produce a system design document with alternatives and a linked threat review.",
+      "primary_purpose": "Work through architecture questions and produce evidence-backed designs, diagrams, decision records, or current repository maps.",
       "use_when": [
-        "Architecture decisions need documented interfaces, data flows, failure behavior, and security requirements."
+        "A team member needs help exploring a system design question or comparing architecture approaches.",
+        "Architecture decisions need documented interfaces, data flows, failure behavior, and security requirements.",
+        "A design document, architecture diagram, or decision record needs authoring, review, or maintenance.",
+        "Current repository maps, dependency edges, or entry-point flows need source-backed maintenance."
       ],
       "avoid_when": [
         "A small bounded edit needs no architecture decision, or implementation planning is already sufficient."
       ],
       "preferred_context": "Requirements, current system evidence, constraints, architecture sources, and project-owned document format.",
       "expected_outputs": [
-        "System design document",
-        "Linked threat review",
-        "Security requirements and readiness findings"
+        "Scoped architecture answers and viable options",
+        "System design document and appropriate architecture views",
+        "Architecture decision records (ADRs) with lifecycle links",
+        "Linked threat review for concrete design proposals",
+        "Current repository map with source revisions and coverage limits, when requested",
+        "Readiness findings, open decisions, owners, and verification gaps"
       ],
       "example_prompts": [
+        "Help our team work through this system design question and compare viable approaches.",
         "Design this service and review its attack paths.",
-        "Review this architecture for unanswered decisions, failure behavior, and security requirements."
+        "Create an architecture document with diagrams, decision records, and explicit open questions.",
+        "Document why we chose this architecture and what would make us reconsider it.",
+        "Review this architecture for unanswered decisions, failure behavior, and security requirements.",
+        "Update the repository map after this entry point moved."
       ],
       "related_skills": [
         "threat-model",
@@ -1692,10 +1709,9 @@ window.AGENT_TOOLBELT_DATA = {
         },
         {
           "skill": "phased-delivery",
-          "rationale": "Turn approved scope into independently reviewable phases, one PR per phase or ticket.",
-          "example_invocation": "Deliver this requirement in phased PRs, reusing its approved tickets.",
+          "rationale": "Implement approved behavior test-first in reviewable phases, one PR per phase or ticket.",
+          "example_invocation": "Deliver these approved tickets with failing tests, minimal implementation, and passing tests.",
           "next_steps": [
-            "test-case-design",
             "pr-review"
           ]
         },
@@ -2152,20 +2168,19 @@ window.AGENT_TOOLBELT_DATA = {
     },
     {
       "id": "operational-documentation",
-      "label": "wiki/ and docs/",
+      "label": "wiki/",
       "kind": "documentation",
       "lifecycle": "still-required",
       "native_skill_surface": false,
       "paths": [
-        "wiki",
-        "docs"
+        "wiki"
       ],
-      "purpose": "Document installation, ownership, operational compatibility, workflow detail, and generated audits.",
-      "recommendation": "Keep deeper guidance here; the portal owns discovery and the README remains the entry point."
+      "purpose": "Supply essential installation and operational instructions.",
+      "recommendation": "Keep usage instructions in the wiki. Keep maintainer reports and evaluation material local."
     },
     {
       "id": "maintainer-research",
-      "label": "notes/ and repos/",
+      "label": "Local maintainer material",
       "kind": "maintainer-research",
       "lifecycle": "optional-compatibility",
       "native_skill_surface": false,
@@ -2174,21 +2189,20 @@ window.AGENT_TOOLBELT_DATA = {
         "repos"
       ],
       "purpose": "Hold local maintainer research and source material when these ignored directories are present.",
-      "recommendation": "Keep these directories optional and local. Do not require or publish them as plugin content."
+      "recommendation": "Keep research, handoff documents, and evaluations outside the repository or in ignored scratch output."
     },
     {
       "id": "portal-catalog",
-      "label": "catalog/, portal/, and generated taxonomy audit",
+      "label": "catalog/ and portal/",
       "kind": "discovery-tooling",
       "lifecycle": "still-required",
       "native_skill_surface": false,
       "paths": [
         "catalog",
-        "portal",
-        "docs/skill-taxonomy-audit.md"
+        "portal"
       ],
-      "purpose": "Provide deterministic discovery metadata, the offline capability portal, and the comprehensive generated classification audit.",
-      "recommendation": "Keep as the discovery source; derive it from canonical skill metadata and validate generated output."
+      "purpose": "Provide deterministic discovery metadata and the offline capability portal.",
+      "recommendation": "Derive discovery content from canonical skill metadata. Generate optional maintainer reports outside published content."
     },
     {
       "id": "project-workflow-boundary",
@@ -2197,7 +2211,7 @@ window.AGENT_TOOLBELT_DATA = {
       "lifecycle": "still-required",
       "native_skill_surface": false,
       "paths": [
-        "docs/project-workflow-boundary.md"
+        "README.md"
       ],
       "absent_paths": [
         "skills/ai-feature-delivery",
@@ -2241,7 +2255,7 @@ window.AGENT_TOOLBELT_DATA = {
         "templates/cursor-rules-150-pr-hygiene.mdc",
         "templates/cursor-rules-200-dev-feature-traceability.mdc"
       ],
-      "purpose": "Keep project-specific lifecycle sources in their project repository while preserving shared Toolbelt methods.",
+      "purpose": "Define shared capability ownership and preserve project-owned delivery requirements.",
       "recommendation": "Use project-owned adapters for forms, approvals, and controlled records; import shared skills without replacing those adapters."
     }
   ]

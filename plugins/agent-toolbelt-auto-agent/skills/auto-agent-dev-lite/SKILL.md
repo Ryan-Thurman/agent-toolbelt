@@ -11,6 +11,10 @@ is requirements input, not a living agent handoff.
 
 For interactive, human-supervised feature work, use `phased-delivery` instead.
 
+When the caller supplies a managed context or structured result format, read the sibling
+`../auto-agent-contract/references/execution-boundary.md` before executing the job.
+Preserve its caller and worker ownership; existing job payloads remain valid until the caller changes them.
+
 ## Plan Contract
 
 Treat the plan path supplied by the caller as read-only unless the caller
@@ -41,16 +45,17 @@ For `IMPLEMENT` jobs:
   If one is unmet or cannot be verified without writes, network mutation, or
   secret disclosure, stop and report it as a blocker; do not partially execute
   the task.
-- Add or update tests with behavior changes when practical.
+- Before changing executable behavior, read `shared/contracts/references/test-driven-development.md` and use its test-first procedure.
+- Keep test cases within the supplied acceptance criteria and permitted paths.
 - Run the requested checks when available; otherwise report the exact checks
   that still need to run.
-- Report changed files, checks, risks, and blockers. Do not report plan edits.
+- Report changed files, red/green evidence, coverage limits, risks, and blockers through the caller's existing result format. Do not report plan edits.
 
 For `FIX` jobs:
 
 - Fix only the supplied review findings.
 - Do not introduce unrelated cleanup or future-phase work.
-- Add or update tests when the finding exposes missing coverage.
+- Use `shared/contracts/references/test-driven-development.md` for behavior fixes and missing regression coverage.
 - Report which findings were fixed, changed files, checks, remaining risks, and
   blockers. Do not report plan edits.
 
@@ -62,6 +67,7 @@ For `PHASE_REVIEW` or `PR_REVIEW` jobs:
 - Do raise findings for implementation drift from the frozen plan body, missing
   required checks, insufficient tests, future-phase leakage, contract drift, or
   ordinary correctness/security/performance/UX risks.
+- Assess supplied red/green evidence and coverage gaps without rerunning implementation or editing the caller's plan.
 
 For `CLOSE_PHASE` jobs:
 

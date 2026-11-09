@@ -12,7 +12,7 @@ command discovery. Canonical behavior lives in each skill's `SKILL.md`.
 Use the [offline portal](../portal/generated/index.html) for discovery,
 taxonomy, examples, and common workflow sequences.
 
-For a guided command path, see `../docs/tutorial.md`. If the next command is
+For workflow entry points, see [the wiki](../wiki/Workflows.md). If the next command is
 unclear inside a pilot repo, start with `/workflow-router`.
 
 - `/pr-review` - run the tiered PR/code review workflow.

@@ -34,6 +34,9 @@ each gate; if a pipeline owns deploy, stop at handoff.
 
 ## Flow
 
+Before executing or retrying an authorized external action, read `shared/contracts/references/operation-retries.md`.
+Keep the pipeline as the operation owner when it controls publication.
+
 1. **Readiness check** (`references/readiness-checklist.md`) — verify tests/build/lint, security,
    performance, infra (env/migrations/health check), and docs. Produce a **go / no-go** verdict
    with the blocking gaps listed. Scope the checklist to the change (skip the a11y/Web-Vitals rows

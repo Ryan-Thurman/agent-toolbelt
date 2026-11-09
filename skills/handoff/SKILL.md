@@ -39,6 +39,11 @@ when asked.
 
 ## Steps
 
+For a managed assignment, read `shared/contracts/references/execution.md` before recording its result or next action.
+Preserve caller ownership of task state and distinguish assignment completion from feature approval.
+After a consequential failure or a request to preserve lessons, read `shared/contracts/references/execution-lessons.md`.
+Include relevant lesson candidates in the handoff or authorized project knowledge; keep policy changes project-owned.
+
 1. **Locate the live state.** If the lane keeps a durable state file, it's the primary source —
    reference and summarize it rather than restating everything:
    - Bug-to-Fix → the bug-investigation file (`status`, Current Focus, Eliminated, `next_action`).

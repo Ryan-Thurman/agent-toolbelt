@@ -17,8 +17,6 @@ commands and hooks are optional project-scoped compatibility surfaces.
 | [Workflows](Workflows.md) | Product Discovery, Phased Delivery, Phase Context, Bug to Fix, Shape Up, Threat Model |
 | [Code Review](Code-Review.md) | Code Quality Gate, PR Review, PR Improve and triggers: Review Reply, Review on Open, Review Queue, Phase Gate, Cursor Hooks |
 | [Utilities](Utilities.md) | Style Guide Init, Simplify, Test Case Design, Cover, Security Audit, Ship It, Retrofit, Worktree, Handoff, Ticket Sync |
-| [Phase → Command Map](../docs/phase-command-map.md) | Which commands each workflow phase uses (with Mermaid diagrams) |
-| [Skill taxonomy audit](../docs/skill-taxonomy-audit.md) | Generated skill classification, completeness, and recommendations |
 
 ## What's included
 
@@ -88,7 +86,6 @@ agent-toolbelt/
   install.sh        single installer entry point (./install.sh --harness <list> <pack...> <target>)
   install/          per-pack file lists (install/<pack>.sh) + shared install/lib.sh
   build-cursor-plugin.sh  assemble a private, user-scoped Cursor plugin from the packs
-  docs/             user-facing setup and usage docs
   commands/         slash commands and reusable command prompts
   skills/           agent skills with operating instructions
   optional/cursor-hooks/

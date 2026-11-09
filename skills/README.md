@@ -3,9 +3,8 @@
 Agent **skills** live in one canonical folder per skill, each with a `SKILL.md`.
 The native plugin exposes the 33 canonical skills across Cursor, Claude Code,
 and Codex. Use the [offline portal](../portal/generated/index.html) for the
-complete searchable catalog, taxonomy, examples, and workflow map; use the
-[generated audit](../docs/skill-taxonomy-audit.md) for completeness and
-recommendations. This page documents authoring, provenance, and copy ownership,
+complete searchable catalog, taxonomy, examples, and workflow map.
+This page documents authoring and copy ownership,
 not a manually maintained second skill catalog.
 
 The unattended runner skills live in the separate
@@ -14,12 +13,16 @@ part of this standard skill tree.
 
 `style-guide-init` derives and maintains contribution/style guidance from repo
 evidence. It distinguishes policy, enforcement, observations and conflicts, and
-ships a local checkpoint helper for changed-input detection. See
-[`repository-conventions-design.md`](../docs/repository-conventions-design.md)
-for usage, maintenance limits and related approaches.
+ships a local checkpoint helper for changed-input detection.
+Its skill references define extraction, maintenance, and validation.
 
 Project-specific delivery skills belong to their project repositories.
-See the [ownership boundary](../docs/project-workflow-boundary.md).
+See the [ownership boundary](../README.md#what-belongs-here).
+
+For managed or resumed assignments, the [execution contract](../shared/contracts/references/execution.md)
+defines compact task context, results, authority, and validation limits.
+`system-design` also maintains current repository maps; `handoff` can preserve evidence-backed execution lessons.
+These are conditional procedures within existing skills.
 
 The Vercel specialists preserve their substantive upstream rules under each
 skill's `references/rules/` tree. They are not universal policy: repository
@@ -35,11 +38,6 @@ MCP tools are available in the session, the skill uses the code graph for the
 retrieval-heavy steps (blast radius, callers, scope, localization) at a fraction
 of the tokens. It is strictly optional — every skill works by reading files
 directly when rct is not present.
-
-## Provenance
-
-Skill concept attribution lives in `../docs/skill-provenance.md` so runtime
-`SKILL.md` files stay focused on invocation, invariants, flow, and references.
 
 ## Canonical copies
 

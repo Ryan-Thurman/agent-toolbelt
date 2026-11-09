@@ -10,7 +10,7 @@ pack_pr_review() {
   local f
   for f in \
     SKILL.md \
-    benchmarks/results.md benchmarks/style-contract/cases.md \
+    benchmarks/style-contract/cases.md \
     checklists/README.md checklists/python.md checklists/sql.md checklists/typescript.md \
     facets/_shared.md facets/correctness.md facets/maintainability-deep.md \
     facets/maintainability.md facets/performance.md facets/security.md \

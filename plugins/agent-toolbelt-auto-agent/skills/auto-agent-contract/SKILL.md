@@ -36,6 +36,7 @@ reviews at a phase boundary, with a human in the session).
 | deciding what changes when no human is present | `references/unattended.md` |
 | writing a plan for `agent-runner` to execute | `references/plan-format.md` |
 | running Dev Lite-style implement/fix/review jobs with a caller-owned immutable plan | `$auto-agent-dev-lite` |
+| defining managed assignments, results, or retry ownership | `references/execution-boundary.md` |
 
 ## Principles (always)
 
@@ -65,8 +66,9 @@ reviews at a phase boundary, with a human in the session).
 
 `agent-runner` is a local Python 3 CLI that drives a markdown plan through `IMPLEMENT → REVIEW →
 FIX → CLOSE_PHASE → MERGE` per phase, one PR per phase, with state in SQLite. Every rule in this pack
-cites the commit that earned it. When a rule and the runner disagree, the runner is the source of
-truth — it is executable and this is prose.
+cites the commit that earned it.
+When observed runner behavior differs from this contract, report the difference.
+The implementation establishes actual behavior; it does not change required behavior automatically.
 
 The plan it consumes is a specific markdown serialization parsed by regex. Write one with
 **`/auto-agent-plan`** (`references/plan-format.md`), which mines the repo for phases rather than
@@ -74,6 +76,7 @@ starting from a blank template.
 
 ## References
 
+- `references/execution-boundary.md` — caller and worker ownership, structured records, and adoption limits.
 - `references/invocation.md` — argv bounds, structured-output extraction, per-CLI flag semantics, and
   the reviewer privilege boundary.
 - `references/convergence.md` — the ratchet, no-op fix detection, and bounded attempts with an

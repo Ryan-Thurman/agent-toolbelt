@@ -18,3 +18,7 @@ decision. Use `templates/phased-delivery-plan.md` only if no suitable existing
 plan can hold this state. Show the specific phase/PR map and stack bases for
 approval before coding; a generic request to start is not approval of an
 unreviewed stack topology.
+
+Include unit-test targets, observable interfaces, important branch and error cases,
+and focused test and coverage commands from the existing repository setup.
+Keep tests within the implementing phase; do not create a separate testing phase.

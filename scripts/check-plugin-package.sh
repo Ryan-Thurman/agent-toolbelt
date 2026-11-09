@@ -11,7 +11,14 @@ command -v node >/dev/null 2>&1 || {
   exit 1
 }
 node "$ROOT/scripts/test-release-version.js"
+node "$ROOT/scripts/check-public-content.js" "$ROOT"
+node "$ROOT/scripts/test-public-content.js"
 node "$ROOT/scripts/check-plugin-package.js" "$ROOT"
+
+echo "Running execution contract and selected-install checks..."
+python3 "$ROOT/scripts/test-execution-contract.py"
+"$ROOT/scripts/check-skill-shape.sh"
+"$ROOT/scripts/check-skill-sync.sh"
 
 echo "Running catalog and generated-audit checks..."
 "$ROOT/scripts/check-catalog.sh"

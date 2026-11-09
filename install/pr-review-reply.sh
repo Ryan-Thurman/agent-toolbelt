@@ -7,4 +7,5 @@ pack_pr_review_reply() {
   skill pr-review-reply references/thread-roundtrip.md
   shared_contract references/providers.md
   shared_contract references/posting.md
+  shared_contract references/operation-retries.md
 }

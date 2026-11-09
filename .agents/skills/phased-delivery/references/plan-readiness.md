@@ -10,6 +10,7 @@ Assess whether planned work covers them without adding product scope.
 | Decisions | The plan preserves agreed choices and exclusions. Delegated technical choices remain explicit. |
 | Dependencies | Prerequisites are available or unresolved. Dependency order has no cycles or hidden cross-ticket work. |
 | Integration | Components connect through specified interfaces. Tests cover the complete behavior where feasible. |
+| Unit tests | Source criteria map to observable interfaces, important branches, boundaries, and error cases. Test commands and material gaps are identified. |
 | Execution | Steps identify important files, owners, interfaces, source constraints, and checkable results. |
 | Scope | Each supplied ticket retains its approved phase and PR boundary. |
 

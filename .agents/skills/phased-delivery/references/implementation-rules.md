@@ -20,11 +20,14 @@ Read this when starting or carrying out a phase.
 3. Verify declared external preconditions using read-only checks. Stop if a
    prerequisite fails or cannot be checked safely; do not partially implement
    behind an unverified dependency.
-4. Implement within this phase's scope. Add or update tests with behavior
-   changes when practical. Discover project checks from repo scripts and CI;
-   run focused checks during the edit loop and proportionate broader checks
-   before PR review. If automation is impractical, explain the gap and name the
-   manual or integration evidence needed.
+4. Implement within this phase's scope using
+   `shared/contracts/references/test-driven-development.md` for behavior changes.
+   Plan unit-test cases from source criteria, observable interfaces, and important branches or error paths.
+   Record the expected failure before implementing each selected behavior, then verify the passing result.
+   Run focused checks during the edit loop and proportionate broader checks before PR review.
+   Inspect changed-code coverage with existing tooling and report uncovered behavior.
+   If automation is impractical, explain the gap and name the manual or integration evidence needed.
+   For repeated failures, use `shared/contracts/references/failure-recovery.md` and retain the attempt record.
 5. Inspect the diff for unrelated changes, premature next-ticket work, and
    generated noise. Record changed files, checks, acceptance evidence, risks,
    and next action in the existing plan or execution record.

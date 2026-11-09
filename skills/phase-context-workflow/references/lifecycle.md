@@ -27,6 +27,10 @@ Before implementation in a fresh or reset session:
 6. Write `.acc/phases/<room>/context-packet.md`.
 7. Treat the context packet as the session source of truth.
 
+Reconcile the packet with current source revisions, worktree content, and caller state before reusing evidence.
+Preserve attempt counts, unresolved operation outcomes, and the owner of each next action.
+A reset does not grant new authority or renew an exhausted repair limit.
+
 Do not start implementation from memory when the phase files are available.
 
 ## Phase Close Rules

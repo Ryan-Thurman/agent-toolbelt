@@ -27,8 +27,8 @@ asks "why is this broken, and what is the smallest change that fixes it?".
 - **Trace to the source.** Fix where the bug *originates*, not where it surfaces.
 - **Smallest safe change.** A bug-fix diff contains only the bug fix. No refactors, no "while I'm
   here," no defensive code for impossible cases.
-- **Verify, don't assume.** "It seems to work" is not verification. Prove it (revert→must-fail for
-  automated tests; documented re-test for manual).
+- **Verify, don't assume.** Keep observed failing and passing test results, or a documented manual re-test.
+  Preserve user edits when checking the unfixed behavior.
 - **The file is the debugging brain.** Keep a durable investigation file
   (`templates/bug-investigation.md`), updated **before** each action, so the work survives a
   context reset and hands off cleanly.
@@ -63,6 +63,8 @@ Each step has a single hard gate, so the commands are independently invocable:
    complete. `--diagnose` stops here without editing anything.
 4. **Fix** (`/fix-plan`) — write the fix contract, apply the smallest change, and verify. Then hand
    to the dev + review back half. Gate: the verification contract is satisfied.
+   Before repair, use `shared/contracts/references/test-driven-development.md` to capture the confirmed symptom in a failing regression test.
+   If automation is unavailable, retain the manual verification path and report the regression coverage gap.
 
 ## Command Entries
 
@@ -71,6 +73,10 @@ Each step has a single hard gate, so the commands are independently invocable:
   are reached.
 
 ## Escalation
+
+When attempts repeat, read `shared/contracts/references/failure-recovery.md`.
+Keep the existing diagnostic gates and three-fix escalation below.
+For managed jobs, read `shared/contracts/references/execution.md` and report within the caller's assigned authority.
 
 - **Three failed fixes** in different places is an *architecture* signal, not a fourth bug —
   STOP and raise it for discussion rather than attempting fix #4.

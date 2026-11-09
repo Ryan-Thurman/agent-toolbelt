@@ -45,17 +45,31 @@
       "path": "references/providers.md",
       "owner": "shared/contracts",
       "consumers": [
+        "auto-agent-contract",
+        "bug-to-fix",
+        "handoff",
+        "phase-context-workflow",
         "phase-gate",
+        "phased-delivery",
         "pr-review-reply",
-        "review-on-open"
+        "review-on-open",
+        "ship-it",
+        "ticket-sync"
       ]
     },
     {
       "path": "references/posting.md",
       "owner": "shared/contracts",
       "consumers": [
+        "auto-agent-contract",
+        "bug-to-fix",
+        "handoff",
+        "phase-context-workflow",
+        "phased-delivery",
         "pr-review-reply",
-        "review-on-open"
+        "review-on-open",
+        "ship-it",
+        "ticket-sync"
       ]
     },
     {
@@ -118,6 +132,79 @@
       "consumers": [
         "product-discovery",
         "product-outcome-review"
+      ]
+    },
+    {
+      "path": "references/test-driven-development.md",
+      "owner": "shared/contracts",
+      "consumers": [
+        "auto-agent-dev-lite",
+        "bug-to-fix",
+        "phased-delivery",
+        "pr-improve"
+      ]
+    },
+    {
+      "path": "references/execution.md",
+      "owner": "shared/contracts",
+      "consumers": [
+        "auto-agent-contract",
+        "bug-to-fix",
+        "handoff",
+        "phase-context-workflow",
+        "phased-delivery"
+      ]
+    },
+    {
+      "path": "references/failure-recovery.md",
+      "owner": "shared/contracts",
+      "consumers": [
+        "auto-agent-contract",
+        "bug-to-fix",
+        "handoff",
+        "phase-context-workflow",
+        "phased-delivery",
+        "pr-improve"
+      ]
+    },
+    {
+      "path": "references/execution-lessons.md",
+      "owner": "shared/contracts",
+      "consumers": [
+        "auto-agent-contract",
+        "bug-to-fix",
+        "handoff",
+        "phase-context-workflow",
+        "phased-delivery",
+        "pr-improve"
+      ]
+    },
+    {
+      "path": "references/operation-retries.md",
+      "owner": "shared/contracts",
+      "consumers": [
+        "auto-agent-contract",
+        "bug-to-fix",
+        "handoff",
+        "phase-context-workflow",
+        "phased-delivery",
+        "pr-review-reply",
+        "review-on-open",
+        "ship-it",
+        "ticket-sync"
+      ]
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "scripts/validate-execution.py",
+      "owner": "shared/contracts",
+      "consumers": [
+        "auto-agent-contract",
+        "bug-to-fix",
+        "handoff",
+        "phase-context-workflow",
+        "phased-delivery"
       ]
     }
   ]

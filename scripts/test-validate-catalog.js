@@ -27,7 +27,7 @@ function makeFixture() {
       }
     }
   }
-  fs.mkdirSync(path.join(root, 'docs'), { recursive: true });
+  fs.mkdirSync(path.join(root, '.atb-work', 'reports'), { recursive: true });
   return root;
 }
 
@@ -252,7 +252,7 @@ expectValidationFailure(
 {
   const root = makeFixture();
   try {
-    const auditPath = path.join(root, 'docs', 'skill-taxonomy-audit.md');
+    const auditPath = path.join(root, '.atb-work', 'reports', 'skill-taxonomy-audit.md');
     fs.writeFileSync(auditPath, `${render(root)}stale\n`);
     assert.strictEqual(isCurrent(root, auditPath), false, 'stale audit should fail freshness check');
     fs.writeFileSync(auditPath, render(root));

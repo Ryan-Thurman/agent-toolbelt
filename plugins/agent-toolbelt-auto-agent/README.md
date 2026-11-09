@@ -17,3 +17,8 @@ pack: `./install.sh --harness all auto-agent-contract <target-folder>`.
 The package does not run an unattended job by itself. Its skills define the
 runner's invocation, plan, review, and merge contracts; the caller controls
 execution and approval policy.
+
+Managed assignment and result guidance is in
+[`execution-boundary.md`](skills/auto-agent-contract/references/execution-boundary.md).
+The standard plugin owns the optional version 1 execution record and its read-only checker.
+Runner support for that record requires a separate implementation and verification change.

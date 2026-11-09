@@ -27,3 +27,6 @@ mode.
 
 Provider-specific payloads, review-thread APIs, and exact CLI calls belong in
 the pack that posts.
+
+For a timeout, interrupted response, or missing local receipt, read [operation-retries.md](operation-retries.md).
+Reconcile the remote operation before sending another mutation.

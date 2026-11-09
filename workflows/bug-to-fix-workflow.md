@@ -18,9 +18,11 @@ each action, so the work survives a context reset and hands off cleanly.
    adversarially → fill the 5-field reasoning checkpoint. Use `--diagnose` for a read-only analysis
    that stops at the cause. Emits an RCA report (`templates/rca-report.md`).
 4. **`/fix-plan`** — write the fix brief (`templates/bug-agent-brief.md`), bound the blast radius
-   (minimal-change + scope self-check), and define verification (automated revert→must-fail, or
-   documented manual QA verification + a Should-Fix automated-test follow-up).
-5. **`/dev-implement-task`** (or **`/implementation-plan`** for a larger fix) — implement the fix.
+   (minimal-change + scope self-check), and define automated or manual verification.
+5. **`/dev-implement-task`** (or **`/implementation-plan`** for a larger fix) — use
+   `shared/contracts/references/test-driven-development.md` to capture the confirmed symptom before repair.
+   Record the expected failing result and the passing result after the fix.
+   If automation is unavailable, document manual verification and the regression-test follow-up.
 6. **`/pr-review`** (or **`/dev-pr-review`**) — review before opening/marking the PR ready. Don't
    push to a default branch unless the user explicitly asks.
 

@@ -83,8 +83,8 @@ the generator (`references/output-format.md` → "No-config nudge").
 Use `references/auto-tier.md` for default tier selection and the deep-spend token
 guardrail. Use `references/rejection-memory.md` when verification refutes a
 finding: later runs may downrank and tag the same finding, but must never hide
-it. Benchmark cost/impact rationale lives in `references/benchmarking.md` and
-`benchmarks/results.md`.
+it. When comparing review cost and impact, use `references/benchmarking.md`.
+Keep target-specific results in private storage outside the shared skill tree.
 
 ## Light tier (active)
 

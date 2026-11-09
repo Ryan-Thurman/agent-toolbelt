@@ -44,6 +44,9 @@ branch and PR target explicitly, including the parent branch for a stack.
 - Blockers or material assumptions:
 - Last updated:
 - Last verified revision and evidence freshness:
+- Repeated failure history and remaining attempt limit, when applicable:
+- Pending external operations with unknown outcomes, when applicable:
+- Caller-owned actions and worker authority, for managed work:
 
 ## Phase 1: [ticket ID or phase title]
 
@@ -58,11 +61,15 @@ branch and PR target explicitly, including the parent branch for a stack.
   dependency order, and a checkable result per step. Include code only for
   decisions an interface and acceptance check cannot convey.
 - Test and verification plan, including exact commands when known:
+- Unit-test targets: source criteria, observable interfaces, important branches, boundaries, and error paths:
+- Coverage command, measurement scope, and existing thresholds, or why coverage is unmeasured:
 - Doc delta, QA, and PR traceability expectations (if applicable):
 - Work branch:
 - PR target branch:
 - PR URL / status:
 - Checks and acceptance evidence:
+- Red/green evidence for selected behaviors: expected failure, commands, results, and tested revision:
+- Uncovered changed behavior and remaining integration or manual verification gaps:
 - Review findings / disposition:
 - Human review / merge status:
 - Next phase dependency or retarget action:

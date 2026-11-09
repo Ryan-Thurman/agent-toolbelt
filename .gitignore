@@ -13,3 +13,31 @@
 /repos/
 /notes/
 /roadmap.md
+
+# Maintainer documents and evaluation material remain local.
+/docs/
+/evals/
+**/benchmarks/results.md
+**/benchmarks/eval-ledger.jsonl
+
+# Local credentials, authentication state, and execution artifacts.
+.env
+.env.*
+!.env.example
+!.env.template
+!.env.*.example
+!.env.*.template
+*.pem
+*.key
+*.p12
+*.pfx
+id_rsa
+id_ed25519
+id_ecdsa
+.aws/
+.ssh/
+.auth/
+*.log
+*.sqlite
+*.sqlite3
+*.db

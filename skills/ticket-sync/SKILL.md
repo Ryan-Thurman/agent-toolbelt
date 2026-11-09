@@ -34,7 +34,7 @@ apply; when offline, write a manifest instead.
   posting — mirroring pr-review's opt-in posting and ship-it's "never deploy without confirmation."
 - **Idempotent via recorded keys — never duplicate.** When an issue is created, record its key back
   into the local ticket file (a `Tracker:` line). On re-run, match by the recorded key and **update**
-  the existing issue; only create when there is no key. No duplicates, ever.
+  the existing issue. If a key is missing after an interrupted request, reconcile the pending operation before another create.
 - **Credentials from env / CLI auth only.** Never hardcode, prompt for, or echo a token/PAT. Auth
   comes from the tracker CLI's own login (`gh auth`, Jira CLI config, `az login` / PAT env var).
 - **Degrade to a manifest when offline.** When the configured tracker's CLI or credentials are
@@ -46,6 +46,10 @@ apply; when offline, write a manifest instead.
   the new version blindly.
 
 ## Flow
+
+Before an apply or retry, read `shared/contracts/references/operation-retries.md`.
+If issue creation may have succeeded before its key was saved, reconcile remote identity before another create.
+When that identity cannot be established, report an unknown outcome and preserve the pending operation.
 
 1. **Resolve config** (`references/config.md`) — discover `.tickets.md` in the target repo; read
    `provider`, the project/board key, default issue type, labels/components, and the FIELD MAPPINGS

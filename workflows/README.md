@@ -32,4 +32,4 @@ detail rather than native plugin skill copies.
 Common entry command: `/workflow-router` chooses the smallest useful command or
 workflow for the current state.
 
-For a hands-on first run, follow `../docs/tutorial.md`.
+For installation and workflow entry points, use [the wiki](../wiki/Home.md).

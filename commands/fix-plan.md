@@ -39,10 +39,11 @@ the fix contract and the verification plan, then hands off to the shared dev + r
    won't add, cases you won't defend, abstractions rejected, diff size, could-it-be-smaller,
    follow-ups not done). For a live incident, separate any mitigation already applied from the real
    fix.
-3. **Define verification** (adapted to the current QA reality):
-   - **If an automated test seam exists** — write a regression test first and prove it by
-     `revert fix → test fails → restore → test passes`.
-   - **If reproduction was manual only** — write the manual re-test steps for QA, and record
+3. **Define verification** using `shared/contracts/references/test-driven-development.md`:
+   - **If automation is feasible** — plan a regression test for the confirmed symptom.
+     During implementation, run it before repair and record the expected failure, then verify it passes after repair.
+     If the fix already exists, check the unfixed revision in an isolated workspace without overwriting user edits.
+   - **If automation is unavailable** — write the manual re-test steps for QA, and record
      **"add an automated regression test" as a Should-Fix follow-up**. Do not silently skip the
      test; the gap must be visible.
    - Either way: original issue gone, you understand *why* the fix works, related behavior intact,

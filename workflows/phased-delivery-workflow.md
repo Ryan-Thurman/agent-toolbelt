@@ -9,7 +9,7 @@ execution context and PR boundaries, not a duplicate product process.
 Source requirement / approved plan / tickets
 → inspect repo and map phases to PRs
 → human approves the map
-→ implement and verify one phase
+→ implement one phase with failing tests, minimal code, and passing tests
 → review its diff and fix blockers
 → open one PR for that phase
 → human reviews and merges
@@ -24,6 +24,8 @@ must ask before changing ticket scope or making an unresolved release/doc/QA
 decision. Do not add Foundation, Polish, or Testing phases around a ticket.
 
 Each phase has its own branch, acceptance evidence, and PR readiness review.
+Use `shared/contracts/references/test-driven-development.md` for behavior changes.
+Keep unit tests and coverage evidence in the same phase as the implementation.
 Dependent tickets may form a stack: branch a child from the parent ticket
 branch and target the child's PR at that parent branch. Record the parent PR,
 target branch, and merge order. After the parent merges, verify the child PR's

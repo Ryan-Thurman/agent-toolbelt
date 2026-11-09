@@ -1,6 +1,6 @@
 ---
 name: phased-delivery
-description: Review implementation plans or deliver requirements in reviewable phases, one PR per phase. Use with a raw request, existing plan, or approved tickets; preserve one ticket per phase and PR.
+description: Review implementation plans or deliver requirements through test-first implementation in reviewable phases, one PR per phase. Use with a raw request, existing plan, or approved tickets; preserve one ticket per phase and PR.
 ---
 
 # Phased Delivery
@@ -57,8 +57,10 @@ Do not quietly split, combine, or expand tickets to make the workflow fit.
 3. **Implement one phase.** Create or switch to its focused work branch before
    editing; if currently on the default branch and a safe branch cannot be
    established, stop. Keep the diff within its phase or
-   ticket, add relevant tests with behavior changes, run proportionate checks,
-   and record evidence and remaining risk. Do not require a commit per task.
+   ticket. Before changing executable behavior, use
+   `shared/contracts/references/test-driven-development.md`.
+   Run proportionate checks and record evidence and remaining risk.
+   Do not require a commit per task.
    Read `references/implementation-rules.md` for detailed execution checks.
 4. **Review and open that phase's PR.** Review its own diff against its acceptance
    criteria, dependencies, and tests; fix blocking findings, then open one PR
@@ -81,6 +83,11 @@ and update the plan. Do not rewrite published branch history or merge a PR
 without authorization. An independent ticket targets the default branch.
 
 ## Durable state and stopping points
+
+For managed assignments or work across sessions, read `shared/contracts/references/execution.md`.
+Keep task context, authority, evidence, and the next action in the existing execution record.
+When repair attempts repeat or verification stalls, read `shared/contracts/references/failure-recovery.md`.
+Preserve attempt history across resets and reassess the failed hypothesis before another edit.
 
 Keep the existing plan or a small execution record current with phase/ticket ID,
 branch and PR links, target branch, acceptance evidence, checks, blockers, and

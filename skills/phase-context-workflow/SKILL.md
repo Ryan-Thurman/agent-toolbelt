@@ -81,6 +81,9 @@ Use templates in `../../templates/`:
 
 ## Phase Lifecycle
 
+For managed assignments, use `shared/contracts/references/execution.md` in the existing context packet.
+When a session resumes after failed attempts, use `shared/contracts/references/failure-recovery.md` before another attempt.
+
 Read `references/lifecycle.md` before starting or closing a phase, clearing or
 compacting context, or delegating phase work to subagents. The top-level rule is
 simple: do not start from memory when phase files are available, and do not clear

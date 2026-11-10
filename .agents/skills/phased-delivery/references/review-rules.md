@@ -1,9 +1,11 @@
 # Phase PR review
 
-Read this before opening or updating each phase PR. Review the phase's own diff
-against its source acceptance criteria, plan, test evidence, and parent branch.
-For a stacked PR, compare parent branch to child head, not default branch to
-child head; otherwise predecessor work can be mistaken for this ticket's scope.
+Read this before you open or update a phase PR, or when you check its readiness.
+Review the phase's own diff against its source acceptance criteria, plan, test
+evidence, and base branch. Check this phase's PR, not one final PR for the
+whole requirement. For a stacked PR, compare parent branch to child head, not
+default branch to child head; otherwise predecessor work can be mistaken for
+this ticket's scope.
 
 Check in this order:
 
@@ -26,12 +28,33 @@ Check in this order:
    Keep the project's source records authoritative. Run `code-quality-gate` only if repository policy, user request, or
    the phase's risk warrants it; a stale result never proves a later diff.
 
-Classify findings as Blocking, Should Fix, or Nice to Have. Do not call a PR
-ready while Blocking findings or required checks remain. Fix within the same
-phase branch, rerun affected checks, and review the changed diff. A human owns
-the review and merge decision; a passing agent review is not merge approval.
+## Findings and verdict
 
-For an independent reviewer, give the source acceptance criteria, phase plan,
+Give each finding a severity: `Blocking`, `Should Fix`, or `Nice to Have`.
+Give the phase PR a separate readiness verdict:
+
+| Verdict | Use when |
+| --- | --- |
+| `Ready` | No Blocking finding remains, and required checks have current passing results. |
+| `Needs Work` | A Blocking finding or failed required check remains, and this phase can fix it. |
+| `Blocked` | Progress needs an outside decision, a dependency, or a check that is not available. |
+
+Record the verdict, findings, evidence, and PR URL in the plan.
+Use `../../../templates/dev-phase-review.md` or `../../../templates/dev-pr-review.md`
+only when a separate report is useful.
+Open the phase PR only when the user authorized delivery.
+A human owns the review and merge decision; a passing agent review is not merge approval.
+
+## Fix findings
+
+Fix findings on the same phase branch and inside the phase boundary.
+For a behavior fix, capture the defect in a failing test before the repair.
+Rerun the affected checks and review the changed diff.
+Record fixed and unresolved findings, checks, and the next action in the plan.
+Keep next-phase work out of the fix.
+
+## Independent reviewer
+
+Give an independent reviewer the source acceptance criteria, phase plan,
 base/head, diff, and test/check evidence. Do not give the implementer's private
-transcript or self-assessment as evidence. Record the result and PR URL in the
-plan. After a parent merges, verify and update each child PR's target and diff.
+transcript or self-assessment as evidence.

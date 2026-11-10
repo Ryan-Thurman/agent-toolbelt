@@ -1,12 +1,12 @@
 ---
-description: Run CRAP analysis on uncommitted changes — orchestrator executes configured coverage and analysis commands once, waits for output, reads the report, and deterministically prompts refactor when threshold is exceeded. Detect-only; never edits source.
+description: Run CRAP analysis on branch changes — orchestrator loads the base-branch config, runs configured coverage and analysis commands once, and reviews the report deterministically. Detect-only; never edits source.
 argument-hint: "[--coverage] [--target NAME] [--report-only]"
 ---
 
 # /do-crap-analysis
 
-Run CRAP analysis on uncommitted changes using the `crap-analysis` skill. Commands run **only**
-through the orchestrator, **once per invocation**, then the agent reads and reviews the output.
+Run CRAP analysis on the current branch changes using the `crap-analysis` skill.
+The changes are the commits since the base branch, plus staged, unstaged, and untracked files.
 
 > **When to use vs related:** `/do-crap-analysis` runs tooling and reports. Use `/crap-refactor` to
 > apply fixes after you confirm. Run `/crap-config` first if `.crap-analysis.json` is missing.
@@ -15,34 +15,29 @@ through the orchestrator, **once per invocation**, then the agent reads and revi
 
 ## Rules
 
-- Read `skills/crap-analysis/SKILL.md`, `references/review.md`, `references/report-schema.md`,
-  `references/cli.md`.
+- Read `skills/crap-analysis/SKILL.md`, `references/cli.md`, and `references/review.md`.
 - **Detect-only — do not edit source files.**
-- **Never run configured commands ad-hoc** — use only `bin/crap-analysis.sh` ops.
-- Load config from **base branch** when on a feature branch (see `references/config-schema.md`).
+- Run only `bin/crap-analysis.sh` ops. Do not run the configured commands yourself.
 
 ## Fixed flow (follow in order)
 
-1. Load `.crap-analysis.json` from base branch; if missing → suggest `/crap-config` and **stop**.
-2. If config is modified in the current diff → note **CONFIG_CHANGE**; use base-branch values.
-3. Run:
+1. Run:
    ```bash
    bash skills/crap-analysis/bin/crap-analysis.sh validate-config
    ```
-4. Unless `--report-only`, run **once**:
+   If it reports that the config is missing, suggest `/crap-config` and **stop**.
+2. Unless `--report-only`, run **once**, and wait for exit:
    ```bash
    bash skills/crap-analysis/bin/crap-analysis.sh execute --changed [--coverage] [--target NAME]
    ```
-   Wait for exit. Capture stdout JSON.
-5. For each target in the result, **Read** `outputs.report`.
-6. Apply the decision table in `references/review.md` (PASS / REFACTOR / ERROR / WARN).
-7. On **REFACTOR**: **Read** `outputs.refactorBrief` into context, then emit the fixed REFACTOR
-   template from `references/review.md`.
+3. Run `review`. With `--report-only`, run `review --report-only --changed [--target NAME]`.
+4. Emit the prefix lines and templates from `references/review.md` for the review JSON.
+   On **REFACTOR**, **read** the target `refactorBrief` before you emit its template.
 
 ## Flags
 
 - `--coverage` — pass to orchestrator `execute`
-- `--target NAME` — single target instead of diff-scoped
+- `--target NAME` — analyze only `NAME`; the review scope stays the changed files
 - `--report-only` — skip `execute`; review existing artifacts on disk
 
 ## Output

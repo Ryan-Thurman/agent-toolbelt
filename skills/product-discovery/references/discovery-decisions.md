@@ -17,4 +17,4 @@ Challenge value, usability, feasibility, and viability assumptions with availabl
 Do not invent likelihood estimates or claim that a prototype demonstrates production readiness.
 
 The project owns research access, experiment approval, product priorities, and publication.
-Do not create a feature lifecycle or external tickets unless the requested next action needs them.
+Create external tickets only when the requested next action needs them.

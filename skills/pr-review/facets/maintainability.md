@@ -27,7 +27,7 @@ For PR review, prioritize smells introduced or worsened by the diff:
 
 - a change that makes a module materially harder to reason about.
 - new ad-hoc conditionals, special-cases, or state that point to a missing model.
-- duplicated logic instead of reusing or extracting a canonical helper.
+- duplicated logic, or a bespoke one-off where the codebase already has a canonical helper.
 - feature logic leaking into the wrong layer or across a boundary.
 - cast-heavy / `any` / `unknown` / needless optionality that obscures the real contract.
 - file-size sprawl: a change pushing a file past ~1000 lines — ask to decompose first.

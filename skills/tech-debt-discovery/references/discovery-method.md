@@ -2,8 +2,8 @@
 
 Inspect each relevant area and mark it inspected, excluded, or unavailable.
 Use history and operational data where available to identify repeated failures, costly changes, and modules that change together.
-Treat complexity and coverage metrics as investigation signals.
-They cannot establish a defect without a concrete consequence.
+Treat complexity, coverage, file size, change frequency, and library age as investigation signals.
+They cannot establish debt without a concrete consequence.
 
 For organization candidates, inspect dependency direction, cycles, ownership, public interfaces, and changes that repeatedly cross boundaries.
 Compare the current structure with the smallest boundary change that would address the observed cost.

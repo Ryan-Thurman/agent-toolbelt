@@ -1,6 +1,6 @@
 ---
 name: simplify
-description: "Apply behavior-preserving cleanup on opt-in: delete dead code, inline thin wrappers, reuse helpers, and fix small inefficiencies. Use after feature work, before PR, or when asked to simplify. For verdicts use pr-review."
+description: "Apply behavior-preserving cleanup on opt-in: delete dead code, inline thin wrappers, reuse helpers, and fix small inefficiencies. Use after feature work, before PR, when asked to simplify, or to scan an area for structural smells (detect-only). For verdicts use pr-review."
 ---
 
 # simplify
@@ -8,13 +8,8 @@ description: "Apply behavior-preserving cleanup on opt-in: delete dead code, inl
 Before you write a response for the user, read
 `shared/contracts/references/human-readable-output.md`.
 
-The **active** counterpart to `pr-review`. Where pr-review is a passive gate that *finds problems
-and applies nothing*, simplify *drives the cleanup* — it proposes high-conviction simplifications
-and applies them on opt-in. It is biased toward small, behavior-preserving deletions, not ambitious
-rewrites.
-
-Use it after feature work, before PR, or when the user explicitly asks to simplify. Use `pr-review`
-for verdicts.
+Propose high-conviction, behavior-preserving cleanup and apply it on opt-in.
+Prefer small deletions to ambitious rewrites. `pr-review` finds problems and applies nothing.
 
 ## Mutation Policy
 
@@ -26,48 +21,58 @@ Never change behavior or edit tests to make cleanup pass.
 
 - **Make the case — `rootIssue → consequence → benefit`.** Every candidate states the underlying
   flaw, what it leads to if left alone, and the concrete win of fixing it. If you cannot name a
-  real, non-trivial consequence, do not flag it.
-- **Behavior-preserving.** Same output, errors, side-effects, and ordering. All existing tests must
-  still pass without modification.
-- **Report-then-apply.** Propose findings first; apply only what the user opts into, in a separate
-  step. Never silently rewrite.
+  real, non-trivial consequence, do not flag it. "Shorter" or "cleaner" alone is not a consequence.
+- **Behavior-preserving.** Keep the same output, errors, side-effects, and ordering.
+  The apply rules are in `references/apply-discipline.md`.
 - **Fewer, higher-conviction.** A short list of defensible deletions beats a flood of style nits.
 - **Use the shared vocabulary.** Load `shared/contracts/references/maintainability-taxonomy.md` for
-  smell families, `/simplify` axes, risk/action vocabulary, thin-wrapper rules, and detection cues.
+  smell families, `/simplify` axes, the risk and action vocabulary, thin-wrapper rules, and detection cues.
   Load `shared/contracts/references/anti-slop-naming.md` for concrete misleading-name,
   narration-comment, and speculative-abstraction cues; never turn generic-name cues into regex bans.
 - **Route React cleanup precisely.** For TypeScript or React changes, load
   `shared/contracts/references/typescript-react-baseline.md`. If the installed specialist skills
   apply, read only the matching composition or React/Next performance rule; verify versions and
   require concrete impact before applying a performance cleanup.
-- **Respect fences and boundaries.** Honor `simplify-ignore` block markers and existing abstraction
-  boundaries; be careful around error handling, security logic, migration files, and dynamic callers.
+- **Respect fences and boundaries.** Skip blocks between `simplify-ignore-start: <reason>` and
+  `simplify-ignore-end` comments, in any comment syntax. Take care with error handling,
+  security logic, migration files, and dynamic callers.
 
 ## Mode routing
 
-- **`/simplify`** — diff- or feature-scoped cleanup. Report → user selects → apply. Biased to
-  `safe`/`confirm` changes. This is the default, post-feature tool.
-- **`/code-smell`** — detect-only scan of a path/area (not diff-bound). Surfaces deeper structural
-  smells ranked by `severity × confidence`. **Never auto-applies** — it hands findings to a human
-  (or to `/simplify` for the safe subset). Use `/code-smell <path> --architecture` for no-code
-  architecture/deepening candidates.
+- **`/simplify`** — diff- or feature-scoped cleanup. Report, let the user select, then apply.
+  This is the default mode after feature work.
+- **`/code-smell`** — detect-only scan of a path or area, not bound to a diff. Rank smells by
+  `severity × confidence`. Do not edit files. Hand the `safe` subset to `/simplify`.
+  With `--architecture`, report no-code deepening candidates from the taxonomy's architecture mode.
 
 ## Flow
 
-1. **Scope** the target (default: the working diff if dirty; or a named path/area for `/code-smell`).
+1. **Scope** the target. Default to the working diff if the tree is dirty.
+   Otherwise use the named path, area, or focus. Use `previous` for `git diff HEAD~1..HEAD`.
 2. **Detect** candidates using `shared/contracts/references/maintainability-taxonomy.md`. For reuse
    candidates, search the codebase for the existing helper first and quote the symbol you'd use.
    Use the anti-slop contract only where the consequence is concrete.
-3. **Make the case** for each (rootIssue → consequence → benefit) and assign a `risk` tier; drop
-   anything without a real consequence.
-4. **Report** the findings list (no prose dump). Stop here for `/code-smell`.
-5. **Apply on opt-in** (`/simplify`) following `references/apply-discipline.md`: one change at a
-   time, run relevant tests, revert on failure, keep cleanup commits separate.
+   Flag legacy or untouched code only when the current change touches it.
+3. **Make the case** for each candidate (rootIssue → consequence → benefit).
+   Give it a `risk` and an `action` from the taxonomy. Drop anything without a real consequence.
+4. **Report** the findings as a table, with no prose dump. Return an empty list if nothing survives.
+   - `/simplify` fields: `category, file, lines, rootIssue, consequence, benefit, risk, action`.
+   - `/code-smell` fields: `category, severity, confidence, file, lines, smell, evidence, impact,
+     recommendation, action`. Mark the findings that are `safe` to route to `/simplify`.
+   - `--architecture` fields: use the taxonomy's architecture report shape.
+   Stop here for `/code-smell`.
+5. **Apply on opt-in** (`/simplify`). Before you edit, read `references/apply-discipline.md`.
+
+## Completion
+
+The report lists each surviving finding with its risk and action.
+After apply, the relevant tests pass, and the cleanup stays separate from feature or fix changes.
 
 ## Reference map
 
-- `shared/contracts/references/maintainability-taxonomy.md` — shared smell families, compact
-  Fowler-style baseline, architecture/deepening mode, `/simplify` axes, risk/action vocabulary,
-  thin-wrapper rules, and detection cues.
-- `references/apply-discipline.md` — the report-then-apply contract, the Chesterton's-Fence
-  pre-removal checklist, behavior-preserving rules, red flags, and scope/ignore handling.
+- `shared/contracts/references/maintainability-taxonomy.md` — smell families, `/simplify` axes,
+  architecture mode, risk and action vocabulary, thin-wrapper rules, and detection cues.
+- `references/apply-discipline.md` — selection, behavior-preserving rules, the Chesterton's Fence
+  checklist, the apply loop, and red flags.
+- `references/rct-acceleration.md` — read it when rct graph tools such as `impact_of` or
+  `build_context_pack` are in the tool list.

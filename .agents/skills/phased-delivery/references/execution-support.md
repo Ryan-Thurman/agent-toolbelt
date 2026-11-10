@@ -14,9 +14,8 @@ mkdir -p .atb-work/phased-delivery/<plan-slug>
 printf '*\n' > .atb-work/phased-delivery/.gitignore
 ```
 
-Choose a stable `<plan-slug>` from the plan filename. If that directory already
-contains a ledger for another plan, add a short stable suffix derived from the
-plan path. Never reuse or clean a sibling plan's workspace.
+Derive a stable `<plan-slug>` from the plan path.
+Never reuse or clean a sibling plan's workspace.
 
 Use `.atb-work/phased-delivery/<plan-slug>/progress.md` as an optional recovery ledger
 for delegated execution. Start it with the plan path, then record one compact
@@ -30,8 +29,7 @@ Before committing, run `git status --short`. If `.atb-work/` appears, stop and
 fix the scratch location or ignore before continuing.
 
 When the plan is finished and its PR handoffs are complete, remove only that
-plan's scratch directory. Git history and the tracked Implementation Plan are
-the durable record; sibling directories may belong to other active work.
+plan's scratch directory.
 
 ## Optional Subagent Dispatch
 
@@ -51,13 +49,7 @@ bounded work with clear ownership:
 - Do not delegate the immediate critical-path task if the next local step is
   blocked on its result; do that work locally.
 
-Model selection should be explicit only when the tool supports it and there is
-a task-specific reason:
+Select a model explicitly only when the tool supports it and the task needs it.
+Use the strongest available model for architecture, security, and final review.
 
-- Mechanical single-file or copy-editing tasks: fastest/cheapest capable model.
-- Normal implementation or integration tasks: default/current coding model.
-- Architecture, security, cross-cutting correctness, or final review: strongest
-  appropriate available model.
-
-If no subagent tool or model override is available, record the intended split
-only as guidance and continue sequentially.
+If no subagent tool is available, record the intended split as guidance and continue sequentially.

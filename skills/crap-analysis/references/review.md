@@ -1,79 +1,96 @@
 # Deterministic CRAP review contract
 
-After `execute` completes, the agent applies this fixed procedure — no improvisation.
+The `review` op makes the decision.
+The agent copies values from the review JSON into the fixed templates below.
+Do not change an outcome, and do not add a summary format.
 
-## Prerequisites
+## Procedure
 
-1. Orchestrator `execute` has finished (or `--report-only` mode with existing artifacts)
-2. `.crap-analysis.json` loaded from **base branch** (not PR head if config changed in diff)
-3. Read `references/report-schema.md` for required JSON fields
+1. Run `execute` or `verify`, and wait for it to exit.
+   For report-only mode, skip this step.
+2. Run `review`, or run `review --report-only` with the same `--changed` and `--target` flags.
+3. Read the review JSON from stdout. `references/cli.md` defines its fields.
+4. If a target outcome is `REFACTOR`, read its `refactorBrief` file in full.
+5. Write the prefix lines that apply, then one template block for each target in name order.
 
-## Step 1 — Parse orchestrator result
+## Decision table (applied by `review`)
 
-Read stdout JSON from `execute`. For each target entry, record:
+The `review` op checks the conditions for each target in this order:
 
-- `name`, `analysis.exitCode`, `coverage.exitCode`
-- `outputs.report`, `outputs.refactorBrief`
+| Order | Condition | Outcome |
+|---|---|---|
+| 1 | Coverage exited non-zero, or analysis or verify exited `2` or more | **ERROR** |
+| 2 | The report is missing, is not valid JSON, or does not have a required field from `report-schema.md` | **ERROR** |
+| 3 | `passed` does not agree with the `exceeds` flags (`passed` must be `true` only when no function exceeds) | **ERROR** |
+| 4 | A function in scope has `exceeds: true` | **REFACTOR** |
+| 5 | A function outside the scope has `exceeds: true` (`--changed` scope only) | **WARN** |
+| 6 | No function has `exceeds: true` | **PASS** |
 
-If any `analysis.exitCode === 2` or tooling error fields present → **ERROR** for that target.
+The scope is all functions of the target, unless the run used `--changed`.
+With `--changed`, a function is in scope when its `filePath` is a changed path.
+A `filePath` relative to the target `src` also matches.
+`worstInScope` and `worstInTarget` use the sort order in `report-schema.md`.
+When no target contains a changed path, the top-level outcome is **NO_TARGETS**.
 
-## Step 2 — Read report JSON
+The analysis exit code `1` does not decide the outcome. The report `exceeds` flags decide it.
+Thus `execute` can exit `1` while `review` gives `WARN` and exits `0`.
 
-For each target, **Read** `outputs.report`. Verify required fields:
+## Prefix lines
 
-- `passed` (boolean)
-- `threshold` (number)
-- `summary.maxCrap.value` (number)
-- `functions` (array, non-empty when `passed === false`)
+Write each prefix line that applies, before the target blocks, in this order.
 
-Missing report after analysis exit `0` or `1` → **ERROR**.
+When `config.changedInDiff` is `true`:
 
-## Step 3 — Scope to changed files (when `--changed`)
+```
+CONFIG_CHANGE: {config.path} changed in this diff. This run used the {config.ref} version.
+```
 
-1. Run `bash skills/crap-analysis/bin/crap-analysis.sh changed` to get diff paths
-2. Filter `functions` to those whose `filePath` matches a changed path (exact or prefix under `src`)
-3. Re-select worst function from filtered set using deterministic sort:
-   - `crap` descending
-   - `qualifiedName` ascending
-   - `filePath` ascending
-   - `startLine` ascending
+When `config.source` is `override`:
 
-If no overlap but `passed === false` → **WARN** (failure outside diff); still proceed to refactor
-brief if threshold logic applies.
+```
+CONFIG_OVERRIDE: This run used {config.path} from the working tree, not the base branch.
+```
 
-## Step 4 — Decision table
+When `reportOnly` is `true`:
 
-| Condition | Outcome |
-|---|---|
-| `analysis.exitCode === 0` AND report `passed === true` | **PASS** |
-| `analysis.exitCode === 1` OR report `passed === false` | **REFACTOR** |
-| `analysis.exitCode >= 2` or report missing/invalid | **ERROR** |
-| Config file modified in current diff | **CONFIG_CHANGE** (use base-branch config; surface finding) |
+```
+REPORT_ONLY: This review used reports on disk. They can be stale.
+```
 
-## Step 5 — Fixed output templates
+## Target templates
+
+`{worst}` is `{qualifiedName} @ {filePath}:{startLine} — CRAP {crap}`, or `none` when the value is `null`.
+`{scope}` is the top-level `scope` value.
+
+When `changedFilesWithoutFunctions` is not empty, add this line at the end of a PASS, WARN, or REFACTOR block:
+
+```
+Changed files with no report entries: {paths}. Make sure that the analysis command includes them.
+```
 
 ### PASS
 
-Do **not** read refactor brief.
+Do **not** read the refactor brief.
 
 ```
 CRAP analysis: PASS
-Target: {target}
+Target: {name}
 Threshold: {threshold}
-Worst in changed scope: {qualifiedName} @ {filePath}:{startLine} — CRAP {score}
-No functions exceed threshold in changed files.
+Worst in scope ({scope}): {worstInScope}
+No function in scope exceeds the threshold.
 ```
 
-### REFACTOR (mandatory MD inclusion)
+### REFACTOR (mandatory brief inclusion)
 
-1. **Read** `{outputs.refactorBrief}` — full file must be in agent context before responding
+1. **Read** `{refactorBrief}`. The full file must be in agent context before you respond.
 2. Emit:
 
 ```
 CRAP analysis: REFACTOR REQUIRED
-Target: {target}
+Target: {name}
 Threshold: {threshold}
-Worst in changed scope: {qualifiedName} @ {filePath}:{startLine} — CRAP {score}
+Worst in scope ({scope}): {worstInScope}
+Functions over the threshold in scope: {exceedingInScope}
 
 The refactor brief has been loaded. Summary:
 - Function: {from brief}
@@ -83,35 +100,38 @@ The refactor brief has been loaded. Summary:
 Recommended actions (from brief):
 {numbered list from ## Recommended actions section}
 
-→ Run `/crap-refactor {target}` to apply behavior-preserving fixes, or confirm here to proceed.
+→ Run `/crap-refactor {name}` to apply behavior-preserving fixes, or confirm here to proceed.
 ```
 
 Do not paraphrase the brief from memory — cite from loaded content only.
+
+### WARN (failure outside the diff)
+
+```
+CRAP analysis: WARN
+Target: {name}
+Threshold: {threshold}
+No function in the changed files exceeds the threshold. Other functions in the target exceed it.
+Worst in target: {worstInTarget}
+Review the full report at {report}.
+```
 
 ### ERROR
 
 ```
 CRAP analysis: ERROR
-Target: {target}
-Command: {analysis|coverage}
-Exit code: {code}
-{stderr tail}
+Target: {name}
+Command: {error.command}
+Exit code: {error.exitCode}
+Reason: {error.reason}
+{error.outputTail}
 
-Fix tooling and re-run `/do-crap-analysis`.
+Fix the tooling and run `/do-crap-analysis` again.
 ```
 
-### WARN (failure outside diff)
+### NO_TARGETS
 
 ```
-CRAP analysis: WARN
-Target: {target}
-Threshold: {threshold}
-No functions in changed files exceed threshold, but the full target report shows failures.
-Worst in target: {qualifiedName} @ {filePath}:{startLine} — CRAP {score}
-Review the full report at {outputs.report}.
+CRAP analysis: NO_TARGETS
+No configured target `src` contains a changed file.
 ```
-
-## Report-only mode
-
-When invoked with `--report-only`, skip `execute` and run steps 2–5 against existing artifacts.
-Useful after a manual command run; agent must note artifacts may be stale.

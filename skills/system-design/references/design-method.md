@@ -51,6 +51,5 @@ Otherwise, perform a focused self-review.
 Assess readiness against the agreed scope rather than document length or a numerical score.
 Do not claim readiness while a required decision or review remains unresolved.
 A useful draft may retain open questions and an explicit readiness limit.
-Readiness does not grant project approval or implementation authority.
 
 Method informed by [Jeffallan's architecture designer](https://github.com/Jeffallan/claude-skills/tree/main/skills/architecture-designer).

@@ -6,5 +6,4 @@ pack_worktree() {
   skill worktree SKILL.md
   skill worktree bin/worktree.sh
   skill worktree references/cli.md
-  skill worktree references/isolation.md
 }

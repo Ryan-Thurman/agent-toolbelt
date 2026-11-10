@@ -12,5 +12,5 @@ The source evidence and project requirements remain authoritative.
 | Assess results | `product-outcome-review` | A decision to continue, revise, stop, or gather evidence. |
 
 An experiment can proceed to outcome review without creating a feature or ticket.
-Immediate release health remains in `ship-it`.
+Send immediate release health to `ship-it` and release failures to `bug-to-fix`.
 The project chooses records, sources, review timing, and required approvals.

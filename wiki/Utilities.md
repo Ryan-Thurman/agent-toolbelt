@@ -198,12 +198,15 @@ a bash orchestrator runs coverage and analysis **once** per invocation; review i
 
 - `/crap-config` — wizard: collect analysis, coverage, verify commands, output paths, threshold;
   write `.crap-analysis.json`.
-- `/do-crap-analysis` — run on uncommitted changes: orchestrator `execute --changed`, read report
-  JSON, apply fixed PASS/REFACTOR/ERROR templates. **Detect-only** — never edits source.
+- `/do-crap-analysis` — run on branch changes since the base (committed, staged, unstaged, and
+  untracked): orchestrator `execute --changed`, then `review` for the verdict (PASS, WARN, REFACTOR,
+  ERROR, or NO_TARGETS) with fixed templates. **Detect-only** — never edits source.
 - `/crap-refactor` — apply-on-opt-in: read refactor brief, change source/tests, run verify once,
   re-review.
 
-Config is loaded from the base branch (a working branch cannot silently weaken thresholds). When
+Config is loaded from the base branch, so a working branch cannot silently weaken thresholds. The base
+is `--base`, else `origin/HEAD`, `origin/main`, `origin/master`, `main`, or `master`. Use `--config` to
+override the config explicitly; the review then starts with `CONFIG_OVERRIDE`. When
 CRAP exceeds threshold, the agent **must** read the refactor brief markdown into context before
 prompting the user toward `/crap-refactor`.
 

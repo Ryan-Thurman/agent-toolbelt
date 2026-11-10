@@ -26,8 +26,8 @@ statuses are `open`, `fixed`, `verified`, `superseded`, or `escalated`.
 
 Before and after each round, compare changed and untracked paths against scope and
 append the result to the round log. Stop if edits escape scope. For behavior fixes,
-use a test or other decisive behavior pin; do not substitute a superficial
-implementation assertion. Re-review after every round. If the same issue recurs,
+write a failing test first. Use another decisive behavior pin only when a test is not feasible.
+Record why in the ledger. Do not substitute a superficial implementation assertion. Re-review after every round. If the same issue recurs,
 severity oscillates, or fixing it shifts the defect without progress, stop editing
 and escalate the structural choice. Default to three rounds unless the user sets
 another bound. A cap is not convergence.

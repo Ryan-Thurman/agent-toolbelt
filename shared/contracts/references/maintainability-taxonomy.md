@@ -3,10 +3,6 @@
 What to look for. `/code-smell` scans by family; `/simplify` scans by axis. Treat cheap regex/lexical
 cues as untrusted leads to verify by reading, never as truth.
 
-This shared contract is the maintainability vocabulary for `/code-smell`, `/simplify`, and the
-`pr-review` maintainability facet. Keep it as the single source of truth: other prompts may point
-here, but should not copy this taxonomy.
-
 ## Baseline rules
 
 Use the smell names below as heuristics, not hard violations. A documented repo standard or local
@@ -59,8 +55,7 @@ rewrites unless a small first slice is clear.
 
 ## Architecture mode (`/code-smell --architecture`)
 
-Use this mode for no-code architecture review. It absorbs the useful `improve-codebase-architecture`
-vocabulary without adding a separate visual report command.
+Use this mode for no-code architecture review.
 
 Scope before scanning. A user-named module, subsystem, or pain point is the
 authoritative target. When no target is named, inspect a meaningful stretch of
@@ -108,8 +103,9 @@ Before flagging, **search the codebase for an existing helper and quote the symb
 
 ### Quality
 - **Dead code (safe)** — unused exports, orphan files, zombie variables, empty try/catch/if blocks.
-- **Debug remnants (safe)** — `console.log/warn/error`, `debugger`, temporary feature flags, stale
-  TODOs.
+- **Debug remnants (safe)** — `console.log`, `console.debug`, `debugger`, and stale TODOs.
+- **Diagnostic output and flags (confirm)** — `console.warn`, `console.error`, and temporary feature
+  flags. Removal can change observability or a runtime path.
 - **Commented-out code (review)**.
 - **Over-engineering / thin wrappers (confirm)** — see the taxonomy below.
 - **Hacky patterns (confirm)** — redundant state (cache what could be derived), parameter sprawl,
@@ -122,6 +118,26 @@ Before flagging, **search the codebase for an existing helper and quote the symb
   work), hot-path bloat, recurring no-op updates (add a change-detection guard), unnecessary
   existence checks (TOCTOU — operate directly and handle the error), memory leaks/unbounded growth,
   overly broad operations.
+
+## Risk and action vocabulary
+
+Give each `/simplify` or `/code-smell` finding one risk tier and one action.
+
+| Risk | Meaning | Apply rule |
+| --- | --- | --- |
+| `safe` | Behavior is the same by inspection, and no caller depends on the removed code. | Pre-select it. Apply it only after the user confirms the selection. |
+| `confirm` | Behavior is probably the same, but the change touches behavior-adjacent code. | Apply it only when the user selects it. |
+| `review` | The change needs human judgment, or the Chesterton's Fence questions have no answer. | Report it. Apply it only when the user selects it after review. |
+
+| Action | Use when |
+| --- | --- |
+| `delete` | The code has no callers or no effect. |
+| `inline` | A wrapper or helper adds no protection; see the thin-wrapper taxonomy. |
+| `extract` | Repeated or mixed logic needs one named home. |
+| `refactor` | The structure changes, and behavior stays the same. |
+| `parallelize` | Independent async work runs in sequence. |
+| `guard` | A missing check or change-detection guard causes repeated or unsafe work. |
+| `inspect` | A lead needs more reading before a recommendation. |
 
 ## Thin-wrapper taxonomy (the standout)
 

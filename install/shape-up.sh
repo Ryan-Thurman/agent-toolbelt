@@ -8,6 +8,7 @@ pack_shape_up() {
   skill shape-up references/interrogation.md
   skill shape-up references/current-state-gap.md
   skill shape-up references/rct-acceleration.md
+  skill shape-up references/slicing.md
 
   template shape-up-brief.md
   template shape-up-issues.md

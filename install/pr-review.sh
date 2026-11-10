@@ -29,6 +29,9 @@ pack_pr_review() {
   shared_contract references/style-precedence.md
   shared_contract references/anti-slop-naming.md
   shared_contract references/typescript-react-baseline.md
+  shared_contract references/providers.md
+  shared_contract references/posting.md
+  shared_contract references/security-checklist.md
 
   template pr-review.md
 

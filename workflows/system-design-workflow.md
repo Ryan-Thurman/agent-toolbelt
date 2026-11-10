@@ -1,17 +1,12 @@
 # System design
 
-1. Start with the team member's architecture question, supplied requirements, or existing design record.
-2. Inspect relevant evidence and previous decisions before asking for missing information.
-3. Use the design coverage reference to examine requirements, interfaces, data, failure behavior, operations, and alternatives.
-4. Resolve consequential uncertainty through focused questions and record remaining decisions with their owners.
-5. Deliver the scoped answer, repository map, decision record, or design document with appropriate diagrams.
-6. For a concrete architecture proposal, complete the linked `threat-model` review against the same design revision.
-7. Review connected scenarios and record readiness, evidence limits, and finding dispositions.
-8. Hand accepted scope to planning and `test-case-design` when requested.
+| Stage | Owner | Output and next decision |
+| --- | --- | --- |
+| Answer a design question, record a decision, or map the current system | `system-design` | A scoped answer, decision record, or repository map with evidence limits. |
+| Design a concrete architecture proposal | `system-design` | A design document and diagrams with readiness and open decisions. |
+| Review the threats of that proposal | `threat-model` | A linked threat report for the same design revision. |
+| Plan accepted scope | `phased-delivery` and `test-case-design` | Phases, PRs, and test cases that trace to the security requirements. |
+| Verify after implementation | The requested security and acceptance checks | Evidence against the linked requirements. |
 
-Keep focused questions scoped; a conceptual explanation or existing repository map does not require a new design or threat report.
-Reuse project document conventions and preserve decision history when choices change.
-Keep proposed controls distinct from implemented and verified controls.
-Reassess affected threats after changes to architecture, identity, sensitive data, or trust boundaries.
-After implementation, use the requested security and acceptance checks against the linked requirements.
+Use only the stages that the current decision needs.
 The project owns controlled records, internal risk registers, required reviews, and release authority.

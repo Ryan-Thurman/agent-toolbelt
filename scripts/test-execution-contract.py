@@ -185,7 +185,7 @@ class ExecutionInstallTests(unittest.TestCase):
                     if pack in ["phased-delivery", "bug-to-fix", "auto-agent-contract", "pr-improve"]:
                         refs += ["test-driven-development.md"]
                     if pack in managed:
-                        refs += ["execution.md", "failure-recovery.md", "execution-lessons.md"]
+                        refs += ["execution.md", "execution-schema.md", "failure-recovery.md", "execution-lessons.md"]
                     if pack in managed + retrying:
                         refs += ["operation-retries.md", "posting.md", "providers.md"]
                     if pack == "pr-improve":

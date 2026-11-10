@@ -1,19 +1,36 @@
-# RCA strategies, patterns, and the symptom index
+# RCA procedure, strategies, patterns, and the symptom index
 
-Toolbox for `/rca`. Pick a strategy from the decision tree, check the common-pattern taxonomy and
-symptom index for a fast start, then run the hypothesis loop. None of these replace the loop —
-they make it start warmer.
+Read this file for root-cause analysis (the `/rca` step), after reproduction.
+The strategies, taxonomy, and symptom index make the loop start warmer. They do not replace it.
 
-## The 4-phase loop (the spine)
+## Preconditions
 
-1. **Root-cause investigation** — read the errors *thoroughly*; reproduce reliably; examine recent
+- The bug is reproduced, manually or automatically. If not, follow `reproduction.md` first.
+- A durable investigation file exists. If not, create one from `templates/bug-investigation.md`.
+- Read `bug-knowledge-base.md` when it exists. A match is a hypothesis candidate (`durable-state.md`).
+
+## Rules
+
+- Output a confirmed cause and a fix *direction* only. Do not fix the bug in this step.
+- With `--diagnose`, make no file edits. Add instrumentation only when the user approves it.
+
+## The loop (the spine)
+
+1. **Re-read** **Symptoms** and **Reproduction**. Confirm that the repro fails the way the
+   reporter described, not with a different failure.
+2. **Root-cause investigation** — read the errors *thoroughly*; examine recent
    changes (`git diff`, recent commits); **trace the data flow backward** from the symptom.
-2. **Pattern analysis** — find a working example of the same thing; compare line by line; list
-   *every* difference, however small ("that can't matter" is how bugs hide).
-3. **Hypothesis testing** — generate **3–5 ranked, falsifiable** hypotheses before testing any.
+   Append findings to **Evidence**.
+3. **Pattern analysis** — find a working example of the same thing; compare line by line; list
+   *every* difference, however small ("that can't matter" is how bugs hide). Check the
+   taxonomy and symptom index below, and pick a strategy from the decision tree.
+4. **Hypothesis testing** — generate **3–5 ranked, falsifiable** hypotheses before testing any.
+   Show the ranked list to the user when domain knowledge would help.
    Test one variable at a time. Disproven → append to **Eliminated**, form the next.
-4. **Confirm** — fill the reasoning checkpoint; confirm adversarially
-   (`adversarial-confirmation.md`). `--diagnose` stops here.
+5. **Confirm** — confirm adversarially (`adversarial-confirmation.md`), then fill the 5-field
+   reasoning checkpoint. If you cannot fill all five concretely, return to step 2.
+6. **Emit** the output contract below. With `--diagnose`, stop and hand off.
+   Otherwise, recommend `/fix-plan`.
 
 ## Backward trace (find the origin, not the surface)
 
@@ -74,8 +91,3 @@ the bug, explain the missing signal and ask how the user wants to provide it sec
 `root cause` · `evidence` (the specific observations/logs/test that prove it) · `fix direction`
 (not the full diff — that's `/fix-plan`) · `prevention`. Write these into the durable file's
 **Resolution** and into `templates/rca-report.md` if a shareable report is wanted.
-
-## Escalate, don't grind
-
-Three failed fixes in different locations = an architecture problem; stop and raise it. "Emergency,
-no time for process" is a trap — systematic debugging is *faster* than guess-and-check thrashing.

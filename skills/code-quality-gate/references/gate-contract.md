@@ -1,20 +1,23 @@
 # Code-quality-gate contract
 
-## Modes and authority
-
-`/code-quality-gate [--mode=report|apply] [--rounds N] [--scope path[,path]] [--disposition-json '<object>']`
-
 ## Target
 
-This first version gates only the current checked-out branch and local working
-tree. Its review set is the branch's committed changes since its frozen merge
+The gate covers only the current checked-out branch and local working tree.
+Its review set is the branch's committed changes since its frozen merge
 base, plus staged, unstaged, and untracked changes. Derive `<target-slug>` from
 that branch/current-local context (a sanitized branch name plus short local
 `HEAD`; use a stable local `HEAD`-based slug when detached). It accepts no PR
 number, remote branch, or other local branch as a target. Use `/pr-review` for
 those reviews; check out the intended branch before running this gate.
 
+## Modes and authority
+
+`/code-quality-gate [--mode=report|apply] [--rounds N] [--scope path[,path]] [--disposition-json '<object>']`
+
+No mode commits or pushes.
+
 - `report` is the default. It inspects and writes only generated evidence.
+  It does not change source, tests, configuration, or documentation.
 - `apply` permits only unambiguous, evidence-backed, behavior-preserving,
   in-scope repairs when the caller explicitly chose it or the surrounding
   implementation request already authorizes edits. It does not authorize
@@ -113,7 +116,8 @@ have its own PASS/FAIL status but cannot prove the entire PR diff.
 1. Derive required checks from repository instructions, manifests, checked-in
    wrappers, CI, and changed-language conventions. Record commands, outcomes,
    and unavailable prerequisites. A check that cannot be run is BLOCKED unless
-   the repository explicitly marks it non-required for this target.
+   the repository explicitly marks it non-required for this target. The CRAP
+   check below is a required check when its config exists on the base.
 2. Inspect every changed hunk against style evidence and the shared contracts.
    Run `/simplify` in report mode to identify high-conviction cleanup candidates;
    do not treat a generic-name cue as a finding without a consequence.
@@ -132,3 +136,39 @@ have its own PASS/FAIL status but cannot prove the entire PR diff.
 Use the report table to list finding ID, source, severity, consequence,
 decision, status, reason/evidence, owner/follow-up, verification, and round.
 Do not make claims about whether a human or model authored the code.
+
+## CRAP analysis check
+
+CRAP (Change Risk Anti-Patterns) combines complexity and coverage into one risk score.
+The `crap-analysis` skill runs the repository's own CRAP commands.
+
+1. Look for `.crap-analysis.json` or `.atb/crap-analysis.json` at `<base_sha>` with `git cat-file -e`.
+2. If neither file exists, add one `Required checks` row with result `Skipped`.
+   Use this evidence text: `No .crap-analysis.json on the base branch.` Then continue the gate.
+3. If `skills/crap-analysis/bin/crap-analysis.sh` is not installed, record BLOCKED.
+   Name the missing `crap-analysis` pack as the unblocker.
+4. Run these commands in sequence, and wait for each to exit:
+
+   ```bash
+   bash skills/crap-analysis/bin/crap-analysis.sh execute --changed --coverage --base <base_sha>
+   bash skills/crap-analysis/bin/crap-analysis.sh review --base <base_sha>
+   ```
+
+   `--base <base_sha>` makes the CRAP config and changed paths use the frozen base.
+   An `execute` exit code of `1` is not a check failure. The `review` outcome decides.
+5. Run `scripts/fingerprint.sh` again with the same arguments.
+   If a fingerprint changed, the CRAP commands wrote a path that git does not ignore.
+   Record BLOCKED, and name the new paths from `git status --porcelain`.
+6. Record the review JSON `outcome`, and each target outcome, threshold, and `worstInScope`, as `Required checks` evidence.
+   If `config.changedInDiff` is `true`, also record the `CONFIG_CHANGE` line from the crap-analysis review contract.
+7. Apply the review outcome:
+
+   | Review outcome | Gate effect |
+   |---|---|
+   | `PASS`, `WARN`, or `NO_TARGETS` | The check passes. `WARN` failures are outside the frozen scope. |
+   | `REFACTOR` | The check passes. Record one `should-fix` finding with source `crap-analysis` for each `REFACTOR` target. Cite its `worstInScope` and `refactorBrief`. |
+   | `ERROR` | The check fails. Cite `error.command`, `error.exitCode`, and `error.reason`. |
+
+With `--scope`, read the target report.
+Record the `should-fix` finding only when an exceeding function is in an allowed path.
+Record exceeding functions in other paths as evidence only.

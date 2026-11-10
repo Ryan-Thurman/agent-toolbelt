@@ -1,7 +1,8 @@
 # CRAP report JSON schema (v1)
 
-The repo's analysis command writes a machine-readable report. The agent reads this file after
-`execute` completes. Required fields for deterministic review:
+The repo's analysis command writes a machine-readable report.
+The `review` op reads it after `execute` or `verify` completes.
+It needs these fields for a deterministic review:
 
 ## Top-level fields
 
@@ -9,7 +10,7 @@ The repo's analysis command writes a machine-readable report. The agent reads th
 |---|---|---|---|
 | `target` | string | yes | Target name (should match config key) |
 | `threshold` | number | yes | Threshold used for this run |
-| `passed` | boolean | yes | `true` when no function exceeds threshold |
+| `passed` | boolean | yes | `true` only when no function has `exceeds: true` |
 | `summary.maxCrap.value` | number | yes | Headline worst score |
 | `functions` | array | yes | Per-function verdicts (see below) |
 
@@ -21,23 +22,26 @@ Optional but useful: `summary.totalFunctions`, `summary.exceedingThreshold`, `co
 |---|---|---|---|
 | `qualifiedName` | string | yes | Function or method name |
 | `filePath` | string | yes | Repo-relative source path |
-| `startLine` | number | yes | Start line in source file |
+| `startLine` | integer | yes | Start line in source file |
 | `crap` | number | yes | CRAP score (1 decimal) |
 | `cyclomaticComplexity` | number | no | Complexity count |
 | `coveragePercent` | number | no | Line/branch coverage percentage |
-| `exceeds` | boolean | yes | Whether score exceeds threshold |
+| `exceeds` | boolean | yes | `true` when `crap` is above the threshold |
 | `riskLevel` | string | no | e.g. Low, Acceptable, Moderate, High |
+
+Write `filePath` relative to the repo root.
+The `review` op also accepts a path relative to the target `src`, or an absolute path in the repo.
 
 ## Worst-function selection
 
-When re-sorting is needed, use this order (deterministic):
+The `review` op sorts functions in this order to select the worst function:
 
 1. `crap` descending
 2. `qualifiedName` ascending
 3. `filePath` ascending
 4. `startLine` ascending
 
-Prefer `functions[0]` when the report is already sorted by the repo tool.
+The report does not need to be sorted.
 
 ## Example fixture
 
@@ -81,4 +85,4 @@ agent-toolbelt).
 }
 ```
 
-If required fields are missing after analysis completes, the review outcome is **ERROR**.
+If a required field is missing or has the wrong type, the review outcome is **ERROR**.

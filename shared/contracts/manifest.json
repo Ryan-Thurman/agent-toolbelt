@@ -77,6 +77,7 @@
       "owner": "shared/contracts",
       "consumers": [
         "code-quality-gate",
+        "crap-analysis",
         "pr-review",
         "simplify"
       ]
@@ -140,12 +141,24 @@
       "consumers": [
         "auto-agent-dev-lite",
         "bug-to-fix",
+        "cover",
         "phased-delivery",
         "pr-improve"
       ]
     },
     {
       "path": "references/execution.md",
+      "owner": "shared/contracts",
+      "consumers": [
+        "auto-agent-contract",
+        "bug-to-fix",
+        "handoff",
+        "phase-context-workflow",
+        "phased-delivery"
+      ]
+    },
+    {
+      "path": "references/execution-schema.md",
       "owner": "shared/contracts",
       "consumers": [
         "auto-agent-contract",
@@ -192,6 +205,14 @@
         "review-on-open",
         "ship-it",
         "ticket-sync"
+      ]
+    },
+    {
+      "path": "references/security-checklist.md",
+      "owner": "shared/contracts",
+      "consumers": [
+        "pr-review",
+        "security-audit"
       ]
     }
   ],

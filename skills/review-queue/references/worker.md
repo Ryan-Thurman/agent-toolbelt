@@ -3,7 +3,7 @@
 The consumer side. A worker claims jobs one at a time and runs the existing reviewer on each. It holds
 no review logic of its own — `/pr-review … --comment` does the work. One invocation of
 `/review-queue-worker` drains the queue **until it's empty**, then returns; repetition across time is
-delegated to `/loop` or `/schedule`.
+delegated to a local `/loop`. A `/schedule` cloud routine cannot read the local queue file.
 
 ## The loop
 
@@ -21,12 +21,14 @@ Concretely, per claimed job:
 1. **Claim.** `bash skills/review-queue/bin/review-queue.sh claim --worker <id>`. Parse the JSON. `[]`
    → nothing pending, end the pass. A non-zero exit → transient DB issue; end the pass and let the
    next tick retry (do **not** treat as a completed job).
-2. **Review in a fresh sub-agent.** Run `/pr-review <target> --comment`, passing `--tier=<tier>` only
-   if the job carried one (empty → let pr-review auto-tier). Spawn it as its own sub-agent (Task tool)
-   so the reviewer is isolated from the worker and from the producer that wrote the PR. The job gives
-   you `repo`, `target`, and `head_sha` — if the worker runs outside that repo's checkout, `cd` to /
-   resolve the right clone first (the queue is host-agnostic; `/pr-review` resolves the target through
-   the `pr-review` provider layer).
+2. **Review in a fresh sub-agent.** Run `/pr-review <target> --comment`. Pass the job's tier when it
+   has one. Otherwise pass the worker's `--tier` when given, else let pr-review auto-tier. Spawn it as its own sub-agent (Task tool)
+   so the reviewer is isolated from the worker and from the producer that wrote the PR. Run it in the
+   job's `repo` directory. If `repo` is not an existing directory, `requeue` with a note; the attempt
+   cap dead-letters a job that has a bad path.
+   `/pr-review` reviews the current PR head. If that head differs from `head_sha`, add
+   `--notes "reviewed <current-sha>"` at completion. The head-SHA marker in
+   `skills/pr-review/references/posting.md` stops a later job from posting the same head again.
 3. **Record the outcome.**
    - Review produced a verdict → `complete <id> --verdict "<APPROVE|REQUEST CHANGES|NEEDS DISCUSSION>"
      --findings <n>`.
@@ -34,6 +36,8 @@ Concretely, per claimed job:
      "<short reason>"`. The lease + attempt count mean a genuinely stuck job eventually dead-letters
      rather than spinning forever.
 4. **Next.** Loop. Stop when `claim` returns `[]` or `--max` is reached (`log` how many were left).
+5. **Summarize.** Print one line per job (id, target, verdict, SHA). Then print a tally:
+   reviewed / requeued / dead-lettered / deferred.
 
 ## Multiple jobs / fan-out
 
@@ -44,28 +48,21 @@ in one wake; the remainder is picked up next tick. Always `log` what was deferre
 
 ## Self-loop guard
 
-The SHA idempotency key already prevents re-reviewing a commit: posting a review doesn't change the
-head SHA, and `enqueue` dedups on it, so a reviewed commit won't be re-queued. If the **review bot also
+The SHA idempotency key and the host head-SHA marker prevent a second review of a commit. Posting a
+review does not change the head SHA. If the **review bot also
 opens PRs**, have the producer skip enqueuing its own bot-authored PRs (or filter them in the worker)
 unless you explicitly want self-review.
 
 ## Scheduling
 
 One `/review-queue-worker` pass drains what's currently queued and exits — don't build a sleep loop
-inside it. Repeat it with the runtime's schedulers:
+inside it. Repeat it with a local `/loop`:
 
 - **Local, while you work:** `/loop 5m /review-queue-worker` — every 5 minutes, drain any jobs other
   agents have pushed. Cheap: a `claim` returning `[]` is a single local SQLite read (no API, no host
   calls), so a short interval is fine.
-- **Hands-off:** a `/schedule` cloud routine running `/review-queue-worker` on a cron. Best when
-  producers enqueue around the clock and you don't want a session open.
 
-Either way the queue is the rendezvous: producers `enqueue` whenever they finish a PR; the worker
+For hands-off review without a local session, use the `review-on-open` CI event or poller instead.
+
+The queue is the rendezvous: producers `enqueue` whenever they finish a PR; the worker
 drains on its own cadence. Because every op is idempotent/atomic, missed or overlapping ticks are safe.
-
-## Where this sits
-
-This is the push-based third trigger of the review family (`skills/review-on-open/SKILL.md` has the CI
-event + host poller). Use the queue when the work originates from **other local agents**; use the CI
-event for GitHub's webhook; use the poller for host PRs with no local producer. After a review posts,
-`pr-review-reply` handles the inbound human threads.

@@ -20,8 +20,8 @@ description, or a ticket. If none is provided, emit `[]` — this facet only run
 
 Return findings in the existing JSON finding schema.
 Keep the orchestrator's findings-array contract unchanged.
-The orchestrator owns the compact coverage table for every supplied acceptance criterion.
-Use evidence from the frozen review revision and distinguish verified, failed, and not verified behavior.
+The orchestrator owns the "Acceptance coverage" table (`../references/output-format.md`).
+Emit a finding for each failed or missing criterion, using evidence from the frozen review revision.
 
 ## Do NOT flag
 

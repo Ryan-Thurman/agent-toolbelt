@@ -10,13 +10,16 @@ State both:
   flag), `git revert` + redeploy, roll back to the prior release/tag, or run the migration's
   down-step. Note any irreversible step (a destructive migration, a data backfill) explicitly — it
   changes the plan.
-- **The trigger** — the concrete signal that means "roll back now" (see the threshold table). Don't
-  leave it to in-the-moment judgment.
+- **The trigger** — the concrete signal that means "roll back now". Take it from the project's
+  release policy. When the project has no trigger, the readiness verdict is NO-GO, and the missing
+  trigger is the blocking gap. Do not invent a universal threshold.
 
-## Feature-flag lifecycle (decouple deploy from release)
+## Example sequences
 
-The percentages, durations, and cleanup interval below are examples.
+The stages, percentages, durations, and cleanup interval in this section are examples.
 Select actual stages and observation windows from project policy, traffic, and risk.
+
+Feature-flag lifecycle (decouple deploy from release):
 
 ```
 1. DEPLOY with flag OFF   → code is in production but inactive
@@ -28,22 +31,21 @@ Select actual stages and observation windows from project policy, traffic, and r
 
 Give each flag an owner and a project-appropriate expiry.
 Test supported flag states and record cleanup criteria.
-Treat the example cleanup interval as illustrative.
 
-## Staged rollout sequence
+Staged rollout:
 
 ```
 1. Staging        → full test suite + manual smoke test of critical flows
 2. Production, flag OFF → verify deploy succeeded (health check), no new errors
-3. Team/internal (flag ON) → ~24h window
-4. Canary 5%      → compare canary vs. baseline; 24–48h window; advance only if thresholds pass
+3. Team/internal (flag ON) → for example, ~24h
+4. Canary 5%      → compare canary vs. baseline; for example, 24–48h; advance only if the rules pass
 5. Gradual 25% → 50% → 100% → same monitoring at each step; can step back at any point
-6. Full rollout   → monitor ~1 week, then clean up the flag
+6. Full rollout   → monitor for the project's window (for example, ~1 week), then clean up the flag
 ```
 
 For a low-risk change you own, big-bang + watch is fine — but still have the rollback plan.
 
-## Advance / hold / roll-back thresholds
+## Advance, hold, and recover rules
 
 Use the project's agreed release policy and baseline for the named deployment.
 Record metric definitions, denominators, comparison windows, traffic or sample limits, and authorized response owners.
@@ -56,7 +58,6 @@ Record metric definitions, denominators, comparison windows, traffic or sample l
 
 A zero-error baseline or a small sample cannot support an unqualified relative-rate threshold.
 Keep data-integrity and security response consistent with the project's incident policy.
-Record missing triggers instead of inventing universal percentages or observation periods.
 A business metric change alone does not establish release causation.
 Use an available `product-outcome-review` for the longer-term customer decision.
 These checks do not expand deployment or rollback authority.
@@ -68,5 +69,4 @@ These checks do not expand deployment or rollback authority.
 - **Infrastructure:** CPU/memory, DB connection-pool usage, disk, queue depth.
 - **Client (UI):** Core Web Vitals (LCP/INP/CLS), JS errors, client-side API error rates.
 
-When an external pipeline owns the deploy, you won't drive these stages — but the same table is the
-**watch-list** to hand off: "here's what to watch and the thresholds that mean roll back."
+When an external pipeline owns the deploy, hand off this list and the project's rules as the watch-list.

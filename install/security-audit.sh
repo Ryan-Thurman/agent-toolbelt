@@ -3,6 +3,7 @@
 pack_security_audit() {
   shared_contract references/human-readable-output.md
   shared_contract references/evidence-quality.md
+  shared_contract references/security-checklist.md
   cmd security-audit
   skill security-audit SKILL.md
   skill security-audit references/audit-boundaries.md

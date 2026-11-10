@@ -28,6 +28,7 @@ _auto_agent_command() {
 pack_auto_agent_contract() {
   shared_contract references/test-driven-development.md
   shared_contract references/execution.md
+  shared_contract references/execution-schema.md
   shared_contract references/failure-recovery.md
   shared_contract references/execution-lessons.md
   shared_contract references/operation-retries.md

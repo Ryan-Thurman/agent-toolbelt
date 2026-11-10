@@ -2,6 +2,7 @@
 pack_cover() {
   cmd write-tests
   shared_contract references/human-readable-output.md
+  shared_contract references/test-driven-development.md
   cmd cover
   cmd cover-gaps
 

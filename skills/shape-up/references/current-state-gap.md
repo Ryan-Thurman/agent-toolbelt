@@ -28,7 +28,7 @@ read-only discovery report, not a brief-approval or implementation step.
 Report concisely in this order: requested outcome; current behavior and
 evidence; gap/status; consequence; prioritized unanswered questions; confidence
 and inspection limits. A small comparison table is useful for several outcomes.
-Do not draft a phase plan, open a PR, edit files, or demand approval to complete
-this review. If the user subsequently wants delivery, carry these findings into
-interactive shaping when product decisions remain open, or pass already-approved
-scope directly to `$phased-delivery`.
+Complete this review without a phase plan, a PR, file edits, or approval.
+If the user then wants delivery, carry these findings into interactive shaping
+when product decisions remain open. Give already-approved scope directly to
+`$phased-delivery`.

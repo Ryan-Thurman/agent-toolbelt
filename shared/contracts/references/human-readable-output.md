@@ -68,7 +68,6 @@ when numerical scale, rather than connectivity, is the question.
 
 Give each step one action, its reason, and a completion condition that the reader can verify.
 Name the owner or dependency when it is not clear. Identify the first action and any problem that prevents it.
-The agent must complete work that the user has already authorized.
 
 For a small plan, use `1. Action — why; done when ...`. For a reviewable plan,
 use this layout, retaining the owning workflow's required scope and approvals:

@@ -2,7 +2,7 @@
 
 Extends the standard fan-out (`fan-out.md`) — read that first; this only adds the deep upgrades. The
 deep tier is the "reach for the thermo-nuclear bar" tier: maximum coverage + adversarial
-verification. It is expensive — see `benchmarks/results.md` for whether the extra cost pays off.
+verification. It costs about 8× a light review.
 
 ## 0. Setup (as standard) + deep presteps
 
@@ -13,6 +13,7 @@ verification. It is expensive — see `benchmarks/results.md` for whether the ex
 - **0a. Blast-radius map.** For each exported/public symbol the diff changes, grep importers and
   matching test files; produce a short impact map (changed symbol → who depends on it → which tests
   cover it). Pass this to every facet so they reason about ripple effects, not just the hunk.
+  When rct graph tools are in the tool list, build the map with `rct-acceleration.md`.
 
 ## 1. Select facets (deep = everything)
 
@@ -30,9 +31,7 @@ effects, not just the hunk. Each returns its JSON findings array.
 
 ## 3. Aggregate + dedup
 
-As standard. (Optional, budget-permitting: run the facet pass **twice** and keep findings a majority
-of passes agree on, deduping by line + token-similarity — the dreki multi-pass-vote pattern. Skip
-unless you specifically want variance-hardening; it multiplies cost.)
+As standard.
 
 ## 4. Dual-judge verification (replaces the single critic)
 
@@ -43,18 +42,16 @@ to the rejection memory (`rejection-memory.md`), same as the standard critic doe
 
 ## 5. Requirements / spec coverage
 
-When intent supplies acceptance criteria, the orchestrator renders the coverage table described in
-`fan-out.md`: each clause → `Verified`, `Failed`, or `Not verified` → evidence and `file:line`.
-Keep it separate from the spec-alignment findings array. Otherwise skip.
+When intent supplies acceptance criteria, render the "Acceptance coverage" table from
+`output-format.md`. Otherwise skip.
 
 ## 6. Re-entry notes, repo-config overrides, rejection memory, threshold, verdict, render
 
 As standard (`fan-out.md` §5–8): synthesize re-entry notes, **apply the repo-config overrides**
 (severity overrides + do-not-flag, host-side, `repo-config.md`), **apply the rejection memory**
 (downrank + tag previously-rejected findings, `rejection-memory.md`), threshold, derive the verdict,
-render — including the `repo-config:` and `memory:` audit footers. Add the **token-usage footer**
-(`output-format.md`), which for deep includes facet tokens + dual-judge + tiebreaker, so the
-deep cost is explicit in every run. If `--comment` was passed, post inline per `posting.md`.
+render — including the audit footers. With `--benchmark`, the token footer (`benchmarking.md`)
+includes facet, dual-judge, and tiebreaker tokens. If `--comment` was passed, post inline per `posting.md`.
 
 ## Failure handling
 

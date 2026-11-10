@@ -11,7 +11,7 @@ Read `shared/contracts/references/evidence-quality.md` when assessing candidate 
 Produce a bounded debt register.
 Default to report-only; write a requested register without editing code, installing tools, or creating external tickets.
 
-Paths beginning `templates/` or `shared/` refer to the Toolbelt root. Compatibility installers rewrite them under the target’s `.atb/`.
+Paths beginning `templates/` or `shared/` refer to the Toolbelt root.
 
 ## Procedure
 
@@ -25,7 +25,6 @@ Paths beginning `templates/` or `shared/` refer to the Toolbelt root. Compatibil
    Reject safe patterns and duplicate reports with a reason.
 4. Rank urgency and expected benefit against cost, dependencies, confidence, and change risk.
    Keep unknown estimates explicit.
-   A newer library, large file, or frequent change alone does not establish debt.
 5. Update an existing suitable register or use `templates/tech-debt-register.md` when a durable output is requested.
    Preserve IDs and earlier decisions; mark resolved or stale evidence explicitly.
    Name `tech-backlog-assessment` as the next owner for selected items when available.

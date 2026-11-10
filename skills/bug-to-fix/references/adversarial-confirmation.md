@@ -41,7 +41,5 @@ this cause, would the symptom definitely disappear?"** If you can't answer both 
 reasoning checkpoint isn't complete. The strongest confirmation is the reproduction itself: a fix
 at the true cause makes the repro go green (and reverting it makes it red again).
 
-## Doubt theater (anti-pattern)
-
-If two or more cycles surface substantive findings but you classified none as actionable, you are
-validating, not doubting. Stop and escalate — you're rubber-stamping.
+If two or more cycles find substantive issues but none are actionable, follow the doubt-theater
+escalation in `SKILL.md`.

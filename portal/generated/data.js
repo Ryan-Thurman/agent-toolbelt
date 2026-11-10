@@ -176,7 +176,7 @@ window.AGENT_TOOLBELT_DATA = {
       "display_name": "Cover",
       "short_description": "Author behavior-pinning tests for a diff, module, or bug reproduction on opt-in.",
       "default_prompt": "Propose tests that pin this behavior.",
-      "description": "Author behavior-pinning tests for a diff, module, or bug reproduction, applied on opt-in. Use when adding regression coverage or strengthening tests. For finding untested areas use /cover-gaps; for a merge verdict use /pr-review.",
+      "description": "Author behavior-pinning tests for a diff, module, or bug reproduction, applied on opt-in, or scan an area for missing and weak coverage (detect-only). Use when adding regression coverage, strengthening tests, or surveying coverage gaps. For a merge verdict use /pr-review.",
       "category": "Testing & Verification",
       "tags": [
         "tests",
@@ -224,7 +224,7 @@ window.AGENT_TOOLBELT_DATA = {
       "id": "crap-analysis",
       "display_name": "CRAP Analysis",
       "short_description": "Configure and run CRAP analysis via repo commands — deterministic review and opt-in refactor.",
-      "default_prompt": "Run CRAP analysis on my uncommitted changes.",
+      "default_prompt": "Run CRAP analysis on my branch changes.",
       "description": "Run CRAP analysis via repo-configured commands — wizard setup, single-run orchestration, deterministic report review, and opt-in refactor. Use for /do-crap-analysis, /crap-config, or /crap-refactor.",
       "category": "Codebase Improvement",
       "tags": [
@@ -247,7 +247,7 @@ window.AGENT_TOOLBELT_DATA = {
         "Improvement candidates"
       ],
       "example_prompts": [
-        "Analyze this repository for high-risk complexity and coverage gaps.",
+        "Run CRAP analysis on my branch changes and list the hotspots above the threshold.",
         "Prioritize refactoring targets using complexity and test evidence."
       ],
       "related_skills": [
@@ -314,7 +314,7 @@ window.AGENT_TOOLBELT_DATA = {
       "display_name": "Phase Context Workflow",
       "short_description": "Durable phase context for resumable long-running coding-agent work.",
       "default_prompt": "Set up durable phase context for this work.",
-      "description": "Manage durable phase context for long coding-agent work. Use when planning, implementation, testing, review, and PR prep should be split into resumable phases with repo-tracked phase files, handoffs, context packets, and safe /clear or /compact boundaries.",
+      "description": "Keep phase files, context packets, and phase handoffs so long coding-agent work survives /clear or /compact. Use when the user asks for phase files or a context packet, or when `.acc/phases/` already exists.",
       "category": "Agent Operations",
       "tags": [
         "phases",
@@ -403,7 +403,7 @@ window.AGENT_TOOLBELT_DATA = {
       "display_name": "Phased Delivery",
       "short_description": "Deliver requirements or tickets as one PR per phase.",
       "default_prompt": "Use $phased-delivery to plan and deliver this requirement as reviewable PRs.",
-      "description": "Review implementation plans or deliver requirements through test-first implementation in reviewable phases, one PR per phase. Use with a raw request, existing plan, or approved tickets; preserve one ticket per phase and PR.",
+      "description": "Plan, review, or deliver requirements as test-first, reviewable phases with one PR per phase. Use with a raw request, an existing plan, or approved tickets, or to review a phase branch or PR against its ticket.",
       "category": "Feature Delivery",
       "tags": [
         "feature",
@@ -556,7 +556,7 @@ window.AGENT_TOOLBELT_DATA = {
       "display_name": "PR Review Reply",
       "short_description": "Triage PR review threads, re-review touched code, and draft per-thread replies.",
       "default_prompt": "Handle these PR review comments.",
-      "description": "Handle the PR-review round-trip: read reviewer threads, triage each one, re-review only touched code, and draft per-thread replies. Use to address PR comments, answer review feedback, or close a /pr-review loop.",
+      "description": "Handle the PR-review round-trip: read reviewer threads, triage each one against code changed since the review, and draft per-thread replies. Use to address PR comments, answer review feedback, or close a /pr-review loop.",
       "category": "Review & Quality",
       "tags": [
         "review-comments",
@@ -881,7 +881,7 @@ window.AGENT_TOOLBELT_DATA = {
       "display_name": "Shape Up",
       "short_description": "Compare a product ask with current behavior, or shape an approved brief.",
       "default_prompt": "Use $shape-up to review this ask against the current system or shape it into an approved brief, as requested.",
-      "description": "Compare a product ask with current system behavior, or shape a vague request into an approved brief. Use for requirement gaps and fuzzy ideas. Route defects to bug-to-fix; preserve delivery rules owned by the target project.",
+      "description": "Compare a product ask with current system behavior, shape a vague request into an approved brief, or slice an approved brief into tickets before planning. Route defects to bug-to-fix.",
       "category": "Discovery & Planning",
       "tags": [
         "brief",
@@ -974,7 +974,7 @@ window.AGENT_TOOLBELT_DATA = {
       "display_name": "Simplify",
       "short_description": "Behavior-preserving cleanup proposals and opt-in application after feature work or before PR.",
       "default_prompt": "Find safe simplifications for this code or diff.",
-      "description": "Apply behavior-preserving cleanup on opt-in: delete dead code, inline thin wrappers, reuse helpers, and fix small inefficiencies. Use after feature work, before PR, or when asked to simplify. For verdicts use pr-review.",
+      "description": "Apply behavior-preserving cleanup on opt-in: delete dead code, inline thin wrappers, reuse helpers, and fix small inefficiencies. Use after feature work, before PR, when asked to simplify, or to scan an area for structural smells (detect-only). For verdicts use pr-review.",
       "category": "Codebase Improvement",
       "tags": [
         "cleanup",
@@ -1126,7 +1126,7 @@ window.AGENT_TOOLBELT_DATA = {
       "display_name": "Tech Backlog Assessment",
       "short_description": "Assess one technical investment before implementation.",
       "default_prompt": "Use $tech-backlog-assessment to assess this item and compare its alternatives.",
-      "description": "Assess technical backlog items before implementation: decide do/defer/reject/spike, compare options such as packages or library switches, define risks, test strategy, and the next workflow.",
+      "description": "Assess technical backlog items before implementation: decide do/defer/reject/spike, compare options such as packages, library switches, or upgrades, define risks, test strategy, and the next workflow.",
       "category": "Discovery & Planning",
       "tags": [
         "backlog",

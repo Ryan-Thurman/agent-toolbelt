@@ -5,7 +5,8 @@ argument-hint: "<research-question-and-sources>"
 
 # /user-research-synthesis
 
-Use `$user-research-synthesis` to analyze `$ARGUMENTS`.
-Preserve source evidence, sample limits, counterexamples, and unanswered questions.
-Use the project's research record when suitable.
-Keep external publication separate from producing the report.
+**Arguments:** `$ARGUMENTS` — the research question and the research sources.
+
+Use this to understand supplied research before a product decision.
+
+Follow the `user-research-synthesis` skill.

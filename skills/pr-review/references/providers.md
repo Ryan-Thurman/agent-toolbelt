@@ -1,31 +1,9 @@
 # Hosting providers — GitHub, Azure Repos, generic git
 
-The reviewer is not GitHub-only. `gh` is the GitHub path; **Azure Repos (Azure DevOps)** uses the
-`az` CLI with a different PR model; and when neither CLI is present the review still runs from plain
-**git** (report-only). Detect the provider once, up front, and route every host-touching step
-(PR metadata, PR diff, inline posting, vote) through it.
-
-## Detect the provider
-
-From the origin remote (first match wins):
-
-```bash
-url="$(git remote get-url origin 2>/dev/null)"
-case "$url" in
-  *github.com*)                       provider=github ;;
-  *dev.azure.com*|*visualstudio.com*) provider=azure  ;;
-  *)                                  provider=git     ;;   # unknown host → git-only fallback
-esac
-```
-
-A **PR URL passed as the target** also tells you the provider directly:
-- `https://github.com/{owner}/{repo}/pull/{n}` → github, PR `n`.
-- `https://dev.azure.com/{org}/{project}/_git/{repo}/pullrequest/{id}` (or
-  `https://{org}.visualstudio.com/...`) → azure, PR `id`.
-
-If the detected provider's CLI isn't installed/authenticated, **degrade one step**: azure/github →
-`git` (review the branch/local diff, report-only, no posting), and say so. Never hard-fail because a
-CLI is missing — the git path always works for diff acquisition.
+Detect the provider and apply the degrade rule with `shared/contracts/references/providers.md`.
+Detect once, up front. Route every host-touching step (PR metadata, PR diff, inline posting, vote)
+through that provider. A missing host CLI degrades the review to the git path: branch or local diff,
+report-only. This file adds the review-specific capability matrix and Azure details.
 
 ## Capability matrix
 

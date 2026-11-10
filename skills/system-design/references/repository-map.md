@@ -38,5 +38,4 @@ Ask for a project decision only when ownership or intended behavior is unresolve
 Deliver the requested map or update with a source revision, dependency diagram, flow references, coverage, and remaining unknowns.
 Verify the recorded paths and symbols against the inspected source.
 Keep design proposals distinct from observations.
-Mapping existing structure does not require a new design or threat review.
 When the request also changes architecture or trust boundaries, use the design procedure and linked threat review.

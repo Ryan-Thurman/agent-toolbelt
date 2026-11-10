@@ -54,7 +54,30 @@ Rules:
 5. Compare: does standard find *materially more high-severity* issues than light for ~Nx the
    tokens? Does deep find anything standard missed, or just re-confirm? That ratio is the decision.
 
-## The report footer (every run prints this)
+## Token-usage footer (`--benchmark`)
 
-See the "Token usage" section in `output-format.md` — each review ends with a per-facet token table
-(multi-agent) or a single figure (light), so numbers land in the report without extra work.
+Print this footer only when the user passes `--benchmark` or runs this protocol.
+Never include it in a posted PR summary.
+
+- **Multi-agent tiers (standard/deep):** sum the per-agent token counts the Task tool returns for
+  each facet, critic, judge, and tiebreaker sub-agent. Print the breakdown and the total.
+- **Light tier:** if the review work ran in a single sub-agent, use its Task token count; otherwise
+  note "see session `/cost`".
+- State the **review tokens** (sub-agent sum) separately from **total session tokens**
+  (harness `/cost`). The sub-agent sum excludes orchestrator setup and aggregation.
+
+```markdown
+### 📊 Token usage  ·  tier: <tier>
+| stage | tokens |
+|---|---|
+| facet: correctness | 47,074 |
+| facet: security    | 34,128 |
+| ...                | ...    |
+| critic             | ...    |
+| **review total (sub-agents)** | **224,033** |
+
+Yield: 0 blockers · 8 should-fix · 6 nits · 2 questions  →  ~28k tokens/finding
+(orchestrator overhead not included — see session /cost for the authoritative total)
+```
+
+The `Yield:` line makes runs comparable across tiers, because it pairs tokens with findings by bucket.

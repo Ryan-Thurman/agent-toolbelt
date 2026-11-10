@@ -5,12 +5,10 @@ argument-hint: "[target-and-review-options]"
 
 # /review-diff
 
-Use `skills/pr-review/SKILL.md` for the selected local diff or branch.
-Preserve the user's tier and focus options.
-Use the skill's normal target resolution, evidence, and verdict rules.
+Use `/review-diff` for a review of local changes or a branch before a PR exists.
 
 **Arguments:** `$ARGUMENTS`
 
-Read supplied acceptance criteria and applicable repository instructions.
-Report findings and coverage limits. Apply no code changes during the review.
-The target project owns any additional approval or document requirements.
+Accept the same options as `/pr-review`. Keep the user's tier, intent, and focus options.
+
+Follow the `pr-review` skill (`skills/pr-review/SKILL.md`).

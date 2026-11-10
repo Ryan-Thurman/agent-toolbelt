@@ -5,10 +5,7 @@ argument-hint: "<system-or-design>"
 
 # /threat-model
 
-Use the `threat-model` skill for design-time security analysis.
-
 **Arguments:** `$ARGUMENTS`
 
-Map assets, actors, flows, trust boundaries, abuse paths, mitigations, residual risk,
-and testable requirements using `templates/threat-model.md`. This is analytical only;
-do not run active testing or claim compliance.
+Use this command for a design before you build it; use `/security-audit` for implemented code.
+Follow the `threat-model` skill for `$ARGUMENTS`.

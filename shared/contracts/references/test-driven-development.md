@@ -6,8 +6,8 @@ Follow the source requirements, repository test policy, and the user's explicit 
 
 Use existing validation for prose, generated output, or simple configuration when a new test would only repeat the change.
 Preserve existing code and user edits when adding tests to work already in progress.
-Report tests added afterward as test-after coverage; do not delete working code to recreate a test-first sequence.
-Implementation authorization includes relevant test edits within scope; do not request approval for each test.
+Report tests added afterward as test-after coverage. Keep the working code instead of deleting it to recreate a test-first sequence.
+Implementation authorization includes relevant test edits within scope. Add those tests without separate approval.
 Standalone test-only workflows retain their own editing rules.
 
 ## Prepare the tests
@@ -34,9 +34,9 @@ Unit tests alone do not establish browser behavior or external service compatibi
 | Refactor if useful | Make a small behavior-preserving cleanup within the approved scope after green. | The affected tests still pass; no new behavior or unrelated cleanup enters the change. |
 
 Repeat this cycle for the next selected behavior.
-Do not write all tests before all implementation.
+Complete each red-green cycle before you write the next test.
 If a new test already passes, record existing coverage and select an unmet requirement.
-Do not invent a requirement or force an unrelated failure to obtain red.
+Get each red result from a real source requirement.
 If a test expectation is mistaken, correct it from source evidence and repeat the red check.
 For a bug fix, the first case must capture the confirmed symptom before repair.
 For existing passing behavior, use characterization tests and identify them separately from test-first evidence.
@@ -45,13 +45,13 @@ For existing passing behavior, use characterization tests and identify them sepa
 
 Name the observable behavior and the realistic defect each test detects.
 Assert through callable interfaces, including a module's public functions; avoid assertions about private structure.
-Do not expose private methods or add production hooks solely for tests.
+Keep private methods private. Keep test-only hooks out of production code.
 Derive expected results from source requirements, worked examples, or independently checked fixtures.
-Do not compute the expected result with the implementation or repeat its algorithm in the test.
+Keep each expected result independent of the implementation and its algorithm.
 
 Keep project logic real inside the unit under test.
 Replace external I/O, clocks, or randomness at their boundaries when needed for deterministic tests.
-Do not use live network services in unit tests.
+Replace live network services with substitutes in unit tests.
 Keep fixtures isolated and clean up temporary state.
 Assert results and contractual effects; a successful mock invocation alone does not prove the behavior works.
 Use integration evidence when a substitute hides a required interaction.
@@ -62,18 +62,11 @@ Use the repository's coverage command when available and inspect uncovered branc
 Coverage percentages measure execution; review the assertions and observable outcomes separately.
 Add cases for meaningful missing decisions, boundaries, and failure outcomes.
 Follow existing coverage thresholds without reducing them or adding exclusions to pass.
-Do not invent a percentage target or add trivial tests to raise the number.
+Use only the repository's coverage targets. Add tests for meaningful behavior, not to raise the number.
 If coverage tooling is unavailable, report coverage as unmeasured and identify the behavior the tests establish.
 
 Before handoff, run the relevant suite and repository-required checks against the final change.
 Keep concise evidence in the existing execution record: behavior, expected red failure, commands, results, and tested revision.
 Include the coverage command, measurement scope, uncovered changed behavior, and any manual or integration gaps.
 Distinguish passing checks, pre-existing failures, and checks that did not run.
-Do not report readiness while required checks fail or required behavior remains unverified.
-
-## Sources
-
-These instructions adapt ideas without requiring either upstream package:
-
-- [Matt Pocock TDD](https://github.com/mattpocock/skills/tree/main/skills/engineering/tdd): incremental behavior slices, observable interfaces, and independent expectations.
-- [Superpowers TDD](https://github.com/obra/superpowers/tree/main/skills/test-driven-development): observed red and green runs, minimal implementation, and cleanup after green.
+Report readiness only when required checks pass and required behavior is verified.

@@ -10,7 +10,6 @@ Inspect existing decision records, project instructions, naming conventions, and
 Reuse their format, location, identifiers, status vocabulary, and approval process.
 Continue the existing sequence instead of creating a second scheme.
 When no convention exists, use `templates/architecture-decision-record.md` in the project's chosen document location.
-Keep internal project decisions outside the public Toolbelt repository.
 
 ## Record the decision
 
@@ -43,7 +42,6 @@ Minor factual corrections may update the existing record with a traceable explan
 
 Check that referenced requirements, alternatives, consequences, and approval evidence support the recorded state.
 Keep unresolved decisions and unavailable evidence visible.
-Writing a record does not authorize implementing its recommendation.
 For a concrete new architecture proposal, use the design procedure and linked threat review before claiming design readiness.
 
 Method adapted from [Addy Osmani's documentation and ADR guidance](https://github.com/addyosmani/agent-skills/blob/main/skills/documentation-and-adrs/SKILL.md).

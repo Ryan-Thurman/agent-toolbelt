@@ -14,17 +14,25 @@ does not perform active testing.
 
 ## Steps
 
-1. Read `references/model-method.md`. Establish system scope, assets, actors and
-   capabilities, data flows, entry points, and trust boundaries from available evidence.
-2. Identify credible abuse cases and attack paths; rank mitigations by likely impact
-   and exploitability, explaining uncertainty rather than asserting completeness.
-3. Convert accepted mitigations into testable security requirements and a verification
-   plan. Record residual risk, assumptions, and decisions needing an owner.
-4. Hand the resulting requirements to planning, `/test-case-design`, or `/shape-up`
-   as appropriate.
-   Record the reviewed design revision and stable threat-to-requirement-to-verification links.
+1. Model only the stated system and the adjacent trust boundaries needed to understand it.
+   Record the design source and reviewed revision.
+2. Establish assets, actors, data and control flows, entry points, and trust boundaries.
+   Assets include data, privileges, availability, and business actions.
+   Actors include legitimate users, services, operators, and credible attackers with stated capabilities.
+3. Describe each credible attack path as entry point, precondition, action, impact, and mitigation.
+   Map a path to CWE or OWASP only when the path supports the mapping.
+   Rank paths by impact and exploitability, and record uncertainty.
+4. Record existing control evidence and proposed controls separately.
    Distinguish proposed controls from observed implementation and verified behavior.
-   Give important threats a disposition and owner or unassigned status.
+5. Convert each accepted mitigation into a testable security requirement.
+   Verify each requirement by a test, review, configuration check, or operational control.
+   Link stable threat IDs to requirement IDs and their verification methods.
+6. Give each important threat a disposition, an owner or unassigned status, and remaining risk.
+   Record assumptions and decisions that need an owner.
+7. Identify the threat assumptions that need review after changes to architecture, identity,
+   data sensitivity, tenant boundaries, or deployment.
+8. For AI systems, inspect untrusted retrieved content, tool authority, stored context, and sensitive output.
+9. Hand the requirements to planning, `/test-case-design`, or `/shape-up` as appropriate.
 
 ## Completion
 

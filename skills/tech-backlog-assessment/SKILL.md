@@ -1,6 +1,6 @@
 ---
 name: tech-backlog-assessment
-description: "Assess technical backlog items before implementation: decide do/defer/reject/spike, compare options such as packages or library switches, define risks, test strategy, and the next workflow."
+description: "Assess technical backlog items before implementation: decide do/defer/reject/spike, compare options such as packages, library switches, or upgrades, define risks, test strategy, and the next workflow."
 ---
 
 # tech-backlog-assessment
@@ -10,72 +10,35 @@ Before you write a response for the user, read
 Read `shared/contracts/references/evidence-quality.md` when evaluating the item.
 
 Use this skill when the user has a technical backlog item and needs a decision
-memo before implementation. The work is discovery and recommendation, not code
-changes.
+memo before implementation.
+Report only. Edit files only after the user accepts the recommendation and asks to implement.
 
-Paths beginning `templates/` or `shared/` refer to the Toolbelt root. Compatibility installers rewrite them under the target’s `.atb/`.
-
-## Mutation Policy
-
-Default: report-only.
-Edit files only when the user explicitly asks to implement after accepting the
-recommendation.
-Do not change code while producing the assessment memo.
-
-## Scope
-
-Good fits:
-
-- Should we import a package, keep custom code, or switch libraries?
-- Is this technical debt item worth doing now?
-- What is the safest approach to a migration, upgrade, or test investment?
-- How should we test and roll out this technical change?
+Paths beginning `templates/` or `shared/` refer to the Toolbelt root.
 
 Use `ticket-discovery` instead when the ticket is narrow and already names a
 precedent to copy or adapt.
 Use an available `tech-debt-discovery` to discover repository candidates before selecting an item.
 For source-to-target upgrades, read `references/version-delta.md`.
 
-## Workflow
+## Steps
 
-```text
-Backlog item
-↓
-Classify decision type
-↓
-Repo investigation
-↓
-Options analysis
-↓
-Recommendation: Do / Defer / Reject / Spike
-↓
-Implementation shape + test strategy
-↓
-Next workflow handoff
-```
-
-## Rules
-
-- Repo-first: inspect code, tests, package files, CI, docs, and nearby patterns
-  before recommending.
-- Decision-first: the primary output is a recommendation and rationale, not a
-  task list.
-- Compare plausible options. Include status quo when it might be the right
-  answer.
-- Make risks concrete: migration risk, dependency risk, runtime impact,
-  compatibility, observability, rollback, security, licensing, and test gaps.
-- If current package metadata, CVEs, license, support status, or ecosystem health
-  affects the recommendation, verify it from primary/current sources.
-
-## Investigation Checklist
-
-- Current implementation and ownership boundaries.
-- Existing dependencies and repo policy signals.
-- Existing tests and missing test seams.
-- Callers, consumers, and integration points.
-- CI/build/deploy constraints.
-- Rollout and rollback constraints.
-- Comparable precedent elsewhere in the repo.
+1. Classify the item: dependency decision, library or framework switch, technical
+   debt cleanup, test investment, migration, performance or reliability risk, or unclear.
+2. Inspect the repo before you recommend. Read the current implementation, ownership boundaries,
+   callers, tests and missing test seams, dependencies, policy signals, and CI/build/deploy constraints.
+   Look for comparable precedent elsewhere in the repo.
+   If the area is unclear, search for likely symbols, package names, docs, and test files.
+3. Compare at least two options when the item contains a real decision.
+   Include the status quo when it is plausible.
+   If package metadata, CVEs, license, support status, or ecosystem health affects the
+   recommendation, verify it from primary and current sources.
+4. Make risks concrete: migration, dependency, runtime impact, compatibility,
+   observability, rollout and rollback, security, licensing, and test gaps.
+5. Recommend one verdict.
+6. For `Do` or `Spike`, define the smallest implementation shape and the verification strategy.
+   Create a phased implementation plan only when the user asks to continue.
+7. Name the next workflow: `/ticket-discover`, `/dev-plan`, `/implementation-plan`,
+   `/retrofit`, `/cover-gaps`, `/cover`, or no action.
 
 ## Verdicts
 
@@ -87,20 +50,18 @@ Next workflow handoff
 - `Spike`: uncertainty is material and a bounded investigation is cheaper than
   guessing.
 
-## Output
+## Output and completion
 
 Use `templates/tech-backlog-assessment.md` when creating a durable artifact.
-Always include:
+Replace all placeholders before you present it.
+The assessment is complete when it states:
 
-- Recommendation and confidence.
-- Repo evidence.
-- Options considered.
-- Dependency/library decision when relevant.
-- Proposed implementation shape if accepted.
-- Test strategy and verification commands.
-- Risks, open questions, and next workflow.
+- The recommendation and confidence.
+- Concrete repo evidence.
+- The options considered and the rejected options, including the dependency or library decision when relevant.
+- The proposed implementation shape if accepted.
+- The test strategy and verification commands.
+- Risks, open questions, and the exact next command or workflow.
 
-Completion criterion: the assessment is done only when it states confidence,
-rejected options, concrete repo evidence, test strategy, risks, and the next
-workflow. If any required evidence is missing, say what was searched and why the
-recommendation still holds or remains a `Spike`.
+If required evidence is missing, say what you searched.
+Then explain why the recommendation still holds or remains a `Spike`.

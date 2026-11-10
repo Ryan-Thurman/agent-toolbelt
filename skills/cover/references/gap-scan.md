@@ -26,7 +26,8 @@ covered by a test with no meaningful assertion is still a gap.
 - **Regressions waiting to happen** — recently changed code with no new test, code with a history of
   bugs (`git log`/`git blame` churn), known-fragile modules, TODO/FIXME near logic.
 - **Weak existing tests** — tests that assert nothing meaningful, are coupled to implementation
-  detail (will rot, not protect), or are flaky/skipped. Strengthening these is also a `/cover` job.
+  detail (will rot, not protect), or are flaky/skipped. `/cover` can strengthen these by adding
+  assertions.
 
 ## Ranking: risk × likelihood
 
@@ -53,3 +54,4 @@ formatter.
 A ranked list — `area/file, lines/symbol, family, risk, likelihood, gap (what behavior is unguarded),
 why it matters (the regression it lets through), suggested test`. Highest risk × likelihood first.
 No files are modified. Note which gaps are well-shaped to hand straight to `/cover`.
+Do not recommend a full test-suite rewrite when a small first slice is clear.

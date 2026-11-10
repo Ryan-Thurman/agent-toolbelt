@@ -90,6 +90,11 @@ reviewer reports every update it wants, bucketed (`blocking` / `shouldFix` / `ni
 every bucket is empty. See `references/convergence.md` for what the orchestrator does with those
 buckets on round two.
 
+**Make each phase a unit of mergeable value, not a unit of file edits.**
+
+**Write acceptance criteria that a command decides.** "The function is added" restates an
+implementation bullet. "`pytest tests/test_x.py` passes, covering the empty-input case" is a criterion.
+
 ---
 
 ## The config

@@ -3,6 +3,7 @@ pack_bug_to_fix() {
   shared_contract references/human-readable-output.md
   shared_contract references/test-driven-development.md
   shared_contract references/execution.md
+  shared_contract references/execution-schema.md
   shared_contract references/failure-recovery.md
   shared_contract references/execution-lessons.md
   shared_contract references/operation-retries.md
@@ -19,6 +20,7 @@ pack_bug_to_fix() {
     SKILL.md \
     references/durable-state.md references/rca-strategies.md \
     references/adversarial-confirmation.md references/severity.md \
+    references/reproduction.md references/fix-contract.md \
     references/rct-acceleration.md
   do
     skill bug-to-fix "$f"

@@ -35,7 +35,7 @@ reviews at a phase boundary, with a human in the session).
 | about to merge a PR an agent authored and reviewed | `references/merge.md` |
 | deciding what changes when no human is present | `references/unattended.md` |
 | writing a plan for `agent-runner` to execute | `references/plan-format.md` |
-| running Dev Lite-style implement/fix/review jobs with a caller-owned immutable plan | `$auto-agent-dev-lite` |
+| running phased-delivery-style implement/fix/review jobs with a caller-owned immutable plan | `$auto-agent-dev-lite` |
 | defining managed assignments, results, or retry ownership | `references/execution-boundary.md` |
 
 ## Principles (always)
@@ -73,18 +73,3 @@ The implementation establishes actual behavior; it does not change required beha
 The plan it consumes is a specific markdown serialization parsed by regex. Write one with
 **`/auto-agent-plan`** (`references/plan-format.md`), which mines the repo for phases rather than
 starting from a blank template.
-
-## References
-
-- `references/execution-boundary.md` — caller and worker ownership, structured records, and adoption limits.
-- `references/invocation.md` — argv bounds, structured-output extraction, per-CLI flag semantics, and
-  the reviewer privilege boundary.
-- `references/convergence.md` — the ratchet, no-op fix detection, and bounded attempts with an
-  explicit escalate state.
-- `references/merge.md` — the three-check close precondition, host-API eventual consistency, and
-  already-merged-is-success.
-- `references/unattended.md` — what changes when nobody reads the report: advisory tags become gates.
-- `references/plan-format.md` — the `agent-runner` plan serialization contract (`/auto-agent-plan`).
-- Standard plugin's `pr-review` skill, `references/finding-schema.md`, and
-  `references/output-format.md` — reviewer findings and mechanical verdict.
-- Standard plugin's `phase-gate` skill — the in-harness sibling at a phase boundary.

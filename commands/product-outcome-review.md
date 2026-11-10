@@ -5,6 +5,8 @@ argument-hint: "<hypothesis-and-results>"
 
 # /product-outcome-review
 
-Use `$product-outcome-review` to assess `$ARGUMENTS`.
-Compare the original hypothesis, measurement definitions, baseline, populations, guardrails, and uncertainty.
-Recommend a next decision with evidence and limits.
+**Arguments:** `$ARGUMENTS` — the original hypothesis and the measured results.
+
+Use this after an experiment or release to decide whether to continue, revise, stop, or gather evidence.
+
+Follow the `product-outcome-review` skill.

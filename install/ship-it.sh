@@ -2,6 +2,7 @@
 pack_ship_it() {
   shared_contract references/human-readable-output.md
   shared_contract references/operation-retries.md
+  shared_contract references/execution-lessons.md
   shared_contract references/posting.md
   shared_contract references/providers.md
   cmd ship-it

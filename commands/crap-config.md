@@ -33,12 +33,15 @@ and writes a deterministic `.crap-analysis.json` — the only config format the 
    - `outputs.report` — default `{outputDir}/{target}.json` unless overridden
    - `outputs.refactorBrief` — default `{outputDir}/{target}.refactor.md` unless overridden
 4. **Validate** — all required fields present; paths repo-relative; target keys unique.
+   Recommend `.gitignore` entries for the output paths and coverage files.
 5. **Preview** — show the full JSON (sorted target keys, 2-space indent).
 6. **Confirm** — write `.crap-analysis.json` only after explicit user approval.
-7. **Optional dry-run** — if user wants, run `validate-config` and show one analysis command for
-   manual verification outside this wizard.
+7. **Optional dry-run** — if the user wants it, run
+   `bash skills/crap-analysis/bin/crap-analysis.sh validate-config --config .crap-analysis.json`.
+   The new file is not on the base branch yet, so the dry-run needs `--config`.
 
 ## Output
 
-Confirm the written path and summarize configured targets. Tell the user to run `/do-crap-analysis`
-when ready.
+Confirm the written path and summarize configured targets.
+Tell the user to merge `.crap-analysis.json` into the base branch.
+`/do-crap-analysis` loads the config from the base branch only.

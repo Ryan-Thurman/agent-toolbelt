@@ -9,8 +9,7 @@ Before you write a response for the user, read
 `shared/contracts/references/human-readable-output.md`.
 
 Derive how to work in this repository, then maintain that guidance against new
-evidence. Preserve the `style-guide-init` name for existing callers. A repeated
-implementation is evidence of practice, not automatic approval of a standard.
+evidence. A repeated implementation is evidence of practice, not automatic approval of a standard.
 
 ## Choose the operation
 
@@ -66,13 +65,8 @@ fallbacks as proposals unless the repository has adopted them.
 
 ## Maintenance
 
-For refresh/check, read [references/maintenance.md](references/maintenance.md).
-Use `scripts/conventions_state.py` to compare a recorded snapshot with the current
-checkout, including new/deleted files and uncommitted edits. Re-read affected
-evidence and counterexamples before changing text. Changes mean **review needed**,
-not **documentation wrong**; unchanged fingerprints mean only **covered inputs
-unchanged**. Without a usable checkpoint, establish a baseline through inspection
-and report the missing historical comparison.
+For check or refresh, read [references/maintenance.md](references/maintenance.md).
+It uses `scripts/conventions_state.py` to compare the recorded checkpoint with the current checkout.
 
 ## Completion
 
@@ -82,9 +76,3 @@ report artifact/checkpoint paths and what changed. Keep adopted requirements
 distinct from observed conventions, and retain a no-change result when it is
 supported. Do not claim full coverage from a sample or command success from a
 configuration read.
-
-## Completion
-
-Finish with an evidence-backed style guide update or draft, a concise precedence
-statement, and unresolved choices. Do not claim a convention where the evidence is
-thin or contradictory.

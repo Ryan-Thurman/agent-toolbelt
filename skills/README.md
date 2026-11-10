@@ -20,7 +20,8 @@ Project-specific delivery skills belong to their project repositories.
 See the [ownership boundary](../README.md#what-belongs-here).
 
 For managed or resumed assignments, the [execution contract](../shared/contracts/references/execution.md)
-defines compact task context, results, authority, and validation limits.
+defines compact task context, results, and authority.
+The [execution schema](../shared/contracts/references/execution-schema.md) defines the optional JSON records and their checker.
 `system-design` also maintains current repository maps; `handoff` can preserve evidence-backed execution lessons.
 These are conditional procedures within existing skills.
 
@@ -85,6 +86,8 @@ Use this checklist when creating or updating a skill:
   when defining outputs: tables for structured findings and comparisons,
   diagrams for relationships, and actions with a reason and completion check
   for plans. Apply its ASD-STE100 rules to all new text for the user.
+  ASD-STE100 output is an intentional Toolbelt-wide standard, not a personal
+  convention. It keeps output from many parallel agents consistent and easy to review.
   All standard skills load this reference. New skills must include its runtime
   pointer and installer dependency.
 - Keep one source of truth for each behavior. Do not repeat the same rule in the

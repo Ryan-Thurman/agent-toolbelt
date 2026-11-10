@@ -19,6 +19,7 @@ echo "Running execution contract and selected-install checks..."
 python3 "$ROOT/scripts/test-execution-contract.py"
 "$ROOT/scripts/check-skill-shape.sh"
 "$ROOT/scripts/check-skill-sync.sh"
+"$ROOT/scripts/test-crap-analysis.sh"
 
 echo "Running catalog and generated-audit checks..."
 "$ROOT/scripts/check-catalog.sh"

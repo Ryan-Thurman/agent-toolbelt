@@ -11,14 +11,13 @@ pack_phased_delivery() {
   skill phased-delivery SKILL.md
   skill phased-delivery references/implementation-rules.md
   skill phased-delivery references/review-rules.md
-  skill phased-delivery references/commit-rules.md
-  skill phased-delivery references/command-surfaces.md
   skill phased-delivery references/execution-support.md
   skill phased-delivery references/standalone-use.md
   skill phased-delivery references/plan-readiness.md
   shared_contract references/human-readable-output.md
   shared_contract references/test-driven-development.md
   shared_contract references/execution.md
+  shared_contract references/execution-schema.md
   shared_contract references/failure-recovery.md
   shared_contract references/execution-lessons.md
   shared_contract references/operation-retries.md

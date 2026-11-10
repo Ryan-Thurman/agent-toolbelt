@@ -8,55 +8,38 @@ description: Create, list, and remove isolated git worktrees for multi-agent sha
 Before you write a response for the user, read
 `shared/contracts/references/human-readable-output.md`.
 
-A thin, safe wrapper over `git worktree` for the **multi-agent, shared-directory** case. When several
-agents (or sessions, or harnesses) operate on the same directory of repos, a plain `git checkout` /
-`git switch` in one agent's shell **moves the branch out from under** every other agent in that same
-checkout. The fix is one **worktree per task**: a separate working directory, on its own branch,
-sharing the repo's object store but isolated on disk. This pack makes that a one-line call with
-collision-safe branch naming and a tidy, predictable layout.
+A git checkout has one HEAD. When agents share a checkout, one `git checkout` or `git switch`
+moves the branch under every other agent. Give each task its own worktree: a separate directory
+on its own branch that shares the repo's object store. This skill manages checkouts only. Do the
+task's work inside the worktree as normal.
 
-> Adds no review/build logic — it only manages checkouts. The agent still does its work inside the
-> worktree the normal way.
+## When to use it
 
-## When to use this (vs. not)
-
-- **Use it** when: multiple agents share one polyrepo dir; an agent needs to start work on a repo
-  another agent might also be touching; or any time you want an isolated checkout without disturbing
-  the main tree's branch.
-- **Don't bother** when: you're the only agent in the dir and a normal branch is fine; or you're
-  doing **parallel fan-out *inside a single `Workflow` run*** — there the `Workflow` tool's
-  `isolation: 'worktree'` already gives each spawned agent its own worktree and auto-cleans it. This
-  pack is for **independent sessions** that the harness can't coordinate, where the worktree must
+- **Use it** when several independent agents or sessions share one directory of repos, or when
+  you want an isolated checkout that leaves the main tree's branch unchanged. The worktree must
   outlive a single tool call.
+- **Use the harness instead** for parallel fan-out inside one `Workflow` run. Pass
+  `isolation: 'worktree'` to those `agent()` calls; the harness creates and removes each worktree.
+- **Skip it** when you are the only agent in the directory and a normal branch is enough.
 
-## The CLI
+## Claim, work, hand back
 
-One shipped script — `bin/worktree.sh` (pure bash + `git`, nothing to install). Use:
+Run the shipped CLI (bash + `git` only):
 
 ```bash
 bash skills/worktree/bin/worktree.sh <op> …
 ```
 
-Read `references/cli.md` for every op, flag, exit behavior, and resolution rule.
-Read `references/isolation.md` for the shared-parent layout and the claim → work → hand back flow.
+1. **Claim.** Run `new <repo> --task <what-you-are-doing>` before you start work in a shared
+   directory. Omit the branch so the CLI picks a collision-safe `agent/<task>-<n>` name.
+2. **Work there only.** `cd` into the printed `worktree:` path. Edit, commit, and push from inside
+   it. Do not run `git checkout` for another branch in the shared main tree; create a worktree instead.
+3. **Hand back.** When the branch merges or the task stops, run `rm <branch> --delete-branch`.
+   Remove a worktree that has no changes. Use `list --all` to find stale worktrees and `prune`
+   after manual deletions.
 
-## Principles (always)
+The work is complete when the task's worktree is removed, or its path and branch are reported for
+the next owner.
 
-- **One worktree per task, on its own branch.** Never `git checkout` a different branch in a
-  checkout another agent shares — make a worktree instead. That is the whole point of the pack.
-- **Collision-safe by default.** Omit the branch and `new` auto-names `agent/<repo|task>-<n>`,
-  bumping `<n>` until both the branch and the path are free, so concurrent agents never clash. An
-  **explicit** branch is honored but **errors if it already exists** (no silent reuse of another
-  agent's branch).
-- **Never nest.** `new` always resolves the repo's **main** tree and creates off it, even when called
-  from inside a linked worktree (it says so when it does) — so you never get worktrees-inside-worktrees.
-- **Don't discard work silently.** `rm` refuses a worktree with uncommitted changes unless `--force`;
-  `--delete-branch` keeps an unmerged branch unless `--force`. Clean up when done so stale checkouts
-  don't accumulate.
-- **The main tree is sacred.** `rm` refuses to remove the repo's main working tree.
-
-## References
-
-- `references/cli.md` — every op, flag, exit behavior, and the repo/branch/base resolution rules.
-- `references/isolation.md` — the multi-agent contract, the polyrepo model, cleanup discipline, and
-  when to prefer `Workflow`'s in-run `isolation: 'worktree'` instead.
+Read `references/cli.md` when you need an argument, a flag, exit behavior, the directory layout,
+or the repo and branch resolution rules.

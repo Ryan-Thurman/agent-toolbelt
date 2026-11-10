@@ -18,7 +18,14 @@ This is a readiness check. Use `pr-review` for code findings.
 | Branch and PR | The branch, base, dependencies, and review scope follow project policy. |
 | Handoff | The summary, risks, remaining issues, and reviewer notes are current. |
 
-Use `Ready`, `Needs Work`, or `Blocked` with reasons.
+Give one verdict with its reasons:
+
+| Verdict | Use when |
+| --- | --- |
+| `Ready` | No Blocking finding remains, and required checks have current passing results. |
+| `Needs Work` | A Blocking finding or failed required check remains, and this phase can fix it. |
+| `Blocked` | Progress needs an outside decision, a dependency, or a check that is not available. |
+
 Keep failed, unavailable, and unrun checks distinct.
 Apply project-owned review requirements without creating new approval gates.
 A readiness result does not grant merge or release approval.

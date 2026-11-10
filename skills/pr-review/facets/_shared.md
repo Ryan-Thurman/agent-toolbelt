@@ -1,6 +1,7 @@
 # Shared facet-agent contract
 
-Every facet sub-agent (correctness, security, performance, tests, maintainability, standards) is a
+Every facet sub-agent (correctness, security, performance, tests, maintainability, standards,
+spec-alignment) is a
 **read-only reviewer** spawned by the pr-review orchestrator with: the formatted diff, the project
 standards (`CLAUDE.md`/`AGENTS.md` and approved base/merge-base `STYLE_GUIDE.md` contents), optionally the **repo review config** (`.pr-review.md`
 Context + Budgets — domain/scale framing and concrete bars to hold the diff to; see
@@ -27,7 +28,7 @@ it is missing or incomplete, do not treat that as proof a concrete runtime/secur
 - **Stay in your facet.** Emit findings only for *your* facet. If you notice something in another
   facet, ignore it — another agent owns it.
 - **Fewer, stronger.** A few real problems beat a flood of nits.
-- **Severity floor.** Runtime/security consequences are not nits. If a changed production path can
+- **Severity floor** (restated from `../references/review-rubric.md` → severity floors). Runtime/security consequences are not nits. If a changed production path can
   plausibly produce wrong output, crash, `NaN`/`Infinity`, unbounded work, data corruption, or an
   auth/security failure, emit at least `should-fix` unless you can prove it is unreachable. Emit
   `blocker` when the diff, reachability sketch, caller read, API/route, or tests show a real

@@ -7,4 +7,4 @@
 
 Use existing style, complexity, dependency, test, and operational evidence as inputs.
 Report unavailable tools and unread areas.
-Keep discovery separate from repairs and avoid replacing libraries solely because newer alternatives exist.
+Keep discovery separate from repairs.

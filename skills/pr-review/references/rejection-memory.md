@@ -1,13 +1,11 @@
 # Anti-noise memory — the recorded-rejections learning loop
 
-A cross-run precision memory (the dreki pattern). When verification (the standard critic or the deep
+A cross-run precision memory. When verification (the standard critic or the deep
 dual-judge) **refutes** a finding, remember it. On later runs of the same repo, a finding that the
 judge already threw out gets **downranked and tagged**, not silently re-raised at full severity. This
 is how the reviewer stops crying wolf about the same non-issue every run.
 
-**Never hides anything.** A previously-rejected finding is still surfaced — just demoted and labelled
-`⟲ previously rejected`, so a real regression isn't buried by a stale verdict. The memory lowers
-*noise*, it does not suppress *signal*.
+The memory demotes and tags a finding. It never hides one (see Guardrails).
 
 ## Where it lives
 
@@ -88,9 +86,7 @@ After aggregation + verification, **before** thresholding/rendering:
      step too. This is the anti-noise effect — a previously-refuted "blocker" no longer blocks merge
      on reputation alone.
    - **Tag** it `⟲ previously rejected (<count>×, last <rejectedOn>)` in `title`/render.
-   - **Do not drop it.** If the finding survived *this* run's independent verification, a human should
-     still see it — the tag tells them "we've argued about this before", the downrank keeps it from
-     dominating the verdict.
+   - Keep it in the report. It survived this run's independent verification.
 4. Findings with no fingerprint match render normally.
 
 Because the verdict is host-derived, downranking a lone previously-rejected "blocker" to should-fix
@@ -109,5 +105,4 @@ before rendering. Do this for the *adjudicated* drops only, after verification h
   nit threshold, same as any nit).
 - It's **advisory and per-repo**. Deleting `.git/pr-review-rejections.jsonl` is a clean reset.
 - If the store is unreadable/corrupt, log a one-line note and proceed as if empty — never block a review.
-- Mention in the report footer when the memory affected anything: `memory: 2 findings downranked
-  (previously rejected)`, so the effect is visible and auditable, never silent.
+- Add the `memory:` audit footer (`output-format.md`) when the memory changed anything.

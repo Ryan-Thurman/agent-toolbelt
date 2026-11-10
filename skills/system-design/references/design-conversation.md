@@ -43,7 +43,6 @@ Identify irreversible commitments, migration effort, operator workload, and circ
 Keep estimated capacity, cost, and reliability separate from measured values and agreed targets.
 Verify version-dependent product capabilities and limits with current primary sources.
 When a consequential assumption can be tested cheaply, propose a bounded experiment with a success criterion.
-An experiment proposal does not authorize implementation or external changes.
 
 ## Retain decisions and limits
 
@@ -52,6 +51,5 @@ Use the existing project record when a durable design handoff is needed.
 State the owner or `Unassigned` for unresolved consequential decisions.
 Distinguish an agent recommendation from an accepted project decision.
 For a concrete architecture proposal, continue through the skill's design procedure and linked threat review.
-A conceptual explanation or current-state question does not require a new design or threat report.
 
 Method adapted from [Superpowers brainstorming](https://github.com/obra/superpowers/blob/main/skills/brainstorming/SKILL.md).

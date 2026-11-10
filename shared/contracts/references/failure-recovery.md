@@ -34,8 +34,6 @@ Bulk resets and deletion of untracked files are not a default recovery action.
 
 ## Bound observations
 
-Use targeted searches, symbol navigation, and relevant source ranges to answer a stated question.
-After repeated empty searches, revise the assumed name, directory, or entry point before searching again.
 Keep complete command output in a local evidence file when its size exceeds the useful context budget.
 Mark shortened output and retain its location, exit status, and relevant failure details.
 A truncated read cannot establish that no additional failures or callers exist.

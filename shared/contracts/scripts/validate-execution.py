@@ -1,5 +1,8 @@
 #!/usr/bin/env python3
-"""Check execution records without executing work or verifying evidence contents."""
+"""Check execution records without executing work or verifying evidence contents.
+
+Field rules: shared/contracts/references/execution-schema.md.
+"""
 
 import argparse
 import hashlib

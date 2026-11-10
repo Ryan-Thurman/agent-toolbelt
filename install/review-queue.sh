@@ -1,4 +1,5 @@
 # DESC: local SQLite-backed review queue: producers enqueue PRs, a worker claims and runs /pr-review (decoupled, no CI/webhook)
+# DEPENDS: pr-review
 pack_review_queue() {
   shared_contract references/human-readable-output.md
   cmd review-queue-worker

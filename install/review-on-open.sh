@@ -1,4 +1,5 @@
 # DESC: auto-review trigger for pr-review: host-agnostic poller (/loop or /schedule) + GitHub Actions event template
+# DEPENDS: pr-review
 pack_review_on_open() {
   shared_contract references/human-readable-output.md
   cmd review-on-open

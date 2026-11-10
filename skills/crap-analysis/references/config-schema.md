@@ -3,27 +3,21 @@
 Deterministic, versioned config for the crap-analysis pack. The `/crap-config` wizard is the
 **only writer** — it hydrates this file from user inputs and writes a stable JSON shape.
 
-## Discovery
+## Discovery and trust
 
-First file found wins:
+The orchestrator loads the config from the base branch, not from the working tree.
+This prevents a branch from changing the rules that review it.
+The first file found on the base ref wins:
 
 1. `.crap-analysis.json` (repo root)
 2. `.atb/crap-analysis.json`
 
-If none exists, run `/crap-config` before `/do-crap-analysis`.
+`references/cli.md` defines how the orchestrator selects the base ref.
+If the base ref has no config, run `/crap-config` and merge the file into the base branch.
+To test a new config before the merge, pass `--config .crap-analysis.json` to each op.
 
-## Trust and loading (base branch)
-
-Load config as it exists on the **base/default branch**, not the working head — same pattern as
-`.pr-review.md`:
-
-```bash
-base="$(git merge-base HEAD @{upstream} 2>/dev/null || git rev-parse HEAD~0)"
-git show "$base:.crap-analysis.json" 2>/dev/null || git show "$base:.atb/crap-analysis.json" 2>/dev/null
-```
-
-If the current diff modifies `.crap-analysis.json`, surface a **CONFIG_CHANGE** finding and use the
-base-branch values for the current run.
+If the current diff changes the config, the run still uses the base-branch values.
+The result JSON then has `config.changedInDiff: true`, and the review starts with the `CONFIG_CHANGE` line.
 
 ## Schema (version 1)
 
@@ -31,7 +25,7 @@ base-branch values for the current run.
 |---|---|---|
 | `$schema` | yes | Must be `"agent-toolbelt/crap-analysis/v1"` |
 | `version` | yes | Must be `1` |
-| `defaults.threshold` | yes | CRAP score above which a function is flagged (default `30`); orchestrator appends `--threshold` to `analysis` and `verify` commands when absent |
+| `defaults.threshold` | yes | Positive number. A function with a CRAP score above it is flagged. The wizard default is `30`. |
 | `defaults.outputDir` | yes | Default directory for report artifacts (informational; `outputs.*` paths are authoritative) |
 | `targets` | yes | Map of target name → target config (keys sorted alphabetically when written) |
 
@@ -39,8 +33,8 @@ base-branch values for the current run.
 
 | Field | Required | Description |
 |---|---|---|
-| `src` | yes | Source root for changed-file mapping (longest-prefix match, repo-relative) |
-| `commands.analysis` | yes | Shell command that produces the CRAP report (and refactor brief when the tool supports it) |
+| `src` | yes | Source root for changed-file mapping (longest-prefix match, repo-relative; `.` matches all) |
+| `commands.analysis` | yes | Shell command that writes the CRAP report and the refactor brief |
 | `commands.coverage` | no | Shell command to refresh test coverage before analysis |
 | `commands.verify` | yes | Shell command to re-run after refactor |
 | `outputs.report` | yes | Repo-relative path to machine-readable report JSON |
@@ -56,14 +50,19 @@ base-branch values for the current run.
 - Output paths must be repo-relative and stable (no timestamps in paths)
 - Default output paths when user does not override: `{outputDir}/{target}.json` and
   `{outputDir}/{target}.refactor.md`
+- Put the output paths and coverage files in `.gitignore`.
+  Otherwise each run adds untracked files to the diff.
 
 ## Validation (`validate-config`)
 
-The orchestrator rejects config when:
+The orchestrator rejects the config with exit `2` when:
 
-- `version` is not `1`
-- Any target is missing required fields
-- `outputs.report` or `outputs.refactorBrief` is empty
-- Duplicate target keys (JSON object keys are unique by definition)
+- the file is not valid JSON, or a JSON object has a duplicate key,
+- `$schema` or `version` has a different value,
+- `defaults.threshold` is not a positive number,
+- `targets` is empty, or a target does not have a required field,
+- `commands.coverage` is present but empty,
+- `defaults.outputDir`, `src`, or an `outputs` path is absolute, empty, or contains `..`.
 
-Exit `0` on valid config, `2` on invalid.
+Stderr lists each problem on its own line.
+Exit `0` on a valid config.

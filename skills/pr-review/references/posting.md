@@ -6,6 +6,7 @@ still printed locally so you have the full record.
 
 This is opt-in and **never** runs unless the user passed `--comment`. Posting writes to a shared,
 outward-facing artifact (the PR) — confirm before posting if the user only said "review".
+The shared posting policy is `shared/contracts/references/posting.md`. This file adds the review mechanics.
 
 **Provider-aware.** Posting works on **GitHub** (`gh`) and **Azure Repos** (`az`); the model differs
 (GitHub = one batched review, Azure = per-location threads) — detect the provider first
@@ -27,9 +28,11 @@ so the author gets minimal noise: GitHub batches all of it into one review; Azur
 location (no batch object) plus a PR-level summary thread.
 
 - **Summary** = the report header: what the change does, the **host-derived verdict**, and the
-  bucket counts (`N blockers · M should-fix · …`). Include the token-usage footer line.
-- Include the coverage/limits line from `output-format.md` so a partial review
-  retains its scope gaps when posted.
+  bucket counts (`N blockers · M should-fix · …`). Do not include the token-usage footer.
+- Include the coverage/limits line and any acceptance coverage table from `output-format.md`.
+  A partial review then keeps its scope gaps when posted.
+- End the summary with the **head-SHA review marker** (see Idempotency):
+  `<!-- pr-review:head=<headSha> tier=<tier> -->`.
 - **One inline comment per surviving finding** at/above the posting threshold (below).
 - Each inline comment body =
   ```
@@ -52,8 +55,7 @@ location (no batch object) plus a PR-level summary thread.
 
 ## Posting threshold (anti-spam)
 
-Post **blockers + should-fix** by default. **Suppress nits** unless the user passed an explicit
-"include nits" intent or the review found nothing higher. Questions and re-entry notes go in the
+Post the findings that survive the posting threshold in `output-format.md`. Questions and re-entry notes go in the
 **summary body**, not as inline comments (they're not line-anchored assertions). A `⟲ previously
 rejected` finding (`rejection-memory.md`) still posts but keeps its tag in the comment body.
 
@@ -92,7 +94,7 @@ gh api repos/{owner}/{repo}/pulls/<N>/reviews \
 {
   "commit_id": "<headRefOid>",          // pin to the SHA you reviewed, so anchors stay valid
   "event": "COMMENT",                    // see "Verdict vs review event" below
-  "body": "<summary body: what-changed + VERDICT + bucket counts + token footer>",
+  "body": "<summary: what-changed + VERDICT + bucket counts + coverage + head-SHA marker>",
   "comments": [
     {
       "path": "src/auth/session.ts",
@@ -161,22 +163,37 @@ summary text and don't gate the merge from the tool.
 
 ## Idempotency (re-running `--comment`)
 
-Re-running would otherwise double-post. Before posting, fetch the markers already on the PR and skip
-any finding whose `pr-review:<facet>:<fingerprint>` marker (`rejection-memory.md`) is present:
+Re-running would otherwise double-post. Use two markers:
+
+| Marker | Where | Meaning |
+|---|---|---|
+| `<!-- pr-review:head=<headSha> tier=<tier> -->` | end of the summary body | This head commit has a posted review. |
+| `<!-- pr-review:<facet>:<fingerprint> -->` | end of each inline comment | This finding is already posted (`rejection-memory.md`). |
+
+This file owns both markers. Every trigger (`review-on-open` event and poller, `review-queue`
+worker, `phase-gate`) uses the head-SHA marker as its only cross-run review record.
+
+1. Before posting, fetch the PR's existing comment bodies (commands below).
+2. If a summary carries `pr-review:head=<current headSha>`, do not post. Report "already reviewed at
+   `<headSha>`". Post again only when the user explicitly asks for a repost.
+3. Otherwise, post the summary with the new head-SHA marker.
+4. Skip each inline finding whose fingerprint marker is already present.
 
 ```bash
-# github:
+# github: inline comments, then review summaries (the head-SHA marker is in a review body)
 gh api repos/{owner}/{repo}/pulls/<N>/comments --paginate --jq '.[].body' \
   | grep -o 'pr-review:[a-z-]*:[0-9a-f]*'
+gh api repos/{owner}/{repo}/pulls/<N>/reviews --paginate --jq '.[].body' \
+  | grep -o 'pr-review:head=[0-9a-f]*'
 # azure: pull existing thread comments and grep the same marker
 az devops invoke --area git --resource pullRequestThreads \
   --route-parameters project=<proj> repositoryId=<repoId> pullRequestId=<id> \
   --http-method GET --api-version 7.1 \
-  --query 'value[].comments[].content' -o tsv | grep -o 'pr-review:[a-z-]*:[0-9a-f]*'
+  --query 'value[].comments[].content' -o tsv | grep -oE 'pr-review:(head=[0-9a-f]+|[a-z-]+:[0-9a-f]+)'
 ```
 
-**Skip** any finding whose marker is already present. Report "posted X new, skipped Y already present".
-This makes `--comment` safe to re-run after pushing fixes — only genuinely new findings post.
+Report "posted X new, skipped Y already present". A push creates a new head SHA.
+A re-run after a push therefore posts a new summary and only the new findings.
 
 ## Dry-run / preview
 

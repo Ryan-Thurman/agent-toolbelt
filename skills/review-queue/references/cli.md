@@ -15,6 +15,7 @@ non-zero exit. The DB and schema are created lazily on first use — no separate
 - **`REVIEW_QUEUE_DB`** — path to the SQLite file. Default `~/.review-queue/queue.db` (user-global, so
   producers in any repo and a worker in any session share one queue). Per-call override: `--db PATH`.
   Set it to a repo-local path (e.g. `.git/review-queue.db`) if you want isolation per repo.
+  Workers must run on the same machine as the file.
 - **`REVIEW_QUEUE_LEASE`** — claim lease in seconds (default `1800` = 30m). A claimed job whose
   `claimed_at` is older than the lease is reaped back to pending on the next `claim`. Per-call:
   `claim --lease SECS`.
@@ -27,7 +28,7 @@ once; claiming is additionally wrapped in `BEGIN IMMEDIATE` for exactly-once sem
 
 ```
 id           INTEGER PK
-repo         TEXT      -- a name you choose (e.g. repo basename or owner/name)
+repo         TEXT      -- the absolute repo checkout path; the worker reviews in this directory
 target       TEXT      -- PR number/id, or branch name — whatever you pass to /pr-review
 head_sha     TEXT      -- the commit under review; idempotency key with (repo,target)
 tier         TEXT      -- light|standard|deep, or NULL = let pr-review auto-tier
@@ -46,8 +47,9 @@ UNIQUE(repo, target, head_sha)        -- the idempotency constraint
 ## Commands
 
 ### `enqueue --repo R --target T --sha S [--tier light|standard|deep] [--reason X] [--by WHO]`
-Push a job (producer). `--repo`, `--target`, `--sha` are required — the SHA is the idempotency key, so
-pass the real head (`git rev-parse HEAD` or the PR head oid). Re-enqueuing the same (repo, target, sha)
+Push a job (producer). `--repo`, `--target`, `--sha` are required. Pass the absolute checkout path
+(`git rev-parse --show-toplevel`) as `--repo`. The SHA is the idempotency key, so pass the pushed PR
+head oid, or `git rev-parse HEAD` after a push. Re-enqueuing the same (repo, target, sha)
 is a no-op. Output:
 ```json
 [{"id":1,"status":"pending","result":"enqueued"}]   // or "result":"duplicate" if already present

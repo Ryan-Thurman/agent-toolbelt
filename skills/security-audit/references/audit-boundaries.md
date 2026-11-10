@@ -1,17 +1,25 @@
 # Security Audit Boundaries
 
-Default evidence sources are repository code, configuration, dependency manifests
-and lockfiles, CI definitions, and supplied logs or architecture artifacts.
-Local static analyzers may run within the authorized source-review scope when they only read local inputs and write bounded report artifacts.
-Inspect their configuration for scripts, downloads, uploads, or other side effects before treating a tool as local analysis.
-Do not install or update tools solely because a scanner is suggested.
-External advisory queries need applicable network authority; record the queried package identifiers and data sent.
-Source uploads need explicit authorization for that disclosure.
-Before probes, fuzzing against targets, exploit attempts, or credential checks, obtain written target and technique authorization.
-That authorization must identify the time window and stop conditions immediately before the active action.
+Read this file before you run a tool, send data to a network service, or start active testing.
 
-For each finding, establish affected asset, entry point, precondition, reachability,
-exploitability, impact, evidence, remediation, verification, and confidence. Redact
-tokens, keys, passwords, and private identifiers; describe their location and type
-instead. Specialized fuzzing, crypto, and sanitizer techniques require a concrete
-stack or risk reason and are outside this core audit.
+## Local tools
+
+Run a local static analyzer only within the authorized source-review scope.
+The analyzer must read only local inputs and write only bounded report artifacts.
+Before you run a tool, inspect its configuration for scripts, downloads, uploads, or other side effects.
+Do not install or update tools only because a scanner is suggested.
+
+## Network and disclosure
+
+Query an external advisory source only with applicable network authority.
+Record the package identifiers that you queried and the data that you sent.
+Upload source code only with explicit authorization for that disclosure.
+
+## Active testing
+
+Active testing includes probes, fuzzing against targets, exploit attempts, and credential checks.
+Before active testing, get written authorization for the target and the techniques.
+The authorization must give the time window and the stop conditions.
+Get it immediately before the active action.
+Specialized fuzzing, cryptography, and sanitizer techniques need a concrete stack or risk reason.
+These techniques are outside this core audit.

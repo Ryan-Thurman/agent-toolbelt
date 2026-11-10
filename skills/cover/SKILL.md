@@ -1,6 +1,6 @@
 ---
 name: cover
-description: Author behavior-pinning tests for a diff, module, or bug reproduction, applied on opt-in. Use when adding regression coverage or strengthening tests. For finding untested areas use /cover-gaps; for a merge verdict use /pr-review.
+description: Author behavior-pinning tests for a diff, module, or bug reproduction, applied on opt-in, or scan an area for missing and weak coverage (detect-only). Use when adding regression coverage, strengthening tests, or surveying coverage gaps. For a merge verdict use /pr-review.
 ---
 
 # cover
@@ -8,13 +8,8 @@ description: Author behavior-pinning tests for a diff, module, or bug reproducti
 Before you write a response for the user, read
 `shared/contracts/references/human-readable-output.md`.
 
-The test-authoring lane the toolbelt lacks — the **active** counterpart to the detect-only
-`/cover-gaps`, mirroring the `simplify` ↔ `code-smell` split. Where `/cover-gaps` *finds* missing
-coverage and writes nothing, `cover` *authors the tests* and applies them on opt-in. It is the lane
-that turns a bug reproduction into a committed regression test.
-
-`cover` writes **tests only**. It never touches production code, and it never weakens an assertion to
-make a test go green.
+Author tests from existing code and behavior, or report coverage gaps. `cover` writes tests only.
+To design cases from requirements before code exists, use `/test-case-design`.
 
 ## Mutation Policy
 
@@ -24,67 +19,53 @@ Never edit production code to make a test pass.
 
 ## Two modes
 
-- **`/cover`** — author/strengthen tests for a diff, a module, or a bug reproduction. Report the
-  proposed tests → user selects → apply. Behavior-**pinning**: each test captures the current (or
-  intended-and-agreed) behavior. For a bug repro it writes the test that **fails on the bug and
-  passes after the fix** (red→green regression lock). This is the default authoring tool.
-- **`/cover-gaps`** — detect-only scan of an area for missing/weak coverage, ranked by
-  `risk × likelihood` (untested branches, error paths, boundary conditions, regressions waiting to
-  happen). **Never writes a test** — it produces a prioritized gap report that `/cover` can act on.
+- **`/cover`** — author or strengthen tests for a diff, a module, or a bug reproduction.
+  Report the proposed tests, let the user select, then apply. Each test pins current behavior,
+  or intended behavior that the user agreed. For a bug reproduction, write the red→green regression lock.
+- **`/cover-gaps`** — detect-only scan of an area for missing or weak coverage. Do not write a test.
+  Read `references/gap-scan.md` for this mode.
 
 ## Principles (always)
 
 - **Pin behavior, not implementation.** Assert observable behavior — return values, outputs, errors,
   side-effects, ordering — not private internals, call counts, or incidental structure.
-- **Prove the test protects something.** Falsify each new test and handle red→green regression locks
-  using `references/authoring.md`.
-- **Keep tests deterministic.** Use the determinism rules in `references/authoring.md`; call out any
-  behavior that cannot be tested reliably.
-- **Behavior-preserving — never edit production code.** `cover` adds and strengthens tests. It does
-  not change production code to make a test pass, and **existing tests must still pass unmodified**.
-  If a green requires a production edit, that's a fix (hand to the dev/bug-to-fix lane), not a test.
-- **Framework-detected, not assumed.** Detect the repo's test framework, runner, and conventions
-  before writing — match them. Don't introduce a new framework or a parallel convention.
-- **Make the case — what it locks and why.** Every proposed test states the behavior it pins and the
-  risk it guards (what regression slips through if this test doesn't exist). A test without a named
-  risk is a candidate to drop.
-- **Report-then-apply.** Propose the tests first; apply only what the user opts into, then run them.
-  Never silently add tests.
+- **Keep existing tests intact.** Existing tests must pass. Strengthen an existing test only by
+  adding assertions. Never weaken or delete an existing assertion.
+- **Hand production changes away.** If a green result needs a production edit, that is a fix.
+  Hand it to the implementation or bug-to-fix lane.
+- **Match the repository.** Detect the test framework, runner, and conventions before you write.
+  Do not add a new framework or a parallel convention.
+- **Make the case.** Every proposed test states the behavior it pins and the risk it guards.
+  Drop a test that has no named risk.
 
 ## Flow
 
 1. **Scope** the target: a diff (default if the tree is dirty), a named module/path, or a bug
    reproduction (a `bug-investigation.md` with `Reproduction status`, or a failing-test/manual repro).
-2. **Detect** the framework, runner, and test conventions from the repo
-   (`references/authoring.md` — detection cues).
+2. **Detect** the framework, runner, and conventions. Read 2–3 nearby tests and match their style.
 3. **Identify** what to lock: for a diff/module, the behaviors and branches worth pinning (lean on a
    `/cover-gaps` report if one exists); for a bug repro, the exact user-visible symptom.
-4. **Propose** each test with the behavior it pins, the risk it guards, and its kind (pinning vs.
-   red→green regression lock). Stop here is the report. Flag any determinism hazards.
-5. **Apply on opt-in** (`references/authoring.md`): write the selected tests matching repo
-   conventions, falsify each, confirm the relevant suite still passes, and keep new tests
-   deterministic.
+4. **Propose** each test with the behavior it pins, the risk it guards, its kind (pinning or
+   red→green regression lock), and its target file. Flag determinism hazards.
+   Stop here and wait for the user's selection.
+5. **Apply on opt-in.** Before you write a test, read `references/authoring.md`.
+
+## Completion
+
+The report lists each proposed test with its behavior, risk, and kind.
+After apply, each written test was seen red when its behavior broke, or is marked `Not verified`.
+The existing suite still passes, and no production code changed.
 
 ## Hand-offs
 
-- **From bug-to-fix.** `/reproduce` establishes a manual or failing-test reproduction; `cover` is the
-  lane that turns that repro into a committed **regression test** (the red→green lock). It does not
-  re-diagnose — it consumes the recorded reproduction.
-- **To ship-it.** `/ship-it`'s readiness checklist wants the suite green; the tests `cover` adds are
-  part of that bar. `cover` runs *before* release, not as part of it.
-- It does not duplicate `/pr-review` (which *finds* problems with a verdict and applies nothing) or
-  `/simplify` (which cleans up code). `cover` owns test authoring.
+- **From bug-to-fix.** `cover` turns a recorded reproduction into a committed regression test.
+  It does not re-diagnose the bug.
+- **Other lanes.** `/pr-review` finds problems with a verdict. `/simplify` cleans up code.
+  `/webapp-test` runs browser checks.
 
 ## References
 
-- `references/authoring.md` — framework/runner detection, behavior-pinning vs. implementation-
-  coupling, the red→green regression-lock recipe, the falsify-the-test check, and the determinism
-  rules. Load this before applying.
-- `references/gap-scan.md` — the `risk × likelihood` ranking rubric and the gap families for
-  `/cover-gaps`. Load this for the detect-only scan.
-
-## Templates
-
-- `templates/regression-test-brief.md` — *optional*: a one-screen brief for a single regression lock
-  (symptom, red command, behavior pinned, risk guarded, determinism notes), handy when turning a bug
-  reproduction into a committed test.
+- `references/authoring.md` — read before you apply tests: detection cues, pinning detail,
+  the red→green regression lock, the falsify check, determinism rules, and apply discipline.
+- `references/gap-scan.md` — read for `/cover-gaps`: gap families, ranking, and report shape.
+- `templates/regression-test-brief.md` — use it to record a single regression lock.

@@ -8,14 +8,8 @@ description: Write a resumable handoff so a fresh agent or person can continue t
 Before you write a response for the user, read
 `shared/contracts/references/human-readable-output.md`.
 
-Write a handoff document so a fresh agent — or a teammate — can pick up exactly where this session
-left off. **Context loss is the most common cause of multi-session and multi-agent failure**: the
-next session re-derives what's already known, re-tries dead ends, or loses the thread entirely. A
-good handoff prevents that.
-
-This is **cross-cutting** — useful in any lane (Bug-to-Fix, Phased Delivery, Retrofit,
-or ad-hoc work). Reach for it *proactively* when a long task is about to lose its context, not only
-when asked.
+Write a handoff so a fresh agent or a teammate can continue exactly where this session stopped.
+A good handoff stops the next session from repeating known work and dead ends.
 
 ## Rules
 
@@ -31,18 +25,17 @@ when asked.
 - **Tailor to the next focus.** If told what the next session will do, shape the handoff toward it.
 - **Keep it compact** — a few screens, not a transcript. For a long task, a ≤2K-token summary plus
   references is the target.
-- **Save outside the workspace** unless the project tracks handoffs. In
-  `phase-context-workflow`, use the phase handoff file; otherwise write to a
-  unique file in the OS temporary directory (`$TMPDIR`, else `/tmp` on Unix;
-  `%TEMP%` on Windows). Use the host's temporary-file API when available and
-  report the exact saved path so the next session can find it.
+- **Save it in the right place.** When `phase-context-workflow` owns the handoff,
+  save it to that skill's phase handoff path. Otherwise, write a unique file in
+  the OS temporary directory (`$TMPDIR`, else `/tmp` on Unix; `%TEMP%` on
+  Windows). Use the host's temporary-file API when available. Report the exact
+  saved path so the next session can find it.
 
 ## Steps
 
 For a managed assignment, read `shared/contracts/references/execution.md` before recording its result or next action.
-Preserve caller ownership of task state and distinguish assignment completion from feature approval.
 After a consequential failure or a request to preserve lessons, read `shared/contracts/references/execution-lessons.md`.
-Include relevant lesson candidates in the handoff or authorized project knowledge; keep policy changes project-owned.
+Include relevant lesson candidates in the handoff or authorized project knowledge.
 
 1. **Locate the live state.** If the lane keeps a durable state file, it's the primary source —
    reference and summarize it rather than restating everything:
@@ -57,10 +50,8 @@ Include relevant lesson candidates in the handoff or authorized project knowledg
    files/logs/metrics to check — by reference.
 4. **Record verification**: the commands run, their outcomes, and checks still needed. If the
    underlying code changes after a check, mark that result stale.
-5. **List suggested next skills/commands** the next session should invoke.
-6. **Keep it compact** and save it: use the phase handoff path when
-   `phase-context-workflow` owns the handoff, otherwise save outside the
-   workspace.
+5. **List suggested next skills/commands** the next session should invoke, and any blockers.
+6. **Save the handoff** by the Rules and report its path.
 
 ## Resume protocol (for whoever picks it up)
 
@@ -69,10 +60,4 @@ what's been ruled out. Compare the recorded branch and working-tree state with `
 checks whose recorded result is missing or stale before relying on them. Continue from the next
 action without re-litigating eliminated paths.
 
-## Output
-
-A handoff document containing: current state + a concrete next action, branch and working-tree
-state, exact verification commands and outcomes, what's been tried/ruled out, references (not copies)
-to the durable state file and related artifacts, suggested next commands, and any blockers — secrets
-redacted, saved to the tracked phase handoff when
-that workflow owns it, otherwise outside the workspace.
+The work is complete when the saved handoff contains each Steps item and you have reported its path.

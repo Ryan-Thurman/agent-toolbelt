@@ -22,8 +22,11 @@ detail rather than native plugin skill copies.
 - `phase-context-workflow.md` - durable phase files, handoffs, and context
   packets so long agent work can survive `/clear` or `/compact`; composes
   `handoff` for phase closeout.
-- `dev-ticket-to-pr.md` - bridge workflow from refined ticket through
-  implementation, tests, project checks, and PR review.
+- `phase-gate-solo-workflow.md` - in-loop subagent review at each phase
+  boundary, with feedback and merge in one session.
+- `phase-gate-team-workflow.md` - phase-boundary review that posts comments
+  for a human reviewer and does not merge.
+- `dev-ticket-to-pr.md` - redirect to `phased-delivery-workflow.md`.
 - `bug-to-fix-workflow.md` - diagnostic lane from bug report through triage,
   reproduction, root-cause analysis, minimal fix, and verification.
 - `retrofit-workflow.md` - apply one defined change across every site

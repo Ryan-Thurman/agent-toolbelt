@@ -33,6 +33,4 @@ An old CI result or review approval cannot authorize publication of a newer head
 ## Existing owners
 
 Preserve the posting rules in [posting.md](posting.md) and each pack's authorization requirements.
-For ticket publishing, preserve recorded tracker keys and recover a missing key before creating another issue.
-For PR review, preserve the existing finding fingerprints and reviewed revision.
-For release work, preserve the project's merge, deployment, and rollback authority.
+Reuse the pack's existing remote identity as the operation identity, such as a tracker key or finding fingerprint.

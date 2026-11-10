@@ -18,8 +18,8 @@ Before applying a rule:
    the installed React/Next versions, server/client boundary, and relevant
    build/runtime configuration.
 2. Read only the matching rule files in
-   [`references/rule-routing.md`](references/rule-routing.md). Do not load all
-   70 rules for an unrelated change.
+   [`references/rule-routing.md`](references/rule-routing.md). Do not load the
+   full rule set for an unrelated change.
 3. Require a concrete consequence tied to the changed code for performance
    findings. Low-impact JavaScript micro-optimizations are valid only with
    hot-path, scale, or measurement evidence.

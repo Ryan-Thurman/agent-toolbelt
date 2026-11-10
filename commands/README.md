@@ -15,69 +15,9 @@ taxonomy, examples, and common workflow sequences.
 For workflow entry points, see [the wiki](../wiki/Workflows.md). If the next command is
 unclear inside a pilot repo, start with `/workflow-router`.
 
-- `/pr-review` - run the tiered PR/code review workflow.
-- `/code-quality-gate` - run a policy- or risk-driven pre-PR checks, maintainability, and bounded convergence gate.
-- `/pr-improve` - apply accepted PR findings in bounded fix-and-rereview rounds.
-- `/pr-review-init` - draft a repo's `.pr-review.md` review-priorities config by mining repo evidence (docs, burn history, rejection memory).
-- `/pr-review-reply` - round-trip a PR review: read reviewer threads, triage, re-review only since-SHA changes, reply per-thread.
-- `/review-on-open` - auto-review trigger: poll open PRs and fire `/pr-review --comment` on the unseen ones (drive with `/loop` or `/schedule`); GitHub Actions event template ships alongside.
-- `/enqueue-review` - push a PR onto the local review queue (producer half of review-queue; idempotent on head SHA).
-- `/review-queue-worker` - drain the local review queue: claim jobs and run `/pr-review --comment` on each (consumer half; drive with `/loop` or `/schedule`).
-- `/shape-up` - review a product ask against current behavior, or shape a vague request into an agreed brief.
-- `/product-discovery` - assess an opportunity's evidence and risks before shaping.
-- `/user-research-synthesis` - connect customer research to themes, counterexamples, and sample limits.
-- `/product-outcome-review` - assess whether an experiment or release improved its original customer problem.
-- `/tech-debt-discovery` - find and prioritize evidence-backed maintenance work across a repository.
-- `/system-design` - produce a design document with a linked threat review and security requirements.
-- `/plan-review` - review requirement coverage, decisions, dependencies, connections, and verification before execution.
-- `/style-guide-init` - derive, check, and refresh evidence-backed contribution/style guidance.
-- `/tech-assess` - assess a technical backlog item before implementation: do/defer/reject/spike, options, risks, tests.
-- `/ticket-discover` - investigate a narrow implementation ticket by finding an existing precedent and producing a gap/test handoff.
-- `/to-issues` - slice an approved brief into vertical-slice tickets.
-- `/ticket-sync` - publish/sync sliced tickets to the repo's tracker (GitHub Issues / Jira / Azure Boards).
-- `/simplify` - actively clean up a diff/area and apply cleanups on opt-in.
-- `$vercel-composition-patterns` - conditional React component API/composition guidance.
-- `$vercel-react-best-practices` - conditional React/Next performance guidance.
-- `/code-smell` - detect-only scan of an area for structural smells; use `--architecture` for
-  no-code deepening candidates.
-- `/cover` - author/strengthen behavior-pinning tests for a diff/module/bug repro, on opt-in.
-- `/test-case-design` - produce prioritized QA cases from requirements and risks; writes no tests.
-- `/cover-gaps` - detect-only scan for missing/weak coverage, ranked by risk × likelihood.
-- `/threat-model` - analyze assets, trust boundaries, abuse paths, and mitigations before building.
-- `/security-audit` - run a bounded read-only code/config/dependency security audit.
-- `/ship-it` - prepare a merged change for release (readiness, rollback, notes, rollout).
-- `/retrofit` - apply one defined change across every site (library swap, API rename, upgrade).
-- `/worktree` - create/list/remove an isolated git worktree so parallel agents in a shared polyrepo dir don't clobber each other's branch.
-- `/crap-config` - wizard: hydrate `.crap-analysis.json` with analysis, coverage, verify commands and output paths.
-- `/do-crap-analysis` - run CRAP analysis on uncommitted changes (orchestrator executes commands once; deterministic review).
-- `/crap-refactor` - apply behavior-preserving refactor from the brief after `/do-crap-analysis` flagged REFACTOR (opt-in).
-- `/bug-intake` - triage a bug report and open a durable investigation.
-- `/reproduce` - establish a manual or automated reproduction before RCA.
-- `/rca` - root-cause a reproduced bug (`--diagnose` for read-only).
-- `/fix-plan` - turn a confirmed root cause into the smallest verified fix.
-- `/handoff` - write a resumable handoff so a fresh session can continue.
-- `/dev-intake` - clarify a raw requirement when no approved plan or ticket exists.
-- `/dev-plan` - map approved scope to phases and one PR per phase or ticket.
-- `/dev-start-phase` - prepare a phase branch, target, checks, and dependencies.
-- `/dev-implement-task` - implement a bounded step within one phase or ticket.
-- `/dev-phase-review` - review one phase against its source and PR base.
-- `/dev-fix-review-issues` - fix only the latest phase review findings.
-- `/dev-pr-review` - check readiness of the current phase or ticket PR.
-- `/phase-create` - create or update a durable phase file.
-- `/phase-start` - create a context packet for a fresh or reset phase session.
-- `/phase-close` - write a phase handoff before clearing or compacting context.
-- `/phase-status` - summarize phase files and handoff state for a room.
-- `/workflow-router` - choose the smallest useful toolbelt command or workflow.
-- `/implementation-plan` - create a concise implementation plan.
-- `/write-tests` - plan or write tests for behavior changes.
-- `/webapp-test` - plan or run browser/webapp verification for user-facing changes.
-- `/review-diff` - review a local diff before PR.
-- `/pr-ready-check` - check whether implementation is ready for PR.
-- `/role-review` - run a product, engineering, design, QA, security, or release review.
-
 ## Choosing between similar commands
 
-Some commands overlap. Use these tables to pick the right one.
+Some commands overlap. Use these tables to select the correct command.
 
 **Reviewing a change**
 
@@ -88,6 +28,7 @@ Some commands overlap. Use these tables to pick the right one.
 | `/pr-improve` | Fix accepted findings in bounded, scope-guarded rounds with a durable ledger; run after review. |
 | `/pr-review-init` | Draft the repo's `.pr-review.md` (per-repo review priorities that `/pr-review` loads) from repo evidence — docs, revert/hotfix history, review threads, rejection memory. Draft only; the team prunes and commits. |
 | `/pr-review-reply` | The round-trip: answer a human reviewer's PR threads — triage each (`answered`/`changed`/`needs-follow-up`), re-review only the code changed since the review, reply per-thread. Run after `/pr-review`. |
+| `/phase-gate` | In-loop gate at a phase boundary: a fresh subagent reviews the phase PR and posts comments. The team mode stops for human merge; `--merge` fixes blockers and merges. |
 | `/review-on-open` | The trigger: auto-fire `/pr-review --comment` in a fresh agent when a PR is opened/updated. Host-agnostic poller (drive with `/loop` / `/schedule`); ships a GitHub Actions event workflow too. Doesn't review itself — it invokes `/pr-review` for you. |
 | `/enqueue-review` · `/review-queue-worker` | Push-based trigger: a producer agent enqueues a PR onto a local SQLite queue (`/enqueue-review`); a worker claims jobs and runs `/pr-review --comment` on each (`/review-queue-worker`, drive with `/loop` / `/schedule`). Decoupled, fully local — no CI/webhook/API key. |
 | `/review-diff` | Local-diff entry to the shared `pr-review` process; preserves tier and focus options. |
@@ -132,7 +73,7 @@ Some commands overlap. Use these tables to pick the right one.
 | `/cover` | *Author/strengthen* behavior-pinning tests for a diff, module, or bug repro (red→green regression lock), on opt-in. Framework-detected, falsified, deterministic; lane-agnostic. Writes tests only. |
 | `/test-case-design` | *Design* prioritized QA cases from requirements and risks; report-only, then hand selected cases to `/cover` or `/webapp-test`. |
 | `/cover-gaps` | *Detect-only* scan for missing/weak coverage, ranked by risk × likelihood. Applies nothing — hands top gaps to `/cover`. |
-| `/write-tests` | Use `test-case-design` for case planning or `cover` for test authoring. |
+| `/write-tests` | Alias for `/cover`. Use `test-case-design` for case planning. |
 
 **Security and architecture decisions**
 
@@ -161,3 +102,28 @@ The Bug-to-Fix lane hands off to the shared back half: `/fix-plan` → `/dev-imp
 |---|---|
 | `/ship-it` | Lightweight launch readiness: go/no-go check, rollback plan, release notes, rollout/monitor plan. Pipeline-aware — hands off when external CI/CD owns the deploy. |
 | `/dev-pr-review` / `/pr-ready-check` | Earlier gate — is the change ready to *open/complete a PR* (not to release). |
+
+## Other commands
+
+The comparison tables do not include these commands.
+
+- `/user-research-synthesis` - connect customer research to themes, counterexamples, and sample limits.
+- `/product-outcome-review` - assess whether an experiment or release improved its original customer problem.
+- `/tech-debt-discovery` - find and prioritize evidence-backed maintenance work across a repository.
+- `/system-design` - produce a design document with a linked threat review and security requirements.
+- `/plan-review` - review requirement coverage, decisions, dependencies, connections, and verification before execution.
+- `/to-issues` - slice an approved brief into vertical-slice tickets.
+- `/ticket-sync` - publish/sync sliced tickets to the repo's tracker (GitHub Issues / Jira / Azure Boards).
+- `$vercel-composition-patterns` - conditional React component API/composition guidance.
+- `$vercel-react-best-practices` - conditional React/Next performance guidance.
+- `/worktree` - create/list/remove an isolated git worktree so parallel agents in a shared polyrepo dir don't clobber each other's branch.
+- `/crap-config` - wizard: hydrate `.crap-analysis.json` with analysis, coverage, verify commands and output paths.
+- `/do-crap-analysis` - run CRAP analysis on branch changes since the base (committed, staged, unstaged, and untracked). The script runs the commands once and returns a deterministic verdict.
+- `/crap-refactor` - apply behavior-preserving refactor from the brief after `/do-crap-analysis` flagged REFACTOR (opt-in).
+- `/dev-start-phase` - prepare a phase branch, target, checks, and dependencies.
+- `/dev-implement-task` - implement a bounded step within one phase or ticket.
+- `/dev-phase-review` - review one phase against its source and PR base.
+- `/dev-fix-review-issues` - fix only the latest phase review findings.
+- `/workflow-router` - choose the smallest useful toolbelt command or workflow.
+- `/webapp-test` - plan or run browser/webapp verification for user-facing changes.
+- `/role-review` - run a product, engineering, design, QA, security, or release review.

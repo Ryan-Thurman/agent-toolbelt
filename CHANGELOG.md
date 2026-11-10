@@ -2,6 +2,24 @@
 
 ## Unreleased
 
+### Changed
+
+- Reviewed every skill, workflow, command, and shared contract for size, clarity, and coverage.
+- Moved procedures that existed only in commands into skills. Commands now point to their skill.
+- Removed repeated rules. Each rule now has one owner file.
+- Fixed contradictions in bug-to-fix, cover, simplify, ship-it, retrofit, phase-context-workflow, and phase-gate.
+- Made `pr-review` write a head-commit marker in the posted summary. `review-on-open` and `review-queue` use it to stop duplicate posts.
+- Added `--intent` to `pr-review` and `phase-gate` for an acceptance coverage table.
+- Made the `pr-review` token footer opt-in with `--benchmark`.
+- Made `phase-gate` solo mode merge only on `APPROVE`, re-review after each fix commit, and fix through `pr-improve`.
+- Made `crap-analysis` load config from the base branch and include committed and untracked changes.
+- Added a `crap-analysis` `review` operation with fixed verdicts, and `verify --changed`.
+- Made `code-quality-gate` run `crap-analysis` when the base commit has `.crap-analysis.json`.
+- Split the execution JSON schema into `execution-schema.md`, loaded only for JSON exchange.
+- Added the shared `security-checklist.md` contract for `security-audit` and `pr-review`.
+- Made `ticket-sync` keep unmapped ticket fields in the issue body.
+- Added missing rows to `/workflow-router` and the README indexes.
+
 ## v1.1.9 - 2026-11-08
 
 ### Changed

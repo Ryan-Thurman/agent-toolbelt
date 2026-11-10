@@ -8,64 +8,47 @@ description: Prepare a change for release with readiness checks, rollback, relea
 Before you write a response for the user, read
 `shared/contracts/references/human-readable-output.md`.
 
-The lightweight release-readiness step that closes the dev lanes — they end at "PR merged," this
-takes it to "released safely." Every release should be **reversible, observable, and incremental**.
+Take a merged or approved change to "released safely".
+Make every release reversible, observable, and incremental.
+Prefer a feature flag and a staged rollout to a big-bang deploy.
 
 ## Mutation Policy
 
-Default: prepare the release package only.
-Edit release artifacts only when the user explicitly asks.
-Running deploy, tag, push, or rollout commands requires explicit confirmation at
-each gate; if a pipeline owns deploy, stop at handoff.
+- Prepare the release package by default.
+- Edit release artifacts only when the user explicitly asks.
+- When a pipeline owns the deploy, produce the release package and stop. Do not run deploy steps.
+- When you own the deploy, propose each deploy, tag, push, or rollout command. Run it only after explicit confirmation at that gate.
+- Push to a default branch only when the user asks.
+- Before you run or retry an authorized external action, read `shared/contracts/references/operation-retries.md`.
+  Keep the pipeline as the operation owner when it controls publication.
 
-## Principles (always)
-
-- **Rollback first.** The one thing teams skip. Do not call a change ready to release until there's
-  a concrete way to undo it and a clear trigger for using it.
-- **Reversible, observable, incremental.** Prefer feature-flagged + staged rollout over a big-bang
-  deploy; know what you'll watch and for how long.
-- **Pipeline-aware — don't assume you own the deploy.** In many orgs an external CI/CD pipeline you
-  can't change takes over once a PR is approved/merged. In that case ship-it **prepares and hands
-  off**: it produces the readiness verdict, rollback plan, release notes, and watch-list, and stops
-  — it does not run deploy steps. Only when *you* own the deploy does it walk the rollout.
-- **Never deploy without explicit confirmation.** Even when you own it, ship-it proposes the
-  deploy/tag commands; it does not execute them unprompted, and never pushes to a default branch
-  unless asked.
-
-## Flow
-
-Before executing or retrying an authorized external action, read `shared/contracts/references/operation-retries.md`.
-Keep the pipeline as the operation owner when it controls publication.
-
-1. **Readiness check** (`references/readiness-checklist.md`) — verify tests/build/lint, security,
-   performance, infra (env/migrations/health check), and docs. Produce a **go / no-go** verdict
-   with the blocking gaps listed. Scope the checklist to the change (skip the a11y/Web-Vitals rows
-   for a backend-only change, etc.).
-2. **Rollback plan** — state exactly how to revert (git revert / flag-off / migration-down / prior
-   release), and the **trigger** that says "roll back now" (see the thresholds in
-   `references/rollout-and-rollback.md`).
-3. **Release notes** — draft a changelog / release-notes entry from the merged commits/PRs since
-   the last tag, using `templates/release-notes.md`; suggest the version/tag. Verify the docs the
-   change affects are updated **in this change** — an unaddressed doc impact is a readiness blocker
-   (see the Documentation gate in `references/readiness-checklist.md`), not a footnote.
-4. **Rollout + monitor plan** (`references/rollout-and-rollback.md`) — choose big-bang vs.
-   flagged/staged/canary, and list the metrics + window to watch at each stage.
-5. **Hand off or roll out:**
-   - **Pipeline owns the deploy** → output steps 1–4 as the release package and stop. Frame step 4
-     as "what to watch once the pipeline deploys," since you won't be driving it.
-   - **You own the deploy** → walk the staged rollout, proposing the exact deploy/tag commands at
-     each gate and pausing for confirmation; advance only when the stage's thresholds pass.
-
-## Determining who owns the deploy
+## Determine who owns the deploy
 
 Ask, or infer from the repo: a CI/CD config that deploys on merge to the default branch (GitHub
 Actions `deploy`, GitLab CI, a release pipeline) usually means **the pipeline owns it** — prepare
 and hand off. A repo with no deploy automation, or manual deploy scripts, usually means **you own
 it**. When unsure, ask before doing anything that deploys.
 
-## References
+## Flow
 
-- `references/readiness-checklist.md` — the pre-launch checklist (code quality, security,
-  performance, accessibility, infrastructure, docs), to scope to the change.
-- `references/rollout-and-rollback.md` — feature-flag lifecycle, the staged rollout sequence, the
-  advance/hold/roll-back threshold table, the roll-back triggers, and the monitoring list.
+1. **Readiness check.** Read `references/readiness-checklist.md` and scope it to the change.
+   Give a **GO / NO-GO** verdict with the blocking gaps listed.
+2. **Rollback plan.** Read `references/rollout-and-rollback.md`. State how to revert and the
+   trigger that means "roll back now". When the project has no rollback trigger, the verdict is
+   NO-GO. List the missing trigger as the blocking gap.
+3. **Release notes.** Draft a release-notes entry from the merged commits or PRs since the last
+   tag with `templates/release-notes.md`. Suggest the version or tag. Confirm the documentation
+   gate in the readiness checklist.
+4. **Rollout and monitor plan.** Choose big-bang, flagged, staged, or canary rollout. List the
+   metrics, the observation window, and the advance, hold, and recover rules for each stage.
+5. **Hand off or roll out.**
+   - **Pipeline owns the deploy:** Give steps 1–4 as the release package. Frame step 4 as the
+     watch-list for the pipeline deploy.
+   - **You own the deploy:** Walk the staged rollout. Advance only when the stage's rules pass.
+
+## Output
+
+Give a release package: the GO / NO-GO verdict with blockers, the rollback plan and trigger,
+the release-notes draft, and the rollout and monitor plan.
+When you own the deploy, add the proposed deploy and tag commands.
+After the release, recommend `workflows/delivery-retrospective-workflow.md` to review the delivery process.

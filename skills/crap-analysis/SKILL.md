@@ -8,10 +8,10 @@ description: Run CRAP analysis via repo-configured commands — wizard setup, si
 Before you write a response for the user, read
 `shared/contracts/references/human-readable-output.md`.
 
-Language-agnostic CRAP analysis orchestration. Each repo configures its own analysis, coverage, and
-verify commands in `.crap-analysis.json`. This skill runs those commands **once** when instructed,
-**waits** for completion, **reads** the produced report and refactor brief, and applies a
-**deterministic review** — no embedded analyzer.
+CRAP (Change Risk Anti-Patterns) combines complexity and test coverage into one risk score.
+This skill does not calculate CRAP.
+Each repository configures its own coverage, analysis, and verify commands in `.crap-analysis.json`.
+The orchestrator runs those commands once, then reviews the report that they write.
 
 ## Mutation Policy
 
@@ -21,35 +21,36 @@ verify commands in `.crap-analysis.json`. This skill runs those commands **once*
 | `analyze` (`/do-crap-analysis`) | no | no |
 | `refactor` (`/crap-refactor`) | yes, after user confirms | no |
 
+The orchestrator writes generated files only under `.atb-work/crap-analysis/` and the configured `outputs` paths.
+
 ## Mode routing
 
-- **`/crap-config`** — wizard hydrates `.crap-analysis.json` from user inputs. See
-  `references/config-schema.md`.
-- **`/do-crap-analysis`** — orchestrator `execute` once; deterministic review. See
-  `references/review.md`, `references/report-schema.md`, `references/cli.md`.
-- **`/crap-refactor`** — apply brief; orchestrator `verify` once. See `references/refactor.md`.
+- **`/crap-config`** — write `.crap-analysis.json` from user inputs. See `references/config-schema.md`.
+- **`/do-crap-analysis`** — run `execute` once, then `review`. See `references/cli.md` and `references/review.md`.
+- **`/crap-refactor`** — apply the brief, run `verify` once, then `review`. See `references/refactor.md`.
 
 ## Invariants (always)
 
-- Commands run **only** through `bin/crap-analysis.sh` — never ad-hoc shell for configured commands
-  during analyze/refactor flows
-- `commands.coverage` runs **at most once** per target per `execute` invocation
-- `commands.analysis` runs **exactly once** per target per `execute` invocation
-- Agent **waits** for each command to exit before reading output files
-- **REFACTOR** outcome requires **Read** of `outputs.refactorBrief` before responding
-- Review output uses **fixed templates** from `references/review.md` only
-- Config loaded from **base branch** when applicable; honor base values if config changed in diff
+- Run configured commands only through `bin/crap-analysis.sh`.
+  Do not run them as ad-hoc shell commands.
+- Wait for each orchestrator op to exit before you read its output files.
+- Let the orchestrator load the config from the base branch.
+  Use `--config PATH` only when the user asks for a working-tree config.
+- Get each outcome from the `review` op.
+  Do not calculate an outcome from the report yourself.
+- On a **REFACTOR** outcome, read `outputs.refactorBrief` before you respond.
+- Use only the fixed templates in `references/review.md` for review output.
 
 ## Reference map
 
 | Doc | Load when |
 |---|---|
-| `references/config-schema.md` | `/crap-config`, config discovery |
-| `references/cli.md` | running orchestrator ops |
-| `references/report-schema.md` | parsing report JSON |
-| `references/review.md` | after `execute` or `--report-only` |
+| `references/config-schema.md` | `/crap-config`, config discovery, or a config error |
+| `references/cli.md` | running orchestrator ops or reading their JSON and exit codes |
+| `references/report-schema.md` | writing or debugging the repository's analysis command |
+| `references/review.md` | after `execute`, `verify`, or `review --report-only` |
 | `references/refactor.md` | `/crap-refactor` |
-| `references/scoring.md` | explaining thresholds to user |
+| `references/scoring.md` | explaining scores and thresholds to the user |
 
 ## CLI
 
@@ -57,4 +58,4 @@ verify commands in `.crap-analysis.json`. This skill runs those commands **once*
 bash skills/crap-analysis/bin/crap-analysis.sh <op> [args]
 ```
 
-Primary ops: `validate-config`, `execute --changed`, `verify --target NAME`.
+Primary ops: `validate-config`, `execute --changed`, `review`, `verify --target NAME`.

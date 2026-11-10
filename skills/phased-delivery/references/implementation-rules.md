@@ -1,15 +1,15 @@
 # Implementing a phase
 
-Read this when starting or carrying out a phase.
+Read this before the first edit in a phase.
 
 1. Reconcile the phase with the source requirement or ticket, current repository
-   state, and preceding PRs. Confirm the work branch and PR target. Before edits
-   or commits, create or switch to a focused phase branch if currently on the
-   default branch; stop if that cannot be done safely. For a stack, branch from
-   the parent ticket branch and compare only against that branch.
+   state, and preceding PRs. Confirm the work branch and PR target.
    Compare recorded completion with the actual revision, diff, and checks before reusing it.
    Report stale evidence or missing work; do not redispatch completed tasks from memory alone.
-2. Fill missing *technical* context: affected files, interfaces, migrations,
+2. Before edits or commits, create or switch to a focused phase branch. If you
+   are on the default branch and cannot branch safely, stop. For a stack, follow
+   the skill's Stacked PRs rules.
+3. Fill missing *technical* context: affected files, interfaces, migrations,
    test locations and commands, operational risks, and implementation steps.
    Mark inferred details as such. Do not change acceptance criteria or release,
    document, or QA decisions without the source owner's approval.
@@ -17,24 +17,26 @@ Read this when starting or carrying out a phase.
    verification result needed for each step. Include implementation code only
    when a non-obvious algorithm or exact source requirement needs it; link to
    existing definitions instead of duplicating them across tasks.
-3. Verify declared external preconditions using read-only checks. Stop if a
+4. Verify declared external preconditions using read-only checks. Stop if a
    prerequisite fails or cannot be checked safely; do not partially implement
    behind an unverified dependency.
-4. Implement within this phase's scope using
-   `shared/contracts/references/test-driven-development.md` for behavior changes.
-   Plan unit-test cases from source criteria, observable interfaces, and important branches or error paths.
-   Record the expected failure before implementing each selected behavior, then verify the passing result.
+5. Implement within this phase's scope. For behavior changes, follow
+   `shared/contracts/references/test-driven-development.md`.
    Run focused checks during the edit loop and proportionate broader checks before PR review.
-   Inspect changed-code coverage with existing tooling and report uncovered behavior.
-   If automation is impractical, explain the gap and name the manual or integration evidence needed.
-   For repeated failures, use `shared/contracts/references/failure-recovery.md` and retain the attempt record.
-5. Inspect the diff for unrelated changes, premature next-ticket work, and
+6. Inspect the diff for unrelated changes, premature next-ticket work, and
    generated noise. Record changed files, checks, acceptance evidence, risks,
    and next action in the existing plan or execution record.
 
-Commit at coherent reviewable boundaries; one commit per task is not required.
-Do not push to the default branch unless the user explicitly requests it. For
-optional commit guidance, read `commit-rules.md`.
+## Commits
+
+Commit at coherent, reviewable boundaries.
+A phase can have one or more commits.
+A task does not need its own commit.
+Write concise messages, such as `feat: add saved filter` or `test: cover duplicate names`.
+Inspect the staged diff before each commit.
+Push to the default branch only when the user explicitly asks.
+
+## Delegation
 
 When delegating or crossing a context reset, hand off the selected phase's
 source scope, branch/base, owned files, exact checks, and report location. Keep

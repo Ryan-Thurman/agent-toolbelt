@@ -234,7 +234,7 @@
         "Improvement candidates"
       ],
       "example_prompts": [
-        "Analyze this repository for high-risk complexity and coverage gaps.",
+        "Run CRAP analysis on my branch changes and list the hotspots above the threshold.",
         "Prioritize refactoring targets using complexity and test evidence."
       ],
       "related_skills": [

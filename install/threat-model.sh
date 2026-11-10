@@ -5,6 +5,5 @@ pack_threat_model() {
   shared_contract references/evidence-quality.md
   cmd threat-model
   skill threat-model SKILL.md
-  skill threat-model references/model-method.md
   template threat-model.md
 }

@@ -1,10 +1,8 @@
 <!--
   Copy this to the ROOT of a repo as `.tickets.md` (or `.claude/tickets.md`).
-  It tells /ticket-sync WHERE the slicers' tickets get published and HOW their fields map — the
-  tracker-adapter config, separate from the tickets themselves. Every section is optional; delete
-  what you don't need. Where a base branch is meaningful it's loaded from the BASE (a working branch
-  can't silently retarget publishing). Full contract:
-  agent-toolbelt/skills/ticket-sync/references/config.md
+  It tells /ticket-sync WHERE ticket files get published and HOW their fields map. Every section is
+  optional; delete what you do not need. Where a base branch is meaningful, ticket-sync loads this
+  file from the BASE branch. Full contract: agent-toolbelt/skills/ticket-sync/references/config.md
 -->
 
 ## Provider
@@ -25,11 +23,8 @@
 - Parent / Epic: REL-2026.06
 
 ## Field mapping
-<!-- How the slicer ticket-template fields land in the tracker. Left = ticket field, right = destination.
-     Defaults (when a line is omitted): IDs → labels, acceptance criteria/test expectation → description. -->
-- Feature ID          -> label `feat:{value}`        (or a custom field, e.g. Jira customfield_10010)
-- Release ID          -> label `rel:{value}`         (or Jira fixVersion / Azure Iteration Path)
-- Acceptance criteria -> appended into the description as a checklist
-- Dependencies        -> issue links ("Blocked by") between the created issues
-- Test expectation    -> appended into the description under a "Testing" heading
-- Doc-delta status    -> label `doc-delta:{value}`   (or a custom field)
+<!-- How `Key: value` fields in the ticket files land in the tracker. Left = the ticket field name,
+     right = the destination. A field without a line here goes into the issue body, so no field is lost.
+     Acceptance criteria go into the body as a checklist unless mapped. -->
+- Feature             -> label `feat:{value}`        (or a custom field, e.g. Jira customfield_10010)
+- Release             -> label `rel:{value}`         (or Jira fixVersion / Azure Iteration Path)

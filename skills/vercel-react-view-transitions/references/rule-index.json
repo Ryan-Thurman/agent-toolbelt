@@ -1,0 +1,12 @@
+{
+  "skill": "vercel-react-view-transitions",
+  "rules": [
+    {
+      "path": "SKILL.md",
+      "when": "The change adds or edits a ViewTransition component, a transition type, or a view transition call.",
+      "fix": "Follow the guide's placement, trigger, and reduced-motion rules.",
+      "signals": ["<ViewTransition\\b", "\\baddTransitionType\\s*\\(", "\\bstartViewTransition\\s*\\("],
+      "file_signals": []
+    }
+  ]
+}

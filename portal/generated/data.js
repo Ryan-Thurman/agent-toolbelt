@@ -1398,6 +1398,54 @@ window.AGENT_TOOLBELT_DATA = {
       "source_url": "https://github.com/Ryan-Thurman/agent-toolbelt/blob/main/skills/ticket-sync/SKILL.md"
     },
     {
+      "id": "use-effect-killer",
+      "display_name": "useEffect Killer",
+      "short_description": "Audit React effects against You Might Not Need an Effect.",
+      "default_prompt": "Use $use-effect-killer to audit the useEffect calls in this change and propose idiomatic fixes.",
+      "description": "Audit React useEffect calls against 13 anti-patterns from \"You Might Not Need an Effect\" and propose idiomatic fixes. Use when you audit, review, write, or clean up effects, or when the React rule scan lists this skill.",
+      "category": "Codebase Improvement",
+      "tags": [
+        "react",
+        "hooks",
+        "useEffect",
+        "react-frontend",
+        "refactor"
+      ],
+      "primary_purpose": "Audit React useEffect calls against 13 anti-patterns and propose idiomatic fixes.",
+      "use_when": [
+        "A change adds or edits React effects, or a component uses effects to derive state, handle events, or sync props."
+      ],
+      "avoid_when": [
+        "The code is not React, or the effect synchronizes with a real external system and has cleanup."
+      ],
+      "preferred_context": "Effect bodies, dependency arrays, owning components, React version, React Compiler setting, and data-fetching library.",
+      "expected_outputs": [
+        "Classification of every effect in scope",
+        "Anti-pattern findings with concrete fixes",
+        "List of legitimate effects"
+      ],
+      "example_prompts": [
+        "Audit the useEffect calls in src/components.",
+        "Check the effects in my branch changes and fix the anti-patterns."
+      ],
+      "related_skills": [
+        "vercel-react-best-practices",
+        "vercel-composition-patterns",
+        "simplify",
+        "pr-review"
+      ],
+      "workflow_membership": [
+        "codebase-improvement"
+      ],
+      "documentation_completeness": {
+        "status": "complete",
+        "notes": "Canonical skill and agent metadata are present."
+      },
+      "recommended_changes": [],
+      "source_path": "skills/use-effect-killer/SKILL.md",
+      "source_url": "https://github.com/Ryan-Thurman/agent-toolbelt/blob/main/skills/use-effect-killer/SKILL.md"
+    },
+    {
       "id": "user-research-synthesis",
       "display_name": "User Research Synthesis",
       "short_description": "Connect customer themes to evidence and limits.",
@@ -1476,6 +1524,7 @@ window.AGENT_TOOLBELT_DATA = {
       ],
       "related_skills": [
         "vercel-react-best-practices",
+        "use-effect-killer",
         "simplify",
         "code-quality-gate"
       ],
@@ -1522,8 +1571,11 @@ window.AGENT_TOOLBELT_DATA = {
       ],
       "related_skills": [
         "vercel-composition-patterns",
+        "use-effect-killer",
         "webapp-testing",
-        "code-quality-gate"
+        "code-quality-gate",
+        "vercel-react-native-skills",
+        "vercel-react-view-transitions"
       ],
       "workflow_membership": [
         "codebase-improvement"
@@ -1535,6 +1587,149 @@ window.AGENT_TOOLBELT_DATA = {
       "recommended_changes": [],
       "source_path": "skills/vercel-react-best-practices/SKILL.md",
       "source_url": "https://github.com/Ryan-Thurman/agent-toolbelt/blob/main/skills/vercel-react-best-practices/SKILL.md"
+    },
+    {
+      "id": "vercel-react-native-skills",
+      "display_name": "Vercel React Native Skills",
+      "short_description": "React Native and Expo performance and UI rules.",
+      "default_prompt": "Use $vercel-react-native-skills to review this React Native change for list, animation, and UI issues.",
+      "description": "Review or improve React Native and Expo code when lists, animations, navigation, images, native UI, or monorepo native dependencies change; verify the React Native, Expo, and library versions first.",
+      "category": "Codebase Improvement",
+      "tags": [
+        "react-native",
+        "expo",
+        "mobile",
+        "performance",
+        "react"
+      ],
+      "primary_purpose": "Apply React Native and Expo performance and native UI rules to mobile changes.",
+      "use_when": [
+        "A React Native or Expo change touches lists, animations, navigation, images, or native UI."
+      ],
+      "avoid_when": [
+        "The repository is a web-only React app."
+      ],
+      "preferred_context": "React Native, Expo, and library versions, list and animation code, navigation setup, and the React Compiler setting.",
+      "expected_outputs": [
+        "Applied or not-applicable record for each listed rule",
+        "Evidence-backed findings",
+        "Focused fixes"
+      ],
+      "example_prompts": [
+        "Review this React Native screen for list and animation performance.",
+        "Check my Expo branch changes against the React Native rules."
+      ],
+      "related_skills": [
+        "vercel-react-best-practices",
+        "use-effect-killer",
+        "pr-review",
+        "simplify"
+      ],
+      "workflow_membership": [
+        "codebase-improvement"
+      ],
+      "documentation_completeness": {
+        "status": "complete",
+        "notes": "Canonical skill and agent metadata are present."
+      },
+      "recommended_changes": [],
+      "source_path": "skills/vercel-react-native-skills/SKILL.md",
+      "source_url": "https://github.com/Ryan-Thurman/agent-toolbelt/blob/main/skills/vercel-react-native-skills/SKILL.md"
+    },
+    {
+      "id": "vercel-react-view-transitions",
+      "display_name": "Vercel React View Transitions",
+      "short_description": "Native-feeling React View Transition animations.",
+      "default_prompt": "Use $vercel-react-view-transitions to add view transitions to this React route change.",
+      "description": "Add or review React View Transition animations (`<ViewTransition>`, `addTransitionType`, view transition CSS) for route changes, shared elements, list reorder, enter and exit, and Suspense reveals, including Next.js. Verify React 19.3 or Next.js App Router first.",
+      "category": "Codebase Improvement",
+      "tags": [
+        "react",
+        "animation",
+        "view-transitions",
+        "nextjs",
+        "react-frontend"
+      ],
+      "primary_purpose": "Add or review React View Transition animations with correct placement, triggers, and reduced motion.",
+      "use_when": [
+        "A change adds route, shared-element, list, enter and exit, or Suspense animations with React View Transitions."
+      ],
+      "avoid_when": [
+        "The React version does not support ViewTransition, or the repository uses a different animation library for this surface."
+      ],
+      "preferred_context": "React or Next.js version, routing setup, the components that change, and the global stylesheet.",
+      "expected_outputs": [
+        "View transition implementation",
+        "Reduced-motion CSS",
+        "Review findings for placement and triggers"
+      ],
+      "example_prompts": [
+        "Add a shared element transition from the list to the detail page.",
+        "Review the view transitions in this change."
+      ],
+      "related_skills": [
+        "vercel-react-best-practices",
+        "vercel-composition-patterns",
+        "webapp-testing"
+      ],
+      "workflow_membership": [
+        "codebase-improvement"
+      ],
+      "documentation_completeness": {
+        "status": "complete",
+        "notes": "Canonical skill and agent metadata are present."
+      },
+      "recommended_changes": [],
+      "source_path": "skills/vercel-react-view-transitions/SKILL.md",
+      "source_url": "https://github.com/Ryan-Thurman/agent-toolbelt/blob/main/skills/vercel-react-view-transitions/SKILL.md"
+    },
+    {
+      "id": "vercel-web-interface-guidelines",
+      "display_name": "Vercel Web Interface Guidelines",
+      "short_description": "Review UI code against the Web Interface Guidelines.",
+      "default_prompt": "Use $vercel-web-interface-guidelines to review the UI files in this change.",
+      "description": "Review web UI code against the Vercel Web Interface Guidelines for accessibility, focus, forms, animation, typography, layout, theming, and interaction. Use when you review or build UI, or when the React rule scan lists this skill.",
+      "category": "Codebase Improvement",
+      "tags": [
+        "accessibility",
+        "ui",
+        "forms",
+        "animation",
+        "react-frontend"
+      ],
+      "primary_purpose": "Review web UI code against the Vercel Web Interface Guidelines with a pinned offline rule list.",
+      "use_when": [
+        "A change adds or edits UI components, styles, forms, or interactions."
+      ],
+      "avoid_when": [
+        "The change has no user interface, or the repository has a stricter design or accessibility policy for the same rules."
+      ],
+      "preferred_context": "Changed components and styles, the design system, copy style, and accessibility policy.",
+      "expected_outputs": [
+        "file:line findings grouped by file",
+        "Severity from the React acceptance contract",
+        "Pass list for clean files"
+      ],
+      "example_prompts": [
+        "Review the UI files in my branch against the web interface guidelines.",
+        "Check src/components/forms for accessibility and form issues."
+      ],
+      "related_skills": [
+        "webapp-testing",
+        "vercel-react-best-practices",
+        "vercel-react-view-transitions",
+        "pr-review"
+      ],
+      "workflow_membership": [
+        "codebase-improvement"
+      ],
+      "documentation_completeness": {
+        "status": "complete",
+        "notes": "Canonical skill and agent metadata are present."
+      },
+      "recommended_changes": [],
+      "source_path": "skills/vercel-web-interface-guidelines/SKILL.md",
+      "source_url": "https://github.com/Ryan-Thurman/agent-toolbelt/blob/main/skills/vercel-web-interface-guidelines/SKILL.md"
     },
     {
       "id": "webapp-testing",

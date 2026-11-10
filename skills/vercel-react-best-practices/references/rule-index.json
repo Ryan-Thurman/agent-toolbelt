@@ -1,0 +1,741 @@
+{
+  "skill": "vercel-react-best-practices",
+  "intro": "Read the individual rule only when the changed code matches its condition. A rule's priority is a triage hint, not permission to ignore repository policy or invent performance requirements.",
+  "categories": [
+    {
+      "prefix": "async",
+      "title": "Async and data fetching"
+    },
+    {
+      "prefix": "bundle",
+      "title": "Bundle size"
+    },
+    {
+      "prefix": "server",
+      "title": "Server rendering and actions"
+    },
+    {
+      "prefix": "client",
+      "title": "Client data and listeners"
+    },
+    {
+      "prefix": "rerender",
+      "title": "Re-render control"
+    },
+    {
+      "prefix": "rendering",
+      "title": "Rendering and DOM output"
+    },
+    {
+      "prefix": "js",
+      "title": "JavaScript hot paths"
+    },
+    {
+      "prefix": "advanced",
+      "title": "Advanced React patterns"
+    }
+  ],
+  "rules": [
+    {
+      "path": "references/rules/advanced-effect-event-deps.md",
+      "when": "A useEffect dependency array lists a function that useEffectEvent returns (React 19.2+).",
+      "fix": "Don't put `useEffectEvent` results in effect deps",
+      "signals": [
+        "\\buseEffectEvent\\b"
+      ],
+      "file_signals": []
+    },
+    {
+      "path": "references/rules/advanced-event-handler-refs.md",
+      "when": "An effect subscribes a handler prop to an event and lists that handler in its dependency array.",
+      "fix": "Store event handlers in refs",
+      "signals": [
+        "\\b(?:window|document)\\.addEventListener\\("
+      ],
+      "file_signals": []
+    },
+    {
+      "path": "references/rules/advanced-init-once.md",
+      "when": "A component effect with an empty dependency array runs app-wide setup, such as an auth check or storage load.",
+      "fix": "Initialize app once per app load",
+      "signals": [],
+      "file_signals": []
+    },
+    {
+      "path": "references/rules/advanced-use-latest.md",
+      "when": "An effect lists a callback prop as a dependency only to call its latest version (React 19.2+ useEffectEvent).",
+      "fix": "useLatest for stable callback refs",
+      "signals": [
+        "\\buseEffectEvent\\b",
+        "\\buse(?:Latest|LatestRef|LatestCallback|EventCallback|StableCallback)\\s*\\("
+      ],
+      "file_signals": []
+    },
+    {
+      "path": "references/rules/async-api-routes.md",
+      "when": "A Next.js route handler or Server Action awaits independent operations one after another.",
+      "fix": "Start promises early, await late in API routes",
+      "signals": [
+        "^\\s*export\\s+(?:async\\s+)?function\\s+(?:GET|POST|PUT|PATCH|DELETE|HEAD|OPTIONS)\\b",
+        "^\\s*export\\s+const\\s+(?:GET|POST|PUT|PATCH|DELETE|HEAD|OPTIONS)\\s*=",
+        "^\\s*['\\\"]use server['\\\"]"
+      ],
+      "file_signals": []
+    },
+    {
+      "path": "references/rules/async-cheap-condition-before-await.md",
+      "when": "Code awaits a flag or remote value before it checks a cheap synchronous condition in the same branch.",
+      "fix": "Check cheap sync conditions before awaiting flags or remote values",
+      "signals": [
+        "\\bawait\\s+[\\w.]*(?:[Ff]lag|[Ff]eature[A-Z]|[Ee]nabled|[Ee]xperiment)\\w*\\("
+      ],
+      "file_signals": []
+    },
+    {
+      "path": "references/rules/async-defer-await.md",
+      "when": "A function awaits a value at the top but an early-return branch does not use that value.",
+      "fix": "Move await into branches where actually used",
+      "signals": [],
+      "file_signals": []
+    },
+    {
+      "path": "references/rules/async-dependencies.md",
+      "when": "Code awaits a Promise.all and then awaits a call that needs only one of its results.",
+      "fix": "Use better-all for partial dependencies",
+      "signals": [
+        "\\bPromise\\.all\\(",
+        "from\\s+['\\\"]better-all['\\\"]"
+      ],
+      "file_signals": []
+    },
+    {
+      "path": "references/rules/async-parallel.md",
+      "when": "Two or more independent awaits run in sequence in one function.",
+      "fix": "Use Promise.all() for independent operations",
+      "signals": [],
+      "file_signals": []
+    },
+    {
+      "path": "references/rules/async-suspense-boundaries.md",
+      "when": "An async server component awaits data before it returns layout JSX that does not need the data (React Server Components).",
+      "fix": "Use Suspense to stream content",
+      "signals": [
+        "^\\s*(?:export\\s+(?:default\\s+)?)?async\\s+function\\s+[A-Z]\\w*\\s*\\("
+      ],
+      "file_signals": []
+    },
+    {
+      "path": "references/rules/bundle-analyzable-paths.md",
+      "when": "An import() or file-system path comes from a variable or string concatenation instead of a literal path.",
+      "fix": "Prefer statically analyzable import and file-system paths to avoid broad bundles and traces",
+      "signals": [
+        "\\bimport\\(\\s*(?:[A-Za-z_$][\\w$.\\[\\]]*\\s*\\)|[A-Za-z_$][\\w$]*\\s*\\[|`[^`]*\\$\\{)",
+        "\\brequire\\(\\s*(?:[A-Za-z_$][\\w$.]*\\s*\\)|`[^`]*\\$\\{)",
+        "\\bpath\\.(?:join|resolve)\\(\\s*process\\.cwd\\(\\)\\s*,\\s*(?:[^'\\\"`\\s)]|['\\\"][^'\\\"]*['\\\"]\\s*\\+|`[^`]*\\$\\{)"
+      ],
+      "file_signals": []
+    },
+    {
+      "path": "references/rules/bundle-barrel-imports.md",
+      "when": "Code imports from a barrel file, such as an index file or an icon or component library root.",
+      "fix": "Import directly, avoid barrel files",
+      "signals": [
+        "from\\s+['\\\"][^'\\\"]*/index(?:\\.[jt]sx?)?['\\\"]",
+        "from\\s+['\\\"]\\.{1,2}/?['\\\"]",
+        "from\\s+['\\\"](?:lucide-react|@mui/icons-material|@tabler/icons-react|react-icons(?:/\\w+)?|lodash|ramda)['\\\"]"
+      ],
+      "file_signals": []
+    },
+    {
+      "path": "references/rules/bundle-conditional.md",
+      "when": "A large module or data file loads at startup but only an optional feature or flag uses it.",
+      "fix": "Load modules only when feature is activated",
+      "signals": [
+        "^\\s*import\\s+[^'\\\"]*\\bfrom\\s+['\\\"](?![^'\\\"]*(?:mock|fixture|__tests__))[^'\\\"]+\\.json['\\\"]"
+      ],
+      "file_signals": []
+    },
+    {
+      "path": "references/rules/bundle-defer-third-party.md",
+      "when": "Code statically imports an analytics, logging, or error-tracking library into the initial client bundle.",
+      "fix": "Load analytics/logging after hydration",
+      "signals": [
+        "from\\s+['\\\"](?:@vercel/analytics(?:/[\\w-]+)?|@vercel/speed-insights(?:/[\\w-]+)?|@sentry/[\\w-]+|posthog-js(?:/react)?|@segment/[\\w-]+|mixpanel-browser|@amplitude/[\\w-]+|react-ga4?|@datadog/browser-[\\w-]+|logrocket|@fullstory/[\\w-]+|@hotjar/[\\w-]+|react-hotjar|@intercom/[\\w-]+|react-gtm-module|@next/third-parties(?:/[\\w-]+)?)['\\\"]"
+      ],
+      "file_signals": []
+    },
+    {
+      "path": "references/rules/bundle-dynamic-imports.md",
+      "when": "A component statically imports a heavy editor, chart, or map library that the first render does not need.",
+      "fix": "Use next/dynamic for heavy components",
+      "signals": [
+        "^\\s*import\\s.*\\bfrom\\s+['\\\"](?:@monaco-editor/react|monaco-editor|react-monaco-editor|@codemirror/[\\w-]+|codemirror|react-quill|quill|@tiptap/[\\w-]+|draft-js|slate-react|lexical|@lexical/[\\w-]+|recharts|chart\\.js|react-chartjs-2|echarts|echarts-for-react|@nivo/[\\w-]+|victory|plotly\\.js[\\w-]*|react-plotly\\.js|d3|three|@react-three/[\\w-]+|mapbox-gl|maplibre-gl|react-map-gl|leaflet|react-leaflet|pdfjs-dist|react-pdf|@react-pdf/renderer|xlsx|exceljs|lottie-react|lottie-web|react-syntax-highlighter|highlight\\.js|prismjs|shiki|mermaid|katex)(?:/[^'\\\"]*)?['\\\"]",
+        "\\b(?:dynamic|lazy)\\(\\s*(?:async\\s*)?\\(\\)\\s*=>\\s*import\\("
+      ],
+      "file_signals": []
+    },
+    {
+      "path": "references/rules/bundle-preload.md",
+      "when": "A lazy-loaded module loads only on click, with no preload on hover, focus, or feature flag.",
+      "fix": "Preload on hover/focus for perceived speed",
+      "signals": [
+        "\\b(?:dynamic|lazy)\\(\\s*(?:async\\s*)?\\(\\)\\s*=>\\s*import\\(",
+        "\\bvoid\\s+import\\("
+      ],
+      "file_signals": []
+    },
+    {
+      "path": "references/rules/client-event-listeners.md",
+      "when": "A hook adds a window or document listener, and many component instances each add their own copy.",
+      "fix": "Deduplicate global event listeners",
+      "signals": [
+        "\\b(?:window|document)\\.addEventListener\\(",
+        "\\buseSWRSubscription\\b"
+      ],
+      "file_signals": []
+    },
+    {
+      "path": "references/rules/client-localstorage-schema.md",
+      "when": "Code reads or writes localStorage or sessionStorage without a versioned key, minimal fields, or try/catch.",
+      "fix": "Version and minimize localStorage data",
+      "signals": [
+        "\\b(?:localStorage|sessionStorage)\\s*[.\\[]",
+        "\\buse(?:Local|Session)Storage\\b"
+      ],
+      "file_signals": []
+    },
+    {
+      "path": "references/rules/client-passive-event-listeners.md",
+      "when": "Code adds a touch, wheel, or scroll listener without { passive: true } and does not call preventDefault.",
+      "fix": "Use passive listeners for scroll",
+      "signals": [
+        "addEventListener\\(\\s*['\\\"](?:touchstart|touchmove|touchend|wheel|mousewheel|scroll)['\\\"]"
+      ],
+      "file_signals": []
+    },
+    {
+      "path": "references/rules/client-swr-dedup.md",
+      "when": "A client component fetches data in an effect and stores it in state instead of a deduplicating fetch hook.",
+      "fix": "Use SWR for automatic request deduplication",
+      "signals": [
+        "\\.then\\(\\s*set[A-Z]\\w*\\s*\\)",
+        "\\.then\\(\\s*\\(?\\s*\\w+\\s*\\)?\\s*=>\\s*set[A-Z]\\w*\\(",
+        "\\buseSWR\\w*\\s*\\("
+      ],
+      "file_signals": []
+    },
+    {
+      "path": "references/rules/js-batch-dom-css.md",
+      "when": "Code reads a layout property, such as offsetWidth or getBoundingClientRect, between style writes on DOM elements.",
+      "fix": "Group CSS changes via classes or cssText",
+      "signals": [
+        "\\bgetBoundingClientRect\\(|\\bgetComputedStyle\\(|\\.offset(?:Width|Height|Top|Left)\\b"
+      ],
+      "file_signals": []
+    },
+    {
+      "path": "references/rules/js-cache-function-results.md",
+      "when": "A render or hot loop calls the same pure function, such as slugify or a formatter, with repeated inputs.",
+      "fix": "Cache function results in module-level Map",
+      "signals": [],
+      "file_signals": []
+    },
+    {
+      "path": "references/rules/js-cache-property-access.md",
+      "when": "A hot loop reads the same deep property chain, such as obj.config.settings.value, on each iteration.",
+      "fix": "Cache object properties in loops",
+      "signals": [],
+      "file_signals": []
+    },
+    {
+      "path": "references/rules/js-cache-storage.md",
+      "when": "Code reads localStorage, sessionStorage, or document.cookie again and again in a hot path without a memory cache.",
+      "fix": "Cache localStorage/sessionStorage reads",
+      "signals": [],
+      "file_signals": []
+    },
+    {
+      "path": "references/rules/js-combine-iterations.md",
+      "when": "Code iterates the same array with several filter or map calls that one loop can replace.",
+      "fix": "Combine multiple filter/map into one loop",
+      "signals": [],
+      "file_signals": []
+    },
+    {
+      "path": "references/rules/js-early-exit.md",
+      "when": "A loop or function continues to process items after the result is known.",
+      "fix": "Return early from functions",
+      "signals": [],
+      "file_signals": []
+    },
+    {
+      "path": "references/rules/js-flatmap-filter.md",
+      "when": "Code chains .map() and then .filter() to remove empty values that the map returns.",
+      "fix": "Use flatMap to map and filter in one pass",
+      "signals": [
+        "\\.filter\\(\\s*Boolean\\s*\\)"
+      ],
+      "file_signals": []
+    },
+    {
+      "path": "references/rules/js-hoist-regexp.md",
+      "when": "A component or hot function creates a RegExp in its body on each call or render.",
+      "fix": "Hoist RegExp creation outside loops",
+      "signals": [
+        "\\bnew\\s+RegExp\\("
+      ],
+      "file_signals": []
+    },
+    {
+      "path": "references/rules/js-index-maps.md",
+      "when": "Code calls .find() on the same array by key inside a loop or another map.",
+      "fix": "Build Map for repeated lookups",
+      "signals": [
+        "\\.(?:map|forEach|filter|flatMap)\\(.*\\.find(?:Index)?\\("
+      ],
+      "file_signals": []
+    },
+    {
+      "path": "references/rules/js-length-check-first.md",
+      "when": "Code compares two arrays with sort, join, or JSON.stringify and does not first compare their lengths.",
+      "fix": "Check array length before expensive comparison",
+      "signals": [
+        "\\.sort\\([^)]*\\)\\.join\\(",
+        "JSON\\.stringify\\([^)]*\\)\\s*[!=]==?\\s*JSON\\.stringify\\("
+      ],
+      "file_signals": []
+    },
+    {
+      "path": "references/rules/js-min-max-loop.md",
+      "when": "Code sorts an array only to take its first or last item as the minimum or maximum.",
+      "fix": "Use loop for min/max instead of sort",
+      "signals": [
+        "\\.(?:sort|toSorted)\\(.*\\)\\s*(?:\\[\\s*0\\s*\\]|\\.at\\(\\s*-?\\d+\\s*\\)|\\.(?:pop|shift)\\(\\s*\\))"
+      ],
+      "file_signals": []
+    },
+    {
+      "path": "references/rules/js-request-idle-callback.md",
+      "when": "A user event handler runs analytics, storage writes, or prefetch work that the user does not wait for.",
+      "fix": "Defer non-critical work to browser idle time",
+      "signals": [
+        "\\brequestIdleCallback\\b"
+      ],
+      "file_signals": []
+    },
+    {
+      "path": "references/rules/js-set-map-lookups.md",
+      "when": "Code calls array.includes() inside a loop or filter for repeated membership checks.",
+      "fix": "Use Set/Map for O(1) lookups",
+      "signals": [],
+      "file_signals": []
+    },
+    {
+      "path": "references/rules/js-tosorted-immutable.md",
+      "when": "Code calls .sort() directly on a prop, state, or shared array instead of .toSorted() or a copy.",
+      "fix": "Use toSorted() for immutability",
+      "signals": [
+        "\\b[A-Za-z_$][\\w$]*\\.sort\\("
+      ],
+      "file_signals": []
+    },
+    {
+      "path": "references/rules/rendering-activity.md",
+      "when": "A component often hides and shows an expensive subtree and loses its state on each toggle (React 19.2+).",
+      "fix": "Use Activity component for show/hide",
+      "signals": [
+        "<Activity\\b"
+      ],
+      "file_signals": []
+    },
+    {
+      "path": "references/rules/rendering-animate-svg-wrapper.md",
+      "when": "Code applies a CSS animation or transform class directly to an svg element instead of a wrapper div.",
+      "fix": "Animate div wrapper, not SVG element",
+      "signals": [
+        "<svg\\b[^>]*\\b(?:className|class)=[^>]*\\b(?:animate-|spin|rotate|scale|transition)",
+        "<(?:svg|path|circle|g)\\b[^>]*style=\\{\\{[^}]*\\b(?:transform|animation)\\b",
+        "<motion\\.(?:svg|path|circle|g)\\b",
+        "^\\s*className=[\\\"'{`][^\\\"'}`]*\\banimate-(?:spin|pulse|bounce|ping)\\b"
+      ],
+      "file_signals": [
+        "<svg\\b",
+        "<motion\\.svg\\b"
+      ]
+    },
+    {
+      "path": "references/rules/rendering-conditional-render.md",
+      "when": "JSX uses value && <Element /> where the value can be 0 or NaN, such as a count or length.",
+      "fix": "Use ternary, not && for conditionals",
+      "signals": [
+        "\\{\\s*[\\w.?!]*(?:\\.length|[Cc]ount|[Tt]otal|[Nn]um[A-Z]\\w*|\\.size|[Aa]mount)\\s*&&"
+      ],
+      "file_signals": []
+    },
+    {
+      "path": "references/rules/rendering-content-visibility.md",
+      "when": "A component renders a long list of items with map and no virtualization or content-visibility.",
+      "fix": "Use content-visibility for long lists",
+      "signals": [
+        "content-visibility|contentVisibility|contain-intrinsic-size|containIntrinsicSize"
+      ],
+      "file_signals": []
+    },
+    {
+      "path": "references/rules/rendering-hoist-jsx.md",
+      "when": "A component creates static JSX, such as a large SVG or skeleton, that uses no props or state.",
+      "fix": "Extract static JSX outside components",
+      "signals": [],
+      "file_signals": []
+    },
+    {
+      "path": "references/rules/rendering-hydration-no-flicker.md",
+      "when": "Server-rendered UI reads localStorage or cookies during render, or in an effect that then changes visible state.",
+      "fix": "Use inline script for client-only data",
+      "signals": [
+        "\\b(?:localStorage|sessionStorage)\\.getItem\\(",
+        "\\bdocument\\.cookie\\b"
+      ],
+      "file_signals": [
+        "^\\s*['\\\"]use (?:client|server)['\\\"]",
+        "from\\s+['\\\"]next(?:/[\\w-]+)*['\\\"]",
+        "from\\s+['\\\"]@remix-run/[\\w-]+['\\\"]",
+        "from\\s+['\\\"]react-dom/server['\\\"]",
+        "\\bhydrateRoot\\(",
+        "^\\s*(?:export\\s+(?:default\\s+)?)?async\\s+function\\s+[A-Z]\\w*\\s*\\("
+      ]
+    },
+    {
+      "path": "references/rules/rendering-hydration-suppress-warning.md",
+      "when": "Server-rendered JSX shows a value that differs on server and client, such as a date, locale string, or random ID.",
+      "fix": "Suppress expected mismatches",
+      "signals": [
+        "\\bsuppressHydrationWarning\\b",
+        "\\bnew\\s+Date\\(\\)\\.(?:toLocale\\w*|getTime|toISOString)\\(",
+        "\\bDate\\.now\\(\\)|\\bMath\\.random\\(\\)"
+      ],
+      "file_signals": [
+        "^\\s*['\\\"]use (?:client|server)['\\\"]",
+        "from\\s+['\\\"]next(?:/[\\w-]+)*['\\\"]",
+        "from\\s+['\\\"]@remix-run/[\\w-]+['\\\"]",
+        "from\\s+['\\\"]react-dom/server['\\\"]",
+        "\\bhydrateRoot\\(",
+        "^\\s*(?:export\\s+(?:default\\s+)?)?async\\s+function\\s+[A-Z]\\w*\\s*\\("
+      ]
+    },
+    {
+      "path": "references/rules/rendering-resource-hints.md",
+      "when": "A page needs an early font, stylesheet, script, or third-party origin but has no preload or preconnect hint.",
+      "fix": "Use React DOM resource hints for preloading",
+      "signals": [
+        "import\\s*\\{[^}]*\\b(?:prefetchDNS|preconnect|preload|preloadModule|preinit|preinitModule)\\b[^}]*\\}\\s*from\\s*['\\\"]react-dom['\\\"]",
+        "\\b(?:prefetchDNS|preconnect|preinit|preinitModule|preloadModule)\\(",
+        "\\brel=[\\\"'](?:preload|preconnect|dns-prefetch|prefetch|modulepreload)[\\\"']"
+      ],
+      "file_signals": []
+    },
+    {
+      "path": "references/rules/rendering-script-defer-async.md",
+      "when": "JSX adds a script tag with src and without defer or async, or a next/script without a strategy.",
+      "fix": "Use defer or async on script tags",
+      "signals": [
+        "<script\\b(?![^>]*\\b(?:async|defer)\\b)[^>]*\\bsrc=",
+        "<Script\\b"
+      ],
+      "file_signals": []
+    },
+    {
+      "path": "references/rules/rendering-svg-precision.md",
+      "when": "An inline SVG path or points attribute has coordinates with more than three decimal places.",
+      "fix": "Reduce SVG coordinate precision",
+      "signals": [
+        "\\b(?:d|points)=[\\\"'{][^\\\"'}]*\\d\\.\\d{4,}"
+      ],
+      "file_signals": []
+    },
+    {
+      "path": "references/rules/rendering-usetransition-loading.md",
+      "when": "A handler sets a manual isLoading state to true before async work and to false after it.",
+      "fix": "Prefer useTransition for loading state",
+      "signals": [
+        "\\bset(?:Is)?(?:Loading|Pending|Fetching|Submitting|Saving|Busy)\\(\\s*(?:true|false)\\s*\\)",
+        "\\buseTransition\\s*\\("
+      ],
+      "file_signals": []
+    },
+    {
+      "path": "references/rules/rerender-defer-reads.md",
+      "when": "A component subscribes to search params or storage but reads the value only inside a callback.",
+      "fix": "Don't subscribe to state only used in callbacks",
+      "signals": [
+        "\\buseSearchParams\\s*\\("
+      ],
+      "file_signals": []
+    },
+    {
+      "path": "references/rules/rerender-dependencies.md",
+      "when": "A hook dependency array lists a whole object, or a raw number the effect only compares to a threshold.",
+      "fix": "Use primitive dependencies in effects",
+      "signals": [],
+      "file_signals": []
+    },
+    {
+      "path": "references/rules/rerender-derived-state-no-effect.md",
+      "when": "An effect sets state to a value that the component can calculate from current props or state.",
+      "fix": "Derive state during render, not effects",
+      "signals": [
+        "\\buse(?:Layout)?Effect\\s*\\("
+      ],
+      "file_signals": [],
+      "defer_to": "use-effect-killer"
+    },
+    {
+      "path": "references/rules/rerender-derived-state.md",
+      "when": "A component subscribes to a continuous value, such as window width or scroll position, but uses only a boolean.",
+      "fix": "Subscribe to derived booleans, not raw values",
+      "signals": [
+        "\\buse(?:Window(?:Size|Width|Height|Dimensions)|ScrollPosition|ScrollY|Scroll|ElementSize|Measure|MousePosition|Viewport\\w*)\\s*\\(",
+        "\\bwindow\\.inner(?:Width|Height)\\b"
+      ],
+      "file_signals": []
+    },
+    {
+      "path": "references/rules/rerender-functional-setstate.md",
+      "when": "A state setter calculates the next value from the current state variable instead of an updater function.",
+      "fix": "Use functional setState for stable callbacks",
+      "signals": [
+        "\\bset[A-Z]\\w*\\(\\s*\\[\\s*\\.\\.\\.[a-z]\\w*",
+        "\\bset[A-Z]\\w*\\(\\s*\\{\\s*\\.\\.\\.[a-z]\\w*",
+        "\\bset[A-Z]\\w*\\(\\s*[a-z]\\w*\\s*[-+]\\s*1\\s*\\)",
+        "\\bset[A-Z]\\w*\\(\\s*![a-z]\\w*\\s*\\)",
+        "\\bset[A-Z]\\w*\\(\\s*[a-z]\\w*\\.(?:filter|map|concat|slice|toSorted)\\("
+      ],
+      "file_signals": []
+    },
+    {
+      "path": "references/rules/rerender-lazy-state-init.md",
+      "when": "useState receives an expensive expression, such as a function call, JSON.parse, or storage read, instead of an initializer function.",
+      "fix": "Pass function to useState for expensive values",
+      "signals": [
+        "\\buseState(?:<[^>]*>)?\\(\\s*(?:new\\s+[A-Z]|[\\w.]+\\()"
+      ],
+      "file_signals": []
+    },
+    {
+      "path": "references/rules/rerender-memo-with-default-value.md",
+      "when": "A memo() component gives an optional object, array, or function prop an inline default value.",
+      "fix": "Hoist default non-primitive props",
+      "signals": [
+        "\\b(?:React\\.)?memo\\(",
+        "[{,]\\s*\\w+\\s*=\\s*(?:\\[\\s*\\]|\\{\\s*\\}|\\(\\)\\s*=>)",
+        "^\\s*\\w+\\s*=\\s*(?:\\[\\s*\\]|\\{\\s*\\}|\\(\\)\\s*=>)[^;]*,\\s*$"
+      ],
+      "file_signals": [
+        "\\b(?:React\\.)?memo\\("
+      ]
+    },
+    {
+      "path": "references/rules/rerender-memo.md",
+      "when": "A component calculates an expensive value or JSX in useMemo before an early return that does not use it.",
+      "fix": "Extract expensive work into memoized components",
+      "signals": [
+        "\\buseMemo\\s*\\("
+      ],
+      "file_signals": []
+    },
+    {
+      "path": "references/rules/rerender-move-effect-to-event.md",
+      "when": "A user action sets a state flag, and an effect watches that flag to do the side effect.",
+      "fix": "Put interaction logic in event handlers",
+      "signals": [
+        "\\buse(?:Layout)?Effect\\s*\\("
+      ],
+      "file_signals": [],
+      "defer_to": "use-effect-killer"
+    },
+    {
+      "path": "references/rules/rerender-no-inline-components.md",
+      "when": "A component function defines another component, a capitalized function or arrow function, inside its body.",
+      "fix": "Don't define components inside components",
+      "signals": [
+        "^\\s+(?:const|let)\\s+[A-Z]\\w*\\s*=\\s*(?:\\([^)]*\\)\\s*=>|[a-z]\\w*\\s*=>|(?:React\\.)?(?:memo|forwardRef)\\()",
+        "^\\s+function\\s+[A-Z]\\w*\\s*\\("
+      ],
+      "file_signals": [
+        "from\\s+['\\\"]react(?:-native)?['\\\"]",
+        "</[A-Za-z][\\w.]*>"
+      ]
+    },
+    {
+      "path": "references/rules/rerender-simple-expression-in-memo.md",
+      "when": "useMemo wraps a simple expression that returns a boolean, number, or string.",
+      "fix": "Avoid memo for simple primitives",
+      "signals": [
+        "\\buseMemo\\s*\\("
+      ],
+      "file_signals": []
+    },
+    {
+      "path": "references/rules/rerender-split-combined-hooks.md",
+      "when": "One useMemo or useEffect does independent tasks that use different dependencies.",
+      "fix": "Split hooks with independent dependencies",
+      "signals": [
+        "^\\s*\\}\\s*,\\s*\\[[^\\]\\[]*,[^\\]\\[]*,[^\\]\\[]*\\]\\s*\\)"
+      ],
+      "file_signals": []
+    },
+    {
+      "path": "references/rules/rerender-transitions.md",
+      "when": "A frequent event, such as scroll or resize, sets state for a non-urgent update without startTransition.",
+      "fix": "Use startTransition for non-urgent updates",
+      "signals": [
+        "addEventListener\\(\\s*['\\\"](?:scroll|resize|mousemove|pointermove|touchmove|wheel)['\\\"]",
+        "\\bstartTransition\\("
+      ],
+      "file_signals": []
+    },
+    {
+      "path": "references/rules/rerender-use-deferred-value.md",
+      "when": "Text input sets state that drives an expensive filter, search, or chart render in the same component.",
+      "fix": "Defer expensive renders to keep input responsive",
+      "signals": [
+        "\\buseDeferredValue\\b"
+      ],
+      "file_signals": []
+    },
+    {
+      "path": "references/rules/rerender-use-ref-transient-values.md",
+      "when": "A frequent event or timer, such as mousemove or an interval, sets state that render does not use.",
+      "fix": "Use refs for transient frequent values",
+      "signals": [
+        "addEventListener\\(\\s*['\\\"](?:scroll|resize|mousemove|pointermove|touchmove|wheel)['\\\"]",
+        "\\bon(?:MouseMove|PointerMove|Scroll|Drag|Wheel|TouchMove)=\\{",
+        "\\bsetInterval\\(",
+        "\\brequestAnimationFrame\\("
+      ],
+      "file_signals": []
+    },
+    {
+      "path": "references/rules/server-after-nonblocking.md",
+      "when": "A Next.js route handler or Server Action awaits logging, analytics, or notification work before it returns.",
+      "fix": "Use after() for non-blocking operations",
+      "signals": [
+        "\\bawait\\s+[\\w.]*(?:[Ll]og[A-Z]|[Ll]ogger\\.|[Tt]rack|[Aa]nalytics|[Aa]udit|[Nn]otif|[Tt]elemetry|send[A-Z]\\w*(?:Email|Event|Webhook))\\w*",
+        "\\bafter\\(\\s*(?:async\\s*)?\\("
+      ],
+      "file_signals": [
+        "^\\s*['\\\"]use server['\\\"]",
+        "^\\s*export\\s+(?:async\\s+)?function\\s+(?:GET|POST|PUT|PATCH|DELETE|HEAD|OPTIONS)\\b",
+        "^\\s*export\\s+const\\s+(?:GET|POST|PUT|PATCH|DELETE|HEAD|OPTIONS)\\s*=",
+        "from\\s+['\\\"]next/(?:server|headers|cache|og)['\\\"]",
+        "from\\s+['\\\"]server-only['\\\"]"
+      ]
+    },
+    {
+      "path": "references/rules/server-auth-actions.md",
+      "when": "A Next.js 'use server' function runs a mutation or data read without its own authentication and authorization check.",
+      "fix": "Authenticate server actions like API routes",
+      "signals": [],
+      "file_signals": [
+        "^\\s*['\\\"]use server['\\\"]"
+      ]
+    },
+    {
+      "path": "references/rules/server-cache-lru.md",
+      "when": "Server code fetches the same data again in sequential requests and has no cross-request cache.",
+      "fix": "Use LRU cache for cross-request caching",
+      "signals": [
+        "from\\s+['\\\"](?:lru-cache|quick-lru|tiny-lru)['\\\"]",
+        "\\bnew\\s+LRUCache\\b",
+        "\\bunstable_cache\\("
+      ],
+      "file_signals": []
+    },
+    {
+      "path": "references/rules/server-cache-react.md",
+      "when": "Server code calls the same database, auth, or non-fetch async function more than once per request (React Server Components).",
+      "fix": "Use React.cache() for per-request deduplication",
+      "signals": [
+        "\\bcache\\(\\s*async\\b",
+        "\\bReact\\.cache\\(",
+        "import\\s*\\{[^}]*\\bcache\\b[^}]*\\}\\s*from\\s*['\\\"]react['\\\"]"
+      ],
+      "file_signals": []
+    },
+    {
+      "path": "references/rules/server-dedup-props.md",
+      "when": "A server component passes an array and a transformed copy, such as filter or toSorted, as client props.",
+      "fix": "Avoid duplicate serialization in RSC props",
+      "signals": [
+        "\\b\\w+=\\{\\s*[\\w.]+\\.(?:toSorted|toReversed|filter|map|slice)\\("
+      ],
+      "file_signals": [
+        "^\\s*(?:export\\s+(?:default\\s+)?)?async\\s+function\\s+[A-Z]\\w*\\s*\\(",
+        "^\\s*['\\\"]use server['\\\"]",
+        "^\\s*export\\s+(?:async\\s+)?function\\s+(?:GET|POST|PUT|PATCH|DELETE|HEAD|OPTIONS)\\b",
+        "^\\s*export\\s+const\\s+(?:GET|POST|PUT|PATCH|DELETE|HEAD|OPTIONS)\\s*=",
+        "from\\s+['\\\"]next/(?:server|headers|cache|og)['\\\"]",
+        "from\\s+['\\\"]server-only['\\\"]"
+      ]
+    },
+    {
+      "path": "references/rules/server-hoist-static-io.md",
+      "when": "A route handler or server function reads a static file, font, or template on each request.",
+      "fix": "Hoist static I/O (fonts, logos) to module level",
+      "signals": [
+        "\\b(?:readFileSync|readFile)\\(",
+        "\\bfetch\\(\\s*new\\s+URL\\([^)]*import\\.meta\\.url"
+      ],
+      "file_signals": [
+        "^\\s*['\\\"]use server['\\\"]",
+        "^\\s*export\\s+(?:async\\s+)?function\\s+(?:GET|POST|PUT|PATCH|DELETE|HEAD|OPTIONS)\\b",
+        "^\\s*export\\s+const\\s+(?:GET|POST|PUT|PATCH|DELETE|HEAD|OPTIONS)\\s*=",
+        "from\\s+['\\\"]next/(?:server|headers|cache|og)['\\\"]",
+        "from\\s+['\\\"]server-only['\\\"]"
+      ]
+    },
+    {
+      "path": "references/rules/server-no-shared-module-state.md",
+      "when": "Server-rendered code writes request or user data to a mutable module-level variable (React Server Components or SSR).",
+      "fix": "Avoid module-level mutable request state in RSC/SSR",
+      "signals": [
+        "^(?:export\\s+)?let\\s+[A-Za-z_$]"
+      ],
+      "file_signals": [
+        "^\\s*['\\\"]use (?:client|server)['\\\"]",
+        "from\\s+['\\\"]next(?:/[\\w-]+)*['\\\"]",
+        "from\\s+['\\\"]@remix-run/[\\w-]+['\\\"]",
+        "from\\s+['\\\"]react-dom/server['\\\"]",
+        "\\bhydrateRoot\\(",
+        "^\\s*(?:export\\s+(?:default\\s+)?)?async\\s+function\\s+[A-Z]\\w*\\s*\\("
+      ]
+    },
+    {
+      "path": "references/rules/server-parallel-fetching.md",
+      "when": "An async server component awaits data and then renders a child component that also fetches data (React Server Components).",
+      "fix": "Restructure components to parallelize fetches",
+      "signals": [
+        "^\\s*(?:export\\s+(?:default\\s+)?)?async\\s+function\\s+[A-Z]\\w*\\s*\\("
+      ],
+      "file_signals": []
+    },
+    {
+      "path": "references/rules/server-parallel-nested-fetching.md",
+      "when": "Code awaits a Promise.all over items, then starts a second Promise.all that fetches nested data for each.",
+      "fix": "Chain nested fetches per item in Promise.all",
+      "signals": [
+        "\\bPromise\\.all\\(\\s*(?:[\\w.]+\\.map\\(|$)"
+      ],
+      "file_signals": []
+    },
+    {
+      "path": "references/rules/server-serialization.md",
+      "when": "A server component passes a whole object as a prop to a client component that uses only a few fields.",
+      "fix": "Minimize data passed to client components",
+      "signals": [
+        "^\\s*['\\\"]use client['\\\"]"
+      ],
+      "file_signals": []
+    }
+  ]
+}

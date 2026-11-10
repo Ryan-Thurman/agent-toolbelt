@@ -11,6 +11,8 @@ pack_code_quality_gate() {
   shared_contract references/style-precedence.md
   shared_contract references/anti-slop-naming.md
   shared_contract references/typescript-react-baseline.md
+  shared_contract scripts/react-rule-scan.py
+  shared_contract references/react-acceptance.md
   shared_contract references/maintainability-taxonomy.md
 
   template code-quality-gate-report.md

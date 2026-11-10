@@ -7,6 +7,7 @@ pack_style_guide_init() {
   shared_contract references/style-precedence.md
   shared_contract references/anti-slop-naming.md
   shared_contract references/typescript-react-baseline.md
+  shared_contract references/react-acceptance.md
   template repository-style-guide.md
   template repository-contribution-guide.md
 }

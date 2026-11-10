@@ -16,9 +16,10 @@ Before choosing a rule:
 
 1. Read `shared/contracts/references/typescript-react-baseline.md` and inspect
    the repository's React version and neighboring components.
-2. Read only the matching rule files in
-   [`references/rule-routing.md`](references/rule-routing.md); do not load the
-   full rule set by default.
+2. Run the React rule scan from that baseline. Read every rule it lists for
+   this skill, and record each as `Applied` or `Not applicable` with a reason.
+   Then use [`references/rule-routing.md`](references/rule-routing.md) to find
+   the rules the scan cannot detect. Do not load the full rule set.
 3. Preserve behavior and public API compatibility unless the task explicitly
    changes the contract. Treat boolean-prop proliferation and render props as
    review cues, not automatic violations: local API stability or a small,

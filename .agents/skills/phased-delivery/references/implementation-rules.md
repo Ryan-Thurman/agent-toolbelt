@@ -24,7 +24,10 @@ Read this before the first edit in a phase.
    `shared/contracts/references/test-driven-development.md`.
    Run focused checks during the edit loop and proportionate broader checks before PR review.
 6. Inspect the diff for unrelated changes, premature next-ticket work, and
-   generated noise. Record changed files, checks, acceptance evidence, risks,
+   generated noise. When the phase changes JavaScript or TypeScript and
+   `shared/contracts/scripts/react-rule-scan.py` is installed, run the React rule scan in
+   `shared/contracts/references/typescript-react-baseline.md`. Fix each applied rule
+   before PR review. Record changed files, checks, acceptance evidence, risks,
    and next action in the existing plan or execution record.
 
 ## Commits

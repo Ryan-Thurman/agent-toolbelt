@@ -91,16 +91,40 @@ and applies nothing, simplify *drives the cleanup* and applies it on opt-in.
 
 ## React quality specialists
 
-Install `react-quality` for both specialist skills:
+Install `react-quality` for the five web React specialist skills.
+Add `vercel-react-native-skills` in a React Native or Expo repository:
 
 ```sh
 ./install.sh --harness all react-quality /path/to/project
+./install.sh --harness all react-quality vercel-react-native-skills /path/to/mobile-app
 ```
 
 Use `vercel-composition-patterns` for component API and composition decisions,
-and `vercel-react-best-practices` for evidence-backed React/Next performance
-work. Their copied MIT-licensed rule files are loaded selectively; local policy,
-framework version, runtime boundary, and concrete impact decide applicability.
+`vercel-react-best-practices` for evidence-backed React/Next performance work,
+`use-effect-killer` to audit effects against React's "You Might Not Need an
+Effect" guide, `vercel-react-view-transitions` for View Transition animations,
+`vercel-web-interface-guidelines` for UI accessibility, forms, and interaction,
+and `vercel-react-native-skills` for React Native and Expo lists, animation,
+navigation, and native UI. Their copied MIT-licensed rule files are loaded selectively; local
+policy, framework version, runtime boundary, and concrete impact decide applicability.
+
+The React rule scan makes the rules hard to skip:
+
+```sh
+python3 shared/contracts/scripts/react-rule-scan.py --base main
+```
+
+It matches the changed lines against each installed specialist's
+`references/rule-index.json` and lists the rule files that the change triggers.
+`pr-review`, `code-quality-gate`, `simplify`, and `phased-delivery` run it and
+record each listed rule as `Applied` or `Not applicable`. Rules without a code
+signal stay in each skill's generated `references/rule-routing.md`.
+
+`shared/contracts/references/react-acceptance.md` sets the severity of each
+finding: a short blocker list, should-fix rules, and rules that need measured
+evidence. It also maps the lint rules for ESLint, Biome, and Oxlint. A repository
+changes the defaults in the `Severity overrides`, `Do not flag`, and `Budgets`
+sections of its base-branch `.pr-review.md`.
 
 ## Cover
 

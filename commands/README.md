@@ -116,6 +116,10 @@ The comparison tables do not include these commands.
 - `/ticket-sync` - publish/sync sliced tickets to the repo's tracker (GitHub Issues / Jira / Azure Boards).
 - `$vercel-composition-patterns` - conditional React component API/composition guidance.
 - `$vercel-react-best-practices` - conditional React/Next performance guidance.
+- `$use-effect-killer` - audit React effects against 13 anti-patterns and propose fixes.
+- `$vercel-react-view-transitions` - add or review React View Transition animations.
+- `$vercel-react-native-skills` - conditional React Native and Expo guidance.
+- `$vercel-web-interface-guidelines` - review UI code against the Web Interface Guidelines.
 - `/worktree` - create/list/remove an isolated git worktree so parallel agents in a shared polyrepo dir don't clobber each other's branch.
 - `/crap-config` - wizard: hydrate `.crap-analysis.json` with analysis, coverage, verify commands and output paths.
 - `/do-crap-analysis` - run CRAP analysis on branch changes since the base (committed, staged, unstaged, and untracked). The script runs the commands once and returns a deterministic verdict.

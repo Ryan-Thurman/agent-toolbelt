@@ -1,0 +1,4 @@
+interface:
+  display_name: "Vercel React View Transitions"
+  short_description: "Native-feeling React View Transition animations."
+  default_prompt: "Use $vercel-react-view-transitions to add view transitions to this React route change."

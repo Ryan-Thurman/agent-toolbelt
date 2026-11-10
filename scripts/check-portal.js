@@ -50,7 +50,7 @@ function check(outputDirectory, root = ROOT) {
   const payload = readPayload(output);
   assert(payload && payload.skills && payload.workflows, 'generated data payload is incomplete');
   const canonical = discoverCanonicalSkills(root).skills;
-  assert.strictEqual(payload.skills.length, 33, 'generated portal must contain 33 standard skills');
+  assert.strictEqual(payload.skills.length, 37, 'generated portal must contain 37 standard skills');
   assert.strictEqual(JSON.stringify(Array.from(payload.skills, (skill) => skill.id).sort()), JSON.stringify(canonical.map((skill) => skill.id).sort()), 'generated skill IDs must match canonical IDs');
   assert.strictEqual(payload.workflows.length, 6, 'generated portal must contain six workflows');
   assert.strictEqual(JSON.stringify(Object.keys(payload.category_guidance)), JSON.stringify(Array.from(payload.categories)), 'generated category guidance must cover the catalog taxonomy exactly');

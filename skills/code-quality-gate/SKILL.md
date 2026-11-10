@@ -26,7 +26,7 @@ It owns the target, modes, scope rules, dispositions, evidence files, and status
    `shared/contracts/references/maintainability-taxonomy.md`, and
    `shared/contracts/references/typescript-react-baseline.md` when their
    language/scope applies. Record uncertainty rather than inventing policy.
-3. Run the required repository checks and the contract's CRAP analysis check. Then
+3. Run the required repository checks, the contract's CRAP analysis check, and its React rules check. Then
    assess every changed hunk through `/simplify` in report mode and `/pr-review`
    with `standards,maintainability` forced into focus. Preserve simplify's
    Chesterton's Fence and test-safety rules.

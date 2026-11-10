@@ -4,4 +4,6 @@ pack_vercel_composition_patterns() {
   shared_contract references/human-readable-output.md
   skill_tree vercel-composition-patterns
   shared_contract references/typescript-react-baseline.md
+  shared_contract scripts/react-rule-scan.py
+  shared_contract references/react-acceptance.md
 }

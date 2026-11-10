@@ -62,6 +62,8 @@ When naming or TypeScript/React guidance needs a fallback, consult
 `shared/contracts/references/anti-slop-naming.md` or
 `shared/contracts/references/typescript-react-baseline.md` as applicable. Label
 fallbacks as proposals unless the repository has adopted them.
+For a React repository, compare its lint and budget tools with the Tooling table in
+`shared/contracts/references/react-acceptance.md`. List each gap as a proposal.
 
 ## Maintenance
 

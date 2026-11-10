@@ -24,6 +24,9 @@ pack_phased_delivery() {
   shared_contract references/posting.md
   shared_contract references/providers.md
   shared_contract scripts/validate-execution.py
+  shared_contract references/typescript-react-baseline.md
+  shared_contract scripts/react-rule-scan.py
+  shared_contract references/react-acceptance.md
 
   template dev-feature-brief.md
   template phased-delivery-plan.md

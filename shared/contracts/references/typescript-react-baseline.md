@@ -15,16 +15,28 @@ instructions, configuration, or repeated local conventions do not decide the iss
 - Preserve local conventions for exports, folder layout, state management, CSS,
   framework server/client boundaries, data fetching, errors, and test placement.
 
-Specialist routing:
+## React rule scan
 
-- When `vercel-react-best-practices` is installed and the change is a React or
-  Next.js performance concern, read that skill's exact conditional rule through
-  `skills/vercel-react-best-practices/references/rule-routing.md`.
-- When `vercel-composition-patterns` is installed and the change concerns a
-  component API, composition, compound components, context, or boolean-prop
-  proliferation, read its exact conditional rule through
-  `skills/vercel-composition-patterns/references/rule-routing.md`.
-- These specialists are references, not universal policy. Check framework and
-  React versions, runtime boundaries, local evidence, and measured impact first.
+Run the scan when a change adds or edits JavaScript or TypeScript code:
+
+```bash
+python3 shared/contracts/scripts/react-rule-scan.py --base <base>
+```
+
+- Use the frozen base when the caller has one. Pass paths instead of `--base` to scan whole files.
+- The scan lists each installed specialist rule that the changed lines trigger:
+  `vercel-react-best-practices` for performance, `vercel-composition-patterns`
+  for component APIs, `use-effect-killer` for effects, `vercel-react-native-skills`
+  for React Native, `vercel-react-view-transitions` for view transitions, and
+  `vercel-web-interface-guidelines` for UI accessibility and interaction.
+- Read every listed rule file. Record each one as `Applied` with the finding or change,
+  or `Not applicable` with a one-line reason. A listed rule without a record is unfinished work.
+- Set the severity of each finding with `shared/contracts/references/react-acceptance.md`.
+- Then read each installed specialist's `references/rule-routing.md`.
+  Check the rules that the scan cannot detect against the change.
+- When `react_files` is empty, record the React rules check as `Skipped`.
+- When the scan names `missing` specialists, report them once. Do not block on them.
+- Check framework and React versions, runtime boundaries, local evidence, and measured
+  impact before you apply a rule. Repository policy wins over specialist rules.
 
 This baseline deliberately does not choose an architecture or framework policy.

@@ -19,6 +19,15 @@
 - Added the shared `security-checklist.md` contract for `security-audit` and `pr-review`.
 - Made `ticket-sync` keep unmapped ticket fields in the issue body.
 - Added missing rows to `/workflow-router` and the README indexes.
+- Added the `use-effect-killer` skill (MIT, from victor36max/use-effect-killer) to `react-quality`.
+- Added the React rule scan (`shared/contracts/scripts/react-rule-scan.py`). It lists the specialist rules that changed lines trigger.
+- Made `pr-review`, `code-quality-gate`, `simplify`, and `phased-delivery` run the React rule scan and record each listed rule.
+- Generated each Vercel skill's `rule-routing.md` from a new `rule-index.json`, with one trigger line per rule.
+- Added the Next.js Server Action authentication rule to `security-checklist.md`.
+- Added the `react-acceptance.md` contract. It sets React finding severity and maps hooks lint rules for ESLint, Biome, and Oxlint.
+- Added the upstream fix summary to each Vercel rule in `rule-routing.md`, ordered by upstream priority.
+- Added `vercel-react-native-skills` (36 rules) and `vercel-react-view-transitions` from Vercel Labs at `1a2c79d`. `react-quality` now includes view transitions.
+- Added `vercel-web-interface-guidelines` with the guideline list pinned at `434b7f9`, so reviews work offline. `react-quality` includes it, and the React rule scan now also reads `.css` and `.scss` files.
 
 ## v1.1.9 - 2026-11-08
 

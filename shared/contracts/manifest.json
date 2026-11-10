@@ -34,9 +34,13 @@
         "threat-model",
         "ticket-discovery",
         "ticket-sync",
+        "use-effect-killer",
         "user-research-synthesis",
         "vercel-composition-patterns",
         "vercel-react-best-practices",
+        "vercel-react-native-skills",
+        "vercel-react-view-transitions",
+        "vercel-web-interface-guidelines",
         "webapp-testing",
         "worktree"
       ]
@@ -110,7 +114,12 @@
         "pr-review",
         "simplify",
         "vercel-composition-patterns",
-        "vercel-react-best-practices"
+        "vercel-react-best-practices",
+        "phased-delivery",
+        "use-effect-killer",
+        "vercel-react-native-skills",
+        "vercel-react-view-transitions",
+        "vercel-web-interface-guidelines"
       ]
     },
     {
@@ -214,6 +223,23 @@
         "pr-review",
         "security-audit"
       ]
+    },
+    {
+      "path": "references/react-acceptance.md",
+      "owner": "shared/contracts",
+      "consumers": [
+        "code-quality-gate",
+        "phased-delivery",
+        "pr-review",
+        "simplify",
+        "style-guide-init",
+        "use-effect-killer",
+        "vercel-composition-patterns",
+        "vercel-react-best-practices",
+        "vercel-react-native-skills",
+        "vercel-react-view-transitions",
+        "vercel-web-interface-guidelines"
+      ]
     }
   ],
   "artifacts": [
@@ -226,6 +252,22 @@
         "handoff",
         "phase-context-workflow",
         "phased-delivery"
+      ]
+    },
+    {
+      "path": "scripts/react-rule-scan.py",
+      "owner": "shared/contracts",
+      "consumers": [
+        "code-quality-gate",
+        "phased-delivery",
+        "pr-review",
+        "simplify",
+        "use-effect-killer",
+        "vercel-composition-patterns",
+        "vercel-react-best-practices",
+        "vercel-react-native-skills",
+        "vercel-react-view-transitions",
+        "vercel-web-interface-guidelines"
       ]
     }
   ]

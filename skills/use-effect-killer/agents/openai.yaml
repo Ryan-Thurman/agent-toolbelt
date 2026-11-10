@@ -1,0 +1,4 @@
+interface:
+  display_name: "useEffect Killer"
+  short_description: "Audit React effects against You Might Not Need an Effect."
+  default_prompt: "Use $use-effect-killer to audit the useEffect calls in this change and propose idiomatic fixes."

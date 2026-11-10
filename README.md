@@ -81,7 +81,7 @@ Most packs fall into one of these jobs:
 - Review and harden changes: `code-quality-gate`, `pr-review`, `pr-improve`, `pr-review-reply`, `phase-gate`
 - Run agents unattended (optional private package): `auto-agent-contract`
 - Discover maintenance work: `tech-debt-discovery`, `tech-backlog-assessment`
-- Improve code or tests: `style-guide-init`, `simplify`, `test-case-design`, `cover`, `crap-analysis`, `retrofit`, `react-quality`
+- Improve code or tests: `style-guide-init`, `simplify`, `test-case-design`, `cover`, `crap-analysis`, `retrofit`, `react-quality`, `use-effect-killer`, `vercel-react-native-skills`, `vercel-web-interface-guidelines`
 - Keep long work resumable: `phase-context-workflow`, `handoff`
 - Prepare to ship: `ship-it`
 
@@ -201,7 +201,7 @@ See [What belongs here](#what-belongs-here) for ownership.
 | Review and improve | `pr-review`, `code-quality-gate`, `pr-improve`, `simplify`, `retrofit` |
 | Test and secure | `cover`, `test-case-design`, `webapp-testing`, `threat-model`, `security-audit` |
 | Operate and release | `phase-context-workflow`, `handoff`, `ship-it`, `worktree`, `ticket-sync` |
-| Specialists and compatibility | `vercel-*`, `crap-analysis`, `cursor-hooks`, `react-quality` |
+| Specialists and compatibility | `vercel-*`, `use-effect-killer`, `crap-analysis`, `cursor-hooks`, `react-quality` |
 
 The portal and catalog contain the complete skill and workflow
 inventory; this summary keeps the README an entry point.

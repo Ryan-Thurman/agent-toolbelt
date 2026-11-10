@@ -101,8 +101,8 @@ if (codex && codex.interface && (!Array.isArray(codex.interface.capabilities) ||
 const skillCount = fs.readdirSync(path.join(root, "skills"), { withFileTypes: true })
   .filter((entry) => entry.isDirectory() && fs.existsSync(path.join(root, "skills", entry.name, "SKILL.md")))
   .length;
-if (skillCount !== 33) {
-  errors.push(`expected 33 standard skills, found ${skillCount}`);
+if (skillCount !== 37) {
+  errors.push(`expected 37 standard skills, found ${skillCount}`);
 }
 for (const id of ["auto-agent-contract", "auto-agent-dev-lite"]) {
   if (fs.existsSync(path.join(root, "skills", id))) {

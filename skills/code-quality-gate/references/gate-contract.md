@@ -172,3 +172,18 @@ The `crap-analysis` skill runs the repository's own CRAP commands.
 With `--scope`, read the target report.
 Record the `should-fix` finding only when an exceeding function is in an allowed path.
 Record exceeding functions in other paths as evidence only.
+
+## React rules check
+
+1. Run the scan from `shared/contracts/references/typescript-react-baseline.md`
+   with `--base <base_sha>`. If the scanner is not installed, record BLOCKED and
+   name the `code-quality-gate` reinstall as the unblocker.
+2. If `react_files` is empty, add one `Required checks` row with result `Skipped`.
+   Use this evidence text: `No React files changed.`
+3. Otherwise, read every listed rule. Record each one in the durable evidence as
+   `Applied` or `Not applicable` with a one-line reason.
+4. Record one `Required checks` row: `React rules: N listed · N applied · N not applicable`.
+   Name any `missing` specialist in the evidence. A missing specialist does not fail the check.
+5. Record one finding with source `react-rule-scan` for each violation of an applied rule
+   in an allowed path. Set its severity with `shared/contracts/references/react-acceptance.md`.
+   A listed rule without a record fails the check.

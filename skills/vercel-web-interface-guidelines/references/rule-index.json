@@ -1,0 +1,24 @@
+{
+  "skill": "vercel-web-interface-guidelines",
+  "rules": [
+    {
+      "path": "references/guidelines.md",
+      "when": "A UI change adds a known accessibility, focus, form, animation, or typography anti-pattern.",
+      "fix": "Check the changed UI against the full guideline list.",
+      "signals": [
+        "\\boutline-none\\b",
+        "\\boutline:\\s*none\\b",
+        "\\btransition-all\\b",
+        "\\btransition:\\s*all\\b",
+        "user-scalable\\s*=\\s*no|maximum-scale\\s*=\\s*1\\b",
+        "\\bonPaste\\s*=",
+        "<(div|span)\\b[^>]*\\sonClick\\s*=",
+        "\\bautoFocus\\b",
+        "<img\\b(?![^>]*\\b(width|height)\\s*=)[^>]*>",
+        ">[^<>{}]*\\w\\.\\.\\.\\s*<",
+        "[\"'`](Loading|Saving|Searching|Uploading|Processing)\\.\\.\\.[\"'`]"
+      ],
+      "file_signals": []
+    }
+  ]
+}

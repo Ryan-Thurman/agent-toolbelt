@@ -1,0 +1,111 @@
+{
+  "skill": "vercel-composition-patterns",
+  "intro": "Read the individual rule only when the changed component or API matches its condition. Repository policy and evidence remain authoritative.",
+  "categories": [
+    {
+      "prefix": "architecture",
+      "title": "Component architecture"
+    },
+    {
+      "prefix": "state",
+      "title": "State management"
+    },
+    {
+      "prefix": "patterns",
+      "title": "Implementation patterns"
+    },
+    {
+      "prefix": "react19",
+      "title": "React 19 only"
+    }
+  ],
+  "rules": [
+    {
+      "path": "references/rules/architecture-avoid-boolean-props.md",
+      "when": "A component adds a boolean prop, such as isThread or isEditing, that changes the structure it renders.",
+      "fix": "Don't add boolean props to customize behavior; use composition",
+      "signals": [
+        "^\\s*(?:is|show|hide|with|enable|disable)(?!(?:Loading|Open|Opened|Disabled|Visible|Selected|Active|Checked|Error|Fetching|Pending|Expanded|Focused|Hovered|Required|Valid|Invalid|Submitting|Saving|Busy|Mobile|Dark|Empty))[A-Z]\\w*\\??\\s*:\\s*boolean\\b",
+        "(?:\\{|:)\\s*(?:is|with)(?!(?:Loading|Open|Opened|Disabled|Visible|Selected|Active|Checked|Error|Fetching|Pending|Expanded|Focused|Hovered|Required|Valid|Invalid|Submitting|Saving|Busy|Mobile|Dark|Empty))[A-Z]\\w*\\s*\\?\\s*(?:\\(\\s*$|\\(?\\s*<)"
+      ],
+      "file_signals": [
+        "from\\s+['\\\"]react(?:-native)?['\\\"]",
+        "</[A-Za-z][\\w.]*>"
+      ]
+    },
+    {
+      "path": "references/rules/architecture-compound-components.md",
+      "when": "A complex component takes many render or show props to configure its parts instead of exposing subcomponents.",
+      "fix": "Structure complex components with shared context",
+      "signals": [
+        "^\\s*render[A-Z]\\w*\\??\\s*:\\s*\\([^)]*\\)\\s*=>\\s*(?:React\\.)?(?:ReactNode|ReactElement|JSX\\.Element)",
+        "^\\s*show[A-Z]\\w*\\?\\s*:\\s*boolean\\b",
+        "\\bObject\\.assign\\(\\s*[A-Z]\\w*\\s*,\\s*\\{",
+        "^\\s*[A-Z]\\w*\\.[A-Z]\\w*\\s*=\\s*[A-Z]\\w*\\s*;?\\s*$",
+        "\\{\\s*show[A-Z]\\w*\\s*&&\\s*<"
+      ],
+      "file_signals": []
+    },
+    {
+      "path": "references/rules/patterns-children-over-render-props.md",
+      "when": "A component takes a renderX prop that only places static child content and passes no data back.",
+      "fix": "Use children for composition instead of renderX props",
+      "signals": [
+        "^\\s*render[A-Z]\\w*\\??\\s*:\\s*\\(\\s*\\)\\s*=>\\s*(?:React\\.)?(?:ReactNode|ReactElement|JSX\\.Element)",
+        "\\brender[A-Z]\\w*=\\{\\s*\\(\\)\\s*=>",
+        "\\brender[A-Z]\\w*\\?\\.\\(\\s*\\)"
+      ],
+      "file_signals": []
+    },
+    {
+      "path": "references/rules/patterns-explicit-variants.md",
+      "when": "A call site sets several boolean mode props on one component to select a variant.",
+      "fix": "Create explicit variant components instead of boolean modes",
+      "signals": [
+        "<[A-Z][\\w.]*(?:\\s+[\\w-]+(?:=(?:\\{[^}]*\\}|\\\"[^\\\"]*\\\"|'[^']*'))?)*?(?:\\s+(?:is|show|hide|with|enable|disable)[A-Z]\\w*(?:=\\{(?:true|false)\\})?(?=[\\s/>])){2,}",
+        "^\\s*(?:is|show|hide|with)(?!(?:Loading|Open|Opened|Disabled|Visible|Selected|Active|Checked|Error|Fetching|Pending|Expanded|Focused|Hovered|Required|Valid|Invalid|Submitting|Saving|Busy|Mobile|Dark|Empty))[A-Z]\\w*(?:=\\{(?:true|false)\\})?\\s*$"
+      ],
+      "file_signals": []
+    },
+    {
+      "path": "references/rules/react19-no-forwardref.md",
+      "when": "React 19+ code uses forwardRef to pass a ref, or useContext to read a context.",
+      "fix": "Don't use `forwardRef`; use `use()` instead of `useContext()`",
+      "signals": [
+        "\\bforwardRef\\b",
+        "\\buseContext\\s*\\("
+      ],
+      "file_signals": []
+    },
+    {
+      "path": "references/rules/state-context-interface.md",
+      "when": "Code creates a context or provider whose value has no clear state, actions, and meta contract.",
+      "fix": "Define generic interface with state, actions, meta for dependency injection",
+      "signals": [
+        "\\bcreateContext\\s*[<(]",
+        "<\\w*Context(?:\\.Provider)?\\b[^>]*\\bvalue="
+      ],
+      "file_signals": []
+    },
+    {
+      "path": "references/rules/state-decouple-implementation.md",
+      "when": "A UI component calls a store or sync hook directly instead of a provider-supplied context interface.",
+      "fix": "Provider is the only place that knows how state is managed",
+      "signals": [
+        "from\\s+['\\\"](?:zustand(?:/[\\w-]+)?|jotai|valtio|recoil|react-redux|mobx-react(?:-lite)?)['\\\"]",
+        "\\bcreate(?:Store)?\\(\\s*(?:\\(\\s*set\\b|\\(set\\b)"
+      ],
+      "file_signals": []
+    },
+    {
+      "path": "references/rules/state-lift-state.md",
+      "when": "A child syncs its state up through an effect or callback, or a parent reads child state through a ref.",
+      "fix": "Move state into provider components for sibling access",
+      "signals": [
+        "\\buseImperativeHandle\\s*\\(",
+        "^\\s*on[A-Z]\\w*Change\\??\\.?\\(\\s*[\\w.]+\\s*\\)\\s*;?\\s*(?://.*)?$"
+      ],
+      "file_signals": []
+    }
+  ]
+}

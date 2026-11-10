@@ -1,0 +1,4 @@
+interface:
+  display_name: "Vercel Web Interface Guidelines"
+  short_description: "Review UI code against the Web Interface Guidelines."
+  default_prompt: "Use $vercel-web-interface-guidelines to review the UI files in this change."

@@ -6,7 +6,7 @@ Report a class only when you can show an attacker-reachable path.
 | Class | Look for |
 | --- | --- |
 | Injection | SQL, command, or path injection; XSS; SSRF; unsafe deserialization; template injection. |
-| Authentication and authorization | Missing or incorrect auth checks; IDOR; privilege escalation; predictable identifiers. |
+| Authentication and authorization | Missing or incorrect auth checks; IDOR; privilege escalation; predictable identifiers. A Next.js Server Action (`'use server'`) is a public endpoint: it needs its own authentication and authorization check inside the action. |
 | Input handling | Missing validation or sanitization; unsafe `eval` or dynamic execution; unsafe redirects. |
 | Secrets | Hardcoded credentials, tokens, or keys; secrets in logs or error output. |
 | Cryptography | Weak or old algorithms; non-constant-time secret comparison; weak randomness; unencrypted sensitive data in transit or at rest. |

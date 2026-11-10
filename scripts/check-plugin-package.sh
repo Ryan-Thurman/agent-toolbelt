@@ -20,6 +20,8 @@ python3 "$ROOT/scripts/test-execution-contract.py"
 "$ROOT/scripts/check-skill-shape.sh"
 "$ROOT/scripts/check-skill-sync.sh"
 "$ROOT/scripts/test-crap-analysis.sh"
+python3 "$ROOT/scripts/test-react-rule-scan.py"
+python3 "$ROOT/scripts/build-react-rule-routing.py" --check
 
 echo "Running catalog and generated-audit checks..."
 "$ROOT/scripts/check-catalog.sh"

@@ -38,6 +38,9 @@ use `NEEDS DISCUSSION` until the gap is resolved or the user explicitly narrows
 the requested scope. Deliberate exclusions and optional tooling failures do not
 block approval when equivalent review evidence covers the agreed scope.
 
+When the React rule scan ran, add `React rules: N listed · N applied · N not applicable`
+to the coverage line. Name any missing specialist that the scan reported.
+
 Include a compact coverage/limits line in every report and posting summary.
 Name unresolved gaps and the next check that would close them. When coverage
 is incomplete and no findings remain, say "No issues found in the inspected

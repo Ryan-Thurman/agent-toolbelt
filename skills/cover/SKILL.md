@@ -1,12 +1,12 @@
 ---
 name: cover
-description: Author behavior-pinning tests for a diff, module, or bug reproduction, applied on opt-in, or scan an area for missing and weak coverage (detect-only). Use when adding regression coverage, strengthening tests, or surveying coverage gaps. For a merge verdict use /pr-review.
+description: Author behavior-pinning tests for a diff, a module, or a bug-to-fix regression gap, applied on opt-in, or scan an area for missing and weak coverage (detect-only). Use when adding regression coverage, strengthening tests, or surveying coverage gaps. For a merge verdict use /pr-review.
 ---
 
 # cover
 
-Before you write a response for the user, read
-`shared/contracts/references/human-readable-output.md`.
+If you have not read `shared/contracts/references/human-readable-output.md` in this session,
+read it before you write for the user.
 
 Author tests from existing code and behavior, or report coverage gaps. `cover` writes tests only.
 To design cases from requirements before code exists, use `/test-case-design`.
@@ -21,7 +21,8 @@ Never edit production code to make a test pass.
 
 - **`/cover`** — author or strengthen tests for a diff, a module, or a bug reproduction.
   Report the proposed tests, let the user select, then apply. Each test pins current behavior,
-  or intended behavior that the user agreed. For a bug reproduction, write the red→green regression lock.
+  or intended behavior that the user agreed. For a bug, write a red→green regression lock only when
+  `bug-to-fix` recorded a regression-coverage gap.
 - **`/cover-gaps`** — detect-only scan of an area for missing or weak coverage. Do not write a test.
   Read `references/gap-scan.md` for this mode.
 
@@ -40,11 +41,11 @@ Never edit production code to make a test pass.
 
 ## Flow
 
-1. **Scope** the target: a diff (default if the tree is dirty), a named module/path, or a bug
-   reproduction (a `bug-investigation.md` with `Reproduction status`, or a failing-test/manual repro).
+1. **Scope** the target: a diff (default if the tree is dirty), a named module/path, or a
+   regression-coverage gap recorded in a `bug-investigation.md` file.
 2. **Detect** the framework, runner, and conventions. Read 2–3 nearby tests and match their style.
 3. **Identify** what to lock: for a diff/module, the behaviors and branches worth pinning (lean on a
-   `/cover-gaps` report if one exists); for a bug repro, the exact user-visible symptom.
+   `/cover-gaps` report if one exists); for a recorded bug gap, the exact user-visible symptom.
 4. **Propose** each test with the behavior it pins, the risk it guards, its kind (pinning or
    red→green regression lock), and its target file. Flag determinism hazards.
    Stop here and wait for the user's selection.
@@ -58,8 +59,9 @@ The existing suite still passes, and no production code changed.
 
 ## Hand-offs
 
-- **From bug-to-fix.** `cover` turns a recorded reproduction into a committed regression test.
-  It does not re-diagnose the bug.
+- **From bug-to-fix.** `bug-to-fix` owns the bug regression test through
+  `shared/contracts/references/test-driven-development.md`. Use `cover` for a bug only when
+  `bug-to-fix` recorded a regression-coverage gap. Do not re-diagnose the bug.
 - **Other lanes.** `/pr-review` finds problems with a verdict. `/simplify` cleans up code.
   `/webapp-test` runs browser checks.
 

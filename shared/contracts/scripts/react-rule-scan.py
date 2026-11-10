@@ -9,7 +9,11 @@ default branch: committed, staged, unstaged, and untracked files. With PATH,
 the scan reads every line of the named files and directories.
 
 The scan reads `references/rule-index.json` from each installed specialist
-skill. Output is JSON on stdout. Exit 0 on success and 2 on a usage or git error.
+skill. `rules` lists the rules that the changed lines trigger. `judgment_rules`
+lists the rules that no pattern can detect, for the installed specialists that
+apply to the React files in scope. React Native rules apply only when a file
+imports React Native or Expo. Output is JSON on stdout. Exit 0 on success and
+2 on a usage or git error.
 """
 
 import argparse
@@ -29,6 +33,10 @@ REACT_FILE = re.compile(
     r"""from\s+['"](react|react-dom|next)(/[^'"]*)?['"]|require\(['"](react|next)['"]\)|^\s*['"]use (client|server)['"]""",
     re.MULTILINE,
 )
+NATIVE_FILE = re.compile(
+    r"""from\s+['"](?:react-native(?:-[\w-]+)?|expo(?:-[\w-]+)?|@expo/[\w-]+)(?:/[^'"]*)?['"]""")
+# Specialists whose judgment rules apply only to React Native files.
+NATIVE_ONLY = {"vercel-react-native-skills"}
 HUNK = re.compile(r"^@@ -\d+(?:,\d+)? \+(\d+)(?:,(\d+))? @@")
 
 
@@ -132,12 +140,20 @@ def load_indexes(skills_dir):
                 "defer_to": rule.get("defer_to"),
             })
     active = [r for r in rules if not (r["defer_to"] and r["defer_to"] in installed)]
-    return installed, missing, [r for r in active if r["signals"] or r["file_signals"]]
+    scanned = [r for r in active if r["signals"] or r["file_signals"]]
+    judged = [r for r in active if not (r["signals"] or r["file_signals"])]
+    return installed, missing, scanned, judged
+
+
+def judgment_list(judged, native):
+    """Return the judgment-only rules that apply to the React files in scope."""
+    return [{"skill": r["skill"], "rule": r["rule"], "path": r["path"], "when": r["when"], "fix": r["fix"]}
+            for r in judged if native or r["skill"] not in NATIVE_ONLY]
 
 
 def scan(repo, targets, rules, max_hits):
     hits = {id(rule): [] for rule in rules}
-    react_files = []
+    react_files, native = [], False
     for name, wanted in sorted(targets.items()):
         try:
             text = (repo / name).read_text(errors="replace")
@@ -145,6 +161,7 @@ def scan(repo, targets, rules, max_hits):
             continue
         if REACT_FILE.search(text) or Path(name).suffix in {".jsx", ".tsx"}:
             react_files.append(name)
+        native = native or bool(NATIVE_FILE.search(text))
         lines = text.splitlines()
         numbers = range(1, len(lines) + 1) if wanted is None else sorted(n for n in wanted if n <= len(lines))
         for rule in rules:
@@ -160,7 +177,7 @@ def scan(repo, targets, rules, max_hits):
         if hits[id(rule)]:
             listed.append({"skill": rule["skill"], "rule": rule["rule"], "path": rule["path"],
                            "when": rule["when"], "fix": rule["fix"], "impact": rule["impact"], "hits": hits[id(rule)][:max_hits] if max_hits else hits[id(rule)], "hit_count": len(hits[id(rule)])})
-    return react_files, listed
+    return react_files, native, listed
 
 
 def main(argv):
@@ -181,8 +198,8 @@ def main(argv):
         else:
             base_ref, merge_base = resolve_base(repo, args.base)
             targets = changed_lines(repo, merge_base)
-        installed, missing, rules = load_indexes(skills_dir)
-        react_files, listed = scan(repo, targets, rules, args.max_hits)
+        installed, missing, rules, judged = load_indexes(skills_dir)
+        react_files, native, listed = scan(repo, targets, rules, args.max_hits)
     except (ScanError, json.JSONDecodeError, KeyError, re.error) as error:
         print(json.dumps({"error": str(error)}))
         return 2
@@ -196,11 +213,13 @@ def main(argv):
         "installed": installed,
         "missing": missing if react_files else [],
         "rules": listed,
+        "judgment_rules": judgment_list(judged, native) if react_files else [],
         "next": ("No React files changed. Record the React rules check as Skipped."
                  if not react_files else
-                 "Read every listed rule file. Record each rule as Applied or Not applicable with a reason. "
-                 "Set severity with shared/contracts/references/react-acceptance.md. "
-                 "Then check the judgment-only rules in each skill's references/rule-routing.md."),
+                 "Read every file in rules. Record each rule as Applied or Not applicable with a reason. "
+                 "Compare the change with the when line of each judgment_rules entry. Read the path only "
+                 "when the condition matches, and record that rule the same way. "
+                 "Set severity with shared/contracts/references/react-acceptance.md."),
     }, indent=2))
     return 0
 

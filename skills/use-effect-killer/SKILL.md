@@ -5,8 +5,8 @@ description: Audit React useEffect calls against 13 anti-patterns from "You Migh
 
 # useEffect audit
 
-Before you write a response for the user, read
-`shared/contracts/references/human-readable-output.md`.
+If you have not read `shared/contracts/references/human-readable-output.md` in this session,
+read it before you write for the user.
 
 Classify every effect in scope. Do not sample. An unclassified effect is an incomplete audit.
 

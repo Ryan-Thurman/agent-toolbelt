@@ -85,9 +85,6 @@ sub-agent gets a prompt composed of:
 Instruct each to return **only** its JSON findings array (schema in `finding-schema.md`), `[]` if
 clean. Give them read-only tools (read/grep/glob). Collect all arrays.
 
-When intent supplies acceptance criteria, the orchestrator also renders the
-"Acceptance coverage" table from `output-format.md`.
-
 ## 3. Aggregate + dedup
 
 Merge all facet findings into one list, then dedup:

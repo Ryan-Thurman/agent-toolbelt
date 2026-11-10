@@ -1,12 +1,12 @@
 ---
 name: security-audit
-description: Perform a read-only security audit of code, configuration, dependencies, and secret exposure. Use for evidence-backed security review; active testing requires explicit written authorization.
+description: Perform a read-only security audit of implemented code, configuration, dependencies, and secret exposure. Use threat-model for a design before it is built. Active testing requires explicit written authorization.
 ---
 
 # security-audit
 
-Before you write a response for the user, read
-`shared/contracts/references/human-readable-output.md`.
+If you have not read `shared/contracts/references/human-readable-output.md` in this session,
+read it before you write for the user.
 Read `shared/contracts/references/evidence-quality.md` when assessing findings and control status.
 
 Audit a bounded target for security risks. Default behavior is read-only review.
@@ -35,6 +35,19 @@ Audit a bounded target for security risks. Default behavior is read-only review.
    `Not verified`, with the inspected revision and evidence.
 8. Stop before active testing. Continue only after the user gives written scope and
    authorization immediately before the requested active action.
+
+## Active scope
+
+The `--active-scope <written-authorization>` argument, or the same text in the request,
+gives the written authorization for active testing. It must name:
+
+- The target systems.
+- The techniques that are permitted.
+- The time window.
+- The stop conditions.
+
+If one item is missing, the audit stays read-only. Report the missing item.
+An active scope does not replace step 8. Confirm with the user immediately before each active action.
 
 ## Completion
 

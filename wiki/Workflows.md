@@ -4,13 +4,13 @@ The delivery lanes. The [offline portal](../portal/generated/index.html) owns
 discovery, examples, and the common workflow map; this page provides deeper
 operational guidance. Each workflow below identifies its commands and completion boundaries.
 
-- [Phased Delivery](#phased-delivery) — requirements or tickets to one PR per phase.
-- [Phase Context Workflow](#phase-context-workflow) — durable state across resets.
-- [Bug to Fix](#bug-to-fix) — the diagnostic lane.
-- [System Design](#system-design) — architecture questions, design documents, diagrams, and decisions.
-- [Shape Up](#shape-up) — review current-state gaps or shape an approved brief.
-- [Product Discovery](#product-discovery) — evidence before deciding what to shape.
-- [Threat Model](#threat-model) — design-time security analysis.
+- [Phased Delivery](#phased-delivery): requirements or tickets to one PR per phase.
+- [Phase Context Workflow](#phase-context-workflow): durable state across resets.
+- [Bug to Fix](#bug-to-fix): the diagnostic lane.
+- [System Design](#system-design): architecture questions, design documents, diagrams, and decisions.
+- [Shape Up](#shape-up): review current-state gaps, shape an approved brief, or slice it into tickets.
+- [Product Discovery](#product-discovery): evidence before deciding what to shape.
+- [Threat Model](#threat-model): design-time security analysis.
 
 ## Phased Delivery
 
@@ -113,12 +113,9 @@ Key ideas:
 
 ## System Design
 
-Use `system-design` when a team member has architecture questions or needs a design document.
-Start with the scoped question, existing requirements, and current implementation evidence.
-The skill compares viable approaches and asks focused questions about consequential unknowns.
-It checks responsibilities, interfaces, data ownership, quality constraints, failure paths, operations, cost, and verification.
-
-For example:
+Use `system-design` for architecture questions, design documents, diagrams, decision records, and repository maps.
+A full design proposal also gets a linked `threat-model` review for the same revision.
+The [skill](../skills/system-design/SKILL.md) owns the modes and the completion rules.
 
 ```text
 $system-design
@@ -126,13 +123,7 @@ Help our team work through this architecture question and compare the options.
 Record the design, diagrams, decision reasons, and important open questions.
 ```
 
-The selected output can be an answer, a repository map, a design document, or an architecture decision record.
-Full design proposals retain a linked threat review for the same revision.
-Focused explanations and existing repository maps do not require a new threat report.
-Records preserve their actual approval state and link to replacement decisions when choices change.
-Design readiness identifies remaining decisions and evidence gaps; it does not grant implementation authority.
-
-The compatibility installation includes design and decision-record templates:
+The compatibility install includes the design and decision-record templates:
 
 ```sh
 ./install.sh --harness all system-design /path/to/project
@@ -163,19 +154,16 @@ analysis, not active testing.
 
 ## Shape Up
 
-The `shape-up` tool can compare a product ask with current system behavior in a
-report-only gap review, or interrogate a vague request into an agreed brief
-before delivery.
+Use `shape-up` for three jobs:
+
+- Compare a product ask with current system behavior (report-only gap review).
+- Shape a vague request into a brief that you approve.
+- Slice an approved brief into vertical-slice tickets (`/to-issues`).
+
+The [skill](../skills/shape-up/SKILL.md) owns the modes and the approval gate.
+An approved brief goes to `$phased-delivery` or `/dev-plan`.
+Use `/dev-intake` for an unclear raw request that has no approved brief, plan, or ticket.
 
 ```sh
 ./install.sh --harness all shape-up /path/to/project
 ```
-
-In gap-review mode it maps each requested outcome to evidence of current behavior,
-flags partial or unknown coverage, and prioritizes unanswered questions. It does
-not require brief approval or start a delivery plan. In interactive shaping mode
-it asks one question at a time (resolving from the codebase first), hunts
-contradictions, and emits a lean brief gated on your approval. An approved brief
-goes directly to `$phased-delivery` or `/dev-plan`; use `/to-issues` first when
-you want vertical-slice tickets. `/dev-intake` remains for unclear raw requests
-that have no approved brief, plan, or ticket.

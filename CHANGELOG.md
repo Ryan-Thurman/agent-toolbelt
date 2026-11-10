@@ -30,8 +30,18 @@
 - Added `vercel-web-interface-guidelines` with the guideline list pinned at `434b7f9`, so reviews work offline. `react-quality` includes it, and the React rule scan now also reads `.css` and `.scss` files.
 - Added `docs-writing.md`, adapted from the Vercel Labs Writing Guidelines with ASD-STE100 precedence, and AI-writing patterns in `human-readable-output.md`. `pr-review` checks documentation changes against it.
 - Added the `simple-english` skill (MIT, AminBlg/SimpleEnglish 2.1.2 at `300432a`) as the base for all ASD-STE100 output. A Toolbelt override keeps bold for quick emphasis in replies. Every pack that installs the output contract now depends on it.
-- Added the `writing-whip` skill and the tropes.fyi trope catalog (CC BY 4.0, Ossama Chaib). `simple-english` depends on it, and the output contract loads it before longer text.
+- Added the `writing-whip` skill and the tropes.fyi trope catalog (CC BY 4.0, Ossama Chaib). The `simple-english` pack installs both skills, and `writing-whip` depends on `simple-english`. The output contract loads `writing-whip` before longer text.
 - Added one "Writing precedence" section to `human-readable-output.md` with the order between writing sources and each known conflict. `scripts/check-writing-rules.py` pins the imported writing text and lints the Toolbelt's own writing files.
+- Added `pr-review --repost`, so `phase-gate --rereview` can post a second review on the same head commit. `pr-review --show-nits` for `code-quality-gate`.
+- Defined one posting confirmation rule: a `--comment` flag from a caller skill, CI job, worker, or poller counts as confirmed.
+- Made the `pr-review` security facet label unknown reachability instead of dropping the finding.
+- Made `phase-gate` solo mode count fix rounds across the whole loop, with a total of 2 by default.
+- Defined `security-audit --active-scope`. Made `bug-to-fix --diagnose` allow writes only to the investigation file. Made `bug-to-fix` the owner of the bug regression test.
+- Made `/implementation-plan` an alias for `/dev-plan`, and stated the difference between `/dev-phase-review` and `/dev-pr-review`.
+- Made the React rule scan print `judgment_rules`, so agents no longer read every `rule-routing.md`. `typescript-react-baseline.md` owns the scan procedure.
+- Moved the long `vercel-react-view-transitions` pattern sections into references, and added a short review checklist for scan hits.
+- Made skills read `human-readable-output.md` once per session. The writing precedence now states that writing rules never limit tool calls, tests, or verification.
+- Removed duplicate skill lists from `README.md`, `commands/README.md`, and the wiki. Thinned the `crap-analysis`, `role-review`, and `auto-agent-plan` commands.
 
 ## v1.1.9 - 2026-11-08
 

@@ -4,10 +4,8 @@
 
 Read the individual rule only when the changed React Native code matches its condition. A rule's priority is a triage hint, not permission to ignore repository policy.
 
-The React rule scan in `shared/contracts/references/typescript-react-baseline.md`
-lists the `scan` rules that changed lines trigger. Check each `judgment` rule
-against the change yourself. Severity comes from
-`shared/contracts/references/react-acceptance.md`, not from the impact column.
+To review a change, follow the "React rule scan" section in
+`shared/contracts/references/typescript-react-baseline.md`. This table is for lookup.
 
 ## Core rendering
 

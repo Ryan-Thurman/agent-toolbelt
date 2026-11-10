@@ -1,12 +1,12 @@
 ---
 name: ticket-discovery
-description: Investigate a narrow implementation ticket that references an existing precedent, compare source and target areas, produce a gap analysis, test plan, and implementation handoff without editing code.
+description: Investigate a narrow implementation ticket that references an existing precedent. Compare source and target areas, and produce a gap analysis, test plan, and handoff without editing code. Use tech-backlog-assessment when the work itself is in question.
 ---
 
 # ticket-discovery
 
-Before you write a response for the user, read
-`shared/contracts/references/human-readable-output.md`.
+If you have not read `shared/contracts/references/human-readable-output.md` in this session,
+read it before you write for the user.
 
 Use this skill when a ticket is probably valid but under-specified, especially
 when it says another area already has the pattern to follow.
@@ -25,7 +25,8 @@ Report only. Edit files only after the user reviews the brief and asks to contin
 6. List the specific test coverage or implementation slices to add.
    Use exact file paths, commands, and test seams from the repo.
 7. Give verification commands and unresolved questions.
-8. Name the next workflow: `/implementation-plan`, `/dev-plan`, `/cover`, `/cover-gaps`, or `/retrofit`.
+8. Name the next skill: `phased-delivery`, `cover` (author mode or gap-scan mode), or `retrofit`.
+   On hosts with commands, also name the command: `/implementation-plan`, `/dev-plan`, `/cover`, `/cover-gaps`, or `/retrofit`.
    If the ticket becomes a "should we do this?" decision, hand off to `tech-backlog-assessment`.
 
 ## Output

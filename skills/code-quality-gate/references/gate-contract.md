@@ -121,12 +121,10 @@ have its own PASS/FAIL status but cannot prove the entire PR diff.
 2. Inspect every changed hunk against style evidence and the shared contracts.
    Run `/simplify` in report mode to identify high-conviction cleanup candidates;
    do not treat a generic-name cue as a finding without a consequence.
-3. Run `/pr-review` on the frozen target with standards and maintainability in
-   focus. Capture the facet outputs before normal rendering applies its
-   severity/noise threshold, then retain every evidence-backed standards or
-   maintainability nit in the gate record. The normal PR report remains the
-   review source of truth for ordinary findings; this capture only prevents
-   unrecorded nits and does not add a taxonomy.
+3. Run `/pr-review --focus=standards,maintainability --show-nits` on the frozen
+   target. `--show-nits` keeps every nit that the posting threshold would hide.
+   Record every evidence-backed standards or maintainability nit in the gate
+   record. The PR report remains the review source of truth for other findings.
 4. For apply mode, use `/pr-improve`'s baseline, allowed-scope guard, stable
    IDs, behavior pins, rereview, and structural-escalation rules. Before any
    deletion or inlining, follow `/simplify`'s Chesterton's Fence and its rule

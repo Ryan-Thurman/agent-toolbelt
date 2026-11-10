@@ -1,23 +1,12 @@
 # The worker — draining the queue
 
-The consumer side. A worker claims jobs one at a time and runs the existing reviewer on each. It holds
-no review logic of its own — `/pr-review … --comment` does the work. One invocation of
-`/review-queue-worker` drains the queue **until it's empty**, then returns; repetition across time is
-delegated to a local `/loop`. A `/schedule` cloud routine cannot read the local queue file.
+The consumer side. A worker claims jobs one at a time and runs `/pr-review … --comment` on each.
+One invocation of `/review-queue-worker` drains the queue until it is empty or `--max` is reached,
+then returns.
 
 ## The loop
 
-```
-loop:
-  job = review-queue claim --worker <id>          # JSON: a job, or []
-  if job == []: break                             # queue drained → stop this pass
-  run /pr-review <job.target> --comment            # + --tier=<job.tier> if non-empty; fresh sub-agent
-      success → review-queue complete <job.id> --verdict <V> --findings <N>
-      failure → review-queue requeue <job.id> --notes "<why>"   # lease/attempts handle the rest
-  honor --max (stop after N this pass; the rest wait for the next tick)
-```
-
-Concretely, per claimed job:
+Per claimed job:
 1. **Claim.** `bash skills/review-queue/bin/review-queue.sh claim --worker <id>`. Parse the JSON. `[]`
    → nothing pending, end the pass. A non-zero exit → transient DB issue; end the pass and let the
    next tick retry (do **not** treat as a completed job).
@@ -55,14 +44,6 @@ unless you explicitly want self-review.
 
 ## Scheduling
 
-One `/review-queue-worker` pass drains what's currently queued and exits — don't build a sleep loop
-inside it. Repeat it with a local `/loop`:
-
-- **Local, while you work:** `/loop 5m /review-queue-worker` — every 5 minutes, drain any jobs other
-  agents have pushed. Cheap: a `claim` returning `[]` is a single local SQLite read (no API, no host
-  calls), so a short interval is fine.
-
-For hands-off review without a local session, use the `review-on-open` CI event or poller instead.
-
-The queue is the rendezvous: producers `enqueue` whenever they finish a PR; the worker
-drains on its own cadence. Because every op is idempotent/atomic, missed or overlapping ticks are safe.
+Do not build a sleep loop inside a pass. Repeat it with a local `/loop 5m /review-queue-worker`.
+A `claim` that returns `[]` is a single local SQLite read, so a short interval is cheap.
+Every op is idempotent or atomic, so missed or overlapping ticks are safe.

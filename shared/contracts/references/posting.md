@@ -6,10 +6,12 @@ pull-request host.
 ## Policy
 
 Posting is outward-facing and opt-in. Default output is a local report or dry
-run. Post only when the user passed the command flag that means posting for that
-pack, such as `--comment` for `pr-review` or `--post` for `pr-review-reply`, and
-confirm before writing unless the command is running in a configured unattended
-mode.
+run. Post only when the command received the flag that means posting for that
+pack, such as `--comment` for `pr-review` or `--post` for `pr-review-reply`.
+This file owns the confirmation rule. A flag passed by a caller skill, CI job,
+worker, or poller counts as confirmed. An interactive user who passed the flag and
+said "post" has confirmed. In other interactive runs, show a preview and ask before
+you write.
 
 ## Invariants
 

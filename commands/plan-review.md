@@ -6,4 +6,4 @@ argument-hint: "<plan-or-ticket-set>"
 # /plan-review
 
 Use this command to review a plan without changing it.
-Follow the `phased-delivery` skill plan-review mode for `$ARGUMENTS`.
+Follow the `phased-delivery` skill "Review a plan" row (`references/plan-readiness.md`) for `$ARGUMENTS`.

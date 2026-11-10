@@ -14,7 +14,7 @@ Technical Backlog Assessment
 ↓
 Decision Review
 ↓
-Accepted? -> /ticket-discover, /dev-plan, /implementation-plan, /retrofit, /cover
+Accepted? -> the next workflow that the assessment names
 Rejected/deferred? -> close or update ticket with rationale
 Spike? -> create bounded spike plan and evidence target
 ```

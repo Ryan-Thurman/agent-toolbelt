@@ -5,8 +5,8 @@ description: Review web UI code against the Vercel Web Interface Guidelines for 
 
 # Web interface review
 
-Before you write a response for the user, read
-`shared/contracts/references/human-readable-output.md`.
+If you have not read `shared/contracts/references/human-readable-output.md` in this session,
+read it before you write for the user.
 
 **Arguments:** an optional file, directory, or pattern. Without one, review the
 UI files changed since the default branch.

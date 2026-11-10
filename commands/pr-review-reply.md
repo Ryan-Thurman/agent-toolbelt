@@ -9,8 +9,4 @@ Use `/pr-review-reply` to answer a human reviewer's PR threads. Use `/pr-review 
 
 **Arguments:** `$ARGUMENTS`
 
-- **target** — a PR URL or number, or empty for the current branch's open PR.
-- **`--post`** — post one reply per thread to the PR. Confirm before posting.
-- **`--since=<sha>`** — the reviewed SHA to diff against. The default is the review's commit.
-
-Follow the `pr-review-reply` skill (`skills/pr-review-reply/SKILL.md`).
+Follow the `pr-review-reply` skill (`skills/pr-review-reply/SKILL.md`). Its "Inputs" section defines each argument.

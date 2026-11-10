@@ -5,8 +5,8 @@ description: Diagnose and fix reported bugs through triage, reproduction, root-c
 
 # bug-to-fix
 
-Before you write a response for the user, read
-`shared/contracts/references/human-readable-output.md`.
+If you have not read `shared/contracts/references/human-readable-output.md` in this session,
+read it before you write for the user.
 
 Drive a bug report to a verified fix: triage, reproduce, find the root cause, make the smallest fix,
 and verify it. Keep the investigation state in one durable file, so another session can resume it.
@@ -40,7 +40,7 @@ and verify it. Keep the investigation state in one durable file, so another sess
 /bug-intake  →  /reproduce  →  /rca  →  /fix-plan  →  (/dev-implement-task → /pr-review)
    triage        repro          root      minimal        the shared dev + review back half
    + seed file   (manual or     cause     fix contract
-                  automated)    (--diagnose stops here, read-only)
+                  automated)    (--diagnose stops here, no source edits)
 ```
 
 `/handoff` can write a resumable summary at any point. Each step has one gate:
@@ -51,13 +51,15 @@ and verify it. Keep the investigation state in one durable file, so another sess
    Gate: a confirmed manual reproduction **or** an automated red-capable repro.
 3. **Root-cause** (`/rca`). Read `references/rca-strategies.md` and
    `references/adversarial-confirmation.md` for root-cause analysis.
-   Gate: the 5-field reasoning checkpoint is complete. `--diagnose` stops here without edits.
+   Gate: the 5-field reasoning checkpoint is complete. `--diagnose` stops here.
+   It makes no source edits. The investigation file is the only permitted write.
 4. **Fix contract** (`/fix-plan`). Read `references/fix-contract.md` after the checkpoint is complete.
    Write the fix contract and the verification plan. Gate: the contract has a verification plan.
 5. **Implement and verify.** `/implementation-plan` plans a larger fix; `/dev-implement-task` implements it.
    Before repair, use `shared/contracts/references/test-driven-development.md` to capture the confirmed
    symptom in a failing regression test. If automation is unavailable, keep the manual verification
-   path and record the regression coverage gap. Gate: the verification contract is satisfied.
+   path and record the regression coverage gap. `/cover` can close that gap later.
+   Gate: the verification contract is satisfied.
 6. **Close out.** After verification passes, set the durable file `status` to `resolved`.
    Append the knowledge-base entry from `references/durable-state.md`.
 

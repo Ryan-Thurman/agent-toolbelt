@@ -5,15 +5,9 @@ description: Rules for an orchestrator that shells into agent CLIs to code and r
 
 # auto-agent-contract
 
-Every other pack in this toolbelt assumes an agent running **inside** a harness (Claude Code,
-Cursor), with a Task tool and a person nearby to confirm, overrule, and merge. This pack is for the
-opposite arrangement: a program **outside** the harness that shells into agent CLIs (`claude -p`,
-`codex exec`, `agy -p`), reads what comes back on stdout, and decides what happens next with nobody
-watching.
-
-That seam is where the failures live. The rules here are each derived from a specific production
-failure in [`agent-runner`](#the-reference-implementation), a local Python orchestrator that runs a
-plan through disposable coding and review agents.
+Use this pack for a program **outside** the harness. The program runs agent CLIs (`claude -p`,
+`codex exec`, `agy -p`) as subprocesses, parses their stdout, and decides the next step with no human
+present. Each rule comes from a production failure in [`agent-runner`](#the-reference-implementation).
 
 > **This pack adds no review logic.** Install the standard `agent-toolbelt` plugin alongside it.
 > Its `pr-review` skill emits a structured finding list (`references/finding-schema.md`) and a
@@ -64,12 +58,8 @@ reviews at a phase boundary, with a human in the session).
 
 ## The reference implementation
 
-`agent-runner` is a local Python 3 CLI that drives a markdown plan through `IMPLEMENT → REVIEW →
-FIX → CLOSE_PHASE → MERGE` per phase, one PR per phase, with state in SQLite. Every rule in this pack
-cites the commit that earned it.
+`agent-runner` is a local Python 3 CLI. It drives a markdown plan through `IMPLEMENT → REVIEW →
+FIX → CLOSE_PHASE → MERGE`, one PR per phase, with state in SQLite.
 When observed runner behavior differs from this contract, report the difference.
-The implementation establishes actual behavior; it does not change required behavior automatically.
-
-The plan it consumes is a specific markdown serialization parsed by regex. Write one with
-**`/auto-agent-plan`** (`references/plan-format.md`), which mines the repo for phases rather than
-starting from a blank template.
+The implementation does not change required behavior.
+Write a plan with **`/auto-agent-plan`** (`references/plan-format.md`).

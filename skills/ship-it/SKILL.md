@@ -5,8 +5,8 @@ description: Prepare a change for release with readiness checks, rollback, relea
 
 # ship-it
 
-Before you write a response for the user, read
-`shared/contracts/references/human-readable-output.md`.
+If you have not read `shared/contracts/references/human-readable-output.md` in this session,
+read it before you write for the user.
 
 Take a merged or approved change to "released safely".
 Make every release reversible, observable, and incremental.
@@ -18,7 +18,6 @@ Prefer a feature flag and a staged rollout to a big-bang deploy.
 - Edit release artifacts only when the user explicitly asks.
 - When a pipeline owns the deploy, produce the release package and stop. Do not run deploy steps.
 - When you own the deploy, propose each deploy, tag, push, or rollout command. Run it only after explicit confirmation at that gate.
-- Push to a default branch only when the user asks.
 - Before you run or retry an authorized external action, read `shared/contracts/references/operation-retries.md`.
   Keep the pipeline as the operation owner when it controls publication.
 

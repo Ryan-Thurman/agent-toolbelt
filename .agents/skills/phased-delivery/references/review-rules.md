@@ -25,8 +25,10 @@ Check in this order:
    base/head, target, merge order, checks, risks, and rollback or migration notes
    where relevant.
 5. Apply the project's required document, QA, release, and evidence checks.
-   Keep the project's source records authoritative. Run `code-quality-gate` only if repository policy, user request, or
-   the phase's risk warrants it; a stale result never proves a later diff.
+   Keep the project's source records authoritative. Run `code-quality-gate` when
+   repository policy or the user requires it. Otherwise, recommend it in the handoff
+   when the phase changes security, persistence, or a public interface.
+   A stale result never proves a later diff.
 
 ## Findings and verdict
 
@@ -43,7 +45,7 @@ Record the verdict, findings, evidence, and PR URL in the plan.
 Use `../../../templates/dev-phase-review.md` or `../../../templates/dev-pr-review.md`
 only when a separate report is useful.
 Open the phase PR only when the user authorized delivery.
-A human owns the review and merge decision; a passing agent review is not merge approval.
+Merge authority follows `shared/contracts/references/execution.md`.
 
 ## Fix findings
 

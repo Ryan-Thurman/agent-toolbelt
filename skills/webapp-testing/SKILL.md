@@ -5,8 +5,8 @@ description: Verify browser and web application behavior for user-facing changes
 
 # webapp-testing
 
-Before you write a response for the user, read
-`shared/contracts/references/human-readable-output.md`.
+If you have not read `shared/contracts/references/human-readable-output.md` in this session,
+read it before you write for the user.
 
 Verify webapp behavior from the user's point of view. The `/webapp-test` command uses this skill.
 

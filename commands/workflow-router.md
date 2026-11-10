@@ -16,8 +16,9 @@ Choose from workflows that are actually installed.
 | Select an opportunity or experiment | `product-discovery` |
 | Assess customer outcomes after an experiment or release | `product-outcome-review` |
 | Discover maintenance work across a repository | `tech-debt-discovery` |
-| Document architecture and review attack paths | `system-design`, then `threat-model` |
-| Compare an ask with current behavior, or clarify scope | `shape-up` |
+| Answer architecture questions or design a system | `system-design` (it runs `threat-model` for a design proposal) |
+| Review the threats of a design before it is built | `threat-model` |
+| Compare an ask with current behavior, clarify scope, or slice an approved brief into tickets | `shape-up` |
 | Review a plan, or deliver approved requirements or tickets | `phased-delivery` |
 | Reproduce and repair a defect | `bug-to-fix` |
 | Assess a technical investment or dependency | `tech-backlog-assessment` |

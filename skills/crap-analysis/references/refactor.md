@@ -4,8 +4,9 @@ Apply-on-opt-in refactoring guided by the refactor brief produced by the repo's 
 
 ## When to run
 
-Only after `/do-crap-analysis` returns **REFACTOR** and the user confirms (via `/crap-refactor` or
-explicit opt-in in chat).
+Only after `/do-crap-analysis` returns **REFACTOR** and the user confirms (via `/crap-refactor <target>`
+or explicit opt-in in chat). The target name is required. It must match a key in the base-branch
+`.crap-analysis.json`.
 
 ## Flow
 
@@ -23,7 +24,8 @@ explicit opt-in in chat).
    bash skills/crap-analysis/bin/crap-analysis.sh review
    ```
 6. Emit the template from `references/review.md` for the review outcome.
-   Report the new worst score in scope, or the remaining REFACTOR gap.
+   Report what changed, the verify exit code, and the new worst score in scope or the remaining
+   REFACTOR gap.
 
 ## Principles
 

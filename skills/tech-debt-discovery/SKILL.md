@@ -5,7 +5,8 @@ description: Find and prioritize technical debt across a repository using code, 
 
 # Technical debt discovery
 
-Before writing for the user, read `shared/contracts/references/human-readable-output.md`.
+If you have not read `shared/contracts/references/human-readable-output.md` in this session,
+read it before you write for the user.
 Read `shared/contracts/references/evidence-quality.md` when assessing candidate evidence.
 
 Produce a bounded debt register.

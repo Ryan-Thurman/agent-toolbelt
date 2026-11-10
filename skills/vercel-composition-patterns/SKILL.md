@@ -5,8 +5,8 @@ description: Apply React composition patterns when designing or reviewing compon
 
 # React composition patterns
 
-Before you write a response for the user, read
-`shared/contracts/references/human-readable-output.md`.
+If you have not read `shared/contracts/references/human-readable-output.md` in this session,
+read it before you write for the user.
 
 Use these rules for component API and architecture decisions. Repository policy,
 enforced configuration, existing public contracts, and repeated local patterns
@@ -14,12 +14,10 @@ win over this upstream reference.
 
 Before choosing a rule:
 
-1. Read `shared/contracts/references/typescript-react-baseline.md` and inspect
-   the repository's React version and neighboring components.
-2. Run the React rule scan from that baseline. Read every rule it lists for
-   this skill, and record each as `Applied` or `Not applicable` with a reason.
-   Then use [`references/rule-routing.md`](references/rule-routing.md) to find
-   the rules the scan cannot detect. Do not load the full rule set.
+1. Inspect the repository's React version and neighboring components.
+2. Follow the "React rule scan" section in
+   `shared/contracts/references/typescript-react-baseline.md`. Do not load the full rule set.
+   To find a rule without a scan, use [`references/rule-routing.md`](references/rule-routing.md).
 3. Preserve behavior and public API compatibility unless the task explicitly
    changes the contract. Treat boolean-prop proliferation and render props as
    review cues, not automatic violations: local API stability or a small,

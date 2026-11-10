@@ -5,11 +5,11 @@ description: Turn requirements and risks into prioritized, executable QA test ca
 
 # test-case-design
 
-Before you write a response for the user, read
-`shared/contracts/references/human-readable-output.md`.
+If you have not read `shared/contracts/references/human-readable-output.md` in this session,
+read it before you write for the user.
 
 Design an evidence-based test case set from requirements and risks. This skill reports cases;
-it does not edit tests or production code. To find gaps in existing code, use `/cover-gaps`.
+it does not edit tests or production code. To find gaps in existing code, use the `cover` skill gap scan (`/cover-gaps`).
 
 ## Steps
 
@@ -28,7 +28,7 @@ it does not edit tests or production code. To find gaps in existing code, use `/
    preconditions and data, steps, expected result, test level, automation candidate, and priority.
 6. Set priority from impact and likelihood, not from an arbitrary numeric score.
    Record assumptions and uncovered risks. Do not invent expected behavior.
-7. Hand selected cases to `/cover` for code-level tests or `/webapp-test` for browser checks.
+7. Hand selected cases to `cover` (`/cover`) for code-level tests or `webapp-testing` (`/webapp-test`) for browser checks.
 
 ## Completion
 

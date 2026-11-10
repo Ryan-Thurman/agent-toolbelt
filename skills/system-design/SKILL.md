@@ -5,7 +5,8 @@ description: Work through system design questions, compare options, and create o
 
 # System design
 
-Before writing for the user, read `shared/contracts/references/human-readable-output.md`.
+If you have not read `shared/contracts/references/human-readable-output.md` in this session,
+read it before you write for the user.
 Read `shared/contracts/references/evidence-quality.md` when establishing design evidence.
 
 Choose the mode from the requested outcome.

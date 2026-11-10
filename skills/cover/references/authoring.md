@@ -17,33 +17,28 @@ Detect the runner, framework, and conventions from the repo before writing a lin
 - **Run command** — the actual command the repo uses (`npm test`, `pytest -q`, `go test ./...`,
   `cargo test`). Prefer a single-file/single-test invocation for the fast falsify loop.
 
-If no test setup exists at all, say so and propose the minimal idiomatic one — don't
-silently scaffold.
-
 ## Pin behavior, not implementation
 
 A test should survive a refactor that preserves behavior and fail on one that changes it.
 
-- **Assert observable behavior** — return values, emitted output, raised errors/error type, HTTP
-  status/body, persisted state, side-effects, ordering when ordering is contractual.
-- **Avoid implementation coupling** — don't assert private fields, internal call counts, mock
-  invocation order, log strings, or incidental data structure shape unless that *is* the contract.
+- Follow the unit-test rules in `shared/contracts/references/test-driven-development.md`.
 - **Intended vs. current.** Pin **current** behavior by default (that's what a regression lock
   protects). Only pin a *different* intended behavior when it's explicitly agreed — and then say so,
   because such a test is red until the behavior changes (that's a spec, not a regression lock).
 - **One behavior per test.** Name the test for the behavior it locks, not the function it calls.
 
-## The red→green regression lock (bug repro → committed test)
+## The red→green regression lock (recorded bug gap)
 
+Use this section only when `bug-to-fix` recorded a regression-coverage gap.
 Use `shared/contracts/references/test-driven-development.md` for the red check and the green check.
-Apply these additions for a bug reproduction:
+Apply these additions:
 
 1. **Anchor on the symptom.** Assert the user's exact observed wrong behavior becoming right, not a proxy.
    For "returns 500 on empty cart", assert the status and response, not an internal flag.
 2. **Confirm red** against the unfixed revision. The failure must show the symptom, not a setup error.
-3. **Confirm green** after the fix lands. The fix belongs to the implementation or bug-to-fix lane.
-4. **Ship the lock with the fix.** Commit the regression test in the same change as the fix,
-   with the bug reference.
+3. **Confirm green** on the current revision, where the fix already landed. The fix belongs to the
+   bug-to-fix lane.
+4. **Name the bug.** Put the bug reference in the test name or a comment.
 
 ## Falsify the test
 
@@ -82,5 +77,4 @@ ship a test that passes "usually."
 - Apply only the tests that the user selected.
 - **One test at a time; run after each.** Falsify each test as you go.
 - Run the relevant existing suite after the last test.
-- Commit pinning tests in their own test-only commit, separate from feature or fix changes.
-  Regression locks ship with their fix.
+- Commit pinning tests and regression locks in a test-only commit, separate from feature or fix changes.

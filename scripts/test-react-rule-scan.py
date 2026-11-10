@@ -104,6 +104,9 @@ class ScannerLogicTests(unittest.TestCase):
              "file_signals": [r"^\s*['\"]use server['\"]"]},
             {"path": "references/rules/judged.md", "when": "Judged.", "signals": []},
         ])
+        write_index(self.skills, "vercel-react-native-skills", [
+            {"path": "references/rules/native-judged.md", "when": "Native judged.", "signals": []},
+        ])
 
     def tearDown(self):
         self.temp.cleanup()
@@ -150,7 +153,7 @@ class ScannerLogicTests(unittest.TestCase):
         _, result = self.scan("--base", "main")
         self.assertIn(("vercel-react-best-practices", "derived"), self.listed(result))
         self.assertEqual(result["missing"], ["vercel-composition-patterns", "use-effect-killer",
-                                             "vercel-react-native-skills", "vercel-react-view-transitions",
+                                             "vercel-react-view-transitions",
                                              "vercel-web-interface-guidelines"])
 
     def test_file_signal_lists_rule_once_per_file(self):
@@ -159,6 +162,26 @@ class ScannerLogicTests(unittest.TestCase):
         auth = self.listed(result)[("vercel-react-best-practices", "auth")]
         self.assertEqual(auth["hits"], ["app/actions.ts:1"])
         self.assertNotIn(("vercel-react-best-practices", "judged"), self.listed(result))
+
+    def test_judgment_rules_list_only_rules_without_patterns(self):
+        self.fixture.write("src/effect.tsx", EFFECT_COMPONENT)
+        _, result = self.scan("--base", "main")
+        judged = {(r["skill"], r["rule"]): r for r in result["judgment_rules"]}
+        self.assertEqual(list(judged), [("vercel-react-best-practices", "judged")])
+        self.assertEqual(judged[("vercel-react-best-practices", "judged")]["when"], "Judged.")
+        self.assertIn("judgment_rules", result["next"])
+
+    def test_native_judgment_rules_need_a_native_file(self):
+        self.fixture.write("app/Count.tsx", NATIVE_COMPONENT)
+        _, result = self.scan("--base", "main")
+        judged = {(r["skill"], r["rule"]) for r in result["judgment_rules"]}
+        self.assertIn(("vercel-react-native-skills", "native-judged"), judged)
+        self.assertIn(("vercel-react-best-practices", "judged"), judged)
+
+    def test_no_react_change_lists_no_judgment_rules(self):
+        self.fixture.write("README.md", "changed\n")
+        _, result = self.scan("--base", "main")
+        self.assertEqual(result["judgment_rules"], [])
 
     def test_path_mode_scans_whole_files_and_max_hits(self):
         self.fixture.write("src/a.tsx", EFFECT_COMPONENT * 3)
@@ -189,6 +212,11 @@ class RealIndexTests(unittest.TestCase):
             self.assertNotIn(("vercel-react-best-practices", "rerender-derived-state-no-effect"), listed)
             for rule in result["rules"]:
                 self.assertTrue(Path(rule["path"]).is_file(), rule["path"])
+            judged = {(r["skill"], r["rule"]) for r in result["judgment_rules"]}
+            self.assertIn(("vercel-react-best-practices", "async-parallel"), judged)
+            self.assertFalse(any(skill == "vercel-react-native-skills" for skill, _ in judged), judged)
+            for rule in result["judgment_rules"]:
+                self.assertTrue(Path(rule["path"]).is_file(), rule["path"])
             auth = next(r for r in result["rules"] if r["rule"] == "server-auth-actions")
             self.assertEqual(auth["impact"], "CRITICAL")
             self.assertTrue(auth["fix"])
@@ -203,7 +231,9 @@ class RealIndexTests(unittest.TestCase):
             self.assertEqual(code, 0, result)
             listed = {(r["skill"], r["rule"]) for r in result["rules"]}
             self.assertIn(("vercel-react-native-skills", "rendering-no-falsy-and"), listed)
-            self.assertIn(("vercel-react-view-transitions", "SKILL"), listed)
+            self.assertIn(("vercel-react-view-transitions", "review-checklist"), listed)
+            judged = {(r["skill"], r["rule"]) for r in result["judgment_rules"]}
+            self.assertIn(("vercel-react-native-skills", "list-performance-item-expensive"), judged)
             self.assertIn(("vercel-web-interface-guidelines", "guidelines"), listed)
             guideline = next(r for r in result["rules"] if r["skill"] == "vercel-web-interface-guidelines")
             self.assertEqual(sorted(guideline["hits"]), ["src/Detail.tsx:4", "src/detail.css:1"])

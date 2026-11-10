@@ -6,4 +6,5 @@ argument-hint: "<requirement-or-idea>"
 # /dev-intake
 
 Use this command when a raw requirement has no approved plan or ticket.
-Follow the `phased-delivery` skill raw-requirement rules for `$ARGUMENTS`.
+Follow the `phased-delivery` skill "Raw requirement" rules for `$ARGUMENTS`.
+Stop after you record the outcome, boundaries, and acceptance criteria. The next command is `/dev-plan`.

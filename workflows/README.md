@@ -1,13 +1,8 @@
 # workflows/
 
-Portable multi-step orchestrations — the "when X, do Y1→Y2→Y3" procedures.
-The [offline portal](../portal/generated/index.html) owns discovery, examples,
-and the common workflow map; these files provide deeper copy-pasteable
-operational procedures for skills and the project installer.
-
-`SKILL.md` remains the canonical behavior source. Commands are optional
-project-scoped compatibility UX, while workflow files hold reusable supporting
-detail rather than native plugin skill copies.
+Each file is a stage map: it gives the order of skills for one kind of work.
+The skill for each stage owns its steps and completion rules.
+The [offline portal](../portal/generated/index.html) owns discovery and examples.
 
 - `phased-delivery-workflow.md` - requirement or ticket delivery as one PR per
   phase, with human review and optional stacked PRs.

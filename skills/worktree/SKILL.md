@@ -5,8 +5,8 @@ description: Create, list, and remove isolated git worktrees for multi-agent sha
 
 # worktree
 
-Before you write a response for the user, read
-`shared/contracts/references/human-readable-output.md`.
+If you have not read `shared/contracts/references/human-readable-output.md` in this session,
+read it before you write for the user.
 
 A git checkout has one HEAD. When agents share a checkout, one `git checkout` or `git switch`
 moves the branch under every other agent. Give each task its own worktree: a separate directory

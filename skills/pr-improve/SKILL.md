@@ -5,8 +5,8 @@ description: Iteratively fix an agreed PR review ledger within a frozen scope an
 
 # pr-improve
 
-Before you write a response for the user, read
-`shared/contracts/references/human-readable-output.md`.
+If you have not read `shared/contracts/references/human-readable-output.md` in this session,
+read it before you write for the user.
 
 Improve a change through a bounded, evidence-preserving review loop. This is
 distinct from `pr-review` (findings only) and `simplify` (small cleanup).
@@ -18,8 +18,10 @@ distinct from `pr-review` (findings only) and `simplify` (small cleanup).
 - **Acceptance** — the user decides which findings are `accepted`. Record an agent recommendation
   as `deferred` until the user accepts it. A calling workflow can pre-accept findings when it
   states that rule, such as `phase-gate` solo mode for blockers.
-- **Scope** — the allowed directories. If the user gives none, use the baseline's changed paths.
-- **Round bound** — the user's bound, else three rounds.
+- **target** — the PR, branch, or diff that the findings apply to.
+- **Scope** (`--scope path[,path]`) — the allowed directories. If the user gives none, use the
+  baseline's changed paths.
+- **Round bound** (`--rounds N`) — the user's bound, else three rounds.
 
 ## Steps
 

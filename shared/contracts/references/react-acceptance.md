@@ -76,5 +76,6 @@ Use `blocker` only for these defaults. Each needs evidence in the changed code.
 
 ## Record
 
-Record each listed rule as `Applied` with its severity, or `Not applicable` with a reason.
+Record rules as the "React rule scan" section in `typescript-react-baseline.md` says.
+Add the severity to each `Applied` rule.
 State the evidence for each `blocker` and each evidence-based `should-fix`.

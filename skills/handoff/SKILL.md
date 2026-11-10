@@ -5,8 +5,8 @@ description: Write a resumable handoff so a fresh agent or person can continue t
 
 # handoff
 
-Before you write a response for the user, read
-`shared/contracts/references/human-readable-output.md`.
+If you have not read `shared/contracts/references/human-readable-output.md` in this session,
+read it before you write for the user.
 
 Write a handoff so a fresh agent or a teammate can continue exactly where this session stopped.
 A good handoff stops the next session from repeating known work and dead ends.
@@ -40,8 +40,8 @@ Include relevant lesson candidates in the handoff or authorized project knowledg
 1. **Locate the live state.** If the lane keeps a durable state file, it's the primary source —
    reference and summarize it rather than restating everything:
    - Bug-to-Fix → the bug-investigation file (`status`, Current Focus, Eliminated, `next_action`).
-   - Phased Delivery or a project-owned delivery workflow → the implementation plan (Current State, task status, next step,
-     resume instructions).
+   - Phased Delivery or a project-owned delivery workflow → the implementation plan (Current state,
+     status, last completed step, next action).
    - Retrofit → the retrofit plan (the site table + status).
    - No durable file → synthesize the state from the session.
 2. **Summarize current state**: what the task is, what's done, what's in flight, the branch and
@@ -56,8 +56,7 @@ Include relevant lesson candidates in the handoff or authorized project knowledg
 ## Resume protocol (for whoever picks it up)
 
 Read the durable state file first (its `status` / Current State), then the handoff's next action and
-what's been ruled out. Compare the recorded branch and working-tree state with `git status`; rerun
-checks whose recorded result is missing or stale before relying on them. Continue from the next
-action without re-litigating eliminated paths.
+what's been ruled out. Reconcile the recorded state as `shared/contracts/references/execution.md`
+says before you rely on it. Continue from the next action without re-litigating eliminated paths.
 
 The work is complete when the saved handoff contains each Steps item and you have reported its path.

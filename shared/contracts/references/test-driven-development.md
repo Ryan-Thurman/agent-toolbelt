@@ -33,10 +33,8 @@ Unit tests alone do not establish browser behavior or external service compatibi
 | Check related behavior | Run the affected tests after the behavior change. | Relevant tests pass, or failures are investigated and reported. |
 | Refactor if useful | Make a small behavior-preserving cleanup within the approved scope after green. | The affected tests still pass; no new behavior or unrelated cleanup enters the change. |
 
-Repeat this cycle for the next selected behavior.
-Complete each red-green cycle before you write the next test.
+Complete each cycle before you write the next test.
 If a new test already passes, record existing coverage and select an unmet requirement.
-Get each red result from a real source requirement.
 If a test expectation is mistaken, correct it from source evidence and repeat the red check.
 For a bug fix, the first case must capture the confirmed symptom before repair.
 For existing passing behavior, use characterization tests and identify them separately from test-first evidence.
@@ -59,10 +57,8 @@ Use integration evidence when a substitute hides a required interaction.
 ## Coverage and completion
 
 Use the repository's coverage command when available and inspect uncovered branches in the changed behavior.
-Coverage percentages measure execution; review the assertions and observable outcomes separately.
-Add cases for meaningful missing decisions, boundaries, and failure outcomes.
-Follow existing coverage thresholds without reducing them or adding exclusions to pass.
-Use only the repository's coverage targets. Add tests for meaningful behavior, not to raise the number.
+Coverage measures execution, not assertions. Add cases for missing decisions, boundaries, and failure outcomes, not to raise the number.
+Use the repository's coverage targets. Do not lower thresholds or add exclusions to pass.
 If coverage tooling is unavailable, report coverage as unmeasured and identify the behavior the tests establish.
 
 Before handoff, run the relevant suite and repository-required checks against the final change.

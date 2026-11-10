@@ -9,8 +9,4 @@ Use `/pr-improve` to fix accepted review findings on a PR. Use `/pr-review` to f
 
 **Arguments:** `$ARGUMENTS`
 
-- **target** — a PR, branch, or diff with existing findings.
-- **`--scope path[,path]`** — the directories that fixes can change. The default is the baseline's changed paths.
-- **`--rounds N`** — the round bound. The default is 3.
-
-Follow the `pr-improve` skill (`skills/pr-improve/SKILL.md`).
+Follow the `pr-improve` skill (`skills/pr-improve/SKILL.md`). Its "Inputs" section defines each argument.

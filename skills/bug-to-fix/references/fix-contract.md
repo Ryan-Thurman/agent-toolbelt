@@ -32,14 +32,14 @@ Read this file after `/rca` completes the reasoning checkpoint, when you write t
      If the fix already exists, check the unfixed revision in an isolated workspace.
      Do not overwrite user edits.
    - **If automation is unavailable:** write the manual re-test steps for QA.
-     Record "add an automated regression test" as a Should-Fix follow-up.
+     Record "add an automated regression test" as a Should-Fix follow-up. `/cover` can close it later.
    - In both cases, verify that the original issue is gone and that you know why the fix works.
      Verify that related behavior is intact. Assume that the fix is wrong until evidence proves it.
 4. **Update the durable file.** Set `status: fixing`, then `verifying` or `awaiting_human_verify`.
    Write the fix and verification plan into **Resolution**.
 5. **Hand off.** `/implementation-plan` plans a larger fix; `/dev-implement-task` implements it.
    Review the change with `/pr-review` or `/dev-pr-review`.
-   Do not push to a default branch unless the user explicitly asks.
+   Push authority follows `shared/contracts/references/execution.md`.
 
 ## Output
 

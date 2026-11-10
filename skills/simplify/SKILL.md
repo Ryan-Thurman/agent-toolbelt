@@ -5,8 +5,8 @@ description: "Apply behavior-preserving cleanup on opt-in: delete dead code, inl
 
 # simplify
 
-Before you write a response for the user, read
-`shared/contracts/references/human-readable-output.md`.
+If you have not read `shared/contracts/references/human-readable-output.md` in this session,
+read it before you write for the user.
 
 Propose high-conviction, behavior-preserving cleanup and apply it on opt-in.
 Prefer small deletions to ambitious rewrites. `pr-review` finds problems and applies nothing.
@@ -29,10 +29,8 @@ Never change behavior or edit tests to make cleanup pass.
   smell families, `/simplify` axes, the risk and action vocabulary, thin-wrapper rules, and detection cues.
   Load `shared/contracts/references/anti-slop-naming.md` for concrete misleading-name,
   narration-comment, and speculative-abstraction cues; never turn generic-name cues into regex bans.
-- **Run the React rule scan.** For TypeScript or React changes, load
-  `shared/contracts/references/typescript-react-baseline.md` and run its scan. Record each listed
-  rule as `Applied` or `Not applicable`. Verify versions, and require concrete impact before
-  you apply a performance cleanup.
+- **Run the React rule scan** in `shared/contracts/references/typescript-react-baseline.md`.
+  Require concrete impact before you apply a performance cleanup.
 - **Respect fences and boundaries.** Skip blocks between `simplify-ignore-start: <reason>` and
   `simplify-ignore-end` comments, in any comment syntax. Take care with error handling,
   security logic, migration files, and dynamic callers.

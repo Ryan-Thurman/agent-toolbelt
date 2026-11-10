@@ -5,8 +5,8 @@ description: Plan, review, or deliver requirements as test-first, reviewable pha
 
 # Phased Delivery
 
-Before you write a response for the user, read
-`shared/contracts/references/human-readable-output.md`.
+If you have not read `shared/contracts/references/human-readable-output.md` in this session,
+read it before you write for the user.
 
 Use this skill to turn approved scope into small, verifiable PRs.
 A human reviews the plan and each PR.
@@ -72,8 +72,8 @@ Continue through ordinary code, file, and test discovery without a stop.
 4. **Review and open that phase's PR.** Read `references/review-rules.md`.
    Fix blocking findings, then open one PR for the phase when authorized.
 5. **Hand off to a human.** Record the PR, base and head, checks, blockers, and
-   next phase. A human reviews and merges the PR. Merge only when the user
-   explicitly authorizes it. Start the next phase as the Stacked PRs section says.
+   next phase. Merge authority follows `shared/contracts/references/execution.md`.
+   Start the next phase as the Stacked PRs section says.
 
 ## Stacked PRs
 
@@ -90,8 +90,8 @@ without authorization. An independent ticket targets the default branch.
 
 Keep the existing plan or a small execution record current. Record the phase or
 ticket ID, branch and PR links, target branch, acceptance evidence, checks,
-blockers, and next action. Before you resume, reconcile the record with git and
-PR state. Keep human-authored requirements unchanged.
+blockers, and next action. Before you resume, reconcile the record as
+`shared/contracts/references/execution.md` says. Keep human-authored requirements unchanged.
 
 - For a caller-managed assignment, read `shared/contracts/references/execution.md`.
 - When repair attempts repeat or verification stalls, read

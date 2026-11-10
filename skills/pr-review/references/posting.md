@@ -1,25 +1,26 @@
 # Inline PR-comment posting (`--comment`)
 
-By default a review prints a markdown report. With `--comment` (PR targets only) the same findings
-are posted as **inline review comments** on the PR, anchored to `file:line`. The markdown report is
-still printed locally so you have the full record.
+With `--comment` (PR targets only), post the findings as inline review comments anchored to
+`file:line`. Always print the markdown report locally as well.
+The shared policy is `shared/contracts/references/posting.md`. This file adds the review mechanics.
+Detect the provider first (`providers.md`). GitHub posts one batched review. Azure Repos posts one
+thread per location.
 
-This is opt-in and **never** runs unless the user passed `--comment`. Posting writes to a shared,
-outward-facing artifact (the PR) — confirm before posting if the user only said "review".
-The shared posting policy is `shared/contracts/references/posting.md`. This file adds the review mechanics.
+## Confirmation
 
-**Provider-aware.** Posting works on **GitHub** (`gh`) and **Azure Repos** (`az`); the model differs
-(GitHub = one batched review, Azure = per-location threads) — detect the provider first
-(`providers.md`) and use the matching mechanics below. The concepts above the provider split (what to
-post, threshold, anchoring, idempotency, dry-run) are identical for both.
+This section applies the confirmation rule in `shared/contracts/references/posting.md` to `--comment`.
+
+- A caller skill, CI job, review-queue worker, or review-on-open poller that passes `--comment`
+  has already confirmed. Post without a prompt.
+- An interactive user who passed `--comment` and said "post" has confirmed. Post without a prompt.
+- In other interactive runs, print the preview (see "Dry-run / preview") and ask before the POST.
 
 ## Preconditions
 
-- The target must resolve to a **real PR** on a supported host (a PR number/URL, or a branch with an
-  open PR — GitHub or Azure Repos). For branch-with-no-PR or local-working-changes there is nothing to
-  attach comments to → fall back to the markdown report and say so.
-- The host CLI must be authenticated: GitHub `gh auth status`; Azure `az account show` (+ a PAT or
-  `az login` with Repos scope). If not, print the report and note posting was skipped.
+- The target must resolve to a real PR on GitHub or Azure Repos.
+- The host CLI must be authenticated: GitHub `gh auth status`; Azure `az account show`.
+
+If a precondition fails, print the report and say why posting was skipped.
 
 ## What gets posted (provider-neutral)
 
@@ -175,7 +176,8 @@ worker, `phase-gate`) uses the head-SHA marker as its only cross-run review reco
 
 1. Before posting, fetch the PR's existing comment bodies (commands below).
 2. If a summary carries `pr-review:head=<current headSha>`, do not post. Report "already reviewed at
-   `<headSha>`". Post again only when the user explicitly asks for a repost.
+   `<headSha>`". Post again only with `--repost` or when the user explicitly asks for a repost.
+   With `--repost`, post a new summary and skip the inline findings that are already present.
 3. Otherwise, post the summary with the new head-SHA marker.
 4. Skip each inline finding whose fingerprint marker is already present.
 
@@ -198,13 +200,10 @@ A re-run after a push therefore posts a new summary and only the new findings.
 ## Dry-run / preview
 
 Before the POST, print a one-line-per-comment preview (`path:line — bucket·title`) and the count.
-If the user invoked with a confirm-first posture (the default when they didn't clearly say "post"),
-show the preview and ask before the POST. With explicit `--comment` + "post it", skip the prompt.
+Ask before the POST only when "Confirmation" requires it.
 
 ## Failure handling
 
-- Auth/permission error or the host CLI (`gh`/`az`) missing → print the full markdown report, note
-  posting was skipped and why (degrade to report-only per `providers.md`).
 - A single comment rejected for a bad anchor → drop it to the summary body (above) and post the rest;
   never let one un-anchorable finding sink the whole review.
 - Partial POST failure → report what posted and what didn't; the markdown report remains the source of truth.

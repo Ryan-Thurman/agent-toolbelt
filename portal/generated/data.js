@@ -176,7 +176,7 @@ window.AGENT_TOOLBELT_DATA = {
       "display_name": "Cover",
       "short_description": "Author behavior-pinning tests for a diff, module, or bug reproduction on opt-in.",
       "default_prompt": "Propose tests that pin this behavior.",
-      "description": "Author behavior-pinning tests for a diff, module, or bug reproduction, applied on opt-in, or scan an area for missing and weak coverage (detect-only). Use when adding regression coverage, strengthening tests, or surveying coverage gaps. For a merge verdict use /pr-review.",
+      "description": "Author behavior-pinning tests for a diff, a module, or a bug-to-fix regression gap, applied on opt-in, or scan an area for missing and weak coverage (detect-only). Use when adding regression coverage, strengthening tests, or surveying coverage gaps. For a merge verdict use /pr-review.",
       "category": "Testing & Verification",
       "tags": [
         "tests",
@@ -836,7 +836,7 @@ window.AGENT_TOOLBELT_DATA = {
       "display_name": "Security Audit",
       "short_description": "Audit code and configuration security risks.",
       "default_prompt": "Use $security-audit to review this target's security risks.",
-      "description": "Perform a read-only security audit of code, configuration, dependencies, and secret exposure. Use for evidence-backed security review; active testing requires explicit written authorization.",
+      "description": "Perform a read-only security audit of implemented code, configuration, dependencies, and secret exposure. Use threat-model for a design before it is built. Active testing requires explicit written authorization.",
       "category": "Security & Risk",
       "tags": [
         "security",
@@ -881,7 +881,7 @@ window.AGENT_TOOLBELT_DATA = {
       "display_name": "Shape Up",
       "short_description": "Compare a product ask with current behavior, or shape an approved brief.",
       "default_prompt": "Use $shape-up to review this ask against the current system or shape it into an approved brief, as requested.",
-      "description": "Compare a product ask with current system behavior, shape a vague request into an approved brief, or slice an approved brief into tickets before planning. Route defects to bug-to-fix.",
+      "description": "Compare a product ask with current system behavior, shape a vague request into an approved brief, or slice an approved brief into tickets before planning. Use product-discovery to decide whether to build. Route defects to bug-to-fix.",
       "category": "Discovery & Planning",
       "tags": [
         "brief",
@@ -1172,7 +1172,7 @@ window.AGENT_TOOLBELT_DATA = {
       "display_name": "Tech Backlog Assessment",
       "short_description": "Assess one technical investment before implementation.",
       "default_prompt": "Use $tech-backlog-assessment to assess this item and compare its alternatives.",
-      "description": "Assess technical backlog items before implementation: decide do/defer/reject/spike, compare options such as packages, library switches, or upgrades, define risks, test strategy, and the next workflow.",
+      "description": "Decide whether and how to do one technical backlog item: do/defer/reject/spike, options such as packages or upgrades, risks, test strategy, and next workflow. Use ticket-discovery when the item names a precedent; use tech-debt-discovery to find candidates.",
       "category": "Discovery & Planning",
       "tags": [
         "backlog",
@@ -1311,7 +1311,7 @@ window.AGENT_TOOLBELT_DATA = {
       "display_name": "Threat Model",
       "short_description": "Map design threats and security controls.",
       "default_prompt": "Use $threat-model to analyze this design before implementation.",
-      "description": "Model assets, trust boundaries, attacker paths, mitigations, and verification before building a security-sensitive change. Use for design-time security analysis, not active testing.",
+      "description": "Model assets, trust boundaries, attacker paths, mitigations, and verification before building a security-sensitive change. Use for design-time security analysis, not active testing. Use security-audit for implemented code.",
       "category": "Security & Risk",
       "tags": [
         "threat-model",
@@ -1319,12 +1319,12 @@ window.AGENT_TOOLBELT_DATA = {
         "mitigations",
         "security"
       ],
-      "primary_purpose": "Identify threats, trust boundaries, and mitigations before or during a security-sensitive change.",
+      "primary_purpose": "Identify threats, trust boundaries, and mitigations for a security-sensitive design before it is built.",
       "use_when": [
         "A change handles credentials, personal data, privileged actions, network boundaries, or untrusted input."
       ],
       "avoid_when": [
-        "The change has no meaningful security boundary or sensitive data flow."
+        "The change has no meaningful security boundary or sensitive data flow, or the code is already built (use security-audit)."
       ],
       "preferred_context": "Architecture, assets, actors, data flows, trust boundaries, abuse cases, and mitigations.",
       "expected_outputs": [
@@ -1358,7 +1358,7 @@ window.AGENT_TOOLBELT_DATA = {
       "display_name": "Ticket Discovery",
       "short_description": "Investigate a narrow precedent-based implementation ticket and produce a handoff without editing code.",
       "default_prompt": "Investigate this implementation ticket.",
-      "description": "Investigate a narrow implementation ticket that references an existing precedent, compare source and target areas, produce a gap analysis, test plan, and implementation handoff without editing code.",
+      "description": "Investigate a narrow implementation ticket that references an existing precedent. Compare source and target areas, and produce a gap analysis, test plan, and handoff without editing code. Use tech-backlog-assessment when the work itself is in question.",
       "category": "Discovery & Planning",
       "tags": [
         "ticket",
@@ -1366,12 +1366,12 @@ window.AGENT_TOOLBELT_DATA = {
         "gap-analysis",
         "planning"
       ],
-      "primary_purpose": "Investigate existing work and evidence to clarify or improve a delivery ticket.",
+      "primary_purpose": "Investigate a narrow ticket that names an existing precedent, and produce a gap analysis, test plan, and handoff.",
       "use_when": [
-        "A ticket is ambiguous, duplicates prior work, or needs repository and history investigation."
+        "A probably valid ticket asks to copy or adapt a pattern that already exists in another area."
       ],
       "avoid_when": [
-        "The issue already contains sufficient context and acceptance criteria."
+        "The issue already contains sufficient context, or the question is whether to do the work at all (use tech-backlog-assessment)."
       ],
       "preferred_context": "Ticket, repository history, related issues, code ownership, and current behavior.",
       "expected_outputs": [
@@ -1404,7 +1404,7 @@ window.AGENT_TOOLBELT_DATA = {
       "display_name": "Ticket Sync",
       "short_description": "Publish sliced ticket files to GitHub Issues, Jira, or Azure Boards with confirmation gates.",
       "default_prompt": "Sync these ticket files to the tracker.",
-      "description": "Publish approved ticket files to the repository's tracker: GitHub Issues, Jira, or Azure Boards. Use after to-issues, bug-intake, or a project-owned ticket workflow. Preview changes, preserve tracker keys, and write a manifest when offline.",
+      "description": "Publish approved ticket files to the repository's tracker: GitHub Issues, Jira, or Azure Boards. Use after shape-up slicing, bug-to-fix intake, or a project-owned ticket workflow. Preview changes, preserve tracker keys, and write a manifest when offline.",
       "category": "Feature Delivery",
       "tags": [
         "ticket",

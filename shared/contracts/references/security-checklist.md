@@ -1,7 +1,9 @@
 # Security Checklist
 
 Use these vulnerability classes as review cues for code, configuration, and changes.
-Report a class only when you can show an attacker-reachable path.
+For each finding, state whether an attacker can reach the path.
+When reachability is unknown, say so. Do not drop the finding for that reason alone.
+Drop a finding only when you can show that the path is unreachable.
 
 | Class | Look for |
 | --- | --- |

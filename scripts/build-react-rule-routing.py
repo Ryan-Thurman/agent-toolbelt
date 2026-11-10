@@ -75,10 +75,8 @@ def render(skill_dir, index):
         "",
         index["intro"],
         "",
-        "The React rule scan in `shared/contracts/references/typescript-react-baseline.md`",
-        "lists the `scan` rules that changed lines trigger. Check each `judgment` rule",
-        "against the change yourself. Severity comes from",
-        "`shared/contracts/references/react-acceptance.md`, not from the impact column.",
+        "To review a change, follow the \"React rule scan\" section in",
+        "`shared/contracts/references/typescript-react-baseline.md`. This table is for lookup.",
     ]
     for category in index["categories"]:
         rows = sorted(by_prefix.get(category["prefix"], []))

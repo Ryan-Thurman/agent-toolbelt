@@ -1,15 +1,16 @@
 ---
 name: ticket-sync
-description: "Publish approved ticket files to the repository's tracker: GitHub Issues, Jira, or Azure Boards. Use after to-issues, bug-intake, or a project-owned ticket workflow. Preview changes, preserve tracker keys, and write a manifest when offline."
+description: "Publish approved ticket files to the repository's tracker: GitHub Issues, Jira, or Azure Boards. Use after shape-up slicing, bug-to-fix intake, or a project-owned ticket workflow. Preview changes, preserve tracker keys, and write a manifest when offline."
 ---
 
 # ticket-sync
 
-Before you write a response for the user, read
-`shared/contracts/references/human-readable-output.md`.
+If you have not read `shared/contracts/references/human-readable-output.md` in this session,
+read it before you write for the user.
 
-Publish local ticket files from `/to-issues`, `/bug-intake`, or project-owned ticket workflows
-to the tracker that the repository declares. Slicing belongs to those workflows.
+Publish local ticket files from `shape-up` slicing (`/to-issues`), `bug-to-fix` intake (`/bug-intake`),
+or project-owned ticket workflows to the tracker that the repository declares.
+Slicing belongs to those workflows.
 
 ## Mutation Policy
 
@@ -49,7 +50,7 @@ When that identity cannot be established, report an unknown outcome and preserve
 4. **Plan (dry-run preview).** For each ticket, choose **create** (no recorded key) or **update**
    (a recorded `Tracker:` key). Show the provider, project, mapped fields, body, and dependency links.
    Stop for confirmation. Nothing is posted yet.
-5. **Apply on confirmation.** Create or update each issue through the provider's commands.
+5. **Apply on confirmation.** Create or update each issue through the provider's commands in `references/providers.md`.
    Link dependencies through the blockers' recorded keys.
    On create, write the new key into the ticket's `Tracker:` line.
    In manifest mode, write the manifest instead.
@@ -57,10 +58,4 @@ When that identity cannot be established, report an unknown outcome and preserve
    (created / updated / manifest-only / skipped).
    Name each dependency that could not be linked yet.
 
-## References
-
-- `references/config.md` — read in step 1 and step 2: the `.tickets.md` schema, discovery,
-  base-branch trust, ticket parsing, field mapping, and the `Tracker:` key.
-- `references/providers.md` — read in step 3 and step 5: per-tracker create, link, and update
-  commands, CLI/credential detection, and the manifest format.
-- `templates/tickets-config.md` — a copyable `.tickets.md` starter for a target repo.
+To start a `.tickets.md` file in a target repository, copy `templates/tickets-config.md`.

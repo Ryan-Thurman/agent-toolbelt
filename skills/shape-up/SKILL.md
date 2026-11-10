@@ -1,12 +1,12 @@
 ---
 name: shape-up
-description: Compare a product ask with current system behavior, shape a vague request into an approved brief, or slice an approved brief into tickets before planning. Route defects to bug-to-fix.
+description: Compare a product ask with current system behavior, shape a vague request into an approved brief, or slice an approved brief into tickets before planning. Use product-discovery to decide whether to build. Route defects to bug-to-fix.
 ---
 
 # shape-up
 
-Before you write a response for the user, read
-`shared/contracts/references/human-readable-output.md`.
+If you have not read `shared/contracts/references/human-readable-output.md` in this session,
+read it before you write for the user.
 
 Choose the mode from the user's request:
 

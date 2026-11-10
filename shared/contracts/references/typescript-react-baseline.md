@@ -17,26 +17,27 @@ instructions, configuration, or repeated local conventions do not decide the iss
 
 ## React rule scan
 
-Run the scan when a change adds or edits JavaScript or TypeScript code:
+This section owns the React rule check. Skills, facets, and gates point here.
+
+Run the scan when a change adds or edits JavaScript or TypeScript code and
+`shared/contracts/scripts/react-rule-scan.py` is installed:
 
 ```bash
-python3 shared/contracts/scripts/react-rule-scan.py --base <base>
+python3 shared/contracts/scripts/react-rule-scan.py [--base REF] [PATH ...]
 ```
 
-- Use the frozen base when the caller has one. Pass paths instead of `--base` to scan whole files.
-- The scan lists each installed specialist rule that the changed lines trigger:
-  `vercel-react-best-practices` for performance, `vercel-composition-patterns`
-  for component APIs, `use-effect-killer` for effects, `vercel-react-native-skills`
-  for React Native, `vercel-react-view-transitions` for view transitions, and
-  `vercel-web-interface-guidelines` for UI accessibility and interaction.
-- Read every listed rule file. Record each one as `Applied` with the finding or change,
-  or `Not applicable` with a one-line reason. A listed rule without a record is unfinished work.
-- Set the severity of each finding with `shared/contracts/references/react-acceptance.md`.
-- Then read each installed specialist's `references/rule-routing.md`.
-  Check the rules that the scan cannot detect against the change.
+- Omit `--base` to compare with the default branch. Pass `--base REF` only when the
+  caller gives a frozen base. Pass `PATH` arguments instead to scan whole files.
 - When `react_files` is empty, record the React rules check as `Skipped`.
+- Read each file in `rules`. These are the specialist rules that the changed lines trigger.
+- Compare the change with the `when` line of each `judgment_rules` entry. No pattern
+  detects these rules. Read the `path` only when the condition matches.
+- Record each rule that you read as `Applied` with the finding or change, or
+  `Not applicable` with a one-line reason. A listed rule without a record is unfinished work.
+- Set the severity of each finding with `shared/contracts/references/react-acceptance.md`.
 - When the scan names `missing` specialists, report them once. Do not block on them.
 - Check framework and React versions, runtime boundaries, local evidence, and measured
   impact before you apply a rule. Repository policy wins over specialist rules.
+- To find a rule without a scan, use the `references/rule-routing.md` table of a specialist.
 
 This baseline deliberately does not choose an architecture or framework policy.

@@ -42,6 +42,6 @@ Manage only processes created by the current task.
 
 ## Resume
 
-Reconcile branch, worktree, source revisions, diff, and attempt history before another edit.
+Before another edit, reconcile state as [execution.md](execution.md) says, and include the attempt history.
 Resume from the recorded next action; a reset does not renew an exhausted attempt limit.
 After a consequential failure, use [execution-lessons.md](execution-lessons.md) when a reusable lesson has evidence.

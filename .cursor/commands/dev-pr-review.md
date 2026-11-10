@@ -1,11 +1,10 @@
 ---
-description: Check readiness of the current phase or ticket PR
+description: Check an open phase or ticket PR before human review
 argument-hint: "<phase-or-ticket-and-diff>"
 ---
 
 # /dev-pr-review
 
-Use this command to check if the current phase PR is ready for human review.
+Use this command to check an open phase PR before human review.
+Use `/dev-phase-review` before the PR is open.
 Follow the `phased-delivery` skill review rules for `$ARGUMENTS`.
-Report the verdict as `Ready`, `Needs Work`, or `Blocked`.
-Give each finding a severity in a separate field.

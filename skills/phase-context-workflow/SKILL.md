@@ -5,8 +5,8 @@ description: Keep phase files, context packets, and phase handoffs so long codin
 
 # phase-context-workflow
 
-Before you write a response for the user, read
-`shared/contracts/references/human-readable-output.md`.
+If you have not read `shared/contracts/references/human-readable-output.md` in this session,
+read it before you write for the user.
 
 Use this skill to keep the context of a multi-session task in files, not in chat history.
 Resume from phase files, the git diff, and acceptance criteria, not from memory.
@@ -37,9 +37,8 @@ When the project wants to track phase files, use `docs/agent-command-center/phas
 After each operation, report the written path and the next command.
 Report a phase as complete only when a handoff or an explicit status field says so.
 
-When you start a phase, reconcile the packet with current source revisions, worktree content, and caller state before you reuse evidence.
+When you start a phase, reconcile the packet as `shared/contracts/references/execution.md` says.
 Keep attempt counts, unresolved operation outcomes, and the owner of each next action.
-A reset does not grant new authority or renew an exhausted repair limit.
 
 ## Clear or compact
 

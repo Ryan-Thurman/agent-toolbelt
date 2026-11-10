@@ -19,7 +19,7 @@ Put nuance in finding buckets and questions.
 ## Posting threshold
 
 Apply this after severity calibration (`review-rubric.md` → severity floors) on every tier.
-Hide `nit`s when a higher finding exists, unless the user asked for nits.
+Hide `nit`s when a higher finding exists, unless the user asked for nits or passed `--show-nits`.
 Keep `should-fix` and `nit` findings in their own sections in an approved report.
 
 ## Review coverage and limits

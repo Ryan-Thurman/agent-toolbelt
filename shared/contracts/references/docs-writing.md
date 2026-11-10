@@ -2,11 +2,10 @@
 
 Read this file with `human-readable-output.md` when you write or review project documentation.
 Project documentation includes README files, wiki pages, docs pages, changelogs, skill references, and PR descriptions.
-The Document rules in `skills/simple-english/SKILL.md` are the base.
-The "Writing precedence" section in `human-readable-output.md` decides each conflict.
-`skills/writing-whip/SKILL.md` and its trope catalog, `references/tropes.md`, list the AI writing tropes to remove.
-This file adds page structure, headings, code, placeholders, units, and links.
-Repository conventions win over the rules in this file.
+This file adds page structure, headings, code, placeholders, units, and links to the
+`simple-english` Document rules. The "Writing precedence" section in `human-readable-output.md` decides each conflict.
+Read the full trope catalog, `skills/writing-whip/references/tropes.md`, only when the list in
+`skills/writing-whip/SKILL.md` does not cover a pattern that you see.
 
 ## Plan the page
 

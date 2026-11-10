@@ -1,12 +1,12 @@
 ---
 name: threat-model
-description: Model assets, trust boundaries, attacker paths, mitigations, and verification before building a security-sensitive change. Use for design-time security analysis, not active testing.
+description: Model assets, trust boundaries, attacker paths, mitigations, and verification before building a security-sensitive change. Use for design-time security analysis, not active testing. Use security-audit for implemented code.
 ---
 
 # threat-model
 
-Before you write a response for the user, read
-`shared/contracts/references/human-readable-output.md`.
+If you have not read `shared/contracts/references/human-readable-output.md` in this session,
+read it before you write for the user.
 Read `shared/contracts/references/evidence-quality.md` when establishing threat and control evidence.
 
 Create a design-time security model before implementation. It is analytical and
@@ -32,7 +32,7 @@ does not perform active testing.
 7. Identify the threat assumptions that need review after changes to architecture, identity,
    data sensitivity, tenant boundaries, or deployment.
 8. For AI systems, inspect untrusted retrieved content, tool authority, stored context, and sensitive output.
-9. Hand the requirements to planning, `/test-case-design`, or `/shape-up` as appropriate.
+9. Hand the requirements to `phased-delivery`, `test-case-design`, or `shape-up` as appropriate.
 
 ## Completion
 

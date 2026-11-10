@@ -6,12 +6,20 @@ Do not change an outcome, and do not add a summary format.
 
 ## Procedure
 
-1. Run `execute` or `verify`, and wait for it to exit.
-   For report-only mode, skip this step.
-2. Run `review`, or run `review --report-only` with the same `--changed` and `--target` flags.
-3. Read the review JSON from stdout. `references/cli.md` defines its fields.
-4. If a target outcome is `REFACTOR`, read its `refactorBrief` file in full.
-5. Write the prefix lines that apply, then one template block for each target in name order.
+This procedure is the `/do-crap-analysis [--coverage] [--target NAME] [--report-only]` flow.
+`/crap-refactor` replaces steps 1 and 2 with `verify` (`references/refactor.md`).
+Do not edit source files in this flow.
+
+1. Run `bash skills/crap-analysis/bin/crap-analysis.sh validate-config`.
+   If it reports that the config is missing, suggest `/crap-config` and stop.
+2. Unless `--report-only`, run `execute --changed` once, and wait for it to exit.
+   Add `--coverage` and `--target NAME` only when the user passed them.
+   `--target NAME` limits the run to that target. The review scope stays the changed files.
+3. Run `review`. With `--report-only`, run `review --report-only --changed`, plus `--target NAME`
+   when given. This reviews the reports on disk without running commands.
+4. Read the review JSON from stdout. `references/cli.md` defines its fields.
+5. If a target outcome is `REFACTOR`, read its `refactorBrief` file in full.
+6. Write the prefix lines that apply, then one template block for each target in name order.
 
 ## Decision table (applied by `review`)
 

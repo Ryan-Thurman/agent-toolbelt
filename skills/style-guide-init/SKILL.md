@@ -5,25 +5,29 @@ description: Extract and maintain repository contribution guidance from code, to
 
 # Repository contribution guidance
 
-Before you write a response for the user, read
-`shared/contracts/references/human-readable-output.md`.
+If you have not read `shared/contracts/references/human-readable-output.md` in this session,
+read it before you write for the user.
 
 Derive how to work in this repository, then maintain that guidance against new
 evidence. A repeated implementation is evidence of practice, not automatic approval of a standard.
 
 ## Choose the operation
 
-- **Explain or draft:** inspect the requested scope and return guidance without
+Select the operation from the flag or from the same request in plain words.
+With no flag and no clear request, use explain or draft.
+
+- **Explain or draft (`--print`):** inspect the requested scope and return guidance without
   changing files. `--print` always takes this path.
-- **Create or update:** a request to write the guide authorizes the relevant doc
+- **Create or update (`--write`):** a request to write the guide authorizes the relevant doc
   edits and evidence checkpoint. Use the existing documentation owner and format;
   otherwise default to `CONTRIBUTING.md`. Use `STYLE_GUIDE.md` for a specifically
   requested style-only guide. Do not require another approval for authorized edits.
-- **Check:** report changed inputs and affected guidance without writing files.
-- **Refresh:** re-evaluate changed inputs and affected claims. Apply doc changes
-  when requested; an audit-only request returns the proposed patch.
+- **Check (`--check`):** report changed inputs and affected guidance without writing files.
+- **Refresh (`--refresh`):** re-evaluate changed inputs and affected claims. Apply doc changes
+  when the request authorizes them. Otherwise return the proposed patch.
+- **Scope (`--scope PATH`):** limit discovery to one package or subtree.
+  Repeat the flag for more areas. With no scope, use the whole repository.
 
-The compatibility command owns flags; natural-language requests work as well.
 This skill changes documentation and its checkpoint, not source/configuration,
 CI settings, branch protections, or release state. Do not install automation
 unless requested. Follow governing instructions while proposing corrections.

@@ -40,7 +40,27 @@ The result JSON then has `config.changedInDiff: true`, and the review starts wit
 | `outputs.report` | yes | Repo-relative path to machine-readable report JSON |
 | `outputs.refactorBrief` | yes | Repo-relative path to refactor brief markdown |
 
-## Writing rules (wizard)
+## Wizard (`/crap-config [edit]`)
+
+Write only `.crap-analysis.json`. Write another file, such as npm scripts in `package.json`, only
+after the user explicitly confirms it. Do not assume a language, framework, or repo layout.
+Start from `templates/crap-analysis.json`.
+
+1. **Discover.** Look for `.crap-analysis.json` or `.atb/crap-analysis.json`. If one exists and the
+   argument is `edit`, load it and offer to update fields.
+2. **Collect globals.** `defaults.threshold` (default `30`) and `defaults.outputDir` (default
+   `reports/crap`).
+3. **Collect targets.** For each target, ask for the target key and each per-target field above.
+   Include `--threshold` in `commands.analysis` and `commands.verify` when the tool supports it.
+4. **Validate.** Apply the writing rules below. Target keys must be unique.
+5. **Preview.** Show the full JSON.
+6. **Confirm.** Write `.crap-analysis.json` only after explicit user approval.
+7. **Optional dry-run.** Run `bash skills/crap-analysis/bin/crap-analysis.sh validate-config --config .crap-analysis.json`.
+   The new file is not on the base branch yet, so the dry-run needs `--config`.
+8. **Report.** Confirm the written path and list the targets. Tell the user to merge
+   `.crap-analysis.json` into the base branch, because `/do-crap-analysis` loads it from there.
+
+### Writing rules
 
 - Target keys sorted alphabetically in the written file
 - 2-space indent, trailing newline

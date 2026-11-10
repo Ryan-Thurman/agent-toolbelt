@@ -1168,12 +1168,12 @@
         "mitigations",
         "security"
       ],
-      "primary_purpose": "Identify threats, trust boundaries, and mitigations before or during a security-sensitive change.",
+      "primary_purpose": "Identify threats, trust boundaries, and mitigations for a security-sensitive design before it is built.",
       "use_when": [
         "A change handles credentials, personal data, privileged actions, network boundaries, or untrusted input."
       ],
       "avoid_when": [
-        "The change has no meaningful security boundary or sensitive data flow."
+        "The change has no meaningful security boundary or sensitive data flow, or the code is already built (use security-audit)."
       ],
       "preferred_context": "Architecture, assets, actors, data flows, trust boundaries, abuse cases, and mitigations.",
       "expected_outputs": [
@@ -1209,12 +1209,12 @@
         "gap-analysis",
         "planning"
       ],
-      "primary_purpose": "Investigate existing work and evidence to clarify or improve a delivery ticket.",
+      "primary_purpose": "Investigate a narrow ticket that names an existing precedent, and produce a gap analysis, test plan, and handoff.",
       "use_when": [
-        "A ticket is ambiguous, duplicates prior work, or needs repository and history investigation."
+        "A probably valid ticket asks to copy or adapt a pattern that already exists in another area."
       ],
       "avoid_when": [
-        "The issue already contains sufficient context and acceptance criteria."
+        "The issue already contains sufficient context, or the question is whether to do the work at all (use tech-backlog-assessment)."
       ],
       "preferred_context": "Ticket, repository history, related issues, code ownership, and current behavior.",
       "expected_outputs": [

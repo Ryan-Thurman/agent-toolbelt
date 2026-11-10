@@ -40,8 +40,6 @@ gh pr view <n> --json reviews,comments,headRefOid,url
 - A general PR comment or review summary has no thread. Triage it with id `pr-comment-<id>`.
   Post its reply as a new PR comment that quotes the first line.
 - The first comment's `commit.oid` is the SHA the reviewer saw.
-- Skip any thread whose latest comment is **yours** and carries the reply marker (below) — already
-  answered.
 
 ### Azure Repos (`az`)
 
@@ -146,12 +144,8 @@ The full set of blocks **is** the default output (the report). Posting consumes 
 
 ## Posting & idempotency
 
-Mirrors `shared/contracts/references/posting.md` — opt-in, confirm-first, idempotent — applied to the
-**reply** direction.
+Apply `shared/contracts/references/posting.md` for opt-in and confirmation. Only `--post` writes.
 
-- **Opt-in.** Only `--post` writes anything. Default prints the reply blocks. Posting is
-  outward-facing (it writes to the shared PR); if the user only said "reply", show the blocks and
-  **confirm before posting**.
 - **One reply per thread**, posted as a reply *to that thread* (not a new top-level comment), with
   the `Status:` and `Response:` rendered as the comment body plus a trailing idempotency marker:
 
@@ -170,15 +164,15 @@ Mirrors `shared/contracts/references/posting.md` — opt-in, confirm-first, idem
     `az devops invoke --area git --resource pullRequestThreadComments --route-parameters
     project=<proj> repositoryId=<repoId> pullRequestId=<id> threadId=<id> --http-method POST
     --in-file comment.json --api-version 7.1`.
-- **Idempotency.** Before posting, fetch existing replies and skip any thread that already carries
-  the `pr-review-reply:<thread-id>` marker. Do not write a block for a thread that already has one.
+- **Idempotency.** Before triage, skip any thread whose latest comment is yours and carries the
+  `pr-review-reply:<thread-id>` marker. Do not write a block for it.
   Report "posted X new, skipped Y already replied." Safe to re-run after pushing more fixes.
 - **Never auto-resolve.** Posting a reply must **not** flip the thread's resolved/`fixed` state — a
   human owns that. A `changed` reply records the fix; the reviewer decides whether to resolve. (Only
   if the user *explicitly* asks "and resolve answered threads" do you set status — and only for ones
   with a substantive reply already posted.)
 - **Dry-run / preview.** Before the writes, print one line per thread (`thread:<id> — <status>`) and
-  the count; with explicit `--post` + "post it", skip the prompt, else ask.
+  the count.
 - **Failure handling.** Auth/CLI error → print the full report, note posting was skipped and why. One
   thread rejected (e.g. stale id) → post the rest, report what didn't; the report stays the source of
   truth.

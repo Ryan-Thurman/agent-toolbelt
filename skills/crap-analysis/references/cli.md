@@ -179,20 +179,3 @@ Review the reports that are on disk now, without a result file.
 This op does not run any command.
 `--changed` and `--target` select targets and scope as for `execute`.
 The output has `"reportOnly": true`.
-
-## Agent usage
-
-`/do-crap-analysis`:
-
-```bash
-bash skills/crap-analysis/bin/crap-analysis.sh validate-config
-bash skills/crap-analysis/bin/crap-analysis.sh execute --changed --coverage
-bash skills/crap-analysis/bin/crap-analysis.sh review
-```
-
-`/crap-refactor`:
-
-```bash
-bash skills/crap-analysis/bin/crap-analysis.sh verify --target api --changed
-bash skills/crap-analysis/bin/crap-analysis.sh review
-```

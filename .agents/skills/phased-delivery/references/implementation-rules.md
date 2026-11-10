@@ -4,8 +4,9 @@ Read this before the first edit in a phase.
 
 1. Reconcile the phase with the source requirement or ticket, current repository
    state, and preceding PRs. Confirm the work branch and PR target.
-   Compare recorded completion with the actual revision, diff, and checks before reusing it.
-   Report stale evidence or missing work; do not redispatch completed tasks from memory alone.
+   Reconcile recorded completion as `shared/contracts/references/execution.md` says.
+   Report stale evidence or missing work.
+   For a `bug-to-fix` handoff, the fix brief is the phase source. Skip the stack rules.
 2. Before edits or commits, create or switch to a focused phase branch. If you
    are on the default branch and cannot branch safely, stop. For a stack, follow
    the skill's Stacked PRs rules.
@@ -24,8 +25,7 @@ Read this before the first edit in a phase.
    `shared/contracts/references/test-driven-development.md`.
    Run focused checks during the edit loop and proportionate broader checks before PR review.
 6. Inspect the diff for unrelated changes, premature next-ticket work, and
-   generated noise. When the phase changes JavaScript or TypeScript and
-   `shared/contracts/scripts/react-rule-scan.py` is installed, run the React rule scan in
+   generated noise. Run the React rule scan in
    `shared/contracts/references/typescript-react-baseline.md`. Fix each applied rule
    before PR review. Record changed files, checks, acceptance evidence, risks,
    and next action in the existing plan or execution record.
@@ -37,7 +37,7 @@ A phase can have one or more commits.
 A task does not need its own commit.
 Write concise messages, such as `feat: add saved filter` or `test: cover duplicate names`.
 Inspect the staged diff before each commit.
-Push to the default branch only when the user explicitly asks.
+Push and merge authority follows `shared/contracts/references/execution.md`.
 
 ## Delegation
 

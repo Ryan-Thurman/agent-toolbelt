@@ -5,8 +5,8 @@ description: Run a focused pre-PR quality gate when repository policy, user requ
 
 # code-quality-gate
 
-Before you write a response for the user, read
-`shared/contracts/references/human-readable-output.md`.
+If you have not read `shared/contracts/references/human-readable-output.md` in this session,
+read it before you write for the user.
 
 Orchestrate the existing quality owners into one current, durable verdict. This
 is not another simplifier or taxonomy: `/simplify` owns behavior-preserving
@@ -26,13 +26,9 @@ It owns the target, modes, scope rules, dispositions, evidence files, and status
    `shared/contracts/references/maintainability-taxonomy.md`, and
    `shared/contracts/references/typescript-react-baseline.md` when their
    language/scope applies. Record uncertainty rather than inventing policy.
-3. Run the required repository checks, the contract's CRAP analysis check, and its React rules check. Then
-   assess every changed hunk through `/simplify` in report mode and `/pr-review`
-   with `standards,maintainability` forced into focus. Preserve simplify's
-   Chesterton's Fence and test-safety rules.
-4. Capture the pre-threshold standards and maintainability facet findings before
-   normal PR rendering can suppress nits. Record every finding and its
-   disposition in the durable evidence.
+3. Run the required repository checks, the CRAP analysis check, the React rules check, and the
+   changed-hunk assessment, as the contract's sections define them.
+4. Record every finding and its disposition in the durable evidence.
 5. In apply mode, run the bounded repair loop from the contract's assessment and
    repair section. In report mode, stop after step 4.
 

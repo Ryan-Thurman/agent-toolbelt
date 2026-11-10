@@ -16,6 +16,8 @@ They do not give permission beyond the user's authorization or project policy.
 
 When a caller owns commits or publication, leave changes in the assigned worktree and report them.
 Otherwise, follow the existing workflow's commit and publication rules.
+Push to a default branch, merge, publish, or deploy only when the user explicitly authorizes that action.
+A passing agent review or check is not that authorization. A human owns the merge decision.
 Preserve the existing PR finding format, verdict rules, and project provider schemas.
 Use an adapter when those formats differ from this optional interchange format.
 
@@ -40,8 +42,11 @@ The caller derives permitted next actions from current state, evidence, policy, 
 When an action is unavailable, name its missing prerequisite and owner.
 Continue independent authorized work when a decision blocks only part of the task.
 
-Before advancing, compare the actual diff and current source revisions with the records.
-Verify referenced evidence and retain a result that no longer matches as stale.
+## Reconcile before reuse
+
+Before you advance or resume, compare the branch, worktree state, actual diff, and current source revisions with the records.
+Verify referenced evidence. Mark a result that no longer matches as stale, and rerun its check before you rely on it.
+Do not reuse completed work from memory alone.
 
 ## Related contracts
 

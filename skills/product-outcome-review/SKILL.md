@@ -5,7 +5,8 @@ description: Review whether an experiment or released change improved its origin
 
 # Product outcome review
 
-Before writing for the user, read `shared/contracts/references/human-readable-output.md`.
+If you have not read `shared/contracts/references/human-readable-output.md` in this session,
+read it before you write for the user.
 Read `shared/contracts/references/evidence-quality.md` and `shared/contracts/references/product-measurement.md` before interpreting results.
 
 Review supplied measurements and permitted research against the original product hypothesis.

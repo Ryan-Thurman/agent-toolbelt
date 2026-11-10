@@ -8,5 +8,9 @@ Vercel Labs Agent Skills repository:
 - Upstream signals: the upstream skill declares `license: MIT`, and the
   repository README identifies the project as MIT.
 - Toolbelt changes: a new frontmatter description and a short preamble. The
-  guide body and the five reference files are unchanged. The compiled
+  guide text is rearranged, not rewritten. The Transition Types, Shared Element
+  Transitions, Common Patterns, and How Multiple VTs Interact sections moved
+  from `SKILL.md` to `references/types-and-composition.md`, with links changed
+  to point inside that folder. A short Toolbelt pointer section replaces them in
+  `SKILL.md`. `references/review-checklist.md` is new Toolbelt text. The five upstream reference files are unchanged. The compiled
   `AGENTS.md` is not copied.

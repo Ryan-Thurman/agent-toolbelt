@@ -5,8 +5,8 @@ description: Run CRAP analysis via repo-configured commands — wizard setup, si
 
 # crap-analysis
 
-Before you write a response for the user, read
-`shared/contracts/references/human-readable-output.md`.
+If you have not read `shared/contracts/references/human-readable-output.md` in this session,
+read it before you write for the user.
 
 CRAP (Change Risk Anti-Patterns) combines complexity and test coverage into one risk score.
 This skill does not calculate CRAP.
@@ -25,9 +25,10 @@ The orchestrator writes generated files only under `.atb-work/crap-analysis/` an
 
 ## Mode routing
 
-- **`/crap-config`** — write `.crap-analysis.json` from user inputs. See `references/config-schema.md`.
-- **`/do-crap-analysis`** — run `execute` once, then `review`. See `references/cli.md` and `references/review.md`.
-- **`/crap-refactor`** — apply the brief, run `verify` once, then `review`. See `references/refactor.md`.
+- **`/crap-config [edit]`** — follow `references/config-schema.md` → "Wizard".
+- **`/do-crap-analysis [--coverage] [--target NAME] [--report-only]`** — follow
+  `references/review.md` → "Procedure".
+- **`/crap-refactor <target>`** — follow `references/refactor.md` → "Flow".
 
 ## Invariants (always)
 
@@ -48,7 +49,7 @@ The orchestrator writes generated files only under `.atb-work/crap-analysis/` an
 | `references/config-schema.md` | `/crap-config`, config discovery, or a config error |
 | `references/cli.md` | running orchestrator ops or reading their JSON and exit codes |
 | `references/report-schema.md` | writing or debugging the repository's analysis command |
-| `references/review.md` | after `execute`, `verify`, or `review --report-only` |
+| `references/review.md` | `/do-crap-analysis`, and after `verify` |
 | `references/refactor.md` | `/crap-refactor` |
 | `references/scoring.md` | explaining scores and thresholds to the user |
 

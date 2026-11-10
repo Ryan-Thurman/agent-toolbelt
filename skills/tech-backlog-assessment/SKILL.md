@@ -1,12 +1,12 @@
 ---
 name: tech-backlog-assessment
-description: "Assess technical backlog items before implementation: decide do/defer/reject/spike, compare options such as packages, library switches, or upgrades, define risks, test strategy, and the next workflow."
+description: "Decide whether and how to do one technical backlog item: do/defer/reject/spike, options such as packages or upgrades, risks, test strategy, and next workflow. Use ticket-discovery when the item names a precedent; use tech-debt-discovery to find candidates."
 ---
 
 # tech-backlog-assessment
 
-Before you write a response for the user, read
-`shared/contracts/references/human-readable-output.md`.
+If you have not read `shared/contracts/references/human-readable-output.md` in this session,
+read it before you write for the user.
 Read `shared/contracts/references/evidence-quality.md` when evaluating the item.
 
 Use this skill when the user has a technical backlog item and needs a decision
@@ -37,8 +37,9 @@ For source-to-target upgrades, read `references/version-delta.md`.
 5. Recommend one verdict.
 6. For `Do` or `Spike`, define the smallest implementation shape and the verification strategy.
    Create a phased implementation plan only when the user asks to continue.
-7. Name the next workflow: `/ticket-discover`, `/dev-plan`, `/implementation-plan`,
-   `/retrofit`, `/cover-gaps`, `/cover`, or no action.
+7. Name the next skill: `ticket-discovery`, `phased-delivery`, `retrofit`, `cover`, or no action.
+   On hosts with commands, also name the command: `/ticket-discover`, `/dev-plan`,
+   `/implementation-plan`, `/retrofit`, `/cover-gaps`, or `/cover`.
 
 ## Verdicts
 

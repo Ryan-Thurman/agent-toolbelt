@@ -5,7 +5,8 @@ description: Synthesize interviews, surveys, usability notes, and customer feedb
 
 # User research synthesis
 
-Before writing for the user, read `shared/contracts/references/human-readable-output.md`.
+If you have not read `shared/contracts/references/human-readable-output.md` in this session,
+read it before you write for the user.
 Read `shared/contracts/references/evidence-quality.md` when assessing the research evidence.
 
 Analyze supplied research or permitted connected sources.

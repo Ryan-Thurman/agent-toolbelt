@@ -5,8 +5,8 @@ description: Frame a product opportunity with evidence, assumptions, risks, expe
 
 # product-discovery
 
-Before you write a response for the user, read
-`shared/contracts/references/human-readable-output.md`.
+If you have not read `shared/contracts/references/human-readable-output.md` in this session,
+read it before you write for the user.
 Read `shared/contracts/references/evidence-quality.md` when assessing product evidence.
 
 Decide whether a candidate is sufficiently evidenced to shape. This skill is
@@ -26,7 +26,7 @@ discovery, not a replacement for the approved implementation brief.
 4. Read `shared/contracts/references/product-measurement.md` when defining experiment or outcome measures.
    Define success and failure conditions with a supported baseline and explicit data limits.
    Use `templates/product-measurement-plan.md` when a separate measurement record is useful.
-5. Hand a sufficiently evidenced candidate to `/shape-up`; otherwise report what
+5. Hand a sufficiently evidenced candidate to `shape-up`; otherwise report what
    evidence or decision is still missing.
 
 Use `templates/product-discovery.md` when the user asks for a durable artifact.

@@ -12,7 +12,8 @@ The strategies, taxonomy, and symptom index make the loop start warmer. They do 
 ## Rules
 
 - Output a confirmed cause and a fix *direction* only. Do not fix the bug in this step.
-- With `--diagnose`, make no file edits. Add instrumentation only when the user approves it.
+- With `--diagnose`, make no source edits. The investigation file is the only permitted write.
+  Add instrumentation only when the user approves it.
 
 ## The loop (the spine)
 

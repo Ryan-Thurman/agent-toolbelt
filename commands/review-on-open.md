@@ -9,10 +9,4 @@ Use `/review-on-open` to review open PRs that have no review at their current he
 
 **Arguments:** `$ARGUMENTS`
 
-- **target filter** — a repo slug, `--author=<x>`, or `--label=<y>`. Empty means all open PRs.
-- **`--tier=light|standard|deep`** — passed to `/pr-review`. Omit it to auto-tier.
-- **`--max=N`** — the most PRs to review in this poll.
-- **`--host=auto|github|azure`** — override host detection.
-- **`--dry-run`** — list the due PRs and stop. Do not review or post.
-
-Follow the `review-on-open` skill (`skills/review-on-open/SKILL.md`).
+Follow the `review-on-open` skill (`skills/review-on-open/SKILL.md`). Its "Inputs" section defines each argument.

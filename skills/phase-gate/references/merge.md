@@ -11,7 +11,9 @@ Do not merge unless **all** hold:
   blockers and no scope gap can merge only after the user answers each open question. A scope gap
   (failed facet, failed verification, or unreviewed file) always stops the merge. Should-fix and nit
   findings do not block a merge, and
-- for a Phased Delivery PR, the user explicitly authorized solo merge in this session, and
+- for a Phased Delivery PR, the user explicitly authorized solo merge in this session
+  (`skills/phased-delivery/references/review-rules.md` gives that decision to a human; without the
+  authorization, stop and hand off as team mode), and
 - the PR targets an ordinary base branch (a feature/integration branch or `main` per the repo's
   normal flow) — merging the PR into its base is the intended action here.
 

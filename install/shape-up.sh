@@ -1,6 +1,8 @@
 # DESC: compare an ask with current behavior or shape an approved brief (+ optional tickets)
+# DEPENDS: simple-english
 pack_shape_up() {
   shared_contract references/human-readable-output.md
+  shared_contract references/docs-writing.md
   cmd shape-up
   cmd to-issues
 

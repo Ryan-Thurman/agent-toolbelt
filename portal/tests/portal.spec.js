@@ -33,18 +33,18 @@ test.beforeEach(async ({ page }) => {
   page.on('pageerror', (error) => problems.errors.push(error.message));
   page.on('request', (request) => { if (/^https?:/.test(request.url())) problems.remoteRequests.push(request.url()); });
   await page.goto(portalURL);
-  await expect(page.locator('#skills-grid .skill-card')).toHaveCount(37);
+  await expect(page.locator('#skills-grid .skill-card')).toHaveCount(39);
   await page.evaluate(() => document.fonts.ready);
 });
 
 test('readable catalog, filters, and skill details', async ({ page }, testInfo) => {
   const { errors, remoteRequests } = diagnostics.get(page);
 
-  await expect(page.locator('#result-summary')).toHaveText('Showing all 37 skills');
+  await expect(page.locator('#result-summary')).toHaveText('Showing all 39 skills');
   await expect(page.locator('html')).toHaveAttribute('data-theme', testInfo.project.use.colorScheme);
   await expect(page.getByRole('searchbox', { name: 'Search skills' })).toBeInViewport();
   await expect(page.getByRole('navigation', { name: 'Primary navigation' })).toBeVisible();
-  await expect(page.locator('#skill-count')).toHaveText('37');
+  await expect(page.locator('#skill-count')).toHaveText('39');
   await expect(page.getByRole('button', { name: 'Reset filters', exact: true })).toBeVisible();
   await checkLayout(page);
   await capture(page, testInfo, 'home');
@@ -97,12 +97,12 @@ test('readable catalog, filters, and skill details', async ({ page }, testInfo) 
   await search.fill('no-such-skill-908172');
   await expect(page.locator('#empty-state')).toBeVisible();
   await page.locator('#empty-clear').click();
-  await expect(page.locator('#skills-grid .skill-card')).toHaveCount(37);
+  await expect(page.locator('#skills-grid .skill-card')).toHaveCount(39);
 
   await page.locator('#category-filters').getByRole('button', { name: 'Review & Quality', exact: true }).click();
   await expect(page.locator('#result-summary')).toContainText('match your filters');
   await page.getByRole('button', { name: 'Reset filters', exact: true }).click();
-  await expect(page.locator('#result-summary')).toHaveText('Showing all 37 skills');
+  await expect(page.locator('#result-summary')).toHaveText('Showing all 39 skills');
 
   await page.locator('#workflows .section-heading').evaluate((element) => {
     const headerHeight = document.querySelector('.site-header').getBoundingClientRect().height;
@@ -123,7 +123,7 @@ test('theme preference persists and keyboard focus is visible', async ({ page },
   await expect(toggle).toHaveAccessibleName(`Use ${initial} theme`);
   await page.reload();
   await expect(page.locator('html')).toHaveAttribute('data-theme', next);
-  await expect(page.locator('#skills-grid .skill-card')).toHaveCount(37);
+  await expect(page.locator('#skills-grid .skill-card')).toHaveCount(39);
   await page.keyboard.press('Tab');
   const skip = page.getByRole('link', { name: 'Skip to content' });
   await expect(skip).toBeFocused();

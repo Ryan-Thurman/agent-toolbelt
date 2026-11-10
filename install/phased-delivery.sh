@@ -1,4 +1,5 @@
 # DESC: human-guided requirement or ticket delivery, one reviewable PR per phase
+# DEPENDS: simple-english
 pack_phased_delivery() {
   local c
   for c in \
@@ -15,6 +16,7 @@ pack_phased_delivery() {
   skill phased-delivery references/standalone-use.md
   skill phased-delivery references/plan-readiness.md
   shared_contract references/human-readable-output.md
+  shared_contract references/docs-writing.md
   shared_contract references/test-driven-development.md
   shared_contract references/execution.md
   shared_contract references/execution-schema.md

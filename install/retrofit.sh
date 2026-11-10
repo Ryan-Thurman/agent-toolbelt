@@ -1,6 +1,8 @@
 # DESC: apply one defined change across every site (library swap, API rename, upgrade): discover/transform/verify
+# DEPENDS: simple-english
 pack_retrofit() {
   shared_contract references/human-readable-output.md
+  shared_contract references/docs-writing.md
   cmd retrofit
 
   skill retrofit SKILL.md

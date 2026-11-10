@@ -1,0 +1,4 @@
+interface:
+  display_name: "Writing Whip"
+  short_description: "Stop AI writing tropes and behaviors at generation."
+  default_prompt: "Use $writing-whip to check this draft for AI writing tropes and fix them."

@@ -1,7 +1,9 @@
 # DESC: author/strengthen tests (apply on opt-in) + detect-only coverage-gap scan
+# DEPENDS: simple-english
 pack_cover() {
   cmd write-tests
   shared_contract references/human-readable-output.md
+  shared_contract references/docs-writing.md
   shared_contract references/test-driven-development.md
   cmd cover
   cmd cover-gaps

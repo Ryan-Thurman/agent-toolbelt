@@ -1,8 +1,9 @@
 #!/usr/bin/env bash
 # DESC: architecture discussions, design documents, diagrams, and decision records
-# DEPENDS: threat-model
+# DEPENDS: threat-model simple-english
 pack_system_design() {
   shared_contract references/human-readable-output.md
+  shared_contract references/docs-writing.md
   shared_contract references/evidence-quality.md
   cmd system-design
   skill system-design SKILL.md

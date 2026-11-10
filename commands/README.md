@@ -120,6 +120,8 @@ The comparison tables do not include these commands.
 - `$vercel-react-view-transitions` - add or review React View Transition animations.
 - `$vercel-react-native-skills` - conditional React Native and Expo guidance.
 - `$vercel-web-interface-guidelines` - review UI code against the Web Interface Guidelines.
+- `$simple-english` - write or rewrite text in plain English with ASD-STE100 discipline.
+- `$writing-whip` - remove AI writing tropes and behaviors from replies and documents.
 - `/worktree` - create/list/remove an isolated git worktree so parallel agents in a shared polyrepo dir don't clobber each other's branch.
 - `/crap-config` - wizard: hydrate `.crap-analysis.json` with analysis, coverage, verify commands and output paths.
 - `/do-crap-analysis` - run CRAP analysis on branch changes since the base (committed, staged, unstaged, and untracked). The script runs the commands once and returns a deterministic verdict.

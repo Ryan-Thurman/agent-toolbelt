@@ -5,7 +5,7 @@ const fs = require('fs');
 const path = require('path');
 const { ROOT, discoverCanonicalSkills, loadCatalog } = require('./catalog-lib');
 
-const EXPECTED_SKILL_COUNT = 37;
+const EXPECTED_SKILL_COUNT = 39;
 const SUPPORTED_HOSTS = new Set(['cursor', 'claude-code', 'codex']);
 const LIFECYCLES = new Set(['still-required', 'optional-compatibility', 'deprecated', 'removable']);
 const DOC_STATUSES = new Set(['complete', 'partial', 'specialized', 'missing']);
@@ -294,7 +294,7 @@ function main() {
     process.exitCode = 1;
     return;
   }
-  console.log('Catalog validation passed: 37 standard skills, 6 workflows, and tooling audit are consistent.');
+  console.log('Catalog validation passed: 39 standard skills, 6 workflows, and tooling audit are consistent.');
 }
 
 if (require.main === module) main();

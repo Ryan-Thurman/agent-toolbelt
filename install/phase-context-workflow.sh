@@ -1,6 +1,8 @@
 # DESC: durable phase context files, handoffs, and context packets; includes handoff for safe /clear or /compact boundaries
+# DEPENDS: simple-english
 pack_phase_context_workflow() {
   shared_contract references/human-readable-output.md
+  shared_contract references/docs-writing.md
   shared_contract references/execution.md
   shared_contract references/execution-schema.md
   shared_contract references/failure-recovery.md

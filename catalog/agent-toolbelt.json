@@ -865,6 +865,46 @@
       "recommended_changes": []
     },
     {
+      "id": "simple-english",
+      "category": "Agent Operations",
+      "tags": [
+        "writing",
+        "documentation",
+        "ste",
+        "plain-english",
+        "communication"
+      ],
+      "primary_purpose": "Write or rewrite replies and documents in plain English with ASD-STE100 discipline.",
+      "use_when": [
+        "An agent writes a reply, README, runbook, error message, release note, or incident report.",
+        "The user asks for STE, plain English, or a de-slop rewrite."
+      ],
+      "avoid_when": [
+        "The text is marketing or brand copy that needs persuasion."
+      ],
+      "preferred_context": "The draft text, its reader, and whether the user asks for Strict ASD-STE100 compliance.",
+      "expected_outputs": [
+        "Plain-English rewrite",
+        "Rule-numbered check report in check mode"
+      ],
+      "example_prompts": [
+        "Rewrite this README with simple-english.",
+        "Check this runbook against ASD-STE100."
+      ],
+      "related_skills": [
+        "writing-whip",
+        "pr-review",
+        "handoff",
+        "ship-it"
+      ],
+      "workflow_membership": [],
+      "documentation_completeness": {
+        "status": "complete",
+        "notes": "Canonical skill and agent metadata are present."
+      },
+      "recommended_changes": []
+    },
+    {
       "id": "simplify",
       "category": "Codebase Improvement",
       "tags": [
@@ -1601,6 +1641,44 @@
       "related_skills": [
         "handoff",
         "phase-context-workflow"
+      ],
+      "workflow_membership": [],
+      "documentation_completeness": {
+        "status": "complete",
+        "notes": "Canonical skill and agent metadata are present."
+      },
+      "recommended_changes": []
+    },
+    {
+      "id": "writing-whip",
+      "category": "Agent Operations",
+      "tags": [
+        "writing",
+        "documentation",
+        "ai-tropes",
+        "communication",
+        "review"
+      ],
+      "primary_purpose": "Stop AI writing tropes and behaviors when an agent writes replies or documents.",
+      "use_when": [
+        "An agent writes anything longer than a paragraph.",
+        "A draft needs a check for AI writing tropes."
+      ],
+      "avoid_when": [
+        "The output is a required data format, such as JSON, where prose rules do not apply."
+      ],
+      "preferred_context": "The draft text and its reader.",
+      "expected_outputs": [
+        "Text without AI writing tropes",
+        "A one-line note for each rule that the output breaks on purpose"
+      ],
+      "example_prompts": [
+        "Check this draft for AI writing tropes.",
+        "Rewrite this README section without AI tells."
+      ],
+      "related_skills": [
+        "simple-english",
+        "pr-review"
       ],
       "workflow_membership": [],
       "documentation_completeness": {

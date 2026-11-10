@@ -3,6 +3,8 @@
 Read [the shared output rules](shared/contracts/references/human-readable-output.md)
 before you write text for the user or project documents.
 Apply the user's ASD-STE100 preference to replies, progress reports, and written work.
+For READMEs, wiki pages, changelogs, and skill references, also read
+[the documentation writing rules](shared/contracts/references/docs-writing.md).
 
 # Public repository content
 

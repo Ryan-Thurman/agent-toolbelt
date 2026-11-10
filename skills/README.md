@@ -85,11 +85,12 @@ Use this checklist when creating or updating a skill:
 - Use the [human-readable output contract](../shared/contracts/references/human-readable-output.md)
   when defining outputs: tables for structured findings and comparisons,
   diagrams for relationships, and actions with a reason and completion check
-  for plans. Apply its ASD-STE100 rules to all new text for the user.
-  ASD-STE100 output is an intentional Toolbelt-wide standard, not a personal
-  convention. It keeps output from many parallel agents consistent and easy to review.
-  All standard skills load this reference. New skills must include its runtime
-  pointer and installer dependency.
+  for plans. It makes the `simple-english` skill the base for all new text
+  for the user. ASD-STE100 output is an intentional Toolbelt-wide standard,
+  not a personal convention. It keeps output from many parallel agents
+  consistent and easy to review. All standard skills load this reference.
+  New skills must include its runtime pointer, its installer line, and a
+  `# DEPENDS: simple-english` header.
 - Keep one source of truth for each behavior. Do not repeat the same rule in the
   description, body, commands, and references unless each copy has a distinct
   job.

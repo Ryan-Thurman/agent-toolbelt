@@ -1,6 +1,8 @@
 # DESC: diagnostic lane: triage, reproduce, root-cause analysis, minimal fix, verification
+# DEPENDS: simple-english
 pack_bug_to_fix() {
   shared_contract references/human-readable-output.md
+  shared_contract references/docs-writing.md
   shared_contract references/test-driven-development.md
   shared_contract references/execution.md
   shared_contract references/execution-schema.md

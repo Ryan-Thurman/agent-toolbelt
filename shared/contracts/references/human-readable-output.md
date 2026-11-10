@@ -5,28 +5,27 @@ action clear. Use the format that the user requests. Keep required data formats 
 
 ## ASD-STE100 language
 
-Use ASD-STE100 Issue 9 for text that you write for the user.
+Use the `simple-english` skill as the base for all text that you write for the user.
 This includes replies, progress reports, documents, table cells, and diagram labels.
+Read `skills/simple-english/SKILL.md` before your first reply in a session.
+Use its Document rules for written work and its Reply rules for chat.
+Its "Toolbelt overrides" section allows bold for quick emphasis in replies.
+Use its Strict mode only when the user asks for ASD-STE100 compliance.
+The `writing-whip` skill removes AI writing tropes. The next section says when to load it.
 
-| Item | Writing rule |
-| --- | --- |
-| Instructions | Use active commands. Give one instruction in each sentence. Use a maximum of 20 words per sentence. |
-| Descriptions | Give one topic per sentence. Use a maximum of 25 words per sentence. |
-| Conditions | Put a necessary condition before the action. |
-| Vocabulary | Use approved words with their approved meanings and parts of speech. Use each technical term consistently. |
-| Grammar | Use simple verb forms. Avoid contractions and idioms. Keep the words needed for a complete sentence. |
+For project documentation, also read [docs-writing.md](docs-writing.md).
 
-Explain unfamiliar technical terms at first use. Keep code, commands, paths,
-identifiers, exact status values, and direct quotations unchanged.
-Use complete sentences in table cells when they contain instructions or explanations.
-Short labels can remain phrases.
+## Avoid AI-writing patterns
 
-Use the [official standard](https://www.asd-ste100.org/assets/files/ASD-STE100_ISSUE9.pdf)
-for its full rules and word-count method.
-Use the [official terminology guidance](https://asd-ste100.org/STE_faq.html)
-for technical nouns and verbs.
-These local rules do not replace the standard or its dictionary.
-Claim full conformance only after a rule and vocabulary review.
+Read `skills/writing-whip/SKILL.md` before you write anything longer than a paragraph.
+Check the output against it before you send it. Its "Toolbelt precedence" section
+keeps the `simple-english` rules, bold for emphasis, and required workflow steps.
+
+`writing-whip` does not cover these patterns:
+
+- Say who does what. Do not write like a data sheet, with phrases such as "provides" or "is configurable".
+- Connect a paragraph to the previous text. Do not start it with a sentence that reads like a heading.
+- Do not give a machine a human action. Write "the browser gets the URL", not "hand the browser a URL".
 
 ## Choose the format
 
@@ -48,7 +47,7 @@ question. For example, a dependency diagram can accompany a table of decisions.
   Divide wide tables by topic. Use stable IDs when rows need references.
 - Put the decision or status near its item. Use explicit labels such as
   `Supported`, `Contradicted`, `Unknown`, or `Not run`, according to the owning
-  workflow's vocabulary. Color and icons may supplement those labels.
+  workflow's vocabulary. Color and icons can supplement those labels.
 - Put an exact source or evidence link next to the finding it supports.
   Keep the version, date, units, scope, and uncertainty when they affect the meaning.
   A blank cell must not imply a successful check.
@@ -69,7 +68,7 @@ when numerical scale, rather than connectivity, is the question.
 Give each step one action, its reason, and a completion condition that the reader can verify.
 Name the owner or dependency when it is not clear. Identify the first action and any problem that prevents it.
 
-For a small plan, use `1. Action — why; done when ...`. For a reviewable plan,
+For a small plan, use `1. Action: why. Done when ...`. For a reviewable plan,
 use this layout, retaining the owning workflow's required scope and approvals:
 
 | Step | Do | Why | Done when |

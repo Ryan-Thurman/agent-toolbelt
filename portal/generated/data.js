@@ -970,6 +970,52 @@ window.AGENT_TOOLBELT_DATA = {
       "source_url": "https://github.com/Ryan-Thurman/agent-toolbelt/blob/main/skills/ship-it/SKILL.md"
     },
     {
+      "id": "simple-english",
+      "display_name": "Simple English",
+      "short_description": "Plain English with ASD-STE100 discipline.",
+      "default_prompt": "Use $simple-english to rewrite this document in plain English.",
+      "description": "Write or rewrite text in plain English with ASD-STE100 discipline. Use for replies, docs, READMEs, runbooks, error messages, release notes, and incident reports, or when the user asks for STE, plain English, or a de-slop rewrite.",
+      "category": "Agent Operations",
+      "tags": [
+        "writing",
+        "documentation",
+        "ste",
+        "plain-english",
+        "communication"
+      ],
+      "primary_purpose": "Write or rewrite replies and documents in plain English with ASD-STE100 discipline.",
+      "use_when": [
+        "An agent writes a reply, README, runbook, error message, release note, or incident report.",
+        "The user asks for STE, plain English, or a de-slop rewrite."
+      ],
+      "avoid_when": [
+        "The text is marketing or brand copy that needs persuasion."
+      ],
+      "preferred_context": "The draft text, its reader, and whether the user asks for Strict ASD-STE100 compliance.",
+      "expected_outputs": [
+        "Plain-English rewrite",
+        "Rule-numbered check report in check mode"
+      ],
+      "example_prompts": [
+        "Rewrite this README with simple-english.",
+        "Check this runbook against ASD-STE100."
+      ],
+      "related_skills": [
+        "writing-whip",
+        "pr-review",
+        "handoff",
+        "ship-it"
+      ],
+      "workflow_membership": [],
+      "documentation_completeness": {
+        "status": "complete",
+        "notes": "Canonical skill and agent metadata are present."
+      },
+      "recommended_changes": [],
+      "source_path": "skills/simple-english/SKILL.md",
+      "source_url": "https://github.com/Ryan-Thurman/agent-toolbelt/blob/main/skills/simple-english/SKILL.md"
+    },
+    {
       "id": "simplify",
       "display_name": "Simplify",
       "short_description": "Behavior-preserving cleanup proposals and opt-in application after feature work or before PR.",
@@ -1821,6 +1867,50 @@ window.AGENT_TOOLBELT_DATA = {
       "recommended_changes": [],
       "source_path": "skills/worktree/SKILL.md",
       "source_url": "https://github.com/Ryan-Thurman/agent-toolbelt/blob/main/skills/worktree/SKILL.md"
+    },
+    {
+      "id": "writing-whip",
+      "display_name": "Writing Whip",
+      "short_description": "Stop AI writing tropes and behaviors at generation.",
+      "default_prompt": "Use $writing-whip to check this draft for AI writing tropes and fix them.",
+      "description": "Stop AI writing tropes and behaviors at generation. Load before you write anything longer than a paragraph, and check the output against it. Use for replies, documentation, communications, and client-facing copy.",
+      "category": "Agent Operations",
+      "tags": [
+        "writing",
+        "documentation",
+        "ai-tropes",
+        "communication",
+        "review"
+      ],
+      "primary_purpose": "Stop AI writing tropes and behaviors when an agent writes replies or documents.",
+      "use_when": [
+        "An agent writes anything longer than a paragraph.",
+        "A draft needs a check for AI writing tropes."
+      ],
+      "avoid_when": [
+        "The output is a required data format, such as JSON, where prose rules do not apply."
+      ],
+      "preferred_context": "The draft text and its reader.",
+      "expected_outputs": [
+        "Text without AI writing tropes",
+        "A one-line note for each rule that the output breaks on purpose"
+      ],
+      "example_prompts": [
+        "Check this draft for AI writing tropes.",
+        "Rewrite this README section without AI tells."
+      ],
+      "related_skills": [
+        "simple-english",
+        "pr-review"
+      ],
+      "workflow_membership": [],
+      "documentation_completeness": {
+        "status": "complete",
+        "notes": "Canonical skill and agent metadata are present."
+      },
+      "recommended_changes": [],
+      "source_path": "skills/writing-whip/SKILL.md",
+      "source_url": "https://github.com/Ryan-Thurman/agent-toolbelt/blob/main/skills/writing-whip/SKILL.md"
     }
   ],
   "workflows": [

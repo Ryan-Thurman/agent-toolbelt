@@ -1,7 +1,9 @@
 #!/usr/bin/env bash
 # DESC: evidence-led product opportunity discovery before shape-up
+# DEPENDS: simple-english
 pack_product_discovery() {
   shared_contract references/human-readable-output.md
+  shared_contract references/docs-writing.md
   shared_contract references/evidence-quality.md
   shared_contract references/product-measurement.md
   cmd product-discovery

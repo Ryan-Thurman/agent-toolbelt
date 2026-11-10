@@ -75,12 +75,9 @@ These rules are for facts and instructions, not marketing copy or brand writing,
 - `references/word-swaps.md`: a map from overused words to plain ones
 - `references/use-cases.md`: the mode and the pattern for error messages, runbooks, incident reports, release notes, commits, agent prompts, UI copy, and translation prep
 
-## Toolbelt overrides
+## Toolbelt precedence
 
-These overrides win over the upstream text above:
-
-- **Bold:** in a reply, you can use bold for quick emphasis of a key term or result. Do not use bold in documents, except for UI element names.
-- **Format:** `shared/contracts/references/human-readable-output.md` decides when a reply uses a table, a diagram, or numbered steps.
-- **Self-check:** in a reply, do not remove `**` emphasis.
+The "Writing precedence" section in `shared/contracts/references/human-readable-output.md`
+wins over this file. It holds the order between the writing rule sources and the known conflicts.
 
 Source and license: [references/upstream-attribution.md](references/upstream-attribution.md).

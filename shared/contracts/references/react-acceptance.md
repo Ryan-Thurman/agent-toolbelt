@@ -1,4 +1,4 @@
-# React Acceptance
+# React acceptance
 
 Use this contract to set the severity of React and Next.js findings.
 The React rule scan in `typescript-react-baseline.md` finds the rules.

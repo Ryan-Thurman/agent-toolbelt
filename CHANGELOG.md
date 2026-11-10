@@ -31,6 +31,7 @@
 - Added `docs-writing.md`, adapted from the Vercel Labs Writing Guidelines with ASD-STE100 precedence, and AI-writing patterns in `human-readable-output.md`. `pr-review` checks documentation changes against it.
 - Added the `simple-english` skill (MIT, AminBlg/SimpleEnglish 2.1.2 at `300432a`) as the base for all ASD-STE100 output. A Toolbelt override keeps bold for quick emphasis in replies. Every pack that installs the output contract now depends on it.
 - Added the `writing-whip` skill and the tropes.fyi trope catalog (CC BY 4.0, Ossama Chaib). `simple-english` depends on it, and the output contract loads it before longer text.
+- Added one "Writing precedence" section to `human-readable-output.md` with the order between writing sources and each known conflict. `scripts/check-writing-rules.py` pins the imported writing text and lints the Toolbelt's own writing files.
 
 ## v1.1.9 - 2026-11-08
 

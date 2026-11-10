@@ -82,13 +82,8 @@ For the full trope catalog with more examples, read [references/tropes.md](refer
 
 ## Toolbelt precedence
 
-These rules win over the upstream text above:
-
-- **Language:** the `simple-english` rules decide grammar, vocabulary, and sentence length. Complete STE sentences are not "short punchy fragments".
-- **Bold:** in a reply, bold for quick emphasis of a key term or result is allowed. Do not start every bullet with bold.
-- **Required steps:** a workflow's required checks, verification, and output fields win over "do not verify" and "give the answer, not your reasoning". Examples: test runs, review findings with their consequence, and plan steps with their reason.
-- **Documentation updates:** user and repository instructions that require documentation or changelog updates win over the changelog rule.
-- **Counts:** a count is allowed when it is data, such as a finding total or a test result.
+The "Writing precedence" section in `shared/contracts/references/human-readable-output.md`
+wins over this file. It holds the order between the writing rule sources and the known conflicts.
 
 Source and license: [references/upstream-attribution.md](references/upstream-attribution.md).
 

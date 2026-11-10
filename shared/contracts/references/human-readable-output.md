@@ -9,17 +9,47 @@ Use the `simple-english` skill as the base for all text that you write for the u
 This includes replies, progress reports, documents, table cells, and diagram labels.
 Read `skills/simple-english/SKILL.md` before your first reply in a session.
 Use its Document rules for written work and its Reply rules for chat.
-Its "Toolbelt overrides" section allows bold for quick emphasis in replies.
 Use its Strict mode only when the user asks for ASD-STE100 compliance.
-The `writing-whip` skill removes AI writing tropes. The next section says when to load it.
+The `writing-whip` skill removes AI writing tropes. A later section says when to load it.
 
 For project documentation, also read [docs-writing.md](docs-writing.md).
+
+## Writing precedence
+
+This section is the only owner of the order between the writing rule sources.
+When two sources conflict, the higher row wins.
+
+| Order | Source | Scope |
+| --- | --- | --- |
+| 1 | The user's instructions | All text |
+| 2 | Repository instructions and style guides | All text in that repository |
+| 3 | The required output of the active workflow or skill | That output |
+| 4 | `simple-english` | Grammar, vocabulary, sentence length, and formatting |
+| 5 | `writing-whip` | AI writing tropes and response behavior |
+| 6 | [docs-writing.md](docs-writing.md) | Structure of project documentation |
+| 7 | `vercel-web-interface-guidelines` | UI text only |
+
+Use these resolutions for the known conflicts:
+
+| Conflict | Resolution |
+| --- | --- |
+| Bold | In a reply, use bold for quick emphasis of a key term or result. Do not start every bullet with bold. In a document, use bold only for UI element names. |
+| Prose or a table | Use the format rules in this file for findings, relationships, and plans. Use prose for other replies. |
+| Short sentences | Write complete STE sentences. Do not write sentence fragments as separate paragraphs. |
+| Contractions | Do not use contractions. |
+| Quotes, ellipsis, and arrows | In Markdown, code, and replies, use straight quotes, three periods, and `->`. In UI text, follow the web interface guidelines. |
+| Heading case | Use sentence case. UI headings follow the repository design system. |
+| "We" | Use "we" only for an action of the project team. Do not use it for the reader, or in a document that you did not write. |
+| Counts | Do not count items before a list. A count is allowed when it is data, such as a finding total or a test result. |
+| Verification and reasoning | A workflow's required checks, verification, and output fields win over "do not verify" and "give the answer, not your reasoning". |
+| Documentation updates | User and repository instructions that require documentation or changelog updates win over the `writing-whip` changelog rule. |
+
+`scripts/check-writing-rules.py` makes sure that the imported skills point to this section.
 
 ## Avoid AI-writing patterns
 
 Read `skills/writing-whip/SKILL.md` before you write anything longer than a paragraph.
-Check the output against it before you send it. Its "Toolbelt precedence" section
-keeps the `simple-english` rules, bold for emphasis, and required workflow steps.
+Check the output against it before you send it.
 
 `writing-whip` does not cover these patterns:
 
@@ -76,7 +106,7 @@ use this layout, retaining the owning workflow's required scope and approvals:
 | 1 | Read the installed package version. | Use the correct API documentation. | The manifest or lockfile gives the version. |
 | 2 | Read the official documentation for that version. | Find the parameter's meaning. | A source passage answers the question for that version. |
 
-Give a reason related to the task's result. Reasons such as “improve quality” do not explain the need for a step.
+Give a reason related to the task's result. Reasons such as "improve quality" do not explain the need for a step.
 Give an estimate only when evidence supports it and it helps a decision.
 
 ## Finish with a reviewable result

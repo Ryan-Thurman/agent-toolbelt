@@ -4,7 +4,7 @@ This skill copies the MIT-licensed SimpleEnglish skill by AminBlg:
 
 - Source: https://github.com/AminBlg/SimpleEnglish/tree/300432a9e4c473229a7049ab61b8ca2522d9214c/skills/simple-english
 - Imported commit: `300432a9e4c473229a7049ab61b8ca2522d9214c` (version 2.1.2)
-- Toolbelt changes: a new frontmatter description and a "Toolbelt overrides"
+- Toolbelt changes: a new frontmatter description and a "Toolbelt precedence"
   section at the end of `SKILL.md`. The upstream body and the four reference
   files are unchanged. The session hooks, output style, linter, and
   benchmarks are not copied.

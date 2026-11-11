@@ -22,7 +22,8 @@ pack_pr_review() {
     references/dual-judge.md references/fan-out.md references/finding-schema.md \
     references/lang-checklists.md references/output-format.md references/posting.md \
     references/providers.md references/rejection-memory.md references/repo-config.md \
-    references/review-rubric.md references/targets-and-diff.md references/rct-acceleration.md
+    references/review-rubric.md references/targets-and-diff.md references/rct-acceleration.md \
+    references/triggers.md
   do
     skill pr-review "$f"
   done

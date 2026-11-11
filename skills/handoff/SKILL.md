@@ -8,6 +8,8 @@ description: Write a resumable handoff so a fresh agent or person can continue t
 If you have not read `shared/contracts/references/human-readable-output.md` in this session,
 read it before you write for the user.
 
+Toolbelt paths: a path that starts with `shared/`, `skills/`, `templates/`, or `workflows/` is relative to the Toolbelt root, `${CLAUDE_PLUGIN_ROOT}`. If that variable is not replaced, use the nearest folder above this file that contains `shared/contracts/`.
+
 Write a handoff so a fresh agent or a teammate can continue exactly where this session stopped.
 A good handoff stops the next session from repeating known work and dead ends.
 

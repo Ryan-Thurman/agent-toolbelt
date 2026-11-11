@@ -974,7 +974,7 @@ window.AGENT_TOOLBELT_DATA = {
       "display_name": "Simple English",
       "short_description": "Plain English with ASD-STE100 discipline.",
       "default_prompt": "Use $simple-english to rewrite this document in plain English.",
-      "description": "Write or rewrite text in plain English with ASD-STE100 discipline. Use for replies, docs, READMEs, runbooks, error messages, release notes, and incident reports, or when the user asks for STE, plain English, or a de-slop rewrite.",
+      "description": "Check or rewrite text against ASD-STE100 in Strict mode or rule by rule, and apply the patterns for error messages, runbooks, incident reports, and release notes. Everyday writing rules are in human-readable-output.md. Use this skill when the user asks for STE or a rewrite.",
       "category": "Agent Operations",
       "tags": [
         "writing",
@@ -983,10 +983,10 @@ window.AGENT_TOOLBELT_DATA = {
         "plain-english",
         "communication"
       ],
-      "primary_purpose": "Write or rewrite replies and documents in plain English with ASD-STE100 discipline.",
+      "primary_purpose": "Check or rewrite text against ASD-STE100 in Strict mode or rule by rule. The everyday writing rules live in human-readable-output.md.",
       "use_when": [
-        "An agent writes a reply, README, runbook, error message, release note, or incident report.",
-        "The user asks for STE, plain English, or a de-slop rewrite."
+        "The user asks for STE, ASD-STE100 compliance, or a plain-English rewrite.",
+        "An agent writes an error message, runbook, incident report, or release notes and needs the matching pattern."
       ],
       "avoid_when": [
         "The text is marketing or brand copy that needs persuasion."
@@ -1873,7 +1873,7 @@ window.AGENT_TOOLBELT_DATA = {
       "display_name": "Writing Whip",
       "short_description": "Stop AI writing tropes and behaviors at generation.",
       "default_prompt": "Use $writing-whip to check this draft for AI writing tropes and fix them.",
-      "description": "Stop AI writing tropes and behaviors at generation. Load before you write anything longer than a paragraph, and check the output against it. Use for replies, documentation, communications, and client-facing copy.",
+      "description": "Full catalog of AI writing tropes with examples. Use for a trope review of long text or client-facing copy, or for a pattern that the short list in human-readable-output.md does not cover.",
       "category": "Agent Operations",
       "tags": [
         "writing",
@@ -1882,10 +1882,10 @@ window.AGENT_TOOLBELT_DATA = {
         "communication",
         "review"
       ],
-      "primary_purpose": "Stop AI writing tropes and behaviors when an agent writes replies or documents.",
+      "primary_purpose": "Give the full AI writing trope catalog with examples. The short trope list lives in human-readable-output.md.",
       "use_when": [
-        "An agent writes anything longer than a paragraph.",
-        "A draft needs a check for AI writing tropes."
+        "Long text or client-facing copy needs a trope review.",
+        "A pattern is not in the short list in human-readable-output.md."
       ],
       "avoid_when": [
         "The output is a required data format, such as JSON, where prose rules do not apply."

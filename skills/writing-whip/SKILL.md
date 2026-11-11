@@ -1,6 +1,6 @@
 ---
 name: writing-whip
-description: Stop AI writing tropes and behaviors at generation. Load before you write anything longer than a paragraph, and check the output against it. Use for replies, documentation, communications, and client-facing copy.
+description: Full catalog of AI writing tropes with examples. Use for a trope review of long text or client-facing copy, or for a pattern that the short list in human-readable-output.md does not cover.
 ---
 
 Adhere to every instruction in this file strictly. Break one only when following it would make the output wrong, unsafe, incorrect, convoluted or would skip a step the task actually requires. Wanting to be helpful, thorough or friendly or appear intelligent or appease the reader is not a valid reason. When you do break one, say which and why in a single line.
@@ -84,6 +84,8 @@ For the full trope catalog with more examples, read [references/tropes.md](refer
 
 The "Writing precedence" section in `shared/contracts/references/human-readable-output.md`
 wins over this file. It holds the order between the writing rule sources and the known conflicts.
+
+Toolbelt paths: a path that starts with `shared/`, `skills/`, `templates/`, or `workflows/` is relative to the Toolbelt root, `${CLAUDE_PLUGIN_ROOT}`. If that variable is not replaced, use the nearest folder above this file that contains `shared/contracts/`.
 
 Source and license: [references/upstream-attribution.md](references/upstream-attribution.md).
 

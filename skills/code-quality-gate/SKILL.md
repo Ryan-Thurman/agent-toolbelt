@@ -8,6 +8,8 @@ description: Run a focused pre-PR quality gate when repository policy, user requ
 If you have not read `shared/contracts/references/human-readable-output.md` in this session,
 read it before you write for the user.
 
+Toolbelt paths: a path that starts with `shared/`, `skills/`, `templates/`, or `workflows/` is relative to the Toolbelt root, `${CLAUDE_PLUGIN_ROOT}`. If that variable is not replaced, use the nearest folder above this file that contains `shared/contracts/`.
+
 Orchestrate the existing quality owners into one current, durable verdict. This
 is not another simplifier or taxonomy: `/simplify` owns behavior-preserving
 cleanup, `/pr-review` owns findings, and `/pr-improve` owns the frozen-scope

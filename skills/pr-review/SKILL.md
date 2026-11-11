@@ -8,6 +8,8 @@ description: Review a PR, branch, or local diff with a tiered, multi-agent code-
 If you have not read `shared/contracts/references/human-readable-output.md` in this session,
 read it before you write for the user.
 
+Toolbelt paths: a path that starts with `shared/`, `skills/`, `templates/`, or `workflows/` is relative to the Toolbelt root, `${CLAUDE_PLUGIN_ROOT}`. If that variable is not replaced, use the nearest folder above this file that contains `shared/contracts/`.
+
 A tiered code-review skill for PRs, branches, and local diffs. It produces a prioritized,
 evidence-backed review with a host-derived merge verdict. Standard and deep tiers split review
 facets across separate sub-agents.

@@ -19,6 +19,12 @@ for skill_md in "$ROOT"/skills/*/SKILL.md; do
     continue
   fi
 
+  if grep -Eq '`(shared|skills|templates|workflows)/' "$skill_md" \
+    && ! grep -q '^Toolbelt paths: .*${CLAUDE_PLUGIN_ROOT}' "$skill_md"; then
+    echo "! $skill_rel: root-relative paths need the \"Toolbelt paths:\" line for plugin installs" >&2
+    status=1
+  fi
+
   frontmatter="$(sed -n '2,/^---$/p' "$skill_md" | sed '$d')"
   name_count="$(printf '%s\n' "$frontmatter" | grep -c '^name:')"
   description_count="$(printf '%s\n' "$frontmatter" | grep -c '^description:')"

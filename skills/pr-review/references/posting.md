@@ -171,8 +171,7 @@ Re-running would otherwise double-post. Use two markers:
 | `<!-- pr-review:head=<headSha> tier=<tier> -->` | end of the summary body | This head commit has a posted review. |
 | `<!-- pr-review:<facet>:<fingerprint> -->` | end of each inline comment | This finding is already posted (`rejection-memory.md`). |
 
-This file owns both markers. Every trigger (`review-on-open` event and poller, `review-queue`
-worker, `phase-gate`) uses the head-SHA marker as its only cross-run review record.
+This file owns both markers. `triggers.md` says how each trigger uses the head-SHA marker.
 
 1. Before posting, fetch the PR's existing comment bodies (commands below).
 2. If a summary carries `pr-review:head=<current headSha>`, do not post. Report "already reviewed at

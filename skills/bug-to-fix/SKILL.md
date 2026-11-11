@@ -8,6 +8,8 @@ description: Diagnose and fix reported bugs through triage, reproduction, root-c
 If you have not read `shared/contracts/references/human-readable-output.md` in this session,
 read it before you write for the user.
 
+Toolbelt paths: a path that starts with `shared/`, `skills/`, `templates/`, or `workflows/` is relative to the Toolbelt root, `${CLAUDE_PLUGIN_ROOT}`. If that variable is not replaced, use the nearest folder above this file that contains `shared/contracts/`.
+
 Drive a bug report to a verified fix: triage, reproduce, find the root cause, make the smallest fix,
 and verify it. Keep the investigation state in one durable file, so another session can resume it.
 

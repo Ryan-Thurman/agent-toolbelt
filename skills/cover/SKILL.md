@@ -8,6 +8,8 @@ description: Author behavior-pinning tests for a diff, a module, or a bug-to-fix
 If you have not read `shared/contracts/references/human-readable-output.md` in this session,
 read it before you write for the user.
 
+Toolbelt paths: a path that starts with `shared/`, `skills/`, `templates/`, or `workflows/` is relative to the Toolbelt root, `${CLAUDE_PLUGIN_ROOT}`. If that variable is not replaced, use the nearest folder above this file that contains `shared/contracts/`.
+
 Author tests from existing code and behavior, or report coverage gaps. `cover` writes tests only.
 To design cases from requirements before code exists, use `/test-case-design`.
 

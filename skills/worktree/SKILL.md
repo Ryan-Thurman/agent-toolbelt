@@ -8,6 +8,8 @@ description: Create, list, and remove isolated git worktrees for multi-agent sha
 If you have not read `shared/contracts/references/human-readable-output.md` in this session,
 read it before you write for the user.
 
+Toolbelt paths: a path that starts with `shared/`, `skills/`, `templates/`, or `workflows/` is relative to the Toolbelt root, `${CLAUDE_PLUGIN_ROOT}`. If that variable is not replaced, use the nearest folder above this file that contains `shared/contracts/`.
+
 A git checkout has one HEAD. When agents share a checkout, one `git checkout` or `git switch`
 moves the branch under every other agent. Give each task its own worktree: a separate directory
 on its own branch that shares the repo's object store. This skill manages checkouts only. Do the

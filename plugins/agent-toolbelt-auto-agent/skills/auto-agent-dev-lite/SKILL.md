@@ -35,7 +35,7 @@ For `IMPLEMENT` jobs:
   If one is unmet or cannot be verified without writes, network mutation, or
   secret disclosure, stop and report it as a blocker; do not partially execute
   the task.
-- Before changing executable behavior, read `shared/contracts/references/test-driven-development.md` and use its test-first procedure.
+- Before changing executable behavior, read `shared/contracts/references/test-driven-development.md` from the installed standard Agent Toolbelt root and use its test-first procedure.
 - Keep test cases within the supplied acceptance criteria and permitted paths.
 - Run the requested checks when available; otherwise report the exact checks
   that still need to run.

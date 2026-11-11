@@ -1,12 +1,23 @@
 # System design
 
-| Stage | Owner | Output and next decision |
-| --- | --- | --- |
-| Answer a design question, record a decision, or map the current system | `system-design` | A scoped answer, decision record, or repository map with evidence limits. |
-| Design a concrete architecture proposal | `system-design` | A design document and diagrams with readiness and open decisions. |
-| Review the threats of that proposal | `threat-model` | A linked threat report for the same design revision. |
-| Plan accepted scope | `phased-delivery` and `test-case-design` | Phases, PRs, and test cases that trace to the security requirements. |
-| Verify after implementation | `security-audit` and `cover` | Control status for each linked threat and requirement, and tests for the acceptance criteria. |
+<!-- BEGIN catalog stages: security-sensitive-change -->
+<!-- Generated from catalog/agent-toolbelt.json by scripts/build-workflow-stages.js. Do not edit. -->
+
+| Stage | Skill | Purpose | Next |
+| --- | --- | --- | --- |
+| 1 | `system-design` | Create the design record and linked threat review before implementation. | `threat-model` |
+| 2 | `threat-model` | Identify assets, trust boundaries, abuse cases, and mitigations before coding. | `test-case-design`, `security-audit` |
+| 3 | `phased-delivery` | Plan accepted requirements and preserve threat-to-verification links. | `test-case-design`, `cover`, `security-audit` |
+| 4 | `test-case-design` | Turn threats and requirements into negative, boundary, and regression cases. | `cover` |
+| 5 | `cover` | Make critical protections executable and regression-resistant. | `security-audit` |
+| 6 | `security-audit` | Inspect the resulting implementation and configuration for exploitable gaps. | `code-quality-gate` |
+| 7 | `code-quality-gate` | Check evidence, maintainability, and release readiness across the risk boundary. | `pr-review` |
+| 8 | `pr-review` | Provide independent final review of correctness and residual risk. | `ship-it` |
+<!-- END catalog stages -->
+
+`system-design` can also answer a design question, record a decision, or map the current system.
+Stop after that stage when the decision needs nothing more.
+`threat-model` reviews the same design revision that `system-design` produced.
 
 Use only the stages that the current decision needs.
 The project owns controlled records, internal risk registers, required reviews, and release authority.

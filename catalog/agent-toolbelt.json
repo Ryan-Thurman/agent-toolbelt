@@ -874,10 +874,10 @@
         "plain-english",
         "communication"
       ],
-      "primary_purpose": "Write or rewrite replies and documents in plain English with ASD-STE100 discipline.",
+      "primary_purpose": "Check or rewrite text against ASD-STE100 in Strict mode or rule by rule. The everyday writing rules live in human-readable-output.md.",
       "use_when": [
-        "An agent writes a reply, README, runbook, error message, release note, or incident report.",
-        "The user asks for STE, plain English, or a de-slop rewrite."
+        "The user asks for STE, ASD-STE100 compliance, or a plain-English rewrite.",
+        "An agent writes an error message, runbook, incident report, or release notes and needs the matching pattern."
       ],
       "avoid_when": [
         "The text is marketing or brand copy that needs persuasion."
@@ -1659,10 +1659,10 @@
         "communication",
         "review"
       ],
-      "primary_purpose": "Stop AI writing tropes and behaviors when an agent writes replies or documents.",
+      "primary_purpose": "Give the full AI writing trope catalog with examples. The short trope list lives in human-readable-output.md.",
       "use_when": [
-        "An agent writes anything longer than a paragraph.",
-        "A draft needs a check for AI writing tropes."
+        "Long text or client-facing copy needs a trope review.",
+        "A pattern is not in the short list in human-readable-output.md."
       ],
       "avoid_when": [
         "The output is a required data format, such as JSON, where prose rules do not apply."

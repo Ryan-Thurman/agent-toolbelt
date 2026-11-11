@@ -8,6 +8,8 @@ description: Keep phase files, context packets, and phase handoffs so long codin
 If you have not read `shared/contracts/references/human-readable-output.md` in this session,
 read it before you write for the user.
 
+Toolbelt paths: a path that starts with `shared/`, `skills/`, `templates/`, or `workflows/` is relative to the Toolbelt root, `${CLAUDE_PLUGIN_ROOT}`. If that variable is not replaced, use the nearest folder above this file that contains `shared/contracts/`.
+
 Use this skill to keep the context of a multi-session task in files, not in chat history.
 Resume from phase files, the git diff, and acceptance criteria, not from memory.
 The workflow needs only normal file edits and git commands.

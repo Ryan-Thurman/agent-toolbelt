@@ -7,6 +7,8 @@ description: "Decide whether and how to do one technical backlog item: do/defer/
 
 If you have not read `shared/contracts/references/human-readable-output.md` in this session,
 read it before you write for the user.
+
+Toolbelt paths: a path that starts with `shared/`, `skills/`, `templates/`, or `workflows/` is relative to the Toolbelt root, `${CLAUDE_PLUGIN_ROOT}`. If that variable is not replaced, use the nearest folder above this file that contains `shared/contracts/`.
 Read `shared/contracts/references/evidence-quality.md` when evaluating the item.
 
 Use this skill when the user has a technical backlog item and needs a decision

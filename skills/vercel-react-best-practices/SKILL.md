@@ -8,6 +8,8 @@ description: Review or improve React and Next.js performance when components, da
 If you have not read `shared/contracts/references/human-readable-output.md` in this session,
 read it before you write for the user.
 
+Toolbelt paths: a path that starts with `shared/`, `skills/`, `templates/`, or `workflows/` is relative to the Toolbelt root, `${CLAUDE_PLUGIN_ROOT}`. If that variable is not replaced, use the nearest folder above this file that contains `shared/contracts/`.
+
 Use this as a conditional performance reference for React or Next.js changes.
 Repository policy, measured budgets, enforced configuration, runtime
 constraints, and local patterns win over upstream guidance.

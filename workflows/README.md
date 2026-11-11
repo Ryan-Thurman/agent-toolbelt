@@ -3,6 +3,9 @@
 Each file is a stage map: it gives the order of skills for one kind of work.
 The skill for each stage owns its steps and completion rules.
 The [offline portal](../portal/generated/index.html) owns discovery and examples.
+`catalog/agent-toolbelt.json` owns the stage lists.
+`scripts/build-workflow-stages.js` writes each stage table between the `catalog stages` markers.
+Do not edit a table by hand. `scripts/check-catalog.sh` fails when a table does not match the catalog.
 
 - `phased-delivery-workflow.md` - requirement or ticket delivery as one PR per
   phase, with human review and optional stacked PRs.

@@ -8,6 +8,8 @@ description: "Publish approved ticket files to the repository's tracker: GitHub 
 If you have not read `shared/contracts/references/human-readable-output.md` in this session,
 read it before you write for the user.
 
+Toolbelt paths: a path that starts with `shared/`, `skills/`, `templates/`, or `workflows/` is relative to the Toolbelt root, `${CLAUDE_PLUGIN_ROOT}`. If that variable is not replaced, use the nearest folder above this file that contains `shared/contracts/`.
+
 Publish local ticket files from `shape-up` slicing (`/to-issues`), `bug-to-fix` intake (`/bug-intake`),
 or project-owned ticket workflows to the tracker that the repository declares.
 Slicing belongs to those workflows.

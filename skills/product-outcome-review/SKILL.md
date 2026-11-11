@@ -7,6 +7,8 @@ description: Review whether an experiment or released change improved its origin
 
 If you have not read `shared/contracts/references/human-readable-output.md` in this session,
 read it before you write for the user.
+
+Toolbelt paths: a path that starts with `shared/`, `skills/`, `templates/`, or `workflows/` is relative to the Toolbelt root, `${CLAUDE_PLUGIN_ROOT}`. If that variable is not replaced, use the nearest folder above this file that contains `shared/contracts/`.
 Read `shared/contracts/references/evidence-quality.md` and `shared/contracts/references/product-measurement.md` before interpreting results.
 
 Review supplied measurements and permitted research against the original product hypothesis.

@@ -8,6 +8,8 @@ description: Apply one defined change across every required site, such as a libr
 If you have not read `shared/contracts/references/human-readable-output.md` in this session,
 read it before you write for the user.
 
+Toolbelt paths: a path that starts with `shared/`, `skills/`, `templates/`, or `workflows/` is relative to the Toolbelt root, `${CLAUDE_PLUGIN_ROOT}`. If that variable is not replaced, use the nearest folder above this file that contains `shared/contracts/`.
+
 Apply **one defined transformation across the whole codebase**, everywhere it's needed, without
 missing a site and without breaking the build along the way. The classic targets: a library swap
 (moment → dayjs), an API/symbol rename across N call sites, a framework upgrade, a pattern

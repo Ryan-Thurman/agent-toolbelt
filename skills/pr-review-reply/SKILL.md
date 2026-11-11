@@ -8,6 +8,8 @@ description: "Handle the PR-review round-trip: read reviewer threads, triage eac
 If you have not read `shared/contracts/references/human-readable-output.md` in this session,
 read it before you write for the user.
 
+Toolbelt paths: a path that starts with `shared/`, `skills/`, `templates/`, or `workflows/` is relative to the Toolbelt root, `${CLAUDE_PLUGIN_ROOT}`. If that variable is not replaced, use the nearest folder above this file that contains `shared/contracts/`.
+
 The inbound half of `pr-review`. Read a human reviewer's open threads, check each thread against the
 code changed since that review, triage it, and draft an evidence-bearing reply block.
 Default output is a local report; posting back to the host is opt-in.

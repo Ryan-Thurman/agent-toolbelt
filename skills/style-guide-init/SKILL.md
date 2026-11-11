@@ -8,6 +8,8 @@ description: Extract and maintain repository contribution guidance from code, to
 If you have not read `shared/contracts/references/human-readable-output.md` in this session,
 read it before you write for the user.
 
+Toolbelt paths: a path that starts with `shared/`, `skills/`, `templates/`, or `workflows/` is relative to the Toolbelt root, `${CLAUDE_PLUGIN_ROOT}`. If that variable is not replaced, use the nearest folder above this file that contains `shared/contracts/`.
+
 Derive how to work in this repository, then maintain that guidance against new
 evidence. A repeated implementation is evidence of practice, not automatic approval of a standard.
 

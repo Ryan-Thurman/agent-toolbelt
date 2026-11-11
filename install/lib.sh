@@ -67,8 +67,10 @@ ensure_dir() {
 ATB_REWRITE='s#(^|[[:space:](=`])(skills|templates|workflows|examples|shared)/#\1.atb/\2/#g'
 
 # install_copy <src> <dest> — copy while rewriting shared-folder refs to .atb/.
+# The "Toolbelt paths:" line in each SKILL.md resolves root-relative refs for plugin
+# installs. The rewrite above makes those refs project-relative, so drop that line.
 install_copy() {
-  sed -E "$ATB_REWRITE" "$1" > "$2"
+  sed -E -e '/^Toolbelt paths: /d' -e "$ATB_REWRITE" "$1" > "$2"
 }
 
 # install_file <abs-src> <abs-dest>

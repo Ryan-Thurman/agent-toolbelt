@@ -60,11 +60,8 @@ runs can't call `Date.now()`.
 
 ## 3. Self-loop guard
 
-A review bot must not chase its own tail:
-- The **head-SHA marker** prevents re-reviewing an unchanged head. Posting a review does not change the
-  head SHA, so the PR does not come back as due.
-- **Optional author guard:** if the review bot account also *opens* PRs, skip PRs authored by it
-  (`--author` of your own bot) unless explicitly told to self-review. State the rule you applied.
+Apply "Do not loop on yourself" in `skills/pr-review/references/triggers.md`.
+To skip the PRs of the review bot account, filter out its author before the due check.
 
 ## 4. Honor `--max`
 
@@ -77,9 +74,8 @@ deferred remainder, then stop. No review, no ledger write.
 
 ## 5. Review each in a fresh sub-agent
 
-For each due PR, run the existing reviewer — **one fresh sub-agent per PR** (Task tool), so the
-reviewer never shares context with the poller or with the agent that wrote the PR, and a slow review
-doesn't block the others:
+For each due PR, run the existing reviewer in **one fresh sub-agent per PR** (Task tool).
+A slow review then does not block the others:
 
 ```
 /pr-review <number-or-id> --comment            # + --tier=<t> if the poller was given one
@@ -89,7 +85,7 @@ Omit `--tier` to let `pr-review` auto-tier per diff — the right default for un
 sub-agent does all host-touching work (diff, inline posting, verdict) through the `pr-review`
 provider layer, so GitHub/Azure differences are already handled there.
 
-Apply the posting-confirmation invariant in `../SKILL.md` before the first post.
+Apply the interactive posting rule in `../SKILL.md` → "Invariants" before the first post.
 
 ## 6. Record & summarize
 

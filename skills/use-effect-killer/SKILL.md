@@ -8,6 +8,8 @@ description: Audit React useEffect calls against 13 anti-patterns from "You Migh
 If you have not read `shared/contracts/references/human-readable-output.md` in this session,
 read it before you write for the user.
 
+Toolbelt paths: a path that starts with `shared/`, `skills/`, `templates/`, or `workflows/` is relative to the Toolbelt root, `${CLAUDE_PLUGIN_ROOT}`. If that variable is not replaced, use the nearest folder above this file that contains `shared/contracts/`.
+
 Classify every effect in scope. Do not sample. An unclassified effect is an incomplete audit.
 
 **Arguments:** an optional path. Without a path, audit the changed lines since the default branch.

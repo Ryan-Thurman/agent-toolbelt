@@ -8,6 +8,8 @@ description: Add or review React View Transition animations (`<ViewTransition>`,
 If you have not read `shared/contracts/references/human-readable-output.md` in this session,
 read it before you write for the user.
 
+Toolbelt paths: a path that starts with `shared/`, `skills/`, `templates/`, or `workflows/` is relative to the Toolbelt root, `${CLAUDE_PLUGIN_ROOT}`. If that variable is not replaced, use the nearest folder above this file that contains `shared/contracts/`.
+
 Below the line is the Vercel Labs guide. Long sections moved to
 [references/types-and-composition.md](references/types-and-composition.md).
 Source and license: [references/upstream-attribution.md](references/upstream-attribution.md).

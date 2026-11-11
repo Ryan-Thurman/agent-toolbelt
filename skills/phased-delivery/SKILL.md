@@ -8,6 +8,8 @@ description: Plan, review, or deliver requirements as test-first, reviewable pha
 If you have not read `shared/contracts/references/human-readable-output.md` in this session,
 read it before you write for the user.
 
+Toolbelt paths: a path that starts with `shared/`, `skills/`, `templates/`, or `workflows/` is relative to the Toolbelt root, `${CLAUDE_PLUGIN_ROOT}`. If that variable is not replaced, use the nearest folder above this file that contains `shared/contracts/`.
+
 Use this skill to turn approved scope into small, verifiable PRs.
 A human reviews the plan and each PR.
 A small request can need only one phase.

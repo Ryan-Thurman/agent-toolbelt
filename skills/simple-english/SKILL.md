@@ -1,6 +1,6 @@
 ---
 name: simple-english
-description: Write or rewrite text in plain English with ASD-STE100 discipline. Use for replies, docs, READMEs, runbooks, error messages, release notes, and incident reports, or when the user asks for STE, plain English, or a de-slop rewrite.
+description: Check or rewrite text against ASD-STE100 in Strict mode or rule by rule, and apply the patterns for error messages, runbooks, incident reports, and release notes. Everyday writing rules are in human-readable-output.md. Use this skill when the user asks for STE or a rewrite.
 ---
 
 # Simple English
@@ -79,5 +79,7 @@ These rules are for facts and instructions, not marketing copy or brand writing,
 
 The "Writing precedence" section in `shared/contracts/references/human-readable-output.md`
 wins over this file. It holds the order between the writing rule sources and the known conflicts.
+
+Toolbelt paths: a path that starts with `shared/`, `skills/`, `templates/`, or `workflows/` is relative to the Toolbelt root, `${CLAUDE_PLUGIN_ROOT}`. If that variable is not replaced, use the nearest folder above this file that contains `shared/contracts/`.
 
 Source and license: [references/upstream-attribution.md](references/upstream-attribution.md).

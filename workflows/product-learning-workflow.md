@@ -3,14 +3,19 @@
 Use only the stages needed for the current decision.
 The source evidence and project requirements remain authoritative.
 
-| Stage | Owner | Output and next decision |
-| --- | --- | --- |
-| Understand research | `user-research-synthesis` | Evidence-linked themes, counterexamples, limitations, and open questions. |
-| Select an opportunity | `product-discovery` | Opportunity comparison, assumptions, experiment, and measurement plan. |
-| Define selected scope | `shape-up` | An approved brief when implementation scope needs clarification. |
-| Deliver selected work | `phased-delivery` | Reviewable changes with acceptance evidence. |
-| Assess results | `product-outcome-review` | A decision to continue, revise, stop, or gather evidence. |
+<!-- BEGIN catalog stages: product-learning -->
+<!-- Generated from catalog/agent-toolbelt.json by scripts/build-workflow-stages.js. Do not edit. -->
+
+| Stage | Skill | Purpose | Next |
+| --- | --- | --- | --- |
+| 1 | `user-research-synthesis` | Understand source evidence, counterexamples, and sample limits. | `product-discovery` |
+| 2 | `product-discovery` | Choose an opportunity or experiment with measurement and decision conditions. | `shape-up`, `product-outcome-review` |
+| 3 | `shape-up` | Clarify selected implementation scope when a brief is needed. | `phased-delivery` |
+| 4 | `phased-delivery` | Deliver approved scope with acceptance evidence. | `ship-it`, `product-outcome-review` |
+| 5 | `ship-it` | Assess immediate release readiness and health when a release is involved. | `product-outcome-review` |
+| 6 | `product-outcome-review` | Determine whether the original customer problem improved. | `product-discovery` |
+<!-- END catalog stages -->
 
 An experiment can proceed to outcome review without creating a feature or ticket.
-Send immediate release health to `ship-it` and release failures to `bug-to-fix`.
+Send release failures to `bug-to-fix`.
 The project chooses records, sources, review timing, and required approvals.

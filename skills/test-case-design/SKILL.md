@@ -8,6 +8,8 @@ description: Turn requirements and risks into prioritized, executable QA test ca
 If you have not read `shared/contracts/references/human-readable-output.md` in this session,
 read it before you write for the user.
 
+Toolbelt paths: a path that starts with `shared/`, `skills/`, `templates/`, or `workflows/` is relative to the Toolbelt root, `${CLAUDE_PLUGIN_ROOT}`. If that variable is not replaced, use the nearest folder above this file that contains `shared/contracts/`.
+
 Design an evidence-based test case set from requirements and risks. This skill reports cases;
 it does not edit tests or production code. To find gaps in existing code, use the `cover` skill gap scan (`/cover-gaps`).
 

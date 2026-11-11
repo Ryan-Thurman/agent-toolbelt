@@ -157,5 +157,9 @@ grep -q 'React rule scan' "$composed_target/.atb/skills/pr-review/SKILL.md"
 grep -q 'React rules check' "$composed_target/.atb/skills/code-quality-gate/references/gate-contract.md"
 grep -q '.atb/shared/contracts/references/typescript-react-baseline.md' "$composed_target/.atb/skills/phased-delivery/references/implementation-rules.md"
 grep -q '.atb/skills/code-quality-gate/SKILL.md' "$composed_target/.cursor/commands/code-quality-gate.md"
+if grep -rq '^Toolbelt paths: ' "$composed_target"; then
+  echo "installed files must not keep the plugin-only \"Toolbelt paths:\" line" >&2
+  exit 1
+fi
 
 echo "ok: React specialist and useEffect standalone, meta-pack, path rewriting, attribution, inventory, and composed-pack installs"

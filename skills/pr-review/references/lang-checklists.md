@@ -46,8 +46,3 @@ not emit a checklist item verbatim as a finding without a concrete `file:line` a
 
 Keep items **specific to the language** — anything true of all languages belongs in the facet file,
 not here. Keep them few and high-signal (the anti-noise discipline applies to checklists too).
-
-## Status
-
-Mechanism + starter checklists (typescript, python, sql) shipped. Add languages as real-world
-accuracy demands them.

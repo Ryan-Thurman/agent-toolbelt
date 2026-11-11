@@ -64,7 +64,7 @@ function render(root = ROOT) {
   return `${lines.join('\n')}`;
 }
 
-function isCurrent(root = ROOT, output = path.join(root, 'docs', 'skill-taxonomy-audit.md')) {
+function isCurrent(root = ROOT, output = path.join(root, '.atb-work', 'reports', 'skill-taxonomy-audit.md')) {
   try {
     return fs.readFileSync(output, 'utf8') === render(root);
   } catch (_) {
@@ -74,7 +74,15 @@ function isCurrent(root = ROOT, output = path.join(root, 'docs', 'skill-taxonomy
 
 function main() {
   const check = process.argv.includes('--check');
-  const output = path.join(ROOT, 'docs', 'skill-taxonomy-audit.md');
+  const outputIndex = process.argv.indexOf('--output');
+  if (outputIndex !== -1 && (!process.argv[outputIndex + 1] || process.argv[outputIndex + 1].startsWith('--'))) {
+    console.error('--output requires a file path');
+    process.exitCode = 1;
+    return;
+  }
+  const output = outputIndex === -1
+    ? path.join(ROOT, '.atb-work', 'reports', 'skill-taxonomy-audit.md')
+    : path.resolve(process.argv[outputIndex + 1]);
   let generated;
   try {
     generated = render(ROOT);
@@ -92,6 +100,7 @@ function main() {
     console.log(`Generated audit is current: ${path.relative(ROOT, output)}`);
     return;
   }
+  fs.mkdirSync(path.dirname(output), { recursive: true });
   fs.writeFileSync(output, generated);
   console.log(`Generated ${path.relative(ROOT, output)} from the canonical skill tree and catalog.`);
 }

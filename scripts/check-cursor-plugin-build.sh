@@ -85,14 +85,14 @@ if [ ! -f "$OUT/shared/contracts/manifest.json" ]; then
   exit 1
 fi
 
-for path in "$OUT/hooks" "$OUT/rules" "$OUT/.cursor" "$OUT/.claude" "$OUT/.agents"; do
+for path in "$OUT/hooks" "$OUT/rules" "$OUT/.cursor" "$OUT/.claude" "$OUT/.agents" "$OUT/docs" "$OUT/evals"; do
   if [ -e "$path" ]; then
     echo "default plugin build must not include harness-local payload: $path" >&2
     exit 1
   fi
 done
 
-for support_dir in templates workflows examples docs; do
+for support_dir in templates workflows examples; do
   if [ ! -d "$OUT/$support_dir" ]; then
     echo "plugin build is missing skill support directory: $support_dir" >&2
     exit 1

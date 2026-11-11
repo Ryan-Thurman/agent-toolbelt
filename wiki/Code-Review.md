@@ -52,6 +52,11 @@ Useful options:
   available.
 - Add `--focus=<facet>` to emphasize correctness, security, performance, tests,
   maintainability, standards, or another supported review facet.
+- Add `--intent=<path|url>` to check the diff against acceptance criteria. The
+  default source is the PR body and linked issues. The report then has an
+  acceptance coverage table.
+- Add `--benchmark` to print the token-usage footer. Posted PR summaries never
+  include it.
 
 Target repos declare local review priorities in a `.pr-review.md` at their
 root — domain context, always-run facets, concrete budgets, severity overrides,
@@ -89,6 +94,10 @@ for every nit. Its installed fingerprint script records the frozen diff and
 untracked content, then makes a PASS stale when either fingerprint changes.
 `--scope` creates partial evidence only; a policy-required final-diff gate
 needs `coverage: final`.
+When `.crap-analysis.json` exists on the base commit, the gate also runs
+`crap-analysis` on the changed files. A REFACTOR verdict becomes a should-fix
+finding, and an ERROR verdict is a failed check. Without that config, the gate
+records one `Skipped` row. Installing the gate also installs `crap-analysis`.
 The gate covers only the current checked-out branch and local working tree
 (committed-since-merge-base, staged, unstaged, and untracked changes). Check out
 the intended branch first; use `/pr-review` for a named PR, remote branch, or
@@ -178,12 +187,13 @@ Two triggers, pick by host:
   /review-on-open [repo-or-filter] [--tier=…] [--max=N] [--host=…] [--dry-run]
   ```
 
-  One poll lists open PRs, reviews the ones whose head SHA it hasn't seen
-  (ledger: `.git/pr-review-seen.jsonl`, plus a per-SHA marker so a poll and a CI
-  run never double-post), each in a fresh sub-agent, and records the reviewed
-  SHA. Run it on an interval with `/loop 10m /review-on-open` (local) or a
-  `/schedule` cloud routine (hands-off). `--dry-run` lists what would be reviewed
-  and posts nothing.
+  One poll lists open PRs and reviews each PR whose current head has no
+  `<!-- pr-review:head=<sha> -->` summary marker. Each review runs in a fresh
+  sub-agent. `pr-review` writes that marker when it posts, so a poll and a CI run
+  do not post twice. The local `.git/pr-review-seen.jsonl` ledger is only a cache.
+  Run it with `/loop 10m /review-on-open` (local) or a `/schedule` cloud routine.
+  A cloud routine uses the host marker only. `--dry-run` lists what would be
+  reviewed and posts nothing.
 
 The decision rule: if the host can run CI on the PR event, prefer the event path
 (the event already names the PR, so no ledger is needed); the poller covers
@@ -211,7 +221,7 @@ driven by a shipped CLI — pure bash + `sqlite3`, nothing to install. Two lanes
   SHA, so re-runs are safe and a new push gets its own job):
 
   ```text
-  /enqueue-review [target] [--repo=…] [--sha=…] [--tier=…] [--reason=…]
+  /enqueue-review [target] [--repo=path] [--sha=…] [--tier=…] [--reason=…]
   ```
 
 - **Consumer** — a worker drains the queue, running `/pr-review --comment` on each
@@ -221,8 +231,9 @@ driven by a shipped CLI — pure bash + `sqlite3`, nothing to install. Two lanes
   /review-queue-worker [--worker=id] [--max=N] [--tier=…]
   ```
 
-  Run it on an interval with `/loop 5m /review-queue-worker` (local) or a
-  `/schedule` routine (hands-off).
+  Run it on an interval with `/loop 5m /review-queue-worker`. The worker must run
+  locally, because it reads the local SQLite file and `cd`s to the job's
+  `--repo` checkout path.
 
 Claiming is an atomic `BEGIN IMMEDIATE` transaction (exactly-once — two workers
 never grab the same job, verified under concurrency). A claim takes a lease
@@ -252,19 +263,22 @@ build reasoning) that runs `/pr-review --comment` and posts inline findings to t
 Run it at a phase boundary with:
 
 ```text
-/phase-gate [target] [--merge] [--tier=light|standard|deep] [--rereview] [--no-post]
+/phase-gate [target] [--merge] [--tier=light|standard|deep] [--intent=path|url] [--rereview] [--no-post]
 ```
 
 **Both flows post the review to the PR**; they differ only in what happens *after*:
 
 - **Team (default).** Post the review, then **stop** — humans do the manual review
   and merge; the auto-review supplements theirs. No auto-merge.
-- **Solo (`--merge`).** Post the review **and** return the findings to the main
-  agent, which fixes blockers in-context and **merges** the phase PR (`gh pr merge
-  --squash` / `az repos pr update --status completed`) before the next phase.
+- **Solo (`--merge`).** Post the review **and** fix blockers through the
+  `pr-improve` loop. After each fix commit, the gate reviews the new head again.
+  It merges the phase PR (`gh pr merge --squash` / `az repos pr update --status
+  completed`) only when the verdict is `APPROVE`. A Phased Delivery PR also needs
+  an explicit user override for the merge.
 
 `--no-post` makes it report-only (also the automatic fallback when no host CLI is
-present); `--rereview` adds one confirming pass after solo fixes. The host (GitHub
+present); `--rereview` requests a confirming review even when no fix commit
+landed; re-review after a fix commit is automatic. The host (GitHub
 `gh` / Azure `az`) is auto-detected from the remote. It adds no review logic — it
 wraps `pr-review`'s provider and posting layers — and pairs with
 `phase-context-workflow` when each phase opens its own PR. All three triggers end in

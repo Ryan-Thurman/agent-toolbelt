@@ -13,7 +13,8 @@ the event workflow wired, you don't need the poller; the event already fires the
 ## 1. Detect host & list open PRs
 
 Detect the provider once (`shared/contracts/references/providers.md`), then list open PRs through it.
-The fields you need per PR: **number/id**, **head SHA**, **author**, **title**, **updated time**.
+The fields you need per PR: **number/id**, **head SHA**, **author**, **title**, **draft state**, and an
+**age** field (`updatedAt` on GitHub, `creationDate` on Azure).
 
 ```bash
 # GitHub
@@ -25,7 +26,7 @@ gh pr list --state open \
 ```bash
 # Azure Repos
 az repos pr list --status active \
-  --query '[].{id:pullRequestId, head:lastMergeSourceCommit.commitId, author:createdBy.uniqueName, title:title}'
+  --query '[].{id:pullRequestId, head:lastMergeSourceCommit.commitId, author:createdBy.uniqueName, title:title, isDraft:isDraft, created:creationDate}'
 ```
 
 No host CLI installed/authenticated → there's nothing to poll: say so and stop (the poller can't
@@ -35,37 +36,36 @@ Apply the **target filter** if given: a repo slug restricts to one repo; `--auth
 `--label=<y>` narrow the list (host-side flags where available, else filter the JSON). **Skip drafts**
 by default (a draft isn't ready for review) unless the filter explicitly asks for them.
 
-## 2. The seen-ledger (idempotency)
+## 2. The due check (idempotency)
 
-Idempotency is keyed on the PR's **head SHA** — review a given commit at most once. State lives in a
-per-repo, git-local, untracked file, mirroring `pr-review`'s rejection store:
+Idempotency is keyed on the PR's **head SHA** — review a given commit at most once.
+The host-side head-SHA marker (`skills/pr-review/references/posting.md` → "Idempotency") is the
+record of truth. A local seen-ledger caches it to save host calls:
 
 ```
 .git/pr-review-seen.jsonl     # one JSON object per line, append-only
 {"pr": 142, "sha": "9c1f…", "tier": "standard", "verdict": "REQUEST CHANGES", "at": "<iso>"}
 ```
 
-A PR is **due** when either:
-- it has **no ledger entry**, or
-- its current head SHA **differs** from the last recorded `sha` for that PR (a new push), **and**
-- the current head does **not already carry the review marker** (the belt-and-suspenders check —
-  see the marker in `ci-event.md` → "Idempotency & the marker"; a poll and a CI run share the same
-  marker so they never double-post the same commit).
+A PR is **due** when both conditions are true:
+1. The ledger has no entry for its current head SHA (no entry, or a new push).
+2. The PR has no `pr-review:head=<current head SHA>` marker on the host.
+
+Check condition 2 even when condition 1 passes. A CI run or another poller can review the same head.
+In a `/schedule` cloud routine, the ledger does not persist between runs. There, condition 2 is the
+only dedup.
 
 `at` is a real timestamp — stamp it from the shell (`date -u +%FT%TZ`) when you append, since skill
 runs can't call `Date.now()`.
 
 ## 3. Self-loop guard
 
-A review bot must not chase its own tail:
-- The **SHA key already** prevents re-reviewing an unchanged head — posting a review comment does not
-  change the head SHA, so the PR won't come back as due.
-- **Optional author guard:** if the review bot account also *opens* PRs, skip PRs authored by it
-  (`--author` of your own bot) unless explicitly told to self-review. State the rule you applied.
+Apply "Do not loop on yourself" in `skills/pr-review/references/triggers.md`.
+To skip the PRs of the review bot account, filter out its author before the due check.
 
 ## 4. Honor `--max`
 
-Take the first **N** due PRs, **oldest `updatedAt` first** (longest-waiting served first). If more
+Take the first **N** due PRs, oldest age field first (longest-waiting served first). If more
 than N are due, `log` the deferred PRs by number — never silently truncate; they're picked up next
 tick. Default N small (e.g. 5) so an unattended routine can't spend unbounded tokens in one wake.
 
@@ -74,9 +74,8 @@ deferred remainder, then stop. No review, no ledger write.
 
 ## 5. Review each in a fresh sub-agent
 
-For each due PR, run the existing reviewer — **one fresh sub-agent per PR** (Task tool), so the
-reviewer never shares context with the poller or with the agent that wrote the PR, and a slow review
-doesn't block the others:
+For each due PR, run the existing reviewer in **one fresh sub-agent per PR** (Task tool).
+A slow review then does not block the others:
 
 ```
 /pr-review <number-or-id> --comment            # + --tier=<t> if the poller was given one
@@ -86,9 +85,7 @@ Omit `--tier` to let `pr-review` auto-tier per diff — the right default for un
 sub-agent does all host-touching work (diff, inline posting, verdict) through the `pr-review`
 provider layer, so GitHub/Azure differences are already handled there.
 
-Posting note: an **unattended** poller (under `/loop` / `/schedule`) posts by design — that's the
-configured intent, no per-PR confirmation. An **interactive** `/review-on-open` you typed yourself
-confirms before its first post like any outward-facing action, then proceeds for the rest of the poll.
+Apply the interactive posting rule in `../SKILL.md` → "Invariants" before the first post.
 
 ## 6. Record & summarize
 
@@ -108,7 +105,7 @@ Don't build a loop inside this skill — compose with the runtime's schedulers:
 - **Local, while you work:** `/loop 10m /review-on-open` — polls every 10 minutes in your session.
   Add a filter to scope it: `/loop 10m /review-on-open --author=my-bot --max=3`.
 - **Hands-off / no machine kept awake:** a `/schedule` cloud routine running `/review-on-open` on a
-  cron (e.g. every 15 min during work hours). Best when the PRs come from other agents around the
-  clock.
+  cron (e.g. every 15 min during work hours). It starts from a fresh clone, so it depends on the
+  host marker, not the ledger.
 
-Both just re-invoke this one-pass poller; the ledger makes every re-invocation safe.
+Both just re-invoke this one-pass poller; the head-SHA marker makes every re-invocation safe.

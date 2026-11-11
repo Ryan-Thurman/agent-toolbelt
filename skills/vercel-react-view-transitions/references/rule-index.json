@@ -1,0 +1,12 @@
+{
+  "skill": "vercel-react-view-transitions",
+  "rules": [
+    {
+      "path": "references/review-checklist.md",
+      "when": "The change adds or edits a ViewTransition component, a transition type, or a view transition call.",
+      "fix": "Check placement, triggers, default=\"none\", shared element pairs, and reduced-motion CSS.",
+      "signals": ["<ViewTransition\\b", "\\baddTransitionType\\s*\\(", "\\bstartViewTransition\\s*\\("],
+      "file_signals": []
+    }
+  ]
+}

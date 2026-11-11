@@ -1,6 +1,8 @@
 # DESC: tiered multi-agent PR/code review (light/standard/deep): commands (incl. /pr-review-init config generator), skill tree, config sample, examples
+# DEPENDS: simple-english
 pack_pr_review() {
   shared_contract references/human-readable-output.md
+  shared_contract references/docs-writing.md
   cmd pr-review
   cmd pr-review-init
   cmd review-diff
@@ -10,7 +12,7 @@ pack_pr_review() {
   local f
   for f in \
     SKILL.md \
-    benchmarks/results.md benchmarks/style-contract/cases.md \
+    benchmarks/style-contract/cases.md \
     checklists/README.md checklists/python.md checklists/sql.md checklists/typescript.md \
     facets/_shared.md facets/correctness.md facets/maintainability-deep.md \
     facets/maintainability.md facets/performance.md facets/security.md \
@@ -20,7 +22,8 @@ pack_pr_review() {
     references/dual-judge.md references/fan-out.md references/finding-schema.md \
     references/lang-checklists.md references/output-format.md references/posting.md \
     references/providers.md references/rejection-memory.md references/repo-config.md \
-    references/review-rubric.md references/targets-and-diff.md references/rct-acceleration.md
+    references/review-rubric.md references/targets-and-diff.md references/rct-acceleration.md \
+    references/triggers.md
   do
     skill pr-review "$f"
   done
@@ -29,6 +32,11 @@ pack_pr_review() {
   shared_contract references/style-precedence.md
   shared_contract references/anti-slop-naming.md
   shared_contract references/typescript-react-baseline.md
+  shared_contract scripts/react-rule-scan.py
+  shared_contract references/react-acceptance.md
+  shared_contract references/providers.md
+  shared_contract references/posting.md
+  shared_contract references/security-checklist.md
 
   template pr-review.md
 

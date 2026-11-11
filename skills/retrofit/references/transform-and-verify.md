@@ -20,11 +20,9 @@ each unit.
 
 ## Isolate parallel work
 
-When transforming many units concurrently, give each its own **git worktree** so parallel edits
-don't collide. Detect existing isolation first (don't nest worktrees); prefer a native worktree tool
-or `Workflow`'s `isolation: 'worktree'` over hand-rolled `git worktree` so the harness can manage
-cleanup. A worktree that ends up unchanged is discarded. Sequential, one-unit-at-a-time work needs no
-worktree.
+When you transform units in parallel, give each unit its own git worktree.
+Inside one `Workflow` run, use `isolation: 'worktree'` so the harness manages cleanup.
+For independent sessions, use the `worktree` skill. Sequential work needs no worktree.
 
 ## Transform each site
 
@@ -36,12 +34,14 @@ don't paper over it. Update the site's status in the plan.
 ## Verify the whole
 
 After the sweep:
+- **Loop until dry** — run discovery again. Transform any new sites, then repeat until a pass finds
+  no new site.
 - **Full test suite + build/type-check** green across the tree.
 - **Adversarial pass on the risky sites** — re-check every site marked `judgment`/`needs-review`:
   did the behavior difference get handled (moment mutate→dayjs immutable), the capability set up (the
   plugin registered), the edge case covered? Try to disprove "this site is correct."
 - **Zero-usage gate before removal** — before deleting the old library/API/pattern, confirm there
-  are no remaining references (fresh grep + `rct affected`/`impact_of` if available). Remove the old
+  are no remaining references (a fresh grep and AST search). Remove the old
   code, its tests, config, and docs only once usage is provably zero.
 
 ## No silent truncation

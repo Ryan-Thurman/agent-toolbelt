@@ -21,6 +21,7 @@ Resolved investigations can move to a `resolved/` subfolder. Pick a `<slug>` fro
 | Section | Rule | Why |
 |---|---|---|
 | **Symptoms** | IMMUTABLE after intake | the bug doesn't change; only our understanding does. Freezing it stops scope drift and "fixing a different bug." |
+| **Reproduction** | OVERWRITE until confirmed | `/reproduce` records the steps and status; keep it fixed after the gate passes. |
 | **Current Focus** | OVERWRITE before every action | always reflects the single thing in flight; `next_action` is the resume point. |
 | **Eliminated** | APPEND only | a disproven hypothesis must never be re-investigated. |
 | **Evidence** | APPEND only | the audit trail of what was observed. |
@@ -29,13 +30,13 @@ Resolved investigations can move to a `resolved/` subfolder. Pick a `<slug>` fro
 
 `next_action` must be concrete and executable: *"Add logging at line 47 of auth.js before
 `jwt.verify()` to observe whether the token is present and its non-sensitive shape"* — never
-*"continue investigating."* Record only redacted evidence in the file.
+*"continue investigating."*
 
 ## Status field
 
 `gathering → investigating → fixing → verifying → awaiting_human_verify → resolved`. Any later
 state loops back to `investigating` when verification fails. `awaiting_human_verify` is the normal
-state while QA re-tests a fix manually (see the QA path in `/reproduce` and `/fix-plan`).
+state while QA re-tests a fix manually (see `reproduction.md` and `fix-contract.md`).
 
 ## Resume protocol (after a reset or handoff)
 
@@ -61,7 +62,7 @@ to high-probability hypotheses when symptoms match. One entry per resolved bug:
 
 Read it at intake (`/bug-intake`) and at the start of `/rca`. A match (keyword overlap ≥ 2 tokens)
 is a **hypothesis candidate, not a confirmed diagnosis** — still run the loop, just start warmer.
-Write an entry when an investigation resolves.
+Write an entry in the close-out step, when the investigation resolves.
 
 ## Long investigations / context budget
 

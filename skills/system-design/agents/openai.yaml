@@ -1,4 +1,4 @@
 interface:
   display_name: "System Design"
-  short_description: "Create design documents with linked threat reviews."
-  default_prompt: "Use $system-design to document this architecture and review its attack paths."
+  short_description: "Discuss architecture, compare options, and document decisions."
+  default_prompt: "Use $system-design to work through this architecture question and produce the design documents, decisions, and diagrams needed."

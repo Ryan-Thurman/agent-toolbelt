@@ -5,15 +5,9 @@ description: Rules for an orchestrator that shells into agent CLIs to code and r
 
 # auto-agent-contract
 
-Every other pack in this toolbelt assumes an agent running **inside** a harness (Claude Code,
-Cursor), with a Task tool and a person nearby to confirm, overrule, and merge. This pack is for the
-opposite arrangement: a program **outside** the harness that shells into agent CLIs (`claude -p`,
-`codex exec`, `agy -p`), reads what comes back on stdout, and decides what happens next with nobody
-watching.
-
-That seam is where the failures live. The rules here are each derived from a specific production
-failure in [`agent-runner`](#the-reference-implementation), a local Python orchestrator that runs a
-plan through disposable coding and review agents.
+Use this pack for a program **outside** the harness. The program runs agent CLIs (`claude -p`,
+`codex exec`, `agy -p`) as subprocesses, parses their stdout, and decides the next step with no human
+present. Each rule comes from a production failure in [`agent-runner`](#the-reference-implementation).
 
 > **This pack adds no review logic.** Install the standard `agent-toolbelt` plugin alongside it.
 > Its `pr-review` skill emits a structured finding list (`references/finding-schema.md`) and a
@@ -35,7 +29,8 @@ reviews at a phase boundary, with a human in the session).
 | about to merge a PR an agent authored and reviewed | `references/merge.md` |
 | deciding what changes when no human is present | `references/unattended.md` |
 | writing a plan for `agent-runner` to execute | `references/plan-format.md` |
-| running Dev Lite-style implement/fix/review jobs with a caller-owned immutable plan | `$auto-agent-dev-lite` |
+| running phased-delivery-style implement/fix/review jobs with a caller-owned immutable plan | `$auto-agent-dev-lite` |
+| defining managed assignments, results, or retry ownership | `references/execution-boundary.md` |
 
 ## Principles (always)
 
@@ -63,25 +58,8 @@ reviews at a phase boundary, with a human in the session).
 
 ## The reference implementation
 
-`agent-runner` is a local Python 3 CLI that drives a markdown plan through `IMPLEMENT → REVIEW →
-FIX → CLOSE_PHASE → MERGE` per phase, one PR per phase, with state in SQLite. Every rule in this pack
-cites the commit that earned it. When a rule and the runner disagree, the runner is the source of
-truth — it is executable and this is prose.
-
-The plan it consumes is a specific markdown serialization parsed by regex. Write one with
-**`/auto-agent-plan`** (`references/plan-format.md`), which mines the repo for phases rather than
-starting from a blank template.
-
-## References
-
-- `references/invocation.md` — argv bounds, structured-output extraction, per-CLI flag semantics, and
-  the reviewer privilege boundary.
-- `references/convergence.md` — the ratchet, no-op fix detection, and bounded attempts with an
-  explicit escalate state.
-- `references/merge.md` — the three-check close precondition, host-API eventual consistency, and
-  already-merged-is-success.
-- `references/unattended.md` — what changes when nobody reads the report: advisory tags become gates.
-- `references/plan-format.md` — the `agent-runner` plan serialization contract (`/auto-agent-plan`).
-- Standard plugin's `pr-review` skill, `references/finding-schema.md`, and
-  `references/output-format.md` — reviewer findings and mechanical verdict.
-- Standard plugin's `phase-gate` skill — the in-harness sibling at a phase boundary.
+`agent-runner` is a local Python 3 CLI. It drives a markdown plan through `IMPLEMENT → REVIEW →
+FIX → CLOSE_PHASE → MERGE`, one PR per phase, with state in SQLite.
+When observed runner behavior differs from this contract, report the difference.
+The implementation does not change required behavior.
+Write a plan with **`/auto-agent-plan`** (`references/plan-format.md`).

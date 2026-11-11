@@ -90,6 +90,11 @@ reviewer reports every update it wants, bucketed (`blocking` / `shouldFix` / `ni
 every bucket is empty. See `references/convergence.md` for what the orchestrator does with those
 buckets on round two.
 
+**Make each phase a unit of mergeable value, not a unit of file edits.**
+
+**Write acceptance criteria that a command decides.** "The function is added" restates an
+implementation bullet. "`pytest tests/test_x.py` passes, covering the empty-input case" is a criterion.
+
 ---
 
 ## The config
@@ -194,3 +199,25 @@ Acceptance Criteria:
 
 Note what the body does *not* contain: no `Evidence:` line, no status prose, no reference to phases 2
 or 3, and an acceptance criterion that a command can decide.
+
+---
+
+## Drafting a plan
+
+`/auto-agent-plan` follows these steps. Read this whole file before you write a line.
+
+1. **Establish the check.** Find the command that proves the repo works: the CI test invocation, a
+   `Makefile` target, or a `package.json` script. If you cannot find one, stop and ask.
+   Each later step needs a command that decides "done".
+2. **Mine the work.** Extract candidate phases from `source` and order them by dependency.
+   The default source order is `docs/roadmap.md`, then open issues, then TODO/FIXME density.
+   Apply "What makes a phase executable". Merge or remove each phase that fails it.
+3. **Write the context preamble.** Follow the 4000-character bound rules in "The contract".
+4. **Write each phase.** Follow "The contract" and "A worked phase".
+5. **Validate with the runner.** Follow "Validating a plan".
+   Compare the phase count that the runner prints with the number of phases you wrote.
+6. **Write `docs/plan.md`, then stop.** With `--print`, print the draft instead.
+   With `--config`, prefer `agent-runner init` and edit its output.
+   Tell the user to read the phases, prune the ones they do not want, and commit.
+   `plan-validate` is safe to run. Never run `agent-runner run` yourself. Starting an unattended
+   loop that opens and merges PRs is the user's decision.

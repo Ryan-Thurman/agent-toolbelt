@@ -1,12 +1,15 @@
 #!/usr/bin/env bash
 # DESC: derive and maintain evidence-backed repository contribution and style guidance
+# DEPENDS: simple-english
 pack_style_guide_init() {
   shared_contract references/human-readable-output.md
+  shared_contract references/docs-writing.md
   cmd style-guide-init
   skill_tree style-guide-init
   shared_contract references/style-precedence.md
   shared_contract references/anti-slop-naming.md
   shared_contract references/typescript-react-baseline.md
+  shared_contract references/react-acceptance.md
   template repository-style-guide.md
   template repository-contribution-guide.md
 }

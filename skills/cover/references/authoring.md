@@ -12,56 +12,49 @@ Detect the runner, framework, and conventions from the repo before writing a lin
   `Cargo.toml` (`cargo test`), `pom.xml` / `build.gradle` (JUnit), `*.csproj` (xUnit / NUnit),
   `Gemfile` (RSpec / minitest), `composer.json` (PHPUnit), etc.
 - **Existing tests** — find the test dir/glob (`test/`, `tests/`, `__tests__/`, `*_test.go`,
-  `*.spec.ts`, `*_test.py`). Read 2–3 nearby tests and **match their style**: file location, naming,
+  `*.spec.ts`, `*_test.py`). Match their file location, naming,
   assertion library, fixtures/factories, setup/teardown, mocking approach.
 - **Run command** — the actual command the repo uses (`npm test`, `pytest -q`, `go test ./...`,
   `cargo test`). Prefer a single-file/single-test invocation for the fast falsify loop.
-
-Match what's there. Do **not** introduce a new framework, a new assertion library, or a parallel
-convention. If no test setup exists at all, say so and propose the minimal idiomatic one — don't
-silently scaffold.
 
 ## Pin behavior, not implementation
 
 A test should survive a refactor that preserves behavior and fail on one that changes it.
 
-- **Assert observable behavior** — return values, emitted output, raised errors/error type, HTTP
-  status/body, persisted state, side-effects, ordering when ordering is contractual.
-- **Avoid implementation coupling** — don't assert private fields, internal call counts, mock
-  invocation order, log strings, or incidental data structure shape unless that *is* the contract.
+- Follow the unit-test rules in `shared/contracts/references/test-driven-development.md`.
 - **Intended vs. current.** Pin **current** behavior by default (that's what a regression lock
   protects). Only pin a *different* intended behavior when it's explicitly agreed — and then say so,
   because such a test is red until the behavior changes (that's a spec, not a regression lock).
 - **One behavior per test.** Name the test for the behavior it locks, not the function it calls.
 
-## The red→green regression-lock recipe (bug repro → committed test)
+## The red→green regression lock (recorded bug gap)
 
-This is the bug-to-fix hand-off: `/reproduce` gave you a reproduction; turn it into a locked test.
+Use this section only when `bug-to-fix` recorded a regression-coverage gap.
+Use `shared/contracts/references/test-driven-development.md` for the red check and the green check.
+Apply these additions:
 
-1. **Anchor on the symptom.** Assert the *user's exact* observed wrong behavior becoming right — not
-   a proxy. If the bug is "returns 500 on empty cart," assert the status/response, not an internal
-   flag.
-2. **Confirm red.** Run the new test against the **unfixed** code and watch it fail for the right
-   reason (the symptom), not a setup error. A regression test that was never seen red proves nothing.
-3. **Apply the fix** (in the dev / bug-to-fix lane — *not* here; `cover` doesn't edit production
-   code) and **confirm green.**
-4. **Falsify.** Re-break the behavior (revert the fix or mutate it) and confirm the test goes red
-   again. Then restore. Now it's a real lock.
-5. **Commit the test** alongside (or just before) the fix, with the bug reference, so the regression
-   can't return silently.
+1. **Anchor on the symptom.** Assert the user's exact observed wrong behavior becoming right, not a proxy.
+   For "returns 500 on empty cart", assert the status and response, not an internal flag.
+2. **Confirm red** against the unfixed revision. The failure must show the symptom, not a setup error.
+3. **Confirm green** on the current revision, where the fix already landed. The fix belongs to the
+   bug-to-fix lane.
+4. **Name the bug.** Put the bug reference in the test name or a comment.
 
-## Falsify the test (every new test, not just regressions)
+## Falsify the test
 
-> A test that can't fail is worthless.
+A test that cannot fail does not protect behavior. Falsify every new test with the method for its kind:
 
-Preserve the intended assertion. Prefer running the test against the pre-fix revision in an isolated workspace.
-Otherwise, use a bounded behavior mutation only within an authorized isolated copy.
-Confirm that the mutation actually landed and the test failed for the intended symptom.
-A changed expected literal or a setup error cannot establish regression detection.
-Restore temporary changes even after failure and verify restoration.
-Keep user changes intact; this experiment does not authorize production edits outside test authoring.
-If a safe behavioral check cannot run, report `Not verified` and explain the limit.
-A test that stays green requires investigation of the mutation, path, and assertion before drawing a conclusion.
+| Test kind | Method |
+| --- | --- |
+| Regression lock | Run the test against the pre-fix revision in an isolated worktree. |
+| Pinning test | In an isolated worktree or copy, mutate the pinned behavior and run the test. |
+
+- Keep the intended assertion. A changed expected literal or a setup error does not prove detection.
+- Confirm that the mutation landed and that the test failed for the intended reason.
+- Restore temporary changes, even after a failure, and verify the restoration.
+- Keep user changes intact. This check does not authorize production edits.
+- If a test stays green, investigate the mutation, the code path, and the assertion.
+- If a safe check cannot run, report `Not verified` and explain the limit.
 
 ## Determinism rules (no flaky tests)
 
@@ -81,12 +74,7 @@ ship a test that passes "usually."
 
 ## Apply discipline
 
-- **Report-then-apply.** Propose the test list first (behavior pinned, risk guarded, kind, file).
-  Apply only the selected tests, in a second step. Never silently add tests.
-- **Tests only.** Never edit production code to make a test pass. If green requires a production
-  change, that's a fix — hand it to the dev / bug-to-fix lane and stop.
-- **Existing suite stays green.** All existing tests must pass unmodified. If your new test forces an
-  existing test to change, you misread the contract — reconsider.
-- **One test at a time; run after each.** Falsify each as you go. Keep test-only additions in their
-  own commit, separate from feature or fix changes.
-- **Match conventions.** File location, naming, fixtures, assertion style — mirror the repo.
+- Apply only the tests that the user selected.
+- **One test at a time; run after each.** Falsify each test as you go.
+- Run the relevant existing suite after the last test.
+- Commit pinning tests and regression locks in a test-only commit, separate from feature or fix changes.

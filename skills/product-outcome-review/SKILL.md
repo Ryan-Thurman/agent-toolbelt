@@ -5,20 +5,22 @@ description: Review whether an experiment or released change improved its origin
 
 # Product outcome review
 
-Before writing for the user, read `shared/contracts/references/human-readable-output.md`.
+If you have not read `shared/contracts/references/human-readable-output.md` in this session,
+read it before you write for the user.
+
+Toolbelt paths: a path that starts with `shared/`, `skills/`, `templates/`, or `workflows/` is relative to the Toolbelt root, `${CLAUDE_PLUGIN_ROOT}`. If that variable is not replaced, use the nearest folder above this file that contains `shared/contracts/`.
 Read `shared/contracts/references/evidence-quality.md` and `shared/contracts/references/product-measurement.md` before interpreting results.
 
 Review supplied measurements and permitted research against the original product hypothesis.
-Default to report-only; a requested report does not authorize deployment, tracker updates, or external publication.
+Default to report-only.
 
-Paths beginning `templates/` or `shared/` refer to the Toolbelt root. Compatibility installers rewrite them under the target’s `.atb/`.
+Paths beginning `templates/` or `shared/` refer to the Toolbelt root.
 
 ## Procedure
 
 1. Identify the original problem, audience, hypothesis, intervention, exposure dates, and decision to make.
    Preserve agreed success criteria and identify missing definitions.
-2. Establish the measurement contract from the shared product-measurement reference.
-   Record baseline and outcome periods, calculation, population, data quality, and guardrail results.
+2. Apply the product-measurement rules to each metric and guardrail.
 3. Compare results and inspect counterevidence.
    Separate observed change from evidence about its cause.
    If populations or event definitions changed, state which comparisons remain valid.
@@ -27,10 +29,9 @@ Paths beginning `templates/` or `shared/` refer to the Toolbelt root. Compatibil
    An inconclusive result remains a valid result.
 5. Use `templates/product-outcome-review.md` to recommend `Continue`, `Revise`, `Stop`, or `Gather evidence`.
    Name the next decision owner and observable evidence needed.
-   Route immediate release failures to `ship-it` or `bug-to-fix` when available.
 
 ## Completion
 
-Report the original hypothesis, metric definitions, baseline, outcome, population, period, guardrails, uncertainty, and decision rationale.
+Report the original hypothesis, the fields that the product-measurement rules require, uncertainty, and decision rationale.
 Mark unsupported conclusions as insufficient evidence.
-Do not require a release or ticket when reviewing an experiment.
+An experiment review needs no release or ticket.

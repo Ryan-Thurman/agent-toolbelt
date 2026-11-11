@@ -28,6 +28,16 @@ linked worktree still resolves correctly and never nests.
 `<parent>/.worktrees/<repo-name>/<branch-slug>`, where `<branch-slug>` is the branch name with `/`
 replaced by `-` (so `agent/fix-login` → `agent-fix-login`).
 
+```
+<parent>/
+  .worktrees/<repo>/<branch-slug>/   <- every agent worktree, for every repo
+  repo-a/  repo-b/  …                <- the main checkouts, branches left alone
+```
+
+The worktrees live outside every repo, so they never appear in a repo's `git status` and need no
+`.gitignore` entry. All repos under the same parent share one `.worktrees/` directory, so
+`list --all` shows every agent's checkout.
+
 ## `new [repo] [branch] [--task <slug>] [--from <ref>]`
 
 Create a worktree on a **newly created** branch and print where it is.

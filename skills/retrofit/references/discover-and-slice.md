@@ -1,8 +1,8 @@
 # Discover and slice
 
 The first phase of a retrofit, done **inline before any fan-out** — you need the full work-list and
-the transform defined before you can apply it everywhere. Capture the result in
-`templates/retrofit-plan.md` (durable + resumable).
+the transform defined before you can apply it everywhere. Record the result in the report, or in
+`templates/retrofit-plan.md` when the user asks for a durable plan.
 
 ## 1. Define the transform
 
@@ -17,9 +17,7 @@ Find *all* of them — a missed site is the failure mode:
 - **Grep / ripgrep** for the import, symbol, or pattern (and its aliases, re-exports, and string/
   dynamic references).
 - **AST** when the pattern is structural (a call shape, a JSX element) rather than textual.
-- **`rct impact_of` / `affected`** when the rct graph is available — it surfaces callers a grep
-  misses (dynamic/aliased). See the `rct-acceleration` note in the review skills for the pattern.
-- Cross-check counts two ways (grep vs. graph/AST); a mismatch means hidden sites.
+- Cross-check counts two ways (grep vs. AST); a mismatch means hidden sites.
 
 Record every site in the plan with a status (`pending`/`done`/`skipped`/`needs-review`).
 
@@ -34,9 +32,8 @@ Mark each site:
 
 ## 4. Codemod-vs-hand-edit decision
 
-- **Mechanical + more than ~a few dozen sites → write a codemod** (jscodeshift / ts-morph / an AST
-  transform) and apply it; review its diff. (The "Rule of 500": large mechanical changes belong in a
-  script, not N hand-edits — same rule `simplify` uses.)
+- **Mechanical + more than ~30 sites → write a codemod** (jscodeshift / ts-morph / an AST
+  transform) and apply it; review its diff.
 - **Few sites, or heavy per-site judgment → hand-edit** each (still in the loop, still verified).
 - A codemod handles the mechanical bulk; retrofit's real value is then catching the **judgment**
   sites the codemod can't.

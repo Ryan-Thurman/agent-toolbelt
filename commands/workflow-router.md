@@ -16,15 +16,22 @@ Choose from workflows that are actually installed.
 | Select an opportunity or experiment | `product-discovery` |
 | Assess customer outcomes after an experiment or release | `product-outcome-review` |
 | Discover maintenance work across a repository | `tech-debt-discovery` |
-| Document architecture and review attack paths | `system-design`, then `threat-model` |
-| Compare an ask with current behavior, or clarify scope | `shape-up` |
+| Answer architecture questions or design a system | `system-design` (it runs `threat-model` for a design proposal) |
+| Review the threats of a design before it is built | `threat-model` |
+| Compare an ask with current behavior, clarify scope, or slice an approved brief into tickets | `shape-up` |
 | Review a plan, or deliver approved requirements or tickets | `phased-delivery` |
 | Reproduce and repair a defect | `bug-to-fix` |
 | Assess a technical investment or dependency | `tech-backlog-assessment` |
 | Find an existing precedent for a narrow ticket | `ticket-discovery` |
 | Design cases, write tests, or verify a browser flow | `test-case-design`, `cover`, or `webapp-testing` |
 | Review a change or address findings | `pr-review`, `pr-improve`, or `pr-review-reply` |
+| Run a pre-PR quality gate or clean up code | `code-quality-gate` or `simplify` |
+| Apply one defined change across many sites | `retrofit` |
+| Audit existing code for security problems | `security-audit` |
+| Keep a long task safe across context resets | `phase-context-workflow` |
+| Review a phase PR at a phase boundary | `phase-gate` |
 | Prepare a release or a resumable handoff | `ship-it` or `handoff` |
+| Review the delivery process after completed work | `workflows/delivery-retrospective-workflow.md` |
 
 A clear small change can proceed directly with relevant checks.
 Use a phase plan when coordinated PR boundaries help the task.

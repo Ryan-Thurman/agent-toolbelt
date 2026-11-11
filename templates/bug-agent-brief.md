@@ -58,3 +58,4 @@ What this fix must **not** do — explicitly fence out refactors, unrelated clea
 - [ ] Root cause addressed, not just the symptom.
 - [ ] Existing tests pass / build succeeds.
 - [ ] Original bug scenario verified end-to-end.
+- [ ] Durable file `status` set to `resolved`, and the knowledge-base entry appended.

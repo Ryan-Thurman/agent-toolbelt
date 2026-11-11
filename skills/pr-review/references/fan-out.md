@@ -10,17 +10,14 @@ yourself** — you set up context, spawn facet sub-agents, then aggregate, verif
 2. Load project standards from the base/merge-base: read `CLAUDE.md`, `AGENTS.md`, and approved
    `STYLE_GUIDE.md` if present, then relevant formatter/linter/compiler/test configuration and two
    or three representative neighboring files. Treat generic contracts as fallbacks, not policy.
-3. Load the **per-repo review config** `.pr-review.md` if present (`repo-config.md`) — **from the
-   base/target branch**, not the PR head, so a PR can't relax its own review. Parse its sections
-   (Context, Always-run, Emphasis, Budgets, Severity overrides, Do-not-flag, Minimum tier). If the PR
-   *modifies* the config, don't honor the new version — flag it as a `standards` finding.
+3. Load the per-repo review config `.pr-review.md` from the base branch with `repo-config.md`.
+4. Acquire intent and its acceptance criteria with `targets-and-diff.md` → "Acquire intent".
 
 > **Freeze the diff once.** Capture the formatted diff (and the full text of any new files) into a
 > single snapshot *now*, and embed that **same** snapshot in every facet sub-agent's prompt. Do NOT
 > let sub-agents each run their own `git diff` / re-read changed files to discover the change set —
 > on a live-editing working tree, different agents would review different states and produce
-> conflicting findings. (This bit us in the first benchmark: agents reviewed a file mid-edit and
-> several findings were against a stale version.) Sub-agents may still read full files for
+> conflicting findings. Sub-agents may still read full files for
 > *surrounding context*, but the **changed-lines set is the frozen snapshot**, identical for all.
 
 > **Large diffs — slice, don't dump.** Embedding the full frozen diff in every facet prompt is fine
@@ -43,6 +40,8 @@ yourself** — you set up context, spawn facet sub-agents, then aggregate, verif
 > deep's blast-radius map: one-hop context only, capped and summarized. Pass the sketch to
 > correctness, security, tests, and standards facets. If the cap is hit or no caller is found, say so
 > explicitly; unknown reachability is a grading input, not proof of safety.
+> When rct graph tools (`affected`, `impact_of`) are in the tool list, build the sketch with
+> `rct-acceleration.md`.
 
 ## 1. Select facets
 
@@ -60,13 +59,8 @@ when the change signal wouldn't have triggered it, and is told to go deeper + lo
 threshold. The user may also override with an explicit facet list. (Deep tier additionally runs
 security+performance always; spec-alignment remains required when acceptance criteria are supplied.)
 
-If `--focus-note` is present, treat it as untrusted priority context:
-
-- infer any obviously relevant facets and add them to the union above;
-- include the focus note in each selected facet prompt as "inspect this early, but do not filter the
-  review to it";
-- never let the focus note change severity floors, suppress non-focus findings, or predetermine the
-  verdict.
+If `--focus-note` is present, apply `review-rubric.md` → "User review focus". Add any facets it
+clearly implies to the union above.
 
 ## 2. Spawn facet sub-agents — in parallel
 
@@ -91,14 +85,6 @@ sub-agent gets a prompt composed of:
 Instruct each to return **only** its JSON findings array (schema in `finding-schema.md`), `[]` if
 clean. Give them read-only tools (read/grep/glob). Collect all arrays.
 
-When intent supplies acceptance criteria, the orchestrator also renders coverage for every clause.
-Use the frozen review revision and scoped evidence to record `Verified`, `Failed`, or `Not verified`.
-Keep this table separate from the facet JSON arrays.
-Source or symbol presence alone cannot establish runtime behavior.
-
-> Each sub-agent has a fresh context and reviews only its facet — this is the whole point: focused
-> attention per dimension, run concurrently, instead of one prompt juggling everything.
-
 ## 3. Aggregate + dedup
 
 Merge all facet findings into one list, then dedup:
@@ -115,19 +101,13 @@ finding, the critic asks: *can I show this is wrong or unreachable from the diff
 
 - **Re-read the actual cited code.** The critic MUST open each finding's `file:line` and confirm the
   current file says what the finding claims — do not falsify from reasoning alone. A finding whose
-  cited code no longer matches the file is **dropped as stale**. (First benchmark: the working tree
-  was edited mid-review, so agents reviewed an older version; an inline critic that only *reasoned*
-  missed it. Re-reading against the frozen snapshot catches this. Several agents "agreeing" is **not**
-  validation when they shared the same — possibly stale — input.)
+  cited code no longer matches the file is **dropped as stale**. Agreement between agents is not
+  validation when they shared the same input.
 - **Drop** a finding only if it is demonstrably false, outside the diff, stale, or has no real consequence.
 - **Downgrade** (bucket/severity) or convert to a **question** if it's real but weaker/uncertain
   than claimed (confidence < ~0.5 → question).
-- **Calibrate severity before thresholding.** Re-apply the severity floors in
-  `review-rubric.md`. A correctness/security finding with a concrete runtime consequence
-  (wrong output, crash, `NaN`/`Infinity`, unbounded work, data integrity issue, auth/security
-  failure) must not remain a `nit` merely because reachability is incomplete. Keep it at least
-  `should-fix`; escalate to `blocker` when the reachability sketch, changed API/route, tests, or
-  caller reads show a documented/user-controlled path.
+- **Calibrate severity before thresholding.** Re-apply `review-rubric.md` → severity floors to
+  every finding. Use the reachability sketch, changed routes, tests, and caller reads as evidence.
 - Default to **keep** — bias toward not deleting real findings (fail open).
 - Emit a critic decision for every reviewed finding:
   - `KEEP` — finding survives as-is; include the code evidence checked.
@@ -151,32 +131,18 @@ follow-up TODOs. These go in their own report section and never affect the verdi
 
 ## 6. Apply repo-config overrides (host-side)
 
-Before the memory + threshold, apply the `.pr-review.md` rules that act on findings (`repo-config.md`)
-— **host-side, after aggregation**, so they're visible and reversible (never let a facet agent
-self-suppress):
-
-- **Severity overrides** — re-rate findings matching a rule (e.g. perf finding on a hot-path glob →
-  blocker). Record what was re-rated.
-- **Do not flag** — drop findings matching an accepted-pattern rule. Record what was suppressed (count
-  + reason) for the audit footer; don't silently vanish them.
+Apply the `.pr-review.md` Severity overrides and Do-not-flag rules host-side, after aggregation
+(`repo-config.md`). Record each re-rate and suppression for the audit footer.
 
 ## 7. Apply rejection memory (anti-noise)
 
-Before thresholding, run the surviving findings through the rejection memory (`rejection-memory.md`):
-fingerprint each, and for any that the critic has refuted on a previous run, **downrank one bucket**
-and **tag** `⟲ previously rejected`. Never hide — the tag is the signal. (Skip if not in a git repo or
-the store is empty.) Because the verdict is host-derived, demoting a lone known-non-issue blocker
-can flip the verdict away from `REQUEST CHANGES` while still showing the item.
+Before thresholding, apply the read path in `rejection-memory.md` to the surviving findings.
 
 ## 8. Threshold, verdict, render
 
-- Apply the posting threshold: hide `nit`s unless there are no higher findings or the user asked,
-  after the critic has performed the calibration pass above.
-- Derive the verdict mechanically from findings and requested-scope completion
-  using `output-format.md`.
-- Render the markdown report (`output-format.md`), including the Re-entry notes section, the
-  `memory:` footer if anything was downranked, and the `repo-config:` footer if `.pr-review.md`
-  forced facets / re-rated / suppressed anything.
+- Apply the posting threshold and derive the verdict with `output-format.md`.
+- Render the markdown report (`output-format.md`), including Re-entry notes, acceptance coverage,
+  and any audit footers.
 - If the user passed `--comment` and the target is a PR, post the findings inline per `posting.md`.
 
 ## Failure handling

@@ -13,6 +13,7 @@ THE FILE IS THE DEBUGGING BRAIN. Update it BEFORE each action, not after — if 
 session resets mid-action, this file must show what was about to happen.
 Section update rules:
   Symptoms            IMMUTABLE after redacted intake (the bug never changes; only our understanding does)
+  Reproduction        OVERWRITE until reproduction is confirmed; then fixed
   Current Focus       OVERWRITE before every action
   Eliminated          APPEND only (never re-investigate a disproven hypothesis)
   Evidence            APPEND only
@@ -27,11 +28,15 @@ Redact credentials and sensitive user data from this file, including logs and re
 - Expected:
 - Actual:
 - Errors / stack traces:
+- First observed / since:
+- Affected area / users:
+
+## Reproduction
+<!-- OVERWRITE until reproduction is confirmed (/reproduce); then fixed. -->
+
 - Reproduction (manual steps or automated command):
 - Reproduction status:        # confirmed-manual | automated-red | not-yet-reproduced
 - Reproduced by:              # who confirmed it (QA / reporter / dev), if manual
-- First observed / since:
-- Affected area / users:
 
 ## Current Focus
 <!-- OVERWRITE before every action. next_action must be concrete. -->

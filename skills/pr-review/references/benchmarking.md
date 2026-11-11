@@ -27,18 +27,10 @@ setup/aggregation/critic tokens — for a true total, add the harness figure.
 
 ## Optional eval ledger
 
-For repeatable review-quality evaluation, keep the ledger repo-local and append-only. Do not add a
-service, dashboard, database, or hosted eval runner.
-
-Use one of these storage modes:
-
-- **Committed benchmark summary:** append human-readable results to `benchmarks/results.md` when the
-  run informs tier guidance or prompt/rubric changes.
-- **Tracked JSONL ledger:** append one JSON object per run to
-  `skills/pr-review/benchmarks/eval-ledger.jsonl` only when the team wants machine-readable history in
-  the repo.
-- **Local scratch ledger:** append to `.git/pr-review-eval-ledger.jsonl` for private experiments that
-  should not be committed.
+For repeatable review-quality evaluation, keep an append-only ledger in private storage outside the repository.
+Use ignored `.atb-work/` only for disposable experiments.
+Keep project identifiers, findings, token reports, and execution evidence out of the shared skill tree and public commits.
+The benchmark method can remain public; individual evaluation records stay private.
 
 Recommended JSONL fields:
 
@@ -51,19 +43,41 @@ Rules:
 - Freeze the diff or record why the run is exploratory.
 - Record critic/dual-judge effects separately from raw findings.
 - Never include secrets, private code snippets, or full proprietary diffs in the ledger.
-- Keep `benchmarks/results.md` as the readable source of conclusions; JSONL is supporting evidence.
+- Keep the readable conclusion report beside its private JSONL evidence.
 
 ## Apples-to-apples protocol
 
 1. Pick one target (a real diff). Freeze it.
 2. Run each tier on it (light → standard → deep), each ideally in a fresh session.
 3. Run the review work in sub-agents so the Task tool meters it uniformly.
-4. Append one row per tier to `benchmarks/results.md`, and optionally one JSONL event per run to the
-   eval ledger.
+4. Append one row per tier to the private report and one event to its ledger when needed.
 5. Compare: does standard find *materially more high-severity* issues than light for ~Nx the
    tokens? Does deep find anything standard missed, or just re-confirm? That ratio is the decision.
 
-## The report footer (every run prints this)
+## Token-usage footer (`--benchmark`)
 
-See the "Token usage" section in `output-format.md` — each review ends with a per-facet token table
-(multi-agent) or a single figure (light), so numbers land in the report without extra work.
+Print this footer only when the user passes `--benchmark` or runs this protocol.
+Never include it in a posted PR summary.
+
+- **Multi-agent tiers (standard/deep):** sum the per-agent token counts the Task tool returns for
+  each facet, critic, judge, and tiebreaker sub-agent. Print the breakdown and the total.
+- **Light tier:** if the review work ran in a single sub-agent, use its Task token count; otherwise
+  note "see session `/cost`".
+- State the **review tokens** (sub-agent sum) separately from **total session tokens**
+  (harness `/cost`). The sub-agent sum excludes orchestrator setup and aggregation.
+
+```markdown
+### 📊 Token usage  ·  tier: <tier>
+| stage | tokens |
+|---|---|
+| facet: correctness | 47,074 |
+| facet: security    | 34,128 |
+| ...                | ...    |
+| critic             | ...    |
+| **review total (sub-agents)** | **224,033** |
+
+Yield: 0 blockers · 8 should-fix · 6 nits · 2 questions  →  ~28k tokens/finding
+(orchestrator overhead not included — see session /cost for the authoritative total)
+```
+
+The `Yield:` line makes runs comparable across tiers, because it pairs tokens with findings by bucket.

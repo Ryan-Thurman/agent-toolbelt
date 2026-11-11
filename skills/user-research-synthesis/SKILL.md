@@ -5,13 +5,16 @@ description: Synthesize interviews, surveys, usability notes, and customer feedb
 
 # User research synthesis
 
-Before writing for the user, read `shared/contracts/references/human-readable-output.md`.
+If you have not read `shared/contracts/references/human-readable-output.md` in this session,
+read it before you write for the user.
+
+Toolbelt paths: a path that starts with `shared/`, `skills/`, `templates/`, or `workflows/` is relative to the Toolbelt root, `${CLAUDE_PLUGIN_ROOT}`. If that variable is not replaced, use the nearest folder above this file that contains `shared/contracts/`.
 Read `shared/contracts/references/evidence-quality.md` when assessing the research evidence.
 
 Analyze supplied research or permitted connected sources.
 Default to report-only; write a requested research artifact without changing product code or publishing to external systems.
 
-Paths beginning `templates/` or `shared/` refer to the Toolbelt root. Compatibility installers rewrite them under the target’s `.atb/`.
+Paths beginning `templates/` or `shared/` refer to the Toolbelt root.
 
 ## Procedure
 
@@ -25,7 +28,7 @@ Paths beginning `templates/` or `shared/` refer to the Toolbelt root. Compatibil
    A convenience sample cannot establish population prevalence or invented customer segments.
 4. Explain each theme's consequence, evidence strength, uncertainty, and potential opportunity.
    Compare conflicting accounts rather than removing them to simplify the story.
-5. Use `templates/user-research-synthesis.md` for a durable report.
+5. For a durable report, use the project's research record when suitable, or `templates/user-research-synthesis.md`.
    Hand a selected opportunity to `product-discovery` only when that decision is requested.
 
 ## Completion

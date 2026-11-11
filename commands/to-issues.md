@@ -5,40 +5,8 @@ argument-hint: "<approved-brief-or-context>"
 
 # /to-issues
 
-Slice an agreed brief into implementation-ready, **vertical-slice** tickets using the `shape-up`
-skill.
+**Arguments:** `$ARGUMENTS` — the approved brief, or the context that identifies it.
 
-> Use after `/shape-up` to slice an approved brief. Preserve supplied project
-> requirements and ticket fields without adding another delivery lifecycle.
+Use this after `/shape-up` approves a brief and the user wants tickets.
 
-**Arguments:** `$ARGUMENTS`
-
-## Rules
-
-- Work from an **approved** brief (from `/shape-up`). If none exists, run `/shape-up` first.
-- **Vertical slices, not layers.** Each ticket delivers a narrow but COMPLETE path through every
-  layer (schema, API, UI, tests) and is demoable/verifiable on its own. Any prefactoring goes first.
-- Use `templates/shape-up-issues.md` for each ticket.
-
-## Steps
-
-1. Read the approved brief.
-2. Cut the work into vertical slices; put any required prefactoring as the first slice.
-3. For each slice, write `What to build` (end-to-end behavior, not layer-by-layer), `Acceptance
-   criteria` (checkboxes), and `Blocked by` (or "None - can start immediately").
-4. **Quiz the breakdown** before finalizing: is the granularity right (too coarse / too fine)? are
-   the dependency relationships correct? should any slices merge or split?
-5. Order the tickets by dependency (blockers first) so the `Blocked by` references are real.
-
-6. Map source requirements to tickets and verification methods.
-   Report missing coverage, contradictory decisions, and cycles before finalizing.
-   Include setup, tests, and documentation in the slice that needs them.
-   Preserve approved ticket boundaries; changes need their owner’s decision.
-
-## Output
-
-A dependency-ordered list of vertical-slice tickets following `templates/shape-up-issues.md`, each
-demoable on its own, ready to hand to `$phased-delivery` (or `/dev-plan`),
-which maps each selected ticket to one phase and one PR. Optionally publish them to
-the repo's configured tracker (GitHub Issues / Jira / Azure Boards) via `/ticket-sync`, which preserves
-the dependency order as "Blocked by" links.
+Follow the `shape-up` skill in its slicing mode.

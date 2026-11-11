@@ -1,103 +1,63 @@
 ---
 name: phase-context-workflow
-description: Manage durable phase context for long coding-agent work. Use when planning, implementation, testing, review, and PR prep should be split into resumable phases with repo-tracked phase files, handoffs, context packets, and safe /clear or /compact boundaries.
+description: Keep phase files, context packets, and phase handoffs so long coding-agent work survives /clear or /compact. Use when the user asks for phase files or a context packet, or when `.acc/phases/` already exists.
 ---
 
 # phase-context-workflow
 
-Before you write a response for the user, read
-`shared/contracts/references/human-readable-output.md`.
+If you have not read `shared/contracts/references/human-readable-output.md` in this session,
+read it before you write for the user.
 
-Use this skill when a coding-agent task will span multiple phases or sessions
-and the user wants important context preserved in files instead of chat history.
+Toolbelt paths: a path that starts with `shared/`, `skills/`, `templates/`, or `workflows/` is relative to the Toolbelt root, `${CLAUDE_PLUGIN_ROOT}`. If that variable is not replaced, use the nearest folder above this file that contains `shared/contracts/`.
 
-This skill is file-first. It does not require a daemon, TUI, or full agent
-orchestration system; the workflow must be useful with normal file edits and
-git commands.
+Use this skill to keep the context of a multi-session task in files, not in chat history.
+Resume from phase files, the git diff, and acceptance criteria, not from memory.
+The workflow needs only normal file edits and git commands.
 
-## Core Principle
-
-Agent chat history is disposable. Durable project context lives in files.
-
-The agent should not depend on a massive prior conversation. It should resume
-from project files, the current git diff, acceptance criteria, phase files,
-handoffs, and context packets.
-
-## Durable Files
-
-Default location:
+## Files
 
 ```text
 .acc/phases/<room-slug>/
-  phase-01.md
-  phase-01-handoff.md
-  phase-02.md
-  phase-02-handoff.md
-  context-packet.md
+  phase-NN.md           from ../../templates/phase-file.md
+  phase-NN-handoff.md   from ../../templates/phase-handoff.md
+  context-packet.md     from ../../templates/context-packet.md
 ```
 
-Use `docs/agent-command-center/phases/` only when the user explicitly wants
-project-visible planning docs instead of local command-center metadata.
+`.acc/` holds local session state by default.
+Recommend that the project adds `.acc/` to `.gitignore`.
+When the project wants to track phase files, use `docs/agent-command-center/phases/` and commit them.
 
-## Commands
+## Operations
 
-The portable command prompts live in `../../commands/`:
+| Operation | Do | Done when |
+| --- | --- | --- |
+| Create a phase | Create or update `phase-NN.md`. Keep useful existing content. Fill missing goal, scope, acceptance criteria, relevant files, status, and notes. Link the source plan, ticket, or PRD by path or URL. | The phase file exists and names its source. |
+| Start a phase | Read the durable plan, `phase-NN.md`, and `phase-(NN-1)-handoff.md` when present. Capture `git status --short --branch` and a changed-file summary. Write `context-packet.md`. | The packet exists and is compact enough to paste into a fresh session. |
+| Close a phase | Write `phase-NN-handoff.md` with the `handoff` skill rules. Include completed work, decisions, changed files, checks and known failures, open issues, and risks. Set `Safe To Clear`. | The handoff exists. `Safe To Clear` is `Yes`, or `No` with the missing items listed. |
+| Show status | List phase files, handoffs, and the latest packet. Match each phase to its handoff. Report the current branch and git status. | Each phase shows `handoff written`, `current`, or `not started`, and the next action is named. |
 
-- `/handoff` supplies the handoff-writing discipline used by phase close.
-- `/phase-create` creates or updates a phase file.
-- `/phase-start` creates or updates a context packet.
-- `/phase-close` writes a phase handoff.
-- `/phase-status` summarizes phase state for a room.
+After each operation, report the written path and the next command.
+Report a phase as complete only when a handoff or an explicit status field says so.
 
-In Codex, invoke this skill directly instead:
+When you start a phase, reconcile the packet as `shared/contracts/references/execution.md` says.
+Keep attempt counts, unresolved operation outcomes, and the owner of each next action.
 
-```text
-$phase-context-workflow
-Create a context packet for room fix-auth-bug phase 2.
-```
+## Clear or compact
 
-Use templates in `../../templates/`:
+- Use `/clear` only after a handoff or context packet holds what the next session needs.
+- Use `/compact` while the phase continues and a summary of the session is still useful.
+- Before a reset in the middle of a phase, write a short recovery note in the phase file or packet.
+- Set `Safe To Clear` to `Yes` only when all important context is in files.
 
-- `phase-file.md`
-- `phase-handoff.md`
-- `context-packet.md`
+## Subagents
 
-## Always Preserve
+The main agent owns the phase.
+Use subagents only for bounded, noisy work, such as diff review, test-failure summaries, module inspection, or log analysis.
+Keep tightly coupled edits in the main agent.
 
-- Room or project slug
-- Phase number and title
-- Goal and scope
-- Acceptance criteria
-- Relevant files
-- Current branch and worktree
-- Current git status
-- Changed files summary
-- Tests and checks run
-- Decisions made
-- Open issues, risks, and blockers
-- Previous phase handoff
-- Concrete next action
-- Whether it is safe to clear context
+## Related contracts and skills
 
-## Phase Lifecycle
-
-Read `references/lifecycle.md` before starting or closing a phase, clearing or
-compacting context, or delegating phase work to subagents. The top-level rule is
-simple: do not start from memory when phase files are available, and do not clear
-context until the next session has durable state.
-
-## Relationship To Other Skills
-
-- Use `handoff` for the handoff-writing rules: reference durable artifacts, lead
-  with the next action, capture ruled-out paths, redact secrets, and keep the
-  summary compact. This skill adds the repeated phase lifecycle and repo-tracked
-  `.acc/phases/<room>/phase-NN-handoff.md` destination.
-- Use `phased-delivery` for requirement or ticket implementation. This skill can wrap
-  dev-lite phases when context reset safety matters.
-- Use `phase-gate` after opening a phase PR when the phase needs a fresh
-  review subagent and PR comments.
-
-## References
-
-- `references/lifecycle.md` — phase start, phase close, `/clear` vs `/compact`,
-  and subagent guidance.
+- For a caller-managed assignment, keep the `shared/contracts/references/execution.md` fields in the context packet.
+- When a session resumes after failed attempts, read `shared/contracts/references/failure-recovery.md` before another attempt.
+- When this skill wraps `phased-delivery`, keep the delivery plan as the source of truth. The context packet links to the plan and holds only session state.
+- Use `phase-gate` after a phase PR opens when the phase needs a fresh review subagent and PR comments.

@@ -4,7 +4,7 @@ Agent Toolbelt is an independent, general-purpose collection of reusable skills
 for software delivery. It has no AI-SDLC or team-workspace dependency.
 
 The native plugin is the primary installation path: one canonical `skills/`
-tree, 33 on-demand skills, and support for Cursor, Claude Code, and Codex.
+tree of on-demand skills, and support for Cursor, Claude Code, and Codex.
 
 ## What belongs here
 
@@ -60,8 +60,8 @@ open portal/generated/index.html   # macOS; use your browser on other hosts
 ```
 
 For screenshots of both themes at desktop and mobile sizes, run
-`npm run portal:screenshots`. Read [the visual review guide](docs/portal-visual-review.md)
-for screenshot paths, the HTML report, and the local browser startup option.
+`npm run portal:screenshots`. Generated reports stay under ignored `.atb-work/portal/`.
+Use `npm run portal:report` to open the local browser report.
 
 ### Publish the portal
 
@@ -71,19 +71,14 @@ The version in `.cursor-plugin/plugin.json` is the comparison source.
 All six plugin manifests and the Claude marketplace versions must agree.
 
 Before the first publication, select **Settings → Pages → Build and deployment → Source → GitHub Actions** in this repository.
-Read [the hosting guide](docs/portal-hosting.md) for the release gate and first-publication requirements.
+Only the checked `portal/generated/` directory enters the Pages artifact.
 
-Most packs fall into one of these jobs:
+Development and bug-fix work use the [shared TDD procedure](shared/contracts/references/test-driven-development.md)
+for behavior changes, with focused unit tests and explicit coverage gaps.
 
-- Understand customers and results: `user-research-synthesis`, `product-discovery`, `product-outcome-review`
-- Start new work: `shape-up`, `system-design`, `phased-delivery`
-- Investigate broken behavior: `bug-to-fix`, `ticket-discovery`
-- Review and harden changes: `code-quality-gate`, `pr-review`, `pr-improve`, `pr-review-reply`, `phase-gate`
-- Run agents unattended (optional private package): `auto-agent-contract`
-- Discover maintenance work: `tech-debt-discovery`, `tech-backlog-assessment`
-- Improve code or tests: `style-guide-init`, `simplify`, `test-case-design`, `cover`, `crap-analysis`, `retrofit`, `react-quality`
-- Keep long work resumable: `phase-context-workflow`, `handoff`
-- Prepare to ship: `ship-it`
+Managed work can use the optional [task execution contract](shared/contracts/references/execution.md)
+for compact context, structured results, and explicit caller ownership.
+Its record checker validates declarations; the execution runtime still verifies evidence and controls transitions.
 
 ## Optional project-scoped compatibility install
 
@@ -155,6 +150,10 @@ completion checklist.
 | Compare a product ask with current behavior and find gaps or missing questions | `shape-up` (gap review) |
 | Turn a vague idea into an approved brief first | `shape-up` |
 | Decide whether an opportunity is ready to shape | `product-discovery` |
+| Answer an architecture question or write a design | `system-design` |
+| Decide whether to do one technical backlog item | `tech-backlog-assessment` |
+| Adapt a pattern that a ticket names to a new area | `ticket-discovery` |
+| Review a design for threats, or audit implemented code | `threat-model`, `security-audit` |
 | Establish repository coding conventions | `style-guide-init` |
 | Run a deep code review on a PR or local diff | `pr-review` |
 | Run a policy- or risk-driven pre-PR maintainability gate | `code-quality-gate` |
@@ -165,10 +164,9 @@ completion checklist.
 ## Documentation
 
 The [generated portal](portal/generated/index.html) owns discovery, taxonomy,
-examples, and the common workflow map. The [wiki](wiki/Home.md) and `docs/`
-own deeper operational and compatibility guidance; `SKILL.md` remains the
-canonical behavior and instruction source. The generated audit is the
-comprehensive classification and recommendation record.
+examples, and the common workflow map. The [wiki](wiki/Home.md) supplies essential
+operational and compatibility instructions. `SKILL.md` remains the canonical behavior source.
+Maintainer reports, project handoff documents, and evaluations stay outside the public repository.
 
 Quick map:
 
@@ -176,13 +174,9 @@ Quick map:
 |---|---|
 | [Installation](wiki/Installation.md) | Native plugin setup, `install.sh` compatibility path, harness selection, polyrepo `--sweep` |
 | [Portal](portal/generated/index.html) | Searchable skill discovery, taxonomy, examples, workflows, and host invocation guidance |
-| [Skill taxonomy audit](docs/skill-taxonomy-audit.md) | Generated classification, documentation completeness, and recommendations |
-| [Workflows](wiki/Workflows.md) | Phased Delivery, Phase Context, Bug to Fix, Shape Up |
+| [Workflows](wiki/Workflows.md) | Phased Delivery, Phase Context, Bug to Fix, System Design, Product Discovery, Threat Model, Shape Up |
 | [Code Review](wiki/Code-Review.md) | PR Review + triggers: Review Reply, Review on Open, Review Queue, Phase Gate, Cursor Hooks |
-| [Utilities](wiki/Utilities.md) | Simplify, Cover, Ship It, Retrofit, Handoff, Ticket Sync |
-| [Phase → Command Map](docs/phase-command-map.md) | Which commands each workflow phase uses (Mermaid diagrams) |
-| [docs/tutorial.md](docs/tutorial.md) | Guided first install and first feature walkthrough |
-| [Release Versioning](docs/release-versioning.md) | Repo release hygiene: license, changelog, and tag version policy |
+| [Utilities](wiki/Utilities.md) | Code, test, security, and React utilities; release, worktree, handoff, and ticket sync |
 
 ## Packs
 
@@ -190,19 +184,10 @@ Packs are installable bundles. Most include slash commands, skills, templates,
 or workflow docs.
 
 Project-specific delivery processes belong to their project repositories.
-See the [ownership and migration guide](docs/project-workflow-boundary.md).
+See [What belongs here](#what-belongs-here) for ownership.
 
-| Area | Representative packs |
-|---|---|
-| Discover and plan | `product-discovery`, `shape-up`, `phased-delivery` |
-| Debug and repair | `bug-to-fix`, `ticket-discovery` |
-| Review and improve | `pr-review`, `code-quality-gate`, `pr-improve`, `simplify`, `retrofit` |
-| Test and secure | `cover`, `test-case-design`, `webapp-testing`, `threat-model`, `security-audit` |
-| Operate and release | `phase-context-workflow`, `handoff`, `ship-it`, `worktree`, `ticket-sync` |
-| Specialists and compatibility | `vercel-*`, `crap-analysis`, `cursor-hooks`, `react-quality` |
-
-The portal and generated audit contain the complete skill and workflow
-inventory; this summary keeps the README an entry point.
+Run `./install.sh --list` to see each pack and its purpose.
+The portal and the catalog list every skill and workflow.
 
 ## Repository layout
 
@@ -214,7 +199,6 @@ agent-toolbelt/
   install/          per-pack file lists (install/<pack>.sh) + shared install/lib.sh
   build-cursor-plugin.sh
                     assemble a private, user-scoped Cursor plugin from the packs
-  docs/             user-facing setup and usage docs
   commands/         slash commands and reusable command prompts
   skills/           agent skills with operating instructions
   plugins/agent-toolbelt-auto-agent/
@@ -238,3 +222,8 @@ This public repo is meant to contain reusable prompts, skills, workflow docs,
 and templates only. Do not commit private project notes, internal planning
 artifacts, cloned third-party repositories, customer data, credentials, or
 workspace-specific scratch files.
+
+Keep `docs/` and `evals/` out of commits and plugin packages.
+Store durable private reports and project handoffs outside this repository.
+Generate disposable maintainer reports under ignored `.atb-work/`.
+Automated package checks and tests remain part of the maintained source.

@@ -64,7 +64,7 @@ fi
 
 # Skills refer to these support documents by their repository-root paths. Include
 # them in the frozen package so those references work from the plugin cache.
-for support_dir in templates workflows examples docs; do
+for support_dir in templates workflows examples; do
   if [ -d "$ROOT/$support_dir" ]; then
     cp -R "$ROOT/$support_dir" "$OUT/"
   fi
@@ -84,6 +84,8 @@ if [ "$WITH_RULES" = "1" ]; then
     cp "$f" "$OUT/rules/$(basename "$f")" && rule_count=$((rule_count + 1))
   done
 fi
+
+node "$ROOT/scripts/check-public-content.js" --package "$OUT" || exit 1
 
 echo "Done: $skill_count skills, 0 commands, $rule_count rules$([ "$WITH_RULES" = 1 ] || echo ' (rules omitted; pass --with-rules to include always-on rules globally)')."
 echo

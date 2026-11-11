@@ -9,13 +9,6 @@ a report-only current-state gap review.
 is bewildering and produces shallow answers. Walk the design tree depth-first: resolve a decision,
 then follow its dependencies, rather than firing a flat checklist.
 
-## Before you ask the human
-
-- **Scope-gate.** If the request spans multiple independent subsystems, stop and propose
-  decomposing it first. Don't refine the details of something that should be split.
-- **Resolve from the repo.** Grep the code and docs. Anything the codebase can answer, answer
-  yourself — only escalate genuine unknowns to the user.
-
 ## Asking well (don't lead)
 
 - Give your **recommended answer** with each question, and prefer **multiple choice** when the
@@ -37,18 +30,9 @@ then follow its dependencies, rather than firing a flat checklist.
 
 ## Brief self-audit (before emitting)
 
+- **Decision state** — separate agreed decisions, delegated technical choices, deferred ideas, and
+  unresolved questions. Resolve repository facts and delegated choices yourself.
 - **Internal consistency** — do any sections contradict each other?
 - **Ambiguity** — could any requirement be read two ways? If so, pick one and make it explicit.
 - **Placeholder scan** — no `TBD`/`TODO`/half-finished sections left; resolve or note them as open
   questions with a recommended default.
-
-## When to pin an ADR
-
-Only offer to record an Architecture Decision when **all three** hold: the decision is hard to
-reverse, surprising without context, and the result of a real trade-off. Otherwise just decide and
-capture it in the brief's Implementation Decisions.
-
-## Done
-
-Stop when a shared understanding is reached and the brief is approved. The hard gate stands until
-then: no planning or implementation step fires before approval.

@@ -80,3 +80,7 @@ If this is phase 1, say there is no previous handoff.
 ## Next Action
 
 The first concrete action for the next session.
+
+For managed work, record the task and run IDs, source revisions, allowed scope, and caller-owned actions.
+Keep required checks, attempt history, unresolved operation outcomes, and the next action's owner with the live state.
+Use the optional execution record only when the caller supports it.

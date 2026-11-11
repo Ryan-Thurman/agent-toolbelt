@@ -6,7 +6,7 @@ point to a precedent.
 Example:
 
 ```text
-Add e2e tests to HCP API. PWD already has them.
+Add e2e tests to the billing API. The accounts API already has them.
 ```
 
 ## Flow
@@ -39,10 +39,4 @@ Implementation planning or test-authoring workflow
 - A defined many-site transformation. Use `/retrofit`.
 - A bug investigation. Use the bug-to-fix lane.
 
-## Completion Criteria
-
-- The precedent has been found or explicitly reported missing.
-- Source and target differences are recorded.
-- The recommended adaptation path is specific.
-- Test scenarios and verification commands are named.
-- The next workflow is named.
+The `ticket-discovery` skill owns the steps and completion criteria.

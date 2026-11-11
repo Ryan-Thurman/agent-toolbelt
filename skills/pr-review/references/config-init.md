@@ -34,9 +34,11 @@ generic one.
 4. **What has this repo been burned by?** → `## Severity overrides`
    `git log --oneline --grep -iE 'revert|hotfix|regression'` plus fix-after-release patterns; if
    `gh`/`az` is available (`providers.md`), scan merged-PR review threads for recurring reviewer
-   push-back. Pin each recurring class with a path-scoped rule per the recipe in `repo-config.md`
-   ("never let a runtime-risk finding get suppressed"). Keep rules specific — path globs plus a named
-   condition — so they re-rate the real class, not every defensive nit.
+   push-back. Pin each recurring class with a path-scoped rule, as in the `## Severity overrides`
+   sample in `templates/pr-review.md`. A host-side re-rate fires even when one facet agent under-grades.
+   The most common class is missing input validation on request paths.
+   Keep rules specific — path globs plus a named condition — so they re-rate the real class, not every
+   defensive nit. Pair such rules with a `## Minimum tier: standard` floor.
 5. **What noise keeps getting rejected?** → `## Do not flag`
    The rejection memory (`.git/pr-review-rejections.jsonl`, `rejection-memory.md`) — entries refuted
    2+ times are suppression candidates. Also established bespoke patterns a generic reviewer would
@@ -61,9 +63,3 @@ generic one.
   applies what they accept.
 - **Skeleton and tone**: follow `templates/pr-review.md` — same headings, lenient markdown, every
   section optional.
-
-## The no-config nudge (in `/pr-review` runs)
-
-Adoption is pull-based, so the review itself points at this generator — but only when the run hit a
-situation the config actually solves. Trigger conditions and the one-line footer format are defined
-in `output-format.md` ("No-config nudge"); this recipe is what that footer links to.

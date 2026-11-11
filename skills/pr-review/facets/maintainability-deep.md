@@ -33,7 +33,7 @@ restructured the adjacent X." You may propose that. Rules:
 - **Anchor the finding on a changed line** (the hunk that triggered it) — keep it reviewable in
   context; never raise a finding about untouched code that the diff doesn't motivate.
 - The **remedy** (`benefit`/`improvedCode`/`rootIssue`) may then propose restructuring that extends
-  into adjacent code, *bounded by the deep-tier blast-radius map* (`deep-tier.md` §0a) — reason about
+  into adjacent code, *bounded by the deep-tier blast-radius map* (`deep-tier.md` §0) — reason about
   real importers/dependents, not speculation about files you haven't read.
 - Mark these `confidence` honestly and frame as a proposal ("the diff is the symptom; the cleaner fix
   is to reframe Y"). This is the one place the reviewer is allowed to be bigger than the hunk.

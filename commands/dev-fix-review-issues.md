@@ -5,8 +5,5 @@ argument-hint: "<review-findings>"
 
 # /dev-fix-review-issues
 
-Use `$phased-delivery` to address `$ARGUMENTS` on the current phase branch.
-Stay inside the ticket or phase boundary, update tests when needed, rerun
-affected checks, and review the changed diff. Record fixed and unresolved
-findings, checks, and next action in the existing plan. Do not begin the next
-phase as part of the fix.
+Use this command to fix review findings on the current phase branch.
+Follow the `phased-delivery` skill review rules, section "Fix findings", for `$ARGUMENTS`.

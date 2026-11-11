@@ -2,6 +2,52 @@
 
 ## Unreleased
 
+### Changed
+
+- Reviewed every skill, workflow, command, and shared contract for size, clarity, and coverage.
+- Moved procedures that existed only in commands into skills. Commands now point to their skill.
+- Removed repeated rules. Each rule now has one owner file.
+- Generated the stage tables in the product-learning, tech-debt, and system-design workflows from the catalog with `scripts/build-workflow-stages.js`. `check-catalog.sh` fails when a table does not match.
+- Moved the review trigger invariants to `pr-review` `references/triggers.md`. `review-on-open`, `review-queue`, and `phase-gate` now point to it.
+- Fixed contradictions in bug-to-fix, cover, simplify, ship-it, retrofit, phase-context-workflow, and phase-gate.
+- Made `pr-review` write a head-commit marker in the posted summary. `review-on-open` and `review-queue` use it to stop duplicate posts.
+- Added `--intent` to `pr-review` and `phase-gate` for an acceptance coverage table.
+- Made the `pr-review` token footer opt-in with `--benchmark`.
+- Made `phase-gate` solo mode merge only on `APPROVE`, re-review after each fix commit, and fix through `pr-improve`.
+- Made `crap-analysis` load config from the base branch and include committed and untracked changes.
+- Added a `crap-analysis` `review` operation with fixed verdicts, and `verify --changed`.
+- Made `code-quality-gate` run `crap-analysis` when the base commit has `.crap-analysis.json`.
+- Split the execution JSON schema into `execution-schema.md`, loaded only for JSON exchange.
+- Added the shared `security-checklist.md` contract for `security-audit` and `pr-review`.
+- Made `ticket-sync` keep unmapped ticket fields in the issue body.
+- Added missing rows to `/workflow-router` and the README indexes.
+- Added the `use-effect-killer` skill (MIT, from victor36max/use-effect-killer) to `react-quality`.
+- Added the React rule scan (`shared/contracts/scripts/react-rule-scan.py`). It lists the specialist rules that changed lines trigger.
+- Made `pr-review`, `code-quality-gate`, `simplify`, and `phased-delivery` run the React rule scan and record each listed rule.
+- Generated each Vercel skill's `rule-routing.md` from a new `rule-index.json`, with one trigger line per rule.
+- Added the Next.js Server Action authentication rule to `security-checklist.md`.
+- Added the `react-acceptance.md` contract. It sets React finding severity and maps hooks lint rules for ESLint, Biome, and Oxlint.
+- Added the upstream fix summary to each Vercel rule in `rule-routing.md`, ordered by upstream priority.
+- Added `vercel-react-native-skills` (36 rules) and `vercel-react-view-transitions` from Vercel Labs at `1a2c79d`. `react-quality` now includes view transitions.
+- Added `vercel-web-interface-guidelines` with the guideline list pinned at `434b7f9`, so reviews work offline. `react-quality` includes it, and the React rule scan now also reads `.css` and `.scss` files.
+- Added `docs-writing.md`, adapted from the Vercel Labs Writing Guidelines with ASD-STE100 precedence, and AI-writing patterns in `human-readable-output.md`. `pr-review` checks documentation changes against it.
+- Added the `simple-english` skill (MIT, AminBlg/SimpleEnglish 2.1.2 at `300432a`) as the base for all ASD-STE100 output. A Toolbelt override keeps bold for quick emphasis in replies. Every pack that installs the output contract now depends on it.
+- Added the `writing-whip` skill and the tropes.fyi trope catalog (CC BY 4.0, Ossama Chaib). `simple-english` depends on it.
+- Added one "Writing precedence" section to `human-readable-output.md` with the order between writing sources and each known conflict. `scripts/check-writing-rules.py` pins the imported writing text and lints the Toolbelt's own writing files.
+- Added `pr-review --repost`, so `phase-gate --rereview` can post a second review on the same head commit. `pr-review --show-nits` for `code-quality-gate`.
+- Defined one posting confirmation rule: a `--comment` flag from a caller skill, CI job, worker, or poller counts as confirmed.
+- Made the `pr-review` security facet label unknown reachability instead of dropping the finding.
+- Made `phase-gate` solo mode count fix rounds across the whole loop, with a total of 2 by default.
+- Defined `security-audit --active-scope`. Made `bug-to-fix --diagnose` allow writes only to the investigation file. Made `bug-to-fix` the owner of the bug regression test.
+- Made `/implementation-plan` an alias for `/dev-plan`, and stated the difference between `/dev-phase-review` and `/dev-pr-review`.
+- Made the React rule scan print `judgment_rules`, so agents no longer read every `rule-routing.md`. `typescript-react-baseline.md` owns the scan procedure.
+- Moved the long `vercel-react-view-transitions` pattern sections into references, and added a short review checklist for scan hits.
+- Made skills read `human-readable-output.md` once per session. The writing precedence now states that writing rules never limit tool calls, tests, or verification.
+- Made `human-readable-output.md` the complete everyday writing rule set: the ASD-STE100 reply and document rules, a short AI-trope table, and the format rules, with each known conflict settled. Agents read `simple-english` and `writing-whip` only for Strict mode, STE checks, rewrite patterns, and full trope reviews. This removes about 2,000 words from each session.
+- Made each writing pack install only its own skill. A `writing-whip`-only install is valid because the output contract no longer needs `simple-english`.
+- Added a "Toolbelt paths" line to each SKILL.md. In a Claude Code plugin, `${CLAUDE_PLUGIN_ROOT}` resolves `shared/`, `skills/`, `templates/`, and `workflows/` paths. On other plugin hosts, the agent uses the nearest folder that contains `shared/contracts/`. The `.atb/` installer removes the line, and `check-skill-shape.sh` requires it.
+- Removed duplicate skill lists from `README.md`, `commands/README.md`, and the wiki. Thinned the `crap-analysis`, `role-review`, and `auto-agent-plan` commands.
+
 ## v1.1.9 - 2026-11-08
 
 ### Changed

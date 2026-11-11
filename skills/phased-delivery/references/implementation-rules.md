@@ -1,15 +1,16 @@
 # Implementing a phase
 
-Read this when starting or carrying out a phase.
+Read this before the first edit in a phase.
 
 1. Reconcile the phase with the source requirement or ticket, current repository
-   state, and preceding PRs. Confirm the work branch and PR target. Before edits
-   or commits, create or switch to a focused phase branch if currently on the
-   default branch; stop if that cannot be done safely. For a stack, branch from
-   the parent ticket branch and compare only against that branch.
-   Compare recorded completion with the actual revision, diff, and checks before reusing it.
-   Report stale evidence or missing work; do not redispatch completed tasks from memory alone.
-2. Fill missing *technical* context: affected files, interfaces, migrations,
+   state, and preceding PRs. Confirm the work branch and PR target.
+   Reconcile recorded completion as `shared/contracts/references/execution.md` says.
+   Report stale evidence or missing work.
+   For a `bug-to-fix` handoff, the fix brief is the phase source. Skip the stack rules.
+2. Before edits or commits, create or switch to a focused phase branch. If you
+   are on the default branch and cannot branch safely, stop. For a stack, follow
+   the skill's Stacked PRs rules.
+3. Fill missing *technical* context: affected files, interfaces, migrations,
    test locations and commands, operational risks, and implementation steps.
    Mark inferred details as such. Do not change acceptance criteria or release,
    document, or QA decisions without the source owner's approval.
@@ -17,21 +18,28 @@ Read this when starting or carrying out a phase.
    verification result needed for each step. Include implementation code only
    when a non-obvious algorithm or exact source requirement needs it; link to
    existing definitions instead of duplicating them across tasks.
-3. Verify declared external preconditions using read-only checks. Stop if a
+4. Verify declared external preconditions using read-only checks. Stop if a
    prerequisite fails or cannot be checked safely; do not partially implement
    behind an unverified dependency.
-4. Implement within this phase's scope. Add or update tests with behavior
-   changes when practical. Discover project checks from repo scripts and CI;
-   run focused checks during the edit loop and proportionate broader checks
-   before PR review. If automation is impractical, explain the gap and name the
-   manual or integration evidence needed.
-5. Inspect the diff for unrelated changes, premature next-ticket work, and
-   generated noise. Record changed files, checks, acceptance evidence, risks,
+5. Implement within this phase's scope. For behavior changes, follow
+   `shared/contracts/references/test-driven-development.md`.
+   Run focused checks during the edit loop and proportionate broader checks before PR review.
+6. Inspect the diff for unrelated changes, premature next-ticket work, and
+   generated noise. Run the React rule scan in
+   `shared/contracts/references/typescript-react-baseline.md`. Fix each applied rule
+   before PR review. Record changed files, checks, acceptance evidence, risks,
    and next action in the existing plan or execution record.
 
-Commit at coherent reviewable boundaries; one commit per task is not required.
-Do not push to the default branch unless the user explicitly requests it. For
-optional commit guidance, read `commit-rules.md`.
+## Commits
+
+Commit at coherent, reviewable boundaries.
+A phase can have one or more commits.
+A task does not need its own commit.
+Write concise messages, such as `feat: add saved filter` or `test: cover duplicate names`.
+Inspect the staged diff before each commit.
+Push and merge authority follows `shared/contracts/references/execution.md`.
+
+## Delegation
 
 When delegating or crossing a context reset, hand off the selected phase's
 source scope, branch/base, owned files, exact checks, and report location. Keep

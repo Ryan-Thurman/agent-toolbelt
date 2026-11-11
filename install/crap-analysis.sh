@@ -1,6 +1,8 @@
 # DESC: CRAP analysis — wizard config, single-run orchestration, deterministic review, opt-in refactor
+# DEPENDS: simple-english
 pack_crap_analysis() {
   shared_contract references/human-readable-output.md
+  shared_contract references/docs-writing.md
   cmd crap-config
   cmd do-crap-analysis
   cmd crap-refactor

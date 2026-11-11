@@ -5,26 +5,31 @@ description: Extract and maintain repository contribution guidance from code, to
 
 # Repository contribution guidance
 
-Before you write a response for the user, read
-`shared/contracts/references/human-readable-output.md`.
+If you have not read `shared/contracts/references/human-readable-output.md` in this session,
+read it before you write for the user.
+
+Toolbelt paths: a path that starts with `shared/`, `skills/`, `templates/`, or `workflows/` is relative to the Toolbelt root, `${CLAUDE_PLUGIN_ROOT}`. If that variable is not replaced, use the nearest folder above this file that contains `shared/contracts/`.
 
 Derive how to work in this repository, then maintain that guidance against new
-evidence. Preserve the `style-guide-init` name for existing callers. A repeated
-implementation is evidence of practice, not automatic approval of a standard.
+evidence. A repeated implementation is evidence of practice, not automatic approval of a standard.
 
 ## Choose the operation
 
-- **Explain or draft:** inspect the requested scope and return guidance without
+Select the operation from the flag or from the same request in plain words.
+With no flag and no clear request, use explain or draft.
+
+- **Explain or draft (`--print`):** inspect the requested scope and return guidance without
   changing files. `--print` always takes this path.
-- **Create or update:** a request to write the guide authorizes the relevant doc
+- **Create or update (`--write`):** a request to write the guide authorizes the relevant doc
   edits and evidence checkpoint. Use the existing documentation owner and format;
   otherwise default to `CONTRIBUTING.md`. Use `STYLE_GUIDE.md` for a specifically
   requested style-only guide. Do not require another approval for authorized edits.
-- **Check:** report changed inputs and affected guidance without writing files.
-- **Refresh:** re-evaluate changed inputs and affected claims. Apply doc changes
-  when requested; an audit-only request returns the proposed patch.
+- **Check (`--check`):** report changed inputs and affected guidance without writing files.
+- **Refresh (`--refresh`):** re-evaluate changed inputs and affected claims. Apply doc changes
+  when the request authorizes them. Otherwise return the proposed patch.
+- **Scope (`--scope PATH`):** limit discovery to one package or subtree.
+  Repeat the flag for more areas. With no scope, use the whole repository.
 
-The compatibility command owns flags; natural-language requests work as well.
 This skill changes documentation and its checkpoint, not source/configuration,
 CI settings, branch protections, or release state. Do not install automation
 unless requested. Follow governing instructions while proposing corrections.
@@ -63,16 +68,13 @@ When naming or TypeScript/React guidance needs a fallback, consult
 `shared/contracts/references/anti-slop-naming.md` or
 `shared/contracts/references/typescript-react-baseline.md` as applicable. Label
 fallbacks as proposals unless the repository has adopted them.
+For a React repository, compare its lint and budget tools with the Tooling table in
+`shared/contracts/references/react-acceptance.md`. List each gap as a proposal.
 
 ## Maintenance
 
-For refresh/check, read [references/maintenance.md](references/maintenance.md).
-Use `scripts/conventions_state.py` to compare a recorded snapshot with the current
-checkout, including new/deleted files and uncommitted edits. Re-read affected
-evidence and counterexamples before changing text. Changes mean **review needed**,
-not **documentation wrong**; unchanged fingerprints mean only **covered inputs
-unchanged**. Without a usable checkpoint, establish a baseline through inspection
-and report the missing historical comparison.
+For check or refresh, read [references/maintenance.md](references/maintenance.md).
+It uses `scripts/conventions_state.py` to compare the recorded checkpoint with the current checkout.
 
 ## Completion
 
@@ -82,9 +84,3 @@ report artifact/checkpoint paths and what changed. Keep adopted requirements
 distinct from observed conventions, and retain a no-change result when it is
 supported. Do not claim full coverage from a sample or command success from a
 configuration read.
-
-## Completion
-
-Finish with an evidence-backed style guide update or draft, a concise precedence
-statement, and unresolved choices. Do not claim a convention where the evidence is
-thin or contradictory.

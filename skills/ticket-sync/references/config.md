@@ -1,11 +1,9 @@
-# Per-repo tracker config (`.tickets.md`)
+# Per-repo tracker config (`.tickets.md`) and ticket parsing
 
-The slicers say *what* the tickets are; this file says *where they go and how their fields map*. A
-target repo ships an optional `.tickets.md` declaring the tracker (`github | jira | azure`), the
-project/board key, default issue type, labels/components, and the FIELD MAPPINGS from ticket-template
-fields to tracker fields. It lives **in the repo whose work is being tracked**, versioned with the
-code, so it travels to every clone with no coupling to this toolbelt. It mirrors `.pr-review.md` from
-the pr-review pack.
+The ticket files say *what* the tickets are; `.tickets.md` says *where they go and how their fields
+map*. A target repo ships an optional `.tickets.md` declaring the tracker (`github | jira | azure`), the
+project/board key, default issue type, labels/components, and the field mappings from ticket fields
+to tracker fields. It lives **in the repo whose work is being tracked**, versioned with the code.
 
 ## Discovery (in the *target* repo)
 
@@ -13,9 +11,10 @@ First file found wins:
 1. `.tickets.md` (repo root)
 2. `.claude/tickets.md`
 
-If none exists, ticket-sync still runs: it falls back to sensible defaults (provider inferred from
-the origin remote — `github.com` → `github`, `dev.azure.com`/`visualstudio.com` → `azure`, otherwise
-ask), and **asks for the project/board key** before posting anything. The config is purely additive.
+If none exists, ticket-sync still runs. It infers the provider from the origin remote
+(`github.com` → `github`, `dev.azure.com`/`visualstudio.com` → `azure`, otherwise ask).
+Show the inferred provider in the preview, and get confirmation of it.
+Ask for the project/board key before posting anything. The config is purely additive.
 
 ## Trust & hardening (load from the BASE, not the working head)
 
@@ -56,40 +55,48 @@ The project/board key the issues are created under.
 - Milestone / Epic / Parent: REL-2026.06   # parent link if the tracker supports it
 
 ## Field mapping
-How ticket-template fields land in the tracker. Left = ticket field, right = tracker destination.
-- Feature ID        -> label `feat:{value}`        (or a custom field, e.g. Jira `customfield_10010`)
-- Release ID        -> label `rel:{value}`         (or fixVersion / Azure Iteration Path)
-- Acceptance criteria -> appended into the description as a checklist
-- Dependencies      -> issue links ("Blocked by") between the created issues
-- Test expectation  -> appended into the description under a "Testing" heading
-- Doc-delta status  -> label `doc-delta:{value}`   (or a custom field)
+How ticket fields land in the tracker. Left = the field name in the ticket file, right = destination.
+- Feature           -> label `feat:{value}`        (or a custom field, e.g. Jira `customfield_10010`)
+- Release           -> label `rel:{value}`         (or fixVersion / Azure Iteration Path)
 ```
+
+## Parse each ticket
+
+Parse the ticket files the same way for every provider.
+
+| Ticket part | Source in the file |
+| --- | --- |
+| Title | The `Title` section. If there is none, the first `#` heading. If there is none, the file name. |
+| Header fields | `Key: value` lines before the first section, or in a `Metadata` section. |
+| Description | The `What to build` or `Description` section. |
+| Acceptance criteria | The `Acceptance criteria` section. |
+| Dependencies | The `Blocked by` or `Dependencies` section. |
+| Tracker key | The `Tracker:` line. |
+| Other sections | Every other section, in source order. |
+
+Match section names without regard to case or heading level.
+When one file holds several `#`-headed tickets, treat each heading as one ticket.
+
+A `Tracker:` value is a key only when it has the provider's key form (see below).
+An empty value or placeholder text means that the ticket has no key yet.
 
 ## Field-mapping rules
 
-The mapping turns ticket files into tracker payloads. Supported sources include:
+Build each tracker payload with these rules:
 
-- **Project-owned ticket files** — use the fields declared in the repository's mapping.
-  Preserve supplied requirement, release, testing, document, and dependency fields.
-- **`templates/shape-up-issues.md`** (from `/to-issues`) — `What to build`, `Acceptance criteria`,
-  `Blocked by`, optional `Parent`.
+1. Put the description first in the body.
+2. Add the acceptance criteria to the body as a checklist, unless the config maps them to a tracker field.
+3. Send each header field that the config's field mapping names to its mapped destination.
+4. Keep every header field that has no mapping in the body, under a "Ticket fields" heading.
+   Write each one as its original `Key: value` line.
+5. Add every other section to the body under its original heading, in source order.
+6. Resolve each dependency that names another ticket file or a tracker key to an issue link.
+   Keep each unresolved dependency in the body, and report it.
+7. Leave the `Tracker:` line out of the body.
 
-Defaults when a mapping is unspecified:
-
-Map optional project fields only when the input supplies them.
-Do not require feature IDs, release IDs, or document-delta fields for ordinary tickets.
-
-- **Title** ← the ticket title.
-- **Description / body** ← the description / "What to build", with **Acceptance criteria** appended as
-  a checklist and **Test expectation** under a "Testing" heading.
-- **Feature ID, Release ID, Doc-delta status** ← labels (`feat:…`, `rel:…`, `doc-delta:…`) unless the
-  config maps them to a custom field / fixVersion / iteration path.
-- **Dependencies / Blocked by** ← issue links between the created issues, resolved through the
-  recorded `Tracker:` keys (see idempotency below).
-
-When the config maps a field to a **custom field** (e.g. a Jira `customfield_#####` for Feature ID),
-use that instead of the label default. Unknown/unmapped fields fall back to labels or the description
-so nothing is silently dropped.
+Skip a mapped destination when its value is empty or a placeholder such as `TBD`.
+Keep that field in the body instead.
+Do not drop a field or a section. When a mapping fails, put the content in the body.
 
 ## Idempotency key (the `Tracker:` line)
 
@@ -101,14 +108,16 @@ of duplicating. The recorded form per provider:
 - Azure:  `Tracker: AB#4321`
 
 On each run, a ticket **with** a `Tracker:` key → update that issue; **without** → create, then write
-the key back. Dependency links are resolved by looking up the blocker ticket's recorded key.
+the key back. Replace the value of an existing `Tracker:` line, including a placeholder.
+If there is no `Tracker:` line, add one directly below the ticket's title heading.
+Dependency links are resolved by looking up the blocker ticket's recorded key.
 
 ## Precedence
 
 1. **Explicit command input** — paths/flags in `$ARGUMENTS` and any confirmed override at the prompt.
 2. **Repo config** (`.tickets.md`, from the base branch) — provider, project, defaults, mappings.
-3. **Defaults** — provider inferred from the remote; labels for unmapped IDs; ask for the project key
-   when it can't be inferred.
+3. **Defaults** — provider inferred from the remote; unmapped fields in the body; ask for the
+   project key when it can't be inferred.
 
 ## See also
 

@@ -1,0 +1,11 @@
+{
+  "skill": "use-effect-killer",
+  "rules": [
+    {
+      "path": "references/anti-patterns.md",
+      "when": "The change adds or edits a useEffect, useLayoutEffect, or useInsertionEffect call.",
+      "signals": ["\\buse(Layout|Insertion)?Effect\\s*\\("],
+      "file_signals": []
+    }
+  ]
+}

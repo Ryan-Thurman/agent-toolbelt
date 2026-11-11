@@ -26,6 +26,15 @@ _auto_agent_command() {
 }
 
 pack_auto_agent_contract() {
+  shared_contract references/test-driven-development.md
+  shared_contract references/execution.md
+  shared_contract references/execution-schema.md
+  shared_contract references/failure-recovery.md
+  shared_contract references/execution-lessons.md
+  shared_contract references/operation-retries.md
+  shared_contract references/posting.md
+  shared_contract references/providers.md
+  shared_contract scripts/validate-execution.py
   _auto_agent_command
 
   _auto_agent_skill auto-agent-contract SKILL.md
@@ -34,6 +43,7 @@ pack_auto_agent_contract() {
   _auto_agent_skill auto-agent-contract references/merge.md
   _auto_agent_skill auto-agent-contract references/unattended.md
   _auto_agent_skill auto-agent-contract references/plan-format.md
+  _auto_agent_skill auto-agent-contract references/execution-boundary.md
 
   _auto_agent_skill auto-agent-dev-lite SKILL.md
 }

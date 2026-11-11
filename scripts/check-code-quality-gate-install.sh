@@ -57,8 +57,12 @@ if ! grep -q '.atb/skills/code-quality-gate/SKILL.md' "$gate_target/.cursor/comm
   echo "installed gate command did not rewrite skill path" >&2
   exit 1
 fi
-if ! grep -q '.atb/skills/code-quality-gate/scripts/fingerprint.sh' "$gate_target/.cursor/commands/code-quality-gate.md"; then
-  echo "installed gate command did not rewrite fingerprint-script path" >&2
+if ! grep -q '.atb/skills/code-quality-gate/scripts/fingerprint.sh' "$gate_target/.atb/skills/code-quality-gate/references/gate-contract.md"; then
+  echo "installed gate contract did not rewrite fingerprint-script path" >&2
+  exit 1
+fi
+if ! grep -q '.atb/skills/crap-analysis/bin/crap-analysis.sh' "$gate_target/.atb/skills/code-quality-gate/references/gate-contract.md"; then
+  echo "installed gate contract did not rewrite crap-analysis script path" >&2
   exit 1
 fi
 for field in head_fingerprint scope_fingerprint coverage allowed_paths_file; do

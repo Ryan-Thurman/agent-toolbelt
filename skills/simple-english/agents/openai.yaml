@@ -1,0 +1,4 @@
+interface:
+  display_name: "Simple English"
+  short_description: "Plain English with ASD-STE100 discipline."
+  default_prompt: "Use $simple-english to rewrite this document in plain English."

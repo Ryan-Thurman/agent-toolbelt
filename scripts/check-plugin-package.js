@@ -6,6 +6,7 @@ const os = require("os");
 const path = require("path");
 const { spawnSync } = require("child_process");
 const { STABLE_VERSION } = require("./check-release-version");
+const { checkPackage } = require("./check-public-content");
 
 const root = path.resolve(process.argv[2] || path.join(__dirname, ".."));
 const errors = [];
@@ -100,8 +101,8 @@ if (codex && codex.interface && (!Array.isArray(codex.interface.capabilities) ||
 const skillCount = fs.readdirSync(path.join(root, "skills"), { withFileTypes: true })
   .filter((entry) => entry.isDirectory() && fs.existsSync(path.join(root, "skills", entry.name, "SKILL.md")))
   .length;
-if (skillCount !== 33) {
-  errors.push(`expected 33 standard skills, found ${skillCount}`);
+if (skillCount !== 39) {
+  errors.push(`expected 39 standard skills, found ${skillCount}`);
 }
 for (const id of ["auto-agent-contract", "auto-agent-dev-lite"]) {
   if (fs.existsSync(path.join(root, "skills", id))) {
@@ -208,6 +209,7 @@ const build = spawnSync(path.join(root, "build-cursor-plugin.sh"), [tempRoot], {
 if (build.status !== 0) {
   errors.push(`Cursor build failed: ${build.stderr || build.stdout}`.trim());
 } else {
+  try { checkPackage(tempRoot); } catch (error) { errors.push(error.message); }
   const builtManifest = readJsonFrom(tempRoot, ".cursor-plugin/plugin.json");
   if (!builtManifest || builtManifest.name !== "agent-toolbelt" || builtManifest.version !== expectedVersion) {
     errors.push("Cursor build manifest is not aligned with the root plugin");
@@ -226,12 +228,12 @@ if (build.status !== 0) {
   if (fs.existsSync(path.join(tempRoot, "commands"))) {
     errors.push("Cursor build must contain 0 commands (commands directory is present)");
   }
-  for (const relativePath of ["hooks", "rules", ".cursor", ".claude", ".agents"]) {
+  for (const relativePath of ["hooks", "rules", ".cursor", ".claude", ".agents", "docs", "evals"]) {
     if (fs.existsSync(path.join(tempRoot, relativePath))) {
       errors.push(`Cursor default build must omit opt-in/harness payload: ${relativePath}`);
     }
   }
-  for (const relativePath of ["templates", "workflows", "examples", "docs"]) {
+  for (const relativePath of ["templates", "workflows", "examples"]) {
     if (!fs.existsSync(path.join(tempRoot, relativePath))) {
       errors.push(`Cursor build is missing skill support directory: ${relativePath}`);
     }

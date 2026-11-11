@@ -1,0 +1,4 @@
+interface:
+  display_name: "Vercel React Native Skills"
+  short_description: "React Native and Expo performance and UI rules."
+  default_prompt: "Use $vercel-react-native-skills to review this React Native change for list, animation, and UI issues."

@@ -176,7 +176,7 @@ window.AGENT_TOOLBELT_DATA = {
       "display_name": "Cover",
       "short_description": "Author behavior-pinning tests for a diff, module, or bug reproduction on opt-in.",
       "default_prompt": "Propose tests that pin this behavior.",
-      "description": "Author behavior-pinning tests for a diff, module, or bug reproduction, applied on opt-in. Use when adding regression coverage or strengthening tests. For finding untested areas use /cover-gaps; for a merge verdict use /pr-review.",
+      "description": "Author behavior-pinning tests for a diff, a module, or a bug-to-fix regression gap, applied on opt-in, or scan an area for missing and weak coverage (detect-only). Use when adding regression coverage, strengthening tests, or surveying coverage gaps. For a merge verdict use /pr-review.",
       "category": "Testing & Verification",
       "tags": [
         "tests",
@@ -224,7 +224,7 @@ window.AGENT_TOOLBELT_DATA = {
       "id": "crap-analysis",
       "display_name": "CRAP Analysis",
       "short_description": "Configure and run CRAP analysis via repo commands — deterministic review and opt-in refactor.",
-      "default_prompt": "Run CRAP analysis on my uncommitted changes.",
+      "default_prompt": "Run CRAP analysis on my branch changes.",
       "description": "Run CRAP analysis via repo-configured commands — wizard setup, single-run orchestration, deterministic report review, and opt-in refactor. Use for /do-crap-analysis, /crap-config, or /crap-refactor.",
       "category": "Codebase Improvement",
       "tags": [
@@ -247,7 +247,7 @@ window.AGENT_TOOLBELT_DATA = {
         "Improvement candidates"
       ],
       "example_prompts": [
-        "Analyze this repository for high-risk complexity and coverage gaps.",
+        "Run CRAP analysis on my branch changes and list the hotspots above the threshold.",
         "Prioritize refactoring targets using complexity and test evidence."
       ],
       "related_skills": [
@@ -314,7 +314,7 @@ window.AGENT_TOOLBELT_DATA = {
       "display_name": "Phase Context Workflow",
       "short_description": "Durable phase context for resumable long-running coding-agent work.",
       "default_prompt": "Set up durable phase context for this work.",
-      "description": "Manage durable phase context for long coding-agent work. Use when planning, implementation, testing, review, and PR prep should be split into resumable phases with repo-tracked phase files, handoffs, context packets, and safe /clear or /compact boundaries.",
+      "description": "Keep phase files, context packets, and phase handoffs so long coding-agent work survives /clear or /compact. Use when the user asks for phase files or a context packet, or when `.acc/phases/` already exists.",
       "category": "Agent Operations",
       "tags": [
         "phases",
@@ -403,16 +403,18 @@ window.AGENT_TOOLBELT_DATA = {
       "display_name": "Phased Delivery",
       "short_description": "Deliver requirements or tickets as one PR per phase.",
       "default_prompt": "Use $phased-delivery to plan and deliver this requirement as reviewable PRs.",
-      "description": "Review implementation plans or deliver requirements in reviewable phases, one PR per phase. Use with a raw request, existing plan, or approved tickets; preserve one ticket per phase and PR.",
+      "description": "Plan, review, or deliver requirements as test-first, reviewable phases with one PR per phase. Use with a raw request, an existing plan, or approved tickets, or to review a phase branch or PR against its ticket.",
       "category": "Feature Delivery",
       "tags": [
         "feature",
         "planning",
         "phases",
         "tickets",
+        "testing",
+        "tdd",
         "review"
       ],
-      "primary_purpose": "Deliver approved requirements or tickets in reviewable phases, one PR per phase.",
+      "primary_purpose": "Deliver approved requirements or tickets through test-first implementation in reviewable phases, one PR per phase.",
       "use_when": [
         "A requirement, plan, or approved project ticket set needs implementation through human-reviewed PRs.",
         "An existing implementation plan needs a report-only readiness check before execution."
@@ -425,11 +427,13 @@ window.AGENT_TOOLBELT_DATA = {
         "Phase-to-PR map",
         "Implementation and verification evidence",
         "One reviewable PR per phase or ticket",
-        "Plan readiness and requirement coverage"
+        "Plan readiness and requirement coverage",
+        "Red/green test evidence and unit-test coverage gaps"
       ],
       "example_prompts": [
         "Use Phased Delivery to implement these approved tickets as stacked PRs, one ticket per PR.",
         "Plan and deliver this requirement in reviewable phases.",
+        "Implement this feature test-first and cover its important unit-test branches.",
         "Review this plan for missing requirements and disconnected components."
       ],
       "related_skills": [
@@ -552,7 +556,7 @@ window.AGENT_TOOLBELT_DATA = {
       "display_name": "PR Review Reply",
       "short_description": "Triage PR review threads, re-review touched code, and draft per-thread replies.",
       "default_prompt": "Handle these PR review comments.",
-      "description": "Handle the PR-review round-trip: read reviewer threads, triage each one, re-review only touched code, and draft per-thread replies. Use to address PR comments, answer review feedback, or close a /pr-review loop.",
+      "description": "Handle the PR-review round-trip: read reviewer threads, triage each one against code changed since the review, and draft per-thread replies. Use to address PR comments, answer review feedback, or close a /pr-review loop.",
       "category": "Review & Quality",
       "tags": [
         "review-comments",
@@ -832,7 +836,7 @@ window.AGENT_TOOLBELT_DATA = {
       "display_name": "Security Audit",
       "short_description": "Audit code and configuration security risks.",
       "default_prompt": "Use $security-audit to review this target's security risks.",
-      "description": "Perform a read-only security audit of code, configuration, dependencies, and secret exposure. Use for evidence-backed security review; active testing requires explicit written authorization.",
+      "description": "Perform a read-only security audit of implemented code, configuration, dependencies, and secret exposure. Use threat-model for a design before it is built. Active testing requires explicit written authorization.",
       "category": "Security & Risk",
       "tags": [
         "security",
@@ -877,7 +881,7 @@ window.AGENT_TOOLBELT_DATA = {
       "display_name": "Shape Up",
       "short_description": "Compare a product ask with current behavior, or shape an approved brief.",
       "default_prompt": "Use $shape-up to review this ask against the current system or shape it into an approved brief, as requested.",
-      "description": "Compare a product ask with current system behavior, or shape a vague request into an approved brief. Use for requirement gaps and fuzzy ideas. Route defects to bug-to-fix; preserve delivery rules owned by the target project.",
+      "description": "Compare a product ask with current system behavior, shape a vague request into an approved brief, or slice an approved brief into tickets before planning. Use product-discovery to decide whether to build. Route defects to bug-to-fix.",
       "category": "Discovery & Planning",
       "tags": [
         "brief",
@@ -966,11 +970,57 @@ window.AGENT_TOOLBELT_DATA = {
       "source_url": "https://github.com/Ryan-Thurman/agent-toolbelt/blob/main/skills/ship-it/SKILL.md"
     },
     {
+      "id": "simple-english",
+      "display_name": "Simple English",
+      "short_description": "Plain English with ASD-STE100 discipline.",
+      "default_prompt": "Use $simple-english to rewrite this document in plain English.",
+      "description": "Check or rewrite text against ASD-STE100 in Strict mode or rule by rule, and apply the patterns for error messages, runbooks, incident reports, and release notes. Everyday writing rules are in human-readable-output.md. Use this skill when the user asks for STE or a rewrite.",
+      "category": "Agent Operations",
+      "tags": [
+        "writing",
+        "documentation",
+        "ste",
+        "plain-english",
+        "communication"
+      ],
+      "primary_purpose": "Check or rewrite text against ASD-STE100 in Strict mode or rule by rule. The everyday writing rules live in human-readable-output.md.",
+      "use_when": [
+        "The user asks for STE, ASD-STE100 compliance, or a plain-English rewrite.",
+        "An agent writes an error message, runbook, incident report, or release notes and needs the matching pattern."
+      ],
+      "avoid_when": [
+        "The text is marketing or brand copy that needs persuasion."
+      ],
+      "preferred_context": "The draft text, its reader, and whether the user asks for Strict ASD-STE100 compliance.",
+      "expected_outputs": [
+        "Plain-English rewrite",
+        "Rule-numbered check report in check mode"
+      ],
+      "example_prompts": [
+        "Rewrite this README with simple-english.",
+        "Check this runbook against ASD-STE100."
+      ],
+      "related_skills": [
+        "writing-whip",
+        "pr-review",
+        "handoff",
+        "ship-it"
+      ],
+      "workflow_membership": [],
+      "documentation_completeness": {
+        "status": "complete",
+        "notes": "Canonical skill and agent metadata are present."
+      },
+      "recommended_changes": [],
+      "source_path": "skills/simple-english/SKILL.md",
+      "source_url": "https://github.com/Ryan-Thurman/agent-toolbelt/blob/main/skills/simple-english/SKILL.md"
+    },
+    {
       "id": "simplify",
       "display_name": "Simplify",
       "short_description": "Behavior-preserving cleanup proposals and opt-in application after feature work or before PR.",
       "default_prompt": "Find safe simplifications for this code or diff.",
-      "description": "Apply behavior-preserving cleanup on opt-in: delete dead code, inline thin wrappers, reuse helpers, and fix small inefficiencies. Use after feature work, before PR, or when asked to simplify. For verdicts use pr-review.",
+      "description": "Apply behavior-preserving cleanup on opt-in: delete dead code, inline thin wrappers, reuse helpers, and fix small inefficiencies. Use after feature work, before PR, when asked to simplify, or to scan an area for structural smells (detect-only). For verdicts use pr-review.",
       "category": "Codebase Improvement",
       "tags": [
         "cleanup",
@@ -1059,32 +1109,45 @@ window.AGENT_TOOLBELT_DATA = {
     {
       "id": "system-design",
       "display_name": "System Design",
-      "short_description": "Create design documents with linked threat reviews.",
-      "default_prompt": "Use $system-design to document this architecture and review its attack paths.",
-      "description": "Produce or review a system design document with alternatives, interfaces, failure behavior, and a linked threat review. Use for architecture decisions; use phased-delivery for implementation planning.",
+      "short_description": "Discuss architecture, compare options, and document decisions.",
+      "default_prompt": "Use $system-design to work through this architecture question and produce the design documents, decisions, and diagrams needed.",
+      "description": "Work through system design questions, compare options, and create or review architecture documents, diagrams, and decision records. Also map implemented architecture; use phased-delivery for implementation planning.",
       "category": "Discovery & Planning",
       "tags": [
         "architecture",
+        "documentation",
+        "adr",
+        "diagrams",
         "security",
         "planning",
         "evidence"
       ],
-      "primary_purpose": "Produce a system design document with alternatives and a linked threat review.",
+      "primary_purpose": "Work through architecture questions and produce evidence-backed designs, diagrams, decision records, or current repository maps.",
       "use_when": [
-        "Architecture decisions need documented interfaces, data flows, failure behavior, and security requirements."
+        "A team member needs help exploring a system design question or comparing architecture approaches.",
+        "Architecture decisions need documented interfaces, data flows, failure behavior, and security requirements.",
+        "A design document, architecture diagram, or decision record needs authoring, review, or maintenance.",
+        "Current repository maps, dependency edges, or entry-point flows need source-backed maintenance."
       ],
       "avoid_when": [
         "A small bounded edit needs no architecture decision, or implementation planning is already sufficient."
       ],
       "preferred_context": "Requirements, current system evidence, constraints, architecture sources, and project-owned document format.",
       "expected_outputs": [
-        "System design document",
-        "Linked threat review",
-        "Security requirements and readiness findings"
+        "Scoped architecture answers and viable options",
+        "System design document and appropriate architecture views",
+        "Architecture decision records (ADRs) with lifecycle links",
+        "Linked threat review for concrete design proposals",
+        "Current repository map with source revisions and coverage limits, when requested",
+        "Readiness findings, open decisions, owners, and verification gaps"
       ],
       "example_prompts": [
+        "Help our team work through this system design question and compare viable approaches.",
         "Design this service and review its attack paths.",
-        "Review this architecture for unanswered decisions, failure behavior, and security requirements."
+        "Create an architecture document with diagrams, decision records, and explicit open questions.",
+        "Document why we chose this architecture and what would make us reconsider it.",
+        "Review this architecture for unanswered decisions, failure behavior, and security requirements.",
+        "Update the repository map after this entry point moved."
       ],
       "related_skills": [
         "threat-model",
@@ -1109,7 +1172,7 @@ window.AGENT_TOOLBELT_DATA = {
       "display_name": "Tech Backlog Assessment",
       "short_description": "Assess one technical investment before implementation.",
       "default_prompt": "Use $tech-backlog-assessment to assess this item and compare its alternatives.",
-      "description": "Assess technical backlog items before implementation: decide do/defer/reject/spike, compare options such as packages or library switches, define risks, test strategy, and the next workflow.",
+      "description": "Decide whether and how to do one technical backlog item: do/defer/reject/spike, options such as packages or upgrades, risks, test strategy, and next workflow. Use ticket-discovery when the item names a precedent; use tech-debt-discovery to find candidates.",
       "category": "Discovery & Planning",
       "tags": [
         "backlog",
@@ -1248,7 +1311,7 @@ window.AGENT_TOOLBELT_DATA = {
       "display_name": "Threat Model",
       "short_description": "Map design threats and security controls.",
       "default_prompt": "Use $threat-model to analyze this design before implementation.",
-      "description": "Model assets, trust boundaries, attacker paths, mitigations, and verification before building a security-sensitive change. Use for design-time security analysis, not active testing.",
+      "description": "Model assets, trust boundaries, attacker paths, mitigations, and verification before building a security-sensitive change. Use for design-time security analysis, not active testing. Use security-audit for implemented code.",
       "category": "Security & Risk",
       "tags": [
         "threat-model",
@@ -1256,12 +1319,12 @@ window.AGENT_TOOLBELT_DATA = {
         "mitigations",
         "security"
       ],
-      "primary_purpose": "Identify threats, trust boundaries, and mitigations before or during a security-sensitive change.",
+      "primary_purpose": "Identify threats, trust boundaries, and mitigations for a security-sensitive design before it is built.",
       "use_when": [
         "A change handles credentials, personal data, privileged actions, network boundaries, or untrusted input."
       ],
       "avoid_when": [
-        "The change has no meaningful security boundary or sensitive data flow."
+        "The change has no meaningful security boundary or sensitive data flow, or the code is already built (use security-audit)."
       ],
       "preferred_context": "Architecture, assets, actors, data flows, trust boundaries, abuse cases, and mitigations.",
       "expected_outputs": [
@@ -1295,7 +1358,7 @@ window.AGENT_TOOLBELT_DATA = {
       "display_name": "Ticket Discovery",
       "short_description": "Investigate a narrow precedent-based implementation ticket and produce a handoff without editing code.",
       "default_prompt": "Investigate this implementation ticket.",
-      "description": "Investigate a narrow implementation ticket that references an existing precedent, compare source and target areas, produce a gap analysis, test plan, and implementation handoff without editing code.",
+      "description": "Investigate a narrow implementation ticket that references an existing precedent. Compare source and target areas, and produce a gap analysis, test plan, and handoff without editing code. Use tech-backlog-assessment when the work itself is in question.",
       "category": "Discovery & Planning",
       "tags": [
         "ticket",
@@ -1303,12 +1366,12 @@ window.AGENT_TOOLBELT_DATA = {
         "gap-analysis",
         "planning"
       ],
-      "primary_purpose": "Investigate existing work and evidence to clarify or improve a delivery ticket.",
+      "primary_purpose": "Investigate a narrow ticket that names an existing precedent, and produce a gap analysis, test plan, and handoff.",
       "use_when": [
-        "A ticket is ambiguous, duplicates prior work, or needs repository and history investigation."
+        "A probably valid ticket asks to copy or adapt a pattern that already exists in another area."
       ],
       "avoid_when": [
-        "The issue already contains sufficient context and acceptance criteria."
+        "The issue already contains sufficient context, or the question is whether to do the work at all (use tech-backlog-assessment)."
       ],
       "preferred_context": "Ticket, repository history, related issues, code ownership, and current behavior.",
       "expected_outputs": [
@@ -1341,7 +1404,7 @@ window.AGENT_TOOLBELT_DATA = {
       "display_name": "Ticket Sync",
       "short_description": "Publish sliced ticket files to GitHub Issues, Jira, or Azure Boards with confirmation gates.",
       "default_prompt": "Sync these ticket files to the tracker.",
-      "description": "Publish approved ticket files to the repository's tracker: GitHub Issues, Jira, or Azure Boards. Use after to-issues, bug-intake, or a project-owned ticket workflow. Preview changes, preserve tracker keys, and write a manifest when offline.",
+      "description": "Publish approved ticket files to the repository's tracker: GitHub Issues, Jira, or Azure Boards. Use after shape-up slicing, bug-to-fix intake, or a project-owned ticket workflow. Preview changes, preserve tracker keys, and write a manifest when offline.",
       "category": "Feature Delivery",
       "tags": [
         "ticket",
@@ -1379,6 +1442,54 @@ window.AGENT_TOOLBELT_DATA = {
       "recommended_changes": [],
       "source_path": "skills/ticket-sync/SKILL.md",
       "source_url": "https://github.com/Ryan-Thurman/agent-toolbelt/blob/main/skills/ticket-sync/SKILL.md"
+    },
+    {
+      "id": "use-effect-killer",
+      "display_name": "useEffect Killer",
+      "short_description": "Audit React effects against You Might Not Need an Effect.",
+      "default_prompt": "Use $use-effect-killer to audit the useEffect calls in this change and propose idiomatic fixes.",
+      "description": "Audit React useEffect calls against 13 anti-patterns from \"You Might Not Need an Effect\" and propose idiomatic fixes. Use when you audit, review, write, or clean up effects, or when the React rule scan lists this skill.",
+      "category": "Codebase Improvement",
+      "tags": [
+        "react",
+        "hooks",
+        "useEffect",
+        "react-frontend",
+        "refactor"
+      ],
+      "primary_purpose": "Audit React useEffect calls against 13 anti-patterns and propose idiomatic fixes.",
+      "use_when": [
+        "A change adds or edits React effects, or a component uses effects to derive state, handle events, or sync props."
+      ],
+      "avoid_when": [
+        "The code is not React, or the effect synchronizes with a real external system and has cleanup."
+      ],
+      "preferred_context": "Effect bodies, dependency arrays, owning components, React version, React Compiler setting, and data-fetching library.",
+      "expected_outputs": [
+        "Classification of every effect in scope",
+        "Anti-pattern findings with concrete fixes",
+        "List of legitimate effects"
+      ],
+      "example_prompts": [
+        "Audit the useEffect calls in src/components.",
+        "Check the effects in my branch changes and fix the anti-patterns."
+      ],
+      "related_skills": [
+        "vercel-react-best-practices",
+        "vercel-composition-patterns",
+        "simplify",
+        "pr-review"
+      ],
+      "workflow_membership": [
+        "codebase-improvement"
+      ],
+      "documentation_completeness": {
+        "status": "complete",
+        "notes": "Canonical skill and agent metadata are present."
+      },
+      "recommended_changes": [],
+      "source_path": "skills/use-effect-killer/SKILL.md",
+      "source_url": "https://github.com/Ryan-Thurman/agent-toolbelt/blob/main/skills/use-effect-killer/SKILL.md"
     },
     {
       "id": "user-research-synthesis",
@@ -1459,6 +1570,7 @@ window.AGENT_TOOLBELT_DATA = {
       ],
       "related_skills": [
         "vercel-react-best-practices",
+        "use-effect-killer",
         "simplify",
         "code-quality-gate"
       ],
@@ -1505,8 +1617,11 @@ window.AGENT_TOOLBELT_DATA = {
       ],
       "related_skills": [
         "vercel-composition-patterns",
+        "use-effect-killer",
         "webapp-testing",
-        "code-quality-gate"
+        "code-quality-gate",
+        "vercel-react-native-skills",
+        "vercel-react-view-transitions"
       ],
       "workflow_membership": [
         "codebase-improvement"
@@ -1518,6 +1633,149 @@ window.AGENT_TOOLBELT_DATA = {
       "recommended_changes": [],
       "source_path": "skills/vercel-react-best-practices/SKILL.md",
       "source_url": "https://github.com/Ryan-Thurman/agent-toolbelt/blob/main/skills/vercel-react-best-practices/SKILL.md"
+    },
+    {
+      "id": "vercel-react-native-skills",
+      "display_name": "Vercel React Native Skills",
+      "short_description": "React Native and Expo performance and UI rules.",
+      "default_prompt": "Use $vercel-react-native-skills to review this React Native change for list, animation, and UI issues.",
+      "description": "Review or improve React Native and Expo code when lists, animations, navigation, images, native UI, or monorepo native dependencies change; verify the React Native, Expo, and library versions first.",
+      "category": "Codebase Improvement",
+      "tags": [
+        "react-native",
+        "expo",
+        "mobile",
+        "performance",
+        "react"
+      ],
+      "primary_purpose": "Apply React Native and Expo performance and native UI rules to mobile changes.",
+      "use_when": [
+        "A React Native or Expo change touches lists, animations, navigation, images, or native UI."
+      ],
+      "avoid_when": [
+        "The repository is a web-only React app."
+      ],
+      "preferred_context": "React Native, Expo, and library versions, list and animation code, navigation setup, and the React Compiler setting.",
+      "expected_outputs": [
+        "Applied or not-applicable record for each listed rule",
+        "Evidence-backed findings",
+        "Focused fixes"
+      ],
+      "example_prompts": [
+        "Review this React Native screen for list and animation performance.",
+        "Check my Expo branch changes against the React Native rules."
+      ],
+      "related_skills": [
+        "vercel-react-best-practices",
+        "use-effect-killer",
+        "pr-review",
+        "simplify"
+      ],
+      "workflow_membership": [
+        "codebase-improvement"
+      ],
+      "documentation_completeness": {
+        "status": "complete",
+        "notes": "Canonical skill and agent metadata are present."
+      },
+      "recommended_changes": [],
+      "source_path": "skills/vercel-react-native-skills/SKILL.md",
+      "source_url": "https://github.com/Ryan-Thurman/agent-toolbelt/blob/main/skills/vercel-react-native-skills/SKILL.md"
+    },
+    {
+      "id": "vercel-react-view-transitions",
+      "display_name": "Vercel React View Transitions",
+      "short_description": "Native-feeling React View Transition animations.",
+      "default_prompt": "Use $vercel-react-view-transitions to add view transitions to this React route change.",
+      "description": "Add or review React View Transition animations (`<ViewTransition>`, `addTransitionType`, view transition CSS) for route changes, shared elements, list reorder, enter and exit, and Suspense reveals, including Next.js. Verify React 19.3 or Next.js App Router first.",
+      "category": "Codebase Improvement",
+      "tags": [
+        "react",
+        "animation",
+        "view-transitions",
+        "nextjs",
+        "react-frontend"
+      ],
+      "primary_purpose": "Add or review React View Transition animations with correct placement, triggers, and reduced motion.",
+      "use_when": [
+        "A change adds route, shared-element, list, enter and exit, or Suspense animations with React View Transitions."
+      ],
+      "avoid_when": [
+        "The React version does not support ViewTransition, or the repository uses a different animation library for this surface."
+      ],
+      "preferred_context": "React or Next.js version, routing setup, the components that change, and the global stylesheet.",
+      "expected_outputs": [
+        "View transition implementation",
+        "Reduced-motion CSS",
+        "Review findings for placement and triggers"
+      ],
+      "example_prompts": [
+        "Add a shared element transition from the list to the detail page.",
+        "Review the view transitions in this change."
+      ],
+      "related_skills": [
+        "vercel-react-best-practices",
+        "vercel-composition-patterns",
+        "webapp-testing"
+      ],
+      "workflow_membership": [
+        "codebase-improvement"
+      ],
+      "documentation_completeness": {
+        "status": "complete",
+        "notes": "Canonical skill and agent metadata are present."
+      },
+      "recommended_changes": [],
+      "source_path": "skills/vercel-react-view-transitions/SKILL.md",
+      "source_url": "https://github.com/Ryan-Thurman/agent-toolbelt/blob/main/skills/vercel-react-view-transitions/SKILL.md"
+    },
+    {
+      "id": "vercel-web-interface-guidelines",
+      "display_name": "Vercel Web Interface Guidelines",
+      "short_description": "Review UI code against the Web Interface Guidelines.",
+      "default_prompt": "Use $vercel-web-interface-guidelines to review the UI files in this change.",
+      "description": "Review web UI code against the Vercel Web Interface Guidelines for accessibility, focus, forms, animation, typography, layout, theming, and interaction. Use when you review or build UI, or when the React rule scan lists this skill.",
+      "category": "Codebase Improvement",
+      "tags": [
+        "accessibility",
+        "ui",
+        "forms",
+        "animation",
+        "react-frontend"
+      ],
+      "primary_purpose": "Review web UI code against the Vercel Web Interface Guidelines with a pinned offline rule list.",
+      "use_when": [
+        "A change adds or edits UI components, styles, forms, or interactions."
+      ],
+      "avoid_when": [
+        "The change has no user interface, or the repository has a stricter design or accessibility policy for the same rules."
+      ],
+      "preferred_context": "Changed components and styles, the design system, copy style, and accessibility policy.",
+      "expected_outputs": [
+        "file:line findings grouped by file",
+        "Severity from the React acceptance contract",
+        "Pass list for clean files"
+      ],
+      "example_prompts": [
+        "Review the UI files in my branch against the web interface guidelines.",
+        "Check src/components/forms for accessibility and form issues."
+      ],
+      "related_skills": [
+        "webapp-testing",
+        "vercel-react-best-practices",
+        "vercel-react-view-transitions",
+        "pr-review"
+      ],
+      "workflow_membership": [
+        "codebase-improvement"
+      ],
+      "documentation_completeness": {
+        "status": "complete",
+        "notes": "Canonical skill and agent metadata are present."
+      },
+      "recommended_changes": [],
+      "source_path": "skills/vercel-web-interface-guidelines/SKILL.md",
+      "source_url": "https://github.com/Ryan-Thurman/agent-toolbelt/blob/main/skills/vercel-web-interface-guidelines/SKILL.md"
     },
     {
       "id": "webapp-testing",
@@ -1609,6 +1867,50 @@ window.AGENT_TOOLBELT_DATA = {
       "recommended_changes": [],
       "source_path": "skills/worktree/SKILL.md",
       "source_url": "https://github.com/Ryan-Thurman/agent-toolbelt/blob/main/skills/worktree/SKILL.md"
+    },
+    {
+      "id": "writing-whip",
+      "display_name": "Writing Whip",
+      "short_description": "Stop AI writing tropes and behaviors at generation.",
+      "default_prompt": "Use $writing-whip to check this draft for AI writing tropes and fix them.",
+      "description": "Full catalog of AI writing tropes with examples. Use for a trope review of long text or client-facing copy, or for a pattern that the short list in human-readable-output.md does not cover.",
+      "category": "Agent Operations",
+      "tags": [
+        "writing",
+        "documentation",
+        "ai-tropes",
+        "communication",
+        "review"
+      ],
+      "primary_purpose": "Give the full AI writing trope catalog with examples. The short trope list lives in human-readable-output.md.",
+      "use_when": [
+        "Long text or client-facing copy needs a trope review.",
+        "A pattern is not in the short list in human-readable-output.md."
+      ],
+      "avoid_when": [
+        "The output is a required data format, such as JSON, where prose rules do not apply."
+      ],
+      "preferred_context": "The draft text and its reader.",
+      "expected_outputs": [
+        "Text without AI writing tropes",
+        "A one-line note for each rule that the output breaks on purpose"
+      ],
+      "example_prompts": [
+        "Check this draft for AI writing tropes.",
+        "Rewrite this README section without AI tells."
+      ],
+      "related_skills": [
+        "simple-english",
+        "pr-review"
+      ],
+      "workflow_membership": [],
+      "documentation_completeness": {
+        "status": "complete",
+        "notes": "Canonical skill and agent metadata are present."
+      },
+      "recommended_changes": [],
+      "source_path": "skills/writing-whip/SKILL.md",
+      "source_url": "https://github.com/Ryan-Thurman/agent-toolbelt/blob/main/skills/writing-whip/SKILL.md"
     }
   ],
   "workflows": [
@@ -1692,10 +1994,9 @@ window.AGENT_TOOLBELT_DATA = {
         },
         {
           "skill": "phased-delivery",
-          "rationale": "Turn approved scope into independently reviewable phases, one PR per phase or ticket.",
-          "example_invocation": "Deliver this requirement in phased PRs, reusing its approved tickets.",
+          "rationale": "Implement approved behavior test-first in reviewable phases, one PR per phase or ticket.",
+          "example_invocation": "Deliver these approved tickets with failing tests, minimal implementation, and passing tests.",
           "next_steps": [
-            "test-case-design",
             "pr-review"
           ]
         },
@@ -2152,20 +2453,19 @@ window.AGENT_TOOLBELT_DATA = {
     },
     {
       "id": "operational-documentation",
-      "label": "wiki/ and docs/",
+      "label": "wiki/",
       "kind": "documentation",
       "lifecycle": "still-required",
       "native_skill_surface": false,
       "paths": [
-        "wiki",
-        "docs"
+        "wiki"
       ],
-      "purpose": "Document installation, ownership, operational compatibility, workflow detail, and generated audits.",
-      "recommendation": "Keep deeper guidance here; the portal owns discovery and the README remains the entry point."
+      "purpose": "Supply essential installation and operational instructions.",
+      "recommendation": "Keep usage instructions in the wiki. Keep maintainer reports and evaluation material local."
     },
     {
       "id": "maintainer-research",
-      "label": "notes/ and repos/",
+      "label": "Local maintainer material",
       "kind": "maintainer-research",
       "lifecycle": "optional-compatibility",
       "native_skill_surface": false,
@@ -2174,21 +2474,20 @@ window.AGENT_TOOLBELT_DATA = {
         "repos"
       ],
       "purpose": "Hold local maintainer research and source material when these ignored directories are present.",
-      "recommendation": "Keep these directories optional and local. Do not require or publish them as plugin content."
+      "recommendation": "Keep research, handoff documents, and evaluations outside the repository or in ignored scratch output."
     },
     {
       "id": "portal-catalog",
-      "label": "catalog/, portal/, and generated taxonomy audit",
+      "label": "catalog/ and portal/",
       "kind": "discovery-tooling",
       "lifecycle": "still-required",
       "native_skill_surface": false,
       "paths": [
         "catalog",
-        "portal",
-        "docs/skill-taxonomy-audit.md"
+        "portal"
       ],
-      "purpose": "Provide deterministic discovery metadata, the offline capability portal, and the comprehensive generated classification audit.",
-      "recommendation": "Keep as the discovery source; derive it from canonical skill metadata and validate generated output."
+      "purpose": "Provide deterministic discovery metadata and the offline capability portal.",
+      "recommendation": "Derive discovery content from canonical skill metadata. Generate optional maintainer reports outside published content."
     },
     {
       "id": "project-workflow-boundary",
@@ -2197,7 +2496,7 @@ window.AGENT_TOOLBELT_DATA = {
       "lifecycle": "still-required",
       "native_skill_surface": false,
       "paths": [
-        "docs/project-workflow-boundary.md"
+        "README.md"
       ],
       "absent_paths": [
         "skills/ai-feature-delivery",
@@ -2241,7 +2540,7 @@ window.AGENT_TOOLBELT_DATA = {
         "templates/cursor-rules-150-pr-hygiene.mdc",
         "templates/cursor-rules-200-dev-feature-traceability.mdc"
       ],
-      "purpose": "Keep project-specific lifecycle sources in their project repository while preserving shared Toolbelt methods.",
+      "purpose": "Define shared capability ownership and preserve project-owned delivery requirements.",
       "recommendation": "Use project-owned adapters for forms, approvals, and controlled records; import shared skills without replacing those adapters."
     }
   ]

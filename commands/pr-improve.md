@@ -5,12 +5,8 @@ argument-hint: "<pr-or-diff> [--scope path[,path]] [--rounds N]"
 
 # /pr-improve
 
-Use the `pr-improve` skill to improve a PR after review findings exist.
+Use `/pr-improve` to fix accepted review findings on a PR. Use `/pr-review` to find them.
 
 **Arguments:** `$ARGUMENTS`
 
-Freeze the start baseline and explicit scope before editing. Keep baseline, diff, and
-ledger artifacts in the guarded `.atb-work/pr-improve/<target-slug>/` workspace;
-do not overwrite unrelated scratch state. Maintain stable finding IDs and decisions,
-re-review after each round, stop on scope escape or structural oscillation, and report
-convergence honestly. Never commit or push automatically.
+Follow the `pr-improve` skill (`skills/pr-improve/SKILL.md`). Its "Inputs" section defines each argument.

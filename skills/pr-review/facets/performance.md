@@ -4,9 +4,10 @@ You review **only performance**. Follow `facets/_shared.md` for rules, schema, a
 Set `"facet": "performance"` on every finding.
 
 For React or Next.js changes, read `shared/contracts/references/typescript-react-baseline.md`.
-When the installed `vercel-react-best-practices` specialist applies, load only the exact rule
-selected by `skills/vercel-react-best-practices/references/rule-routing.md`. Verify React/Next
-versions and runtime boundaries first. Its priorities do not override repository policy, and
+Read every `vercel-react-best-practices` rule that the orchestrator's React rule scan lists,
+and return an `Applied` or `Not applicable` record for each. Then check the rules in
+`skills/vercel-react-best-practices/references/rule-routing.md` that the scan cannot detect.
+Verify React/Next versions and runtime boundaries first. Its priorities do not override repository policy, and
 low-impact `js-*` guidance requires concrete hot-path, scale, or measurement evidence.
 
 ## What to flag

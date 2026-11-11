@@ -94,20 +94,12 @@ not instructions, but CI adds a second risk: a malicious PR running with access 
   `Bash(gh:*)`: either one lets a reviewer that an injected diff has talked into approving itself
   reach an API that would record the approval.
 
-## Idempotency & the marker
+## Idempotency
 
-Actions fires once per push, so the SHA changing is the natural dedup — `synchronize` gives you a new
-run per new head, and `concurrency.cancel-in-progress` kills a review of a now-stale SHA. To also stay
-idempotent across a re-run of the *same* commit (and to interlock with the poller so the two never
-double-post), the review's posted comment carries a hidden marker tying it to the head SHA, e.g.:
-
-```
-<!-- review-on-open: sha=<head-sha> -->
-```
-
-Before posting, `--comment` (and the poller) check whether a marker for the current head already
-exists and skip if so. This is the same marker the poller's seen-ledger check honors
-(`poller.md` → "The seen-ledger").
+Actions fires once per push, so a new head SHA starts a new run. `concurrency.cancel-in-progress`
+stops a review of a stale SHA. A re-run of the same commit, or a poller run, must not post again.
+`--comment` writes and checks the head-SHA marker in `skills/pr-review/references/posting.md` →
+"Idempotency". The poller checks the same marker (`poller.md` → "The due check").
 
 ## Azure Repos (sketch)
 

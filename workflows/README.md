@@ -1,13 +1,11 @@
 # workflows/
 
-Portable multi-step orchestrations — the "when X, do Y1→Y2→Y3" procedures.
-The [offline portal](../portal/generated/index.html) owns discovery, examples,
-and the common workflow map; these files provide deeper copy-pasteable
-operational procedures for skills and the project installer.
-
-`SKILL.md` remains the canonical behavior source. Commands are optional
-project-scoped compatibility UX, while workflow files hold reusable supporting
-detail rather than native plugin skill copies.
+Each file is a stage map: it gives the order of skills for one kind of work.
+The skill for each stage owns its steps and completion rules.
+The [offline portal](../portal/generated/index.html) owns discovery and examples.
+`catalog/agent-toolbelt.json` owns the stage lists.
+`scripts/build-workflow-stages.js` writes each stage table between the `catalog stages` markers.
+Do not edit a table by hand. `scripts/check-catalog.sh` fails when a table does not match the catalog.
 
 - `phased-delivery-workflow.md` - requirement or ticket delivery as one PR per
   phase, with human review and optional stacked PRs.
@@ -22,8 +20,11 @@ detail rather than native plugin skill copies.
 - `phase-context-workflow.md` - durable phase files, handoffs, and context
   packets so long agent work can survive `/clear` or `/compact`; composes
   `handoff` for phase closeout.
-- `dev-ticket-to-pr.md` - bridge workflow from refined ticket through
-  implementation, tests, project checks, and PR review.
+- `phase-gate-solo-workflow.md` - in-loop subagent review at each phase
+  boundary, with feedback and merge in one session.
+- `phase-gate-team-workflow.md` - phase-boundary review that posts comments
+  for a human reviewer and does not merge.
+- `dev-ticket-to-pr.md` - redirect to `phased-delivery-workflow.md`.
 - `bug-to-fix-workflow.md` - diagnostic lane from bug report through triage,
   reproduction, root-cause analysis, minimal fix, and verification.
 - `retrofit-workflow.md` - apply one defined change across every site
@@ -32,4 +33,4 @@ detail rather than native plugin skill copies.
 Common entry command: `/workflow-router` chooses the smallest useful command or
 workflow for the current state.
 
-For a hands-on first run, follow `../docs/tutorial.md`.
+For installation and workflow entry points, use [the wiki](../wiki/Home.md).

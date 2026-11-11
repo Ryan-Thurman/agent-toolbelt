@@ -8,6 +8,9 @@ any). Read `shared/contracts/references/style-precedence.md` and
 `shared/contracts/references/anti-slop-naming.md`; hold the diff to **this repo's** documented
 conventions, using generic guidance only when local evidence does not decide the issue.
 
+For documentation changes, also read `shared/contracts/references/docs-writing.md`.
+Report a writing finding as a `nit`, unless it makes the documentation wrong or unclear for a required step.
+
 For TypeScript or React changes, also read `shared/contracts/references/typescript-react-baseline.md`.
 If the installed Vercel specialists apply, use their exact conditional rule pointers for
 composition or React/Next performance. They supplement repository policy and never replace it.
@@ -15,8 +18,6 @@ composition or React/Next performance. They supplement repository policy and nev
 ## What to flag
 
 - violations of explicit rules in the repository's approved standards (the primary job).
-- logic in the wrong layer/module; feature logic leaking into shared/general-purpose paths.
-- bespoke one-off where the codebase already has a canonical helper/utility for the job.
 - naming/structure that breaks surrounding established patterns: misleading behavior names,
   canonical-vocabulary drift, ambiguous units, non-predicate booleans, or ID/object confusion.
 - public-API/contract changes that don't follow the project's conventions for them.
@@ -27,7 +28,8 @@ composition or React/Next performance. They supplement repository policy and nev
 - a generic name in a tiny unambiguous scope, or an unusual pattern established by representative
   local code.
 - correctness/security/perf (other facets).
-- maintainability abstractions (maintainability facet) — you check *conformance*, not elegance.
+- maintainability abstractions, wrong-layer logic, and canonical-helper reuse (maintainability facet).
+  You check *conformance* to documented policy, not elegance.
 
 If the repo has no documented standards, fall back to consistency with the surrounding code, and
 keep findings to clear deviations. A standards blocker is an explicit policy violation or concrete

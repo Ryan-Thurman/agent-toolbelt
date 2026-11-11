@@ -1,7 +1,7 @@
 # Installation
 
 The native cross-host plugin is the primary installation path. The repository
-root exposes 33 skills for Cursor, Claude Code, and Codex from one canonical
+root exposes 39 skills for Cursor, Claude Code, and Codex from one canonical
 tree. For a local clone:
 
 ```sh
@@ -43,8 +43,7 @@ Other shapes:
 
 New to the compatibility installer? Take the guided path:
 
-- `docs/tutorial.md` — a first install and first feature walkthrough.
-- `docs/README.md` — the documentation map.
+- `wiki/Workflows.md` — the shared workflow entry points.
 
 After install, open the target folder and run `/workflow-router` (or a specific
 pack's entry command) from chat.
@@ -93,9 +92,11 @@ specialist skills, or install either pack separately:
 
 The packs preserve the substantive MIT-licensed upstream rules as progressive
 disclosure references. They are conditional guidance, not universal repository
-policy. The baseline routes component API work to
-`vercel-composition-patterns` and React/Next performance work to
-`vercel-react-best-practices` when those skills are installed. Check the
+policy. The baseline's React rule scan lists the installed
+`vercel-composition-patterns`, `vercel-react-best-practices`,
+`use-effect-killer`, `vercel-react-view-transitions`,
+`vercel-web-interface-guidelines`, and
+`vercel-react-native-skills` rules that changed code triggers. Check the
 repository's React/Next versions, runtime boundaries, local conventions, and
 concrete performance impact before applying a rule.
 
@@ -144,7 +145,7 @@ The target repository owns process rules, forms, and approval requirements.
 The installer does not delete rules from earlier installations.
 Review each old rule against its owner before removing it.
 Preserve project-owned rules and local changes.
-Read [the migration guide](../docs/project-workflow-boundary.md) before an update.
+Read [the ownership boundary](../README.md#what-belongs-here) before an update.
 
 ## Polyrepo / `--sweep`
 
@@ -173,7 +174,7 @@ application* in a multi-root workspace, promote those rules to **Cursor User Rul
 ## Cross-host plugin (Cursor, Claude Code, and Codex)
 
 The repository root is the canonical skills-only plugin package. It contains
-native manifests for all three hosts and one shared `skills/` tree, exposing 33
+native manifests for all three hosts and one shared `skills/` tree, exposing 39
 on-demand skills, 0 commands, and 0 hooks; no committed skill copies are
 generated. The root `commands/` remain available through `install.sh`. The
 `cursor-hooks` pack remains available through `install.sh`, but its manifest and
@@ -217,7 +218,7 @@ scripts/check-plugin-package.sh
 ```
 
 This check verifies the three manifests, aligned version and identity metadata,
-both catalog source paths, all 33 canonical skills, and that default plugin
+both catalog source paths, all 39 canonical skills, and that default plugin
 payloads do not include hooks or always-on rules. Claude's installed validator is
 run as part of the check. Run the repository check script from the clone rather
 than relying on an installation-specific validator path.

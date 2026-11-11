@@ -4,8 +4,9 @@ Apply-on-opt-in refactoring guided by the refactor brief produced by the repo's 
 
 ## When to run
 
-Only after `/do-crap-analysis` returns **REFACTOR** and the user confirms (via `/crap-refactor` or
-explicit opt-in in chat).
+Only after `/do-crap-analysis` returns **REFACTOR** and the user confirms (via `/crap-refactor <target>`
+or explicit opt-in in chat). The target name is required. It must match a key in the base-branch
+`.crap-analysis.json`.
 
 ## Flow
 
@@ -17,12 +18,14 @@ explicit opt-in in chat).
    - When complexity dominates: extract helpers, reduce branching at lines listed under
      **Complexity drivers**
 4. Do not weaken existing tests or change observable behavior
-5. Run verify **once** via orchestrator:
+5. Run verify **once** via orchestrator, then run `review`:
    ```bash
-   bash skills/crap-analysis/bin/crap-analysis.sh verify --target {target}
+   bash skills/crap-analysis/bin/crap-analysis.sh verify --target {target} --changed
+   bash skills/crap-analysis/bin/crap-analysis.sh review
    ```
-6. **Read** the new report JSON; apply the review decision table from `references/review.md`
-7. Report PASS or remaining REFACTOR gap
+6. Emit the template from `references/review.md` for the review outcome.
+   Report what changed, the verify exit code, and the new worst score in scope or the remaining
+   REFACTOR gap.
 
 ## Principles
 

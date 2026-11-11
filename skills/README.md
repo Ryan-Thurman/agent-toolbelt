@@ -3,9 +3,8 @@
 Agent **skills** live in one canonical folder per skill, each with a `SKILL.md`.
 The native plugin exposes the 33 canonical skills across Cursor, Claude Code,
 and Codex. Use the [offline portal](../portal/generated/index.html) for the
-complete searchable catalog, taxonomy, examples, and workflow map; use the
-[generated audit](../docs/skill-taxonomy-audit.md) for completeness and
-recommendations. This page documents authoring, provenance, and copy ownership,
+complete searchable catalog, taxonomy, examples, and workflow map.
+This page documents authoring and copy ownership,
 not a manually maintained second skill catalog.
 
 The unattended runner skills live in the separate
@@ -14,12 +13,17 @@ part of this standard skill tree.
 
 `style-guide-init` derives and maintains contribution/style guidance from repo
 evidence. It distinguishes policy, enforcement, observations and conflicts, and
-ships a local checkpoint helper for changed-input detection. See
-[`repository-conventions-design.md`](../docs/repository-conventions-design.md)
-for usage, maintenance limits and related approaches.
+ships a local checkpoint helper for changed-input detection.
+Its skill references define extraction, maintenance, and validation.
 
 Project-specific delivery skills belong to their project repositories.
-See the [ownership boundary](../docs/project-workflow-boundary.md).
+See the [ownership boundary](../README.md#what-belongs-here).
+
+For managed or resumed assignments, the [execution contract](../shared/contracts/references/execution.md)
+defines compact task context, results, and authority.
+The [execution schema](../shared/contracts/references/execution-schema.md) defines the optional JSON records and their checker.
+`system-design` also maintains current repository maps; `handoff` can preserve evidence-backed execution lessons.
+These are conditional procedures within existing skills.
 
 The Vercel specialists preserve their substantive upstream rules under each
 skill's `references/rules/` tree. They are not universal policy: repository
@@ -35,11 +39,6 @@ MCP tools are available in the session, the skill uses the code graph for the
 retrieval-heavy steps (blast radius, callers, scope, localization) at a fraction
 of the tokens. It is strictly optional — every skill works by reading files
 directly when rct is not present.
-
-## Provenance
-
-Skill concept attribution lives in `../docs/skill-provenance.md` so runtime
-`SKILL.md` files stay focused on invocation, invariants, flow, and references.
 
 ## Canonical copies
 
@@ -86,9 +85,12 @@ Use this checklist when creating or updating a skill:
 - Use the [human-readable output contract](../shared/contracts/references/human-readable-output.md)
   when defining outputs: tables for structured findings and comparisons,
   diagrams for relationships, and actions with a reason and completion check
-  for plans. Apply its ASD-STE100 rules to all new text for the user.
-  All standard skills load this reference. New skills must include its runtime
-  pointer and installer dependency.
+  for plans. It makes the `simple-english` skill the base for all new text
+  for the user. ASD-STE100 output is an intentional Toolbelt-wide standard,
+  not a personal convention. It keeps output from many parallel agents
+  consistent and easy to review. All standard skills load this reference.
+  New skills must include its runtime pointer, its installer line, and a
+  `# DEPENDS: simple-english` header.
 - Keep one source of truth for each behavior. Do not repeat the same rule in the
   description, body, commands, and references unless each copy has a distinct
   job.

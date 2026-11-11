@@ -16,10 +16,11 @@ speculative-abstraction cues. Report them only where the changed code has a conc
 maintenance, contract, or readability consequence; preserve the deep-tier behavior
 in `maintainability-deep.md`.
 
-For React component API or architecture changes, read
-`shared/contracts/references/typescript-react-baseline.md`. When the installed
-`vercel-composition-patterns` specialist applies, load only the matching rule selected by
-`skills/vercel-composition-patterns/references/rule-routing.md`. Treat its patterns as
+For React changes, read `shared/contracts/references/typescript-react-baseline.md`.
+Read every `vercel-composition-patterns` and `use-effect-killer` rule that the orchestrator's
+React rule scan lists, and return an `Applied` or `Not applicable` record for each. For
+`use-effect-killer`, classify every listed effect. Then check the rules in
+`skills/vercel-composition-patterns/references/rule-routing.md` that the scan cannot detect. Treat its patterns as
 evidence-backed review cues, not universal prohibitions; verify the repository's React version
 and public API compatibility first.
 
@@ -27,7 +28,7 @@ For PR review, prioritize smells introduced or worsened by the diff:
 
 - a change that makes a module materially harder to reason about.
 - new ad-hoc conditionals, special-cases, or state that point to a missing model.
-- duplicated logic instead of reusing or extracting a canonical helper.
+- duplicated logic, or a bespoke one-off where the codebase already has a canonical helper.
 - feature logic leaking into the wrong layer or across a boundary.
 - cast-heavy / `any` / `unknown` / needless optionality that obscures the real contract.
 - file-size sprawl: a change pushing a file past ~1000 lines — ask to decompose first.

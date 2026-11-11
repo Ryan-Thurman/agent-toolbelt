@@ -1,0 +1,460 @@
+{
+  "skill": "vercel-react-native-skills",
+  "intro": "Read the individual rule only when the changed React Native code matches its condition. A rule's priority is a triage hint, not permission to ignore repository policy.",
+  "categories": [
+    {
+      "prefix": "rendering",
+      "title": "Core rendering"
+    },
+    {
+      "prefix": "list-performance",
+      "title": "List performance"
+    },
+    {
+      "prefix": "animation",
+      "title": "Animation"
+    },
+    {
+      "prefix": "scroll",
+      "title": "Scroll performance"
+    },
+    {
+      "prefix": "navigation",
+      "title": "Navigation"
+    },
+    {
+      "prefix": "react-state",
+      "title": "React state"
+    },
+    {
+      "prefix": "state",
+      "title": "State architecture"
+    },
+    {
+      "prefix": "react-compiler",
+      "title": "React Compiler"
+    },
+    {
+      "prefix": "ui",
+      "title": "User interface"
+    },
+    {
+      "prefix": "design-system",
+      "title": "Design system"
+    },
+    {
+      "prefix": "monorepo",
+      "title": "Monorepo"
+    },
+    {
+      "prefix": "imports",
+      "title": "Third-party dependencies"
+    },
+    {
+      "prefix": "js",
+      "title": "JavaScript"
+    },
+    {
+      "prefix": "fonts",
+      "title": "Fonts"
+    }
+  ],
+  "rules": [
+    {
+      "path": "references/rules/animation-derived-value.md",
+      "when": "A Reanimated useAnimatedReaction callback writes a shared value that it derives from another shared value.",
+      "fix": "Use useDerivedValue for computed animations",
+      "signals": [
+        "\\buseAnimatedReaction\\s*\\("
+      ],
+      "file_signals": [
+        "from\\s+['\"]react-native-reanimated['\"]"
+      ]
+    },
+    {
+      "path": "references/rules/animation-gesture-detector-press.md",
+      "when": "A Pressable onPressIn or onPressOut handler animates a Reanimated shared value for press feedback.",
+      "fix": "Use Gesture.Tap instead of Pressable",
+      "signals": [
+        "\\bonPress(?:In|Out)=\\{"
+      ],
+      "file_signals": [
+        "from\\s+['\"]react-native-reanimated['\"]"
+      ]
+    },
+    {
+      "path": "references/rules/animation-gpu-properties.md",
+      "when": "An animated style animates width, height, top, left, margin, or padding instead of transform or opacity.",
+      "fix": "Animate only transform and opacity",
+      "signals": [
+        "^\\s*['\\\"]?(?:width|height|top|left|right|bottom|margin\\w*|padding\\w*|(?:min|max)(?:Width|Height))['\\\"]?\\s*:\\s*(?:with(?:Timing|Spring|Decay|Sequence|Repeat|Delay)|interpolate)\\("
+      ],
+      "file_signals": [
+        "from\\s+['\"](?:react-native(?:-[\\w-]+)?|expo(?:-[\\w-]+)?|@expo/[\\w-]+|@react-navigation/[\\w-]+|@shopify/flash-list|@legendapp/list)(?:/[^'\"]*)?['\"]"
+      ]
+    },
+    {
+      "path": "references/rules/design-system-compound-components.md",
+      "when": "A component accepts string or node children and checks typeof children to wrap the string in Text.",
+      "fix": "Use compound components, such as Button and ButtonText, instead of polymorphic string children",
+      "signals": [
+        "typeof\\s+(?:props\\.)?children\\s*===?\\s*['\"]string['\"]",
+        "\\bchildren\\??\\s*:\\s*string\\s*\\|"
+      ],
+      "file_signals": [
+        "from\\s+['\"](?:react-native(?:-[\\w-]+)?|expo(?:-[\\w-]+)?|@expo/[\\w-]+|@react-navigation/[\\w-]+|@shopify/flash-list|@legendapp/list)(?:/[^'\"]*)?['\"]"
+      ]
+    },
+    {
+      "path": "references/rules/fonts-config-plugin.md",
+      "when": "Expo code loads custom fonts at runtime with useFonts or Font.loadAsync instead of the expo-font config plugin.",
+      "fix": "Use config plugins for custom fonts",
+      "signals": [
+        "\\buseFonts\\s*\\(",
+        "\\bFont\\.loadAsync\\s*\\("
+      ],
+      "file_signals": [
+        "from\\s+['\"](?:expo-font|@expo-google-fonts/[\\w-]+)['\"]"
+      ]
+    },
+    {
+      "path": "references/rules/imports-design-system-folder.md",
+      "when": "App code imports UI primitives directly from react-native or a UI package instead of a design system folder.",
+      "fix": "Organize design system imports",
+      "signals": [],
+      "file_signals": []
+    },
+    {
+      "path": "references/rules/js-hoist-intl.md",
+      "when": "A component, hook, or loop creates an Intl.NumberFormat, DateTimeFormat, or RelativeTimeFormat on each call.",
+      "fix": "Hoist Intl object creation",
+      "signals": [
+        "^\\s+.*\\bnew\\s+Intl\\.(?:DateTimeFormat|NumberFormat|RelativeTimeFormat|PluralRules|ListFormat|Collator)\\s*\\("
+      ],
+      "file_signals": [
+        "from\\s+['\"](?:react-native(?:-[\\w-]+)?|expo(?:-[\\w-]+)?|@expo/[\\w-]+|@react-navigation/[\\w-]+|@shopify/flash-list|@legendapp/list)(?:/[^'\"]*)?['\"]"
+      ]
+    },
+    {
+      "path": "references/rules/list-performance-callbacks.md",
+      "when": "A list renderItem creates a new callback for each item, such as () => handlePress(item.id).",
+      "fix": "Stabilize callback references",
+      "signals": [
+        "\\(\\s*\\)\\s*=>\\s*[\\w.]+\\(\\s*item\\b"
+      ],
+      "file_signals": [
+        "<(?:Animated\\.)?(?:FlatList|FlashList|LegendList|SectionList)\\b"
+      ]
+    },
+    {
+      "path": "references/rules/list-performance-function-references.md",
+      "when": "Code maps or filters an array in render, then passes the new array to a FlatList, FlashList, or LegendList.",
+      "fix": "Extract functions outside render",
+      "signals": [
+        "\\bdata=\\{[^}]*\\.(?:map|filter|flatMap|concat|reduce)\\("
+      ],
+      "file_signals": [
+        "<(?:Animated\\.)?(?:FlatList|FlashList|LegendList|SectionList)\\b"
+      ]
+    },
+    {
+      "path": "references/rules/list-performance-images.md",
+      "when": "A list item renders a remote image from its full-size URL instead of a resized thumbnail URL.",
+      "fix": "Optimize images in lists",
+      "signals": [
+        "source=\\{\\{\\s*uri:\\s*(?:item|\\w+)\\.\\w*(?:[Ii]mage|[Uu]rl|[Uu]ri|[Pp]hoto|[Aa]vatar|[Pp]icture|[Ss]rc)\\w*\\s*\\}\\}"
+      ],
+      "file_signals": [
+        "<(?:Animated\\.)?(?:FlatList|FlashList|LegendList|SectionList)\\b"
+      ]
+    },
+    {
+      "path": "references/rules/list-performance-inline-objects.md",
+      "when": "A renderItem callback passes a new inline object or style object as a prop to the list item.",
+      "fix": "Avoid inline style objects",
+      "signals": [
+        "\\b\\w+=\\{\\{\\s*\\w+:\\s*item\\b"
+      ],
+      "file_signals": [
+        "<(?:Animated\\.)?(?:FlatList|FlashList|LegendList|SectionList)\\b"
+      ]
+    },
+    {
+      "path": "references/rules/list-performance-item-expensive.md",
+      "when": "A virtualized list item component runs a query, reads several contexts, or does expensive computation.",
+      "fix": "Move expensive work outside items",
+      "signals": [],
+      "file_signals": []
+    },
+    {
+      "path": "references/rules/list-performance-item-memo.md",
+      "when": "A renderItem passes the whole item object to a memoized row component instead of primitive fields.",
+      "fix": "Memoize list item components",
+      "signals": [
+        "<[A-Z][\\w.]*\\s+\\w+=\\{item\\}",
+        "<[A-Z][\\w.]*\\s+\\{\\.\\.\\.item\\}"
+      ],
+      "file_signals": [
+        "<(?:Animated\\.)?(?:FlatList|FlashList|LegendList|SectionList)\\b"
+      ]
+    },
+    {
+      "path": "references/rules/list-performance-item-types.md",
+      "when": "A virtualized list renders different item layouts from one item component and does not set getItemType.",
+      "fix": "Use item types for heterogeneous lists",
+      "signals": [
+        "\\bif\\s*\\(\\s*item\\.(?:is[A-Z]\\w*|type)\\b"
+      ],
+      "file_signals": [
+        "<(?:Animated\\.)?(?:FlatList|FlashList|LegendList|SectionList)\\b"
+      ]
+    },
+    {
+      "path": "references/rules/list-performance-virtualize.md",
+      "when": "A ScrollView renders an array with .map() instead of a FlashList or LegendList virtualizer.",
+      "fix": "Use FlashList for large lists",
+      "signals": [
+        "^\\s*\\{\\s*[\\w.?!]+\\.map\\(\\s*\\(?"
+      ],
+      "file_signals": [
+        "<(?:Animated\\.)?ScrollView\\b"
+      ]
+    },
+    {
+      "path": "references/rules/monorepo-native-deps-in-app.md",
+      "when": "A monorepo shared package adds a native dependency that the app package.json does not also list.",
+      "fix": "Keep native dependencies in app package",
+      "signals": [],
+      "file_signals": []
+    },
+    {
+      "path": "references/rules/monorepo-single-dependency-versions.md",
+      "when": "Monorepo packages declare different versions or version ranges of the same dependency in package.json.",
+      "fix": "Use single versions across packages",
+      "signals": [],
+      "file_signals": []
+    },
+    {
+      "path": "references/rules/navigation-native-navigators.md",
+      "when": "Code imports a JS stack or bottom-tab navigator, expo-router Tabs, or sets a custom header component.",
+      "fix": "Use native stack and native tabs over JS navigators",
+      "signals": [
+        "from\\s+['\"]@react-navigation/(?:stack|bottom-tabs)['\"]",
+        "\\bcreate(?:Stack|BottomTab)Navigator\\s*\\(",
+        "import\\s*\\{[^}]*\\bTabs\\b[^}]*\\}\\s*from\\s*['\"]expo-router['\"]",
+        "^\\s*header\\s*:\\s*\\([^)]*\\)\\s*=>(?!\\s*null\\b)"
+      ],
+      "file_signals": [
+        "from\\s+['\"](?:@react-navigation/[\\w-]+|expo-router)(?:/[^'\"]*)?['\"]"
+      ]
+    },
+    {
+      "path": "references/rules/react-compiler-destructure-functions.md",
+      "when": "With React Compiler enabled, a component calls a function by dotting into props, such as props.onSave().",
+      "fix": "Destructure for React Compiler",
+      "signals": [
+        "\\bprops\\.[a-z]\\w*\\??\\.?\\("
+      ],
+      "file_signals": [
+        "from\\s+['\"](?:react-native(?:-[\\w-]+)?|expo(?:-[\\w-]+)?|@expo/[\\w-]+|@react-navigation/[\\w-]+|@shopify/flash-list|@legendapp/list)(?:/[^'\"]*)?['\"]"
+      ]
+    },
+    {
+      "path": "references/rules/react-compiler-reanimated-shared-values.md",
+      "when": "With React Compiler enabled, code reads or writes a Reanimated shared value through .value, not .get() or .set().",
+      "fix": "Handle shared values with compiler",
+      "signals": [
+        "\\b\\w+\\.value\\s*=(?!=)"
+      ],
+      "file_signals": [
+        "from\\s+['\"]react-native-reanimated['\"]"
+      ]
+    },
+    {
+      "path": "references/rules/react-state-dispatcher.md",
+      "when": "A setter calculates the next state from the current state variable, such as setCount(count + 1).",
+      "fix": "Use dispatcher pattern for callbacks",
+      "signals": [
+        "\\bset([A-Z])(\\w*)\\(\\s*(?i:\\1)\\2\\s*[-+*]",
+        "\\bset([A-Z])(\\w*)\\(\\s*!\\s*(?i:\\1)\\2\\s*\\)",
+        "\\bset([A-Z])(\\w*)\\(\\s*[\\[{]\\s*\\.\\.\\.(?i:\\1)\\2\\b",
+        "\\bset([A-Z])(\\w*)\\(\\s*(?i:\\1)\\2\\.(?:filter|map|concat|slice|toSorted)\\("
+      ],
+      "file_signals": [
+        "from\\s+['\"](?:react-native(?:-[\\w-]+)?|expo(?:-[\\w-]+)?|@expo/[\\w-]+|@react-navigation/[\\w-]+|@shopify/flash-list|@legendapp/list)(?:/[^'\"]*)?['\"]"
+      ]
+    },
+    {
+      "path": "references/rules/react-state-fallback.md",
+      "when": "useState copies a prop or server value as its initial state and does not follow later changes to it.",
+      "fix": "Show fallback on first render",
+      "signals": [
+        "\\buseState(?:<[^>]*>)?\\(\\s*(?:props\\.\\w+|data\\.\\w+|(?:initial|default)[A-Z]\\w*)\\s*\\)"
+      ],
+      "file_signals": [
+        "from\\s+['\"](?:react-native(?:-[\\w-]+)?|expo(?:-[\\w-]+)?|@expo/[\\w-]+|@react-navigation/[\\w-]+|@shopify/flash-list|@legendapp/list)(?:/[^'\"]*)?['\"]"
+      ]
+    },
+    {
+      "path": "references/rules/react-state-minimize.md",
+      "when": "A component stores a value in state that it can calculate from other state or props.",
+      "fix": "Minimize state subscriptions",
+      "signals": [
+        "^\\s*set[A-Z]\\w*\\(\\s*[\\w.]+\\.(?:reduce\\(|length\\s*\\))"
+      ],
+      "file_signals": [
+        "from\\s+['\"](?:react-native(?:-[\\w-]+)?|expo(?:-[\\w-]+)?|@expo/[\\w-]+|@react-navigation/[\\w-]+|@shopify/flash-list|@legendapp/list)(?:/[^'\"]*)?['\"]"
+      ]
+    },
+    {
+      "path": "references/rules/rendering-no-falsy-and.md",
+      "when": "JSX renders {value && <Element />} where the value can be an empty string or 0 (React Native crash).",
+      "fix": "Avoid falsy && for conditional rendering",
+      "signals": [
+        "\\{\\s*(?![\\w.?]*\\b(?:is|has|should|can|show|did|was|will|are)[A-Z])(?![\\w.?]*\\b(?:disabled|selected|visible|loading|open|expanded|checked|enabled|active|focused)\\s*&&)[\\w.?]+\\s*&&\\s*(?:<|\\(?\\s*$)"
+      ],
+      "file_signals": [
+        "from\\s+['\"](?:react-native(?:-[\\w-]+)?|expo(?:-[\\w-]+)?|@expo/[\\w-]+|@react-navigation/[\\w-]+|@shopify/flash-list|@legendapp/list)(?:/[^'\"]*)?['\"]"
+      ]
+    },
+    {
+      "path": "references/rules/rendering-text-in-text-component.md",
+      "when": "JSX places a string directly inside a View, Pressable, or other non-Text element (React Native crash).",
+      "fix": "Wrap text in Text components",
+      "signals": [
+        "<(?:View|Pressable|TouchableOpacity|TouchableHighlight|TouchableWithoutFeedback|ScrollView|SafeAreaView|KeyboardAvoidingView|Animated\\.View)\\b(?:[^>]|(?<==)>)*(?<![=/])>\\s*(?:[A-Za-z0-9$][^<]*|\\{\\s*['\\\"`])"
+      ],
+      "file_signals": [
+        "from\\s+['\"](?:react-native(?:-[\\w-]+)?|expo(?:-[\\w-]+)?|@expo/[\\w-]+|@react-navigation/[\\w-]+|@shopify/flash-list|@legendapp/list)(?:/[^'\"]*)?['\"]"
+      ]
+    },
+    {
+      "path": "references/rules/scroll-position-no-state.md",
+      "when": "An onScroll handler stores the scroll offset in useState and re-renders on each scroll event.",
+      "fix": "Track scroll position in a Reanimated shared value or a ref, not useState",
+      "signals": [
+        "(?<![.\\w])set[A-Z]\\w*\\(\\s*[\\w.?]*contentOffset\\b",
+        "\\[\\s*\\w*[Ss]croll(?:X|Y|Offset|Position|Pos|Top|Left)\\s*,\\s*set\\w*\\s*\\]\\s*=\\s*(?:React\\.)?useState\\b"
+      ],
+      "file_signals": [
+        "from\\s+['\"](?:react-native(?:-[\\w-]+)?|expo(?:-[\\w-]+)?|@expo/[\\w-]+|@react-navigation/[\\w-]+|@shopify/flash-list|@legendapp/list)(?:/[^'\"]*)?['\"]"
+      ]
+    },
+    {
+      "path": "references/rules/state-ground-truth.md",
+      "when": "A useState or Reanimated shared value stores a visual output, such as scale or opacity, not the underlying state.",
+      "fix": "Store ground-truth state and derive visual values from it",
+      "signals": [
+        "\\b(?:const|let)\\s+(?:scale|opacity|translate[XY]?|rotat\\w*|height|width)\\s*=\\s*useSharedValue\\(",
+        "\\[\\s*(?:scale|opacity|translate[XY]?|rotation|height|width)\\s*,\\s*set\\w+\\s*\\]\\s*=\\s*(?:React\\.)?useState\\b"
+      ],
+      "file_signals": [
+        "from\\s+['\"](?:react-native(?:-[\\w-]+)?|expo(?:-[\\w-]+)?|@expo/[\\w-]+|@react-navigation/[\\w-]+|@shopify/flash-list|@legendapp/list)(?:/[^'\"]*)?['\"]"
+      ]
+    },
+    {
+      "path": "references/rules/ui-expo-image.md",
+      "when": "Code imports Image from react-native instead of expo-image.",
+      "fix": "Use expo-image for all images",
+      "signals": [
+        "import\\s*\\{[^}]*\\bImage\\b[^}]*\\}\\s*from\\s*['\"]react-native['\"]",
+        "^\\s*Image\\s*,?\\s*$"
+      ],
+      "file_signals": [
+        "import\\s*(?:type\\s*)?\\{[^}]*\\bImage\\b[^}]*\\}\\s*from\\s*['\"]react-native['\"]"
+      ]
+    },
+    {
+      "path": "references/rules/ui-image-gallery.md",
+      "when": "Code adds an image lightbox with a Modal, a full-screen Image, or a JS image viewer library.",
+      "fix": "Use Galeria for image lightboxes",
+      "signals": [
+        "from\\s+['\"](?:react-native-image-viewing|react-native-image-zoom-viewer|react-native-lightbox(?:-v2)?|react-native-image-gallery|react-native-awesome-gallery|@likashefqet/react-native-image-zoom)['\"]"
+      ],
+      "file_signals": [
+        "from\\s+['\"](?:react-native(?:-[\\w-]+)?|expo(?:-[\\w-]+)?|@expo/[\\w-]+|@react-navigation/[\\w-]+|@shopify/flash-list|@legendapp/list)(?:/[^'\"]*)?['\"]"
+      ]
+    },
+    {
+      "path": "references/rules/ui-measure-views.md",
+      "when": "Code calls measure() or measureInWindow() on a view ref to get its size.",
+      "fix": "Use onLayout, not measure()",
+      "signals": [
+        "\\.measure(?:InWindow)?\\(\\s*\\(?"
+      ],
+      "file_signals": [
+        "from\\s+['\"](?:react-native(?:-[\\w-]+)?|expo(?:-[\\w-]+)?|@expo/[\\w-]+|@react-navigation/[\\w-]+|@shopify/flash-list|@legendapp/list)(?:/[^'\"]*)?['\"]"
+      ]
+    },
+    {
+      "path": "references/rules/ui-menus.md",
+      "when": "Code builds a dropdown or context menu from Pressable, state, and an absolute View instead of native menus.",
+      "fix": "Use native context menus",
+      "signals": [
+        "from\\s+['\"](?:react-native-popup-menu|react-native-modal-dropdown|react-native-element-dropdown|react-native-dropdown-picker|react-native-material-menu)['\"]",
+        "\\[\\s*\\w*(?:Menu|Dropdown)\\w*\\s*,\\s*set\\w+\\s*\\]\\s*=\\s*(?:React\\.)?useState\\b"
+      ],
+      "file_signals": [
+        "from\\s+['\"](?:react-native(?:-[\\w-]+)?|expo(?:-[\\w-]+)?|@expo/[\\w-]+|@react-navigation/[\\w-]+|@shopify/flash-list|@legendapp/list)(?:/[^'\"]*)?['\"]"
+      ]
+    },
+    {
+      "path": "references/rules/ui-native-modals.md",
+      "when": "Code renders a JS bottom sheet or modal library, such as @gorhom/bottom-sheet, instead of a native Modal.",
+      "fix": "Use native modals when possible",
+      "signals": [
+        "from\\s+['\"](?:@gorhom/bottom-sheet|react-native-raw-bottom-sheet|react-native-modal|reanimated-bottom-sheet|react-native-actions-sheet|react-native-modalize)['\"]"
+      ],
+      "file_signals": [
+        "from\\s+['\"](?:react-native(?:-[\\w-]+)?|expo(?:-[\\w-]+)?|@expo/[\\w-]+|@react-navigation/[\\w-]+|@shopify/flash-list|@legendapp/list)(?:/[^'\"]*)?['\"]"
+      ]
+    },
+    {
+      "path": "references/rules/ui-pressable.md",
+      "when": "Code imports or renders TouchableOpacity or TouchableHighlight instead of Pressable.",
+      "fix": "Use Pressable over TouchableOpacity",
+      "signals": [
+        "<Touchable(?:Opacity|Highlight)\\b",
+        "import\\s*\\{[^}]*\\bTouchable(?:Opacity|Highlight)\\b"
+      ],
+      "file_signals": [
+        "from\\s+['\"](?:react-native(?:-[\\w-]+)?|expo(?:-[\\w-]+)?|@expo/[\\w-]+|@react-navigation/[\\w-]+|@shopify/flash-list|@legendapp/list)(?:/[^'\"]*)?['\"]"
+      ]
+    },
+    {
+      "path": "references/rules/ui-safe-area-scroll.md",
+      "when": "A screen wraps a ScrollView in SafeAreaView or pads it with safe area insets.",
+      "fix": "Handle safe areas in ScrollViews",
+      "signals": [
+        "<SafeAreaView\\b",
+        "\\bcontentContainerStyle=\\{\\{[^}]*\\binsets\\.(?:top|bottom)\\b"
+      ],
+      "file_signals": [
+        "<(?:Animated\\.)?(?:ScrollView|FlatList|FlashList|LegendList|SectionList|KeyboardAwareScrollView)\\b"
+      ]
+    },
+    {
+      "path": "references/rules/ui-scrollview-content-inset.md",
+      "when": "A ScrollView adds dynamic top or bottom padding in contentContainerStyle for a keyboard, toolbar, or header.",
+      "fix": "Use contentInset for headers",
+      "signals": [
+        "\\bcontentContainerStyle=\\{\\{[^}]*\\bpadding(?:Top|Bottom|Vertical)\\s*:\\s*(?![\\d'\\\"\\s])"
+      ],
+      "file_signals": [
+        "<(?:Animated\\.)?(?:ScrollView|FlatList|FlashList|LegendList|SectionList|KeyboardAwareScrollView)\\b"
+      ]
+    },
+    {
+      "path": "references/rules/ui-styling.md",
+      "when": "A style uses legacy shadow props or elevation, or code uses a gradient library instead of boxShadow and backgroundImage.",
+      "fix": "Use StyleSheet.create or Nativewind",
+      "signals": [
+        "\\bshadowColor\\s*:",
+        "from\\s+['\"](?:expo-linear-gradient|react-native-linear-gradient)['\"]"
+      ],
+      "file_signals": [
+        "from\\s+['\"](?:react-native(?:-[\\w-]+)?|expo(?:-[\\w-]+)?|@expo/[\\w-]+|@react-navigation/[\\w-]+|@shopify/flash-list|@legendapp/list)(?:/[^'\"]*)?['\"]"
+      ]
+    }
+  ]
+}

@@ -1,8 +1,9 @@
 #!/usr/bin/env bash
 # DESC: policy- or risk-driven pre-PR maintainability gate with bounded convergence
-# DEPENDS: simplify pr-review pr-improve
+# DEPENDS: simplify pr-review pr-improve crap-analysis simple-english
 pack_code_quality_gate() {
   shared_contract references/human-readable-output.md
+  shared_contract references/docs-writing.md
   cmd code-quality-gate
   skill code-quality-gate SKILL.md
   skill code-quality-gate references/gate-contract.md
@@ -11,6 +12,8 @@ pack_code_quality_gate() {
   shared_contract references/style-precedence.md
   shared_contract references/anti-slop-naming.md
   shared_contract references/typescript-react-baseline.md
+  shared_contract scripts/react-rule-scan.py
+  shared_contract references/react-acceptance.md
   shared_contract references/maintainability-taxonomy.md
 
   template code-quality-gate-report.md

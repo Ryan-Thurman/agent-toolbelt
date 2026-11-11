@@ -49,6 +49,9 @@ covered inputs stale, and no ancestry assumption is needed across branches.
 
 ## Refresh by affected claim
 
+A changed fingerprint means **review needed**, not **documentation wrong**.
+An unchanged fingerprint means only **covered inputs unchanged**.
+
 1. Run `check` and inspect added, changed, deleted and edited-guide paths. If the
    state is missing, invalid, or unreadable, report the problem and inspect the
    current repo to establish a baseline. Do not call that a historical drift check.

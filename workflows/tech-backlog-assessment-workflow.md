@@ -14,19 +14,10 @@ Technical Backlog Assessment
 ↓
 Decision Review
 ↓
-Accepted? -> /ticket-discover, /dev-plan, /implementation-plan, /retrofit, /cover
+Accepted? -> the next workflow that the assessment names
 Rejected/deferred? -> close or update ticket with rationale
 Spike? -> create bounded spike plan and evidence target
 ```
-
-## Use For
-
-- Package import decisions.
-- Library/framework switches.
-- Technical debt items with unclear value.
-- Test investment decisions.
-- Migration or upgrade strategy.
-- Reliability/performance work needing option comparison.
 
 ## Do Not Use For
 
@@ -35,10 +26,4 @@ Spike? -> create bounded spike plan and evidence target
 - A confirmed bug. Use the bug-to-fix lane.
 - A feature that already needs an implementation plan. Use Phased Delivery or the target project's workflow.
 
-## Completion Criteria
-
-- The recommendation is one of `Do`, `Defer`, `Reject`, or `Spike`.
-- Repo evidence supports the recommendation.
-- Options and risks are explicit.
-- Test strategy is concrete enough to plan from.
-- The next workflow is named.
+The `tech-backlog-assessment` skill owns the item types, steps, and completion criteria.

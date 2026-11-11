@@ -8,29 +8,20 @@ Set `"facet": "correctness"` on every finding.
 - null/undefined handling, off-by-one, wrong operator or boundary condition, inverted logic.
 - incorrect or missing error handling; swallowed errors; wrong error path.
 - concurrency: races, TOCTOU, stale closure/variable capture, shared mutable state, await/async bugs.
-- data integrity: N+1 queries, unbounded growth, lost updates, non-atomic multi-step writes,
+- data integrity: unbounded growth, lost updates, non-atomic multi-step writes,
   partial state on failure.
 - contract breaks: changed function signature/return shape that callers don't expect.
 
 ## Do NOT flag
 
 - style, naming, formatting (other facets / linters own these).
-- performance micro-optimizations (performance facet owns these).
+- performance issues, including N+1 queries (performance facet owns these).
 - missing tests (tests facet owns this).
 - purely theoretical bugs with no reachable path — unless you can show the path.
 
 Prioritize bugs that change behavior on a real input. A correctness blocker is something that
 produces a wrong result, crashes, corrupts data, or breaks a caller.
 
-## Severity calibration
-
-- Mark **blocker** when the changed line is wrong for valid input, the documented happy path, an
-  existing caller/test contract, a route/API handler, or a user/request-controlled path.
-- Mark **should-fix** when the changed production code can fail for a plausible but not fully traced
-  input and the consequence is runtime-visible: wrong output, crash, `NaN`/`Infinity`, unbounded
-  work, data loss/corruption, or broken caller behavior.
-- Use **nit** only for defensive polish with no concrete runtime consequence.
-
-Do not downshift a boundary/validation/arithmetic bug to nit just because the caller path is not
+Apply the severity floor in `_shared.md`. Do not downshift a boundary/validation/arithmetic bug to nit just because the caller path is not
 fully proven in your facet context. State the reachability uncertainty in `evidence`; the critic or
 deep tier can escalate if caller context proves it reachable.

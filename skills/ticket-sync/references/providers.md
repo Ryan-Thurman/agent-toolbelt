@@ -1,11 +1,9 @@
 # Tracker providers — GitHub Issues, Jira, Azure Boards
 
-ticket-sync is not GitHub-only. `gh` is the GitHub Issues path; **Jira** uses a Jira CLI (or REST);
-**Azure Boards** uses the `az boards` CLI; and when none is present/authenticated the publish still
-runs as a **manifest** (report-only). Detect the provider once from the config (`config.md`), then
-route every tracker-touching step — **create**, **link**, **update** — through it. Parsing the ticket
-files and mapping their fields are provider-independent; only these three operations branch on
-`provider`.
+`gh` is the GitHub Issues path; **Jira** uses a Jira CLI (or REST); **Azure Boards** uses the
+`az boards` CLI. When none is present/authenticated, the publish runs as a **manifest** (report-only).
+Parsing, field mapping, the preview, idempotency, and the confirmation gate are provider-independent
+(`config.md`). Only **create**, **link**, and **update** branch on `provider`.
 
 ## Detect the provider + auth
 
@@ -40,9 +38,6 @@ from the CLI's own auth (`gh auth login`, the Jira CLI config / `JIRA_API_TOKEN`
 | Update | `gh issue edit <n>` | `jira issue edit <KEY>` | `az boards work-item update --id <id>` |
 | Auth check | `gh auth status` | `jira me` | `az account show` |
 
-The plan/preview, field mapping, idempotency, and confirmation gate are **provider-independent** —
-only create/link/update branch on `provider`.
-
 ## GitHub Issues (`gh`)
 
 - **Create:**
@@ -51,9 +46,9 @@ only create/link/update branch on `provider`.
     --label "<l1>" --label "<l2>" [--milestone "<rel>"]
   ```
   `gh` returns the issue URL; parse the number for the `Tracker: #<n>` key.
-- **Field mapping:** Feature/Release/Doc-delta IDs → labels (`feat:…`, `rel:…`, `doc-delta:…`);
-  acceptance criteria → a `- [ ]` checklist in the body; test expectation → a "Testing" section in
-  the body. No native issue type — encode it as a label if the config asks.
+- **Field mapping:** mapped fields → labels; acceptance criteria → a `- [ ]` checklist in the body;
+  unmapped fields and sections → the body (`config.md`). No native issue type — encode it as a label
+  if the config asks.
 - **Dependencies:** GitHub has no first-class "blocked by" link — render it in the body as
   `Blocked by #<n>` and/or a task list referencing the blocker issues (resolved from their recorded
   keys). Order creation blockers-first so the references are real.
@@ -71,9 +66,8 @@ only create/link/update branch on `provider`.
   converts to ADF (Atlassian Document Format).
 - **Field mapping:** project key + issue type come from the config `Defaults`. Acceptance criteria →
   appended into the description (a checklist, or a custom "Acceptance Criteria" field if the config
-  maps one). Feature ID / Release ID → labels by default, or a **custom field** (`customfield_#####`)
-  / **fixVersion** when the config's field mapping says so (`-l` / `--custom field=value` / `--fix-version`).
-  Test expectation → a "Testing" section in the description.
+  maps one). A mapped field → a label, a **custom field** (`customfield_#####`), or **fixVersion**
+  (`-l` / `--custom field=value` / `--fix-version`). Unmapped fields and sections → the description.
 - **Dependencies:** link issues by their recorded keys:
   ```bash
   jira issue link <THIS-KEY> <BLOCKER-KEY> "is blocked by"   # or "Blocks" from the blocker side
@@ -91,9 +85,9 @@ only create/link/update branch on `provider`.
   ```
   Returns JSON; parse `.id` → `Tracker: AB#<id>`.
 - **Field mapping:** issue/work-item type + area/iteration from the config. Labels → `System.Tags`.
-  Feature ID / Release ID → tags by default, or a custom field / iteration path per the config.
+  A mapped field → a tag, a custom field, or the iteration path, per the config.
   Acceptance criteria → `Microsoft.VSTS.Common.AcceptanceCriteria` when present, else appended to the
-  description. Test expectation → the description.
+  description. Unmapped fields and sections → the description.
 - **Dependencies:** add a relation between the created work items (resolved from recorded ids):
   ```bash
   az boards work-item relation add --id <this-id> \
@@ -113,9 +107,9 @@ later, e.g.:
 # ticket-sync manifest (provider: jira · project ABC · NOT POSTED — jira CLI unauthenticated)
 
 ## ABC ← tickets/03-checkout-api.md   [action: create]
-- type: Story   labels: feat:FEAT-1042, rel:REL-2026.06, doc-delta:yes
+- type: Story   labels: feat:FEAT-1042, rel:REL-2026.06
 - summary: Checkout API accepts saved cards
-- description: <built body with acceptance-criteria checklist + Testing section>
+- description: <built body: description, acceptance-criteria checklist, unmapped fields, other sections>
 - blocked by: tickets/02-payment-token.md  (link once both keys exist)
 - would run: jira issue create -pABC -tStory -s"…" -b"…" -lfeat:FEAT-1042 …
 ```

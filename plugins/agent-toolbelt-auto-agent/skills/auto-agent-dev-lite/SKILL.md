@@ -1,35 +1,29 @@
 ---
 name: auto-agent-dev-lite
-description: Use only for headless or orchestrated Dev Lite jobs where agent-runner or another caller invokes an agent CLI for IMPLEMENT, FIX, PHASE_REVIEW, or PR_REVIEW with a caller-owned immutable plan document. Do not use for interactive Dev Lite sessions.
+description: Use only for headless or orchestrated phased-delivery jobs where agent-runner or another caller invokes an agent CLI for IMPLEMENT, FIX, PHASE_REVIEW, or PR_REVIEW with a caller-owned immutable plan document. Do not use for interactive phased-delivery sessions.
 ---
 
 # auto-agent-dev-lite
 
-Use this skill when an outside orchestrator is running Dev Lite-style work
+Use this skill when an outside orchestrator runs phased-delivery-style work
 through agent CLIs and the caller owns durable progress state. The plan document
 is requirements input, not a living agent handoff.
 
 For interactive, human-supervised feature work, use `phased-delivery` instead.
+
+When the caller supplies a managed context or structured result format, read the sibling
+`../auto-agent-contract/references/execution-boundary.md` before executing the job.
+Preserve its caller and worker ownership; existing job payloads remain valid until the caller changes them.
 
 ## Plan Contract
 
 Treat the plan path supplied by the caller as read-only unless the caller
 explicitly says this job is the close-phase writer.
 
-- Do not create, edit, reformat, or save the plan document.
-- Do not mark tasks or phases complete.
-- Do not add, remove, or rewrite `Status:` or `Evidence:` lines.
-- Do not rewrite phase prose into past tense after work is done.
-- Do not "keep the plan current" even if a Dev Lite command or template says to
-  update the Implementation Plan.
+- Leave the plan document unchanged. The caller owns task status, phase status, and the `Status:` and `Evidence:` lines.
+- Keep the phase prose as written, including after the work is done.
 - Use the supplied phase body, task text, checks, and acceptance criteria as the
   frozen spec for implementation and review.
-
-If an output format asks for `Plan Document Updates`, write exactly:
-
-```text
-skipped: caller owns the plan document
-```
 
 ## Job Rules
 
@@ -41,18 +35,19 @@ For `IMPLEMENT` jobs:
   If one is unmet or cannot be verified without writes, network mutation, or
   secret disclosure, stop and report it as a blocker; do not partially execute
   the task.
-- Add or update tests with behavior changes when practical.
+- Before changing executable behavior, read `shared/contracts/references/test-driven-development.md` from the installed standard Agent Toolbelt root and use its test-first procedure.
+- Keep test cases within the supplied acceptance criteria and permitted paths.
 - Run the requested checks when available; otherwise report the exact checks
   that still need to run.
-- Report changed files, checks, risks, and blockers. Do not report plan edits.
+- Report changed files, red/green evidence, coverage limits, risks, and blockers through the caller's existing result format.
 
 For `FIX` jobs:
 
 - Fix only the supplied review findings.
 - Do not introduce unrelated cleanup or future-phase work.
-- Add or update tests when the finding exposes missing coverage.
+- Use `shared/contracts/references/test-driven-development.md` for behavior fixes and missing regression coverage.
 - Report which findings were fixed, changed files, checks, remaining risks, and
-  blockers. Do not report plan edits.
+  blockers.
 
 For `PHASE_REVIEW` or `PR_REVIEW` jobs:
 
@@ -62,6 +57,7 @@ For `PHASE_REVIEW` or `PR_REVIEW` jobs:
 - Do raise findings for implementation drift from the frozen plan body, missing
   required checks, insufficient tests, future-phase leakage, contract drift, or
   ordinary correctness/security/performance/UX risks.
+- Assess supplied red/green evidence and coverage gaps without rerunning implementation or editing the caller's plan.
 
 For `CLOSE_PHASE` jobs:
 
@@ -73,5 +69,6 @@ For `CLOSE_PHASE` jobs:
 
 ## Conflict Rule
 
-If another loaded command says to update the Implementation Plan and this skill
-is active for a headless job, this skill wins. The caller owns progress state.
+This skill takes precedence for a headless job.
+When another loaded command, template, or output format asks for plan edits, skip them.
+Report that item as `skipped: caller owns the plan document`.

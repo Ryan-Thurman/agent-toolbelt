@@ -36,7 +36,7 @@ The environment variables `CRAP_BASE` and `CRAP_CONFIG` have the same effect.
 | Repo root | `git rev-parse --show-toplevel`. Ops run from the repo root. |
 | Base ref | `--base REF`. Else the first ref that exists: `origin/HEAD`, `origin/main`, `origin/master`, `main`, `master`. The branch's own `@{upstream}` is never used. |
 | Merge base | `git merge-base HEAD <base ref>`. |
-| Config | `--config PATH` loads that working-tree file (repo-relative or absolute). Else the orchestrator copies `<base ref>:.crap-analysis.json`, or else `<base ref>:.atb/crap-analysis.json`, to `.atb-work/crap-analysis/base-config.json`. |
+| Config | `--config PATH` loads that working-tree file (repo-relative or absolute). Else the orchestrator copies `<base ref>:.crap-analysis.json`, or else `<base ref>:.agents/crap-analysis.json`, to `.atb-work/crap-analysis/base-config.json`. Existing base commits can also use `.atb/crap-analysis.json`. |
 | Config change | With a base config, `changedInDiff` is `true` when the diff from the merge base changes that config path. |
 | Commands | Run verbatim with `eval` from the repo root, in a subshell, with stdin closed. |
 

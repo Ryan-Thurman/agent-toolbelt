@@ -1,13 +1,13 @@
 ---
 title: Secure coding, OWASP secure code review & code-review security practices
 type: reference / external article
-source: Graphite guides (three combined) — secure coding practices + OWASP code-review guidelines + code-review security best practices
+source: ../shared/contracts/references/review-example-attribution.md
 use: mine for the security checklist that feeds our tool's "deep" tier and the security focus of every tier
 ---
 
 # Secure coding, OWASP secure code review & code-review security practices
 
-Three complementary Graphite guides combined: (1) secure coding practices, (2) OWASP's secure code review process, and (3) code-review security best practices.
+This reference covers secure coding practices, a secure code review process, and security checks for code changes.
 
 ## Part 1 — Secure coding guidelines
 

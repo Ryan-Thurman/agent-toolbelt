@@ -10,7 +10,8 @@ This prevents a branch from changing the rules that review it.
 The first file found on the base ref wins:
 
 1. `.crap-analysis.json` (repo root)
-2. `.atb/crap-analysis.json`
+2. `.agents/crap-analysis.json`
+3. `.atb/crap-analysis.json` for existing base commits
 
 `references/cli.md` defines how the orchestrator selects the base ref.
 If the base ref has no config, run `/crap-config` and merge the file into the base branch.
@@ -46,8 +47,8 @@ Write only `.crap-analysis.json`. Write another file, such as npm scripts in `pa
 after the user explicitly confirms it. Do not assume a language, framework, or repo layout.
 Start from `templates/crap-analysis.json`.
 
-1. **Discover.** Look for `.crap-analysis.json` or `.atb/crap-analysis.json`. If one exists and the
-   argument is `edit`, load it and offer to update fields.
+1. **Discover.** Look for `.crap-analysis.json`, `.agents/crap-analysis.json`, or the legacy `.atb/crap-analysis.json`.
+   If a file exists and the argument is `edit`, load it and offer to update fields.
 2. **Collect globals.** `defaults.threshold` (default `30`) and `defaults.outputDir` (default
    `reports/crap`).
 3. **Collect targets.** For each target, ask for the target key and each per-target field above.

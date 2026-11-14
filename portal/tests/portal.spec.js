@@ -138,6 +138,27 @@ test('theme preference persists and keyboard focus is visible', async ({ page },
   await expect(page.getByRole('searchbox', { name: 'Search skills' })).toBeInViewport();
 });
 
+test('hero install tabs switch hosts and copy commands', async ({ page, context }, testInfo) => {
+  test.skip(testInfo.project.name.startsWith('mobile'), 'The hero install block is hidden on phones.');
+  await context.grantPermissions(['clipboard-read', 'clipboard-write']);
+  const tabs = page.getByRole('tablist', { name: 'Install commands by agent host' });
+  const panel = page.locator('#hero-install-panel');
+  await expect(tabs.getByRole('tab')).toHaveCount(3);
+  await expect(tabs.getByRole('tab', { name: 'Cursor' })).toHaveAttribute('aria-selected', 'true');
+  await expect(panel).toContainText('cursor-agent --plugin-dir /path/to/agent-toolbelt');
+  await tabs.getByRole('tab', { name: 'Codex' }).click();
+  await expect(panel.locator('.install-line')).toHaveCount(2);
+  await expect(panel).toContainText('codex plugin add agent-toolbelt@agent-toolbelt');
+  await page.keyboard.press('ArrowLeft');
+  await expect(tabs.getByRole('tab', { name: 'Claude Code' })).toBeFocused();
+  await expect(tabs.getByRole('tab', { name: 'Claude Code' })).toHaveAttribute('aria-selected', 'true');
+  await expect(panel).toContainText('claude --plugin-dir /path/to/agent-toolbelt');
+  const copy = page.getByRole('button', { name: 'Copy Claude Code install commands' }).first();
+  await copy.click();
+  await expect(copy.locator('.copy-status')).toHaveText('Copied');
+  expect(await page.evaluate(() => navigator.clipboard.readText())).toBe('claude --plugin-dir /path/to/agent-toolbelt');
+});
+
 async function checkTaskShortcuts(page) {
   const tasks = [
     { id: 'product-discovery', title: 'Product Discovery' },

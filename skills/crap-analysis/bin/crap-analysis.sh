@@ -501,7 +501,7 @@ list_changed() {
 }
 
 # Config = --config / CRAP_CONFIG (working-tree file), else the base branch's
-# .crap-analysis.json or .atb/crap-analysis.json, copied into .atb-work/.
+# .crap-analysis.json or .agents/crap-analysis.json, copied into .atb-work/.
 init_config() {
   if [ -n "$CONFIG_OVERRIDE" ]; then
     case "$CONFIG_OVERRIDE" in
@@ -514,7 +514,7 @@ init_config() {
   else
     init_base
     local candidate
-    for candidate in .crap-analysis.json .atb/crap-analysis.json; do
+    for candidate in .crap-analysis.json .agents/crap-analysis.json .atb/crap-analysis.json; do
       if git cat-file -e "$BASE_REF:$candidate" 2>/dev/null; then
         ensure_work_dir
         CFG_PATH="$ROOT/$WORK_REL/base-config.json"
@@ -524,7 +524,7 @@ init_config() {
         break
       fi
     done
-    [ -n "$CFG_PATH" ] || die "config not found on base $BASE_REF (.crap-analysis.json or .atb/crap-analysis.json); commit it to $BASE_REF, or pass --config PATH to use a working-tree file"
+    [ -n "$CFG_PATH" ] || die "config not found on base $BASE_REF (.crap-analysis.json or .agents/crap-analysis.json); commit it to $BASE_REF, or pass --config PATH to use a working-tree file"
     CFG_CHANGED="false"
     if ! git diff --quiet "$MERGE_BASE" -- "$CFG_REPO_PATH" \
       || [ -n "$(git ls-files --others --exclude-standard -- "$CFG_REPO_PATH")" ]; then

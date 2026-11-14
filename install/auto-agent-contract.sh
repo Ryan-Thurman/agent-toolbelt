@@ -2,26 +2,16 @@
 # PRIVATE: true
 _auto_agent_skill() {
   local name="$1" rel="$2" src="plugins/agent-toolbelt-auto-agent/skills/$1/$2"
-  _install "$src" ".atb/skills/$name/$rel"
+  _install "$src" ".agents/skills/$name/$rel"
   if [ "$rel" = "SKILL.md" ]; then
-    _install "plugins/agent-toolbelt-auto-agent/skills/$name/agents/openai.yaml" ".atb/skills/$name/agents/openai.yaml"
+    _install "plugins/agent-toolbelt-auto-agent/skills/$name/agents/openai.yaml" ".agents/skills/$name/agents/openai.yaml"
   fi
-  if harness_enabled cursor || harness_enabled codex; then
-    _install "$src" ".agents/skills/$name/$rel"
-    if [ "$rel" = "SKILL.md" ]; then
-      _install "plugins/agent-toolbelt-auto-agent/skills/$name/agents/openai.yaml" ".agents/skills/$name/agents/openai.yaml"
-    fi
-  else
-    gated=$((gated + 1))
-  fi
-  _record_skill "$name"
 }
 
 _auto_agent_command() {
-  local did=0 src="plugins/agent-toolbelt-auto-agent/commands/auto-agent-plan.md"
-  if harness_enabled cursor; then _install "$src" ".cursor/commands/auto-agent-plan.md"; did=1; else gated=$((gated + 1)); fi
-  if harness_enabled claude; then _install "$src" ".claude/commands/auto-agent-plan.md"; did=1; else gated=$((gated + 1)); fi
-  [ "$did" = 1 ] && _record_command auto-agent-plan
+  local src="plugins/agent-toolbelt-auto-agent/commands/auto-agent-plan.md"
+  if harness_enabled cursor; then _install "$src" ".cursor/commands/auto-agent-plan.md"; else gated=$((gated + 1)); fi
+  if harness_enabled claude; then _install "$src" ".claude/commands/auto-agent-plan.md"; else gated=$((gated + 1)); fi
   return 0
 }
 

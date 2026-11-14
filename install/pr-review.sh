@@ -37,6 +37,7 @@ pack_pr_review() {
   shared_contract references/providers.md
   shared_contract references/posting.md
   shared_contract references/security-checklist.md
+  shared_contract references/review-example-attribution.md
 
   template pr-review.md
 

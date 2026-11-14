@@ -287,6 +287,13 @@
         "vercel-react-view-transitions",
         "vercel-web-interface-guidelines"
       ]
+    },
+    {
+      "path": "references/review-example-attribution.md",
+      "owner": "shared/contracts",
+      "consumers": [
+        "pr-review"
+      ]
     }
   ],
   "artifacts": [

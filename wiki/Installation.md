@@ -60,7 +60,7 @@ can consistently implement and review code in its local style.
 |---|---|---|
 | The existing canonical style owner, or root `STYLE_GUIDE.md` when no owner exists | Run `/style-guide-init`. Use repository instructions, enforced configuration, representative code and tests, domain vocabulary, and accepted external standards as evidence. A newly created guide remains `Status: Draft` until maintainers approve it. | Team-owned and tracked. Keep the rules here, not duplicated in agent pointer files. |
 | Root `.pr-review.md` | Run `/pr-review-init`. Remove generic sections that lack evidence and review the resulting priorities before committing them to the base branch. | Team-owned and tracked. PR review reads the base-branch copy so a change cannot weaken its own review policy. |
-| Root `AGENTS.md` and/or `CLAUDE.md` | Let `install.sh` maintain its marker-delimited workflow block. Merge around existing content and add only a concise pointer to the canonical style owner when one is needed. | Installer-maintained pointer block plus any existing team-owned instructions. |
+| Root `AGENTS.md` and/or `CLAUDE.md` | Let `install.sh` maintain its compact entry instructions between markers. Merge around existing content and add only a concise pointer to the canonical style owner when one is needed. | Installer-maintained pointer block plus any existing team-owned instructions. |
 
 An existing `CONTRIBUTING.md`, engineering handbook, or repository-specific
 standards document may already be the canonical style owner. Update that owner
@@ -77,7 +77,7 @@ Do not create empty documents to make the repository look complete:
 - `.atb-work/pr-improve/<target-slug>/` contains generated baselines, diffs, and
   ledgers for a bounded improvement loop. It is scratch state and must remain
   ignored.
-- Installed `.atb/`, `.cursor/`, and `.agents/` content is workflow machinery,
+- Installed `.agents/`, `.cursor/`, and `.claude/` content is workflow machinery,
   not a substitute for repository policy.
 
 ### React quality specialists
@@ -121,10 +121,19 @@ written:
 
 | Harness | Installs |
 |---|---|
-| `cursor` | `.cursor/commands/`, `.cursor/rules/`, and skills into `.agents/skills/` |
-| `claude` | `.claude/commands/` |
-| `codex`  | skills into `.agents/skills/` |
-| _always_ | the shared `.atb/` folder: the canonical `.atb/skills/` tree (commands reference it by path), plus `.atb/templates/`, `.atb/workflows/`, `.atb/examples/` |
+| `cursor` | `.cursor/commands/`, `.cursor/rules/`, and a root `AGENTS.md` pointer block |
+| `claude` | `.claude/commands/` and a root `CLAUDE.md` pointer block |
+| `codex` | A root `AGENTS.md` pointer block |
+| All selections | One shared `.agents/` tree with `skills/`, `shared/contracts/`, `templates/`, `workflows/`, and `examples/` |
+
+The installer migrates existing `.atb/` files into `.agents/` before it installs
+selected packs. It removes matching duplicates and updates installed Toolbelt paths,
+including packs outside the current selection. Other `.agents/` files remain in place.
+
+If copies differ after path conversion, the installer stops before migration.
+Merge the reported files, then rerun the command. The `--force` flag does not
+resolve migration conflicts. Use `--dry-run` to preview migration without writes.
+The ignored `.atb-work/` directory keeps its current name.
 
 ## Cursor rule modes
 
@@ -135,9 +144,18 @@ Cursor installs default to **minimal** project rules:
 ```
 
 Minimal mode writes one small always-on router/guardrail rule at
-`.cursor/rules/agent-toolbelt-router.mdc`. It keeps always-injected context small
-and points the agent to the matching installed command or skill when a task needs
-workflow-specific detail.
+`.cursor/rules/agent-toolbelt-router.mdc`. The rule tells the agent to read the
+shared writing rules before responding and the documentation rules before writing
+project documents. The selected skill supplies its references and templates.
+
+The root `AGENTS.md` and `CLAUDE.md` blocks contain the same writing-rule pointers
+and instructions to load matching skills. Reinstalling replaces the old workflow
+catalog inside the Toolbelt markers, including without `--force`.
+Content outside those markers remains in place.
+
+Existing Cursor rules remain unchanged without `--force`.
+To refresh the routing rule, review local edits and rerun the install command with `--force`.
+That flag replaces existing files selected by the install command.
 
 The former `--rules full` mode is retired.
 The target repository owns process rules, forms, and approval requirements.
@@ -157,7 +175,7 @@ tooling works both inside a single repo and across the whole application:
 ./install.sh --sweep --harness cursor all /path/to/parent
 ```
 
-Each level is a self-contained install — its own `.atb/` folder (commands
+Each level is a self-contained install — its own `.agents/` folder (commands
 reference the skills tree by path), root instruction pointer files, and selected
 `.cursor/rules` mode — so a repo opened on its own carries its guardrails.
 
@@ -256,7 +274,7 @@ Notes:
   if you want that. For scoped, per-project rules, use the per-repo `install.sh` instead.
 - **Commands** are intentionally not included in the global plugin build. Use the
   project-scoped `install.sh --harness cursor` flow for the `/command` UX and its
-  project-local `.atb/` paths.
+  project-local `.agents/` paths.
 
 The symlink picks up rebuilds live (Reload Window); `build/` is gitignored.
 

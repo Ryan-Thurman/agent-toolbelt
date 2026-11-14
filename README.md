@@ -116,8 +116,14 @@ explicitly only when needed:
 ./install.sh --harness all auto-agent-contract /path/to/project
 ```
 
+The installer stores one copy of skills and support files under `.agents/`.
+It migrates existing `.atb/` installs and stops if duplicate copies contain different edits.
+Use `--dry-run` to preview the migration.
+
 Cursor installs use one minimal routing rule. Project process rules belong to
 the target repository. The former `--rules full` option is retired.
+The generated `AGENTS.md` and `CLAUDE.md` blocks contain compact writing-rule and
+skill pointers. Skills load their own references and templates when needed.
 
 After install, open the target folder in your agent tool and run
 `/workflow-router` from chat. Full compatibility mechanics, including
@@ -133,7 +139,7 @@ implementation and review:
 |---|---|
 | Existing canonical style owner, or `STYLE_GUIDE.md` when none exists | Run `/style-guide-init`. Mine repository evidence, record the team's external baseline (for example, the Google TypeScript Style Guide), keep repo-specific TypeScript/React conventions local, and leave a new guide `Draft` until the team approves it. |
 | `.pr-review.md` | Run `/pr-review-init`. Keep only priorities supported by repository evidence, then have the team prune and commit the draft to the base branch. |
-| `AGENTS.md` for Cursor/Codex and `CLAUDE.md` for Claude Code | The installer creates or refreshes its marker-delimited workflow block. Preserve existing content and point to the canonical style owner instead of copying its rules. |
+| `AGENTS.md` for Cursor/Codex and `CLAUDE.md` for Claude Code | The installer creates or refreshes its compact entry instructions between markers. Preserve existing content and point to the canonical style owner instead of copying its rules. |
 
 Do not pre-create empty product-discovery, QA test-case, threat-model, or
 security-audit documents. Produce those from their templates only when real work

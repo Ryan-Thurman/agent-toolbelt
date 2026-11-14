@@ -3,10 +3,16 @@ description: agent-toolbelt workflow router and guardrails
 alwaysApply: true
 ---
 
-# agent-toolbelt Router
+# Agent Toolbelt routing
+
+Before writing for the user, read
+`shared/contracts/references/human-readable-output.md`.
+For project documents, also read
+`shared/contracts/references/docs-writing.md`.
 
 Use installed agent-toolbelt workflows when the task clearly matches one. Prefer
 the matching slash command or skill over re-creating the workflow from memory.
+Read the selected skill's `SKILL.md`, then load its references and templates as needed.
 
 Use `/workflow-router` when it is installed and the right workflow is unclear.
 Otherwise choose a matching installed skill directly.

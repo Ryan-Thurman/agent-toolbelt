@@ -1,7 +1,7 @@
 ---
 title: Code review principles, techniques & common quality issues
 type: reference / external article
-source: Graphite code-review guides (mentions Graphite Agent / Graphite Insights as tooling examples)
+source: ../shared/contracts/references/review-example-attribution.md
 use: mine for review principles, a reviewer checklist, coding standards, and a quality-issue taxonomy when designing our own PR-review tool
 ---
 
@@ -99,16 +99,14 @@ Adhering to coding standards and applying specific techniques ensures consistenc
 ### Code review techniques
 
 - **Follow a checklist** — cover key areas like readability, security, and performance; maintain consistency so nothing important is overlooked.
-- **Use automated tools** — linters, static analyzers, and tools like Graphite Agent automate detection of syntax errors, security vulnerabilities, and style violations, freeing reviewers to focus on complex aspects.
-- **Code style guide enforcement** — follow team/org style guides (e.g., Google Style Guide, PEP8) for a uniform structure.
+- **Use automated tools:** Run linters, static analyzers, and automated reviewers to find syntax errors, security vulnerabilities, and style violations.
+- **Code style guide enforcement:** Follow the repository style guide and the applicable language standards.
 - **Peer reviews** — engage multiple reviewers for diverse perspectives; experienced devs catch nuanced issues, less experienced ones learn and ask valuable questions.
 - **Focus on logic and structure** — ensure logic is clear and maintainable; consider edge cases and unexpected inputs.
 - **Encourage constructive feedback** — specific, actionable, focused on improving the code; frame suggestions as improvements, not criticisms.
 - **Understand the context** — understand the business requirements/user story driving the change before diving in, so feedback aligns with the goals.
 
 ## Part 3 — Common code quality issues
-
-(Graphite frames several of these around metrics from Graphite Insights — kept here as the issue taxonomy is the reusable part.)
 
 - **Code complexity problems** — complex code is hard to understand/maintain, lengthening debugging and testing. Watch median review times and number of review cycles as signals.
 - **Lack of coding standards** — inconsistent styles and practices make code hard to read and maintain.

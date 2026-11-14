@@ -245,7 +245,8 @@ class RealIndexTests(unittest.TestCase):
             fixture = FixtureRepo(temp)
             run([str(ROOT / "install.sh"), "--harness", "all", "react-quality", str(fixture.repo)], ROOT)
             fixture.write("src/effect.tsx", EFFECT_COMPONENT)
-            installed = fixture.repo / ".atb/shared/contracts/scripts/react-rule-scan.py"
+            fixture.write(".agents/skills/local/examples/effect.tsx", EFFECT_COMPONENT)
+            installed = fixture.repo / ".agents/shared/contracts/scripts/react-rule-scan.py"
             code, result = scan(fixture.repo, "--base", "main", scanner=installed)
             self.assertEqual(code, 0, result)
             self.assertEqual(result["installed"], ["vercel-react-best-practices", "vercel-composition-patterns",

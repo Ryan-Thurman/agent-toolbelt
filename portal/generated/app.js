@@ -220,6 +220,75 @@
       });
     }
 
+    // A terminal-style Copy button. The status span gives screen readers the result.
+    function installCopyButton(host) {
+      const button = createElement('button', 'install-copy');
+      button.type = 'button';
+      button.dataset.copyText = host.local_install_commands.join('\n');
+      button.appendChild(createElement('span', 'install-copy-label', 'Copy'));
+      const status = createElement('span', 'copy-status');
+      status.setAttribute('role', 'status');
+      status.setAttribute('aria-live', 'polite');
+      button.appendChild(status);
+      button.setAttribute('aria-label', `Copy ${host.name} install commands`);
+      return button;
+    }
+
+    function renderHeroInstall() {
+      const target = byId('hero-install');
+      target.replaceChildren();
+      const bar = createElement('div', 'install-bar');
+      const tabs = createElement('div', 'install-tabs');
+      tabs.setAttribute('role', 'tablist');
+      tabs.setAttribute('aria-label', 'Install commands by agent host');
+      const panel = createElement('div', 'install-panel');
+      panel.id = 'hero-install-panel';
+      panel.setAttribute('role', 'tabpanel');
+      const copySlot = createElement('span');
+      const tabButtons = data.hosts.map((host) => {
+        const tab = createElement('button', 'install-tab', host.name);
+        tab.type = 'button';
+        tab.id = `hero-install-tab-${host.id}`;
+        tab.setAttribute('role', 'tab');
+        tab.setAttribute('aria-controls', panel.id);
+        tab.dataset.installHost = host.id;
+        tabs.appendChild(tab);
+        return tab;
+      });
+      const select = (index, focus) => {
+        const host = data.hosts[index];
+        tabButtons.forEach((tab, tabIndex) => {
+          const selected = tabIndex === index;
+          tab.setAttribute('aria-selected', String(selected));
+          tab.tabIndex = selected ? 0 : -1;
+        });
+        if (focus) tabButtons[index].focus();
+        panel.setAttribute('aria-labelledby', tabButtons[index].id);
+        panel.replaceChildren(...host.local_install_commands.map((command) => createElement('code', 'install-line', command)));
+        panel.querySelectorAll('.install-line').forEach((line) => {
+          const prompt = createElement('span', 'install-prompt', '$');
+          prompt.setAttribute('aria-hidden', 'true');
+          line.prepend(prompt);
+        });
+        copySlot.replaceChildren(installCopyButton(host));
+      };
+      tabs.addEventListener('click', (event) => {
+        const tab = event.target.closest('[data-install-host]');
+        if (tab) select(tabButtons.indexOf(tab), false);
+      });
+      tabs.addEventListener('keydown', (event) => {
+        const current = tabButtons.findIndex((tab) => tab.getAttribute('aria-selected') === 'true');
+        const last = tabButtons.length - 1;
+        const next = { ArrowRight: current === last ? 0 : current + 1, ArrowLeft: current === 0 ? last : current - 1, Home: 0, End: last }[event.key];
+        if (next === undefined) return;
+        event.preventDefault();
+        select(next, true);
+      });
+      bar.append(tabs, copySlot);
+      target.append(bar, panel);
+      select(0, false);
+    }
+
     function renderHostSetup() {
       const target = byId('host-setup-list');
       target.replaceChildren();
@@ -233,6 +302,7 @@
           const commandRow = createElement('code', 'host-command', command);
           commandList.appendChild(commandRow);
         });
+        commandList.appendChild(installCopyButton(host));
         card.appendChild(commandList);
         const invocation = createElement('p', 'host-invocation-note');
         invocation.appendChild(createElement('span', '', 'Try a skill: '));
@@ -821,6 +891,7 @@
     window.addEventListener('popstate', applyHash);
     renderHosts();
     renderTaskShortcuts();
+    renderHeroInstall();
     renderHostSetup();
     renderStartHere();
     renderCategoryBuckets();

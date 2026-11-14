@@ -1,7 +1,7 @@
 ---
 title: AI-powered code security & vulnerability scanning
 type: reference / external article
-source: Graphite guide
+source: ../shared/contracts/references/review-example-attribution.md
 use: DIRECTLY relevant — we're building an AI reviewer. Mine for what AI review can/can't do, techniques, and the "augment not replace / human oversight" framing
 ---
 
@@ -31,7 +31,7 @@ Example: an AI system might learn that JavaScript using `eval()` with user input
 
 ## Can AI write secure code?
 
-Still a growing research area. Models like GPT-4 and Codex can generate code but don't inherently understand security. Fine-tuned on secure practices, they can assist by:
+Code generation models can produce insecure code. With suitable instructions and review, they can assist by:
 
 - Suggesting safer APIs or libraries
 - Highlighting dangerous coding patterns in real time

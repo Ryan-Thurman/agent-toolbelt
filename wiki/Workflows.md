@@ -42,8 +42,8 @@ Use `--dry-run` to preview the install:
 ```
 
 The installer adds legacy `/dev-*` Cursor and Claude command shortcuts, a
-repo-scoped `.agents/skills/phased-delivery` Codex skill, a shared
-`.atb/skills/` copy, templates, and the workflow playbook. The former
+shared `.agents/skills/phased-delivery/` skill, templates, and the workflow
+playbook. The former
 `dev-lite-workflow` pack name remains an explicit compatibility alias. Quality
 gates are applied when repository policy, the user, or the phase's risk requires
 them; they are not a universal pre-PR dependency.
@@ -103,7 +103,7 @@ double-click `install.command` and follow the prompts.
 
 Key ideas:
 
-- A **durable investigation file** (`.atb/templates/bug-investigation.md`) is updated
+- A **durable investigation file** (`.agents/templates/bug-investigation.md`) is updated
   *before* each action, so the work survives a context reset and hands off cleanly.
 - **No fix without a confirmed root cause**, and **no "fixed" without verification**.
 - **Reproduction is manual-first**: `/reproduce` asks whether you or QA reproduced

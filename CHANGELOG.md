@@ -1,5 +1,18 @@
 # Changelog
 
+## Unreleased
+
+### Changed
+
+- Replaced the portal's amber accent with green. Recolored the brand icon and favicons to match.
+- Moved portal surfaces to a neutral slate scale in light mode and neutral grays in dark mode.
+- Limited green to the hero headline, the active filter, focus rings, and the workflow start buttons.
+- Made the hero follow the page theme. The light theme no longer has a black hero.
+- Showed category colors only on category icons. Category labels are now gray sentence case.
+- Set heading weights to 600, set card corners to 8 pixels, and removed the hover lift from task cards.
+- Added an install terminal with Cursor, Claude Code, and Codex tabs and a Copy button to the hero. Phones do not show it.
+- Showed the setup commands as terminal blocks with a Copy button.
+
 ## v1.2.0 - 2026-11-10
 
 ### Changed

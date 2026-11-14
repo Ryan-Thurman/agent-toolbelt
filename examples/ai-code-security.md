@@ -1,7 +1,7 @@
 ---
 title: AI-powered code security & vulnerability scanning
 type: reference / external article
-source: Graphite guide
+source: ../shared/contracts/references/review-example-attribution.md
 use: DIRECTLY relevant — we're building an AI reviewer. Mine for what AI review can/can't do, techniques, and the "augment not replace / human oversight" framing
 ---
 

@@ -1,7 +1,7 @@
 ---
 title: Defect density (quality metric)
 type: reference / external article
-source: Graphite guide
+source: ../shared/contracts/references/review-example-attribution.md
 use: optional quality-metric context; relevant if our tool ever reports/benchmarks quality, not core to per-PR review
 ---
 

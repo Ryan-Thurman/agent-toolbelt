@@ -2,7 +2,7 @@
 
 These complete reference samples show review procedures, comment formats, and security coverage.
 Use them to develop a review checklist or compare review approaches.
-The reference files retain their source attribution.
+Source credits are listed in the [review example attribution](../shared/contracts/references/review-example-attribution.md).
 
 - [PR review reference](pr-review-reference.md): A sample command with target selection and structured output.
 - [Code review best practices](code-review-best-practices.md): Review scope, turnaround, and common process problems.

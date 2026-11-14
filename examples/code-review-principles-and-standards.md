@@ -1,7 +1,7 @@
 ---
 title: Code review principles, techniques & common quality issues
 type: reference / external article
-source: Graphite code-review guides
+source: ../shared/contracts/references/review-example-attribution.md
 use: mine for review principles, a reviewer checklist, coding standards, and a quality-issue taxonomy when designing our own PR-review tool
 ---
 

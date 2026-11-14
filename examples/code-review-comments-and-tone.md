@@ -1,7 +1,7 @@
 ---
 title: Code review comment types, examples & tone
 type: reference / external article
-source: Graphite code-review guide
+source: ../shared/contracts/references/review-example-attribution.md
 use: mine for a comment taxonomy (blocking vs nit), good/bad comment patterns, and tone rules for our tool's output
 ---
 

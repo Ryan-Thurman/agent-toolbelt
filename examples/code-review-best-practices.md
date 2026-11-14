@@ -1,7 +1,7 @@
 ---
 title: Code review best practices (guide)
 type: reference / external article
-source: Graphite code-review guide
+source: ../shared/contracts/references/review-example-attribution.md
 use: mine for principles & process when designing our own PR-review tool
 ---
 

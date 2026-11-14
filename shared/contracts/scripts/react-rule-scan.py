@@ -28,7 +28,7 @@ SPECIALISTS = [
     "vercel-react-native-skills", "vercel-react-view-transitions", "vercel-web-interface-guidelines",
 ]
 SOURCE_SUFFIXES = {".js", ".jsx", ".ts", ".tsx", ".mjs", ".cjs", ".css", ".scss"}
-SKIP_DIRS = {"node_modules", "dist", "build", ".next", "coverage", ".git", ".atb", ".atb-work"}
+SKIP_DIRS = {"node_modules", "dist", "build", ".next", "coverage", ".git", ".agents", ".atb", ".atb-work"}
 REACT_FILE = re.compile(
     r"""from\s+['"](react|react-dom|next)(/[^'"]*)?['"]|require\(['"](react|next)['"]\)|^\s*['"]use (client|server)['"]""",
     re.MULTILINE,

@@ -1,7 +1,7 @@
 ---
 title: Code review best practices (guide)
 type: reference / external article
-source: Graphite code-review guide (mentions Graphite as the tooling example throughout)
+source: Graphite code-review guide
 use: mine for principles & process when designing our own PR-review tool
 ---
 
@@ -29,7 +29,7 @@ A code review involves peers reviewing code changes before they are merged into 
 
 ### Step 2: Conduct the review
 
-- **Use code review tools:** Tools like Graphite facilitate streamlined code review processes by allowing developers to comment directly on lines of code and track changes effectively.
+- **Use code review tools:** Use a review platform to comment on changed lines and track the resolution of findings.
 - **Focus on the following aspects:**
   - **Code correctness:** Ensure that the code behaves as intended and meets the requirements.
   - **Code efficiency:** Look for performance issues, such as unnecessary loops or memory usage.
@@ -79,4 +79,4 @@ Be aware of common pitfalls that can hinder the effectiveness of the code review
 
 ## Takeaways
 
-Implementing these code review best practices can significantly enhance your team's development process. By focusing on efficient code review practices, establishing a clear process, utilizing code review tools like Graphite and encouraging constructive feedback, teams can improve code quality and foster a more collaborative environment. Whether you're working in agile or other development frameworks, prioritizing good code review practices is essential for success.
+Use a defined review process, review tools, and specific feedback to find defects and maintain code quality.

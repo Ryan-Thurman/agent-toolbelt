@@ -154,17 +154,17 @@ class InstallationTests(unittest.TestCase):
                 capture_output=True, text=True,
             )
             self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
-            for prefix in (".atb/skills/style-guide-init", ".agents/skills/style-guide-init"):
-                for name in ("SKILL.md", "agents/openai.yaml", "references/extraction.md",
-                             "references/maintenance.md", "scripts/conventions_state.py"):
-                    self.assertTrue((target / prefix / name).is_file(), name)
-                text = (target / prefix / "SKILL.md").read_text()
-                self.assertIn(".atb/shared/contracts/references/style-precedence.md", text)
-            for name in (".atb/templates/repository-contribution-guide.md",
-                         ".atb/templates/repository-style-guide.md",
+            prefix = ".agents/skills/style-guide-init"
+            for name in ("SKILL.md", "agents/openai.yaml", "references/extraction.md",
+                         "references/maintenance.md", "scripts/conventions_state.py"):
+                self.assertTrue((target / prefix / name).is_file(), name)
+            text = (target / prefix / "SKILL.md").read_text()
+            self.assertIn(".agents/shared/contracts/references/style-precedence.md", text)
+            for name in (".agents/templates/repository-contribution-guide.md",
+                         ".agents/templates/repository-style-guide.md",
                          ".cursor/commands/style-guide-init.md", ".claude/commands/style-guide-init.md"):
                 self.assertTrue((target / name).is_file(), name)
-            installed = target / ".atb/skills/style-guide-init/scripts/conventions_state.py"
+            installed = target / ".agents/skills/style-guide-init/scripts/conventions_state.py"
             self.assertEqual(installed.read_bytes(), HELPER.read_bytes())
             subprocess.run(["git", "-C", str(target), "init", "-q"], check=True, capture_output=True)
             (target / "CONTRIBUTING.md").write_text("Contribution fixture.\n")

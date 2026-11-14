@@ -250,6 +250,9 @@ function checkInstall(args, target, label) {
     errors.push(`${label} installer failed: ${result.stderr || result.stdout}`.trim());
     return false;
   }
+  if (fs.existsSync(path.join(target, ".atb"))) {
+    errors.push(`${label} installer created the retired .atb directory`);
+  }
   return true;
 }
 // Each new capability must also work as a selected compatibility pack.
@@ -262,54 +265,50 @@ for (const [id, template] of [
   const target = path.join(tempRoot, `selected-${id}`);
   if (!checkInstall(["--harness", "all", id], target, id)) continue;
   for (const relativePath of [
-    `.atb/skills/${id}/SKILL.md`,
     `.agents/skills/${id}/SKILL.md`,
-    `.atb/templates/${template}`,
-    ".atb/shared/contracts/references/evidence-quality.md",
+    `.agents/templates/${template}`,
+    ".agents/shared/contracts/references/evidence-quality.md",
     `.cursor/commands/${id}.md`,
     `.claude/commands/${id}.md`,
   ]) {
     if (!fs.existsSync(path.join(target, relativePath))) errors.push(`${id} selected install is missing ${relativePath}`);
   }
   const installed = fs.readFileSync(path.join(target, ".agents", "skills", id, "SKILL.md"), "utf8");
-  if (!installed.includes(`.atb/templates/${template}`)) errors.push(`${id} template path was not rewritten for compatibility installation`);
+  if (!installed.includes(`.agents/templates/${template}`)) errors.push(`${id} template path was not rewritten for compatibility installation`);
   if (id === "system-design" && !fs.existsSync(path.join(target, ".agents", "skills", "threat-model", "SKILL.md"))) {
     errors.push("system-design selected install must include its threat-model dependency");
   }
-  if (id === "product-outcome-review" && !fs.existsSync(path.join(target, ".atb", "shared", "contracts", "references", "product-measurement.md"))) {
+  if (id === "product-outcome-review" && !fs.existsSync(path.join(target, ".agents", "shared", "contracts", "references", "product-measurement.md"))) {
     errors.push("product-outcome-review selected install must include product measurement rules");
   }
 }
 const standardTarget = path.join(tempRoot, "standard-install");
 if (checkInstall(["--harness", "all", "all"], standardTarget, "standard all-pack")) {
   for (const relativePath of [
-    ".atb/skills/phased-delivery/SKILL.md",
     ".agents/skills/phased-delivery/SKILL.md",
     ".cursor/commands/dev-plan.md",
-    ".atb/templates/phased-delivery-plan.md",
-    ".atb/workflows/phased-delivery-workflow.md",
+    ".agents/templates/phased-delivery-plan.md",
+    ".agents/workflows/phased-delivery-workflow.md",
   ]) {
     if (!fs.existsSync(path.join(standardTarget, relativePath))) {
       errors.push(`standard all-pack install is missing Phased Delivery payload: ${relativePath}`);
     }
   }
-  if (fs.existsSync(path.join(standardTarget, ".atb", "skills", "dev-lite-workflow"))) {
+  if (fs.existsSync(path.join(standardTarget, ".agents", "skills", "dev-lite-workflow"))) {
     errors.push("standard all-pack install must omit the deprecated Dev Lite skill path");
   }
   for (const id of ["auto-agent-contract", "auto-agent-dev-lite"]) {
-    if (fs.existsSync(path.join(standardTarget, ".atb", "skills", id))) {
+    if (fs.existsSync(path.join(standardTarget, ".agents", "skills", id))) {
       errors.push(`standard all-pack install must omit private skill: ${id}`);
     }
   }
   if (fs.existsSync(path.join(standardTarget, ".cursor", "commands", "auto-agent-plan.md"))) {
     errors.push("standard all-pack install must omit private auto-agent-plan command");
   }
-  for (const surface of [".atb", ".agents"]) {
-    const installedCount = fs.readdirSync(path.join(standardTarget, surface, "skills"))
-      .filter((id) => fs.existsSync(path.join(standardTarget, surface, "skills", id, "SKILL.md"))).length;
-    if (installedCount !== skillCount) {
-      errors.push(`${surface} must install exactly ${skillCount} standard skills; found ${installedCount}`);
-    }
+  const installedCount = fs.readdirSync(path.join(standardTarget, ".agents", "skills"))
+    .filter((id) => fs.existsSync(path.join(standardTarget, ".agents", "skills", id, "SKILL.md"))).length;
+  if (installedCount !== skillCount) {
+    errors.push(`.agents must install exactly ${skillCount} standard skills; found ${installedCount}`);
   }
   for (const host of [".cursor", ".claude"]) {
     for (const command of ["workflow-router", "implementation-plan", "write-tests", "review-diff", "pr-ready-check", "role-review", "plan-review", "user-research-synthesis", "product-outcome-review", "tech-debt-discovery", "system-design"]) {
@@ -321,9 +320,7 @@ if (checkInstall(["--harness", "all", "all"], standardTarget, "standard all-pack
   for (const relativePath of projectBoundary?.absent_paths || []) {
     const destinations = relativePath.startsWith("commands/")
       ? [`.cursor/${relativePath}`, `.claude/${relativePath}`]
-      : relativePath.startsWith("skills/")
-        ? [`.atb/${relativePath}`, `.agents/${relativePath}`]
-        : [`.atb/${relativePath}`];
+      : [`.agents/${relativePath}`];
     for (const destination of destinations) {
       if (fs.existsSync(path.join(standardTarget, destination))) {
         errors.push(`standard install restored project lifecycle payload: ${destination}`);
@@ -337,10 +334,15 @@ if (checkInstall(["--harness", "all", "all"], standardTarget, "standard all-pack
   if (cursorRules.length !== 1 || cursorRules[0] !== "agent-toolbelt-router.mdc") {
     errors.push("standard install must contain only the minimal shared Cursor rule");
   }
+  for (const name of ["AGENTS.md", "CLAUDE.md"]) {
+    const instructions = fs.readFileSync(path.join(standardTarget, name), "utf8");
+    if (instructions.trimEnd().split("\n").length > 15 || instructions.includes("### ")) {
+      errors.push(`${name} must contain a compact pointer instead of the pack catalog`);
+    }
+  }
 }
 // A shared update must preserve a project's lifecycle and same-name adapters.
 const projectFiles = [
-  ".atb/skills/ai-feature-delivery/SKILL.md",
   ".agents/skills/ai-feature-delivery/SKILL.md",
   ".cursor/commands/workflow-router.md",
   ".claude/commands/implementation-plan.md",
@@ -375,17 +377,15 @@ for (const [label, args, diagnostic] of [
 }
 const legacyTarget = path.join(tempRoot, "legacy-selector-install");
 if (checkInstall(["--harness", "all", "dev-lite-workflow"], legacyTarget, "legacy Dev Lite selector")) {
-  if (!fs.existsSync(path.join(legacyTarget, ".atb", "skills", "phased-delivery", "SKILL.md"))) {
+  if (!fs.existsSync(path.join(legacyTarget, ".agents", "skills", "phased-delivery", "SKILL.md"))) {
     errors.push("legacy Dev Lite selector must resolve to the Phased Delivery skill");
   }
 }
 const privateTarget = path.join(tempRoot, "private-install");
 if (checkInstall(["--harness", "all", "auto-agent-contract"], privateTarget, "private pack")) {
   for (const id of ["auto-agent-contract", "auto-agent-dev-lite"]) {
-    for (const surface of [".atb", ".agents"]) {
-      if (!fs.existsSync(path.join(privateTarget, surface, "skills", id, "SKILL.md"))) {
-        errors.push(`private pack must install ${id} on ${surface}`);
-      }
+    if (!fs.existsSync(path.join(privateTarget, ".agents", "skills", id, "SKILL.md"))) {
+      errors.push(`private pack must install ${id} in .agents/skills`);
     }
   }
   for (const host of [".cursor", ".claude"]) {

@@ -225,12 +225,11 @@ for p in "${selected[@]}"; do
 done
 
 # install_into_target <dir> — install all selected packs into <dir>.
-# Resets the per-target counters/records so each target's summary + root pointer
-# blocks reflect only its own install.
+# Reset per-target counters and support-file records.
 install_into_target() {
   TARGET="$1"
   created=0; updated=0; skipped=0; gated=0
-  INSTALLED_COMMANDS=(); INSTALLED_SKILLS=(); INSTALLED_SHARED_CONTRACTS=()
+  INSTALLED_SHARED_CONTRACTS=()
 
   if [ ! -d "$TARGET" ]; then
     if [ "$DRY_RUN" = "1" ]; then
@@ -240,7 +239,12 @@ install_into_target() {
     fi
   fi
 
+  migrate_layout || exit 1
+
   echo "=== Installing into: $TARGET ==="
+  shared_contract references/human-readable-output.md
+  shared_contract references/docs-writing.md
+
   local p pre pre_g touched
   for p in "${selected[@]}"; do
     CURRENT_PACK="$p"
@@ -259,8 +263,8 @@ install_into_target() {
     fi
   done
   write_cursor_router_rule
-  write_agents_md "${selected[@]}"
-  write_claude_md "${selected[@]}"
+  write_agents_md
+  write_claude_md
 
   if [ "$DRY_RUN" = "1" ]; then
     echo "  (dry run) $TARGET"

@@ -31,7 +31,7 @@ Example: an AI system might learn that JavaScript using `eval()` with user input
 
 ## Can AI write secure code?
 
-Still a growing research area. Models like GPT-4 and Codex can generate code but don't inherently understand security. Fine-tuned on secure practices, they can assist by:
+Code generation models can produce insecure code. With suitable instructions and review, they can assist by:
 
 - Suggesting safer APIs or libraries
 - Highlighting dangerous coding patterns in real time

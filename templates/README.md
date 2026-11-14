@@ -3,7 +3,7 @@
 Fill-in-the-blank starting files — scaffolds you copy and adapt (config stubs,
 SKILL.md skeletons, prompt templates, etc.). Placeholders, not finished work.
 
-The selected pack installs its templates under `.atb/templates/`.
+The selected pack installs its templates under `.agents/templates/`.
 Use an existing suitable plan before creating another document.
 
 - `pr-review.md` - per-repo review priority config (blank starter; `/pr-review-init`
@@ -31,3 +31,5 @@ Use an existing suitable plan before creating another document.
 - `context-packet.md` - compact source-of-truth packet for fresh sessions.
 - `cursor-rules-agent-toolbelt-router.mdc` - the default minimal Cursor
   always-on router/guardrail rule.
+- `agent-toolbelt-instructions.md` - the installer source for compact root
+  instructions in `AGENTS.md` and `CLAUDE.md`.

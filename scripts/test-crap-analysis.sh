@@ -285,6 +285,24 @@ expect_eq "$(jget "$out" 'len(d["targets"])')" "0" "no targets"
 run 0 "$out" "$err" review
 expect_eq "$(jget "$out" 'd["outcome"]')" "NO_TARGETS" "no-targets outcome"
 
+# Config discovery supports the shared tree and base commits before migration.
+mkdir -p .agents
+git mv .crap-analysis.json .agents/crap-analysis.json
+git add .agents/crap-analysis.json
+git commit -qm "move config into shared agent tree"
+run 0 "$out" "$err" validate-config --base trunk
+expect_grep "config: .agents/crap-analysis.json from base trunk" "$err" "shared config source"
+mkdir -p .atb
+cp .agents/crap-analysis.json .atb/crap-analysis.json
+git add .atb/crap-analysis.json
+git commit -qm "add legacy config fallback"
+run 0 "$out" "$err" validate-config --base trunk
+expect_grep "config: .agents/crap-analysis.json from base trunk" "$err" "shared config precedence"
+git rm -q .agents/crap-analysis.json
+git commit -qm "retain only legacy base config"
+run 0 "$out" "$err" validate-config --base trunk
+expect_grep "config: .atb/crap-analysis.json from base trunk" "$err" "legacy base config source"
+
 # Bundled fixtures stay valid for the review op.
 fixtures="$ROOT/skills/crap-analysis/fixtures"
 mkdir -p reports/crap

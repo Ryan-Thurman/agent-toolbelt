@@ -1,7 +1,7 @@
 ---
 title: Defect density (quality metric)
 type: reference / external article
-source: Graphite guide (uses Graphite Insights as the tooling example)
+source: Graphite guide
 use: optional quality-metric context; relevant if our tool ever reports/benchmarks quality, not core to per-PR review
 ---
 
@@ -34,4 +34,4 @@ Defect Density = (Total Defects / Total KLOC) × 1000
 - **Total defects reported** — over a specific period.
 - **Total KLOC reviewed** — over the same period.
 
-(Graphite frames measurement around Graphite Insights — correlating PRs merged with defects reported over time. The formula and benchmarks are the reusable part.)
+Use the same reporting period for defects and code size. Record the inclusion criteria so that measurements remain comparable.

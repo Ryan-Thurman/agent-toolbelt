@@ -27,54 +27,44 @@ gate_target="$TMP_ROOT/gate"
 for path in \
   .cursor/commands/code-quality-gate.md \
   .claude/commands/code-quality-gate.md \
-  .atb/skills/code-quality-gate/SKILL.md \
-  .atb/skills/code-quality-gate/references/gate-contract.md \
-  .atb/skills/code-quality-gate/scripts/fingerprint.sh \
-  .atb/skills/code-quality-gate/agents/openai.yaml \
   .agents/skills/code-quality-gate/SKILL.md \
   .agents/skills/code-quality-gate/references/gate-contract.md \
   .agents/skills/code-quality-gate/scripts/fingerprint.sh \
+  .agents/skills/code-quality-gate/agents/openai.yaml \
   .cursor/commands/simplify.md \
   .cursor/commands/pr-review.md \
   .cursor/commands/pr-improve.md \
-  .atb/skills/simplify/SKILL.md \
-  .atb/skills/pr-review/SKILL.md \
-  .atb/skills/pr-improve/SKILL.md \
-  .atb/shared/contracts/references/style-precedence.md \
-  .atb/shared/contracts/references/anti-slop-naming.md \
-  .atb/shared/contracts/references/typescript-react-baseline.md \
-  .atb/shared/contracts/references/maintainability-taxonomy.md \
-  .atb/templates/code-quality-gate-report.md
+  .agents/skills/simplify/SKILL.md \
+  .agents/skills/pr-review/SKILL.md \
+  .agents/skills/pr-improve/SKILL.md \
+  .agents/shared/contracts/references/style-precedence.md \
+  .agents/shared/contracts/references/anti-slop-naming.md \
+  .agents/shared/contracts/references/typescript-react-baseline.md \
+  .agents/shared/contracts/references/maintainability-taxonomy.md \
+  .agents/templates/code-quality-gate-report.md
 do
   require_file "$gate_target/$path"
 done
 
-if ! grep -q '.atb/shared/contracts/references/style-precedence.md' "$gate_target/.atb/skills/code-quality-gate/SKILL.md"; then
+if ! grep -q '.agents/shared/contracts/references/style-precedence.md' "$gate_target/.agents/skills/code-quality-gate/SKILL.md"; then
   echo "installed gate skill did not rewrite shared-contract path" >&2
   exit 1
 fi
-if ! grep -q '.atb/skills/code-quality-gate/SKILL.md' "$gate_target/.cursor/commands/code-quality-gate.md"; then
+if ! grep -q '.agents/skills/code-quality-gate/SKILL.md' "$gate_target/.cursor/commands/code-quality-gate.md"; then
   echo "installed gate command did not rewrite skill path" >&2
   exit 1
 fi
-if ! grep -q '.atb/skills/code-quality-gate/scripts/fingerprint.sh' "$gate_target/.atb/skills/code-quality-gate/references/gate-contract.md"; then
+if ! grep -q '.agents/skills/code-quality-gate/scripts/fingerprint.sh' "$gate_target/.agents/skills/code-quality-gate/references/gate-contract.md"; then
   echo "installed gate contract did not rewrite fingerprint-script path" >&2
   exit 1
 fi
-if ! grep -q '.atb/skills/crap-analysis/bin/crap-analysis.sh' "$gate_target/.atb/skills/code-quality-gate/references/gate-contract.md"; then
+if ! grep -q '.agents/skills/crap-analysis/bin/crap-analysis.sh' "$gate_target/.agents/skills/code-quality-gate/references/gate-contract.md"; then
   echo "installed gate contract did not rewrite crap-analysis script path" >&2
   exit 1
 fi
 for field in head_fingerprint scope_fingerprint coverage allowed_paths_file; do
-  if ! grep -q "^$field:" "$gate_target/.atb/templates/code-quality-gate-report.md"; then
+  if ! grep -q "^$field:" "$gate_target/.agents/templates/code-quality-gate-report.md"; then
     echo "installed gate report template is missing $field" >&2
-    exit 1
-  fi
-done
-for pack in simplify pr-review pr-improve code-quality-gate; do
-  count="$(grep -c "^### $pack$" "$gate_target/AGENTS.md")"
-  if [ "$count" -ne 1 ]; then
-    echo "dependency pack was not recorded exactly once: $pack" >&2
     exit 1
   fi
 done
@@ -84,22 +74,21 @@ phased_target="$TMP_ROOT/phased-delivery"
 
 for path in \
   .cursor/commands/dev-pr-review.md \
-  .atb/skills/phased-delivery/SKILL.md \
-  .atb/templates/phased-delivery-plan.md \
-  .atb/workflows/phased-delivery-workflow.md \
-  .atb/templates/dev-pr-review.md \
-  .agents/skills/phased-delivery/SKILL.md
+  .agents/skills/phased-delivery/SKILL.md \
+  .agents/templates/phased-delivery-plan.md \
+  .agents/workflows/phased-delivery-workflow.md \
+  .agents/templates/dev-pr-review.md
 do
   require_file "$phased_target/$path"
 done
-if [ -e "$phased_target/.atb/skills/code-quality-gate/SKILL.md" ]; then
+if [ -e "$phased_target/.agents/skills/code-quality-gate/SKILL.md" ]; then
   echo "phased-delivery unexpectedly installed the optional code-quality-gate" >&2
   exit 1
 fi
 
 legacy_target="$TMP_ROOT/legacy-name"
 "$ROOT/install.sh" --harness all dev-lite-workflow "$legacy_target" >/dev/null
-require_file "$legacy_target/.atb/skills/phased-delivery/SKILL.md"
+require_file "$legacy_target/.agents/skills/phased-delivery/SKILL.md"
 
 fingerprint_repo="$TMP_ROOT/fingerprint-repo"
 mkdir -p "$fingerprint_repo"
@@ -111,7 +100,7 @@ printf 'changed\n' > "$fingerprint_repo/tracked.txt"
 printf 'untracked\n' > "$fingerprint_repo/untracked.txt"
 allowed_paths="$TMP_ROOT/allowed-paths.nul"
 printf 'tracked.txt\0untracked.txt\0' > "$allowed_paths"
-fingerprint_script="$gate_target/.atb/skills/code-quality-gate/scripts/fingerprint.sh"
+fingerprint_script="$gate_target/.agents/skills/code-quality-gate/scripts/fingerprint.sh"
 first="$(cd "$fingerprint_repo" && bash "$fingerprint_script" --base HEAD --allowed-paths-file "$allowed_paths")"
 second="$(cd "$fingerprint_repo" && bash "$fingerprint_script" --base HEAD --allowed-paths-file "$allowed_paths")"
 if [ "$first" != "$second" ] || ! printf '%s\n' "$first" | grep -q '^coverage=final$'; then

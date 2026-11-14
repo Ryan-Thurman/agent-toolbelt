@@ -12,15 +12,14 @@
 # Resolve the repo root from this file's location (install/lib.sh -> repo root).
 REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 
+. "$REPO_ROOT/install/migrate-layout.bash"
+
 created=0
 updated=0
 skipped=0
 gated=0          # files skipped because their harness was not selected
 
-# Per-target record of what was actually installed, for the AGENTS.md pointer.
-# Entries are "pack<TAB>name". Reset per target by install.sh.
-INSTALLED_COMMANDS=()
-INSTALLED_SKILLS=()
+# Support files already installed for this target. Reset by install.sh.
 INSTALLED_SHARED_CONTRACTS=()
 
 # ---- Harness gating -----------------------------------------------------------
@@ -33,19 +32,6 @@ harness_enabled() {
   esac
 }
 
-# _record_command <name> / _record_skill <dir> — note an installed artifact under
-# the current pack so write_agents_md can group by pack. Skills dedup on pack+dir.
-_record_command() {
-  INSTALLED_COMMANDS+=("${CURRENT_PACK:-}"$'\t'"$1")
-}
-_record_skill() {
-  local key="${CURRENT_PACK:-}"$'\t'"$1" e
-  for e in "${INSTALLED_SKILLS[@]:-}"; do
-    [ "$e" = "$key" ] && return 0
-  done
-  INSTALLED_SKILLS+=("$key")
-}
-
 ensure_dir() {
   local dir="$1"
   if [ "$DRY_RUN" = "1" ]; then
@@ -56,21 +42,21 @@ ensure_dir() {
 }
 
 # The shared, harness-agnostic folders (skills/ templates/ workflows/ examples/ shared/)
-# are installed under .atb/ in the target so they don't collide with a brownfield
+# are installed under .agents/ in the target so they don't collide with a brownfield
 # project's own top-level dirs. Content shipped by the packs still refers to them by
 # their *source* path (e.g. `skills/pr-review/references/foo.md`), so we rewrite those
-# absolute-from-root refs to `.atb/…` as each file is copied. Relative refs
-# (`../../examples/…`) are left alone: since all four dirs move together, their
+# absolute-from-root refs to `.agents/…` as each file is copied. Relative refs
+# (`../../examples/…`) are left alone: since these dirs move together, their
 # relative distance is unchanged and they still resolve. Matching only at a path
 # boundary ([start | space | ` | ( | =]) skips relative refs (preceded by `/`) and
-# makes the rewrite idempotent (an existing `.atb/` prefix is preceded by `/`).
-ATB_REWRITE='s#(^|[[:space:](=`])(skills|templates|workflows|examples|shared)/#\1.atb/\2/#g'
+# makes the rewrite idempotent (an existing `.agents/` prefix is preceded by `/`).
+AGENTS_REWRITE='s#(^|[[:space:](=`])(skills|templates|workflows|examples|shared)/#\1.agents/\2/#g'
 
-# install_copy <src> <dest> — copy while rewriting shared-folder refs to .atb/.
+# install_copy <src> <dest> — copy while rewriting shared-folder refs to .agents/.
 # The "Toolbelt paths:" line in each SKILL.md resolves root-relative refs for plugin
 # installs. The rewrite above makes those refs project-relative, so drop that line.
 install_copy() {
-  sed -E -e '/^Toolbelt paths: /d' -e "$ATB_REWRITE" "$1" > "$2"
+  sed -E -e '/^Toolbelt paths: /d' -e "$AGENTS_REWRITE" "$1" > "$2"
 }
 
 # install_file <abs-src> <abs-dest>
@@ -126,16 +112,14 @@ _install() {
 
 # cmd <name> — a slash command for Cursor and/or Claude Code (per selected harness).
 cmd() {
-  local did=0
-  if harness_enabled cursor; then _install "commands/$1.md" ".cursor/commands/$1.md"; did=1; else gated=$((gated + 1)); fi
-  if harness_enabled claude; then _install "commands/$1.md" ".claude/commands/$1.md"; did=1; else gated=$((gated + 1)); fi
-  [ "$did" = 1 ] && _record_command "$1"
+  if harness_enabled cursor; then _install "commands/$1.md" ".cursor/commands/$1.md"; else gated=$((gated + 1)); fi
+  if harness_enabled claude; then _install "commands/$1.md" ".claude/commands/$1.md"; else gated=$((gated + 1)); fi
   return 0
 }
 
 # cmd_cursor <name> — a slash command for Cursor only.
 cmd_cursor() {
-  if harness_enabled cursor; then _install "commands/$1.md" ".cursor/commands/$1.md"; _record_command "$1"; else gated=$((gated + 1)); fi
+  if harness_enabled cursor; then _install "commands/$1.md" ".cursor/commands/$1.md"; else gated=$((gated + 1)); fi
   return 0
 }
 
@@ -144,45 +128,19 @@ _skill_metadata() {
   _install "skills/$1/agents/openai.yaml" "$2/agents/openai.yaml"
 }
 
-# skill <pack> <rel> — canonical skills/ copy (always; commands reference it by path),
-# plus the agent-native .agents/skills/ copy when cursor or codex is selected. Cursor AND
-# Codex both auto-discover skills under .agents/skills/, so one copy serves both — writing a
-# separate .cursor/skills/ too would make Cursor list every skill twice. (Bare skills/ is NOT
-# an auto-discovery root, so it never double-registers.) SKILL.md is a cross-agent standard.
+# skill <pack> <rel> — one shared copy for commands and skill discovery.
+# Claude commands also read this tree by path.
 skill() {
-  _install "skills/$1/$2" ".atb/skills/$1/$2"
+  _install "skills/$1/$2" ".agents/skills/$1/$2"
   if [ "$2" = "SKILL.md" ]; then
-    _skill_metadata "$1" ".atb/skills/$1"
+    _skill_metadata "$1" ".agents/skills/$1"
   fi
-  if harness_enabled cursor || harness_enabled codex; then
-    _install "skills/$1/$2" ".agents/skills/$1/$2"
-    if [ "$2" = "SKILL.md" ]; then
-      _skill_metadata "$1" ".agents/skills/$1"
-    fi
-  else
-    gated=$((gated + 1))
-  fi
-  _record_skill "$1"
   return 0
 }
 
-# skill_shared <pack> <rel> — canonical skills/ copy plus the native .agents/skills/ copy when
-# Cursor is selected for a Cursor-only compatibility pack.
+# skill_shared <pack> <rel> — shared payload for a Cursor-only pack.
 skill_shared() {
-  _install "skills/$1/$2" ".atb/skills/$1/$2"
-  if [ "$2" = "SKILL.md" ]; then
-    _skill_metadata "$1" ".atb/skills/$1"
-  fi
-  if harness_enabled cursor; then
-    _install "skills/$1/$2" ".agents/skills/$1/$2"
-    if [ "$2" = "SKILL.md" ]; then
-      _skill_metadata "$1" ".agents/skills/$1"
-    fi
-  else
-    gated=$((gated + 1))
-  fi
-  _record_skill "$1"
-  return 0
+  skill "$@"
 }
 
 # skill_tree <pack> — install a complete skill reference tree without hand-listing
@@ -206,26 +164,26 @@ skill_tree() {
 }
 
 # template <name>, workflow <name>, example <name> — shared artifacts (harness-agnostic).
-# Installed under .atb/ so they don't collide with the target project's own top-level dirs.
-template() { _install "templates/$1" ".atb/templates/$1"; }
-workflow() { _install "workflows/$1" ".atb/workflows/$1"; }
-example()  { _install "examples/$1"  ".atb/examples/$1"; }
+# Installed under .agents/ so they don't collide with the target project's own top-level dirs.
+template() { _install "templates/$1" ".agents/templates/$1"; }
+workflow() { _install "workflows/$1" ".agents/workflows/$1"; }
+example()  { _install "examples/$1"  ".agents/examples/$1"; }
 
 # shared_contract <rel> — support-only contracts consumed by multiple packs.
-# These are not skills and are not installed under .agents/.
+# These support files live under .agents/shared/, outside skill discovery.
 shared_contract() {
   local rel="$1" e
   for e in "${INSTALLED_SHARED_CONTRACTS[@]:-}"; do
     [ "$e" = "manifest.json" ] && break
   done
   if [ "${e:-}" != "manifest.json" ]; then
-    _install "shared/contracts/manifest.json" ".atb/shared/contracts/manifest.json"
+    _install "shared/contracts/manifest.json" ".agents/shared/contracts/manifest.json"
     INSTALLED_SHARED_CONTRACTS+=("manifest.json")
   fi
   for e in "${INSTALLED_SHARED_CONTRACTS[@]:-}"; do
     [ "$e" = "$rel" ] && return 0
   done
-  _install "shared/contracts/$rel" ".atb/shared/contracts/$rel"
+  _install "shared/contracts/$rel" ".agents/shared/contracts/$rel"
   INSTALLED_SHARED_CONTRACTS+=("$rel")
 }
 
@@ -256,77 +214,18 @@ write_cursor_router_rule() {
 AGENTS_BEGIN="<!-- BEGIN agent-toolbelt -->"
 AGENTS_END="<!-- END agent-toolbelt -->"
 
-# pack_section <pack> — the "### <pack>" entry for a pack installed this run,
-# built from the INSTALLED_* records. No leading or trailing blank line.
-pack_section() {
-  local p="$1" e out cmds sk
-  out="### $p"$'\n'"$(pack_desc "$p")"$'\n'
-  cmds=""
-  for e in "${INSTALLED_COMMANDS[@]:-}"; do
-    case "$e" in "$p"$'\t'*) cmds="$cmds- \`/${e#*$'\t'}\`"$'\n' ;; esac
-  done
-  sk=""
-  for e in "${INSTALLED_SKILLS[@]:-}"; do
-    case "$e" in "$p"$'\t'*) sk="$sk- \`.atb/skills/${e#*$'\t'}/\`"$'\n' ;; esac
-  done
-  [ -n "$cmds" ] && out="${out}"$'\n'"Commands:"$'\n'"$cmds"
-  [ -n "$sk" ]   && out="${out}"$'\n'"Skills:"$'\n'"$sk"
-  printf '%s' "$out"
+# The same compact entry instructions serve every host. Skills own their task
+# procedures and references, so the root block does not list installed packs.
+toolbelt_instructions_block() {
+  printf '%s\n' "$AGENTS_BEGIN"
+  install_copy "$REPO_ROOT/templates/agent-toolbelt-instructions.md" /dev/stdout
+  printf '%s\n' "$AGENTS_END"
 }
 
-# existing_pack_section <file> <pack> — that pack's "### <pack>" section, verbatim,
-# from the file's existing marker block. Empty if absent.
-existing_pack_section() {
-  awk -v b="$AGENTS_BEGIN" -v e="$AGENTS_END" -v h="### $2" '
-    $0==b {inb=1; next}
-    inb && $0==e {exit}
-    inb && /^### / { if ($0==h) sec=1; else if (sec) exit }
-    sec {print}
-  ' "$1"
-}
-
-# toolbelt_workflows_block <file> <packs...> — the full marker block, MERGED with
-# the block already in <file>: packs advertised there keep their position (and
-# their section text, unless reinstalled this run); packs new to this run are
-# appended. Installing one pack must not un-advertise the others.
-toolbelt_workflows_block() {
-  local f="$1"; shift
-  local p q sec seen block
-  block="$AGENTS_BEGIN"$'\n'"## Available workflows"$'\n'
-  block="$block"$'\n'"Installed by agent-toolbelt. Reach for these when the task matches the description."$'\n'
-  local all=()
-  if [ -f "$f" ] && grep -q "^$AGENTS_BEGIN\$" "$f"; then
-    while IFS= read -r p; do
-      [ -n "$p" ] && all+=("$p")
-    done < <(awk -v b="$AGENTS_BEGIN" -v e="$AGENTS_END" '
-      $0==b {inb=1; next} $0==e {inb=0} inb && /^### / {print substr($0,5)}' "$f")
-  fi
-  for p in "$@"; do
-    seen=0
-    for q in "${all[@]:-}"; do [ "$q" = "$p" ] && seen=1; done
-    [ "$seen" = "1" ] || all+=("$p")
-  done
-  for p in "${all[@]:-}"; do
-    [ -n "$p" ] || continue
-    seen=0
-    for q in "$@"; do [ "$q" = "$p" ] && seen=1; done
-    if [ "$seen" = "1" ]; then
-      sec="$(pack_section "$p")"
-    else
-      sec="$(existing_pack_section "$f" "$p")"
-    fi
-    [ -n "$sec" ] && block="$block"$'\n'"$sec"$'\n'
-  done
-  block="$block$AGENTS_END"$'\n'
-  printf '%s' "$block"
-}
-
-# write_marked_pointer_file <file> <display-name> <packs...> — write/update the
-# generated "Available workflows" block without disturbing user-authored content.
+# write_marked_pointer_file <file> <display-name> — replace only the managed block.
 write_marked_pointer_file() {
   local f="$1" display="$2" block tmp blkfile
-  shift 2
-  block="$(toolbelt_workflows_block "$f" "$@"; printf x)"
+  block="$(toolbelt_instructions_block; printf x)"
   block="${block%x}"
 
   if [ "$DRY_RUN" = "1" ]; then
@@ -346,7 +245,7 @@ write_marked_pointer_file() {
   # Splice the block in place. The block is read from a temp file rather than an
   # awk -v var: BSD/macOS awk rejects a literal newline in a -v value ("newline in
   # string"), which would break every re-install over an existing AGENTS.md.
-  blkfile="$(mktemp "$(dirname "$f")/.atb-block.XXXXXX")" || exit 1
+  blkfile="$(mktemp "$(dirname "$f")/.agents-block.XXXXXX")" || exit 1
   printf '%s' "$block" > "$blkfile" || { rm -f "$blkfile"; exit 1; }
   tmp="$(mktemp "$(dirname "$f")/.AGENTS.md.XXXXXX")" || { rm -f "$blkfile"; exit 1; }
   awk -v b="$AGENTS_BEGIN" -v e="$AGENTS_END" -v bf="$blkfile" '
@@ -359,17 +258,16 @@ write_marked_pointer_file() {
   echo "~ updated: $f"; updated=$((updated + 1)); return 0
 }
 
-# write_agents_md <packs...> — write/update an "Available workflows" block in
-# $TARGET/AGENTS.md listing the commands and skills installed for the given packs.
+# write_agents_md — write compact entry instructions in $TARGET/AGENTS.md.
 # Only runs when cursor or codex is selected (the AGENTS.md-consuming harnesses).
 write_agents_md() {
   harness_enabled cursor || harness_enabled codex || return 0
-  write_marked_pointer_file "$TARGET/AGENTS.md" "AGENTS.md" "$@"
+  write_marked_pointer_file "$TARGET/AGENTS.md" "AGENTS.md"
 }
 
-# write_claude_md <packs...> — same pointer block for Claude Code, which reads
+# write_claude_md — same pointer block for Claude Code, which reads
 # CLAUDE.md rather than AGENTS.md.
 write_claude_md() {
   harness_enabled claude || return 0
-  write_marked_pointer_file "$TARGET/CLAUDE.md" "CLAUDE.md" "$@"
+  write_marked_pointer_file "$TARGET/CLAUDE.md" "CLAUDE.md"
 }

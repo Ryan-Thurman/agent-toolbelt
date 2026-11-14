@@ -140,8 +140,9 @@ Do not make claims about whether a human or model authored the code.
 CRAP (Change Risk Anti-Patterns) combines complexity and coverage into one risk score.
 The `crap-analysis` skill runs the repository's own CRAP commands.
 
-1. Look for `.crap-analysis.json` or `.atb/crap-analysis.json` at `<base_sha>` with `git cat-file -e`.
-2. If neither file exists, add one `Required checks` row with result `Skipped`.
+1. Look for `.crap-analysis.json` or `.agents/crap-analysis.json` at `<base_sha>` with `git cat-file -e`.
+   Accept `.atb/crap-analysis.json` for existing base commits.
+2. If no configuration file exists, add one `Required checks` row with result `Skipped`.
    Use this evidence text: `No .crap-analysis.json on the base branch.` Then continue the gate.
 3. If `skills/crap-analysis/bin/crap-analysis.sh` is not installed, record BLOCKED.
    Name the missing `crap-analysis` pack as the unblocker.

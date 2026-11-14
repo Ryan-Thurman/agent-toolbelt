@@ -180,7 +180,7 @@ class ExecutionInstallTests(unittest.TestCase):
                         capture_output=True, text=True,
                     )
                     self.assertEqual(installed.returncode, 0, installed.stderr)
-                    support = target / ".atb/shared/contracts"
+                    support = target / ".agents/shared/contracts"
                     refs = []
                     if pack in ["phased-delivery", "bug-to-fix", "auto-agent-contract", "pr-improve"]:
                         refs += ["test-driven-development.md"]
@@ -208,16 +208,12 @@ class ExecutionInstallTests(unittest.TestCase):
                                                capture_output=True, text=True)
                         self.assertEqual(check.returncode, 0, check.stdout + check.stderr)
                     if pack == "system-design":
-                        for surface in [".atb", ".agents"]:
-                            for name in ["repository-map.md", "design-method.md", "design-conversation.md",
-                                         "architecture-diagrams.md", "decision-records.md"]:
-                                installed_ref = target / surface / "skills/system-design/references" / name
-                                self.assertTrue(installed_ref.is_file(), str(installed_ref))
-                                if surface == ".agents":
-                                    canonical = target / ".atb/skills/system-design/references" / name
-                                    self.assertEqual(installed_ref.read_bytes(), canonical.read_bytes())
+                        for name in ["repository-map.md", "design-method.md", "design-conversation.md",
+                                     "architecture-diagrams.md", "decision-records.md"]:
+                            installed_ref = target / ".agents/skills/system-design/references" / name
+                            self.assertTrue(installed_ref.is_file(), str(installed_ref))
                         for name in ["system-design.md", "architecture-decision-record.md"]:
-                            installed_template = target / ".atb/templates" / name
+                            installed_template = target / ".agents/templates" / name
                             self.assertTrue(installed_template.is_file(), name)
                             self.assertEqual(installed_template.read_bytes(), (ROOT / "templates" / name).read_bytes())
                     if pack == "auto-agent-contract":

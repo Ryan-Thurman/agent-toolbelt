@@ -52,6 +52,8 @@ Documents rules in `human-readable-output.md`. Its "Writing precedence" section 
 - Explain what each code block does, in the text before or after the block.
 - Do not show default values or repeat variable definitions in examples.
 - Write new examples in the main language of the project.
+- Use generic project names in examples, sample data, and narrative descriptions.
+  Keep upstream project names in source attribution and license notices.
 
 ## Placeholders, units, and links
 

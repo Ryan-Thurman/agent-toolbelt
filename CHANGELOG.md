@@ -4,7 +4,11 @@
 
 ### Added
 
-- Added the shared check `right-sizing.md`. It links each moving part of a design or a plan to a requirement, an observed failure, or a constraint. A part without a link is removed, merged, or deferred with a measurable trigger, and the safeguards stay. `system-design` runs it before the coverage sweep of a full proposal. The design review Architecture lens checks it. Phased Delivery plan readiness reports it as a warning row.
+## Unreleased
+
+### Fixed
+
+- The installer no longer replaces a `CLAUDE.md` -> `AGENTS.md` symlink with a regular file when it updates the Toolbelt block. It also keeps the file mode of `AGENTS.md` and `CLAUDE.md`. Before this fix, a reinstall changed both files to mode `0600`.
 
 ## v1.3.0 - 2026-11-14
 

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Papercuts"
+  short_description: "Report the codebase friction that slowed the work, as a ranked fix table."
+  default_prompt: "Report the papercuts from this work."

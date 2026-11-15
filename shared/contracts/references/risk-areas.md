@@ -21,14 +21,20 @@ A change cannot remove the risk area that it touches.
 
 ## Format
 
-Each entry is one list item with a name, one or more path globs, and the impact of a defect:
+Each entry is one list item with a name and the impact of a defect. A `Paths:` line under it lists
+one or more path globs:
 
 ```markdown
 ## Risk areas
 
-- **Access control** (`src/auth/**`, `src/roles/**`): A defect can show one clinic's records to another clinic.
-- **Data export** (`src/export/**`): A defect can send personal data to the wrong recipient.
+- **Access control**: A defect can show one clinic's records to another clinic.
+  - Paths: `src/auth/**`, `src/roles/**`
+- **Data export**: A defect can send personal data to the wrong recipient.
+  - Paths: `src/export/**`
 ```
+
+When the list of globs is long, continue it on more indented lines under `Paths:`. Readers also
+accept the older form with the globs in parentheses after the name.
 
 Write the impact as a fact about users, money, data, or access. Do not write a priority word
 such as "critical" without the reason. When code in other repos consumes a contract in the area,

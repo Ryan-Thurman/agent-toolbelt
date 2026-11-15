@@ -45,6 +45,7 @@ into `AGENTS.md`. The default target is `.pr-review.md`.
 4. Turn candidates into entries with evidence. Drop the others and record the reason.
    Record a risk that applies to all code, for example "never log personal data", and a hygiene
    problem, for example a database dump in the repository, in "Other findings". They are not risk areas.
+   Do not list process rules, such as a version bump or a coverage target, as findings.
 5. Write the review file from `templates/risk-areas-review.md`. For one repository, write it to
    `risk-areas-review.md` at the repository root. For a sweep, write `<dir>/risk-areas-review.md`.
    Do not edit any target file in this step.
@@ -56,7 +57,7 @@ into `AGENTS.md`. The default target is `.pr-review.md`.
 ## Apply
 
 1. Read the review file. Use only the repositories with the status `Approved`.
-2. Write the entry lines only. Do not write the evidence lines into the target file.
+2. Write the entry lines and their `Paths:` lines. Do not write the evidence lines into the target file.
 3. Write the entries into the `## Risk areas` section of the target file of each repository.
    When the section exists, show the diff and write only after the user confirms.
 4. Do not commit. Report each changed file. The team commits the list through a normal pull request.

@@ -3,8 +3,8 @@
 <!--
   Draft from risk-area-mapping. Do not commit this file.
   For each repository: confirm, edit, or delete each entry, then set Status to Approved or Skip.
-  Check the entries with "Evidence: inferred" first. Apply writes only the entry lines, not the
-  evidence lines. Then run /risk-areas --apply <this file>.
+  Check the entries with "Evidence: inferred" first. Apply writes the entry and Paths lines, not
+  the evidence lines. Then run /risk-areas --apply <this file>.
 -->
 
 - Generated: <date>
@@ -30,7 +30,8 @@ Not inspected in depth: <each code folder that was skipped or only scanned by na
 
 ### Draft entries
 
-- **<Name>** (`<glob>`): <impact of a defect>
+- **<Name>**: <impact of a defect>
+  - Paths: `<glob>`, `<glob>`
   - Evidence: <sourced or inferred>. Files matched: <count>. From: <evidence>.
 
 ### Dropped candidates

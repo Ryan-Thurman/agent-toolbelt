@@ -45,8 +45,9 @@ line from evidence. Drop a candidate when the only evidence is its folder name.
 
 Report two facts for each repository, so that the review file does not look more complete than it is:
 
-- **Coverage:** count the source files of the repository with the same exclusions as the file
-  counts. Report how many of them the entries match, and the percentage. A large share means that the
+- **Coverage:** count the source files of the repository: code and configuration files in every
+  folder, with the same exclusions as the file counts, and without vendored or built output. Count
+  a file that two entries match once. Report how many of them the entries match, and the percentage. A large share means that the
   list does not separate risk from normal code. The reviewer then merges or removes entries.
 - **Not inspected in depth:** list each code folder that you skipped or only scanned by name.
   Write `None` only when you searched every code folder.
@@ -69,14 +70,15 @@ difference in the review file.
 
 ## Entry format
 
-Write each entry in the format of `shared/contracts/references/risk-areas.md`. Under it, write one
-visible evidence line:
+Write each entry in the format of `shared/contracts/references/risk-areas.md`, with its `Paths:`
+line. Under the paths, write one visible evidence line:
 
 Write the impact line in one or two sentences. Put the mechanism, such as function names and keys,
 in the evidence line.
 
 ```markdown
-- **Patient data export** (`src/export/**`): A defect can send one patient's data to another clinic.
+- **Patient data export**: A defect can send one patient's data to another clinic.
+  - Paths: `src/export/**`
   - Evidence: sourced. Files matched: 14. From: models/patient.ts columns, atlas edge reports_to_export_api.
 ```
 
@@ -86,4 +88,5 @@ or an incident. Quote the words in the evidence line. A map edge alone shows a c
 consequence, so it is not enough. Use `Evidence: inferred` when you inferred the consequence from the code.
 When one part of the impact line is quoted and another part is inferred, use `inferred` and quote
 the sourced part in the evidence line.
-Keep the evidence line to one or two lines. Apply writes only the entry line.
+Keep the evidence line to one or two lines. Apply writes the entry line and its `Paths:` line,
+not the evidence line.

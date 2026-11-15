@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+### Added
+
+- Added the `papercuts` skill and `/papercuts` command. The skill reports the codebase friction that slowed a session, such as stale docs, misleading names, duplicate config, and failing commands. The report is a ranked table with a fix file and a stable key for each row. `--feature` covers one feature across sessions from phase plans, handoffs, review threads, CI runs, and commits. `--post` adds the report to a shared Markdown file, a GitHub issue, or an Azure Boards work item after a preview, and marks rows that repeat an earlier entry.
+
 ### Fixed
 
 - The installer no longer replaces a `CLAUDE.md` -> `AGENTS.md` symlink with a regular file when it updates the Toolbelt block. It also keeps the file mode of `AGENTS.md` and `CLAUDE.md`. Before this fix, a reinstall changed both files to mode `0600`.

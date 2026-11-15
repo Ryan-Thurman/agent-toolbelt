@@ -127,6 +127,20 @@ class InstallLayoutTests(unittest.TestCase):
         for pack in ["simplify", "handoff"]:
             self.assertTrue((self.target / f".agents/skills/{pack}/SKILL.md").is_file())
 
+    def test_claude_md_symlink_and_file_mode_survive_reinstall(self):
+        agents = self.write("AGENTS.md", b"# Team instructions\n")
+        agents.chmod(0o644)
+        (self.target / "CLAUDE.md").symlink_to("AGENTS.md")
+        for _ in range(2):
+            self.install("simplify")
+            claude = self.target / "CLAUDE.md"
+            self.assertTrue(claude.is_symlink())
+            self.assertEqual(os.readlink(claude), "AGENTS.md")
+            self.assertEqual(agents.stat().st_mode & 0o777, 0o644)
+            text = agents.read_text()
+            self.assertTrue(text.startswith("# Team instructions\n"))
+            self.assertEqual(text.count("<!-- BEGIN agent-toolbelt -->"), 1)
+
     def test_hooks_only_install_includes_the_referenced_writing_rules(self):
         self.install("cursor-hooks", harness="cursor")
         self.assert_compact_instructions((self.target / "AGENTS.md").read_text())

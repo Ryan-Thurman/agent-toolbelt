@@ -21,6 +21,7 @@ pack_phased_delivery() {
   shared_contract references/test-levels.md
   shared_contract references/negative-testing.md
   shared_contract references/reliability-checklist.md
+  shared_contract references/right-sizing.md
   shared_contract references/execution.md
   shared_contract references/execution-schema.md
   shared_contract references/failure-recovery.md

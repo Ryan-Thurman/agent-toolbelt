@@ -2164,6 +2164,52 @@ window.AGENT_TOOLBELT_DATA = {
       "recommended_changes": [],
       "source_path": "skills/worktree/SKILL.md",
       "source_url": "https://github.com/Ryan-Thurman/agent-toolbelt/blob/main/skills/worktree/SKILL.md"
+    },
+    {
+      "id": "papercuts",
+      "display_name": "Papercuts",
+      "short_description": "Report the codebase friction that slowed the work, as a ranked fix table.",
+      "default_prompt": "Report the papercuts from this work.",
+      "description": "Report codebase friction that slowed a session or feature, such as stale docs, misleading names, duplicate config, or failing commands, as ranked fixes for a shared team log. Suggest it after work that friction slowed.",
+      "category": "Agent Operations",
+      "tags": [
+        "retrospective",
+        "friction",
+        "documentation",
+        "developer-experience"
+      ],
+      "primary_purpose": "Report the codebase friction that slowed a session or a feature as a ranked table of fixes for a shared team log.",
+      "use_when": [
+        "A task or a feature is complete and stale docs, misleading names, duplicates, or failing commands cost time.",
+        "A team collects recurring friction in a shared log to decide which fixes to make first."
+      ],
+      "avoid_when": [
+        "The work had no friction from the repository.",
+        "The question is about the delivery process after a release. Use the delivery retrospective workflow."
+      ],
+      "preferred_context": "The session, and for a feature the phase plan, handoffs, PR review threads, CI runs, and branch commits.",
+      "expected_outputs": [
+        "Ranked papercut table with a fix file for each row",
+        "Saved report for a shared log",
+        "Repeat marks against earlier entries when posted"
+      ],
+      "example_prompts": [
+        "What in this repo slowed you down? Run papercuts.",
+        "Report the papercuts for feature/export-csv and post them to our papercuts issue."
+      ],
+      "related_skills": [
+        "handoff",
+        "style-guide-init",
+        "ticket-sync"
+      ],
+      "workflow_membership": [],
+      "documentation_completeness": {
+        "status": "complete",
+        "notes": "Canonical skill and agent metadata are present."
+      },
+      "recommended_changes": [],
+      "source_path": "skills/papercuts/SKILL.md",
+      "source_url": "https://github.com/Ryan-Thurman/agent-toolbelt/blob/main/skills/papercuts/SKILL.md"
     }
   ],
   "workflows": [

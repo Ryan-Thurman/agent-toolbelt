@@ -31,6 +31,11 @@ A decision belongs in the design when two teams that build separately can otherw
 For each such decision, record what it binds, the conflict that it prevents, and the rule.
 Leave other choices to the implementer.
 
+## Right-size the design
+
+For a full proposal, run the check in `shared/contracts/references/right-sizing.md` before the coverage sweep.
+Revise the design with its result. Put each deferred part and its trigger in the decision table.
+
 ## Coverage sweep
 
 Before you share a design, check that each requirement and each concern in the coverage table is addressed,

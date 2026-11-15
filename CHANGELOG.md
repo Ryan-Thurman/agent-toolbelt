@@ -4,8 +4,14 @@
 
 ### Added
 
+- Added the `papercuts` skill and `/papercuts` command. The skill reports the codebase friction that slowed a session, such as stale docs, misleading names, duplicate config, and failing commands. The report is a ranked table with a fix file and a stable key for each row. `--feature` covers one feature across sessions from phase plans, handoffs, review threads, CI runs, and commits. `--post` adds the report to a shared Markdown file, a GitHub issue, or an Azure Boards work item after a preview, and marks rows that repeat an earlier entry.
+- Added the shared check `right-sizing.md`. It links each moving part of a design or a plan to a requirement, an observed failure, or a constraint. A part without a link is removed, merged, or deferred with a measurable trigger, and the safeguards stay. `system-design` runs it before the coverage sweep of a full proposal. The design review Architecture lens checks it. Phased Delivery plan readiness reports it as a warning row.
 - Added a rails mode to `style-guide-init` (`--rails`). It sets up one canonical quality command and connects local use, CI, and release to it with the tools that the repository already has. It does not change application code or fix findings. A new check that finds problems in existing code stays out of the required CI path and is listed as pending adoption.
 - Added an exact-text assertion rule to the shared TDD contract and `test-case-design`. An exact text assertion is for text that is the contract, such as a protocol, generated file, command output, or user-visible copy. `cover` gap scans mark tests that match source text or private names as weak.
+
+### Fixed
+
+- The installer no longer replaces a `CLAUDE.md` -> `AGENTS.md` symlink with a regular file when it updates the Toolbelt block. It also keeps the file mode of `AGENTS.md` and `CLAUDE.md`. Before this fix, a reinstall changed both files to mode `0600`.
 
 ## v1.3.0 - 2026-11-14
 

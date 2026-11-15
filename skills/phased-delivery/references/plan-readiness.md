@@ -16,10 +16,11 @@ Assess whether planned work covers them without adding product scope.
 | Reliability | Work that adds a trigger in `shared/contracts/references/reliability-checklist.md` answers its story tier. Failure scenarios map to tests. |
 | Execution | Steps identify important files, owners, interfaces, source constraints, and checkable results. |
 | Scope | Each supplied ticket retains its approved phase and PR boundary. |
+| Right size | Each service, store, queue, job, abstraction, or rollout phase that the plan adds has a ground from `shared/contracts/references/right-sizing.md`. Deferred parts have a trigger. |
 
 Return `Ready`, `Needs revision`, or `Not verified` with evidence and material gaps.
 Do not report Ready when required scope or evidence remains unresolved.
-Report gaps in the Acceptance scenarios, Test levels, Negative cases, and Reliability rows as warnings.
+Report gaps in the Acceptance scenarios, Test levels, Negative cases, Reliability, and Right size rows as warnings.
 They do not change the result unless the project instructions make them a gate.
 This assessment does not grant plan approval or authorize implementation.
 

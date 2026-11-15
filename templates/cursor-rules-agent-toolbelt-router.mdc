@@ -27,6 +27,10 @@ Common matches:
 - Feature or app work needing brief, flows, acceptance criteria, phased
   implementation, commits, and reviews: `phased-delivery`.
 - Project-specific lifecycle, forms, and approvals: follow the target project's workflow owner.
+- Ticket or story refinement and readiness: `story-refinement`.
+- Gherkin feature files from acceptance criteria: `bdd-scenarios`.
+- Reliability of a design, or production readiness: `reliability-review`.
+- High-impact paths for risk-based testing: `risk-area-mapping`.
 - Code review: `pr-review`.
 - Debugging from symptom to fix: `bug-to-fix`.
 - Review comment follow-up: `pr-review-reply`.

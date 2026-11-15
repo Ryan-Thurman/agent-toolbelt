@@ -1,9 +1,11 @@
 # Changelog
 
-## Unreleased
+## v1.3.0 - 2026-11-14
 
 ### Added
 
+- Added the `production-readiness` workflow (`reliability-review` readiness mode, `failure-scenario-design` staging plans, `ship-it`) and the `incident-follow-up` workflow (`bug-to-fix`, `reliability-review`, `failure-scenario-design`, `test-case-design`, `cover`).
+- Added `story-refinement`, `bdd-scenarios`, `reliability-review`, and `risk-area-mapping` to the common matches of the Cursor routing rule.
 - Added the `story-refinement` skill and `/story-refinement` command. The skill finds ambiguity in a ticket, settles facts from the repository, asks the open decisions in batched rounds with defaults, writes Given/When/Then criteria with failure paths, and gives a readiness verdict from product, developer, QA, and SRE reviewer subagents.
 - Added the `bdd-scenarios` skill and `/bdd-scenarios` command. The skill writes Gherkin feature files from acceptance criteria, maps steps to existing step definitions, traces each criterion to a scenario or a unit test, reviews feature files, and plans a `playwright-bdd`, `pytest-bdd`, or Cucumber-JVM runner.
 - Added an acceptance loop to the shared TDD contract. A phase with BDD scenarios runs them red before the implementation and green after it, with unit TDD cycles inside. `phased-delivery` plans, plan readiness, implementation, and review now use it.

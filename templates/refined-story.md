@@ -1,6 +1,7 @@
-# Refined story: <title>
+# <title>
 
-Source: <tracker key or document, and revision>
+Tracker: <tracker key, or leave out when the item is not in a tracker>
+Source: <document or ticket, and revision>
 Readiness: <Ready | Ready with defaults | Not ready | Not verified>
 Risk: <Low | Medium | High> - <one-line reason>
 
@@ -60,6 +61,10 @@ Complete when the story adds a remote call, a queue, a job, a data store, a migr
 | Need | Measure and unit | Condition | Source or owner |
 | --- | --- | --- | --- |
 |  |  |  |  |
+
+## Rollout and rollback
+
+How the change reaches users, and how to undo it. Write `Not applicable` with a reason for a change with no rollout risk.
 
 ## Out of scope
 

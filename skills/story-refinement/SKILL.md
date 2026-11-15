@@ -19,13 +19,14 @@ Route other requests first:
 - A decision about whether to build goes to `product-discovery`.
 - A defect goes to `bug-to-fix`. An architecture question goes to `system-design`.
 
-Choose the mode from the request:
+Choose the mode from the flag. With no flag, choose from the request.
+If the request does not decide, use `--scan`.
 
-| Request | Procedure | Result |
-| --- | --- | --- |
-| Prepare an item before a refinement meeting, or run with no person present. | Steps 1 to 6. Ask no questions. | Refined draft, question register, and owner packets. |
-| Resolve the open questions with the user now. | Steps 1 to 6, then the live rounds in `references/question-strategy.md`. | Updated spec and decision log. |
-| Check whether a story is ready. | Read `references/readiness-review.md`. | Readiness verdict with findings. The item does not change. |
+| Flag | Request | Procedure | Result |
+| --- | --- | --- | --- |
+| `--scan` | Prepare an item before a refinement meeting, or run with no person present. | Steps 1 to 6. Ask no questions. | Refined draft, question register, and owner packets. |
+| `--live` | Resolve the open questions with the user now. | Steps 1 to 6, then the live rounds in `references/question-strategy.md`. | Updated spec and decision log. |
+| `--check` | Check whether a story is ready. | Read `references/readiness-review.md`. | Readiness verdict with findings. The item does not change. |
 
 ## Principles
 
@@ -38,7 +39,8 @@ Choose the mode from the request:
 
 ## Procedure
 
-1. Read the item and its linked sources. Record the tracker key or source revision.
+1. Read the item and its linked sources. Write the tracker key in the `Tracker:` line of the template,
+   and the source revision in the `Source:` line.
    If you cannot read the tracker, ask the user for the item text.
 2. Read `references/ambiguity-scan.md`. Scan every requirement on both axes.
    Give each raised item a resolution state.
@@ -46,7 +48,7 @@ Choose the mode from the request:
    Resolve facts and mechanical items yourself, and cite the evidence.
 4. Draft the spec in `templates/refined-story.md`. Read `references/acceptance-criteria.md`.
    Read `shared/contracts/references/negative-testing.md` and `shared/contracts/references/test-levels.md`.
-   When the item adds a remote call, a queue, a job, a data store, a migration, or deployment configuration,
+   When the item adds one of the triggers in `shared/contracts/references/reliability-checklist.md`,
    also answer the story tier in `shared/contracts/references/reliability-checklist.md`.
 5. Read `references/question-strategy.md`. Put the assumptions table first.
    Group the remaining decisions by owner in `templates/refinement-questions.md`.
@@ -60,7 +62,8 @@ and one question packet for each owner. Mark sources that you could not read as 
 The readiness verdict is a warning. It does not stop a handoff unless the project instructions make it a gate.
 
 Hand a ready spec to `test-case-design` for test cases and to `phased-delivery` for the plan.
-Use `ticket-sync` to publish approved story changes to the tracker.
+Use `ticket-sync` to publish approved story changes to the tracker. The `Tracker:` line makes it update
+the source ticket instead of creating an issue.
 
-Concepts adapted from mattpocock/skills, obra/superpowers, open-gsd/gsd-core, garrytan/gstack,
-and BMAD-METHOD (all MIT). No source text is copied.
+Concepts adapted from mattpocock/skills, obra/superpowers, open-gsd/gsd-core, and garrytan/gstack
+(all MIT). No source text is copied.

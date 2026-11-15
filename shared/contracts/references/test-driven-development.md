@@ -68,6 +68,10 @@ Replace external I/O, clocks, or randomness at their boundaries when needed for 
 Replace live network services with substitutes in unit tests.
 Keep fixtures isolated and clean up temporary state.
 Assert results and contractual effects. A successful mock invocation alone does not prove the behavior works.
+Use an exact text assertion only when the text is the contract, such as a protocol, a parser or serializer output,
+a generated file, command output, or user-visible copy.
+Do not assert on source text, private names, or a constant that the same change copied into the test.
+These tests break on a safe refactor and do not detect a defect.
 Use integration evidence when a substitute hides a required interaction.
 
 ## Coverage and completion

@@ -38,6 +38,8 @@ It does not edit tests or production code. To rank untested behavior in code as 
 6. Set priority from impact and likelihood, not from an arbitrary numeric score.
    A case in a declared risk area has high impact. Read `shared/contracts/references/risk-areas.md`.
    Record assumptions and uncovered risks. Do not invent expected behavior.
+   Write the expected result as observable behavior. Give exact text only when the text is the contract,
+   such as a protocol message, generated file, command output, or user-visible copy.
 7. When the set will have more than ten cases and a person can answer, calibrate first.
    Show the five to ten cases with the highest priority and stop. Ask about domain terms, test level,
    priority, and case size. Apply the answers to all remaining cases. When no person can answer,

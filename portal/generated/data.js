@@ -1345,7 +1345,7 @@ window.AGENT_TOOLBELT_DATA = {
       "display_name": "Repository Contribution Guide",
       "short_description": "Extract repo conventions and maintain contribution guidance.",
       "default_prompt": "Use $style-guide-init to derive or refresh this repository's contribution guide from current evidence.",
-      "description": "Extract and maintain repository contribution guidance from code, tooling, tests, CI, and documented policy. Use to create or refresh contribution/style guides, explain how to contribute, or assess convention drift; not for routine code review.",
+      "description": "Extract and maintain repository contribution guidance from code, tooling, tests, CI, and documented policy. Use to create or refresh contribution/style guides, explain how to contribute, assess convention drift, or set up one quality command for local use and CI; not for routine code review.",
       "category": "Discovery & Planning",
       "tags": [
         "style",
@@ -1355,7 +1355,8 @@ window.AGENT_TOOLBELT_DATA = {
       ],
       "primary_purpose": "Derive and maintain contribution guidance from repository policy, tooling, CI, and observed code/test conventions.",
       "use_when": [
-        "A repository needs contribution or style guidance created, checked for drift, or refreshed against current evidence."
+        "A repository needs contribution or style guidance created, checked for drift, or refreshed against current evidence.",
+        "A new team needs one quality command that local use, CI, and release all run, without fixing existing findings."
       ],
       "avoid_when": [
         "Existing conventions are clear and the task only needs a local implementation."
@@ -1364,11 +1365,13 @@ window.AGENT_TOOLBELT_DATA = {
       "expected_outputs": [
         "Contribution or style guide",
         "Classified evidence and unresolved conflicts",
-        "Scoped drift report and evidence checkpoint"
+        "Scoped drift report and evidence checkpoint",
+        "Canonical quality command with CI and release wiring, and a list of checks pending adoption"
       ],
       "example_prompts": [
         "Create a contribution guide from the actual code, tests, tooling and CI, flagging stale written guidance.",
-        "Check what changed since this guide was reviewed and refresh only the affected conventions."
+        "Check what changed since this guide was reviewed and refresh only the affected conventions.",
+        "Set up the quality rails for this repository with style-guide-init --rails."
       ],
       "related_skills": [
         "code-quality-gate",

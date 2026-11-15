@@ -1,6 +1,6 @@
 ---
 name: style-guide-init
-description: Extract and maintain repository contribution guidance from code, tooling, tests, CI, and documented policy. Use to create or refresh contribution/style guides, explain how to contribute, or assess convention drift; not for routine code review.
+description: Extract and maintain repository contribution guidance from code, tooling, tests, CI, and documented policy. Use to create or refresh contribution/style guides, explain how to contribute, assess convention drift, or set up one quality command for local use and CI; not for routine code review.
 ---
 
 # Repository contribution guidance
@@ -27,11 +27,15 @@ With no flag and no clear request, use explain or draft.
 - **Check (`--check`):** report changed inputs and affected guidance without writing files.
 - **Refresh (`--refresh`):** re-evaluate changed inputs and affected claims. Apply doc changes
   when the request authorizes them. Otherwise return the proposed patch.
+- **Set up quality rails (`--rails`):** add one canonical quality command and connect local use,
+  CI, and release to it. Read [references/rails.md](references/rails.md) first.
+  The flag or a plain request to set up quality checks authorizes these edits.
 - **Scope (`--scope PATH`):** limit discovery to one package or subtree.
   Repeat the flag for more areas. With no scope, use the whole repository.
 
-This skill changes documentation and its checkpoint, not source/configuration,
-CI settings, branch protections, or release state. Do not install automation
+Except in rails mode, this skill changes documentation and its checkpoint, not source/configuration,
+CI settings, branch protections, or release state. Rails mode also changes check configuration,
+check scripts, and CI and release steps. No mode changes application source, tests, or branch protections. Do not install automation
 unless requested. Follow governing instructions while proposing corrections.
 
 ## Derive the guide

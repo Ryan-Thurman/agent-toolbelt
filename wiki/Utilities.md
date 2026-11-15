@@ -30,6 +30,11 @@ present. Otherwise it waits for explicit approval before creating `STYLE_GUIDE.m
 ./install.sh --harness all style-guide-init /path/to/project
 ```
 
+`/style-guide-init --rails` sets up the quality rails for a new team: one canonical quality command
+that local use, CI, and release all run. It reuses the formatter, linter, type checker, and task
+runner that the repository already has. It does not change application code or fix findings.
+A new check that finds problems in existing code stays out of the required CI path until the team fixes them.
+
 ## Test case design
 
 `test-case-design` turns requirements and risks into prioritized QA cases without writing tests. It

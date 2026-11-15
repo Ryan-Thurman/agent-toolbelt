@@ -26,7 +26,7 @@ covered by a test with no meaningful assertion is still a gap.
 - **Regressions waiting to happen**: recently changed code with no new test, code with a history of
   bugs (`git log`/`git blame` churn), known-fragile modules, TODO/FIXME near logic.
 - **Weak existing tests**: tests that assert nothing meaningful, are coupled to implementation
-  detail (will rot, not protect), or are flaky/skipped. `/cover` can strengthen these by adding
+  detail (will rot, not protect), match source text or private names, or are flaky/skipped. `/cover` can strengthen these by adding
   assertions.
 
 ## Ranking: risk × likelihood

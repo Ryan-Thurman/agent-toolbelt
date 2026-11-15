@@ -52,7 +52,7 @@ function check(outputDirectory, root = ROOT) {
   const canonical = discoverCanonicalSkills(root).skills;
   assert.strictEqual(payload.skills.length, 44, 'generated portal must contain 44 standard skills');
   assert.strictEqual(JSON.stringify(Array.from(payload.skills, (skill) => skill.id).sort()), JSON.stringify(canonical.map((skill) => skill.id).sort()), 'generated skill IDs must match canonical IDs');
-  assert.strictEqual(payload.workflows.length, 8, 'generated portal must contain eight workflows');
+  assert.strictEqual(payload.workflows.length, 10, 'generated portal must contain ten workflows');
   assert.strictEqual(JSON.stringify(Object.keys(payload.category_guidance)), JSON.stringify(Array.from(payload.categories)), 'generated category guidance must cover the catalog taxonomy exactly');
   payload.categories.forEach((category) => assert(payload.category_guidance[category].trim(), `generated category guidance is empty: ${category}`));
   assert(payload.hosts.length === 3 && payload.hosts.every((host) => host.id && host.name && host.invocation_template && host.invocation_template.includes('{skill_id}') && host.local_install_commands && host.local_install_commands.length), 'generated host records are incomplete');

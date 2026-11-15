@@ -11,6 +11,8 @@ operational guidance. Each workflow below identifies its commands and completion
 - [Shape Up](#shape-up): review current-state gaps, shape an approved brief, or slice it into tickets.
 - [Story Refinement](#story-refinement): prepare a ticket for refinement and check whether it is ready.
 - [Risk-Based Testing](#risk-based-testing): map high-impact paths, then plan focused tests and reviews for each pull request.
+- [Production Readiness](#production-readiness): check reliability evidence before launch, then release with rollback triggers.
+- [Incident Follow-Up](#incident-follow-up): fix the root cause of an incident and prove detection and recovery with tests.
 - [Product Discovery](#product-discovery): evidence before deciding what to shape.
 - [Threat Model](#threat-model): design-time security analysis.
 
@@ -153,6 +155,29 @@ The compatibility install includes the design and decision-record templates:
 ```
 
 Keep generated internal documents in the project's designated location or outside the public Toolbelt repository.
+
+## Production Readiness
+
+Use this before the first launch of a service, or before a launch that adds a hard dependency or a data store.
+`/reliability-review --readiness` marks each reliability requirement `Verified`, `Failed`, or `Not verified`
+with evidence. `/failure-scenario-design --deep` plans staging experiments for the requirements that need
+platform evidence. The team that owns the chaos tooling runs them. `/ship-it` then sets SLO burn-rate rollback triggers.
+The [workflow](../workflows/production-readiness-workflow.md) gives the stage order.
+
+```sh
+./install.sh --harness all reliability-review failure-scenario-design ship-it /path/to/project
+```
+
+## Incident Follow-Up
+
+Use this after an incident is mitigated. `bug-to-fix` fixes the root cause after a failing regression test.
+`/reliability-review` adds the failure mode to the register and records the missing detection or recovery
+as requirements. `/failure-scenario-design`, `/test-case-design`, and `/cover` turn them into tests.
+The [workflow](../workflows/incident-follow-up-workflow.md) gives the stage order.
+
+```sh
+./install.sh --harness all bug-to-fix reliability-review failure-scenario-design test-case-design cover /path/to/project
+```
 
 ## Product Discovery
 

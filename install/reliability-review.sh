@@ -16,4 +16,5 @@ pack_reliability_review() {
   skill reliability-review references/capacity-and-data.md
   skill reliability-review references/platform-notes.md
   template reliability-review.md
+  workflow production-readiness-workflow.md
 }

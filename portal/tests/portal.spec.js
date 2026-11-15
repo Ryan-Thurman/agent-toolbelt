@@ -181,7 +181,7 @@ async function checkTaskShortcuts(page) {
 
 
 async function checkProductDesignWorkflows(page, testInfo) {
-  await expect(page.locator('#workflow-count')).toHaveText('8');
+  await expect(page.locator('#workflow-count')).toHaveText('10');
   const learning = page.locator('#workflow-product-learning');
   await learning.scrollIntoViewIfNeeded();
   const stages = learning.getByRole('list', { name: 'Product decisions and learning stages' });

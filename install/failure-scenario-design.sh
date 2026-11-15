@@ -12,4 +12,5 @@ pack_failure_scenario_design() {
   skill failure-scenario-design references/bdd-mapping.md
   skill failure-scenario-design references/staging-experiment-plan.md
   template failure-scenario-design.md
+  workflow incident-follow-up-workflow.md
 }

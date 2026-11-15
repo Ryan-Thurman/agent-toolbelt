@@ -16,6 +16,10 @@ Do not edit a table by hand. `scripts/check-catalog.sh` fails when a table does 
 - `product-learning-workflow.md` - research synthesis, opportunity decisions, experiments, and outcome review.
 - `tech-debt-workflow.md` - debt discovery, selected assessment, authorized repair, and baseline verification.
 - `system-design-workflow.md` - design documents, threat and reliability reviews, failure scenarios, security and reliability requirements, and implementation evidence.
+- `production-readiness-workflow.md` - readiness evidence for each reliability requirement, staging
+  experiment plans for the missing evidence, and a release with SLO burn-rate rollback triggers.
+- `incident-follow-up-workflow.md` - root-cause fix with a regression test, the failure mode in the
+  register, and tests that prove detection and recovery.
 - `delivery-retrospective-workflow.md` - evidence-backed process improvements after delivery.
 - `tech-backlog-assessment-workflow.md` - decision workflow for technical
   backlog items before implementation.

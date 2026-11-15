@@ -161,7 +161,8 @@
         "code-quality-gate"
       ],
       "workflow_membership": [
-        "bug-fixing"
+        "bug-fixing",
+        "incident-follow-up"
       ],
       "documentation_completeness": {
         "status": "complete",
@@ -248,7 +249,8 @@
         "feature-delivery",
         "bug-fixing",
         "security-sensitive-change",
-        "codebase-improvement"
+        "codebase-improvement",
+        "incident-follow-up"
       ],
       "documentation_completeness": {
         "status": "complete",
@@ -331,7 +333,9 @@
         "cover"
       ],
       "workflow_membership": [
-        "security-sensitive-change"
+        "security-sensitive-change",
+        "production-readiness",
+        "incident-follow-up"
       ],
       "documentation_completeness": {
         "status": "complete",
@@ -749,7 +753,9 @@
         "ship-it"
       ],
       "workflow_membership": [
-        "security-sensitive-change"
+        "security-sensitive-change",
+        "production-readiness",
+        "incident-follow-up"
       ],
       "documentation_completeness": {
         "status": "complete",
@@ -1035,7 +1041,8 @@
       ],
       "workflow_membership": [
         "feature-delivery",
-        "product-learning"
+        "product-learning",
+        "production-readiness"
       ],
       "documentation_completeness": {
         "status": "complete",
@@ -1385,7 +1392,8 @@
         "feature-delivery",
         "security-sensitive-change",
         "feature-refinement",
-        "risk-based-testing"
+        "risk-based-testing",
+        "incident-follow-up"
       ],
       "documentation_completeness": {
         "status": "complete",
@@ -2396,6 +2404,89 @@
           "example_invocation": "Review this security-sensitive PR for residual risk.",
           "next_steps": [
             "ship-it"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "production-readiness",
+      "name": "Production readiness",
+      "purpose": "Check a built service against its reliability requirements with evidence, plan the staging experiments that the evidence still needs, and release with rollback triggers.",
+      "stages": [
+        {
+          "skill": "reliability-review",
+          "rationale": "Run readiness mode. Mark each reliability requirement Verified, Failed, or Not verified from the SLO, alerts, runbooks, capacity, and restore evidence.",
+          "example_invocation": "Is this service ready for production? Check it against its reliability requirements.",
+          "next_steps": [
+            "failure-scenario-design",
+            "ship-it"
+          ]
+        },
+        {
+          "skill": "failure-scenario-design",
+          "rationale": "Plan staging experiments and game days for the requirements that need platform evidence. Each plan has abort conditions, rollback, and no-go checks. The team that owns the chaos tooling runs it.",
+          "example_invocation": "Plan staging experiments for the requirements that are not verified.",
+          "next_steps": [
+            "reliability-review",
+            "ship-it"
+          ]
+        },
+        {
+          "skill": "ship-it",
+          "rationale": "Check release readiness, including the reliability section, and set SLO burn-rate rollback triggers for the rollout.",
+          "example_invocation": "Prepare this release and set the rollback triggers.",
+          "next_steps": [
+            "product-outcome-review",
+            "handoff"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "incident-follow-up",
+      "name": "Incident follow-up",
+      "purpose": "After an incident is mitigated, fix the root cause with a regression test, record the failure mode, and add the tests that prove the system now detects and recovers from it.",
+      "stages": [
+        {
+          "skill": "bug-to-fix",
+          "rationale": "Reproduce the defect behind the incident, find the root cause, and fix it after a failing regression test. Mitigate a live incident before this stage.",
+          "example_invocation": "Find the root cause of last night's checkout outage and fix it.",
+          "next_steps": [
+            "reliability-review",
+            "pr-review"
+          ]
+        },
+        {
+          "skill": "reliability-review",
+          "rationale": "Add the failure mode to the register. Record the missing detection, recovery, or SLO coverage as testable requirements.",
+          "example_invocation": "Update the reliability review with this incident's failure mode.",
+          "next_steps": [
+            "failure-scenario-design"
+          ]
+        },
+        {
+          "skill": "failure-scenario-design",
+          "rationale": "Turn the failure mode into scenario cards at the lowest level that proves the fix and the recovery.",
+          "example_invocation": "Write failure scenarios for the incident's failure mode.",
+          "next_steps": [
+            "test-case-design",
+            "bdd-scenarios"
+          ]
+        },
+        {
+          "skill": "test-case-design",
+          "rationale": "Plan regression and failure cases for the fix and the code next to it.",
+          "example_invocation": "Plan test cases for the incident fix in PR 123.",
+          "next_steps": [
+            "cover"
+          ]
+        },
+        {
+          "skill": "cover",
+          "rationale": "Write the planned tests and close the coverage gap that let the defect through.",
+          "example_invocation": "Write the planned tests for the incident fix.",
+          "next_steps": [
+            "pr-review"
           ]
         }
       ]

@@ -30,7 +30,8 @@ personal data, access rules, or exports. A new sweep shows the existing list nex
 ## Use the risk areas
 
 - `/test-case-design <PR number or branch>` plans focused cases for one change. Cases in a matched
-  area get high impact. Consumers in other repositories come from the workspace map.
+  area get high impact. Give the path of the workspace map
+  to find consumers in other repositories.
 - `/pr-review` raises a change that touches a risk area to at least the standard tier. Each facet
   lowers its reporting threshold on the matched paths.
 

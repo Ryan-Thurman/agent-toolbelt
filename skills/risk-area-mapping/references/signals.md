@@ -71,15 +71,13 @@ difference in the review file.
 ## Entry format
 
 Write each entry in the format of `shared/contracts/references/risk-areas.md`, with its `Paths:`
-line. Under the paths, write one visible evidence line:
-
-Write the impact line in one or two sentences. Put the mechanism, such as function names and keys,
-in the evidence line.
+line. Write the impact line in one or two sentences. Under the paths, write one visible evidence
+line. Put the mechanism, such as function names and keys, in the evidence line.
 
 ```markdown
 - **Patient data export**: A defect can send one patient's data to another clinic.
   - Paths: `src/export/**`
-  - Evidence: sourced. Files matched: 14. From: models/patient.ts columns, atlas edge reports_to_export_api.
+  - Evidence: sourced. Files matched: 14. Repo card blast radius: "an export error exposes patient records to the wrong clinic". From: models/patient.ts columns, atlas edge reports_to_export_api.
 ```
 
 Use `Evidence: sourced` when a document states the consequence of a defect, for these paths or for

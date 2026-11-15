@@ -39,7 +39,8 @@ step catalog             "$ROOT/scripts/check-catalog.sh"
 step portal              "$ROOT/scripts/check-portal.sh"
 # Claude's installed validator checks plugin and marketplace schemas.
 if command -v claude >/dev/null 2>&1; then
-  step claude-validator  sh -c "claude plugin validate '$ROOT/.claude-plugin/plugin.json' --strict >/dev/null && claude plugin validate '$ROOT/.claude-plugin/marketplace.json' --strict >/dev/null"
+  step claude-validator  sh -c 'claude plugin validate "$1" --strict >/dev/null && claude plugin validate "$2" --strict >/dev/null' \
+    sh "$ROOT/.claude-plugin/plugin.json" "$ROOT/.claude-plugin/marketplace.json"
 else
   echo "warning: claude CLI not found; skipped Claude validator" >&2
 fi

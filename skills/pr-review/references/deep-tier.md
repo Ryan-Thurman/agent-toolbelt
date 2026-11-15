@@ -17,9 +17,9 @@ verification. It costs about 8× a light review.
 Run **all** facets: correctness, security, performance, tests, standards, and **maintainability via
 `facets/maintainability-deep.md`** (thermo-nuclear bar). Add **spec-alignment**
 (`facets/spec-alignment.md`) when supplied intent includes checkable acceptance criteria. Add **reliability**
-(`facets/reliability.md`) when the change signal in `fan-out.md` applies. Repo
-**Always run** is a no-op here; **Emphasis**/`--focus` still tell a facet to go deeper and lower its
-threshold.
+(`facets/reliability.md`) when the change signal in `fan-out.md` applies, or when repo **Always run**
+or `--focus` names it. For the facets that always run at deep, **Always run** is a no-op;
+**Emphasis**/`--focus` still tell a facet to go deeper and lower its threshold.
 
 ## 2. Spawn facet sub-agents in parallel
 

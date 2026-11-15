@@ -12,7 +12,8 @@ Toolbelt paths: a path that starts with `shared/`, `skills/`, `templates/`, or `
 
 A failure scenario states how the system must behave when one thing goes wrong.
 This skill writes scenario cards that become BDD scenarios, test-first cases, and staging chaos experiment plans.
-It never runs fault injection, load, or restore tools, and it never targets production.
+It never runs fault injection, load, or restore tools. It targets staging. It plans a production
+experiment only with a recorded written approval (see Rules).
 
 ## Procedure
 

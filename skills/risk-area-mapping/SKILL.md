@@ -56,10 +56,15 @@ into `AGENTS.md`. The default target is `.pr-review.md`.
 
 ## Apply
 
-1. Read the review file. Use only the repositories with the status `Approved`.
-2. Write the entry lines and their `Paths:` lines. Do not write the evidence lines into the target file.
-3. Write the entries into the `## Risk areas` section of the target file of each repository.
-   When the section exists, show the diff and write only after the user confirms.
+1. Read the review file. Use only the repositories with the status `Approved`. A repository heading
+   names a child folder of the folder that holds the review file. For a review file at a repository
+   root, the heading names that repository.
+2. Write the entry lines and their `Paths:` lines, with the continuation lines. Do not write the
+   evidence lines or any other part of the review file into the target file.
+3. Write a `## Risk areas` heading and the entries into the target file of each repository:
+   - When the target file does not exist, create it with only that section.
+   - When the file exists without the section, add the section at the end of the file.
+   - When the section exists, show the diff that replaces it and write only after the user confirms.
 4. Do not commit. Report each changed file. The team commits the list through a normal pull request.
 5. Tell the user to delete the review file, or to keep it outside the repositories.
 

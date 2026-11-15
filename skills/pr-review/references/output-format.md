@@ -129,6 +129,8 @@ Repo config. Add this line when `.pr-review.md` (`repo-config.md`) forced facets
 _repo-config: .pr-review.md · forced: performance, security · risk areas: Data export · 1 re-rated (hot-path → blocker) · 2 suppressed (do-not-flag)_
 ```
 
+Leave out each segment that has nothing to report, for example `_repo-config: .pr-review.md · risk areas: Data export_`.
+
 ## No-config nudge
 
 When the target repo has **no** `.pr-review.md` *and* this run hit a situation the config exists to

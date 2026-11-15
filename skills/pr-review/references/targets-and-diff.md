@@ -56,19 +56,25 @@ PR description/title from `az repos pr show` so spec-alignment and the summary s
 
 **Branch (no PR):**
 ```bash
-git fetch origin
-git log <base>..HEAD --oneline
-git diff <base>..HEAD
+git remote get-url origin >/dev/null 2>&1 && git fetch origin   # skip the fetch when there is no remote
+git log <base>..<branch> --oneline
+git diff <base>...<branch>       # three-dot: changes on the branch since it left the base
+range="<base>...<branch>"
 ```
+Use the branch name, not `HEAD`. The branch does not need to be checked out.
 
 **Local working changes (empty target):**
 ```bash
 base="$(git merge-base <base> HEAD)"
+range="$base"
 git diff "$base"            # committed + unstaged vs merge-base
 git diff "$base" --stat
 git status --porcelain      # surface staged/untracked too
 ```
 Covers committed, staged, unstaged, and (via status) untracked work — review before you push.
+
+Later steps (`auto-tier.md` signals and the frozen diff) use `git diff $range`. For a PR whose diff
+comes from `gh pr diff`, compute the same signals from that diff.
 
 ## Format for line-anchored review
 

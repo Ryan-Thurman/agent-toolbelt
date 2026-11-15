@@ -24,7 +24,8 @@ no orchestration change.
 
 ## Injection (which facet gets which checklist)
 
-Each checklist is sectioned by facet so only the relevant slice goes to each agent. When spawning a
+Each checklist is sectioned by facet so only the relevant slice goes to each agent. A checklist
+with no section for a facet adds nothing to that facet's prompt. When spawning a
 facet sub-agent (`fan-out.md` §2), append the facet's slice of every in-scope language checklist to
 its prompt, after `_shared.md` + the facet file + standards + repo-config. A checklist item is a
 **lens, not a finding** — the agent still applies the schema, evidence, and anti-noise rules; it must

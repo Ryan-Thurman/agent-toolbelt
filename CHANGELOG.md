@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+### Fixed
+
+- `pr-review` reviews a named branch with `git diff <base>...<branch>`, so the branch does not need to be checked out. It skips `git fetch` when the repository has no remote. Tier signals use the same diff range.
+- `pr-review` auto-tier treats only a contract that code outside the repository or package depends on as a public-contract hot path. A changed export that only the same application imports now gets the standard tier, not deep.
+
 ### Changed
 
 - Replaced the portal's amber accent with green. Recolored the brand icon and favicons to match.

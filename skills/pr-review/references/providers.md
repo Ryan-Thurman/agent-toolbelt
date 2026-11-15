@@ -10,7 +10,7 @@ report-only. This file adds the review-specific capability matrix and Azure deta
 | Capability | GitHub (`gh`) | Azure Repos (`az`) | generic `git` |
 |---|---|---|---|
 | PR metadata | `gh pr view <n> --json …` | `az repos pr show --id <id>` | — (branch/local only) |
-| PR diff | `gh pr diff <n>` | git diff of PR refs (no `pr diff` verb) | `git diff <base>..HEAD` |
+| PR diff | `gh pr diff <n>` | git diff of PR refs (no `pr diff` verb) | `git diff <base>...<branch>` |
 | Inline comments | one batched **review** (`/pulls/{n}/reviews`) | **per-location threads** (`pullRequestThreads`) | — (report-only) |
 | Committable suggestion | ✅ ```suggestion``` block | ❌ renders as a plain code fence | — |
 | Verdict → state | `event: COMMENT` (no self approve/reject) | optional `az repos pr set-vote` | — |

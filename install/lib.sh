@@ -245,6 +245,8 @@ write_marked_pointer_file() {
   # Splice the block in place. The block is read from a temp file rather than an
   # awk -v var: BSD/macOS awk rejects a literal newline in a -v value ("newline in
   # string"), which would break every re-install over an existing AGENTS.md.
+  # Copy the result back with cat, not mv: mv replaces a CLAUDE.md -> AGENTS.md
+  # symlink with a regular file and gives the file the 0600 mode of the temp file.
   blkfile="$(mktemp "$(dirname "$f")/.agents-block.XXXXXX")" || exit 1
   printf '%s' "$block" > "$blkfile" || { rm -f "$blkfile"; exit 1; }
   tmp="$(mktemp "$(dirname "$f")/.AGENTS.md.XXXXXX")" || { rm -f "$blkfile"; exit 1; }
@@ -253,8 +255,8 @@ write_marked_pointer_file() {
     skip && $0==e { skip=0; next }
     skip { next }
     { print }
-  ' "$f" > "$tmp" && mv "$tmp" "$f" || { rm -f "$tmp" "$blkfile"; exit 1; }
-  rm -f "$blkfile"
+  ' "$f" > "$tmp" && cat "$tmp" > "$f" || { rm -f "$tmp" "$blkfile"; exit 1; }
+  rm -f "$tmp" "$blkfile"
   echo "~ updated: $f"; updated=$((updated + 1)); return 0
 }
 

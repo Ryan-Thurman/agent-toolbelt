@@ -22,7 +22,6 @@
 ### Changed
 
 - `check-plugin-package.sh` runs its checks in parallel and prints the time of each step. A full run takes about 40 seconds instead of about 100. Set `ATB_CHECK_SERIAL=1` to run the steps one at a time.
-
 - Renamed the `security-sensitive-change` workflow to "System design, security, and reliability" and added `reliability-review` and `failure-scenario-design` stages.
 - Changed `shape-up` to ask open decisions in numbered rounds instead of one question for each message. Added non-functional requirements and an open-questions table to the brief template, and Given/When/Then criteria and a "Must not change" section to the ticket template.
 - Added negative-family, boundary, and test-level steps to `test-case-design` and its template.

@@ -1,5 +1,11 @@
 # Changelog
 
+## Unreleased
+
+### Added
+
+- Added the shared check `right-sizing.md`. It links each moving part of a design or a plan to a requirement, an observed failure, or a constraint. A part without a link is removed, merged, or deferred with a measurable trigger, and the safeguards stay. `system-design` runs it before the coverage sweep of a full proposal. The design review Architecture lens checks it. Phased Delivery plan readiness reports it as a warning row.
+
 ## v1.3.0 - 2026-11-14
 
 ### Added

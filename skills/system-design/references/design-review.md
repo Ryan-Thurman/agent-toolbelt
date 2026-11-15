@@ -13,7 +13,7 @@ run the lenses yourself one after another, and label the result `Self-review`.
 
 | Lens | Checks |
 | --- | --- |
-| Architecture | Each boundary follows a domain seam. The design is the simplest one that meets the requirements, and it reuses what exists. Each piece of state has one owner. Each decision states what it solves, what it makes worse, and when to change it. |
+| Architecture | Each boundary follows a domain seam. The design is the simplest one that meets the requirements, and it reuses what exists. Each moving part has a ground from `shared/contracts/references/right-sizing.md`, and each deferred part has a measurable trigger. Each piece of state has one owner. Each decision states what it solves, what it makes worse, and when to change it. |
 | Data and contracts | The breaking-change rules in `interface-contracts.md` are checked. Every state-changing call is safe to retry. Schema changes use the add, migrate, and remove steps. The source of truth is named. |
 | Security | Use the linked `threat-model` report. Check that authorization applies at each entry point, sensitive data is classified, and tenant boundaries are clear. |
 | SRE | Trace one dependency outage from start to end. Only one layer retries, and deadlines pass downstream. The design survives the loss of its largest failure domain. Rollback is possible. |

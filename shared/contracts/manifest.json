@@ -346,6 +346,14 @@
       ]
     },
     {
+      "path": "references/right-sizing.md",
+      "owner": "shared/contracts",
+      "consumers": [
+        "phased-delivery",
+        "system-design"
+      ]
+    },
+    {
       "path": "references/depth-levels.md",
       "owner": "shared/contracts",
       "consumers": [

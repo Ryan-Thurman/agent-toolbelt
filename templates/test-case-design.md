@@ -6,7 +6,7 @@ Requirements, risks, evidence sources, and unresolved assumptions.
 
 ## Change scope
 
-Only for a pull request, a branch, or a diff. Delete this section for a requirement-based design.
+Only for change mode: a pull request, a branch, a commit range, or a diff. Delete this section for a requirement-based design.
 
 - Base and head commits:
 - Changed modules and the kind of each change:
@@ -18,6 +18,8 @@ Only for a pull request, a branch, or a diff. Delete this section for a requirem
 | ID | Requirement / risk | Preconditions / data | Steps | Expected result | Level | Automation candidate | Priority |
 |---|---|---|---|---|---|---|---|
 | TC-001 |  |  |  |  |  |  |  |
+
+Priority: `High` (impact and likelihood both high), `Medium` (one is high), or `Low` (neither is high).
 
 ## Negative coverage
 

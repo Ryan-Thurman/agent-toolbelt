@@ -225,7 +225,7 @@ Run `/story-refinement <ticket> --scan` before the refinement meeting.
 The scan settles facts from the repository, states defaults, and writes one question packet for each owner.
 It also writes Given/When/Then criteria with failure paths and checks the negative-testing families.
 When the story adds a dependency, a job, or a data change, it answers the reliability checklist.
-Run `--check` for the readiness verdict. Product, developer, QA, and SRE reviewer subagents check the story.
+Every mode ends with a readiness verdict. `--check` gives the verdict without changing the item. The depth level sets the reviewers. Every level runs the builder check and a QA review. The SRE lens runs when the reliability story tier applies, and a security lens runs for authentication, personal data, or money. Deep runs the product, developer, QA, and SRE lenses.
 The verdict is a warning, and a project can make it a gate.
 Hand the criteria to `bdd-scenarios` for feature files.
 The [workflow](../workflows/feature-refinement-workflow.md) gives the stage order.

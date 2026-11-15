@@ -5,6 +5,11 @@ Before you name a feature or a configuration key, read the installed version and
 These notes give the model of each runner, not its exact API.
 Do not add a runner without the user's agreement. Reuse the repository's existing test framework when it can run Gherkin.
 
+The default for each stack is the runner in the table below. For a TypeScript or JavaScript repository with Jest
+and no browser tests, propose `playwright-bdd` with `@api` scenarios only. It adds Playwright as a test runner but
+starts no browser. Name the alternative: a Jest binding for Gherkin keeps one test runner, but browser scenarios
+then need a second runner later. The user chooses.
+
 | Stack | Runner | Model |
 | --- | --- | --- |
 | TypeScript or JavaScript | `playwright-bdd` | A generator converts `.feature` files into normal Playwright test files. The Playwright test runner then runs them, so BDD tests and other Playwright tests share one runner, one configuration, and one report. |

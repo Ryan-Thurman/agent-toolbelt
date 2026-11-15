@@ -46,10 +46,13 @@ line from evidence. Drop a candidate when the only evidence is its folder name.
 
 Report two facts for each repository, so that the review file does not look more complete than it is:
 
-- **Coverage:** count the source files of the repository: code and configuration files in every
-  folder, with the same exclusions as the file counts, and without vendored or built output. Count
-  a file that two entries match once. Report how many of them the entries match, and the percentage. A large share means that the
-  list does not separate risk from normal code. The reviewer then merges or removes entries.
+- **Coverage:** count the source files of the repository: the tracked code and configuration files
+  (`git ls-files`) in every folder. Exclude tests and test fixtures, Markdown and other documentation,
+  images and other binary assets, lockfiles, editor configuration, and vendored or built output.
+  Write the exclusions that you used in the review file. Count a file that two entries match once.
+  Report how many source files the entries match, and the percentage.
+  The skill sets no threshold. If the reviewer cannot name normal code that the list leaves out,
+  the list does not separate risk from normal code. The reviewer then merges or removes entries.
 - **Not inspected in depth:** list each code folder that you skipped or only scanned by name.
   Write `None` only when you searched every code folder.
 

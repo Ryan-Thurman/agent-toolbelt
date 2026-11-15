@@ -181,10 +181,10 @@ def main(argv):
             try:
                 files.append(str(full.resolve().relative_to(ROOT)))
             except ValueError:
-                missing.append(arg)
+                files.append(str(full.resolve()))  # a file outside the repository, such as a draft
         if missing:
             for arg in missing:
-                print(f"error: --files argument is not an existing file in the repository: {arg!r}", file=sys.stderr)
+                print(f"error: --files argument is not an existing file: {arg!r}", file=sys.stderr)
             print("pass each path as a separate argument (for example with xargs)", file=sys.stderr)
             return 2
     errors = []

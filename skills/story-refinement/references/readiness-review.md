@@ -26,7 +26,8 @@ Run the lenses that the depth level allows:
 
 The builder check is a required check. At any level, add a security lens when the item touches
 authentication, personal data, or money. The security lens is also a required check.
-Use `threat-model` for its checks when it is installed. Otherwise list the trust-boundary questions as `Ask`.
+When `threat-model` is installed, apply its checks only to the entry points and data that the item changes.
+Do not write a full threat report for one story. Otherwise list the trust-boundary questions as `Ask`.
 
 ## Lens brief
 
@@ -44,6 +45,8 @@ Give each subagent only these inputs:
 Give a fresh subagent the draft only. It acts as a builder who cannot talk to the author.
 It lists the questions where a wrong guess changes what gets built, most important first.
 Run it once for each review.
+If the host has no subagents, run the builder check yourself and label it `Self-review`.
+Read only the draft, not your notes. A self-run check is not independent, so state the label next to check 11 in the verdict.
 
 ## Merge and sort
 
@@ -67,7 +70,8 @@ If the project has its own Definition of Ready, use it in place of this list.
 4. Each criterion is testable and has its failure path.
 5. Each applicable edge and negative family is resolved, or dismissed with a reason.
 6. Non-functional requirements are stated, or `Unknown` with an owner.
-7. The reliability story tier is answered when it applies.
+7. The reliability story tier is answered when it applies. A `Decision needed` answer that
+   `shared/contracts/references/reliability-checklist.md` calls a warning passes this check. List it as a warning.
 8. No open question blocks the start of work.
 9. Dependencies are known and have no cycle.
 10. The item fits one PR, or it is sliced.
@@ -75,7 +79,7 @@ If the project has its own Definition of Ready, use it in place of this list.
 
 ## Verdict
 
-Give one verdict and list each failed check with its evidence.
+Give one verdict. List each failed check with its evidence, then each warning.
 
 | Verdict | Meaning |
 | --- | --- |

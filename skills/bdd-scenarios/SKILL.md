@@ -14,13 +14,13 @@ Behavior-driven development (BDD) describes behavior as Given/When/Then scenario
 and that a runner executes as tests. This skill turns acceptance criteria into feature files.
 The feature files are the outer test loop of `phased-delivery`. Unit test-driven development is the inner loop.
 
-Choose the mode from the request:
+Choose the mode from the flag. With no flag, choose from the request:
 
-| Request | Procedure | Result |
-| --- | --- | --- |
-| Write scenarios for a story or a phase. | The procedure below. | Feature files, a step map, and a traceability table. |
-| Review existing feature files. | Read `references/review-checklist.md`. | Findings. No file changes. |
-| Add a BDD runner to a repository. | Read `references/runners.md`. | A runner plan. Install it only when the user agrees. |
+| Flag | Request | Procedure | Result |
+| --- | --- | --- | --- |
+| none | Write scenarios for a story or a phase. | The procedure below. | Feature files, a step map, and a traceability table. |
+| `--review` | Review existing feature files. | Read `references/review-checklist.md`. | Findings. No file changes. |
+| `--setup` | Add a BDD runner to a repository. | Read `references/runners.md`. | A runner plan. Install it only when the user agrees. |
 
 Write feature files to the repository only when the user asks, or inside an authorized `phased-delivery` phase.
 Otherwise, report the feature text.
@@ -31,7 +31,9 @@ Otherwise, report the feature text.
    If a criterion has no Given/When/Then form or no failure path, rewrite it and mark the rewrite as your draft.
    If many criteria are vague, send the item to `story-refinement` first.
 2. Find the runner, the feature folder, and the existing step definitions.
-   If the repository has no runner, read `references/runners.md` and stop for the user's choice.
+   If the repository has no runner, read `references/runners.md` and propose its default for the stack.
+   Feature files do not depend on the runner, so continue. Mark the runner as `Proposed` in the template,
+   and ask the user to choose before you install or connect a runner.
 3. Choose the level of each criterion with `shared/contracts/references/test-levels.md`.
    A criterion that only a unit test can prove well stays a unit test. Name the criterion ID in that test.
    Write Gherkin scenarios for the other criteria.

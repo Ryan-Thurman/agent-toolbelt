@@ -20,14 +20,14 @@ A test-only or documentation change needs no new cases unless it removes a test.
 
 For each changed interface, search for its callers, importers, and consumers. Search one step
 out from the change. Record each search and its result count. For a consumer in another
-repository, use the workspace map (integration edges or repo cards) when the workspace has one,
+repository, use the workspace map (integration edges or repo cards) when the user gives its path,
 and cite the edge. When no map lists the consumer and a search is not possible, record it as
 `Not searched` with the reason.
 
 ## 4. Match the risk areas
 
-Read `shared/contracts/references/risk-areas.md` and apply the repository's risk-area list to the
-changed and affected paths. Record each match with its impact line.
+Read `shared/contracts/references/risk-areas.md` and apply the repository's risk-area list, read
+from the base branch, to the changed and affected paths. Record each match with its impact line.
 
 ## 5. Find the intended behavior
 

@@ -16,8 +16,9 @@ Read the first `## Risk areas` section that you find, in this order:
 Use only one list. Do not merge lists from two files. When no file has the section, the
 repository has no declared risk areas. Do not invent them.
 
-For a review of a pull request, read the list from the base branch, not from the pull request.
-A change cannot remove the risk area that it touches.
+For a review of a pull request or a branch, read the list from the base branch, not from the change.
+Read each file in the order with `git show "$base:<file>"`, where `$base` is the base branch or the
+merge-base. A change cannot remove the risk area that it touches.
 
 ## Format
 

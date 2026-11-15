@@ -1,8 +1,8 @@
 # Reliability checklist
 
 Use these questions to find reliability gaps in a story or a feature plan before work starts.
-Apply them only when the change adds or changes a remote call, a queue, a scheduled job,
-a data store, a migration, or deployment configuration.
+Apply them only when the change adds or changes one of these triggers: a remote call, a queue,
+a scheduled job, a data store, a migration, or deployment configuration.
 
 ## Story tier
 

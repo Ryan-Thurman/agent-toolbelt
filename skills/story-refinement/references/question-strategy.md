@@ -10,9 +10,9 @@ The goal is the fewest questions and the fewest rounds that settle every item th
 2. **Lead with assumptions.** Show a table of your assumptions before any question.
    Give each one its evidence, the consequence if it is wrong, and a confidence of
    `Confident`, `Likely`, or `Unclear`. The person corrects only the wrong rows.
-3. **Ask in rounds.** A round holds every open decision whose prerequisites are settled.
-   Hold a question that depends on another open question for a later round.
-   Use three to five questions in each round. Put the question that blocks the most work first.
+3. **Ask in rounds.** A round holds up to five open decisions whose prerequisites are settled.
+   Put the rest in the next round. Hold a question that depends on another open question for a later round.
+   Put the question that blocks the most work first.
 4. **Accept defaults in a batch.** One "yes" can accept a group of defaults.
    Each decision and each challenge needs its own answer. "Use your recommendations" does not settle a decision.
 5. **Send questions to owners.** When the owner is not in the session, group the open decisions by owner
@@ -36,7 +36,7 @@ End with one open question for anything that the packet missed.
 
 ## When no person is present
 
-Ask no questions. Record each open decision as an `Open question:` line with its owner.
+Ask no questions. Record each open decision as a row in the Open questions table, with its owner.
 Record each default as an `Assumption:` line. Run every check.
 
 ## Mistakes to avoid

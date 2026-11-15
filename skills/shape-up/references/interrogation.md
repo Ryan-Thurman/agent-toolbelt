@@ -5,12 +5,13 @@ a report-only current-state gap review.
 
 ## Ask in rounds
 
-Map the request as a tree of decisions. A round holds every open decision whose prerequisites are settled.
-Number the questions in a round, and put the question that blocks the most work first.
-Use three to five questions in each round. Hold a question that depends on another open question for a later round.
+Map the request as a tree of decisions. A round holds up to five open decisions whose prerequisites are settled.
+Put the rest in the next round. Number the questions in a round, and put the question that blocks the most work first.
+Hold a question that depends on another open question for a later round.
 Settle facts from the repository before you ask, and do not stop a round to wait for a fact search.
 
-Ask one question at a time only for an early idea, when open answers help more than choices.
+Ask one open question at a time only when the user cannot yet name the outcome.
+When the outcome is named, change to rounds.
 For a ticket or story that is almost ready, use `story-refinement`.
 
 ## Before the first round

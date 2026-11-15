@@ -11,5 +11,6 @@ These are pointers. Read the current official documentation before you name a se
 | OpenTelemetry | SLIs from span and metric data. Trace context propagation across services and queues. Semantic conventions for HTTP, database, and messaging spans. | Not applicable. It gives the steady-state signal for experiments. |
 | Any stack | Service mesh retries, timeouts, and fault injection, if a mesh is in use. | Toxiproxy for network faults in tests. |
 
-Do not write an experiment or a manifest that targets production.
+Do not write an experiment or a manifest that targets production unless it has a recorded written
+approval reference, as the `failure-scenario-design` rules require.
 Use `failure-scenario-design` to plan experiments.

@@ -8,7 +8,7 @@ Do not add a runner without the user's agreement. Reuse the repository's existin
 | Stack | Runner | Model |
 | --- | --- | --- |
 | TypeScript or JavaScript | `playwright-bdd` | A generator converts `.feature` files into normal Playwright test files. The Playwright test runner then runs them, so BDD tests and other Playwright tests share one runner, one configuration, and one report. |
-| Python | `pytest-bdd` | pytest collects scenarios from `.feature` files. Step functions are pytest fixtures. `pytest-playwright` gives the browser `page` fixture. |
+| Python | `pytest-bdd` | pytest collects scenarios from `.feature` files. Step functions can request pytest fixtures, and a step's `target_fixture` makes its return value a fixture. `pytest-playwright` gives the browser `page` fixture. |
 | Java or Kotlin | Cucumber-JVM | Runs through the JUnit Platform engine. Step classes form the glue. Use Playwright for Java for browser steps, and the project's HTTP or framework test client for API steps. |
 
 ## playwright-bdd
@@ -23,9 +23,10 @@ Do not add a runner without the user's agreement. Reuse the repository's existin
 
 ## pytest-bdd
 
-- Bind scenarios to test modules, then write steps as fixtures with `given`, `when`, and `then`.
-- Use a step's target fixture to pass state between steps of one scenario.
-- Select scenarios with pytest markers that match the Gherkin tags.
+- Bind scenarios to test modules with `scenarios()`, then write steps with `given`, `when`, and `then`.
+- Use a step's `target_fixture` to pass state between steps of one scenario.
+- Each Gherkin tag becomes a pytest marker. Select scenarios with `-m`, for example `-m "not wip"`.
+  With `--strict-markers`, register every tag, such as `wip` and `api`, under `markers` in the pytest configuration.
 
 ## Cucumber-JVM
 
@@ -36,5 +37,7 @@ Do not add a runner without the user's agreement. Reuse the repository's existin
 ## In every stack
 
 - CI runs every scenario except `@wip`. A failing scenario fails the build.
+  Exclude `@wip` with the runner's tag filter: `--grep-invert @wip` in playwright-bdd, `-m "not wip"` in pytest-bdd,
+  and `cucumber.filter.tags=not @wip` in Cucumber-JVM.
 - Keep the runner's report and, for browser scenarios, traces or screenshots of failures as CI artifacts.
 - The same feature file format works in all three runners. Keep the files in one folder for each service.

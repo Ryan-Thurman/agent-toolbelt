@@ -20,6 +20,10 @@ acceptance criteria (`../facets/spec-alignment.md`).
 - needless loops/allocations, repeated work, N+1 queries, sync-where-parallel, blocking I/O on hot paths.
 - Don't micro-optimize; flag only avoidable, meaningful regressions.
 
+**reliability** — does the change keep working when a dependency fails? (`../facets/reliability.md`)
+- remote calls without timeouts, uncapped retries or retries of unsafe operations, consumers not safe for duplicates.
+- migrations the old code cannot run against, liveness probes that check dependencies, broken trace propagation.
+
 **tests** — does the change leave a real coverage gap?
 - new logic/branches with no test; changed behavior with stale tests; missing edge/error cases.
 - Coverage *theater* (asserting trivia) is not a finding.
@@ -49,6 +53,7 @@ acceptance criteria (`../facets/spec-alignment.md`).
 ### Auto-emphasis by change type
 - touches `auth`/`security`/`payments`/`crypto` paths → emphasize **security**.
 - logic-heavy diff (new branches/functions) → emphasize **tests** + **correctness**.
+- touches clients, timeouts, retries, consumers, jobs, migrations, probes, infrastructure, or telemetry → emphasize **reliability**.
 
 ## Anti-noise / anti-hallucination rules (mandatory)
 

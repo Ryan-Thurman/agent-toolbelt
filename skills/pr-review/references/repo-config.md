@@ -61,9 +61,10 @@ self-suppress; the suppression should be visible and reversible in the orchestra
 Severity overrides run before the posting threshold. A finding raised above `nit` therefore stays visible.
 
 The format and discovery order of `## Risk areas` are in `shared/contracts/references/risk-areas.md`.
+Follow that order for the risk-area list, even when the review config came from another file.
 `test-case-design` reads the same list, so one declaration drives review depth and test priority.
-When `.pr-review.md` has no `## Risk areas` section, use the section in the base-branch
-`AGENTS.md` or `CLAUDE.md` when one exists.
+Read each file from the base branch. If the PR changes the `## Risk areas` section of any file in
+the order, report it as a `standards` finding, as for a change to `.pr-review.md`.
 
 ## Precedence
 

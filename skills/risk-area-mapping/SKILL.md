@@ -61,7 +61,10 @@ into `AGENTS.md`. The default target is `.pr-review.md`.
    root, the heading names that repository.
 2. Write the entry lines and their `Paths:` lines, with the continuation lines. Do not write the
    evidence lines or any other part of the review file into the target file.
-3. Write a `## Risk areas` heading and the entries into the target file of each repository:
+3. Before you write, read the discovery order of the contract. When a file earlier in the order than
+   the target already has a `## Risk areas` section, readers use that list and ignore the new one.
+   Warn the user and ask which file to write.
+   Write a `## Risk areas` heading and the entries into the target file of each repository:
    - When the target file does not exist, create it with only that section.
    - When the file exists without the section, add the section at the end of the file.
    - When the section exists, show the diff that replaces it and write only after the user confirms.

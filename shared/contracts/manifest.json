@@ -25,6 +25,7 @@
         "retrofit",
         "review-on-open",
         "review-queue",
+        "risk-area-mapping",
         "security-audit",
         "shape-up",
         "ship-it",
@@ -74,6 +75,7 @@
         "retrofit",
         "review-on-open",
         "review-queue",
+        "risk-area-mapping",
         "security-audit",
         "shape-up",
         "ship-it",
@@ -322,6 +324,15 @@
         "bdd-scenarios",
         "phased-delivery",
         "story-refinement",
+        "test-case-design"
+      ]
+    },
+    {
+      "path": "references/risk-areas.md",
+      "owner": "shared/contracts",
+      "consumers": [
+        "pr-review",
+        "risk-area-mapping",
         "test-case-design"
       ]
     },

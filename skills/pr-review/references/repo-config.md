@@ -2,7 +2,7 @@
 
 Tiers say *how hard to look*; this file says *what matters in this codebase*. A target repo can ship
 an optional `.pr-review.md` with domain context, always-run facets, budgets, accepted patterns,
-severity overrides, and a minimum tier. It lives in the reviewed repo and travels with its code.
+severity overrides, a minimum tier, and risk areas. It lives in the reviewed repo and travels with its code.
 This is the **priorities** axis, orthogonal to tier (depth) and `--focus` (per-run emphasis).
 The copyable sample, with every section filled in, is `templates/pr-review.md`.
 
@@ -51,6 +51,7 @@ Write the file as lenient markdown. A missing section means "no override".
 | Emphasis | facet selection + fan-out | forces facet on; instructs it to go deeper + lower threshold |
 | Always run | facet selection | facet set = auto-selected ∪ always-run ∪ `--focus` |
 | Minimum tier | tier resolution (`auto-tier.md`) | raises the auto-selected default to the floor |
+| Risk areas | tier resolution + facet fan-out | a diff that touches a risk-area path raises the floor to standard. Each facet gets the matched area and its impact line (`fan-out.md`) |
 | Severity overrides | aggregation/threshold | **host-side** re-rate after findings return (auditable) |
 | Do not flag | aggregation/threshold | host-side suppression after findings return (auditable) |
 
@@ -58,6 +59,11 @@ Apply **Context/Budgets/Emphasis inside the agents** (they shape what gets found
 overrides / Do-not-flag host-side, after aggregation** — never let a single facet agent silently
 self-suppress; the suppression should be visible and reversible in the orchestrator.
 Severity overrides run before the posting threshold. A finding raised above `nit` therefore stays visible.
+
+The format and discovery order of `## Risk areas` are in `shared/contracts/references/risk-areas.md`.
+`test-case-design` reads the same list, so one declaration drives review depth and test priority.
+When `.pr-review.md` has no `## Risk areas` section, use the section in the base-branch
+`AGENTS.md` or `CLAUDE.md` when one exists.
 
 ## Precedence
 

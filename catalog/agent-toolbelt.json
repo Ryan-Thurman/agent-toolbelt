@@ -576,13 +576,15 @@
         "pr-improve",
         "pr-review-reply",
         "code-quality-gate",
-        "security-audit"
+        "security-audit",
+        "risk-area-mapping"
       ],
       "workflow_membership": [
         "feature-delivery",
         "pr-review",
         "codebase-improvement",
-        "security-sensitive-change"
+        "security-sensitive-change",
+        "risk-based-testing"
       ],
       "documentation_completeness": {
         "status": "complete",
@@ -752,6 +754,48 @@
       "documentation_completeness": {
         "status": "complete",
         "notes": "Canonical skill and agent metadata are present."
+      },
+      "recommended_changes": []
+    },
+    {
+      "id": "risk-area-mapping",
+      "category": "Testing & Verification",
+      "tags": [
+        "risk-based-testing",
+        "qa",
+        "review",
+        "workspace"
+      ],
+      "primary_purpose": "Draft the paths where a defect has high impact, for one repository or a folder of repositories, so that test planning and review put effort there.",
+      "use_when": [
+        "A team wants risk-based test planning or review and has no declared risk areas.",
+        "A workspace map changed, or an incident showed a new high-impact path."
+      ],
+      "avoid_when": [
+        "The repository already has a reviewed risk-area list and nothing changed."
+      ],
+      "preferred_context": "Schemas and models, access control code, exports and pipelines, CODEOWNERS, revert and hotfix history, and a workspace map with blast radius and integration edges.",
+      "expected_outputs": [
+        "Risk-area review file with evidence for each entry",
+        "Dropped candidates with reasons",
+        "Approved risk-area lists in each repository"
+      ],
+      "example_prompts": [
+        "Draft the risk areas for this repository.",
+        "Sweep the repos in this folder for risk areas and use the workspace map as evidence."
+      ],
+      "related_skills": [
+        "test-case-design",
+        "pr-review",
+        "threat-model",
+        "reliability-review"
+      ],
+      "workflow_membership": [
+        "risk-based-testing"
+      ],
+      "documentation_completeness": {
+        "status": "complete",
+        "notes": "Canonical skill, agent metadata, template, command, and installer are present."
       },
       "recommended_changes": []
     },
@@ -1312,12 +1356,13 @@
       ],
       "primary_purpose": "Design high-value test cases from behavior, requirements, risks, and edge conditions.",
       "use_when": [
-        "A feature or fix needs a deliberate test strategy before tests are implemented."
+        "A feature or fix needs a deliberate test strategy before tests are implemented.",
+        "A pull request needs a focused test plan for the modules, callers, and risk areas it touches."
       ],
       "avoid_when": [
         "The needed regression test is obvious and can be added directly."
       ],
-      "preferred_context": "Requirements, acceptance criteria, state transitions, failure modes, and test harness.",
+      "preferred_context": "Requirements, acceptance criteria, a pull request diff, declared risk areas, state transitions, failure modes, and test harness.",
       "expected_outputs": [
         "Test matrix",
         "Boundary and negative cases",
@@ -1325,19 +1370,22 @@
       ],
       "example_prompts": [
         "Design the test cases for this feature, including edge and failure paths.",
-        "Turn these acceptance criteria into a prioritized executable test matrix."
+        "Turn these acceptance criteria into a prioritized executable test matrix.",
+        "Plan focused tests for this pull request, with the risk areas it touches first."
       ],
       "related_skills": [
         "cover",
         "webapp-testing",
         "story-refinement",
         "bdd-scenarios",
-        "failure-scenario-design"
+        "failure-scenario-design",
+        "risk-area-mapping"
       ],
       "workflow_membership": [
         "feature-delivery",
         "security-sensitive-change",
-        "feature-refinement"
+        "feature-refinement",
+        "risk-based-testing"
       ],
       "documentation_completeness": {
         "status": "complete",
@@ -2063,6 +2111,41 @@
           "example_invocation": "Plan this refined story.",
           "next_steps": [
             "code-quality-gate"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "risk-based-testing",
+      "name": "Risk-based testing",
+      "purpose": "Map the paths where a defect has high impact, then give each pull request a focused test plan and a deeper review on those paths.",
+      "stages": [
+        {
+          "skill": "risk-area-mapping",
+          "rationale": "Draft risk areas from code, history, ownership, and the workspace map. A person approves each entry before it is applied.",
+          "example_invocation": "Sweep the repos in this folder for risk areas with the workspace map.",
+          "next_steps": [
+            "test-case-design",
+            "pr-review"
+          ]
+        },
+        {
+          "skill": "test-case-design",
+          "rationale": "Plan focused cases for a pull request. Cases in a matched risk area get high impact.",
+          "example_invocation": "Plan focused tests for PR 123.",
+          "next_steps": [
+            "cover",
+            "webapp-testing",
+            "pr-review"
+          ]
+        },
+        {
+          "skill": "pr-review",
+          "rationale": "Review the pull request with the risk-area tier floor and a lower threshold on matched paths.",
+          "example_invocation": "Review PR 123.",
+          "next_steps": [
+            "pr-improve",
+            "pr-review-reply"
           ]
         }
       ]

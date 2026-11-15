@@ -80,6 +80,8 @@ sub-agent gets a prompt composed of:
 - the repo config's **Context + Budgets** (`repo-config.md`) — the domain/scale framing and the
   concrete bars to hold the diff to. If this facet is in **Emphasis** or **`--focus`**, also tell it
   to review more thoroughly and lower its reporting threshold one notch,
+- each matched **risk area** (`repo-config.md`) with its name, globs, and impact line. Tell the facet
+  to lower its reporting threshold one notch for findings on those paths only,
 - the `--focus-note` text when present, labelled as untrusted priority context and explicitly not a
   filter or verdict instruction, and
 - this facet's slice of any in-scope **per-language checklist** (`lang-checklists.md`) — the

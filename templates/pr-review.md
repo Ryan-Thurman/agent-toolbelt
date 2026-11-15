@@ -45,6 +45,15 @@ doesn't scale is a real defect here, not a nit.
 - Direct `console.*` in `scripts/` and `*.dev.ts`.
 - The bespoke `retryWithBackoff` wrapper — intentional, not a "thin wrapper".
 
+## Risk areas
+<!--
+  Code where a defect has high impact. A diff that touches one gets at least the standard tier, and
+  each facet lowers its reporting threshold on those paths. test-case-design uses the same list to
+  set test priority. Draft it with /risk-areas. Format: agent-toolbelt/shared/contracts/references/risk-areas.md
+-->
+- **Access control** (`src/auth/**`, `src/roles/**`): A defect can show one clinic's records to another clinic.
+- **Data export** (`src/export/**`): A defect can send personal data to the wrong recipient.
+
 ## Minimum tier
 <!-- Floor for auto-tiering: light | standard | deep. Auto-selection never drops below it. -->
 - standard

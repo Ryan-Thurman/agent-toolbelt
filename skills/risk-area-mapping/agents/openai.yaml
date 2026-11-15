@@ -1,0 +1,4 @@
+interface:
+  display_name: "Risk Area Mapping"
+  short_description: "Draft the high-impact paths of a repo or a folder of repos for review."
+  default_prompt: "Use $risk-area-mapping to draft the risk areas of these repositories from code, history, ownership, and the workspace map, into one review file."

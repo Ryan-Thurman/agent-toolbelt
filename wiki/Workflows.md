@@ -10,6 +10,7 @@ operational guidance. Each workflow below identifies its commands and completion
 - [System Design](#system-design): architecture questions, design documents, diagrams, and decisions.
 - [Shape Up](#shape-up): review current-state gaps, shape an approved brief, or slice it into tickets.
 - [Story Refinement](#story-refinement): prepare a ticket for refinement and check whether it is ready.
+- [Risk-Based Testing](#risk-based-testing): map high-impact paths, then plan focused tests and reviews for each pull request.
 - [Product Discovery](#product-discovery): evidence before deciding what to shape.
 - [Threat Model](#threat-model): design-time security analysis.
 
@@ -192,4 +193,20 @@ The [workflow](../workflows/feature-refinement-workflow.md) gives the stage orde
 
 ```sh
 ./install.sh --harness all story-refinement /path/to/project
+```
+
+## Risk-Based Testing
+
+Use `risk-area-mapping` to find the paths where a defect has high impact, for example personal
+data, access control, or exports. Run `/risk-areas` in one repository, or
+`/risk-areas --sweep <dir> --atlas <workspace map>` for a folder of repositories.
+A sweep runs one subagent for each repository in parallel. The command writes one review file
+with evidence for each entry and edits no repository.
+A person confirms each impact line, and `/risk-areas --apply <file>` writes the approved entries.
+After that, `/test-case-design <PR>` plans focused cases with high impact in those areas, and
+`/pr-review` raises a change in a risk area to at least the standard tier.
+The [workflow](../workflows/risk-based-testing-workflow.md) gives the stage order.
+
+```sh
+./install.sh --harness all risk-area-mapping test-case-design pr-review /path/to/project
 ```

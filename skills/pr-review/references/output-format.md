@@ -123,10 +123,10 @@ with its tag inline. It is already downranked one bucket:
 _memory: 2 findings downranked (previously rejected) · store: .git/pr-review-rejections.jsonl_
 ```
 
-Repo config. Add this line when `.pr-review.md` (`repo-config.md`) forced facets, re-rated, or suppressed findings:
+Repo config. Add this line when `.pr-review.md` (`repo-config.md`) forced facets, matched a risk area, re-rated, or suppressed findings:
 
 ```markdown
-_repo-config: .pr-review.md · forced: performance, security · 1 re-rated (hot-path → blocker) · 2 suppressed (do-not-flag)_
+_repo-config: .pr-review.md · forced: performance, security · risk areas: Data export · 1 re-rated (hot-path → blocker) · 2 suppressed (do-not-flag)_
 ```
 
 ## No-config nudge

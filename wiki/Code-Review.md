@@ -63,7 +63,11 @@ root — domain context, always-run facets, concrete budgets, severity overrides
 do-not-flag suppressions, and a minimum tier. Draft one from repo evidence with
 `/pr-review-init` (it mines the docs, revert/hotfix history, review threads, and
 rejection memory, then leaves a draft for the team to prune and commit), or copy
-`templates/pr-review.md` as a blank starter. When a review runs in a repo
+`templates/pr-review.md` as a blank starter. The `## Risk areas` section lists
+the high-impact paths. A change that touches one gets at least the standard tier.
+Draft the section with `/risk-areas` (see the
+[risk-based testing workflow](../workflows/risk-based-testing-workflow.md)).
+When a review runs in a repo
 without one and hits a situation the config would solve, the report footer
 nudges once toward the generator.
 

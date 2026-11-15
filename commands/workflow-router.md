@@ -26,6 +26,7 @@ Choose from workflows that are actually installed.
 | Reproduce and repair a defect | `bug-to-fix` |
 | Assess a technical investment or dependency | `tech-backlog-assessment` |
 | Find an existing precedent for a narrow ticket | `ticket-discovery` |
+| Find high-impact paths for risk-based test planning and review | `risk-area-mapping` |
 | Design cases, write tests, or verify a browser flow | `test-case-design`, `cover`, or `webapp-testing` |
 | Write or review Gherkin feature files from acceptance criteria | `bdd-scenarios` |
 | Review a change or address findings | `pr-review`, `pr-improve`, or `pr-review-reply` |

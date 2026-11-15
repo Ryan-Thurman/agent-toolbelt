@@ -5,6 +5,7 @@
 ### Added
 
 - Added the `papercuts` skill and `/papercuts` command. The skill reports the codebase friction that slowed a session, such as stale docs, misleading names, duplicate config, and failing commands. The report is a ranked table with a fix file and a stable key for each row. `--feature` covers one feature across sessions from phase plans, handoffs, review threads, CI runs, and commits. `--post` adds the report to a shared Markdown file, a GitHub issue, or an Azure Boards work item after a preview, and marks rows that repeat an earlier entry.
+- Added the shared check `right-sizing.md`. It links each moving part of a design or a plan to a requirement, an observed failure, or a constraint. A part without a link is removed, merged, or deferred with a measurable trigger, and the safeguards stay. `system-design` runs it before the coverage sweep of a full proposal. The design review Architecture lens checks it. Phased Delivery plan readiness reports it as a warning row.
 
 ### Fixed
 

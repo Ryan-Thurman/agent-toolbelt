@@ -6,6 +6,7 @@ pack_system_design() {
   shared_contract references/docs-writing.md
   shared_contract references/evidence-quality.md
   shared_contract references/depth-levels.md
+  shared_contract references/right-sizing.md
   cmd system-design
   skill system-design SKILL.md
   skill system-design references/design-method.md

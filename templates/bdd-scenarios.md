@@ -1,7 +1,7 @@
 # BDD scenarios: <story or phase>
 
 Source: <tracker key, refined story, or plan phase>
-Runner: <playwright-bdd | pytest-bdd | Cucumber-JVM | none yet>
+Runner: <playwright-bdd | pytest-bdd | Cucumber-JVM> - <In use | Proposed, waits for the user's choice>
 
 ## Feature files
 
@@ -13,7 +13,7 @@ Runner: <playwright-bdd | pytest-bdd | Cucumber-JVM | none yet>
 
 | Criterion | Scenario or unit test | Level | Expected before implementation |
 | --- | --- | --- | --- |
-| AC-1 |  | Unit, Integration (`@api` at the HTTP boundary), Contract, or End-to-end | Fails, Passes (existing behavior), or `@wip` (later phase) |
+| AC-1 |  | Unit, Integration (`@api` at the HTTP boundary), Contract, or End-to-end | Fails, Passes (existing behavior), `@wip` (later phase), or `@wip` (waits on <question ID>) |
 
 Criteria with no test:
 
@@ -28,6 +28,11 @@ Criteria with no test:
 | Family | State | Scenario or reason |
 | --- | --- | --- |
 |  | `Covered`, `Not applicable`, or `Gap` |  |
+
+## Runner plan
+
+Only when the repository has no runner. The proposed runner, the alternative, the files that it adds,
+the commands for local use and CI, and who chooses.
 
 ## Handoff
 

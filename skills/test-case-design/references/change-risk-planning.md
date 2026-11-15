@@ -6,6 +6,7 @@ instead of a requirement. The output is a focused test plan for that change.
 ## 1. Get the change
 
 - For a branch, use `git diff <base>...HEAD`, where `<base>` is the merge base with the default branch.
+- For a commit range, use `git diff <first>..<last>`. The base is `<first>`.
 - For a GitHub pull request, use `gh pr diff <number>`. For an Azure Repos pull request, fetch
   the source branch and use `git diff` against the target branch.
 - Record the base and the head commit in "Change scope". The plan applies to that range only.
@@ -27,7 +28,7 @@ and cite the edge. When no map lists the consumer and a search is not possible, 
 ## 4. Match the risk areas
 
 Read `shared/contracts/references/risk-areas.md` and apply the repository's risk-area list, read
-from the base branch, to the changed and affected paths. Record each match with its impact line.
+from the base (the base branch, the merge base, or the first commit of a range), to the changed and affected paths. Record each match with its impact line.
 
 ## 5. Find the intended behavior
 
@@ -41,6 +42,10 @@ the expected result and list the case in "Inputs and assumptions".
 Find the tests that already exercise each changed module. Do not write a new case for behavior
 that an existing test already covers. Name that test in "Coverage notes". A changed behavior
 with no test is a gap. A removed or weakened assertion is a gap.
+Read the body of each named test. A test that cannot fail when the change is wrong, for example
+because a mock returns the changed value for any input, is not coverage.
+When you can run the test in this environment, run it and record the result. A test that does not
+run is not coverage. Record it as a finding in "Coverage notes", with the error.
 
 ## 7. Set the priority
 

@@ -50,8 +50,8 @@ into `AGENTS.md`. The default target is `.pr-review.md`.
    Do not edit any target file in this step.
 6. Stop. Give the user the path of the review file. Tell the user to confirm, edit, or delete each
    entry, and to change the status of each repository to `Approved` or `Skip`. Tell the user which
-   entries have `Evidence: inferred`, because those impact lines need the most attention. Name the
-   repositories with a high coverage share and the folders that were not inspected in depth.
+   entries have `Evidence: inferred`, because those impact lines need the most attention. Give the
+   coverage share of each repository, and name the folders that were not inspected in depth.
 
 ## Apply
 

@@ -17,8 +17,8 @@ It does not edit tests or production code. To rank untested behavior in code as 
 
 1. Identify requirements, observable risks, interfaces, existing test conventions,
    and missing information. Do not invent customer behavior or system constraints.
-   When the input is a pull request, a branch, a commit range, or a diff, follow
-   `references/change-risk-planning.md` and fill "Change scope" in the template.
+   When the input is a pull request, a branch, a commit range, or a diff, use change mode:
+   follow `references/change-risk-planning.md` and fill "Change scope" in the template.
 2. Choose the least complex technique that exposes each risk:
    - Equivalence partitions and boundaries for input rules.
    - Decision tables for interacting conditions.
@@ -36,7 +36,10 @@ It does not edit tests or production code. To rank untested behavior in code as 
    Write each case in `templates/test-case-design.md`. Give each case an ID, requirement or risk,
    preconditions and data, steps, expected result, test level, automation candidate, and priority.
 6. Set priority from impact and likelihood, not from an arbitrary numeric score.
+   Use `High` when impact and likelihood are both high, `Medium` when one is high, and `Low` when neither is.
    A case in a declared risk area has high impact. Read `shared/contracts/references/risk-areas.md`.
+   A draft from `risk-area-mapping` is not declared. Use a draft entry only when the user says so,
+   and record it as an assumption.
    Record assumptions and uncovered risks. Do not invent expected behavior.
    Write the expected result as observable behavior. Give exact text only when the text is the contract,
    such as a protocol message, generated file, command output, or user-visible copy.
@@ -50,3 +53,5 @@ It does not edit tests or production code. To rank untested behavior in code as 
 
 Deliver a traceable case set with explicit omissions and uncertainties. Stop before
 writing tests unless the user separately invokes an authoring workflow.
+Save the report in the folder that the user names. Otherwise use `.atb-work/test-case-design/<scope-slug>.md`,
+and make sure that `.atb-work/` has a `.gitignore` that contains `*`.

@@ -61,6 +61,10 @@ The depth sets how many reviewer lenses run in step 6. The scan and the criteria
 
 Deliver the refined spec, the decision log, the open-questions register, the readiness verdict,
 and one question packet for each owner. Mark sources that you cannot read as `Not verified`.
+Save the files in the folder that the user names. Otherwise use `.atb-work/story-refinement/<item-key>/`,
+and make sure that `.atb-work/` has a `.gitignore` that contains `*`.
+Use `refined.md` for the spec (with the decision log and register), `readiness.md` for the findings and the verdict,
+and `questions-<owner>.md` for each packet.
 
 Hand a ready spec to `bdd-scenarios` for feature files, to `test-case-design` for test cases,
 and to `phased-delivery` for the plan.

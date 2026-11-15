@@ -1,8 +1,9 @@
 # <title>
 
+Depth: <Light | Standard | Deep> - <one-line reason>
 Tracker: <tracker key, or leave out when the item is not in a tracker>
 Source: <document or ticket, and revision>
-Readiness: <Ready | Ready with defaults | Not ready | Not verified>
+Readiness: <Ready | Ready with defaults | Not ready | Not verified> - details in the readiness review
 Risk: <Low | Medium | High> - <one-line reason>
 
 ## Outcome
@@ -22,7 +23,8 @@ Who can do this, who cannot, and what the others see.
 ## Acceptance criteria
 
 Write each criterion as Given/When/Then. Give each rule its failure path.
-Propose a test level for each criterion.
+Propose a test level for each criterion. Write one scenario or outline for each criterion, under its rule.
+The block below shows the shape for one rule.
 
 | ID | Rule | Level |
 | --- | --- | --- |

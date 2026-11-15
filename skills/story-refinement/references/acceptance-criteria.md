@@ -15,6 +15,9 @@ and that fail when the build is wrong.
 6. Give each criterion an ID, such as `AC-1`. Do not reuse an ID after you remove a criterion.
 7. Together, the criteria must fail any build that does the wrong thing. If a wrong build passes them all,
    add the missing criterion.
+8. Put every criterion in the spec as a scenario. Do not leave sample scenarios and point to feature files.
+   `bdd-scenarios` later copies the scenarios into feature files. After that, the feature files own the
+   executable text, and the spec keeps the rule table with links to the scenarios.
 
 ## From scan items to criteria
 

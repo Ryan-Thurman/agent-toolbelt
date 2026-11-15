@@ -51,6 +51,7 @@ The scenario is the outer loop. The unit TDD cycle above is the inner loop.
 | Outer green | Run the phase's scenarios again. | Every scenario of the phase passes, and scenarios of earlier phases still pass. |
 
 A scenario that passes before the implementation proves existing behavior. Record it as existing coverage.
+In a Scenario Outline, record each example row in the same way. Some rows can pass before the implementation while others fail.
 Remove `@wip` only from the scenarios of the current phase.
 During the inner cycles, the phase's scenarios stay red. This is expected until outer green.
 Record outer red and outer green evidence with the unit evidence.

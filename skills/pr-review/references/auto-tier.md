@@ -37,6 +37,8 @@ paths=$(git diff $range --name-only)
   For example, `auth/`, `auth.ts`, and `session_store.py` match. `author.ts` and `tokenizer.ts` do not match.
   A new exported helper is not a hot-path hit. The production-logic floor holds it at standard.
   Route and API handler paths (`*/api/*`, `*/routes/*`) are logic-bearing production, not hot paths.
+  This rule applies to the route folder alone. A route path that also matches a keyword or a glob is a hot path,
+  for example `src/routes/auth/auth.service.ts`.
 - **low-risk-only**: every changed path is docs/config/test/lockfile:
   `*.md *.mdx docs/* *.txt LICENSE* *.lock package-lock.json *.snap` and `*test* *spec* __tests__/*`
   with no production source touched.

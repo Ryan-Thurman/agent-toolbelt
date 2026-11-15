@@ -11,6 +11,7 @@
 
 ### Fixed
 
+- Fixed 20 skill gaps that real use-case runs found. `story-refinement` names its output files, has a depth line in the template, a Self-review fallback for the builder check, a warning state for reliability check 7, and a rule that the spec holds every criterion as a scenario. `bdd-scenarios` maps `--review` and `--setup` to its modes, proposes a default runner and continues when the repository has none (including Jest-only TypeScript APIs), and its template has a runner plan and a "waits on a question" state. `test-case-design` names change mode, supports commit ranges, defines `High`, `Medium`, and `Low` priority, names its output file, runs or flags existing tests, and treats a risk-area draft as an assumption. `risk-area-mapping` defines its coverage exclusions and states that it sets no coverage threshold. `pr-review` auto-tier states that a route path with a risk keyword is a hot path. `check-writing-rules.py --files` accepts files outside the repository.
 - The installer no longer replaces a `CLAUDE.md` -> `AGENTS.md` symlink with a regular file when it updates the Toolbelt block. It also keeps the file mode of `AGENTS.md` and `CLAUDE.md`. Before this fix, a reinstall changed both files to mode `0600`.
 
 ## v1.3.0 - 2026-11-14

@@ -10,13 +10,14 @@ or explicit opt-in in chat). The target name is required. It must match a key in
 
 ## Flow
 
-1. **Read** `outputs.refactorBrief` from config for the target — must exist on disk
+1. **Read** `outputs.refactorBrief` from config for the target. It must exist on disk
 2. **Read** the affected source file(s) cited in the brief
 3. Apply **behavior-preserving** changes:
    - When coverage is the primary driver (`coveragePercent` low): add targeted tests for uncovered
-     paths listed in the brief
+     paths listed in the brief (see the `cover` skill for test authoring discipline)
    - When complexity dominates: extract helpers, reduce branching at lines listed under
-     **Complexity drivers**
+     **Complexity drivers**. Use the tactics in
+     `shared/contracts/references/maintainability-taxonomy.md`
 4. Do not weaken existing tests or change observable behavior
 5. Run verify **once** via orchestrator, then run `review`:
    ```bash
@@ -31,10 +32,5 @@ or explicit opt-in in chat). The target name is required. It must match a key in
 
 - Follow numbered actions from the brief's **Recommended actions** section in order
 - Prefer the smallest change that reduces CRAP below threshold
-- If verify still fails, report the new score and stop — do not loop verify automatically
+- If verify still fails, report the new score and stop. Do not loop verify automatically
 - Honor `simplify-ignore` markers and existing abstraction boundaries where present
-
-## Verify command
-
-The verify command comes from config `commands.verify` — run only through the orchestrator, never
-ad-hoc.

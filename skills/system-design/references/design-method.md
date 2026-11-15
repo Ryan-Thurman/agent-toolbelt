@@ -21,13 +21,13 @@ Do not require every system to use every pattern mentioned below.
 | Connected behavior | Important requests, events, jobs, and state transitions across components. | Trace the path from input to observable result, including required side effects. |
 | Failure and recovery | Timeouts, retries, partial success, duplicates, concurrency, and dependency loss. | Define failure ownership, durable state, reconciliation, recovery, and user-visible outcomes where relevant. Use `reliability-review` for the failure-mode register. |
 | Operation and evolution | Deployment, monitoring, support, rollback, upgrades, and migration. | Identify owners, failure signals, rollout conditions, compatibility windows, and recovery criteria. |
-| Capacity and cost | Expected demand, bottlenecks, resource use, and operational effort. | State estimate inputs and uncertainty; connect added infrastructure to a demonstrated need. See `estimation.md`. |
+| Capacity and cost | Expected demand, bottlenecks, resource use, and operational effort. | State estimate inputs and uncertainty. Connect added infrastructure to a demonstrated need. See `estimation.md`. |
 | Alternatives | Viable approaches, including the existing system when suitable. | For each decision, record what it solves, what it makes worse, and when to change it. "Change it when" names a measurable trigger, such as a load, a latency, or a team size. |
 | Verification | How requirements and important failure cases will be checked. | Link each important scenario to a test, experiment, review, or explicit evidence gap. |
 
 ## Decisions that the design must fix
 
-A decision belongs in the design when two teams that build separately could otherwise choose things that do not work together.
+A decision belongs in the design when two teams that build separately can otherwise choose things that do not work together.
 For each such decision, record what it binds, the conflict that it prevents, and the rule.
 Leave other choices to the implementer.
 
@@ -40,7 +40,7 @@ Use quality scenarios to make broad claims checkable.
 For example, specify the triggering event, operating conditions, expected response, and measurement for a recovery requirement.
 Leave unavailable target values unknown instead of copying example numbers into requirements.
 Distinguish intended controls from controls observed in code and behavior verified by execution.
-Use the linked threat review for security analysis; retain the broader architecture review separately.
+Use the linked threat review for security analysis. Retain the broader architecture review separately.
 
 ## Review the connected design
 
@@ -60,13 +60,11 @@ Otherwise, perform a focused self-review.
 
 | Result | Use when |
 | --- | --- |
-| `Ready for planning` | Scoped requirements and consequential decisions are resolved; required review evidence is current. |
+| `Ready for planning` | Scoped requirements and consequential decisions are resolved. Required review evidence is current. |
 | `Needs decision` | A named product, architecture, ownership, or constraint decision prevents a reliable handoff. |
 | `Needs revision` | A contradiction, missing flow, or design defect requires changes within the existing scope. |
 | `Not verified` | Required evidence is unavailable, stale, or has not been checked. |
 
 Assess readiness against the agreed scope rather than document length or a numerical score.
 Do not claim readiness while a required decision or review remains unresolved.
-A useful draft may retain open questions and an explicit readiness limit.
-
-Method informed by [Jeffallan's architecture designer](https://github.com/Jeffallan/claude-skills/tree/main/skills/architecture-designer).
+A useful draft can retain open questions and an explicit readiness limit.

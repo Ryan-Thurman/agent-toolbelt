@@ -5,7 +5,7 @@ argument-hint: "<product-ask-or-request>"
 
 # /shape-up
 
-**Arguments:** `$ARGUMENTS` — a product ask, requirement, ticket, or vague idea.
+**Arguments:** `$ARGUMENTS`: a product ask, requirement, ticket, or vague idea.
 
 Use this before planning when the ask is unclear or its gap with the current system is unknown.
 For broken behavior, use `/bug-intake`.

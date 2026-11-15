@@ -1,6 +1,6 @@
 ---
 name: cover
-description: Author behavior-pinning tests for a diff, a module, or a bug-to-fix regression gap, applied on opt-in, or scan an area for missing and weak coverage (detect-only). Use when adding regression coverage, strengthening tests, or surveying coverage gaps. For a merge verdict use /pr-review.
+description: Author behavior-pinning tests for a diff, a module, or a bug-to-fix regression gap, applied on opt-in, or scan an area for missing and weak coverage (detect-only). Use when adding regression coverage, strengthening tests, or surveying coverage gaps. Use test-case-design to plan cases from requirements.
 ---
 
 # cover
@@ -11,9 +11,9 @@ read it before you write for the user.
 Toolbelt paths: a path that starts with `shared/`, `skills/`, `templates/`, or `workflows/` is relative to the Toolbelt root, `${CLAUDE_PLUGIN_ROOT}`. If that variable is not replaced, use the nearest folder above this file that contains `shared/contracts/`.
 
 Author tests from existing code and behavior, or report coverage gaps. `cover` writes tests only.
-To design cases from requirements before code exists, use `/test-case-design`.
+To plan cases against the intended behavior of a requirement or a pull request, use `/test-case-design`.
 
-## Mutation Policy
+## Mutation policy
 
 Default: report-only.
 Edit test files only when the user explicitly asks to apply selected tests.
@@ -21,17 +21,16 @@ Never edit production code to make a test pass.
 
 ## Two modes
 
-- **`/cover`** — author or strengthen tests for a diff, a module, or a bug reproduction.
+- **`/cover`**: author or strengthen tests for a diff, a module, or a bug reproduction.
   Report the proposed tests, let the user select, then apply. Each test pins current behavior,
-  or intended behavior that the user agreed. For a bug, write a red→green regression lock only when
-  `bug-to-fix` recorded a regression-coverage gap.
-- **`/cover-gaps`** — detect-only scan of an area for missing or weak coverage. Do not write a test.
+  or intended behavior that the user agreed. For a bug, see Hand-offs.
+- **`/cover-gaps`**: detect-only scan of an area for missing or weak coverage. Do not write a test.
   Read `references/gap-scan.md` for this mode.
 
 ## Principles (always)
 
-- **Pin behavior, not implementation.** Assert observable behavior — return values, outputs, errors,
-  side-effects, ordering — not private internals, call counts, or incidental structure.
+- **Pin behavior, not implementation.** Assert observable behavior (return values, outputs, errors,
+  side-effects, ordering), not private internals, call counts, or incidental structure.
 - **Keep existing tests intact.** Existing tests must pass. Strengthen an existing test only by
   adding assertions. Never weaken or delete an existing assertion.
 - **Hand production changes away.** If a green result needs a production edit, that is a fix.
@@ -43,13 +42,24 @@ Never edit production code to make a test pass.
 
 ## Flow
 
-1. **Scope** the target: a diff (default if the tree is dirty), a named module/path, or a
-   regression-coverage gap recorded in a `bug-investigation.md` file.
-2. **Detect** the framework, runner, and conventions. Read 2–3 nearby tests and match their style.
+1. **Scope** the target: a diff (default if the tree is dirty), a named module/path, a
+   regression-coverage gap recorded in a `bug-investigation.md` file, or selected cases from a
+   `test-case-design` report (`TC-` IDs). Name the case ID in the test.
+2. **Detect** the framework, runner, and conventions from the repo. Never assume. Read 2–3 nearby
+   tests and match their style.
+   - Manifest or config: `package.json` scripts and devDeps (jest, vitest, mocha, node:test,
+     playwright), `pyproject.toml`, `pytest.ini`, or `tox.ini` (pytest, unittest), `go.mod`
+     (`go test`), `Cargo.toml` (`cargo test`), `pom.xml` or `build.gradle` (JUnit), `*.csproj`
+     (xUnit, NUnit), `Gemfile` (RSpec, minitest), `composer.json` (PHPUnit).
+   - Existing tests: find the test directory or glob (`test/`, `tests/`, `__tests__/`,
+     `*_test.go`, `*.spec.ts`, `*_test.py`). Match their file location, naming, assertion library,
+     fixtures, setup and teardown, and mocking approach.
+   - Run command: the command the repo uses (`npm test`, `pytest -q`, `go test ./...`,
+     `cargo test`). Prefer a single-file or single-test run for the fast falsify loop.
 3. **Identify** what to lock: for a diff/module, the behaviors and branches worth pinning (lean on a
-   `/cover-gaps` report if one exists); for a recorded bug gap, the exact user-visible symptom.
+   `/cover-gaps` report if one exists). For a recorded bug gap, the exact user-visible symptom.
 4. **Propose** each test with the behavior it pins, the risk it guards, its kind (pinning or
-   red→green regression lock), and its target file. Flag determinism hazards.
+   red -> green regression lock), and its target file. Flag determinism hazards.
    Stop here and wait for the user's selection.
 5. **Apply on opt-in.** Before you write a test, read `references/authoring.md`.
 
@@ -69,7 +79,7 @@ The existing suite still passes, and no production code changed.
 
 ## References
 
-- `references/authoring.md` — read before you apply tests: detection cues, pinning detail,
-  the red→green regression lock, the falsify check, determinism rules, and apply discipline.
-- `references/gap-scan.md` — read for `/cover-gaps`: gap families, ranking, and report shape.
-- `templates/regression-test-brief.md` — use it to record a single regression lock.
+- `references/authoring.md`: read before you apply tests: pinning detail,
+  the red -> green regression lock, the falsify check, determinism rules, and apply discipline.
+- `references/gap-scan.md`: read for `/cover-gaps`: gap families, ranking, and report shape.
+- `templates/regression-test-brief.md`: use it to record a single regression lock.

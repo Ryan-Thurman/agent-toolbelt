@@ -1,4 +1,4 @@
-# PR Readiness Review
+# PR readiness review
 
 Review one phase or ticket PR. For a stack, compare this branch with its parent
 branch rather than the default branch.
@@ -11,54 +11,54 @@ branch rather than the default branch.
 
 Use one:
 
-- Ready for PR
-- Needs Fixes
+- Ready
+- Needs Work
 - Blocked
 
-## Done-When / Acceptance Clauses Verified
+## Done-when / acceptance clauses verified
 
 List the clauses that were verified and the evidence used. Do not list a clause
-as verified when it is only Not Inferable.
+as verified when it is only Not verified.
 
 | Clause | Status | Evidence |
 |---|---|---|
-| ... | Verified / Failed / Not Inferable | ... |
+| ... | Verified / Failed / Not verified | ... |
 
-## Acceptance Criteria Matrix
+## Acceptance criteria matrix
 
 | Criteria | Status | Evidence / Notes |
 |---|---|---|
 | ... | Met / Partial / Missing | ... |
 
-## Flow Coverage Matrix
+## Flow coverage matrix
 
 | Flow | Status | Evidence / Notes |
 |---|---|---|
 | ... | Covered / Partial / Missing | ... |
 
-## Verification Reach
+## Verification reach
 
-List important requirements or risks as Verified, Failed, or Not Inferable. For
-Not Inferable items, state the exact evidence needed next.
+List important requirements or risks as Verified, Failed, or Not verified. For
+Not verified items, state the exact evidence needed next.
 
 | Item | Reach | Evidence / Needed Evidence |
 |---|---|---|
-| ... | Verified / Failed / Not Inferable | ... |
+| ... | Verified / Failed / Not verified | ... |
 
 ## Findings
 
 ### Blocking
 
-### Should Fix
+### `Should Fix`
 
-### Nice to Have
+### `Nice to Have`
 
-Each request-changes finding should cite the specific plan, acceptance,
-contract, or boundary clause violated.
+Cite the specific plan, acceptance, contract, or boundary clause violated
+in each request-changes finding.
 
-## Required Fixes
+## Required fixes
 
-## Required Quality Gate Evidence, If Applicable
+## Required quality gate evidence, if applicable
 
 - Report path:
 - Why required (repository policy, user request, or phase risk):
@@ -67,28 +67,28 @@ contract, or boundary clause violated.
 - Current base/head/scope fingerprints recomputed and verified: Yes / No
 - Blocking gate outcome or remaining disposition:
 
-## Tests / Checks Reviewed
+## Tests / checks reviewed
 
-## Test Suite Changes
+## Test suite changes
 
 Summarize automated tests added or updated during implementation.
 
-## Test Gaps
+## Test gaps
 
-List missing feasible tests and classify as Blocking, Should Fix, or Nice to
-Have.
+List missing feasible tests and classify as `Blocking`, `Should Fix`, or
+`Nice to Have`.
 
-## Performance Notes
+## Performance notes
 
-## Security Notes
+## Security notes
 
-## Code Quality Notes
+## Code quality notes
 
-## UX / Product Notes
+## UX / product notes
 
-## Documentation Notes
+## Documentation notes
 
-## Branch / PR Notes
+## Branch / PR notes
 
 - Current branch:
 - PR target branch and parent PR:
@@ -96,12 +96,12 @@ Have.
 - Ready to open PR: Yes / No
 - Recommended PR command or manual PR title/body:
 
-## Plan Document Updates
+## Plan document updates
 
 Summarize the existing plan or execution record updates made for PR readiness result,
 branch/PR state, required fixes, next step, and resume instructions.
 
-## Suggested PR Description
+## Suggested PR description
 
 ```md
 ## Summary

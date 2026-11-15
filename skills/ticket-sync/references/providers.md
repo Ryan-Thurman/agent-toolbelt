@@ -1,6 +1,6 @@
-# Tracker providers — GitHub Issues, Jira, Azure Boards
+# Tracker providers: GitHub Issues, Jira, Azure Boards
 
-`gh` is the GitHub Issues path; **Jira** uses a Jira CLI (or REST); **Azure Boards** uses the
+`gh` is the GitHub Issues path. **Jira** uses a Jira CLI (or REST). **Azure Boards** uses the
 `az boards` CLI. When none is present/authenticated, the publish runs as a **manifest** (report-only).
 Parsing, field mapping, the preview, idempotency, and the confirmation gate are provider-independent
 (`config.md`). Only **create**, **link**, and **update** branch on `provider`.
@@ -18,8 +18,8 @@ case "$provider" in
 esac
 ```
 
-If the configured tracker's CLI isn't installed or isn't authenticated, **degrade to manifest mode**
-(see the bottom of this file) — never hard-fail because a CLI is missing. Credentials always come
+If the configured tracker's CLI is not installed or is not authenticated, **degrade to manifest mode**
+(see the bottom of this file). Never hard-fail because a CLI is missing. Credentials always come
 from the CLI's own auth (`gh auth login`, the Jira CLI config / `JIRA_API_TOKEN`, `az login` /
 `AZURE_DEVOPS_EXT_PAT`). **Never hardcode, prompt for, or echo a token/PAT.**
 
@@ -29,10 +29,10 @@ from the CLI's own auth (`gh auth login`, the Jira CLI config / `JIRA_API_TOKEN`
 |---|---|---|---|
 | Create | `gh issue create` | `jira issue create` | `az boards work-item create` |
 | Title | `--title` | `--summary` | `--title` |
-| Body | `--body` (markdown) | `--body` (markdown→ADF) | `--description` |
-| Type | — (no native type) | `--type Story\|Bug\|Task` | `--type "User Story"\|Bug\|Task` |
+| Body | `--body` (markdown) | `--body` (markdown->ADF) | `--description` |
+| Type | n/a (no native type) | `--type Story\|Bug\|Task` | `--type "User Story"\|Bug\|Task` |
 | Labels | `--label` | `--label` | `--fields "System.Tags=…"` |
-| Component / area | — (use a label) | `--component` | `--area` / `--iteration` |
+| Component / area | n/a (use a label) | `--component` | `--area` / `--iteration` |
 | Parent / epic | `--milestone` (loose) | `--parent EPIC-1` | `--fields "System.Parent=#"` via relation |
 | Dependency link | task list / "Blocked by #N" | `jira issue link A B "Blocks"` | `az boards work-item relation add` |
 | Update | `gh issue edit <n>` | `jira issue edit <KEY>` | `az boards work-item update --id <id>` |
@@ -45,16 +45,16 @@ from the CLI's own auth (`gh auth login`, the Jira CLI config / `JIRA_API_TOKEN`
   gh issue create --title "<title>" --body "<body>" \
     --label "<l1>" --label "<l2>" [--milestone "<rel>"]
   ```
-  `gh` returns the issue URL; parse the number for the `Tracker: #<n>` key.
-- **Field mapping:** mapped fields → labels; acceptance criteria → a `- [ ]` checklist in the body;
-  unmapped fields and sections → the body (`config.md`). No native issue type — encode it as a label
+  `gh` returns the issue URL. Parse the number for the `Tracker: #<n>` key.
+- **Field mapping:** mapped fields -> labels. Acceptance criteria -> a `- [ ]` checklist in the body.
+  Unmapped fields and sections -> the body (`config.md`). No native issue type. Encode it as a label
   if the config asks.
-- **Dependencies:** GitHub has no first-class "blocked by" link — render it in the body as
+- **Dependencies:** GitHub has no first-class "blocked by" link. Render it in the body as
   `Blocked by #<n>` and/or a task list referencing the blocker issues (resolved from their recorded
   keys). Order creation blockers-first so the references are real.
 - **Update:** `gh issue edit <n> --title … --body … --add-label …`.
 
-## Jira (`jira` CLI — ankitpokhrel/jira-cli; or `acli`/REST)
+## Jira (`jira` CLI from ankitpokhrel/jira-cli, or `acli`/REST)
 
 - **Create:**
   ```bash
@@ -62,12 +62,12 @@ from the CLI's own auth (`gh auth login`, the Jira CLI config / `JIRA_API_TOKEN`
     -s"<summary>" -b"<description>" \
     -l"<label>" -C"<component>" [--parent "<EPIC-KEY>"]
   ```
-  Returns the key (e.g. `ABC-1234`) → `Tracker: ABC-1234`. Description is markdown; the CLI/REST
+  Returns the key (e.g. `ABC-1234`) -> `Tracker: ABC-1234`. Description is markdown. The CLI/REST
   converts to ADF (Atlassian Document Format).
-- **Field mapping:** project key + issue type come from the config `Defaults`. Acceptance criteria →
+- **Field mapping:** project key + issue type come from the config `Defaults`. Acceptance criteria ->
   appended into the description (a checklist, or a custom "Acceptance Criteria" field if the config
-  maps one). A mapped field → a label, a **custom field** (`customfield_#####`), or **fixVersion**
-  (`-l` / `--custom field=value` / `--fix-version`). Unmapped fields and sections → the description.
+  maps one). A mapped field -> a label, a **custom field** (`customfield_#####`), or **fixVersion**
+  (`-l` / `--custom field=value` / `--fix-version`). Unmapped fields and sections -> the description.
 - **Dependencies:** link issues by their recorded keys:
   ```bash
   jira issue link <THIS-KEY> <BLOCKER-KEY> "is blocked by"   # or "Blocks" from the blocker side
@@ -83,11 +83,11 @@ from the CLI's own auth (`gh auth login`, the Jira CLI config / `JIRA_API_TOKEN`
     --type "<User Story|Bug|Task>" --title "<title>" --description "<html/markdown>" \
     --fields "System.Tags=<l1>; <l2>" --area "<area>" --iteration "<iteration>"
   ```
-  Returns JSON; parse `.id` → `Tracker: AB#<id>`.
-- **Field mapping:** issue/work-item type + area/iteration from the config. Labels → `System.Tags`.
-  A mapped field → a tag, a custom field, or the iteration path, per the config.
-  Acceptance criteria → `Microsoft.VSTS.Common.AcceptanceCriteria` when present, else appended to the
-  description. Unmapped fields and sections → the description.
+  Returns JSON. Parse `.id` -> `Tracker: AB#<id>`.
+- **Field mapping:** issue/work-item type + area/iteration from the config. Labels -> `System.Tags`.
+  A mapped field -> a tag, a custom field, or the iteration path, per the config.
+  Acceptance criteria -> `Microsoft.VSTS.Common.AcceptanceCriteria` when present, else appended to the
+  description. Unmapped fields and sections -> the description.
 - **Dependencies:** add a relation between the created work items (resolved from recorded ids):
   ```bash
   az boards work-item relation add --id <this-id> \
@@ -98,9 +98,9 @@ from the CLI's own auth (`gh auth login`, the Jira CLI config / `JIRA_API_TOKEN`
 
 ## Manifest degrade (no CLI / no credentials)
 
-When detection fails, **do not post** — write a publish-ready manifest and say so. The manifest is
+When detection fails, **do not post**. Write a publish-ready manifest and say so. The manifest is
 the plan made durable: per ticket, the resolved action (create/update), the provider, and the exact
-mapped fields (and the command that *would* run). Format it so a person with credentials can run it
+mapped fields (and the command to run). Format it so a person with credentials can run it
 later, e.g.:
 
 ```markdown
@@ -115,9 +115,9 @@ later, e.g.:
 ```
 
 Manifest mode is also the safe **preview** when the user wants the plan without committing to a
-post — it never touches the tracker and never records a `Tracker:` key.
+post. Manifest mode never touches the tracker and never records a `Tracker:` key.
 
 ## See also
 
-- `references/config.md` — the `.tickets.md` schema, field-mapping rules, base-branch trust, and the
+- `references/config.md`: the `.tickets.md` schema, field-mapping rules, base-branch trust, and the
   `Tracker:` idempotency key.

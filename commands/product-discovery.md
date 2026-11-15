@@ -5,7 +5,7 @@ argument-hint: "<opportunity-or-request>"
 
 # /product-discovery
 
-**Arguments:** `$ARGUMENTS` — the opportunity, request, or candidate feature to assess.
+**Arguments:** `$ARGUMENTS`: the opportunity, request, or candidate feature to assess.
 
 Use this before `/shape-up` when the team must decide what to build.
 

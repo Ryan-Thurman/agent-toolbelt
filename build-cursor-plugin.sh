@@ -7,7 +7,7 @@
 # from this repo. The repository itself is also a native Cursor, Claude Code, and
 # Codex plugin; this build is the optional frozen/user-scoped Cursor package.
 #
-# By DEFAULT rules are NOT bundled: most of this repo's rules are `alwaysApply: true`,
+# By DEFAULT rules are NOT bundled: the routing rule is `alwaysApply: true`,
 # and a user-scoped plugin would fire them in EVERY project. Skills are on-demand and
 # safe to globalize; pass --with-rules only if you really want always-on rules everywhere.
 #

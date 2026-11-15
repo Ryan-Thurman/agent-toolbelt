@@ -1,4 +1,4 @@
-# Phased Delivery Workflow
+# Phased delivery workflow
 
 Use the `phased-delivery` skill for this workflow.
 The skill owns the rules for scope, approval, stacked PRs, tests, and merge authority.

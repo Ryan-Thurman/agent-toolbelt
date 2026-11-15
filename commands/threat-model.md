@@ -7,5 +7,5 @@ argument-hint: "<system-or-design>"
 
 **Arguments:** `$ARGUMENTS`
 
-Use this command for a design before you build it; use `/security-audit` for implemented code.
+Use this command for a design before you build it. Use `/security-audit` for implemented code.
 Follow the `threat-model` skill for `$ARGUMENTS`.

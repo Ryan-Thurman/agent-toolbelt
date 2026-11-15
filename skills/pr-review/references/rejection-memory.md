@@ -1,4 +1,4 @@
-# Anti-noise memory — the recorded-rejections learning loop
+# Anti-noise memory: the recorded-rejections learning loop
 
 A cross-run precision memory. When verification (the standard critic or the deep
 dual-judge) **refutes** a finding, remember it. On later runs of the same repo, a finding that the
@@ -15,9 +15,9 @@ Per-repo, outside the working tree, never committed:
 store="$(git rev-parse --git-path pr-review-rejections.jsonl)"   # -> <repo>/.git/pr-review-rejections.jsonl
 ```
 
-Using `git rev-parse --git-path` keeps it inside `.git/` (so it's naturally per-repo, ignored by git,
+Using `git rev-parse --git-path` keeps it inside `.git/` (so it is naturally per-repo, ignored by git,
 and shared across worktrees) without you hard-coding a path. If not in a git repo, skip the memory
-entirely — it's a pure optimization, never a hard dependency.
+entirely. It is a pure optimization, never a hard dependency.
 
 ## The fingerprint (must survive line drift)
 
@@ -28,9 +28,9 @@ fingerprint = short_hash( facet + "|" + path + "|" + normalize(rootIssue) )
 ```
 
 - `normalize()` = lowercase, collapse whitespace, strip line numbers / hex literals / quoted
-  identifiers — so "token === stored at L142" and "token === stored at L150" hash the same.
+  identifiers, so "token === stored at L142" and "token === stored at L150" hash the same.
 - Include `path` and `facet` so the same root issue in two files stays distinct.
-- **Exclude** `lineStart`/`lineEnd`, severity, and confidence — those legitimately change between runs.
+- **Exclude** `lineStart`/`lineEnd`, severity, and confidence, because those legitimately change between runs.
 
 This same fingerprint is the `--comment` idempotency marker (`posting.md`).
 
@@ -55,23 +55,23 @@ Append with a real JSON tool (`jq -c`), one object per line. On a repeat rejecti
 fingerprint, bump `count` and refresh `rejectedOn` instead of adding a duplicate line.
 Preserve the falsifying observation and its code reference when writing a new
 record so the next run can inspect why it was rejected. Older records without
-`evidence` remain readable; do not fabricate missing historical evidence.
+`evidence` remain readable. Do not fabricate missing historical evidence.
 
-## What to record — and what NOT to
+## What to record, and what NOT to
 
 Record a drop **only** when verification refuted the finding on its merits:
 
-- ✅ `reason: "refuted"` — judge re-read the code and showed the claim is **false** or unreachable.
-- ✅ `reason: "no-consequence"` — real code, but no actual consequence (a nit dressed as a problem).
+- ✅ `reason: "refuted"`: judge re-read the code and showed the claim is **false** or unreachable.
+- ✅ `reason: "no-consequence"`: real code, but no actual consequence (a nit dressed as a problem).
 
 Do **NOT** record:
 
-- ❌ **stale** drops — the finding was against code that has since changed. Stale ≠ wrong; the issue
-  may legitimately recur in a different form. Learning from staleness would train the reviewer to
+- ❌ **stale** drops: the finding was against code that has since changed. Stale ≠ wrong, and the issue
+  can legitimately recur in a different form. Learning from staleness will train the reviewer to
   ignore a real future bug. (See the stale-drop rule in `fan-out.md` §4.)
-- ❌ findings the **user** dismissed in conversation (could be "not now", not "not real"). A future
-  phase may add an explicit user-dismiss path with its own reason; until then, judge-only.
-- ❌ anything from a run where verification itself failed/was skipped — no judgment, no memory.
+- ❌ findings the **user** dismissed in conversation (can be "not now", not "not real"). A future
+  phase can add an explicit user-dismiss path with its own reason. Until then, judge-only.
+- ❌ anything from a run where verification itself failed/was skipped: no judgment, no memory.
 
 This keeps the memory a record of *adjudicated false positives*, not of everything that ever got cut.
 
@@ -82,15 +82,15 @@ After aggregation + verification, **before** thresholding/rendering:
 1. Load the store (skip if absent/empty). Index by `fingerprint`.
 2. For each **surviving** finding, compute its fingerprint and look it up.
 3. On a hit:
-   - **Downrank one bucket**: `blocker → should-fix → nit` (a nit stays a nit). Lower `severity` one
-     step too. This is the anti-noise effect — a previously-refuted "blocker" no longer blocks merge
+   - **Downrank one bucket**: `blocker -> should-fix -> nit` (a nit stays a nit). Lower `severity` one
+     step too. This is the anti-noise effect: a previously-refuted "blocker" no longer blocks merge
      on reputation alone.
    - **Tag** it `⟲ previously rejected (<count>×, last <rejectedOn>)` in `title`/render.
    - Keep it in the report. It survived this run's independent verification.
 4. Findings with no fingerprint match render normally.
 
 Because the verdict is host-derived, downranking a lone previously-rejected "blocker" to should-fix
-can move the verdict away from `REQUEST CHANGES` — exactly the intended "stop blocking merge over a
+can move the verdict away from `REQUEST CHANGES`, which is exactly the intended "stop blocking merge over a
 known non-issue" behavior, while still showing the item.
 
 ## Writing the memory (write path)
@@ -101,8 +101,8 @@ before rendering. Do this for the *adjudicated* drops only, after verification h
 
 ## Guardrails
 
-- The memory **downranks; it never auto-hides** — a `⟲` item is always rendered (subject to the normal
+- The memory **downranks and never auto-hides**. A `⟲` item is always rendered (subject to the normal
   nit threshold, same as any nit).
-- It's **advisory and per-repo**. Deleting `.git/pr-review-rejections.jsonl` is a clean reset.
-- If the store is unreadable/corrupt, log a one-line note and proceed as if empty — never block a review.
+- It is **advisory and per-repo**. Deleting `.git/pr-review-rejections.jsonl` is a clean reset.
+- If the store is unreadable/corrupt, log a one-line note and proceed as if empty. Never block a review.
 - Add the `memory:` audit footer (`output-format.md`) when the memory changed anything.

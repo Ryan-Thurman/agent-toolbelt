@@ -6,18 +6,18 @@ created: YYYY-MM-DD
 updated: YYYY-MM-DD
 ---
 
-# Bug Investigation: <short title>
+# Bug investigation: <short title>
 
 <!--
-THE FILE IS THE DEBUGGING BRAIN. Update it BEFORE each action, not after — if the
+THE FILE IS THE DEBUGGING BRAIN. Update it BEFORE each action, not after. If the
 session resets mid-action, this file must show what was about to happen.
 Section update rules:
-  Symptoms            IMMUTABLE after redacted intake (the bug never changes; only our understanding does)
-  Reproduction        OVERWRITE until reproduction is confirmed; then fixed
-  Current Focus       OVERWRITE before every action
+  Symptoms            IMMUTABLE after redacted intake (the bug never changes. Only our understanding does)
+  Reproduction        OVERWRITE until reproduction is confirmed, then fixed
+  Current focus       OVERWRITE before every action
   Eliminated          APPEND only (never re-investigate a disproven hypothesis)
   Evidence            APPEND only
-  Reasoning checkpoint GATE — fill all 5 fields with concrete answers before any fix
+  Reasoning checkpoint GATE: fill all 5 fields with concrete answers before any fix
   Resolution          OVERWRITE as understanding evolves
 Redact credentials and sensitive user data from this file, including logs and reproduction commands.
 -->
@@ -38,18 +38,18 @@ Redact credentials and sensitive user data from this file, including logs and re
 - Reproduction status:        # confirmed-manual | automated-red | not-yet-reproduced
 - Reproduced by:              # who confirmed it (QA / reporter / dev), if manual
 
-## Current Focus
+## Current focus
 <!-- OVERWRITE before every action. next_action must be concrete. -->
 
 - Hypothesis under test:
 - Test / probe:
 - Expecting:
-- next_action:                # e.g. "Add logging at line 47 of auth.js before jwt.verify()" — never "continue investigating"
+- next_action:                # e.g. "Add logging at line 47 of auth.js before jwt.verify()", never "continue investigating"
 
 ## Eliminated
 <!-- APPEND only. -->
 
-| Hypothesis | Evidence it's wrong | When |
+| Hypothesis | Evidence it is wrong | When |
 |---|---|---|
 |  |  |  |
 
@@ -62,19 +62,19 @@ Redact credentials and sensitive user data from this file, including logs and re
 
 ## Reasoning checkpoint
 <!-- GATE before any fix. If you cannot fill all five with specific, concrete answers,
-     you do NOT have a confirmed root cause yet — keep investigating. -->
+     you do NOT have a confirmed root cause yet, so keep investigating. -->
 
 - hypothesis:
-- confirming_evidence:        # list — the specific observations that support it
-- falsification_test:         # the experiment that would have disproven it (and didn't)
+- confirming_evidence:        # list: the specific observations that support it
+- falsification_test:         # the experiment that was able to disprove it, and did not
 - fix_rationale:              # why the planned change addresses the cause, not the symptom
-- blind_spots:                # what you're still unsure about
+- blind_spots:                # what you are still unsure about
 
 ## Resolution
 <!-- OVERWRITE as it firms up. -->
 
 - root_cause:
 - fix:
-- verification:               # automated revert→must-fail proof, or documented manual QA verification
+- verification:               # automated test observed red before repair and green after, or documented manual QA verification
 - files_changed:
 - prevention / follow-ups:    # incl. "automated regression test" when repro was manual-only

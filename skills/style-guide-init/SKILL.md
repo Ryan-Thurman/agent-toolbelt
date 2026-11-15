@@ -21,8 +21,8 @@ With no flag and no clear request, use explain or draft.
 - **Explain or draft (`--print`):** inspect the requested scope and return guidance without
   changing files. `--print` always takes this path.
 - **Create or update (`--write`):** a request to write the guide authorizes the relevant doc
-  edits and evidence checkpoint. Use the existing documentation owner and format;
-  otherwise default to `CONTRIBUTING.md`. Use `STYLE_GUIDE.md` for a specifically
+  edits and evidence checkpoint. Use the existing documentation owner and format.
+  Otherwise default to `CONTRIBUTING.md`. Use `STYLE_GUIDE.md` for a specifically
   requested style-only guide. Do not require another approval for authorized edits.
 - **Check (`--check`):** report changed inputs and affected guidance without writing files.
 - **Refresh (`--refresh`):** re-evaluate changed inputs and affected claims. Apply doc changes
@@ -42,27 +42,27 @@ unless requested. Follow governing instructions while proposing corrections.
    linter, compiler, package/task, test, CI, PR-template and ownership files.
 2. Read [references/extraction.md](references/extraction.md). Trace a representative
    change through implementation, tests and required checks. Include active and
-   older areas where their practices differ; record unsampled areas. Validate
-   commands from their definitions and relevant CI; record actual execution
+   older areas where their practices differ, and record unsampled areas. Validate
+   commands from their definitions and relevant CI, and record actual execution
    separately. Repository scripts are code: inspect before running, and stay
    within the task's execution authority.
 3. Classify each claim as **documented policy**, **enforced**, **observed**,
    **proposed**, or **conflicted**. Record source paths/symbols, scope, confidence
    and counterexamples. A new branch or frequent pattern cannot override an
-   approved policy. Show stale commands or contradictions with current evidence;
-   preserve intent and leave policy decisions unresolved when the evidence cannot
+   approved policy. Show stale commands or contradictions with current evidence.
+   Preserve intent and leave policy decisions unresolved when the evidence cannot
    settle them. Generic advice is never an extracted repository convention.
 4. Write only useful contribution decisions: setup, where changes belong,
    representative code/test idioms, verification commands, generated-file handling,
    documentation impact, and submission workflow. Reuse the existing style owner
-   for detailed rules. Link from README/agent entry files when useful and authorized;
-   keep one owner per fact. Use `templates/repository-contribution-guide.md` or,
+   for detailed rules. Link from README/agent entry files when useful and authorized.
+   Keep one owner per fact. Use `templates/repository-contribution-guide.md` or,
    for style-only work, `templates/repository-style-guide.md`.
 5. Verify cited paths and command definitions, inspect the scoped doc diff, and
    record unresolved choices and coverage. For persisted guidance, read
    [references/maintenance.md](references/maintenance.md) and capture a checkpoint
-   after reviewing the final sources and outputs. A checkpoint detects changes;
-   it does not certify that a guide is correct or approved.
+   after reviewing the final sources and outputs. A checkpoint detects changes.
+   It does not certify that a guide is correct or approved.
 
 When naming or TypeScript/React guidance needs a fallback, consult
 `shared/contracts/references/anti-slop-naming.md` or

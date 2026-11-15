@@ -27,7 +27,7 @@ Otherwise, report the feature text.
 
 ## Procedure
 
-1. Read the acceptance criteria and their IDs. Prefer the output of `story-refinement`.
+1. Read the acceptance criteria and their IDs, or failure-scenario cards (`FS-` IDs). Prefer the output of `story-refinement`.
    If a criterion has no Given/When/Then form or no failure path, rewrite it and mark the rewrite as your draft.
    If many criteria are vague, send the item to `story-refinement` first.
 2. Find the runner, the feature folder, and the existing step definitions.
@@ -37,6 +37,7 @@ Otherwise, report the feature text.
    Write Gherkin scenarios for the other criteria.
 4. Write the feature files with `references/writing-features.md`.
    Add the negative scenarios from `shared/contracts/references/negative-testing.md` that apply.
+   Record each family in the template.
 5. Map each step to an existing step definition, or mark it as new. Reuse the wording of existing steps.
 6. Build the traceability table: each criterion ID maps to a scenario or a named unit test.
    Report each criterion with no test as a gap.
@@ -46,3 +47,4 @@ Otherwise, report the feature text.
 Deliver the feature files, the step map, and the traceability table in `templates/bdd-scenarios.md`.
 State which scenarios are expected to fail before implementation.
 Hand the scenarios to `phased-delivery`. Each phase lists the scenarios that it must turn from red to green.
+The loop is in `shared/contracts/references/test-driven-development.md`, "Acceptance loop with BDD scenarios".

@@ -2,14 +2,14 @@
 
 Design source and revision:
 Owner:
-Result: <Ready for planning | Needs decision | Needs revision | Not verified>
+Result: <Ready for planning | Needs decision | Needs revision | Not verified. In readiness mode, the requirement statuses.>
 Evidence limits:
 
 ## Journeys and targets
 
 | Journey | SLI and source | SLO and window | Target source or owner | Error budget policy owner |
 | --- | --- | --- | --- | --- |
-|  |  | `Unknown` if not given |  |  |
+|  |  | `Decision needed` with an owner if not given |  |  |
 
 ## Dependency inventory
 

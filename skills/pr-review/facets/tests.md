@@ -15,8 +15,8 @@ Set `"facet": "tests"` on every finding.
 
 - coverage *theater*: demanding tests for trivial getters/constants/pass-throughs.
 - asking for tests of code outside the diff.
-- correctness of the implementation itself (correctness facet owns that) — you assess *coverage*.
+- correctness of the implementation itself (correctness facet owns that). You assess *coverage*.
 - style of existing tests unless the change introduced a real gap.
 
 A tests blocker is a real, untested behavior change or bug-fix where a missing test leaves a
-genuine regression risk. Name the specific case that should be tested.
+genuine regression risk. Name the specific case to test.

@@ -12,9 +12,7 @@ Toolbelt paths: a path that starts with `shared/`, `skills/`, `templates/`, or `
 Read `shared/contracts/references/evidence-quality.md` when assessing candidate evidence.
 
 Produce a bounded debt register.
-Default to report-only; write a requested register without editing code, installing tools, or creating external tickets.
-
-Paths beginning `templates/` or `shared/` refer to the Toolbelt root.
+Default to report-only. Write a requested register without editing code, installing tools, or creating external tickets.
 
 ## Procedure
 
@@ -29,7 +27,7 @@ Paths beginning `templates/` or `shared/` refer to the Toolbelt root.
 4. Rank urgency and expected benefit against cost, dependencies, confidence, and change risk.
    Keep unknown estimates explicit.
 5. Update an existing suitable register or use `templates/tech-debt-register.md` when a durable output is requested.
-   Preserve IDs and earlier decisions; mark resolved or stale evidence explicitly.
+   Preserve IDs and earlier decisions. Mark resolved or stale evidence explicitly.
    Name `tech-backlog-assessment` as the next owner for selected items when available.
    Perform that separate assessment only when the user requests it.
 

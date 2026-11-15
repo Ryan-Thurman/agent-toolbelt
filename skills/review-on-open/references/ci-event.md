@@ -1,7 +1,7 @@
-# The event (CI) path — fire a review on the PR event
+# The event (CI) path: fire a review on the PR event
 
 On GitHub, the host already emits a `pull_request` event when a PR is opened or pushed to. That event
-*is* the trigger — so instead of polling, a CI job runs a **headless** Claude Code that reviews the
+*is* the trigger, so instead of polling, a CI job runs a **headless** Claude Code that reviews the
 exact PR the event names. Each CI run is a brand-new process, which gives the "fresh agent, not the
 authoring agent" property for free.
 
@@ -15,7 +15,7 @@ the way it is.
 name: agent-pr-review
 on:
   pull_request:
-    types: [opened, synchronize, reopened]   # opened + every new push (synchronize) + reopen
+    types: [opened, synchronize, reopened, ready_for_review]   # opened + every new push (synchronize) + reopen + draft marked ready
 permissions:
   contents: read            # read the code…
   pull-requests: write      # …and post the inline review. Nothing else.
@@ -25,6 +25,7 @@ concurrency:
 jobs:
   review:
     runs-on: ubuntu-latest
+    if: github.event.pull_request.draft == false   # skip draft PRs
     steps:
       - uses: actions/checkout@v4
         with:
@@ -39,71 +40,73 @@ jobs:
           PR: ${{ github.event.pull_request.number }}
         run: |
           claude -p "/pr-review $PR --comment" \
-            --allowedTools="Bash(gh auth status:*),Bash(gh pr view:*),Bash(gh pr diff:*),Bash(gh api:*),Bash(git diff:*),Bash(git log:*),Bash(git show:*),Bash(git status:*),Bash(git rev-parse:*),Bash(git merge-base:*),Bash(git symbolic-ref:*),Bash(git remote:*),Bash(git fetch:*),Bash(jq:*),Read,Grep,Glob,Task" \
+            --allowedTools="Bash(gh auth status:*),Bash(gh pr view:*),Bash(gh pr diff:*),Bash(gh issue view:*),Bash(gh api:*),Bash(git diff:*),Bash(git log:*),Bash(git show:*),Bash(git status:*),Bash(git rev-parse:*),Bash(git merge-base:*),Bash(git symbolic-ref:*),Bash(git remote:*),Bash(git fetch:*),Bash(jq:*),Read,Grep,Glob,Task" \
             --disallowedTools="Edit,Write,NotebookEdit,WebFetch,WebSearch"
 ```
 
 Notes:
-- **`claude -p "…"`** is headless (print) mode — one prompt, no interactive session. The prompt is
-  just your existing slash command; `--comment` does the inline posting via the `pr-review` provider
+- **`if: ... draft == false`** skips draft PRs. A draft that is marked ready gets its review when it is marked ready, because `ready_for_review` is in `types`.
+- **`claude -p "…"`** is headless (print) mode, one prompt, no interactive session. The prompt is
+  just your existing slash command. `--comment` does the inline posting via the `pr-review` provider
   layer, which uses `gh` and the `GH_TOKEN` above.
 - **`--allowedTools` is variadic**, so the space-separated form (`--allowedTools "a,b,c"` followed by
   the prompt) can swallow a positional argument. Use the `=`-joined form above.
 - **Scope `Bash` to verbs, not to `Bash`.** A bare `Bash` in the allowlist grants *every* Bash
-  command — including `gh pr merge` and `git push`. It looks restrictive and restricts nothing.
+  command, including `gh pr merge` and `git push`. It looks restrictive and restricts nothing.
 - **The list above is exhaustive, and has to be.** Under headless `-p` an unmatched permission check
   is **denied, not prompted**, so a command review needs but the allowlist omits fails mid-run. Each
   entry earns its place: `gh pr diff`/`gh pr view` fetch the target
-  (`skills/pr-review/references/targets-and-diff.md`), `git remote`/`git symbolic-ref` detect the host
+  (`skills/pr-review/references/targets-and-diff.md`), `gh issue view` reads the linked issue for intent
+  (same file), `git remote`/`git symbolic-ref` detect the host
   and base branch, `git fetch`/`git merge-base` resolve `base...head`, `git rev-parse --git-path`
   locates the rejection-memory store, `gh api` posts the inline review, and `jq` builds the payload
   (`skills/pr-review/references/posting.md`). If you narrow it, re-derive it from what `pr-review`
-  actually invokes — and if a run dies on a denied command, widen the allowlist rather than falling
+  actually invokes, and if a run dies on a denied command, widen the allowlist rather than falling
   back to bare `Bash`.
-- **The allowlist is not the security boundary — `permissions:` is.** `Bash(gh api:*)` cannot be
+- **The allowlist is not the security boundary: `permissions:` is.** `Bash(gh api:*)` cannot be
   scoped to an HTTP verb, so the reviewer can in principle call any endpoint the token permits. With
-  `contents: read` the token cannot merge (merging needs `contents: write`); with
+  `contents: read` the token cannot merge (merging needs `contents: write`). With
   `pull-requests: write` it can post, and it can also close or retitle the PR. Keep `permissions:`
   minimal and treat the allowlist as defense in depth, not as the thing standing between an injected
   diff and your repo.
-- The repo's `.pr-review.md` (if present) is picked up automatically by `pr-review` — per-repo
+- The repo's `.pr-review.md` (if present) is picked up automatically by `pr-review`, per-repo
   priorities apply to the bot exactly as to a human-invoked review.
 
 ## Required secret
 
-- **`ANTHROPIC_API_KEY`** — add under the repo's *Settings → Secrets and variables → Actions*. (Or
+- **`ANTHROPIC_API_KEY`**: add under the repo's *Settings -> Secrets and variables -> Actions*. (Or
   use your org's Claude Code GitHub auth if you have one.)
-- **`GITHUB_TOKEN`** is provided by Actions automatically; the `permissions:` block scopes it to
+- **`GITHUB_TOKEN`** is provided by Actions automatically. The `permissions:` block scopes it to
   read-code + write-PR-comments and nothing more.
 
 ## Untrusted-diff hardening (read this)
 
-A PR's diff, title, and body are **untrusted** — the `pr-review` skill already treats them as data,
+A PR's diff, title, and body are **untrusted**. The `pr-review` skill already treats them as data,
 not instructions, but CI adds a second risk: a malicious PR running with access to your secrets.
 
 - **Use `pull_request`, never `pull_request_target`.** `pull_request` runs in the *untrusted* context:
   the fork's code, **no** access to repo secrets by default, read-only token. `pull_request_target`
-  runs in the *base* repo's trusted context with secrets and a write token — combining that with
-  checking out untrusted PR code is the classic Actions exfiltration hole. Don't.
-- That means **fork PRs won't have `ANTHROPIC_API_KEY`** (secrets aren't exposed to fork-triggered
-  runs). That's the safe default. For a private repo where all PRs are from trusted branches, this is
+  runs in the *base* repo's trusted context with secrets and a write token, combining that with
+  checking out untrusted PR code is the classic Actions exfiltration hole. Do not.
+- That means **fork PRs will not have `ANTHROPIC_API_KEY`** (secrets are not exposed to fork-triggered
+  runs). That is the safe default. For a private repo where all PRs are from trusted branches, this is
   a non-issue. If you genuinely need fork-PR review, gate it behind a manual `labeled` trigger or a
-  separate maintainer-approved workflow — don't reach for `pull_request_target`.
-- Keep `permissions:` minimal (above) — it, not `--allowedTools`, is what bounds the blast radius.
+  separate maintainer-approved workflow. Do not reach for `pull_request_target`.
+- Keep `permissions:` minimal (above). It, not `--allowedTools`, is what bounds the blast radius.
   Never add `Write`/`Edit`/`WebFetch` to a reviewer's allowlist, and never grant bare `Bash` or
   `Bash(gh:*)`: either one lets a reviewer that an injected diff has talked into approving itself
-  reach an API that would record the approval.
+  reach an API that records the approval.
 
 ## Idempotency
 
 Actions fires once per push, so a new head SHA starts a new run. `concurrency.cancel-in-progress`
 stops a review of a stale SHA. A re-run of the same commit, or a poller run, must not post again.
-`--comment` writes and checks the head-SHA marker in `skills/pr-review/references/posting.md` →
-"Idempotency". The poller checks the same marker (`poller.md` → "The due check").
+`--comment` writes and checks the head-SHA marker in `skills/pr-review/references/posting.md` ->
+"Idempotency". The poller checks the same marker (`poller.md` -> "The due check").
 
 ## Azure Repos (sketch)
 
-Azure has no GitHub-Actions equivalent baked into the repo; the event path is an **Azure Pipeline**
+Azure has no GitHub-Actions equivalent baked into the repo. The event path is an **Azure Pipeline**
 with a PR trigger that runs the same headless command:
 
 ```yaml
@@ -118,4 +121,4 @@ steps:
 ```
 
 `pr-review`'s provider layer detects Azure and posts per-location `pullRequestThreads`. Until you wire
-a Pipeline, run the **poller** against Azure instead (`poller.md`) — no CI required.
+a Pipeline, run the **poller** against Azure instead (`poller.md`). It needs no CI.

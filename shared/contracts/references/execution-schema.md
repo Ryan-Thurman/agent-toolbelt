@@ -23,7 +23,7 @@ Use UTF-8 JSON with these version 1 fields:
 | `next_action` | Record `action`, `owner`, and `reason`. |
 
 Use `source_refs` entries with `location` and `revision` strings.
-Use exact paths or directory prefixes ending in `/` for scope; glob patterns are unsupported.
+Use exact paths or directory prefixes ending in `/` for scope. Glob patterns are unsupported.
 An excluded path takes precedence over an allowed path.
 Use an empty allowed list for an assignment that cannot change source files.
 Name any report destination separately from the source-change scope.
@@ -46,7 +46,7 @@ Create a new run ID and input when scope, source, authority, or relevant workspa
 | `actions_used` | List the worker action IDs used within its authority. |
 | `checks` | List unique `id`, `outcome`, and `evidence` values. Outcomes are `passed`, `failed`, or `not_run`. |
 | `acceptance` | List unique `id`, `outcome`, and `evidence` values for the assigned criteria. |
-| `blockers` | List unresolved blockers; a `blocked` result needs at least one. |
+| `blockers` | List unresolved blockers. A `blocked` result needs at least one. |
 | `next_action` | Record `action`, `owner`, and `reason`. |
 
 Acceptance outcomes are `verified`, `failed`, or `not_verified`.

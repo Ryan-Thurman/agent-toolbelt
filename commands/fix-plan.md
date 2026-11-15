@@ -1,5 +1,5 @@
 ---
-description: Turn a confirmed root cause into the smallest safe fix and verify it — write the fix brief, bound the blast radius, define the verification, then hand to dev and review. Use after RCA confirms the cause.
+description: Turn a confirmed root cause into a bounded fix contract. Write the fix brief, bound the blast radius, and define the verification. Use after RCA confirms the cause.
 argument-hint: "<bug-investigation-file-or-rca-context>"
 ---
 
@@ -7,5 +7,5 @@ argument-hint: "<bug-investigation-file-or-rca-context>"
 
 **Arguments:** `$ARGUMENTS`
 
-Use this command after `/rca` confirms the cause. `/implementation-plan` plans a larger fix; `/dev-implement-task` implements it.
+Use this command after `/rca` confirms the cause.
 Follow the `bug-to-fix` skill and its `references/fix-contract.md` for `$ARGUMENTS`.

@@ -18,6 +18,7 @@ Choose the mode from the user's request:
 | Turn an ambiguous idea into an agreed brief. | Follow the interactive shaping flow below. | A brief that the user approves. |
 | Turn an approved brief into tickets. | Read `references/slicing.md`. | Dependency-ordered vertical-slice tickets. |
 
+If the request describes broken behavior, route it to `bug-to-fix`.
 Send a ticket or story that is almost ready to `story-refinement`.
 If the user asks for a gap review and shaping, report the gaps first.
 Then use the gaps to focus the shaping questions.
@@ -38,8 +39,6 @@ Send architecture-structure questions to `system-design` when it is available.
 1. **Scope-gate.** If the request contains several independent subsystems, propose a split
    before you refine details.
 2. **Grill.** Read `references/interrogation.md`. Ask the open decisions in numbered rounds.
-   Use single open questions only until the user can name the outcome.
-   Give a recommended answer with each question.
 3. **Review readiness.** Find each point where another implementer must make a consequential guess.
    Do the brief self-audit in `references/interrogation.md`.
    Done means no unresolved overloaded terms, no open scope boundary, and no `TBD`.
@@ -49,7 +48,6 @@ Send architecture-structure questions to `system-design` when it is available.
 5. **Hand off after approval.** Give the approved brief to `$phased-delivery`
    (or `/dev-plan` on hosts with commands).
    If the user wants tickets, slice the brief first with `references/slicing.md`.
-   If the request describes broken behavior, route it to `bug-to-fix`.
 
 Record a decision in the brief.
 For an architecture decision record, use the threshold in

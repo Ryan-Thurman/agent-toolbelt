@@ -1,7 +1,5 @@
 # Distributed workflows
 
-Read this at the Standard level or higher when a flow crosses services, queues, or scheduled jobs.
-
 ## Start simple
 
 Prefer one deployable unit with clear modules. A distributed design adds network failures, partial failure,

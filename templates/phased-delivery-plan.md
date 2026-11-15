@@ -1,4 +1,4 @@
-# Phased Delivery Plan
+# Phased delivery plan
 
 Use this template only when an existing approved plan cannot hold the execution
 state. Link to source requirements or tickets instead of copying them wholesale.
@@ -24,13 +24,13 @@ Preserve source scope and approved project ticket boundaries.
 ## Phase / PR map
 
 One row is one PR. When approved tickets are supplied, one row is exactly one
-ticket; implementation tasks may be added within the row, but ticket scope may
+ticket. Implementation tasks can be added within the row, but ticket scope must
 not be silently expanded. Use one row for a small standalone request.
 
 Keep the source ID and acceptance link with the phase outcome. State the work
 branch and PR target explicitly, including the parent branch for a stack.
 
-| Phase / source | Outcome, reason, and acceptance link | Depends on | Work branch → PR target | PR URL / status |
+| Phase / source | Outcome, reason, and acceptance link | Depends on | Work branch -> PR target | PR URL / status |
 |---|---|---|---|---|
 | 1 / <source ID> |  |  |  |  |
 
@@ -87,4 +87,4 @@ Include the owner and prerequisite within the action when they are not obvious.
 Duplicate the phase block for each additional approved phase or ticket. Do not
 add separate Foundation, Polish, or Test phases to a ticket-scoped plan.
 When a parent PR merges, verify each dependent PR's base and diff before
-continuing; record any authorized retarget or history rewrite here.
+continuing. Record any authorized retarget or history rewrite here.

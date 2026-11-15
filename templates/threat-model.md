@@ -1,25 +1,25 @@
-# Threat Model: <system>
+# Threat model: <system>
 
-## Scope and Assumptions
+## Scope and assumptions
 
 Record the design source and reviewed revision, evidence sources, unavailable inputs, and review limits.
 
-## Assets and Actors
+## Assets and actors
 
-## Flows and Trust Boundaries
+## Flows and trust boundaries
 
-## Abuse Cases and Attack Paths
+## Abuse cases and attack paths
 
-| ID | Entry point / precondition | Path | Impact | Likelihood / uncertainty |
+| ID | Entry point / precondition | Path | Impact | Exploitability / uncertainty |
 |---|---|---|---|---|
 
-## Mitigations and Testable Requirements
+## Mitigations and testable requirements
 
 | Path ID and owner | Mitigation and control status | Security requirement ID | Verification and evidence | Disposition |
 |---|---|---|---|---|
 
 Distinguish proposed controls, observed implementation, and verified behavior.
 
-## Residual Risk and Decisions Needed
+## Residual risk and decisions needed
 
 Record accepted risks with their actual owner decisions and architecture changes that require another review.

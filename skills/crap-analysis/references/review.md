@@ -111,7 +111,7 @@ Recommended actions (from brief):
 → Run `/crap-refactor {name}` to apply behavior-preserving fixes, or confirm here to proceed.
 ```
 
-Do not paraphrase the brief from memory — cite from loaded content only.
+Do not paraphrase the brief from memory. Cite from loaded content only.
 
 ### WARN (failure outside the diff)
 

@@ -1,16 +1,16 @@
 # Rollout and rollback
 
-How to release incrementally and how to undo it. The rollback plan is mandatory; the rollout plan
+How to release incrementally and how to undo it. The rollback plan is mandatory. The rollout plan
 scales to the risk of the change.
 
 ## Rollback plan (required before release)
 
 State both:
-- **How to revert** — the cheapest safe mechanism for this change: flag-off (if behind a feature
+- **How to revert**: the cheapest safe mechanism for this change: flag-off (if behind a feature
   flag), `git revert` + redeploy, roll back to the prior release/tag, or run the migration's
-  down-step. Note any irreversible step (a destructive migration, a data backfill) explicitly — it
+  down-step. Note any irreversible step (a destructive migration, a data backfill) explicitly, because it
   changes the plan.
-- **The trigger** — the concrete signal that means "roll back now". Take it from the project's
+- **The trigger**: the concrete signal that means "roll back now". Take it from the project's
   release policy. When the project has no trigger, the readiness verdict is NO-GO, and the missing
   trigger is the blocking gap. Do not invent a universal threshold.
   When the project has an SLO and an error budget policy, a burn-rate alert on the affected journey can be the trigger.
@@ -44,7 +44,7 @@ Staged rollout:
 6. Full rollout   → monitor for the project's window (for example, ~1 week), then clean up the flag
 ```
 
-For a low-risk change you own, big-bang + watch is fine — but still have the rollback plan.
+For a low-risk change you own, big-bang + watch is fine, but still have the rollback plan.
 
 ## Advance, hold, and recover rules
 

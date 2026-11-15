@@ -1,4 +1,4 @@
-# Repository Style Precedence
+# Repository style precedence
 
 Use this contract when writing or reviewing code. It defines how generic guidance
 becomes repository-specific practice.
@@ -23,7 +23,7 @@ neighbors, established domain terms, and the local patterns for boundaries, erro
 and tests. Record uncertainty rather than inventing a rule.
 
 An approved `STYLE_GUIDE.md` is a repository style owner only when the team has
-adopted it. `AGENTS.md` and similar entry files should point to the owner rather
+adopted it. Point to the owner from `AGENTS.md` and similar entry files rather
 than duplicate its content.
 
 ## Review rule

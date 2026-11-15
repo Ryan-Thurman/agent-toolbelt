@@ -13,7 +13,7 @@ Give each finding the file, the scenario, the rule that it breaks, and a suggest
 | Independence | A scenario depends on data or state from another scenario. |
 | Duplication | Several scenarios differ only by values and can be one `Scenario Outline`. |
 | Background | The `Background` has more than three steps, or some scenarios do not need it. |
-| Traceability | A scenario has no criterion tag, or a criterion has no scenario or named unit test. |
+| Traceability | A scenario has no `@AC-` or `@FS-` tag, or a criterion has no scenario or named unit test. |
 | Level | A scenario runs at a higher level than `shared/contracts/references/test-levels.md` requires, for example an edge case as `@e2e`. |
 | Stale work | A scenario of a completed phase still has `@wip`, or a step definition has no scenario. |
 

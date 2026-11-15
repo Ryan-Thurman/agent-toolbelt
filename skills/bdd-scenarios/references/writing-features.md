@@ -31,6 +31,7 @@ Read this in step 4 of `bdd-scenarios`.
 | --- | --- |
 | `@<ticket-key>` | The tracker key, for example `@PROJ-123`. |
 | `@AC-<n>` | The acceptance criterion that the scenario proves. |
+| `@FS-<n>` | The failure-scenario card that the scenario proves, from `failure-scenario-design`. A reliability register row can add `@REL-<n>`. |
 | `@integration`, `@e2e` | The Integration or End-to-end level from `shared/contracts/references/test-levels.md`. The runner configuration selects scenarios by this tag. |
 | `@api` | An Integration scenario at the HTTP boundary. It starts no browser. |
 | `@negative` | A failure-path scenario. |

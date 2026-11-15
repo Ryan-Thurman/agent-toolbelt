@@ -2,7 +2,7 @@
 
 Use this procedure to create or maintain a map of implemented architecture.
 Reuse the project's existing architecture index, repository cards, and diagrams.
-An architecture map describes current structure; proposed design remains separately labeled.
+An architecture map describes current structure. Proposed design remains separately labeled.
 
 ## Establish scope
 

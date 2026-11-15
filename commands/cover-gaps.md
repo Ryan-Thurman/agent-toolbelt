@@ -7,5 +7,5 @@ argument-hint: "<path-or-area> [focus] (or a diff)"
 
 **Arguments:** `$ARGUMENTS`
 
-Use this command to rank coverage gaps without writing tests; use `/cover` to write the tests.
+Use this command to rank coverage gaps without writing tests. Use `/cover` to write the tests.
 Follow the `cover` skill in `/cover-gaps` mode for `$ARGUMENTS`.

@@ -1,16 +1,16 @@
-# Thread round-trip — fetch, diff since review, triage, reply
+# Thread round-trip: fetch, diff since review, triage, reply
 
 The full mechanics for `pr-review-reply`: pull the human reviewer's open threads, diff the code
 changed since the review, triage each thread, and reply per the contract. Host-touching steps
-reuse the shared provider layer — detect the provider once, up front
+reuse the shared provider layer. Detect the provider once, up front
 (`shared/contracts/references/providers.md`), and route every host call through it.
 
 ## Fetch threads per host
 
 Detect the provider from the origin remote / the PR URL (`shared/contracts/references/providers.md`).
-Resolve the target: a PR number/URL → use directly; **empty** → the current branch's open PR
+Resolve the target: a PR number/URL -> use directly. **Empty** -> the current branch's open PR
 (`gh pr list --head <branch>` / `az repos pr list --source-branch <branch> --status active`). If
-there's no open PR, or the host CLI is missing/unauthenticated, **degrade to report-only** (see the
+there is no open PR, or the host CLI is missing/unauthenticated, **degrade to report-only** (see the
 Degrade path) and say so.
 
 Fetch only the threads worth answering: **OPEN**, **unresolved**, and started by a **human reviewer**.
@@ -43,7 +43,7 @@ gh pr view <n> --json reviews,comments,headRefOid,url
 
 ### Azure Repos (`az`)
 
-Azure models everything as **threads** on the PR; pull them and filter:
+Azure models everything as **threads** on the PR. Pull them and filter:
 
 ```bash
 az repos pr show --id <id> \
@@ -57,28 +57,28 @@ az devops invoke --area git --resource pullRequestThreads \
 
 - Each thread has `id`, `status` (`active`/`fixed`/`closed`/`wontFix`/`pending`), `threadContext`
   (`filePath`, `rightFileStart`/`rightFileEnd`), and `comments[]` (with `author.displayName`,
-  `content`, `commentType`). Keep `status == active`; skip `fixed`/`closed`/`wontFix`.
-- Drop **system** threads (`comments[].commentType == "system"` — vote/status churn).
+  `content`, `commentType`). Keep `status == active`. Skip `fixed`/`closed`/`wontFix`.
+- Drop **system** threads (`comments[].commentType == "system"`, vote/status churn).
 
 ### Degrade path (no host / no PR)
 
 If the provider CLI is absent/unauthenticated, or the target resolves to a branch with no open PR,
-there are no host threads to fetch. Don't hard-fail:
+there are no host threads to fetch. Do not hard-fail:
 
-- Acquire the diff from plain git with `git diff <reviewedSha>..HEAD`; if `reviewedSha` is unknown,
+- Acquire the diff from plain git with `git diff <reviewedSha>..HEAD`. If `reviewedSha` is unknown,
   ask for it or use the branch merge-base and state the assumption.
-- Emit a **report-only** result: state that no host threads could be fetched, and (if the user pasted
+- Emit a **report-only** result: state that no host threads were fetched, and (if the user pasted
   reviewer comments into the prompt) triage *those* against the since-SHA diff using the same rubric.
-- Never invent thread ids — if there's no host thread, use `[[thread:pasted-<n>]]` and make clear
+- Never invent thread ids. If there is no host thread, use `[[thread:pasted-<n>]]` and make clear
   these are local, un-postable.
 
 ## Diff since the review
 
 The reviewed SHA is the commit the human review was submitted against:
 
-- **GitHub:** the first comment's `commit.oid` (or the review's `commit_id`); if a
-  thread spans commits, use the earliest reviewed SHA so you don't miss intervening fixes.
-- **Azure:** the source commit at review time — use the comment's `publishedDate` to pick the PR
+- **GitHub:** the first comment's `commit.oid` (or the review's `commit_id`). If a
+  thread spans commits, use the earliest reviewed SHA so you do not miss intervening fixes.
+- **Azure:** the source commit at review time. Use the comment's `publishedDate` to pick the PR
   iteration's commit, or take the user-supplied `--since`.
 - **`--since=<sha>`** always overrides (e.g. after a force-push rewrote history).
 
@@ -87,19 +87,19 @@ Then diff **since that SHA**, not the whole PR:
 ```bash
 git fetch origin
 git diff <reviewedSha>..HEAD --stat
-git diff <reviewedSha>..HEAD            # the evidence pool for "changed"/"answered" claims
+git diff <reviewedSha>..HEAD            # the evidence pool for "changed" claims
 git log  <reviewedSha>..HEAD --oneline  # commits that landed after the review
 ```
 
 This delta is the **only** thing that can have resolved a thread since the review. A concern is
-"resolved" **only** if a line in this diff demonstrably addresses it — cite the `file:line`/commit.
-If nothing in the delta touches the thread's concern, it is **not** resolved by code; it's either
+"resolved" **only** if a line in this diff demonstrably addresses it. Cite the `file:line`/commit.
+If nothing in the delta touches the thread's concern, it is **not** resolved by code. It is either
 `answered` (already fine before the review) or `needs-follow-up`.
 
 ## Triage rubric
 
 Classify each OPEN thread into **exactly one** status. Default to `needs-follow-up` when evidence is
-thin — never upgrade to `answered`/`changed` without a citation.
+thin. Never upgrade to `answered`/`changed` without a citation.
 
 | Status | When | Required evidence |
 |---|---|---|
@@ -112,14 +112,14 @@ Resolved threads are **skipped entirely** (not given a status). Outdated but unr
 ### Worked examples
 
 - Reviewer: *"This `parseConfig` call can throw on malformed input — handle it."* The since-SHA diff
-  shows `config.ts:42` now wraps it in try/catch returning a typed error. → **`changed`**, cite
+  shows `config.ts:42` now wraps it in try/catch returning a typed error. -> **`changed`**, cite
   `config.ts:42` + the commit.
 - Reviewer: *"Won't this N+1 the DB?"* but the loop already batches via `loadMany()` at
-  `repo.ts:88`, unchanged and visible at review time. → **`answered`**, cite `repo.ts:88` (the
-  reviewer misread; no change needed).
+  `repo.ts:88`, unchanged and visible at review time. -> **`answered`**, cite `repo.ts:88` (the
+  reviewer misread, so no change is needed).
 - Reviewer: *"Should this be configurable per-tenant?"* No code addresses it and the answer depends
-  on product intent. → **`needs-follow-up`** with the clarifying question, not a guess.
-- Reviewer: *"Add a test for the empty-list case."* No test was added in the since-SHA diff. →
+  on product intent. -> **`needs-follow-up`** with the clarifying question, not a guess.
+- Reviewer: *"Add a test for the empty-list case."* No test was added in the since-SHA diff. ->
   **`needs-follow-up`** naming the missing test (file + case), even if the production code is fine.
 
 ## Reply contract
@@ -136,7 +136,7 @@ Response: <concise, evidence-bearing — cite file:line / commit, or state the c
   degrade path.
 - `Status:` is exactly one of the three rubric values.
 - `Response:` is 1–4 sentences. For `changed`/`answered`, it **must** carry the citation. For
-  `needs-follow-up`, it states the concrete missing change *or* the question — nothing vague.
+  `needs-follow-up`, it states the concrete missing change *or* the question, nothing vague.
 - Never write a block for a resolved thread (those are skipped), and never close a thread
   inside the Response without a substantive answer above it.
 
@@ -156,23 +156,23 @@ Apply `shared/contracts/references/posting.md` for opt-in and confirmation. Only
   <!-- pr-review-reply:<thread-id> -->
   ```
 
-  - **GitHub:** reply into the existing thread —
+  - **GitHub:** reply into the existing thread,
     `gh api repos/{owner}/{repo}/pulls/<n>/comments -F in_reply_to=<rootCommentId> -f body=…`
-    (or `--method POST` with `--input` for bodies with backticks/newlines — build the JSON with a
+    (or `--method POST` with `--input` for bodies with backticks/newlines: build the JSON with a
     real tool, never string concatenation).
-  - **Azure:** add a comment to the thread —
+  - **Azure:** add a comment to the thread,
     `az devops invoke --area git --resource pullRequestThreadComments --route-parameters
     project=<proj> repositoryId=<repoId> pullRequestId=<id> threadId=<id> --http-method POST
     --in-file comment.json --api-version 7.1`.
 - **Idempotency.** Before triage, skip any thread whose latest comment is yours and carries the
   `pr-review-reply:<thread-id>` marker. Do not write a block for it.
   Report "posted X new, skipped Y already replied." Safe to re-run after pushing more fixes.
-- **Never auto-resolve.** Posting a reply must **not** flip the thread's resolved/`fixed` state — a
-  human owns that. A `changed` reply records the fix; the reviewer decides whether to resolve. (Only
-  if the user *explicitly* asks "and resolve answered threads" do you set status — and only for ones
+- **Never auto-resolve.** Posting a reply must **not** flip the thread's resolved/`fixed` state. A
+  human owns that. A `changed` reply records the fix. The reviewer decides whether to resolve. (Only
+  if the user *explicitly* asks "and resolve answered threads" do you set status, and only for ones
   with a substantive reply already posted.)
 - **Dry-run / preview.** Before the writes, print one line per thread (`thread:<id> — <status>`) and
   the count.
-- **Failure handling.** Auth/CLI error → print the full report, note posting was skipped and why. One
-  thread rejected (e.g. stale id) → post the rest, report what didn't; the report stays the source of
+- **Failure handling.** Auth/CLI error -> print the full report, note posting was skipped and why. One
+  thread rejected (e.g. stale id) -> post the rest, report what did not. The report stays the source of
   truth.

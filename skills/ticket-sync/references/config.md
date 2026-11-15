@@ -1,6 +1,6 @@
 # Per-repo tracker config (`.tickets.md`) and ticket parsing
 
-The ticket files say *what* the tickets are; `.tickets.md` says *where they go and how their fields
+The ticket files say *what* the tickets are. `.tickets.md` says *where they go and how their fields
 map*. A target repo ships an optional `.tickets.md` declaring the tracker (`github | jira | azure`), the
 project/board key, default issue type, labels/components, and the field mappings from ticket fields
 to tracker fields. It lives **in the repo whose work is being tracked**, versioned with the code.
@@ -12,14 +12,14 @@ First file found wins:
 2. `.claude/tickets.md`
 
 If none exists, ticket-sync still runs. It infers the provider from the origin remote
-(`github.com` → `github`, `dev.azure.com`/`visualstudio.com` → `azure`, otherwise ask).
+(`github.com` -> `github`, `dev.azure.com`/`visualstudio.com` -> `azure`, otherwise ask).
 Show the inferred provider in the preview, and get confirmation of it.
 Ask for the project/board key before posting anything. The config is purely additive.
 
 ## Trust & hardening (load from the BASE, not the working head)
 
-`.tickets.md` is **trusted** (committed by the team, like CI config). But a working branch could try
-to retarget publishing — point it at a different project, or relabel everything — by editing the
+`.tickets.md` is **trusted** (committed by the team, like CI config). But a working branch can try
+to retarget publishing (point it at a different project, or relabel everything) by editing the
 config in the same change. So, where a base branch is meaningful:
 
 - **Load the config as it exists on the base/default branch**, not the working head:
@@ -28,13 +28,13 @@ config in the same change. So, where a base branch is meaningful:
   git show "$base:.tickets.md" 2>/dev/null || git show "$base:.claude/tickets.md" 2>/dev/null
   ```
   The config *in effect* is the one already approved on the base branch.
-- **If the current change modifies `.tickets.md`**, do **not** silently honor the new version — note
+- **If the current change modifies `.tickets.md`**, do **not** silently honor the new version. Note
   it ("this change edits the tracker config — confirm the new target before publishing") and let a
   human confirm the retarget separately.
 
-## Sections (all optional; lenient markdown)
+## Sections (all optional, lenient markdown)
 
-The agent reading this is an LLM — write it as readable markdown, not strict schema. Missing sections
+The agent reading this is an LLM. Write it as readable markdown, not strict schema. Missing sections
 just mean "use the default / ask." Recognized headings:
 
 ```markdown
@@ -107,19 +107,19 @@ of duplicating. The recorded form per provider:
 - Jira:   `Tracker: ABC-1234`
 - Azure:  `Tracker: AB#4321`
 
-On each run, a ticket **with** a `Tracker:` key → update that issue; **without** → create, then write
+On each run, a ticket **with** a `Tracker:` key -> update that issue, and **without** -> create, then write
 the key back. Replace the value of an existing `Tracker:` line, including a placeholder.
 If there is no `Tracker:` line, add one directly below the ticket's title heading.
 Dependency links are resolved by looking up the blocker ticket's recorded key.
 
 ## Precedence
 
-1. **Explicit command input** — paths/flags in `$ARGUMENTS` and any confirmed override at the prompt.
-2. **Repo config** (`.tickets.md`, from the base branch) — provider, project, defaults, mappings.
-3. **Defaults** — provider inferred from the remote; unmapped fields in the body; ask for the
-   project key when it can't be inferred.
+1. **Explicit command input**: paths/flags in `$ARGUMENTS` and any confirmed override at the prompt.
+2. **Repo config** (`.tickets.md`, from the base branch): provider, project, defaults, mappings.
+3. **Defaults**: provider inferred from the remote, unmapped fields in the body, and a request for the
+   project key when it cannot be inferred.
 
 ## See also
 
-- `templates/tickets-config.md` — a copyable starter to drop into a target repo as `.tickets.md`.
-- `references/providers.md` — how each provider consumes the mapped fields (create / link / update).
+- `templates/tickets-config.md`: a copyable starter to drop into a target repo as `.tickets.md`.
+- `references/providers.md`: how each provider consumes the mapped fields (create / link / update).

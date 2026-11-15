@@ -6,9 +6,9 @@ The gate covers only the current checked-out branch and local working tree.
 Its review set is the branch's committed changes since its frozen merge
 base, plus staged, unstaged, and untracked changes. Derive `<target-slug>` from
 that branch/current-local context (a sanitized branch name plus short local
-`HEAD`; use a stable local `HEAD`-based slug when detached). It accepts no PR
+`HEAD`, or a stable local `HEAD`-based slug when detached). It accepts no PR
 number, remote branch, or other local branch as a target. Use `/pr-review` for
-those reviews; check out the intended branch before running this gate.
+those reviews. Check out the intended branch before running this gate.
 
 ## Modes and authority
 
@@ -24,12 +24,12 @@ No mode commits or pushes.
   commits, pushes, scope widening, broad refactors, behavior changes, or a
   structural remedy with meaningful tradeoffs. Those need a recorded human
   choice before implementation.
-- `--rounds` defaults to `3`; it must be a positive integer. A cap is not
+- `--rounds` defaults to `3`. It must be a positive integer. A cap is not
   convergence.
 - `--scope` selects a subset of the frozen changed-path scope. Expand it into
   exact repository-relative paths within the worktree and write those
   NUL-delimited paths to `allowed-paths.nul`. Reject absolute paths and any
-  `..` escape. An allowed scope may widen only with explicit authorization
+  `..` escape. An allowed scope can widen only with explicit authorization
   recorded in the evidence.
 - `--disposition-json` is repeatable JSON, for example:
 
@@ -41,8 +41,8 @@ No mode commits or pushes.
 
   - `accepted`: `id`, `state`. The finding is valid and remains unresolved
     until an in-scope fix is `verified`.
-  - `rejected`: `id`, `state`, `reason`, `evidence`. Rejection may clear only
-    that finding; it cannot suppress a related independent finding.
+  - `rejected`: `id`, `state`, `reason`, `evidence`. Rejection can clear only
+    that finding. It cannot suppress a related independent finding.
   - `deferred`: `id`, `state`, `reason`, `owner`, `follow_up`. It is permitted
     only for a low-impact nit.
 
@@ -52,7 +52,7 @@ No mode commits or pushes.
 ## Durable evidence
 
 Use `.atb-work/code-quality-gate/<target-slug>/`. Ensure its parent has a
-`.gitignore` containing `*`; never place these generated artifacts in tracked
+`.gitignore` containing `*`. Never place these generated artifacts in tracked
 source. Keep `baseline.md`, `allowed-paths.nul`, `report.md`, and (for apply mode) the
 `pr-improve` ledger or a pointer to it. Start `report.md` from
 `templates/code-quality-gate-report.md`.
@@ -88,28 +88,28 @@ It computes:
 - `scope_fingerprint` by hashing the base SHA, sorted changed paths, sorted
   untracked paths, and sorted allowed paths.
 - `coverage=final` only when the sorted allowed paths exactly equal every
-  changed and untracked path; otherwise `coverage=partial`.
+  changed and untracked path. Otherwise `coverage=partial`.
 
 Rewrite the report after each assessment round. A consumer must rerun this
 script and treat PASS as stale when either fingerprint differs. Only final
-coverage PASS can satisfy a policy-required pre-PR gate; partial coverage may
+coverage PASS can satisfy a policy-required pre-PR gate. Partial coverage can
 have its own PASS/FAIL status but cannot prove the entire PR diff.
 
 ## Status decision
 
-- **PASS** — all required repository checks are green; the frozen scope is
-  intact; every standards, naming, anti-slop, simplification, and
+- **PASS**: all required repository checks are green. The frozen scope is
+  intact. Every standards, naming, anti-slop, simplification, and
   maintainability finding is either `rejected` with required evidence,
   `deferred` as a low-impact nit with required follow-up, or `accepted` with a
   verified fix. No blocker or should-fix remains.
-- **FAIL** — assessment completed but a required check failed, scope escaped,
+- **FAIL**: assessment completed but a required check failed, scope escaped,
   or any blocker, should-fix, unresolved evidence-backed quality issue, or
   undispositioned nit remains. Report mode does not edit to turn FAIL into PASS.
-- **CAPPED** — apply mode reached its round bound with unresolved work. Record
-  the remaining ledger rows and next owner; do not describe this as converged.
-- **BLOCKED** — a necessary target, baseline, evidence source, required check,
+- **CAPPED**: apply mode reached its round bound with unresolved work. Record
+  the remaining ledger rows and next owner. Do not describe this as converged.
+- **BLOCKED**: a necessary target, baseline, evidence source, required check,
   or authorization cannot be obtained. State the exact missing prerequisite and
-  what would unblock it.
+  what unblocks it.
 
 ## Assessment and repair
 
@@ -119,10 +119,10 @@ have its own PASS/FAIL status but cannot prove the entire PR diff.
    the repository explicitly marks it non-required for this target. The CRAP
    check below is a required check when its config exists on the base.
 2. Inspect every changed hunk against style evidence and the shared contracts.
-   Run `/simplify` in report mode to identify high-conviction cleanup candidates;
-   do not treat a generic-name cue as a finding without a consequence.
+   Run `/simplify` in report mode to identify high-conviction cleanup candidates,
+   and do not treat a generic-name cue as a finding without a consequence.
 3. Run `/pr-review --focus=standards,maintainability --show-nits` on the frozen
-   target. `--show-nits` keeps every nit that the posting threshold would hide.
+   target. `--show-nits` keeps every nit that the posting threshold hides.
    Record every evidence-backed standards or maintainability nit in the gate
    record. The PR report remains the review source of truth for other findings.
 4. For apply mode, use `/pr-improve`'s baseline, allowed-scope guard, stable

@@ -1,4 +1,8 @@
-# Phase NN Handoff - <Title>
+# Phase NN handoff - <title>
+
+## Next action
+
+The first concrete step for the next session.
 
 ## Goal
 
@@ -9,16 +13,20 @@ What this phase was supposed to accomplish.
 - Item 1
 - Item 2
 
-## Decisions Made
+## Decisions made
 
 - Decision 1
 - Decision 2
 
-## Files Changed
+## Ruled Out
+
+- Path or cause that the next session must not repeat
+
+## Files changed
 
 - `path/to/file` - why it changed
 
-## Git Status
+## Git status
 
 ```text
 <git status --short --branch output>
@@ -38,7 +46,7 @@ Results:
 - Known failures
 - Notes
 
-## Open Issues
+## Open issues
 
 - Issue 1
 
@@ -46,11 +54,15 @@ Results:
 
 - Risk 1
 
-## Next Phase Context
+## Next phase context
 
 What the next agent or session must know.
 
-## Safe To Clear?
+## Next commands
+
+- Skill or command the next session must run
+
+## Safe to clear?
 
 Yes / No
 

@@ -61,7 +61,7 @@ Address partial success, retries, duplicates, concurrency, and dependency loss w
 - Accepted decisions and approval evidence:
 - Delegated technical choices:
 - Linked architecture decision records and their status:
-- Conditions that would change the recommendation:
+- Conditions that change the recommendation:
 
 ## Operation, rollout, capacity, and cost
 

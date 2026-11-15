@@ -34,6 +34,9 @@ At the Standard level, follow the full procedure and load each topic reference o
 | Scale or cost decides the design (also every Deep design). | `references/estimation.md` |
 | Deep level only: a person asks for a design review, or the project requires one. | `references/design-review.md` |
 
+At the Deep level, also do estimation (`references/estimation.md`), design it twice (`references/design-conversation.md`),
+and the design review (`references/design-review.md`) when a person or the project asks for it.
+
 Start with the team member's question and existing project evidence.
 In each mode, use `references/design-method.md` to check relevant design coverage and find material gaps.
 Scale the investigation to the decision's consequences.
@@ -45,8 +48,6 @@ Use the project's existing design record and format when suitable.
 Keep controlled records, internal control registers, and formal approvals project-owned.
 Keep generated internal documents in the project's designated location or an external private directory.
 Publish generated documents only when the project authorizes it.
-
-Paths beginning `templates/` or `shared/` refer to the Toolbelt root.
 
 ## Design procedure
 
@@ -67,7 +68,7 @@ Paths beginning `templates/` or `shared/` refer to the Toolbelt root.
    If it is unavailable, report the reliability review as `Not verified`.
 5. Resolve design findings and record their disposition.
    Apply the readiness checks from the design method.
-   Resolve repository facts and delegated choices directly; surface only decisions that require the source owner.
+   Resolve repository facts and delegated choices directly. Surface only decisions that require the source owner.
 6. Hand the design and security requirements to the requested planning or test-design workflow.
 
 ## Completion and maintenance
@@ -80,6 +81,3 @@ For discussion, decision-record, or mapping work, deliver the scoped result from
 Record unresolved decisions and review limits instead of claiming readiness.
 Preserve decision history and recheck affected document sections after source changes.
 When an architecture, identity, data, trust boundary, or deployment changes, reassess the affected design and threats.
-
-Topic references adapted from proyecto26/system-design-skills, mattpocock/skills, addyosmani/agent-skills,
-wondelai/skills, and cursor/plugins pstack (all MIT). No source text is copied.

@@ -16,7 +16,7 @@ Do not ask for transitions that the change did not add.
 | Shared element pair | `default="none"` without a `share` prop, or a type-keyed `share` on a navigation that adds no type. The morph does not run. | `types-and-composition.md` |
 | Types | A typed animation depends on `router.back()` or the browser back button, which add no type. A type map in TypeScript has no `default` key. | `types-and-composition.md` |
 | Suspense | A changed `key` on a boundary that wraps `<Suspense>` remounts it and fetches again. | `types-and-composition.md` |
-| Motion meaning | A directional slide is used for lateral navigation, such as tab to tab. A page with a shared morph uses a fade-out exit. | `SKILL.md` When to Animate |
+| Motion meaning | A directional slide is used for lateral navigation, such as tab to tab. A page with a shared morph uses a fade-out exit. | `SKILL.md` When to Animate, `types-and-composition.md` |
 | Reduced motion | The global stylesheet does not have the reduced motion CSS. | `css-recipes.md#reduced-motion` |
 | Navigation and focus | The transition blocks a link, the back button, or keyboard focus. | `react-acceptance.md` should-fix list |
 

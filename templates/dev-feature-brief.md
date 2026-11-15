@@ -1,18 +1,18 @@
-# Feature Brief
+# Feature brief
 
 ## Summary
 
-## Target User
+## Target user
 
-## Problem / Goal
+## Problem / goal
 
-## App or Feature Flows
+## App or feature flows
 
 1.
 2.
 3.
 
-## Acceptance Criteria
+## Acceptance criteria
 
 - [ ]
 - [ ]
@@ -22,8 +22,8 @@
 
 ## Non-Goals
 
-## Open Questions
+## Open questions
 
-## Suggested Assumptions
+## Suggested assumptions
 
 ## Risks

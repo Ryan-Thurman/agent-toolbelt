@@ -1,6 +1,5 @@
 # Estimation
 
-Read this at the Deep level, or when scale or cost decides the design.
 A quick estimate shows the order of magnitude. It does not replace a measurement or a load test.
 Write each input, its source, and whether it is measured or assumed. Round to simple numbers.
 

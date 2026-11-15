@@ -1,4 +1,4 @@
-# Phase Context Workflow
+# Phase context workflow
 
 Use the `phase-context-workflow` skill for this workflow.
 The skill owns the file layout, the phase operations, and the rules for `/clear` and `/compact`.

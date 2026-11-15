@@ -1,6 +1,6 @@
-# Release <version> — <date>
+# Release <version> (<date>)
 
-Draft from the merged commits/PRs since the last tag. Group by impact; lead with what users notice.
+Draft from the merged commits/PRs since the last tag. Group by impact. Lead with what users notice.
 
 ## Highlights
 
@@ -24,7 +24,7 @@ One or two lines on the most notable changes in this release.
 
 ## Breaking changes
 
-- <what breaks, and the migration step for consumers> — omit the section if none.
+- <what breaks, and the migration step for consumers>: omit the section if none.
 
 ## Upgrade / deploy notes
 

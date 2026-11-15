@@ -6,7 +6,7 @@ Treat complexity, coverage, file size, change frequency, and library age as inve
 They cannot establish debt without a concrete consequence.
 
 For organization candidates, inspect dependency direction, cycles, ownership, public interfaces, and changes that repeatedly cross boundaries.
-Compare the current structure with the smallest boundary change that would address the observed cost.
+Compare the current structure with the smallest boundary change that can address the observed cost.
 Do not assume that services, extra layers, or additional abstractions improve a working design.
 
 For dependency candidates, inspect installed versions, actual usage, support constraints, and migration work.
@@ -21,5 +21,5 @@ Account for test gaps, integration work, rollout, recovery, licensing, and depen
 
 Use stable IDs to merge repeated findings.
 Preserve accepted, deferred, rejected, and resolved decisions with their supporting revision or period.
-For each proposed repair, define a baseline and a result that would demonstrate improvement.
-Record when a changed architecture, incident, support deadline, or measurement should reopen the item.
+For each proposed repair, define a baseline and a result that will demonstrate improvement.
+Record what reopens the item: a changed architecture, incident, support deadline, or measurement.

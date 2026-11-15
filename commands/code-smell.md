@@ -7,5 +7,5 @@ argument-hint: "<path-or-area> [focus|--architecture]"
 
 **Arguments:** `$ARGUMENTS`
 
-Use this command for a detect-only scan of an area; use `/simplify` to apply cleanup.
+Use this command for a detect-only scan of an area. Use `/simplify` to apply cleanup.
 Follow the `simplify` skill in `/code-smell` mode for `$ARGUMENTS`.

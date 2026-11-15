@@ -12,14 +12,14 @@ Do not merge unless **all** hold:
   (failed facet, failed verification, or unreviewed file) always stops the merge. Should-fix and nit
   findings do not block a merge, and
 - for a Phased Delivery PR, the user explicitly authorized solo merge in this session
-  (`skills/phased-delivery/references/review-rules.md` gives that decision to a human; without the
+  (when `phased-delivery` is installed, `skills/phased-delivery/references/review-rules.md` gives that decision to a human. Without the
   authorization, stop and hand off as team mode), and
 - the PR targets an ordinary base branch (a feature/integration branch or `main` per the repo's
-  normal flow) — merging the PR into its base is the intended action here.
+  normal flow): merging the PR into its base is the intended action here.
 
-Never force-push or rewrite shared history to "merge"; use the host's merge so the PR is recorded as
+Never force-push or rewrite shared history to "merge". Use the host's merge so the PR is recorded as
 merged. If the host CLI is missing or the merge is refused (protections, conflicts, required checks),
-**stop and report** — don't improvise a push to the base branch.
+**stop and report**: do not improvise a push to the base branch.
 
 ## Merge only what was reviewed
 
@@ -40,7 +40,7 @@ git rev-parse HEAD                # must equal the SHA the review ran against
 ```
 
 Record the head branch and SHA when the review subagent returns, and compare here. If any check fails,
-**re-review; do not merge.** A fix that landed after the review is the code most likely to be wrong,
+**re-review. Do not merge.** A fix that landed after the review is the code most likely to be wrong,
 and no review has read it. The solo flow therefore re-reviews after every fix commit (`modes.md`).
 
 Then confirm the host agrees, since a merge is decided on the host's view of the PR, not yours:
@@ -50,8 +50,8 @@ gh pr view <pr> --json headRefOid --jq .headRefOid    # must equal the reviewed 
 ```
 
 Expect this to lag: GitHub reports the pre-push head for a few seconds after a push. Re-read it a
-couple of times before concluding the PR really is at a different commit — and **never** loosen the
-SHA comparison to get past the lag. The comparison is the correctness rule; a retry is the
+couple of times before concluding the PR really is at a different commit, and **never** loosen the
+SHA comparison to get past the lag. The comparison is the correctness rule. A retry is the
 accommodation.
 
 ## Provider-aware merge
@@ -62,7 +62,7 @@ Detect the host with the shared provider contract (`shared/contracts/references/
 ```bash
 gh pr merge <pr> --squash    # --squash is the default phase-PR strategy; adjust to repo norm
 ```
-- Honors branch protections / required checks; if it can't merge, it errors — surface that, don't work around it.
+- Honors branch protections / required checks. If it cannot merge, it errors. Surface that and do not work around it.
 - Add `--delete-branch` only when no open PR uses this branch as its base.
 - For stacked phase PRs, use a merge commit or update each child PR after the merge.
   A squash merge rewrites the parent's commits under the child branch.
@@ -76,7 +76,7 @@ az repos pr update --id <id> --status completed \
 ```
 - Completing the PR is Azure's merge. If policies block completion, report it.
 
-**Generic git / no host CLI:** don't auto-merge. Report the PR as review-clean and ask the human to
+**Generic git / no host CLI:** do not auto-merge. Report the PR as review-clean and ask the human to
 merge (degrade like the rest of the review family).
 
 ## After merge

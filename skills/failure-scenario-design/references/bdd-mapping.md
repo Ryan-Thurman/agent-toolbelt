@@ -1,6 +1,6 @@
 # From a card to Given/When/Then
 
-Read this in step 5 of `failure-scenario-design`.
+Read this in step 3 of `failure-scenario-design`.
 
 | Card field | Gherkin |
 | --- | --- |
@@ -11,14 +11,15 @@ Read this in step 5 of `failure-scenario-design`.
 
 Abort conditions are not steps. They stay in the experiment plan.
 Write the steps in business terms, as `skills/bdd-scenarios/references/writing-features.md` requires.
-Tag the scenario with `@negative`, the card ID, and the level.
+Tag the scenario with `@FS-<n>`, the level tag, `@negative`, and `@REL-<n>` when a reliability register row exists.
+At the Light level there are no cards, so a scenario uses the criterion tag (`@AC-<n>`) and `@negative`.
 
 ## Example
 
 The numbers are placeholders. The project gives the real values.
 
 ```gherkin
-@FS-001 @REL-003 @integration @negative
+@FS-001 @integration @negative @REL-003
 Scenario: Checkout when the payment service is slow
   Given checkout works normally
   And the payment call has a timeout of <payment timeout>

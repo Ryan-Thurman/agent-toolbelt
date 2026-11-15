@@ -5,7 +5,7 @@ argument-hint: "<research-question-and-sources>"
 
 # /user-research-synthesis
 
-**Arguments:** `$ARGUMENTS` — the research question and the research sources.
+**Arguments:** `$ARGUMENTS`: the research question and the research sources.
 
 Use this to understand supplied research before a product decision.
 

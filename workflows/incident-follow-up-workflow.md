@@ -12,12 +12,12 @@ Start this workflow after the incident is mitigated. Mitigation comes first and 
 | 2 | `reliability-review` | Add the failure mode to the register. Record the missing detection, recovery, or SLO coverage as testable requirements. | `failure-scenario-design` |
 | 3 | `failure-scenario-design` | Turn the failure mode into scenario cards at the lowest level that proves the fix and the recovery. | `test-case-design`, `bdd-scenarios` |
 | 4 | `test-case-design` | Plan regression and failure cases for the fix and the code next to it. | `cover` |
-| 5 | `cover` | Write the planned tests and close the coverage gap that let the defect through. | `pr-review` |
+| 5 | `cover` | Pin the fixed behavior and the neighboring paths. | `pr-review` |
 <!-- END catalog stages -->
 
 ## Fix the root cause
 
-Run `/reproduce`, then `/rca`, then the fix in `bug-to-fix`.
+Run `/bug-intake`, then `/reproduce`, then `/rca`, then the fix in `bug-to-fix`.
 The first test captures the confirmed symptom and fails before the fix.
 Use `/rca --diagnose` when the team wants the analysis before anyone edits code.
 

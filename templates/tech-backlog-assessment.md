@@ -1,4 +1,4 @@
-# Technical Backlog Assessment: <title>
+# Technical backlog assessment: <title>
 
 ## Recommendation
 
@@ -8,16 +8,16 @@ Confidence: High / Medium / Low
 
 Summary: <one-paragraph recommendation>
 
-## Backlog Item
+## Backlog item
 
 <original ticket/request and the technical decision being evaluated>
 
-## Current State
+## Current state
 
 <repo evidence: current implementation, relevant files/modules, tests, commands,
 dependencies, CI/deploy constraints>
 
-## Options Considered
+## Options considered
 
 | Option | Benefit | Cost, risk, and effort | Decision and reason |
 |---|---|---|---|
@@ -25,7 +25,7 @@ dependencies, CI/deploy constraints>
 | Option A |  |  |  |
 | Option B |  |  |  |
 
-## Package / Library Decision
+## Package / library decision
 
 Use when the assessment involves a dependency, package import, library switch, or
 framework upgrade. Otherwise write `Not applicable`.
@@ -39,17 +39,17 @@ framework upgrade. Otherwise write `Not applicable`.
 | Migration cost |  |
 | Reversibility/lock-in |  |
 
-## Proposed Implementation Shape
+## Proposed implementation shape
 
 Describe the smallest useful implementation or spike. Each step explains its
-purpose and the evidence needed to finish; use a dependency diagram if helpful.
+purpose and the evidence needed to finish. Use a dependency diagram if helpful.
 Keep implementation code in the development step.
 
 | Step | Do | Why | Done when |
 |---|---|---|---|
 | 1 | <bounded action> | <task-specific reason> | <observable result> |
 
-## Test Strategy
+## Test strategy
 
 | Test Type | What It Proves | Command / Evidence |
 |---|---|---|
@@ -58,17 +58,17 @@ Keep implementation code in the development step.
 | Regression |  |  |
 | Manual / Operational |  |  |
 
-## Risks and Mitigations
+## Risks and mitigations
 
 - <risk>: <mitigation>
 
-## Open Questions
+## Open questions
 
 - <question> Recommended default: <default>
 
-## Next Workflow
+## Next workflow
 
 Recommended next command: `/ticket-discover` / `/dev-plan` /
-`/implementation-plan` / `/retrofit` / `/cover-gaps` / `/cover` / No action
+`/implementation-plan` / `/simplify` / `/retrofit` / `/cover-gaps` / `/cover` / No action
 
-Handoff notes: <what the next agent/person should do first>
+Handoff notes: <the first action for the next agent/person>

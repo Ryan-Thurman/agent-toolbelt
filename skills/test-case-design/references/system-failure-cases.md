@@ -1,6 +1,6 @@
 # System failure cases
 
-Read this when the scope has a remote call, a queue, a scheduled job, a cache, or a data store.
+Read this when the scope has a remote call, a queue, a scheduled job, a cache, a data store, or a migration.
 These cases test how the change behaves when another part of the system fails.
 Raise a family only when the change has the part that it names.
 

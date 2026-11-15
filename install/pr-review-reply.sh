@@ -1,4 +1,4 @@
-# DESC: PR review round-trip: read reviewer threads, triage, re-review only since-SHA changes, reply per-thread (opt-in posting)
+# DESC: PR review round-trip: read reviewer threads, triage, triage each thread against code changed since the review, reply per-thread (opt-in posting)
 # DEPENDS: simple-english
 pack_pr_review_reply() {
   shared_contract references/human-readable-output.md

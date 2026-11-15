@@ -1,4 +1,4 @@
-# Ticket Discovery Workflow
+# Ticket discovery workflow
 
 Use this workflow for narrow implementation tickets that are valid but vague and
 point to a precedent.

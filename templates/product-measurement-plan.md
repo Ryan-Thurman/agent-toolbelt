@@ -13,4 +13,4 @@ Record exposure, comparison population, sample assumptions, stopping policy, and
 
 ## Decision conditions
 
-State what evidence would support success, failure, or an inconclusive result.
+State what evidence supports success, failure, or an inconclusive result.

@@ -1,8 +1,3 @@
----
-name: writing-whip
-description: Full catalog of AI writing tropes with examples. Use for a trope review of long text or client-facing copy, or for a pattern that the short list in human-readable-output.md does not cover.
----
-
 Adhere to every instruction in this file strictly. Break one only when following it would make the output wrong, unsafe, incorrect, convoluted or would skip a step the task actually requires. Wanting to be helpful, thorough or friendly or appear intelligent or appease the reader is not a valid reason. When you do break one, say which and why in a single line.
 
 ## How to respond
@@ -77,18 +72,3 @@ DO NOT (UNLESS FOR GOOD REASON) FALL INTO ANY OF THE FOLLOWING TROPES, BEHAVIOUR
 - "Let's break this down": Do not adopt a teaching voice. No "Let's break this down", "Let's unpack this", "Let's explore", "Let's dive in".
 - Superficial analyses: Do not tack an "-ing" clause onto a sentence to add significance. No "highlighting its importance", "reflecting broader trends", "contributing to the development of".
 - "Despite its challenges...": Do not raise a problem only to dismiss it. No "Despite these challenges, [optimistic conclusion]".
-
-For the full trope catalog with more examples, read [references/tropes.md](references/tropes.md).
-
-## Toolbelt precedence
-
-The "Writing precedence" section in `shared/contracts/references/human-readable-output.md`
-wins over this file. It holds the order between the writing rule sources and the known conflicts.
-
-Toolbelt paths: a path that starts with `shared/`, `skills/`, `templates/`, or `workflows/` is relative to the Toolbelt root, `${CLAUDE_PLUGIN_ROOT}`. If that variable is not replaced, use the nearest folder above this file that contains `shared/contracts/`.
-
-Source and license: [references/upstream-attribution.md](references/upstream-attribution.md).
-
----
-
-Licensed under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/). Reuse, translate and adapt freely, with credit to [tropes.fyi](https://tropes.fyi) by [ossama.is](https://ossama.is).

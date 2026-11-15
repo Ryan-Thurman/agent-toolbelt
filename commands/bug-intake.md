@@ -7,5 +7,5 @@ argument-hint: "<bug-report-or-ticket>"
 
 **Arguments:** `$ARGUMENTS`
 
-Use this command when a bug report first arrives; use `/shape-up` or `/dev-intake` for a new capability.
+Use this command when a bug report first arrives. Use `/shape-up` for a vague idea or `/dev-intake` for a clear requirement.
 Follow the `bug-to-fix` skill and its `references/severity.md` for `$ARGUMENTS`.

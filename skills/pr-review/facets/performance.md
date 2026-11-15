@@ -5,17 +5,17 @@ Set `"facet": "performance"` on every finding.
 
 For React or Next.js changes, read `shared/contracts/references/typescript-react-baseline.md`.
 Read every `vercel-react-best-practices` rule that the orchestrator's React rule scan lists,
-and return an `Applied` or `Not applicable` record for each. Then check the rules in
+and return an `Applied` or `Not applicable` record for each. When the scan does not list that specialist as `missing`, check the rules in
 `skills/vercel-react-best-practices/references/rule-routing.md` that the scan cannot detect.
 Verify React/Next versions and runtime boundaries first. Its priorities do not override repository policy, and
 low-impact `js-*` guidance requires concrete hot-path, scale, or measurement evidence.
 
 ## What to flag
 
-- needless work: redundant computation, repeated queries, work inside a loop that could hoist out.
-- algorithmic: O(n²) where O(n) is easy; N+1 queries; loading whole datasets to use one row.
-- I/O: blocking/sync I/O on hot paths; sequential awaits for independent work that could run in
-  parallel; missing pagination/streaming for large data.
+- needless work: redundant computation, repeated queries, work inside a loop that can hoist out.
+- algorithmic: O(n²) where O(n) is easy, N+1 queries, loading whole datasets to use one row.
+- I/O: blocking/sync I/O on hot paths, sequential awaits for independent work that can run in
+  parallel, missing pagination/streaming for large data.
 - memory: unbounded caches/collections, large allocations in hot paths, leaks (unreleased
   resources, lingering listeners/timers).
 - database: a new query path whose filter/join/sort cannot use an appropriate index, a costly scan
@@ -24,11 +24,11 @@ low-impact `js-*` guidance requires concrete hot-path, scale, or measurement evi
   representative plan evidence when available, and index write cost before recommending an index.
   For connection pressure, compare per-instance pool size with the database connection budget and
   expected instance count. (N+1 is covered under algorithmic.)
-- ETL / data pipelines: per-row work where a set-based operation fits; a step made non-idempotent so
-  a failure forces a full re-run instead of a resumable batch; loss of chunking/streaming/partitioning
+- ETL / data pipelines: per-row work where a set-based operation fits, a step made non-idempotent so
+  a failure forces a full re-run instead of a resumable batch, loss of chunking/streaming/partitioning
   so the job's cost scales with total data rather than batch size.
-- report generation: aggregations recomputed per request instead of cached/materialized; heavy report
-  work on a synchronous request path instead of precomputed/async; output whose size or cost grows
+- report generation: aggregations recomputed per request instead of cached/materialized, heavy report
+  work on a synchronous request path instead of precomputed/async, output whose size or cost grows
   with users/rows with no bound.
 
 ## Do NOT flag

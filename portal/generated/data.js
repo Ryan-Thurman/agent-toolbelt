@@ -90,7 +90,7 @@ window.AGENT_TOOLBELT_DATA = {
       ],
       "primary_purpose": "Turn acceptance criteria into Gherkin feature files that run as the outer test loop of test-first delivery.",
       "use_when": [
-        "A refined story or plan phase has Given/When/Then criteria that need executable scenarios.",
+        "A refined story or plan phase has Given/When/Then criteria that need executable scenarios, or a failure-scenario card (FS- ID) needs a scenario.",
         "A team wants feature files reviewed, or needs a BDD runner such as playwright-bdd, pytest-bdd, or Cucumber-JVM."
       ],
       "avoid_when": [
@@ -159,7 +159,8 @@ window.AGENT_TOOLBELT_DATA = {
       "related_skills": [
         "cover",
         "webapp-testing",
-        "code-quality-gate"
+        "code-quality-gate",
+        "handoff"
       ],
       "workflow_membership": [
         "bug-fixing",
@@ -228,7 +229,7 @@ window.AGENT_TOOLBELT_DATA = {
       "display_name": "Cover",
       "short_description": "Author behavior-pinning tests for a diff, module, or bug reproduction on opt-in.",
       "default_prompt": "Propose tests that pin this behavior.",
-      "description": "Author behavior-pinning tests for a diff, a module, or a bug-to-fix regression gap, applied on opt-in, or scan an area for missing and weak coverage (detect-only). Use when adding regression coverage, strengthening tests, or surveying coverage gaps. For a merge verdict use /pr-review.",
+      "description": "Author behavior-pinning tests for a diff, a module, or a bug-to-fix regression gap, applied on opt-in, or scan an area for missing and weak coverage (detect-only). Use when adding regression coverage, strengthening tests, or surveying coverage gaps. Use test-case-design to plan cases from requirements.",
       "category": "Testing & Verification",
       "tags": [
         "tests",
@@ -238,10 +239,12 @@ window.AGENT_TOOLBELT_DATA = {
       ],
       "primary_purpose": "Add or improve focused test coverage for the behavior changed by a task.",
       "use_when": [
-        "A fix or feature needs regression protection and executable evidence of expected behavior."
+        "A fix or feature needs regression protection and executable evidence of expected behavior.",
+        "A test-case-design report has selected TC- cases that need executable tests."
       ],
       "avoid_when": [
-        "The repository has no testable seam and a test would only duplicate implementation details."
+        "The repository has no testable seam and a test would only duplicate implementation details.",
+        "The task is to plan cases from requirements. Use test-case-design."
       ],
       "preferred_context": "Acceptance criteria, changed code paths, existing test conventions, and failure cases.",
       "expected_outputs": [
@@ -324,7 +327,7 @@ window.AGENT_TOOLBELT_DATA = {
       "display_name": "Failure Scenario Design",
       "short_description": "Plan failure scenarios and staging chaos experiments as testable cards.",
       "default_prompt": "Use $failure-scenario-design to turn these reliability risks into scenario cards with Given/When/Then forms, test-first cases, and staging experiment plans.",
-      "description": "Turn reliability risks into failure-scenario cards with a hypothesis, steady state, fault, blast radius, abort conditions, Given/When/Then form, and test-first case. Plans chaos experiments and game days for staging. Plan output only.",
+      "description": "Turn reliability risks into failure-scenario cards with a hypothesis, steady state, fault, blast radius, abort conditions, Given/When/Then form, and test-first case. Plans chaos experiments and game days for staging. Plan output only. Use after reliability-review marks risks as testable.",
       "category": "Testing & Verification",
       "tags": [
         "chaos-engineering",
@@ -355,7 +358,8 @@ window.AGENT_TOOLBELT_DATA = {
         "reliability-review",
         "bdd-scenarios",
         "test-case-design",
-        "cover"
+        "cover",
+        "phased-delivery"
       ],
       "workflow_membership": [
         "security-sensitive-change",
@@ -462,7 +466,7 @@ window.AGENT_TOOLBELT_DATA = {
       "display_name": "Phase Gate",
       "short_description": "Synchronous PR-review gate at a phased-build boundary with isolated review and routing.",
       "default_prompt": "Run a phase gate review for this phase PR.",
-      "description": "Run a synchronous PR-review gate at a phased-build boundary. Use when each phase PR needs an isolated subagent review, posted findings, and either team handoff or solo fix-and-merge routing.",
+      "description": "Run a synchronous PR-review gate at a phased-build boundary. Use when each phase PR needs an isolated subagent review, posted findings, and either team handoff or solo fix-and-merge routing. It runs pr-review. Use pr-review directly for a single review.",
       "category": "Review & Quality",
       "tags": [
         "phase",
@@ -471,10 +475,11 @@ window.AGENT_TOOLBELT_DATA = {
       ],
       "primary_purpose": "Review whether a delivery phase met its evidence and acceptance criteria before proceeding.",
       "use_when": [
-        "A phased task needs an explicit checkpoint before the next implementation or release step."
+        "Each phase PR needs an isolated subagent review before the next phase starts."
       ],
       "avoid_when": [
-        "There is no phase boundary or the work has no defined acceptance evidence."
+        "There is no phase boundary or the work has no defined acceptance evidence.",
+        "A single PR needs one review. Use pr-review."
       ],
       "preferred_context": "Phase plan, completed work, checks, acceptance criteria, risks, and deferred items.",
       "expected_outputs": [
@@ -487,8 +492,9 @@ window.AGENT_TOOLBELT_DATA = {
         "Run a phase gate and list required corrections before continuing."
       ],
       "related_skills": [
-        "code-quality-gate",
-        "handoff",
+        "pr-review",
+        "pr-improve",
+        "phased-delivery",
         "phase-context-workflow"
       ],
       "workflow_membership": [
@@ -507,7 +513,7 @@ window.AGENT_TOOLBELT_DATA = {
       "display_name": "Phased Delivery",
       "short_description": "Deliver requirements or tickets as one PR per phase.",
       "default_prompt": "Use $phased-delivery to plan and deliver this requirement as reviewable PRs.",
-      "description": "Plan, review, or deliver requirements as test-first, reviewable phases with one PR per phase. Use with a raw request, an existing plan, or approved tickets, or to review a phase branch or PR against its ticket.",
+      "description": "Plan, review, or deliver requirements as test-first phases with one PR each. Use with a clear raw requirement (use shape-up if vague), an existing plan, or approved tickets. Checks a phase PR against its ticket's acceptance criteria (use pr-review for code findings).",
       "category": "Feature Delivery",
       "tags": [
         "feature",
@@ -524,7 +530,9 @@ window.AGENT_TOOLBELT_DATA = {
         "An existing implementation plan needs a report-only readiness check before execution."
       ],
       "avoid_when": [
-        "The request is only to define requirements, or an unattended runner owns execution and merge."
+        "The request is only to define requirements, or an unattended runner owns execution and merge.",
+        "The requirement is vague. Use shape-up first.",
+        "The task is a code review of a phase PR. Use pr-review."
       ],
       "preferred_context": "Source requirement or approved tickets, acceptance criteria, dependencies, repository state, and PR branch strategy.",
       "expected_outputs": [
@@ -566,7 +574,7 @@ window.AGENT_TOOLBELT_DATA = {
       "display_name": "PR Improve",
       "short_description": "Improve a PR in bounded verified rounds.",
       "default_prompt": "Use $pr-improve to address accepted PR findings within scope.",
-      "description": "Iteratively fix an agreed PR review ledger within a frozen scope and verify each round. Use to improve a PR after findings exist; not for one-time review or broad cleanup.",
+      "description": "Iteratively fix an agreed PR review ledger within a frozen scope and verify each round. Use to improve a PR after findings exist; not for one-time review or broad cleanup. Use pr-review-reply to answer reviewer threads.",
       "category": "Review & Quality",
       "tags": [
         "pr",
@@ -579,7 +587,8 @@ window.AGENT_TOOLBELT_DATA = {
         "A pull request has actionable findings that need implementation and re-checking."
       ],
       "avoid_when": [
-        "No review findings exist or the task is a fresh implementation."
+        "No review findings exist or the task is a fresh implementation.",
+        "The task is to answer reviewer threads. Use pr-review-reply."
       ],
       "preferred_context": "Pull request diff, review findings, repository checks, and unresolved threads.",
       "expected_outputs": [
@@ -622,7 +631,9 @@ window.AGENT_TOOLBELT_DATA = {
       ],
       "primary_purpose": "Review a change for correctness, regressions, maintainability, and delivery risk.",
       "use_when": [
-        "A pull request or diff needs an independent, evidence-backed review."
+        "A pull request or diff needs an independent, evidence-backed review.",
+        "A local diff needs review before a PR exists. Use /review-diff, which reports findings only and never posts.",
+        "A change needs a /pr-ready-check readiness verdict before a PR opens, or a /role-review from one role (product, engineering, design, QA, security, or release)."
       ],
       "avoid_when": [
         "The request is only to implement a known change and no review is needed yet."
@@ -662,9 +673,9 @@ window.AGENT_TOOLBELT_DATA = {
     {
       "id": "pr-review-reply",
       "display_name": "PR Review Reply",
-      "short_description": "Triage PR review threads, re-review touched code, and draft per-thread replies.",
+      "short_description": "Triage PR review threads, triage each thread against code changed since the review, and draft per-thread replies.",
       "default_prompt": "Handle these PR review comments.",
-      "description": "Handle the PR-review round-trip: read reviewer threads, triage each one against code changed since the review, and draft per-thread replies. Use to address PR comments, answer review feedback, or close a /pr-review loop.",
+      "description": "Handle the PR-review round-trip: read reviewer threads, triage each one against code changed since the review, and draft per-thread replies. Use to reply to a human reviewer's threads or close a /pr-review loop. Use pr-improve to fix accepted findings in code.",
       "category": "Review & Quality",
       "tags": [
         "review-comments",
@@ -677,7 +688,8 @@ window.AGENT_TOOLBELT_DATA = {
         "Review comments need replies that explain fixes, decisions, or justified non-changes."
       ],
       "avoid_when": [
-        "The pull request has not been reviewed or needs implementation rather than communication."
+        "The pull request has not been reviewed or needs implementation rather than communication.",
+        "The task is to fix accepted findings in code. Use pr-improve."
       ],
       "preferred_context": "Review thread, changed code, check results, and project conventions.",
       "expected_outputs": [
@@ -805,7 +817,7 @@ window.AGENT_TOOLBELT_DATA = {
       "display_name": "Reliability Review",
       "short_description": "Find failure modes and testable reliability requirements before a design is built.",
       "default_prompt": "Use $reliability-review to review this design for failure modes, SLOs, dependencies, recovery, and observability, and produce the reliability requirements.",
-      "description": "Review a design or feature plan for failure modes, SLOs, dependencies, recovery, capacity, and observability before it is built, or run a production readiness review. Produces testable reliability requirements. Analysis only.",
+      "description": "Review a design or feature plan for failure modes, SLOs, dependencies, recovery, capacity, and observability before it is built, or run a production readiness review. Produces testable reliability requirements. Analysis only. Use failure-scenario-design to turn its requirements into test scenarios.",
       "category": "Security & Risk",
       "tags": [
         "sre",
@@ -819,7 +831,8 @@ window.AGENT_TOOLBELT_DATA = {
         "A built service needs a production readiness review against its reliability requirements."
       ],
       "avoid_when": [
-        "The change has no remote call, data store, job, or deployment change. Use the story tier of the reliability checklist instead."
+        "The change has no remote call, data store, job, or deployment change. Use the story tier of the reliability checklist instead.",
+        "The task is to write test scenarios from existing reliability requirements. Use failure-scenario-design."
       ],
       "preferred_context": "Design document and revision, user journeys, dependencies and their owners, targets, telemetry, and deployment topology.",
       "expected_outputs": [
@@ -1042,7 +1055,7 @@ window.AGENT_TOOLBELT_DATA = {
       "display_name": "Security Audit",
       "short_description": "Audit code and configuration security risks.",
       "default_prompt": "Use $security-audit to review this target's security risks.",
-      "description": "Perform a read-only security audit of implemented code, configuration, dependencies, and secret exposure. Use threat-model for a design before it is built. Active testing requires explicit written authorization.",
+      "description": "Perform a read-only security audit of implemented code, configuration, dependencies, and secret exposure. Use threat-model for a design before it is built. Active testing requires explicit written authorization. Use pr-review for the security facet of one diff.",
       "category": "Security & Risk",
       "tags": [
         "security",
@@ -1054,7 +1067,9 @@ window.AGENT_TOOLBELT_DATA = {
         "A repository, change, or configuration needs a security-focused inspection."
       ],
       "avoid_when": [
-        "The task is general quality review with no security-sensitive surface."
+        "The task is general quality review with no security-sensitive surface.",
+        "The design is not built yet. Use threat-model.",
+        "The task is the security facet of one diff. Use pr-review."
       ],
       "preferred_context": "Trust boundaries, sensitive data, dependencies, configuration, findings policy, and safe test scope.",
       "expected_outputs": [
@@ -1182,21 +1197,23 @@ window.AGENT_TOOLBELT_DATA = {
     {
       "id": "simple-english",
       "display_name": "Simple English",
-      "short_description": "Plain English with ASD-STE100 discipline.",
+      "short_description": "Plain English with ASD-STE100 discipline and trope review.",
       "default_prompt": "Use $simple-english to rewrite this document in plain English.",
-      "description": "Check or rewrite text against ASD-STE100 in Strict mode or rule by rule, and apply the patterns for error messages, runbooks, incident reports, and release notes. Everyday writing rules are in human-readable-output.md. Use this skill when the user asks for STE or a rewrite.",
+      "description": "Check or rewrite text against ASD-STE100, or review it for AI writing tropes. Use only for an STE or compliance request, a trope review of long text or client copy, or an error message, runbook, incident report, release note, commit message, or UI copy.",
       "category": "Agent Operations",
       "tags": [
         "writing",
         "documentation",
         "ste",
         "plain-english",
-        "communication"
+        "communication",
+        "ai-tropes"
       ],
-      "primary_purpose": "Check or rewrite text against ASD-STE100 in Strict mode or rule by rule. The everyday writing rules live in human-readable-output.md.",
+      "primary_purpose": "Check or rewrite text against ASD-STE100 in Strict mode or rule by rule, and review long text for AI writing tropes. The everyday writing rules live in human-readable-output.md.",
       "use_when": [
         "The user asks for STE, ASD-STE100 compliance, or a plain-English rewrite.",
-        "An agent writes an error message, runbook, incident report, or release notes and needs the matching pattern."
+        "An agent writes an error message, runbook, incident report, or release notes and needs the matching pattern.",
+        "Long text or client-facing copy needs a trope review, or a pattern is not in the short list in human-readable-output.md."
       ],
       "avoid_when": [
         "The text is marketing or brand copy that needs persuasion."
@@ -1204,14 +1221,15 @@ window.AGENT_TOOLBELT_DATA = {
       "preferred_context": "The draft text, its reader, and whether the user asks for Strict ASD-STE100 compliance.",
       "expected_outputs": [
         "Plain-English rewrite",
-        "Rule-numbered check report in check mode"
+        "Rule-numbered check report in check mode",
+        "Text without AI writing tropes"
       ],
       "example_prompts": [
         "Rewrite this README with simple-english.",
-        "Check this runbook against ASD-STE100."
+        "Check this runbook against ASD-STE100.",
+        "Check this draft for AI writing tropes."
       ],
       "related_skills": [
-        "writing-whip",
         "pr-review",
         "handoff",
         "ship-it"
@@ -1275,7 +1293,7 @@ window.AGENT_TOOLBELT_DATA = {
       "display_name": "Story Refinement",
       "short_description": "Refine a ticket into a ready-to-build spec with criteria and questions.",
       "default_prompt": "Use $story-refinement to scan this ticket for ambiguity, draft Given/When/Then criteria, and prepare the owner questions and readiness verdict.",
-      "description": "Refine a ticket, story, or approved brief into a ready-to-build spec. Find ambiguity, resolve facts from the repository, batch owner questions with defaults, write Given/When/Then criteria with negative paths, and give a readiness verdict.",
+      "description": "Refine a ticket, story, or approved brief into a ready-to-build spec. Find ambiguity, resolve facts from the repository, batch owner questions with defaults, write Given/When/Then criteria with negative paths, and give a readiness verdict. Use shape-up for a vague idea.",
       "category": "Discovery & Planning",
       "tags": [
         "refinement",
@@ -1494,7 +1512,7 @@ window.AGENT_TOOLBELT_DATA = {
         "The repository needs a bounded maintenance backlog with consequences and priority reasons."
       ],
       "avoid_when": [
-        "One supplied item already needs an options decision; use technical assessment."
+        "One supplied item already needs an options decision. Use tech-backlog-assessment."
       ],
       "preferred_context": "Repository revision, scoped paths, history period, tests, dependencies, operations, and existing debt records.",
       "expected_outputs": [
@@ -1528,7 +1546,7 @@ window.AGENT_TOOLBELT_DATA = {
       "display_name": "Test Case Design",
       "short_description": "Design prioritized, traceable QA test cases.",
       "default_prompt": "Use $test-case-design to design cases for this requirement.",
-      "description": "Turn requirements, risks, or a code change into prioritized, executable QA test cases without writing tests. Use before test implementation, QA handoff, coverage planning, or to plan focused tests for a pull request.",
+      "description": "Turn requirements, risks, or a code change into prioritized, executable QA test cases without writing tests. Use before test implementation, QA handoff, case planning, or to plan focused tests for a pull request. Use cover to write tests or find coverage gaps in code.",
       "category": "Testing & Verification",
       "tags": [
         "qa",
@@ -1542,7 +1560,8 @@ window.AGENT_TOOLBELT_DATA = {
         "A pull request needs a focused test plan for the modules, callers, and risk areas it touches."
       ],
       "avoid_when": [
-        "The needed regression test is obvious and can be added directly."
+        "The needed regression test is obvious and can be added directly.",
+        "The task is to write tests or find coverage gaps in code. Use cover."
       ],
       "preferred_context": "Requirements, acceptance criteria, a pull request diff, declared risk areas, state transitions, failure modes, and test harness.",
       "expected_outputs": [
@@ -1677,7 +1696,7 @@ window.AGENT_TOOLBELT_DATA = {
       "display_name": "Ticket Sync",
       "short_description": "Publish sliced ticket files to GitHub Issues, Jira, or Azure Boards with confirmation gates.",
       "default_prompt": "Sync these ticket files to the tracker.",
-      "description": "Publish approved ticket files to the repository's tracker: GitHub Issues, Jira, or Azure Boards. Use after shape-up slicing, bug-to-fix intake, or a project-owned ticket workflow. Preview changes, preserve tracker keys, and write a manifest when offline.",
+      "description": "Publish approved ticket files to the repository's tracker: GitHub Issues, Jira, or Azure Boards. Use after shape-up slicing or a project-owned ticket workflow. Preview changes, preserve tracker keys, and write a manifest when offline.",
       "category": "Feature Delivery",
       "tags": [
         "ticket",
@@ -2142,50 +2161,6 @@ window.AGENT_TOOLBELT_DATA = {
       "recommended_changes": [],
       "source_path": "skills/worktree/SKILL.md",
       "source_url": "https://github.com/Ryan-Thurman/agent-toolbelt/blob/main/skills/worktree/SKILL.md"
-    },
-    {
-      "id": "writing-whip",
-      "display_name": "Writing Whip",
-      "short_description": "Stop AI writing tropes and behaviors at generation.",
-      "default_prompt": "Use $writing-whip to check this draft for AI writing tropes and fix them.",
-      "description": "Full catalog of AI writing tropes with examples. Use for a trope review of long text or client-facing copy, or for a pattern that the short list in human-readable-output.md does not cover.",
-      "category": "Agent Operations",
-      "tags": [
-        "writing",
-        "documentation",
-        "ai-tropes",
-        "communication",
-        "review"
-      ],
-      "primary_purpose": "Give the full AI writing trope catalog with examples. The short trope list lives in human-readable-output.md.",
-      "use_when": [
-        "Long text or client-facing copy needs a trope review.",
-        "A pattern is not in the short list in human-readable-output.md."
-      ],
-      "avoid_when": [
-        "The output is a required data format, such as JSON, where prose rules do not apply."
-      ],
-      "preferred_context": "The draft text and its reader.",
-      "expected_outputs": [
-        "Text without AI writing tropes",
-        "A one-line note for each rule that the output breaks on purpose"
-      ],
-      "example_prompts": [
-        "Check this draft for AI writing tropes.",
-        "Rewrite this README section without AI tells."
-      ],
-      "related_skills": [
-        "simple-english",
-        "pr-review"
-      ],
-      "workflow_membership": [],
-      "documentation_completeness": {
-        "status": "complete",
-        "notes": "Canonical skill and agent metadata are present."
-      },
-      "recommended_changes": [],
-      "source_path": "skills/writing-whip/SKILL.md",
-      "source_url": "https://github.com/Ryan-Thurman/agent-toolbelt/blob/main/skills/writing-whip/SKILL.md"
     }
   ],
   "workflows": [
@@ -2521,7 +2496,9 @@ window.AGENT_TOOLBELT_DATA = {
           "next_steps": [
             "simplify",
             "retrofit",
-            "phased-delivery"
+            "phased-delivery",
+            "ticket-discovery",
+            "cover"
           ]
         },
         {
@@ -2597,19 +2574,8 @@ window.AGENT_TOOLBELT_DATA = {
           "rationale": "Find failure modes, SLO and observability gaps, and recovery needs, and write testable reliability requirements.",
           "example_invocation": "Run a reliability review on this design.",
           "next_steps": [
-            "phased-delivery",
-            "failure-scenario-design"
-          ]
-        },
-        {
-          "skill": "phased-delivery",
-          "rationale": "Plan accepted requirements and preserve threat-to-verification links.",
-          "example_invocation": "Plan the accepted design and security requirements.",
-          "next_steps": [
             "failure-scenario-design",
-            "test-case-design",
-            "cover",
-            "security-audit"
+            "phased-delivery"
           ]
         },
         {
@@ -2617,8 +2583,19 @@ window.AGENT_TOOLBELT_DATA = {
           "rationale": "Turn testable reliability risks into scenario cards, Given/When/Then forms, and staging experiment plans.",
           "example_invocation": "Write failure scenarios for these reliability risks.",
           "next_steps": [
+            "phased-delivery",
             "test-case-design",
             "cover"
+          ]
+        },
+        {
+          "skill": "phased-delivery",
+          "rationale": "Plan accepted requirements and preserve threat-to-verification links.",
+          "example_invocation": "Plan the accepted design and security requirements.",
+          "next_steps": [
+            "test-case-design",
+            "cover",
+            "security-audit"
           ]
         },
         {
@@ -2738,7 +2715,7 @@ window.AGENT_TOOLBELT_DATA = {
         },
         {
           "skill": "cover",
-          "rationale": "Write the planned tests and close the coverage gap that let the defect through.",
+          "rationale": "Pin the fixed behavior and the neighboring paths.",
           "example_invocation": "Write the planned tests for the incident fix.",
           "next_steps": [
             "pr-review"
@@ -2830,7 +2807,7 @@ window.AGENT_TOOLBELT_DATA = {
         "scripts/check-portal.sh"
       ],
       "purpose": "Validate native manifests, catalogs, package inventory, and host-specific plugin contracts.",
-      "recommendation": "Keep as release checks; add catalog checks as a separate Phase 1 surface."
+      "recommendation": "Keep as release checks."
     },
     {
       "id": "skill-sync",

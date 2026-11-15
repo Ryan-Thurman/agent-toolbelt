@@ -11,15 +11,8 @@ read it before you write for the user.
 Toolbelt paths: a path that starts with `shared/`, `skills/`, `templates/`, or `workflows/` is relative to the Toolbelt root, `${CLAUDE_PLUGIN_ROOT}`. If that variable is not replaced, use the nearest folder above this file that contains `shared/contracts/`.
 Read `shared/contracts/references/evidence-quality.md` when evaluating the item.
 
-Use this skill when the user has a technical backlog item and needs a decision
-memo before implementation.
 Report only. Edit files only after the user accepts the recommendation and asks to implement.
 
-Paths beginning `templates/` or `shared/` refer to the Toolbelt root.
-
-Use `ticket-discovery` instead when the ticket is narrow and already names a
-precedent to copy or adapt.
-Use an available `tech-debt-discovery` to discover repository candidates before selecting an item.
 For source-to-target upgrades, read `references/version-delta.md`.
 
 ## Steps
@@ -39,9 +32,9 @@ For source-to-target upgrades, read `references/version-delta.md`.
 5. Recommend one verdict.
 6. For `Do` or `Spike`, define the smallest implementation shape and the verification strategy.
    Create a phased implementation plan only when the user asks to continue.
-7. Name the next skill: `ticket-discovery`, `phased-delivery`, `retrofit`, `cover`, or no action.
+7. Name the next skill: `ticket-discovery`, `phased-delivery`, `simplify`, `retrofit`, `cover`, or no action.
    On hosts with commands, also name the command: `/ticket-discover`, `/dev-plan`,
-   `/implementation-plan`, `/retrofit`, `/cover-gaps`, or `/cover`.
+   `/implementation-plan`, `/simplify`, `/retrofit`, `/cover-gaps`, or `/cover`.
 
 ## Verdicts
 

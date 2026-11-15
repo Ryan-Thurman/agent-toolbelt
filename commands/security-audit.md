@@ -7,5 +7,5 @@ argument-hint: "<path-or-system> [--active-scope <written-authorization>]"
 
 **Arguments:** `$ARGUMENTS`
 
-Use this command to audit implemented code; use `/threat-model` for a design before you build it.
+Use this command to audit implemented code. Use `/threat-model` for a design before you build it.
 Follow the `security-audit` skill for `$ARGUMENTS`.

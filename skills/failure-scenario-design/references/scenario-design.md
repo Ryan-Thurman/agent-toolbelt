@@ -28,9 +28,12 @@ Choose the lowest level that exposes the risk. Lower levels are faster, cheaper,
 | --- | --- |
 | Unit test with a fake | Timeout handling, retry rules, fallback logic, and error mapping in one module. |
 | Integration test with a fault proxy | Real client behavior against a dependency that is slow, resets connections, or returns errors. For example Toxiproxy, a container dependency, or an HTTP stub with faults. |
-| BDD scenario | A failure behavior that the team must read and agree on, at the API or end-to-end level. |
+| Contract test | A consumer and a provider that deploy separately must agree on failure responses. |
+| End-to-end test | A critical user journey that must survive the fault, through the public interface. |
 | Staging experiment | Behavior that only the real platform shows: failover, zone or node loss, autoscaling, and mesh or load balancer settings. |
 | Game day | A planned team exercise with several faults, people on call, and runbooks under test. |
+
+Write it as a feature-file scenario when the team must read it.
 
 ## Fault types
 
@@ -45,6 +48,6 @@ Choose the lowest level that exposes the risk. Lower levels are faster, cheaper,
 | Resource exhaustion | Pool, memory, and disk limits | Small pool in a test, Chaos Mesh |
 | Pod, node, or zone loss | Self-healing, PodDisruptionBudget, failover | Chaos Mesh, LitmusChaos, AWS FIS, Azure Chaos Studio |
 | Network partition | Split brain and failover | Chaos Mesh |
-| Load above capacity | Shedding and degradation | k6, Gatling, Locust |
+| Load above capacity | Shedding and degradation | When `reliability-review` is installed, see `skills/reliability-review/references/capacity-and-data.md` |
 
 Read the official documentation of a tool before you name its settings.

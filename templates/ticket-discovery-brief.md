@@ -1,10 +1,10 @@
-# Ticket Discovery Brief: <title>
+# Ticket discovery brief: <title>
 
-## Ticket Summary
+## Ticket summary
 
 <what the ticket asks for in plain language>
 
-## Parsed Request
+## Parsed request
 
 Target: <system/module/service>
 
@@ -14,7 +14,7 @@ Requested change: <change to make>
 
 Success signal: <how we will know it is done>
 
-## Existing Precedent
+## Existing precedent
 
 | Item | Finding |
 |---|---|
@@ -26,7 +26,7 @@ Success signal: <how we will know it is done>
 | CI hook |  |
 | Patterns to reuse |  |
 
-## Target Current State
+## Target current state
 
 | Item | Finding |
 |---|---|
@@ -36,7 +36,7 @@ Success signal: <how we will know it is done>
 | Missing setup |  |
 | Constraints |  |
 
-## Gap Analysis
+## Gap analysis
 
 | Area | Precedent Has | Target Has | Action and why |
 |---|---|---|---|
@@ -46,7 +46,7 @@ Success signal: <how we will know it is done>
 | Scenarios |  |  | Reuse / adapt / create |
 | CI / command wiring |  |  | Reuse / adapt / create |
 
-## Recommended Approach
+## Recommended approach
 
 Describe the smallest useful adaptation, preserving the source ticket's scope.
 
@@ -69,15 +69,15 @@ Describe the smallest useful adaptation, preserving the source ticket's scope.
 | Full relevant suite |  |
 | CI expectation |  |
 
-## Risks / Unknowns
+## Risks / unknowns
 
 - <risk or question>
 
-## Implementation Handoff
+## Implementation handoff
 
 Ready for implementation planning: Yes / No
 
-Recommended next command: `/implementation-plan` / `/dev-plan` / `/cover` /
+Recommended next command: `/implementation-plan` / `/cover` /
 `/cover-gaps` / `/retrofit` / `/tech-assess`
 
 First implementation step: <what to do first>

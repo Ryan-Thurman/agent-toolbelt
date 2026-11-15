@@ -1,6 +1,6 @@
 # Finding schema
 
-Every facet emits a list of findings in this shape. The aggregator merges/dedups them; the host
+Every facet emits a list of findings in this shape. The aggregator merges/dedups them, and the host
 (not the model) derives the verdict from them. **Emit an empty list if the change is clean.**
 
 ```jsonc
@@ -8,7 +8,7 @@ Every facet emits a list of findings in this shape. The aggregator merges/dedups
   "file": "src/auth/session.ts",
   "lineStart": 142,            // anchor on the diff's NEW side
   "lineEnd": 148,              // == lineStart for a single line
-  "facet": "security",         // correctness|security|performance|reliability|tests|maintainability|standards|spec-alignment|re-entry
+  "facet": "security",         // correctness|security|performance|reliability|tests|maintainability|standards|spec-alignment
   "bucket": "blocker",         // blocker | should-fix | nit
   "severity": "high",          // critical | high | medium | low
   "title": "Session token compared with non-constant-time equality",
@@ -24,12 +24,13 @@ Every facet emits a list of findings in this shape. The aggregator merges/dedups
 
 ## Rules
 
+- **Re-entry notes are not findings.** The orchestrator writes them. They sit outside this schema and are not graded.
 - **Anchor on the new side.** `lineStart`/`lineEnd` reference post-change line numbers (see
-  `targets-and-diff.md`). If you can't anchor confidently, lower `confidence` and say so in
-  `evidence` — don't invent a line number.
+  `targets-and-diff.md`). If you cannot anchor confidently, lower `confidence` and say so in
+  `evidence`. Do not invent a line number.
 - **One facet per finding.** If two facets apply, emit the stronger one (or two findings).
-- **`improvedCode` is optional** and only for concrete, safe, in-place fixes — not large rewrites.
-- **`rootIssue`/`consequence`/`benefit` are required** — they are the "make the case" gate. A
-  finding without a real consequence should not be emitted.
-- **`confidence`** below ~0.5 means "worth a question, not an assertion" — render it as a question
+- **`improvedCode` is optional** and only for concrete, safe, in-place fixes, not large rewrites.
+- **`rootIssue`/`consequence`/`benefit` are required**: they are the "make the case" gate. A
+  finding without a real consequence must not be emitted.
+- **`confidence`** below ~0.5 means "worth a question, not an assertion": render it as a question
   in the report, not a blocker.

@@ -1,15 +1,15 @@
-# TypeScript and React Baseline
+# TypeScript and React baseline
 
 Use this contract only for TypeScript or React code when stronger repository
 instructions, configuration, or repeated local conventions do not decide the issue.
 
 - Follow the repository's adopted TypeScript guide and enforced formatter, linter,
   compiler, and import rules.
-- Make boundary types explicit; narrow `unknown` before use and avoid `any` or casts
+- Make boundary types explicit. Narrow `unknown` before use and avoid `any` or casts
   unless the boundary justifies them.
 - Use PascalCase for components and `use`-prefixed names for custom hooks. Keep
   hooks and components responsible for a coherent user or domain concern.
-- Derive values during render when practical; do not add effects solely to mirror
+- Derive values during render when practical. Do not add effects solely to mirror
   derivable state. Effects synchronize with external systems and need cleanup when
   they create subscriptions, timers, or other resources.
 - Preserve local conventions for exports, folder layout, state management, CSS,
@@ -38,6 +38,6 @@ python3 shared/contracts/scripts/react-rule-scan.py [--base REF] [PATH ...]
 - When the scan names `missing` specialists, report them once. Do not block on them.
 - Check framework and React versions, runtime boundaries, local evidence, and measured
   impact before you apply a rule. Repository policy wins over specialist rules.
-- To find a rule without a scan, use the `references/rule-routing.md` table of a specialist.
+- To find a rule without a scan, use the `references/rule-routing.md` table of an installed specialist.
 
 This baseline deliberately does not choose an architecture or framework policy.

@@ -8,3 +8,4 @@ argument-hint: "<requirement-or-idea>"
 Use this command when a raw requirement has no approved plan or ticket.
 Follow the `phased-delivery` skill "Raw requirement" rules for `$ARGUMENTS`.
 Stop after you record the outcome, boundaries, and acceptance criteria. The next command is `/dev-plan`.
+For an idea with open product decisions or an unknown gap with the current system, use `/shape-up`.

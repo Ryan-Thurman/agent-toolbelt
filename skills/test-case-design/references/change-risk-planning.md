@@ -8,7 +8,7 @@ instead of a requirement. The output is a focused test plan for that change.
 - For a branch, use `git diff <base>...HEAD`, where `<base>` is the merge base with the default branch.
 - For a GitHub pull request, use `gh pr diff <number>`. For an Azure Repos pull request, fetch
   the source branch and use `git diff` against the target branch.
-- Record the base and the head commit in "Change Scope". The plan applies to that range only.
+- Record the base and the head commit in "Change scope". The plan applies to that range only.
 
 ## 2. Classify each changed file
 
@@ -34,12 +34,12 @@ from the base branch, to the changed and affected paths. Record each match with 
 Read the linked ticket, the pull request description, and the commit messages. Use their
 acceptance criteria as the requirements. When no source states the intended behavior of a
 change, do not take the expected result from the new code. Write `Confirm with the owner` as
-the expected result and list the case in "Inputs and Assumptions".
+the expected result and list the case in "Inputs and assumptions".
 
 ## 6. Check the existing tests
 
 Find the tests that already exercise each changed module. Do not write a new case for behavior
-that an existing test already covers. Name that test in "Coverage Notes". A changed behavior
+that an existing test already covers. Name that test in "Coverage notes". A changed behavior
 with no test is a gap. A removed or weakened assertion is a gap.
 
 ## 7. Set the priority
@@ -49,4 +49,4 @@ with no test is a gap. A removed or weakened assertion is a gap.
 - Likelihood is high when the change alters a branch, a calculation, a state transition, or an
   error path, or when the module has no tests.
 - Put the high-impact, high-likelihood cases first. A low-impact, low-likelihood area can get no
-  case when you record the reason in "Coverage Notes".
+  case when you record the reason in "Coverage notes".

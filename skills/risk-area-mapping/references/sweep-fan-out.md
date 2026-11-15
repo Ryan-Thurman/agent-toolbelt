@@ -44,7 +44,7 @@ Do not add your own view of the risks to the brief. The subagent must form its v
 
 When a section returns, check it. The section must have:
 
-- a status, a target file, an existing list, the signals that were not available, the coverage, and
+- a status, a target file, an existing list, the signals that were not available, the signals with no candidates, the coverage, and
   the folders not inspected in depth,
 - for each entry, globs, an impact line, and an evidence line with `sourced` or `inferred` and a file count,
 - a reason for each dropped candidate.

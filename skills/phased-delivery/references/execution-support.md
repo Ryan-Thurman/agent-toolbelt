@@ -1,9 +1,6 @@
-# Execution Support
+# Execution support
 
-Load this reference only when a Phased Delivery run needs temporary scratch artifacts,
-a recovery ledger, or delegated subagent execution.
-
-## Scratch and Ledger Convention
+## Scratch and ledger convention
 
 For temporary task briefs, implementer reports, review packages, and progress
 ledgers, use one repo-local scratch workspace per Implementation Plan instead of
@@ -22,7 +19,7 @@ for delegated execution. Start it with the plan path, then record one compact
 line per completed task with the task name, commit range or changed files,
 checks run, and review result.
 
-The source plan or small execution record remains the durable source of truth; the ledger
+The source plan or small execution record remains the durable source of truth. The ledger
 is only a local recovery aid after context loss.
 
 Before committing, run `git status --short`. If `.atb-work/` appears, stop and
@@ -31,7 +28,7 @@ fix the scratch location or ignore before continuing.
 When the plan is finished and its PR handoffs are complete, remove only that
 plan's scratch directory.
 
-## Optional Subagent Dispatch
+## Optional subagent dispatch
 
 Phased Delivery must work without multi-agent tooling. Run tasks sequentially in the
 current session by default.
@@ -47,7 +44,7 @@ bounded work with clear ownership:
 - Ask for a short return message: status, changed files or commits, checks run,
   and blockers or concerns. Longer evidence belongs in the report file.
 - Do not delegate the immediate critical-path task if the next local step is
-  blocked on its result; do that work locally.
+  blocked on its result. Do that work locally.
 
 Select a model explicitly only when the tool supports it and the task needs it.
 Use the strongest available model for architecture, security, and final review.

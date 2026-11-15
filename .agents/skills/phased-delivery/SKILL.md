@@ -1,9 +1,9 @@
 ---
 name: phased-delivery
-description: Plan, review, or deliver requirements as test-first, reviewable phases with one PR per phase. Use with a raw request, an existing plan, or approved tickets, or to review a phase branch or PR against its ticket.
+description: Plan, review, or deliver requirements as test-first phases with one PR each. Use with a clear raw requirement (use shape-up if vague), an existing plan, or approved tickets. Checks a phase PR against its ticket's acceptance criteria (use pr-review for code findings).
 ---
 
-# Phased Delivery
+# Phased delivery
 
 If you have not read `shared/contracts/references/human-readable-output.md` in this session,
 read it before you write for the user.
@@ -36,7 +36,7 @@ This is the interactive delivery lane, not the unattended Auto Agent runner.
 - **Raw requirement:** Inspect the repository and clarify material ambiguity.
   Record a concise outcome, boundaries, and testable acceptance criteria before
   you slice phases. Make reversible technical assumptions explicit. Use
-  `../../templates/dev-feature-brief.md` only when a brief resolves real uncertainty.
+  `templates/dev-feature-brief.md` only when a brief resolves real uncertainty.
 
 Stop for a human scope decision in these conditions:
 
@@ -63,7 +63,7 @@ Continue through ordinary code, file, and test discovery without a stop.
    decisions the implementer cannot infer, and exact values that the source
    fixes. Give each step a checkable result, not a transcript of future edits.
    Present steps as **Do / Why / Done when**. Flag missing or cyclic
-   dependencies for a human decision. Use `../../templates/phased-delivery-plan.md`
+   dependencies for a human decision. Use `templates/phased-delivery-plan.md`
    only when no suitable plan exists.
 2. **Check readiness and get approval.** Read `references/plan-readiness.md`.
    Show the phase and PR map, dependency bases, and material assumptions.

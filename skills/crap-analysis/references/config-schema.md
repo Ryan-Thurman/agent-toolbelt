@@ -1,7 +1,7 @@
 # CRAP analysis config (`.crap-analysis.json`)
 
 Deterministic, versioned config for the crap-analysis pack. The `/crap-config` wizard is the
-**only writer** — it hydrates this file from user inputs and writes a stable JSON shape.
+**only writer**: it hydrates this file from user inputs and writes a stable JSON shape.
 
 ## Discovery and trust
 
@@ -27,14 +27,14 @@ The result JSON then has `config.changedInDiff: true`, and the review starts wit
 | `$schema` | yes | Must be `"agent-toolbelt/crap-analysis/v1"` |
 | `version` | yes | Must be `1` |
 | `defaults.threshold` | yes | Positive number. A function with a CRAP score above it is flagged. The wizard default is `30`. |
-| `defaults.outputDir` | yes | Default directory for report artifacts (informational; `outputs.*` paths are authoritative) |
-| `targets` | yes | Map of target name → target config (keys sorted alphabetically when written) |
+| `defaults.outputDir` | yes | Default directory for report artifacts (informational: `outputs.*` paths are authoritative) |
+| `targets` | yes | Map of target name -> target config (keys sorted alphabetically when written) |
 
 ### Per-target fields
 
 | Field | Required | Description |
 |---|---|---|
-| `src` | yes | Source root for changed-file mapping (longest-prefix match, repo-relative; `.` matches all) |
+| `src` | yes | Source root for changed-file mapping (longest-prefix match, repo-relative, `.` matches all) |
 | `commands.analysis` | yes | Shell command that writes the CRAP report and the refactor brief |
 | `commands.coverage` | no | Shell command to refresh test coverage before analysis |
 | `commands.verify` | yes | Shell command to re-run after refactor |
@@ -65,7 +65,7 @@ Start from `templates/crap-analysis.json`.
 
 - Target keys sorted alphabetically in the written file
 - 2-space indent, trailing newline
-- Command strings stored verbatim — the orchestrator runs them exactly as written
+- Command strings stored verbatim. The orchestrator runs them exactly as written
 - When running `analysis` or `verify`, the orchestrator appends `--threshold <defaults.threshold>`
   if the command does not already include `--threshold`
 - Output paths must be repo-relative and stable (no timestamps in paths)

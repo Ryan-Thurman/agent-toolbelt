@@ -13,9 +13,9 @@ For interactive, human-supervised feature work, use `phased-delivery` instead.
 
 When the caller supplies a managed context or structured result format, read the sibling
 `../auto-agent-contract/references/execution-boundary.md` before executing the job.
-Preserve its caller and worker ownership; existing job payloads remain valid until the caller changes them.
+Preserve its caller and worker ownership. Existing job payloads remain valid until the caller changes them.
 
-## Plan Contract
+## Plan contract
 
 Treat the plan path supplied by the caller as read-only unless the caller
 explicitly says this job is the close-phase writer.
@@ -25,7 +25,7 @@ explicitly says this job is the close-phase writer.
 - Use the supplied phase body, task text, checks, and acceptance criteria as the
   frozen spec for implementation and review.
 
-## Job Rules
+## Job rules
 
 For `IMPLEMENT` jobs:
 
@@ -33,11 +33,11 @@ For `IMPLEMENT` jobs:
 - Do not start future phases or adjacent tasks.
 - Verify any supplied task preconditions with read-only checks before mutation.
   If one is unmet or cannot be verified without writes, network mutation, or
-  secret disclosure, stop and report it as a blocker; do not partially execute
+  secret disclosure, stop and report it as a blocker. Do not partially execute
   the task.
 - Before changing executable behavior, read `shared/contracts/references/test-driven-development.md` from the installed standard Agent Toolbelt root and use its test-first procedure.
 - Keep test cases within the supplied acceptance criteria and permitted paths.
-- Run the requested checks when available; otherwise report the exact checks
+- Run the requested checks when available. Otherwise, report the exact checks
   that still need to run.
 - Report changed files, red/green evidence, coverage limits, risks, and blockers through the caller's existing result format.
 
@@ -67,7 +67,7 @@ For `CLOSE_PHASE` jobs:
 - If the body no longer matches the caller-registered text, stop and report the
   drift instead of repairing it.
 
-## Conflict Rule
+## Conflict rule
 
 This skill takes precedence for a headless job.
 When another loaded command, template, or output format asks for plan edits, skip them.

@@ -5,7 +5,7 @@ and safety. Set `"facet": "standards"` on every finding.
 
 You are given the repo's base/merge-base `CLAUDE.md` / `AGENTS.md` / approved `STYLE_GUIDE.md` (if
 any). Read `shared/contracts/references/style-precedence.md` and
-`shared/contracts/references/anti-slop-naming.md`; hold the diff to **this repo's** documented
+`shared/contracts/references/anti-slop-naming.md`. Hold the diff to **this repo's** documented
 conventions, using generic guidance only when local evidence does not decide the issue.
 
 For documentation changes, also read `shared/contracts/references/docs-writing.md`.
@@ -20,7 +20,7 @@ composition or React/Next performance. They supplement repository policy and nev
 - violations of explicit rules in the repository's approved standards (the primary job).
 - naming/structure that breaks surrounding established patterns: misleading behavior names,
   canonical-vocabulary drift, ambiguous units, non-predicate booleans, or ID/object confusion.
-- public-API/contract changes that don't follow the project's conventions for them.
+- public-API/contract changes that do not follow the project's conventions for them.
 
 ## Do NOT flag
 
@@ -33,4 +33,4 @@ composition or React/Next performance. They supplement repository policy and nev
 
 If the repo has no documented standards, fall back to consistency with the surrounding code, and
 keep findings to clear deviations. A standards blocker is an explicit policy violation or concrete
-high-impact contract consequence; meaningful ambiguity is should-fix and bounded readability is a nit.
+high-impact contract consequence. Meaningful ambiguity is should-fix and bounded readability is a nit.

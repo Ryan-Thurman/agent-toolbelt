@@ -15,7 +15,7 @@ This skill does not calculate CRAP.
 Each repository configures its own coverage, analysis, and verify commands in `.crap-analysis.json`.
 The orchestrator runs those commands once, then reviews the report that they write.
 
-## Mutation Policy
+## Mutation policy
 
 | Mode | Edits code | Writes config |
 |---|---|---|
@@ -27,10 +27,10 @@ The orchestrator writes generated files only under `.atb-work/crap-analysis/` an
 
 ## Mode routing
 
-- **`/crap-config [edit]`** — follow `references/config-schema.md` → "Wizard".
-- **`/do-crap-analysis [--coverage] [--target NAME] [--report-only]`** — follow
-  `references/review.md` → "Procedure".
-- **`/crap-refactor <target>`** — follow `references/refactor.md` → "Flow".
+- **`/crap-config [edit]`**: follow `references/config-schema.md` -> "Wizard".
+- **`/do-crap-analysis [--coverage] [--target NAME] [--report-only]`**: follow
+  `references/review.md` -> "Procedure".
+- **`/crap-refactor <target>`**: follow `references/refactor.md` -> "Flow".
 
 ## Invariants (always)
 

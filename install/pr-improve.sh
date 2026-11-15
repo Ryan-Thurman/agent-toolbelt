@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # DESC: bounded PR finding-fix-rereview loop with frozen scope and a persistent ledger
-# DEPENDS: simple-english
+# DEPENDS: pr-review simple-english
 pack_pr_improve() {
   shared_contract references/human-readable-output.md
   shared_contract references/docs-writing.md

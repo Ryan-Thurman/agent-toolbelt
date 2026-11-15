@@ -16,8 +16,8 @@ real values. Label commands as defined, executed/passed, failed or unverified.
 
 ## Make a change
 
-Where common changes belong; representative production/test paths; vocabulary,
-module boundaries, helpers, error and state conventions. Link detailed style and
+Where common changes belong, representative production/test paths, vocabulary,
+module boundaries, helpers, and error and state conventions. Link detailed style and
 architecture owners instead of duplicating them. Name legacy/package exceptions.
 
 ## Verify the change
@@ -33,16 +33,16 @@ ownership. Mark remote review/merge requirements unknown if not inspected.
 
 ## Evidence and open decisions
 
-Baseline revision and working-tree state; sampled areas; exclusions; checker
+Baseline revision and working-tree state, sampled areas, exclusions, and checker
 state path if used. Keep only non-obvious claims in this compact appendix, or link
 the established project evidence record.
 
 | Claim | Class | Scope and sources | Confidence / counterexamples / decision |
 | --- | --- | --- | --- |
-| A repository-specific decision | Documented policy / Enforced / Observed / Proposed / Conflicted | Config, path and symbol; baseline revision | Why supported, exceptions and any needed decision |
+| A repository-specific decision | Documented policy / Enforced / Observed / Proposed / Conflicted | Config, path and symbol, and baseline revision | Why supported, exceptions and any needed decision |
 
 ## Keeping this guide current
 
 Name the existing owner/review path. Explain the scoped check/refresh process and
 what an unchanged check does and does not establish. Include the exact helper
-path in this installation if using a checkpoint; do not assume it is on PATH.
+path in this installation if using a checkpoint. Do not assume it is on PATH.

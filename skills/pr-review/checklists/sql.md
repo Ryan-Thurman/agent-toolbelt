@@ -5,23 +5,23 @@ a system targeting scale (pairs with a `.pr-review.md` perf budget, `repo-config
 place to *look*, not a finding to emit verbatim.
 
 ## correctness
-- migration with no rollback / `down` path; a destructive change (`DROP`/`ALTER ... DROP`) with no backfill.
-- `NOT NULL` column added without a default or backfill — fails on existing rows.
-- nullable join/filter columns silently dropping rows; `NULL` semantics in `NOT IN (...)`.
+- migration with no rollback / `down` path, a destructive change (`DROP`/`ALTER ... DROP`) with no backfill.
+- `NOT NULL` column added without a default or backfill, so it fails on existing rows.
+- nullable join/filter columns silently dropping rows, `NULL` semantics in `NOT IN (...)`.
 
 ## security
 - string-concatenated SQL (injection) instead of bound parameters.
-- broad `GRANT` / a migration widening permissions; secrets or PII in seed data.
+- broad `GRANT` / a migration widening permissions, secrets or PII in seed data.
 
 ## performance
-- a new query path whose filter/join/sort lacks a useful index on realistic data; a costly scan
+- a new query path whose filter/join/sort lacks a useful index on realistic data, a costly scan
   supported by query shape, selectivity, table size, or a representative plan. An index on a
-  low-selectivity predicate, leading wildcard, or transformed column may not help and adds write cost.
-- `SELECT *` over wide tables; unbounded result set with no `LIMIT`/pagination.
-- index added on a hot table **without `CONCURRENTLY`** (Postgres) — locks writes during the migration.
-- a transaction held open across application I/O; lock scope widened on a hot table.
-- N+1-inducing schema (no covering index for the access pattern); function on an indexed column in `WHERE` (kills the index).
+  low-selectivity predicate, leading wildcard, or transformed column can fail to help and adds write cost.
+- `SELECT *` over wide tables, unbounded result set with no `LIMIT`/pagination.
+- index added on a hot table **without `CONCURRENTLY`** (Postgres), so it locks writes during the migration.
+- a transaction held open across application I/O, lock scope widened on a hot table.
+- N+1-inducing schema (no covering index for the access pattern), function on an indexed column in `WHERE` (kills the index).
 
 ## maintainability
 - business logic pushed into a trigger/stored-proc where the app layer is the canonical home (or vice-versa).
-- a migration that mixes schema change + large data backfill in one step (should be split/batched).
+- a migration that mixes schema change + large data backfill in one step (split or batch it).

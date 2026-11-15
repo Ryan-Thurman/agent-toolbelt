@@ -23,7 +23,7 @@ It owns the target, modes, scope rules, dispositions, evidence files, and status
 1. Freeze the target, scope, round bound, and fingerprints as the contract defines.
    Use `scripts/fingerprint.sh` for the fingerprints.
 2. Build the style evidence packet using
-   `shared/contracts/references/style-precedence.md`; load
+   `shared/contracts/references/style-precedence.md`. Load
    `shared/contracts/references/anti-slop-naming.md`,
    `shared/contracts/references/maintainability-taxonomy.md`, and
    `shared/contracts/references/typescript-react-baseline.md` when their

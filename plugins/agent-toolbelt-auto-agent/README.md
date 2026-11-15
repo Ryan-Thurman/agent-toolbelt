@@ -9,13 +9,13 @@ The standard Agent Toolbelt plugin and `install.sh all` do not include them.
 Install the standard `agent-toolbelt` plugin alongside this package when the
 runner needs shared `pr-review`, `handoff`, or delivery skills. In Codex, install
 `agent-toolbelt-auto-agent@agent-toolbelt` from the repository marketplace. In
-Claude Code, use the optional marketplace entry or load this plugin directory;
-in Cursor, load this plugin directory explicitly.
+Claude Code, use the optional marketplace entry or load this plugin directory.
+In Cursor, load this plugin directory explicitly.
 For project-scoped command installation, explicitly select the compatibility
 pack: `./install.sh --harness all auto-agent-contract <target-folder>`.
 
 The package does not run an unattended job by itself. Its skills define the
-runner's invocation, plan, review, and merge contracts; the caller controls
+runner's invocation, plan, review, and merge contracts. The caller controls
 execution and approval policy.
 
 Managed assignment and result guidance is in

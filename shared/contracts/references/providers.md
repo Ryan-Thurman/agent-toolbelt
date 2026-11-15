@@ -1,9 +1,9 @@
-# Host Provider Contract
+# Host provider contract
 
 Use this contract when a pack needs to touch a pull-request host without owning
 the full `pr-review` implementation.
 
-## Provider Detection
+## Provider detection
 
 Detect the provider once from the PR URL or `origin` remote:
 
@@ -16,20 +16,20 @@ case "$url" in
 esac
 ```
 
-PR URLs may override remote detection:
+PR URLs can override remote detection:
 
 - `https://github.com/{owner}/{repo}/pull/{n}` means GitHub.
 - `https://dev.azure.com/{org}/{project}/_git/{repo}/pullrequest/{id}` or
   `https://{org}.visualstudio.com/...` means Azure Repos.
 
-## Degrade Rule
+## Degrade rule
 
 If the detected provider CLI is missing or unauthenticated, degrade one step:
 GitHub/Azure becomes generic git, and generic git is report-only. Do not
 hard-fail a review, reply, queue, or gate solely because host posting is
 unavailable.
 
-## Capability Split
+## Capability split
 
 - GitHub uses `gh` for PR metadata, PR diffs, reviews, comments, and merge.
 - Azure Repos uses `az` and `az devops invoke` for PR metadata, threads,

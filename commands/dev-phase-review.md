@@ -7,4 +7,4 @@ argument-hint: "<phase-or-ticket>"
 
 Use this command to review a completed phase on its branch before you open its PR.
 Use `/dev-pr-review` after the PR is open.
-Follow the `phased-delivery` skill review rules for `$ARGUMENTS`.
+Follow the `phased-delivery` skill review rules for `$ARGUMENTS`. Use `templates/dev-phase-review.md` for the report.

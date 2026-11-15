@@ -1,10 +1,10 @@
-# Test Case Design: <scope>
+# Test case design: <scope>
 
-## Inputs and Assumptions
+## Inputs and assumptions
 
 Requirements, risks, evidence sources, and unresolved assumptions.
 
-## Change Scope
+## Change scope
 
 Only for a pull request, a branch, or a diff. Delete this section for a requirement-based design.
 
@@ -19,7 +19,7 @@ Only for a pull request, a branch, or a diff. Delete this section for a requirem
 |---|---|---|---|---|---|---|---|
 | TC-001 |  |  |  |  |  |  |  |
 
-## Negative Coverage
+## Negative coverage
 
 | Family | State | Cases or reason |
 |---|---|---|
@@ -30,7 +30,7 @@ Only for a pull request, a branch, or a diff. Delete this section for a requirem
 Each boundary that the change crosses, such as a database, a queue, an API, another service, or a browser,
 with its test case or `Not covered` and a reason.
 
-## Coverage Notes
+## Coverage notes
 
 Relevant partitions, boundaries, decision/state cases, retries, concurrency,
 idempotency, permissions, abuse paths, and UI states considered or omitted.

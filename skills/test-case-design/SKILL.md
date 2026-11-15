@@ -1,6 +1,6 @@
 ---
 name: test-case-design
-description: Turn requirements, risks, or a code change into prioritized, executable QA test cases without writing tests. Use before test implementation, QA handoff, coverage planning, or to plan focused tests for a pull request.
+description: Turn requirements, risks, or a code change into prioritized, executable QA test cases without writing tests. Use before test implementation, QA handoff, case planning, or to plan focused tests for a pull request. Use cover to write tests or find coverage gaps in code.
 ---
 
 # test-case-design
@@ -10,24 +10,24 @@ read it before you write for the user.
 
 Toolbelt paths: a path that starts with `shared/`, `skills/`, `templates/`, or `workflows/` is relative to the Toolbelt root, `${CLAUDE_PLUGIN_ROOT}`. If that variable is not replaced, use the nearest folder above this file that contains `shared/contracts/`.
 
-Design an evidence-based test case set from requirements, risks, or a code change. This skill reports cases;
-it does not edit tests or production code. To find gaps in existing code, use the `cover` skill gap scan (`/cover-gaps`).
+Design an evidence-based test case set from requirements, risks, or a code change. This skill reports cases.
+It does not edit tests or production code. To rank untested behavior in code as it is, with no requirement source, use the `cover` skill gap scan (`/cover-gaps`).
 
 ## Steps
 
 1. Identify requirements, observable risks, interfaces, existing test conventions,
    and missing information. Do not invent customer behavior or system constraints.
    When the input is a pull request, a branch, a commit range, or a diff, follow
-   `references/change-risk-planning.md` and fill "Change Scope" in the template.
+   `references/change-risk-planning.md` and fill "Change scope" in the template.
 2. Choose the least complex technique that exposes each risk:
    - Equivalence partitions and boundaries for input rules.
    - Decision tables for interacting conditions.
    - State transitions for lifecycle behavior.
 3. Add positive and negative cases. Read `shared/contracts/references/negative-testing.md`.
    Record each family as covered, `Not applicable` with a reason, or a gap.
-   When the change adds one of the triggers in `shared/contracts/references/reliability-checklist.md`, add the failure cases
-   from the story tier of `shared/contracts/references/reliability-checklist.md`.
-   Read `references/system-failure-cases.md` when the scope has a remote call, a queue, a job, a cache, or a data store.
+   When the scope has a remote call, a queue, a scheduled job, a cache, a data store, or a migration, read
+   `references/system-failure-cases.md`. Use the R2 to R5 answers of
+   `shared/contracts/references/reliability-checklist.md` as input when they exist.
    Accept failure-scenario cards (`FS-` IDs) from `failure-scenario-design` as input.
 4. For a user-facing flow, add loading, empty, error, overflow, responsive, accessibility,
    console, and network states only when the interface makes them relevant.

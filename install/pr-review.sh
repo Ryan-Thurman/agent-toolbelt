@@ -23,6 +23,7 @@ pack_pr_review() {
     references/lang-checklists.md references/output-format.md references/posting.md \
     references/providers.md references/rejection-memory.md references/repo-config.md \
     references/review-rubric.md references/targets-and-diff.md references/rct-acceleration.md \
+    references/ready-check.md references/role-review.md \
     references/triggers.md
   do
     skill pr-review "$f"
@@ -36,6 +37,7 @@ pack_pr_review() {
   shared_contract references/react-acceptance.md
   shared_contract references/providers.md
   shared_contract references/posting.md
+  shared_contract references/operation-retries.md
   shared_contract references/security-checklist.md
   shared_contract references/risk-areas.md
   shared_contract references/review-example-attribution.md

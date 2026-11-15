@@ -14,8 +14,6 @@ Read `shared/contracts/references/evidence-quality.md` and `shared/contracts/ref
 Review supplied measurements and permitted research against the original product hypothesis.
 Default to report-only.
 
-Paths beginning `templates/` or `shared/` refer to the Toolbelt root.
-
 ## Procedure
 
 1. Identify the original problem, audience, hypothesis, intervention, exposure dates, and decision to make.
@@ -27,7 +25,8 @@ Paths beginning `templates/` or `shared/` refer to the Toolbelt root.
 4. Assess uncertainty and practical customer consequences.
    Combine quantitative findings with traceable qualitative evidence when available.
    An inconclusive result remains a valid result.
-5. Use `templates/product-outcome-review.md` to recommend `Continue`, `Revise`, `Stop`, or `Gather evidence`.
+5. Recommend `Continue`, `Revise`, `Stop`, or `Gather evidence`.
+   Use `templates/product-outcome-review.md` when the user asks for a durable record.
    Name the next decision owner and observable evidence needed.
 
 ## Completion

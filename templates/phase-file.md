@@ -1,4 +1,4 @@
-# Phase NN - <Title>
+# Phase NN - <title>
 
 ## Metadata
 
@@ -22,20 +22,20 @@ Describe the goal of this phase.
 
 - Item 1
 
-## Acceptance Criteria
+## Acceptance criteria
 
 - [ ] Criterion 1
 - [ ] Criterion 2
 
-## Relevant Files
+## Relevant files
 
 - `path/to/file` - why it matters
 
-## Plan / Source References
+## Plan / source references
 
 - `path/to/plan-or-brief.md`
 
-## Validation Plan
+## Validation plan
 
 - Command or check 1
 - Command or check 2

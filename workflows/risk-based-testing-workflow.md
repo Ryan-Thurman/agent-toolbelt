@@ -25,7 +25,7 @@ Then `/risk-areas --apply <file>` writes the approved entries. The team commits 
 normal pull request, so the list is on the base branch before reviews use it.
 
 Run the sweep again when the workspace map changes, after an incident, or when a new module holds
-personal data, access rules, or exports. A new sweep shows the existing list next to the new draft.
+personal data, access rules, or exports. A new sweep records the existing list's file and entry count.
 
 ## Use the risk areas
 

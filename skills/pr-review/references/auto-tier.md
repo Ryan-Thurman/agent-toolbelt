@@ -11,9 +11,10 @@ Explicit `--tier=<x>` always wins. Auto-selection only fills the default, and th
 ## Signals (compute once, from the frozen diff)
 
 ```bash
-files=$(git diff "$base" --name-only | wc -l)
-added=$(git diff "$base" --numstat | awk '{a+=$1} END{print a+0}')   # added lines (all paths)
-paths=$(git diff "$base" --name-only)
+# $range comes from targets-and-diff.md: <base>...<branch> for a branch, the merge-base for local changes
+files=$(git diff $range --name-only | wc -l)
+added=$(git diff $range --numstat | awk '{a+=$1} END{print a+0}')   # added lines (all paths)
+paths=$(git diff $range --name-only)
 # production-source subset: the same two counts restricted to paths NOT matching the
 # low-risk globs below (docs/tests/config/lockfiles/snapshots) → prod_files, prod_added
 ```
@@ -25,8 +26,12 @@ paths=$(git diff "$base" --name-only)
 - **hot-path hit** — any changed path that matches a risk keyword or glob:
   - keywords: `auth login session security payment billing crypto token secret password permission acl`;
   - globs: `*/migrations/* *.sql */middleware/*`;
-  - a change to an **existing public/exported surface**: a changed or removed exported signature,
-    contract, or observable behavior.
+  - a change to an **existing public contract**: a changed or removed signature, contract, or
+    observable behavior that code outside this repository or package depends on. Examples are the
+    entry-point exports of a published package, an HTTP, gRPC, or event contract, a CLI interface,
+    and a shared database schema. A function that is exported from a module but imported only
+    inside the same application or package is not a public contract. A change to it is
+    logic-bearing production, and the production-logic floor holds it at standard.
 
   Match a keyword only as a whole path segment or a whole word in the file stem.
   For example, `auth/`, `auth.ts`, and `session_store.py` match. `author.ts` and `tokenizer.ts` do not match.
@@ -48,7 +53,7 @@ First matching rule wins, top to bottom:
 |---|---|---|
 | 1 | low-risk-only (docs/test/config) **and** no hot-path hit | **light** |
 | 2 | tiny mechanical/non-production: `added ≤ 15`, `files ≤ 2`, no hot-path hit, **and no logic-bearing production hunk** | **light** |
-| 3 | hot-path hit (security/auth/payment/migration/changed public contract) | **deep** |
+| 3 | hot-path hit (security/auth/payment/migration/changed public contract outside the package) | **deep** |
 | 4 | large: `prod_added > 400` **or** `prod_files > 20` (production source only) | **deep** |
 | 5 | everything else (the common case) | **standard** |
 

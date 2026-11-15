@@ -10,6 +10,17 @@ Requirements, risks, evidence sources, and unresolved assumptions.
 |---|---|---|---|---|---|---|---|
 | TC-001 |  |  |  |  |  |  |  |
 
+## Negative Coverage
+
+| Family | State | Cases or reason |
+|---|---|---|
+| Input values | Covered, Not applicable, or Gap |  |
+
+## Boundaries
+
+Each boundary that the change crosses, such as a database, a queue, an API, another service, or a browser,
+with its test case or `Not covered` and a reason.
+
 ## Coverage Notes
 
 Relevant partitions, boundaries, decision/state cases, retries, concurrency,

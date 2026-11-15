@@ -1,0 +1,4 @@
+interface:
+  display_name: "Story Refinement"
+  short_description: "Refine a ticket into a ready-to-build spec with criteria and questions."
+  default_prompt: "Use $story-refinement to scan this ticket for ambiguity, draft Given/When/Then criteria, and prepare the owner questions and readiness verdict."

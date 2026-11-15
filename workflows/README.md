@@ -9,6 +9,8 @@ Do not edit a table by hand. `scripts/check-catalog.sh` fails when a table does 
 
 - `phased-delivery-workflow.md` - requirement or ticket delivery as one PR per
   phase, with human review and optional stacked PRs.
+- `feature-refinement-workflow.md` - ticket or story refinement into a ready-to-build spec, with
+  owner questions, Given/When/Then criteria, and a readiness verdict.
 - `product-learning-workflow.md` - research synthesis, opportunity decisions, experiments, and outcome review.
 - `tech-debt-workflow.md` - debt discovery, selected assessment, authorized repair, and baseline verification.
 - `system-design-workflow.md` - design documents, threat review, security requirements, and implementation evidence.

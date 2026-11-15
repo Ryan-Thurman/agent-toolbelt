@@ -19,6 +19,7 @@ Choose from workflows that are actually installed.
 | Answer architecture questions or design a system | `system-design` (it runs `threat-model` for a design proposal) |
 | Review the threats of a design before it is built | `threat-model` |
 | Compare an ask with current behavior, clarify scope, or slice an approved brief into tickets | `shape-up` |
+| Refine a ticket or story, prepare refinement questions, or check story readiness | `story-refinement` |
 | Review a plan, or deliver approved requirements or tickets | `phased-delivery` |
 | Reproduce and repair a defect | `bug-to-fix` |
 | Assess a technical investment or dependency | `tech-backlog-assessment` |

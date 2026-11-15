@@ -32,14 +32,22 @@ and contracts, not line-level detail.
 Where this will be tested. Prefer existing seams over new ones; use the highest seam possible (the
 ideal number of new seams is one). Confirm these match the user's expectations.
 
+## Non-functional Requirements
+
+Performance, availability, security, privacy, accessibility, and cost needs that apply.
+Give each one a measure, a unit, a condition, and a source. If no source gives a target, write `Unknown` and name the owner.
+
 ## Out of Scope
 
 What this work explicitly does not include.
 
 ## Open Questions
 
-Anything unresolved, each with a recommended default.
 Before approval, resolve questions whose wrong answer would materially change the scope or plan.
+
+| ID | Question | Owner | Blocks start | Recommended default | Status |
+| --- | --- | --- | --- | --- | --- |
+| Q-1 |  |  | Yes or No |  | Open |
 
 ## Further Notes
 

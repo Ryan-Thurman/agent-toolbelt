@@ -21,6 +21,7 @@ Each row separates commands that can match the same request.
 |---|---|---|
 | `/product-discovery` · `/shape-up` · `/user-research-synthesis` | `product-discovery` · `shape-up` · `user-research-synthesis` | Decide whether to build · shape a selected ask or compare it with current behavior · understand supplied research. |
 | `/shape-up` · `/to-issues` | `shape-up` | Gap review or shaping · slice an approved brief into tickets. |
+| `/story-refinement` | `story-refinement` | Prepare a ticket for refinement, resolve its questions, or check whether it is ready. |
 | `/shape-up` · `/dev-intake` | `shape-up` · `phased-delivery` | Shape a vague ask into an approved brief · clarify a raw requirement that enters Phased Delivery. |
 | `/tech-assess` · `/ticket-discover` · `/tech-debt-discovery` | `tech-backlog-assessment` · `ticket-discovery` · `tech-debt-discovery` | Decide one item · adapt a named precedent · find candidates across a repository. |
 | `/product-outcome-review` · `/ship-it` | `product-outcome-review` · `ship-it` | Customer outcome after an experiment or release · immediate release readiness and health. |

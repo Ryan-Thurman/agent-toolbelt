@@ -21,12 +21,15 @@ it does not edit tests or production code. To find gaps in existing code, use th
    - Equivalence partitions and boundaries for input rules.
    - Decision tables for interacting conditions.
    - State transitions for lifecycle behavior.
-3. Add positive and negative cases. Add retry, concurrency, idempotency, authorization,
-   or abuse cases only when a real interface or failure mode supports them.
+3. Add positive and negative cases. Read `shared/contracts/references/negative-testing.md`.
+   Record each family as covered, `Not applicable` with a reason, or a gap.
+   When the change adds a remote call, a queue, a job, or a data store, add the failure cases
+   from the story tier of `shared/contracts/references/reliability-checklist.md`.
 4. For a user-facing flow, add loading, empty, error, overflow, responsive, accessibility,
    console, and network states only when the interface makes them relevant.
    State the relevant UI state in the case.
-5. Write each case in `templates/test-case-design.md`. Give each case an ID, requirement or risk,
+5. Choose the test level of each case with `shared/contracts/references/test-levels.md`.
+   Write each case in `templates/test-case-design.md`. Give each case an ID, requirement or risk,
    preconditions and data, steps, expected result, test level, automation candidate, and priority.
 6. Set priority from impact and likelihood, not from an arbitrary numeric score.
    Record assumptions and uncovered risks. Do not invent expected behavior.

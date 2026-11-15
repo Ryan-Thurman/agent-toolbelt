@@ -27,6 +27,7 @@
         "ship-it",
         "simple-english",
         "simplify",
+        "story-refinement",
         "style-guide-init",
         "system-design",
         "tech-backlog-assessment",
@@ -72,6 +73,7 @@
         "ship-it",
         "simple-english",
         "simplify",
+        "story-refinement",
         "style-guide-init",
         "system-design",
         "tech-backlog-assessment",
@@ -293,6 +295,33 @@
       "owner": "shared/contracts",
       "consumers": [
         "pr-review"
+      ]
+    },
+    {
+      "path": "references/negative-testing.md",
+      "owner": "shared/contracts",
+      "consumers": [
+        "phased-delivery",
+        "story-refinement",
+        "test-case-design"
+      ]
+    },
+    {
+      "path": "references/test-levels.md",
+      "owner": "shared/contracts",
+      "consumers": [
+        "phased-delivery",
+        "story-refinement",
+        "test-case-design"
+      ]
+    },
+    {
+      "path": "references/reliability-checklist.md",
+      "owner": "shared/contracts",
+      "consumers": [
+        "phased-delivery",
+        "story-refinement",
+        "test-case-design"
       ]
     }
   ],

@@ -2,8 +2,17 @@
 
 ## Unreleased
 
+### Added
+
+- Added the `story-refinement` skill and `/story-refinement` command. The skill finds ambiguity in a ticket, settles facts from the repository, asks the open decisions in batched rounds with defaults, writes Given/When/Then criteria with failure paths, and gives a readiness verdict from product, developer, QA, and SRE reviewer subagents.
+- Added the `feature-refinement` workflow and a `story-refinement` stage in `feature-delivery`.
+- Added the shared references `negative-testing.md`, `test-levels.md`, and `reliability-checklist.md`. `story-refinement`, `test-case-design`, and plan readiness use them. Their gaps are warnings.
+
 ### Changed
 
+- Changed `shape-up` to ask open decisions in numbered rounds instead of one question for each message. Added non-functional requirements and an open-questions table to the brief template, and Given/When/Then criteria and a "Must not change" section to the ticket template.
+- Added negative-family, boundary, and test-level steps to `test-case-design` and its template.
+- Added Test levels, Negative cases, and Reliability rows to `phased-delivery` plan readiness.
 - Replaced the portal's amber accent with green. Recolored the brand icon and favicons to match.
 - Moved portal surfaces to a neutral slate scale in light mode and neutral grays in dark mode.
 - Limited green to the hero headline, the active filter, focus rings, and the workflow start buttons.

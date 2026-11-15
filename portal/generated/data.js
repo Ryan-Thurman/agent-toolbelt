@@ -445,7 +445,8 @@ window.AGENT_TOOLBELT_DATA = {
       "workflow_membership": [
         "feature-delivery",
         "product-learning",
-        "security-sensitive-change"
+        "security-sensitive-change",
+        "feature-refinement"
       ],
       "documentation_completeness": {
         "status": "complete",
@@ -909,11 +910,13 @@ window.AGENT_TOOLBELT_DATA = {
       "related_skills": [
         "product-discovery",
         "phased-delivery",
-        "ticket-discovery"
+        "ticket-discovery",
+        "story-refinement"
       ],
       "workflow_membership": [
         "feature-delivery",
-        "product-learning"
+        "product-learning",
+        "feature-refinement"
       ],
       "documentation_completeness": {
         "status": "complete",
@@ -1059,6 +1062,57 @@ window.AGENT_TOOLBELT_DATA = {
       "recommended_changes": [],
       "source_path": "skills/simplify/SKILL.md",
       "source_url": "https://github.com/Ryan-Thurman/agent-toolbelt/blob/main/skills/simplify/SKILL.md"
+    },
+    {
+      "id": "story-refinement",
+      "display_name": "Story Refinement",
+      "short_description": "Refine a ticket into a ready-to-build spec with criteria and questions.",
+      "default_prompt": "Use $story-refinement to scan this ticket for ambiguity, draft Given/When/Then criteria, and prepare the owner questions and readiness verdict.",
+      "description": "Refine a ticket, story, or approved brief into a ready-to-build spec. Find ambiguity, resolve facts from the repository, batch owner questions with defaults, write Given/When/Then criteria with negative paths, and give a readiness verdict.",
+      "category": "Discovery & Planning",
+      "tags": [
+        "refinement",
+        "acceptance-criteria",
+        "definition-of-ready",
+        "bdd"
+      ],
+      "primary_purpose": "Refine a ticket or story into a ready-to-build spec with Given/When/Then criteria, owner questions, and a readiness verdict.",
+      "use_when": [
+        "A ticket, story, or approved brief is almost ready but has open questions, vague criteria, or missing failure paths.",
+        "A team wants to prepare questions before a refinement meeting or check whether a story is ready."
+      ],
+      "avoid_when": [
+        "The request is a vague idea or spans several subsystems. Use shape-up.",
+        "The item is a defect. Use bug-to-fix."
+      ],
+      "preferred_context": "Ticket or story text, linked sources, repository behavior, existing tests, and the people who own open decisions.",
+      "expected_outputs": [
+        "Refined spec with Given/When/Then criteria and negative paths",
+        "Decision log and open-questions register",
+        "Question packet for each owner",
+        "Readiness verdict"
+      ],
+      "example_prompts": [
+        "Refine PROJ-123 before tomorrow's refinement meeting.",
+        "Is this story ready to build? Check it with product, QA, and SRE lenses."
+      ],
+      "related_skills": [
+        "shape-up",
+        "test-case-design",
+        "phased-delivery",
+        "ticket-sync"
+      ],
+      "workflow_membership": [
+        "feature-delivery",
+        "feature-refinement"
+      ],
+      "documentation_completeness": {
+        "status": "complete",
+        "notes": "Canonical skill and agent metadata are present."
+      },
+      "recommended_changes": [],
+      "source_path": "skills/story-refinement/SKILL.md",
+      "source_url": "https://github.com/Ryan-Thurman/agent-toolbelt/blob/main/skills/story-refinement/SKILL.md"
     },
     {
       "id": "style-guide-init",
@@ -1292,11 +1346,13 @@ window.AGENT_TOOLBELT_DATA = {
       ],
       "related_skills": [
         "cover",
-        "webapp-testing"
+        "webapp-testing",
+        "story-refinement"
       ],
       "workflow_membership": [
         "feature-delivery",
-        "security-sensitive-change"
+        "security-sensitive-change",
+        "feature-refinement"
       ],
       "documentation_completeness": {
         "status": "complete",
@@ -1434,7 +1490,9 @@ window.AGENT_TOOLBELT_DATA = {
         "handoff",
         "phased-delivery"
       ],
-      "workflow_membership": [],
+      "workflow_membership": [
+        "feature-refinement"
+      ],
       "documentation_completeness": {
         "status": "complete",
         "notes": "Canonical skill and agent metadata are present."
@@ -1989,6 +2047,15 @@ window.AGENT_TOOLBELT_DATA = {
           "rationale": "Bound appetite, solution direction, rabbit holes, and explicit exclusions.",
           "example_invocation": "Shape this brief into a bounded implementation scope.",
           "next_steps": [
+            "story-refinement",
+            "phased-delivery"
+          ]
+        },
+        {
+          "skill": "story-refinement",
+          "rationale": "Resolve open questions and write testable criteria with failure paths before planning.",
+          "example_invocation": "Refine this story and tell me whether it is ready.",
+          "next_steps": [
             "phased-delivery"
           ]
         },
@@ -2022,6 +2089,55 @@ window.AGENT_TOOLBELT_DATA = {
           "example_invocation": "Prepare this change for a safe release.",
           "next_steps": [
             "handoff"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "feature-refinement",
+      "name": "Feature refinement",
+      "purpose": "Turn a ticket or brief into a ready-to-build spec with fewer refinement rounds. Use only the stages that the item needs.",
+      "stages": [
+        {
+          "skill": "shape-up",
+          "rationale": "Shape a vague idea into an approved brief and slices before story refinement.",
+          "example_invocation": "Shape this idea into a brief and tickets.",
+          "next_steps": [
+            "story-refinement"
+          ]
+        },
+        {
+          "skill": "story-refinement",
+          "rationale": "Scan for ambiguity, batch owner questions with defaults, and write Given/When/Then criteria with failure paths.",
+          "example_invocation": "Prepare PROJ-123 for refinement.",
+          "next_steps": [
+            "test-case-design",
+            "ticket-sync",
+            "phased-delivery"
+          ]
+        },
+        {
+          "skill": "test-case-design",
+          "rationale": "Turn the criteria, negative families, and reliability answers into prioritized cases at the right test level.",
+          "example_invocation": "Design the test cases for this refined story.",
+          "next_steps": [
+            "phased-delivery"
+          ]
+        },
+        {
+          "skill": "ticket-sync",
+          "rationale": "Publish the approved story changes to the tracker.",
+          "example_invocation": "Sync the refined story to Jira.",
+          "next_steps": [
+            "phased-delivery"
+          ]
+        },
+        {
+          "skill": "phased-delivery",
+          "rationale": "Plan the ready story as test-first phases.",
+          "example_invocation": "Plan this refined story.",
+          "next_steps": [
+            "code-quality-gate"
           ]
         }
       ]

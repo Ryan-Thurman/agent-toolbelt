@@ -9,6 +9,7 @@ operational guidance. Each workflow below identifies its commands and completion
 - [Bug to Fix](#bug-to-fix): the diagnostic lane.
 - [System Design](#system-design): architecture questions, design documents, diagrams, and decisions.
 - [Shape Up](#shape-up): review current-state gaps, shape an approved brief, or slice it into tickets.
+- [Story Refinement](#story-refinement): prepare a ticket for refinement and check whether it is ready.
 - [Product Discovery](#product-discovery): evidence before deciding what to shape.
 - [Threat Model](#threat-model): design-time security analysis.
 
@@ -166,4 +167,19 @@ Use `/dev-intake` for an unclear raw request that has no approved brief, plan, o
 
 ```sh
 ./install.sh --harness all shape-up /path/to/project
+```
+
+## Story Refinement
+
+Use `story-refinement` for a ticket or story that has a clear goal but open questions.
+Run `/story-refinement <ticket> --scan` before the refinement meeting.
+The scan settles facts from the repository, states defaults, and writes one question packet for each owner.
+It also writes Given/When/Then criteria with failure paths and checks the negative-testing families.
+When the story adds a dependency, a job, or a data change, it answers the reliability checklist.
+Run `--check` for the readiness verdict. Product, developer, QA, and SRE reviewer subagents check the story.
+The verdict is a warning, and a project can make it a gate.
+The [workflow](../workflows/feature-refinement-workflow.md) gives the stage order.
+
+```sh
+./install.sh --harness all story-refinement /path/to/project
 ```

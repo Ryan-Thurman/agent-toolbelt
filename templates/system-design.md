@@ -7,6 +7,7 @@ Keep unknown targets and unresolved decisions explicit.
 ## Document identity and sources
 
 - Design status, owner, and revision:
+- Depth level and reason: Light / Standard / Deep
 - Source requirements, existing decisions, and inspected revisions:
 - Evidence limitations and relevant local changes:
 - Project review and approval evidence, if any:
@@ -92,7 +93,6 @@ Link the reliability review and the reviewed design revision.
 
 ## Readiness, review, and handoff
 
-- Depth level and reason: Light / Standard / Deep
 - Weakest point:
 - Glossary link, if terms were defined:
 - Result: Ready for planning / Needs decision / Needs revision / Not verified

@@ -17,10 +17,12 @@ load test, or restore, and it changes no code or infrastructure.
 
 Choose the depth with `shared/contracts/references/depth-levels.md` and state it first.
 
+The request in the mode table selects the mode. The depth sets how deep that mode goes.
+
 | Level | Work |
 | --- | --- |
-| Light | Answer the story tier of `shared/contracts/references/reliability-checklist.md` only. |
-| Standard | The design mode. Load each reference only when its step needs it. |
+| Light | For a story, the story tier of `shared/contracts/references/reliability-checklist.md`. For a design, the design mode with only the questions that can change the answer. |
+| Standard | For a story, the story tier, and the design mode for a question that the story tier cannot settle. For a design, the design mode. Load each reference only when its step needs it. |
 | Deep | The design mode with every reference, a capacity estimate, and a list of the evidence that readiness mode will need before launch. |
 
 Readiness mode runs at any level when a person asks for it.

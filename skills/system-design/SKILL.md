@@ -22,6 +22,7 @@ Choose the mode from the requested outcome.
 
 Choose the depth with `shared/contracts/references/depth-levels.md` and state it first.
 At the Light level, give a short design note or a direct answer from the rows that can change it.
+A Light design proposal still runs step 4: the threat review, and the reliability review when its trigger applies.
 At the Standard level, follow the full procedure and load each topic reference only when its trigger applies:
 
 | Trigger | Read |
@@ -81,4 +82,4 @@ Preserve decision history and recheck affected document sections after source ch
 When an architecture, identity, data, trust boundary, or deployment changes, reassess the affected design and threats.
 
 Topic references adapted from proyecto26/system-design-skills, mattpocock/skills, addyosmani/agent-skills,
-wondelai/skills, cursor/plugins pstack (all MIT), and BMAD-METHOD (MIT). No source text is copied.
+wondelai/skills, and cursor/plugins pstack (all MIT). No source text is copied.

@@ -29,6 +29,7 @@ State the proposed or accepted approach and why it fits the recorded constraints
 
 - What becomes easier:
 - What becomes harder, including risks and operational consequences:
+- Team familiarity with the option:
 - Migration, compatibility, and affected owners:
 
 ## Verification and reconsideration

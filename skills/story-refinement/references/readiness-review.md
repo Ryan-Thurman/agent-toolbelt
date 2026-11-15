@@ -20,11 +20,12 @@ Run the lenses that the depth level allows:
 
 | Level | Lenses |
 | --- | --- |
-| Light | The builder check only. |
+| Light | The builder check, and a QA self-review with no subagent. |
 | Standard | The builder check and the QA lens. Add the SRE lens when the reliability story tier applies. |
 | Deep | All four lenses and the builder check. |
 
-At any level, add a security lens when the item touches authentication, personal data, or money.
+The builder check is a required check. At any level, add a security lens when the item touches
+authentication, personal data, or money. The security lens is also a required check.
 Use `threat-model` for its checks. At the Deep level, add a design lens for a user-facing flow.
 
 ## Lens brief

@@ -132,12 +132,12 @@ The agent chooses one from the risk of the change and states it first. `--light`
 
 | Level | `system-design` does |
 | --- | --- |
-| Light | A short design note for a change inside existing boundaries. No topic references, reviews, or subagents. |
-| Standard | The full design. Topic references load only when they apply: interface contracts, data design, domain language, and distributed workflows. |
-| Deep | Standard, plus estimation, a multi-lens design review by reviewer subagents, and "design it twice". |
+| Light | A short design note for a change inside existing boundaries. No topic references or design review. A design proposal still gets its threat review. |
+| Standard | The full design. Topic references load only when they apply: interface contracts, data design, domain language, distributed workflows, and estimation when scale or cost decides the design. |
+| Deep | Standard, plus estimation and "design it twice". A multi-lens design review by reviewer subagents runs on request or by project rule. |
 
 `story-refinement`, `reliability-review`, and `failure-scenario-design` use the same levels.
-At the Light level, they run the scan and the criteria, the story-tier reliability questions, or the failure criteria only.
+At the Light level, they run the scan, the criteria, and the builder check, the story-tier reliability questions, or the failure criteria only.
 
 ```text
 $system-design

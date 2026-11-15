@@ -20,8 +20,10 @@ Choose the depth with `shared/contracts/references/depth-levels.md` and state it
 | Level | Work |
 | --- | --- |
 | Light | No cards. Write the failure criteria of the story as Given/When/Then scenarios only. |
-| Standard | Cards at the unit, integration, and BDD levels. Mark a card that needs a real platform fault as `Staging` and do not plan the experiment. |
+| Standard | Cards at the unit, integration, and BDD levels. Give a card that needs a real platform fault the level `Staging experiment` or `Game day`, and do not plan the experiment. |
 | Deep | All cards, plus staging experiment and game day plans. |
+
+At the Light level, do step 1, then write the failure criteria with `references/bdd-mapping.md`. Skip steps 2 to 6.
 
 ## Procedure
 
@@ -47,6 +49,6 @@ Choose the depth with `shared/contracts/references/depth-levels.md` and state it
 
 ## Completion
 
-Deliver the cards. Hand the Given/When/Then scenarios to `bdd-scenarios`,
+Deliver the cards, or the failure criteria at the Light level. Hand the Given/When/Then scenarios to `bdd-scenarios`,
 the lower-level cases to `test-case-design` or `cover`,
 and the staging experiment plans to the team that owns the chaos tooling.

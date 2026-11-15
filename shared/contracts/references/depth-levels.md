@@ -5,7 +5,7 @@ Most features need the Light level. Deep work runs only when a person asks for i
 
 | Level | Use for | Effort |
 | --- | --- | --- |
-| Light | A change inside existing boundaries: no new service, data store, public API, queue, or trust boundary. | The rows and questions that can change the answer. No optional references, reviews, or subagents. |
+| Light | A change inside existing boundaries: no new service, data store, public API, queue, or trust boundary. | The rows and questions that can change the answer. No optional references, reviews, or subagents. Required checks still run. |
 | Standard | A change that adds or changes a component, a data store, an API, a queue, a dependency, or a trust boundary. | The full procedure of the skill. A reference loads only when its trigger applies. |
 | Deep | A request for depth, a project rule, or a high-risk signal: money, personal data, a new platform, a change across several teams, or an irreversible migration. | Standard, plus the steps that the skill marks as Deep. |
 

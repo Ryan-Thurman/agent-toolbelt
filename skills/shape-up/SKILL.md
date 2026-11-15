@@ -38,6 +38,7 @@ Send architecture-structure questions to `system-design` when it is available.
 1. **Scope-gate.** If the request contains several independent subsystems, propose a split
    before you refine details.
 2. **Grill.** Read `references/interrogation.md`. Ask the open decisions in numbered rounds.
+   Use single open questions only until the user can name the outcome.
    Give a recommended answer with each question.
 3. **Review readiness.** Find each point where another implementer must make a consequential guess.
    Do the brief self-audit in `references/interrogation.md`.

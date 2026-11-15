@@ -35,6 +35,11 @@
 - Added an install terminal with Cursor, Claude Code, and Codex tabs and a Copy button to the hero. Phones do not show it.
 - Showed the setup commands as terminal blocks with a Copy button.
 
+### Fixed
+
+- `pr-review` reviews a named branch with `git diff <base>...<branch>`, so the branch does not need to be checked out. It skips `git fetch` when the repository has no remote. Tier signals use the same diff range.
+- `pr-review` auto-tier treats only a contract that code outside the repository or package depends on as a public-contract hot path. A changed export that only the same application imports now gets the standard tier, not deep.
+
 ## v1.2.0 - 2026-11-10
 
 ### Changed

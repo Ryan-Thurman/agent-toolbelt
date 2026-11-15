@@ -25,7 +25,7 @@ it does not edit tests or production code. To find gaps in existing code, use th
    - State transitions for lifecycle behavior.
 3. Add positive and negative cases. Read `shared/contracts/references/negative-testing.md`.
    Record each family as covered, `Not applicable` with a reason, or a gap.
-   When the change adds a remote call, a queue, a job, or a data store, add the failure cases
+   When the change adds one of the triggers in `shared/contracts/references/reliability-checklist.md`, add the failure cases
    from the story tier of `shared/contracts/references/reliability-checklist.md`.
    Read `references/system-failure-cases.md` when the scope has a remote call, a queue, a job, a cache, or a data store.
    Accept failure-scenario cards (`FS-` IDs) from `failure-scenario-design` as input.

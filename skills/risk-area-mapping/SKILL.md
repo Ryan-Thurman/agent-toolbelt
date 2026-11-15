@@ -50,7 +50,8 @@ into `AGENTS.md`. The default target is `.pr-review.md`.
    Do not edit any target file in this step.
 6. Stop. Give the user the path of the review file. Tell the user to confirm, edit, or delete each
    entry, and to change the status of each repository to `Approved` or `Skip`. Tell the user which
-   entries have `Evidence: inferred`, because those impact lines need the most attention.
+   entries have `Evidence: inferred`, because those impact lines need the most attention. Name the
+   repositories with a high coverage share and the folders that were not inspected in depth.
 
 ## Apply
 
@@ -64,4 +65,5 @@ into `AGENTS.md`. The default target is `.pr-review.md`.
 ## Completion
 
 The draft is complete when each repository in scope has entries, an existing list, or a reason
-for no entries. Apply is complete when each approved repository has the list in its target file.
+for no entries. A draft is not a complete inventory of risk. The coverage and "Not inspected in
+depth" lines state what the draft did not check. Apply is complete when each approved repository has the list in its target file.

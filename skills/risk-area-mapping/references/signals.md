@@ -26,18 +26,30 @@ A signal finds a candidate path. A candidate becomes an entry only when you can 
 line from evidence. Drop a candidate when the only evidence is its folder name.
 
 - Make the globs as narrow as the evidence. Use `src/patients/export/**`, not `src/**`.
-- Keep each entry to five globs or fewer. Each item in a brace list such as `{a,b}` counts as one
-  glob, so do not use brace lists. When an area needs more, use a wildcard or the folder that holds
-  the files. When that is too wide, keep the five strongest globs and list the other paths as
-  dropped with the reason "glob limit". Split an entry only when its parts have different impacts.
-- Count the files that the globs match with a command, for example `find` or `git ls-files`. Do not
-  count tests, snapshots, generated files, or caches. Write the exact number.
+- Use as many globs as the evidence needs. A file that the evidence names must match a glob, because
+  a change to an unmatched file gets no extra test or review effort. Use a folder glob when the
+  folder holds only files of the area. Do not use a wildcard that also matches unrelated files.
+  Do not use brace lists such as `{a,b}`. Split an entry only when its parts have different impacts.
+- Count the files that the globs match with one command, for example `find` or `git ls-files`.
+  Do not count tests, test data, mocks, snapshots, generated files, or caches. Write the number.
 - When one file holds many concerns, for example a notebook, use the file as the glob. Name the cells
-  or functions in the evidence line.
+  or functions in the evidence line. When a cell or function belongs to a different entry than
+  the rest of its file, list the file in both entries.
 - Merge candidates that have the same impact into one entry.
-- Keep the list short. When most of a repository matches, the list does not separate risk from
-  normal code. Keep the entries with the strongest impact and record the others as dropped.
-- Record every candidate that you drop in the dropped table, with the reason.
+- Write an entry for each candidate that has evidence. Do not drop a candidate to make the list
+  shorter. The person who reviews the file removes or merges entries.
+- Drop a candidate only when it has no evidence for an impact. Record each dropped candidate in the
+  dropped table, with the reason.
+
+## Coverage
+
+Report two facts for each repository, so that the review file does not look more complete than it is:
+
+- **Coverage:** count the source files of the repository with the same exclusions as the file
+  counts. Report how many of them the entries match, and the percentage. A large share means that the
+  list does not separate risk from normal code. The reviewer then merges or removes entries.
+- **Not inspected in depth:** list each code folder that you skipped or only scanned by name.
+  Write `None` only when you searched every code folder.
 
 ## Workspace map
 
@@ -72,4 +84,6 @@ Use `Evidence: sourced` when a document states the consequence of a defect, for 
 the whole repository. Examples are a repo card blast radius, an `AGENTS.md` rule, a hazard document,
 or an incident. Quote the words in the evidence line. A map edge alone shows a consumer, not a
 consequence, so it is not enough. Use `Evidence: inferred` when you inferred the consequence from the code.
+When one part of the impact line is quoted and another part is inferred, use `inferred` and quote
+the sourced part in the evidence line.
 Keep the evidence line to one or two lines. Apply writes only the entry line.

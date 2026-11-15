@@ -44,8 +44,9 @@ Do not add your own view of the risks to the brief. The subagent must form its v
 
 When a section returns, check it. The section must have:
 
-- a status, a target file, an existing list, and the signals that were not available,
-- for each entry, five globs or fewer, an impact line, and an evidence line with `sourced` or `inferred` and a file count,
+- a status, a target file, an existing list, the signals that were not available, the coverage, and
+  the folders not inspected in depth,
+- for each entry, globs, an impact line, and an evidence line with `sourced` or `inferred` and a file count,
 - a reason for each dropped candidate.
 
 When a part is missing, send the subagent one follow-up message that names the missing part.
@@ -57,3 +58,4 @@ When the second answer still has the gap, keep the section and write the gap und
 2. Compare the sections with the integration edges. When a producer repository has an entry for a
    contract, the consumer repositories must be named in its impact line. Add the missing names.
 3. Add a line under the header with the count of repositories, entries, and inferred entries.
+   Name each repository that has folders not inspected in depth.

@@ -18,9 +18,15 @@ Status: Draft
 
 Target file: <`.pr-review.md` or `AGENTS.md`>
 
-Existing list: <file and entry count, or None>. Checked: <each file of the discovery order that exists without the section, or None>
+Existing list: <file and entry count, or None>. Checked: <each file of the discovery order, as absent or as present without the section>
 
 Signals not available: <each signal whose input does not exist, with the reason, or None>
+
+Signals with no candidates: <each signal that you searched and that found nothing, or None>
+
+Coverage: <files that the entries match> of <source files> source files (<percent>)
+
+Not inspected in depth: <each code folder that was skipped or only scanned by name, or None>
 
 ### Draft entries
 

@@ -70,6 +70,10 @@ auto-selected tier is **raised to the floor** (never dropped below it): e.g. a r
 to repo floor)`. An explicit `--tier` below the floor is honored but warned (see Precedence in
 `repo-config.md`).
 
+**Risk-area floor.** If the diff touches a path in a declared risk area (`repo-config.md`), the
+auto-selected tier is raised to at least **standard**, also for a config or test change in that area.
+Note it: `tier: standard (auto - touches risk area Data export)`. A risk area never selects deep by itself.
+
 ## The token guardrail (refuse waste)
 
 Deep costs ~8× light. Refuse to spend that on a change that can't pay it back:

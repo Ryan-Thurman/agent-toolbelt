@@ -8,7 +8,7 @@ Every facet emits a list of findings in this shape. The aggregator merges/dedups
   "file": "src/auth/session.ts",
   "lineStart": 142,            // anchor on the diff's NEW side
   "lineEnd": 148,              // == lineStart for a single line
-  "facet": "security",         // correctness|security|performance|tests|maintainability|standards|spec-alignment|re-entry
+  "facet": "security",         // correctness|security|performance|reliability|tests|maintainability|standards|spec-alignment|re-entry
   "bucket": "blocker",         // blocker | should-fix | nit
   "severity": "high",          // critical | high | medium | low
   "title": "Session token compared with non-constant-time equality",

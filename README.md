@@ -157,6 +157,9 @@ completion checklist.
 | Turn a vague idea into an approved brief first | `shape-up` |
 | Prepare a ticket for refinement, write Given/When/Then criteria, or check whether a story is ready | `story-refinement` |
 | Write or review Gherkin feature files, or set up a BDD runner | `bdd-scenarios` |
+| Review a design for failure modes, SLOs, and recovery, or run a production readiness review | `reliability-review` |
+| Plan failure scenarios or a staging chaos experiment | `failure-scenario-design` |
+| Find the high-impact paths of a repo or a folder of repos for risk-based testing | `risk-area-mapping` |
 | Decide whether an opportunity is ready to shape | `product-discovery` |
 | Answer an architecture question or write a design | `system-design` |
 | Decide whether to do one technical backlog item | `tech-backlog-assessment` |

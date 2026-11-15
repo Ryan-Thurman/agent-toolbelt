@@ -1,0 +1,4 @@
+interface:
+  display_name: "Reliability Review"
+  short_description: "Find failure modes and testable reliability requirements before a design is built."
+  default_prompt: "Use $reliability-review to review this design for failure modes, SLOs, dependencies, recovery, and observability, and produce the reliability requirements."

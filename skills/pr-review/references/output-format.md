@@ -123,11 +123,14 @@ with its tag inline. It is already downranked one bucket:
 _memory: 2 findings downranked (previously rejected) · store: .git/pr-review-rejections.jsonl_
 ```
 
-Repo config. Add this line when `.pr-review.md` (`repo-config.md`) forced facets, re-rated, or suppressed findings:
+Repo config. Add this line when `.pr-review.md` (`repo-config.md`) forced facets, matched a risk area, re-rated, or suppressed findings.
+Name the file that the config came from. When the risk-area list came from another file, name that file in the risk-area segment, for example `risk areas (AGENTS.md): Data export`:
 
 ```markdown
-_repo-config: .pr-review.md · forced: performance, security · 1 re-rated (hot-path → blocker) · 2 suppressed (do-not-flag)_
+_repo-config: .pr-review.md · forced: performance, security · risk areas: Data export · 1 re-rated (hot-path → blocker) · 2 suppressed (do-not-flag)_
 ```
+
+Leave out each segment that has nothing to report, for example `_repo-config: .pr-review.md · risk areas: Data export_`.
 
 ## No-config nudge
 

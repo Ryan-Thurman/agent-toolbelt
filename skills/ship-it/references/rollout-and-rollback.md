@@ -13,6 +13,7 @@ State both:
 - **The trigger** — the concrete signal that means "roll back now". Take it from the project's
   release policy. When the project has no trigger, the readiness verdict is NO-GO, and the missing
   trigger is the blocking gap. Do not invent a universal threshold.
+  When the project has an SLO and an error budget policy, a burn-rate alert on the affected journey can be the trigger.
 
 ## Example sequences
 

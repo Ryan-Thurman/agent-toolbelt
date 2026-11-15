@@ -1,7 +1,7 @@
 # skills/
 
 Agent **skills** live in one canonical folder per skill, each with a `SKILL.md`.
-The native plugin exposes the 41 canonical skills across Cursor, Claude Code,
+The native plugin exposes the 44 canonical skills across Cursor, Claude Code,
 and Codex. Use the [offline portal](../portal/generated/index.html) for the
 complete searchable catalog, taxonomy, examples, and workflow map.
 This page documents authoring and copy ownership,

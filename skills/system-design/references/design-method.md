@@ -19,7 +19,7 @@ Do not require every system to use every pattern mentioned below.
 | Data | Sources of truth, models, access patterns, retention, and lifecycle. | Define write ownership, consistency, transactions, deletion, and migration where applicable. |
 | Identity and trust | Authentication, authorization, tenant boundaries, sensitive data, and external entry points. | Link relevant threat findings, proposed controls, and verification requirements. |
 | Connected behavior | Important requests, events, jobs, and state transitions across components. | Trace the path from input to observable result, including required side effects. |
-| Failure and recovery | Timeouts, retries, partial success, duplicates, concurrency, and dependency loss. | Define failure ownership, durable state, reconciliation, recovery, and user-visible outcomes where relevant. |
+| Failure and recovery | Timeouts, retries, partial success, duplicates, concurrency, and dependency loss. | Define failure ownership, durable state, reconciliation, recovery, and user-visible outcomes where relevant. Use `reliability-review` for the failure-mode register. |
 | Operation and evolution | Deployment, monitoring, support, rollback, upgrades, and migration. | Identify owners, failure signals, rollout conditions, compatibility windows, and recovery criteria. |
 | Capacity and cost | Expected demand, bottlenecks, resource use, and operational effort. | State estimate inputs and uncertainty; connect added infrastructure to a demonstrated need. |
 | Alternatives | Viable approaches, including the existing system when suitable. | Compare benefits, disadvantages, reversibility, effort, and conditions for reconsideration. |

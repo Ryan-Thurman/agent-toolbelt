@@ -11,6 +11,7 @@
         "code-quality-gate",
         "cover",
         "crap-analysis",
+        "failure-scenario-design",
         "handoff",
         "phase-context-workflow",
         "phase-gate",
@@ -20,9 +21,11 @@
         "pr-review-reply",
         "product-discovery",
         "product-outcome-review",
+        "reliability-review",
         "retrofit",
         "review-on-open",
         "review-queue",
+        "risk-area-mapping",
         "security-audit",
         "shape-up",
         "ship-it",
@@ -58,6 +61,7 @@
         "code-quality-gate",
         "cover",
         "crap-analysis",
+        "failure-scenario-design",
         "handoff",
         "phase-context-workflow",
         "phase-gate",
@@ -67,9 +71,11 @@
         "pr-review-reply",
         "product-discovery",
         "product-outcome-review",
+        "reliability-review",
         "retrofit",
         "review-on-open",
         "review-queue",
+        "risk-area-mapping",
         "security-audit",
         "shape-up",
         "ship-it",
@@ -179,6 +185,7 @@
       "consumers": [
         "product-discovery",
         "product-outcome-review",
+        "reliability-review",
         "security-audit",
         "system-design",
         "tech-backlog-assessment",
@@ -321,10 +328,21 @@
       ]
     },
     {
+      "path": "references/risk-areas.md",
+      "owner": "shared/contracts",
+      "consumers": [
+        "pr-review",
+        "risk-area-mapping",
+        "test-case-design"
+      ]
+    },
+    {
       "path": "references/reliability-checklist.md",
       "owner": "shared/contracts",
       "consumers": [
+        "failure-scenario-design",
         "phased-delivery",
+        "reliability-review",
         "story-refinement",
         "test-case-design"
       ]

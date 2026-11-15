@@ -7,11 +7,22 @@
 - Added the `story-refinement` skill and `/story-refinement` command. The skill finds ambiguity in a ticket, settles facts from the repository, asks the open decisions in batched rounds with defaults, writes Given/When/Then criteria with failure paths, and gives a readiness verdict from product, developer, QA, and SRE reviewer subagents.
 - Added the `bdd-scenarios` skill and `/bdd-scenarios` command. The skill writes Gherkin feature files from acceptance criteria, maps steps to existing step definitions, traces each criterion to a scenario or a unit test, reviews feature files, and plans a `playwright-bdd`, `pytest-bdd`, or Cucumber-JVM runner.
 - Added an acceptance loop to the shared TDD contract. A phase with BDD scenarios runs them red before the implementation and green after it, with unit TDD cycles inside. `phased-delivery` plans, plan readiness, implementation, and review now use it.
+- Added the `reliability-review` skill and `/reliability-review` command. The skill reviews a design for failure modes, SLOs, dependencies, recovery, capacity, and observability, and writes testable reliability requirements. Its readiness mode checks a built service against them. `system-design` runs it next to `threat-model`.
+- Added the `failure-scenario-design` skill and `/failure-scenario-design` command. The skill turns testable reliability risks into scenario cards with a Given/When/Then form, a test-first case, and a staging experiment plan with abort and no-go conditions. It writes plans only.
+- Added a `pr-review` reliability facet. It runs when the diff changes clients, timeouts, retries, consumers, jobs, migrations, probes, infrastructure, or telemetry.
+- Added a system-failure case reference to `test-case-design` and a reliability section to the `ship-it` readiness checklist.
+- Added a change mode to `test-case-design`. It plans focused cases from a pull request, a branch, or a diff. It finds the affected callers, matches declared risk areas, and checks the existing tests.
+- Added a calibration step to `test-case-design`. A set of more than ten cases starts with the five to ten cases with the highest priority, and the user's feedback applies to the rest.
+- Added the shared reference `risk-areas.md` and a `## Risk areas` section for `.pr-review.md`. A team declares its high-impact paths once. `test-case-design` gives cases there high impact, and `pr-review` raises a diff that touches one to at least the standard tier. `/risk-areas` drafts the section from repo evidence.
+- Added the `risk-area-mapping` skill, the `/risk-areas` command, and the `risk-based-testing` workflow. The skill drafts risk areas from code, history, ownership, and an optional workspace map (`--atlas`) into a review file. `--sweep <dir>` covers each repo under a folder with one subagent for each repo, in parallel. `--apply <file>` writes only the entries that a person approved. The signals include personal and health data, access control, data rights, exports, pipelines, ownership, defect history, and hotspots. `/pr-review-init` points to `/risk-areas` for that section.
+- `test-case-design` change mode uses the workspace map to find consumers in other repositories.
 - Added the `feature-refinement` workflow and `story-refinement` and `bdd-scenarios` stages in `feature-delivery`.
 - Added the shared references `negative-testing.md`, `test-levels.md`, and `reliability-checklist.md`. `story-refinement`, `test-case-design`, and plan readiness use them. Their gaps are warnings.
 
 ### Changed
 
+- `check-plugin-package.sh` runs its checks in parallel and prints the time of each step. A full run takes about 40 seconds instead of about 100. Set `ATB_CHECK_SERIAL=1` to run the steps one at a time.
+- Renamed the `security-sensitive-change` workflow to "System design, security, and reliability" and added `reliability-review` and `failure-scenario-design` stages.
 - Changed `shape-up` to ask open decisions in numbered rounds instead of one question for each message. Added non-functional requirements and an open-questions table to the brief template, and Given/When/Then criteria and a "Must not change" section to the ticket template.
 - Added negative-family, boundary, and test-level steps to `test-case-design` and its template.
 - Added Test levels, Negative cases, and Reliability rows to `phased-delivery` plan readiness.

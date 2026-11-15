@@ -111,7 +111,8 @@ window.AGENT_TOOLBELT_DATA = {
         "story-refinement",
         "test-case-design",
         "phased-delivery",
-        "webapp-testing"
+        "webapp-testing",
+        "failure-scenario-design"
       ],
       "workflow_membership": [
         "feature-delivery",
@@ -315,6 +316,55 @@ window.AGENT_TOOLBELT_DATA = {
       "recommended_changes": [],
       "source_path": "skills/crap-analysis/SKILL.md",
       "source_url": "https://github.com/Ryan-Thurman/agent-toolbelt/blob/main/skills/crap-analysis/SKILL.md"
+    },
+    {
+      "id": "failure-scenario-design",
+      "display_name": "Failure Scenario Design",
+      "short_description": "Plan failure scenarios and staging chaos experiments as testable cards.",
+      "default_prompt": "Use $failure-scenario-design to turn these reliability risks into scenario cards with Given/When/Then forms, test-first cases, and staging experiment plans.",
+      "description": "Turn reliability risks into failure-scenario cards with a hypothesis, steady state, fault, blast radius, abort conditions, Given/When/Then form, and test-first case. Plans chaos experiments and game days for staging. Plan output only.",
+      "category": "Testing & Verification",
+      "tags": [
+        "chaos-engineering",
+        "failure-scenarios",
+        "game-day",
+        "resilience"
+      ],
+      "primary_purpose": "Turn reliability risks into failure-scenario cards that become BDD scenarios, test-first cases, and staging chaos experiment plans.",
+      "use_when": [
+        "A reliability review marks risks as testable.",
+        "A team needs a chaos experiment or game day plan for staging."
+      ],
+      "avoid_when": [
+        "The request is to run fault injection now. This skill only writes plans.",
+        "The target is production without written approval."
+      ],
+      "preferred_context": "Reliability review or failure modes, journeys and their SLIs, telemetry, and the staging environment.",
+      "expected_outputs": [
+        "Scenario cards with hypothesis, steady state, fault, and verification level",
+        "Given/When/Then forms and test-first cases",
+        "Staging experiment plans with abort and no-go conditions"
+      ],
+      "example_prompts": [
+        "Write failure scenarios for the payment dependency in this reliability review.",
+        "Plan a staging game day for zone loss."
+      ],
+      "related_skills": [
+        "reliability-review",
+        "bdd-scenarios",
+        "test-case-design",
+        "cover"
+      ],
+      "workflow_membership": [
+        "security-sensitive-change"
+      ],
+      "documentation_completeness": {
+        "status": "complete",
+        "notes": "Canonical skill and agent metadata are present."
+      },
+      "recommended_changes": [],
+      "source_path": "skills/failure-scenario-design/SKILL.md",
+      "source_url": "https://github.com/Ryan-Thurman/agent-toolbelt/blob/main/skills/failure-scenario-design/SKILL.md"
     },
     {
       "id": "handoff",
@@ -558,7 +608,7 @@ window.AGENT_TOOLBELT_DATA = {
       "display_name": "PR Review",
       "short_description": "Tiered code review for PRs, branches, or local diffs with evidence-backed findings.",
       "default_prompt": "Review this PR, branch, or local diff.",
-      "description": "Review a PR, branch, or local diff with a tiered, multi-agent code-review process (light/standard/deep). Use before merge or when auditing changed code for bugs, security, performance, tests, maintainability, and standards compliance.",
+      "description": "Review a PR, branch, or local diff with a tiered, multi-agent code-review process (light/standard/deep). Use before merge or when auditing changed code for bugs, security, performance, reliability, tests, maintainability, and standards compliance.",
       "category": "Review & Quality",
       "tags": [
         "pr",
@@ -587,13 +637,15 @@ window.AGENT_TOOLBELT_DATA = {
         "pr-improve",
         "pr-review-reply",
         "code-quality-gate",
-        "security-audit"
+        "security-audit",
+        "risk-area-mapping"
       ],
       "workflow_membership": [
         "feature-delivery",
         "pr-review",
         "codebase-improvement",
-        "security-sensitive-change"
+        "security-sensitive-change",
+        "risk-based-testing"
       ],
       "documentation_completeness": {
         "status": "complete",
@@ -743,6 +795,102 @@ window.AGENT_TOOLBELT_DATA = {
       "recommended_changes": [],
       "source_path": "skills/product-outcome-review/SKILL.md",
       "source_url": "https://github.com/Ryan-Thurman/agent-toolbelt/blob/main/skills/product-outcome-review/SKILL.md"
+    },
+    {
+      "id": "reliability-review",
+      "display_name": "Reliability Review",
+      "short_description": "Find failure modes and testable reliability requirements before a design is built.",
+      "default_prompt": "Use $reliability-review to review this design for failure modes, SLOs, dependencies, recovery, and observability, and produce the reliability requirements.",
+      "description": "Review a design or feature plan for failure modes, SLOs, dependencies, recovery, capacity, and observability before it is built, or run a production readiness review. Produces testable reliability requirements. Analysis only.",
+      "category": "Security & Risk",
+      "tags": [
+        "sre",
+        "reliability",
+        "slo",
+        "failure-modes"
+      ],
+      "primary_purpose": "Find failure modes and recovery gaps in a design before it is built, and turn them into testable reliability requirements.",
+      "use_when": [
+        "A design or change adds or changes a service, dependency, data store, queue, job, topology, or reliability target.",
+        "A built service needs a production readiness review against its reliability requirements."
+      ],
+      "avoid_when": [
+        "The change has no remote call, data store, job, or deployment change. Use the story tier of the reliability checklist instead."
+      ],
+      "preferred_context": "Design document and revision, user journeys, dependencies and their owners, targets, telemetry, and deployment topology.",
+      "expected_outputs": [
+        "Dependency inventory and failure-mode register",
+        "SLO and observability gaps with owners",
+        "Reliability requirements with verification levels"
+      ],
+      "example_prompts": [
+        "Run a reliability review on this design before we build it.",
+        "Is this service ready for production? Check it against its reliability requirements."
+      ],
+      "related_skills": [
+        "system-design",
+        "threat-model",
+        "failure-scenario-design",
+        "ship-it"
+      ],
+      "workflow_membership": [
+        "security-sensitive-change"
+      ],
+      "documentation_completeness": {
+        "status": "complete",
+        "notes": "Canonical skill and agent metadata are present."
+      },
+      "recommended_changes": [],
+      "source_path": "skills/reliability-review/SKILL.md",
+      "source_url": "https://github.com/Ryan-Thurman/agent-toolbelt/blob/main/skills/reliability-review/SKILL.md"
+    },
+    {
+      "id": "risk-area-mapping",
+      "display_name": "Risk Area Mapping",
+      "short_description": "Draft the high-impact paths of a repo or a folder of repos for review.",
+      "default_prompt": "Use $risk-area-mapping to draft the risk areas of these repositories from code, history, ownership, and the workspace map, into one review file.",
+      "description": "Draft a repository's risk areas, the paths where a defect has high impact, from code, history, ownership, and an optional workspace map. Sweeps a folder of repos into one review file and applies only approved entries. Use before risk-based test planning or review.",
+      "category": "Testing & Verification",
+      "tags": [
+        "risk-based-testing",
+        "qa",
+        "review",
+        "workspace"
+      ],
+      "primary_purpose": "Draft the paths where a defect has high impact, for one repository or a folder of repositories, so that test planning and review put effort there.",
+      "use_when": [
+        "A team wants risk-based test planning or review and has no declared risk areas.",
+        "A workspace map changed, or an incident showed a new high-impact path."
+      ],
+      "avoid_when": [
+        "The repository already has a reviewed risk-area list and nothing changed."
+      ],
+      "preferred_context": "Schemas and models, access control code, exports and pipelines, CODEOWNERS, revert and hotfix history, and a workspace map with blast radius and integration edges.",
+      "expected_outputs": [
+        "Risk-area review file with evidence for each entry",
+        "Dropped candidates with reasons",
+        "Approved risk-area lists in each repository"
+      ],
+      "example_prompts": [
+        "Draft the risk areas for this repository.",
+        "Sweep the repos in this folder for risk areas and use the workspace map as evidence."
+      ],
+      "related_skills": [
+        "test-case-design",
+        "pr-review",
+        "threat-model",
+        "reliability-review"
+      ],
+      "workflow_membership": [
+        "risk-based-testing"
+      ],
+      "documentation_completeness": {
+        "status": "complete",
+        "notes": "Canonical skill, agent metadata, template, command, and installer are present."
+      },
+      "recommended_changes": [],
+      "source_path": "skills/risk-area-mapping/SKILL.md",
+      "source_url": "https://github.com/Ryan-Thurman/agent-toolbelt/blob/main/skills/risk-area-mapping/SKILL.md"
     },
     {
       "id": "retrofit",
@@ -1009,7 +1157,8 @@ window.AGENT_TOOLBELT_DATA = {
       "related_skills": [
         "code-quality-gate",
         "cover",
-        "handoff"
+        "handoff",
+        "reliability-review"
       ],
       "workflow_membership": [
         "feature-delivery",
@@ -1259,7 +1408,8 @@ window.AGENT_TOOLBELT_DATA = {
         "threat-model",
         "security-audit",
         "phased-delivery",
-        "test-case-design"
+        "test-case-design",
+        "reliability-review"
       ],
       "workflow_membership": [
         "security-sensitive-change",
@@ -1371,7 +1521,7 @@ window.AGENT_TOOLBELT_DATA = {
       "display_name": "Test Case Design",
       "short_description": "Design prioritized, traceable QA test cases.",
       "default_prompt": "Use $test-case-design to design cases for this requirement.",
-      "description": "Turn requirements and risks into prioritized, executable QA test cases without writing tests. Use before test implementation, QA handoff, or coverage planning.",
+      "description": "Turn requirements, risks, or a code change into prioritized, executable QA test cases without writing tests. Use before test implementation, QA handoff, coverage planning, or to plan focused tests for a pull request.",
       "category": "Testing & Verification",
       "tags": [
         "qa",
@@ -1381,12 +1531,13 @@ window.AGENT_TOOLBELT_DATA = {
       ],
       "primary_purpose": "Design high-value test cases from behavior, requirements, risks, and edge conditions.",
       "use_when": [
-        "A feature or fix needs a deliberate test strategy before tests are implemented."
+        "A feature or fix needs a deliberate test strategy before tests are implemented.",
+        "A pull request needs a focused test plan for the modules, callers, and risk areas it touches."
       ],
       "avoid_when": [
         "The needed regression test is obvious and can be added directly."
       ],
-      "preferred_context": "Requirements, acceptance criteria, state transitions, failure modes, and test harness.",
+      "preferred_context": "Requirements, acceptance criteria, a pull request diff, declared risk areas, state transitions, failure modes, and test harness.",
       "expected_outputs": [
         "Test matrix",
         "Boundary and negative cases",
@@ -1394,18 +1545,22 @@ window.AGENT_TOOLBELT_DATA = {
       ],
       "example_prompts": [
         "Design the test cases for this feature, including edge and failure paths.",
-        "Turn these acceptance criteria into a prioritized executable test matrix."
+        "Turn these acceptance criteria into a prioritized executable test matrix.",
+        "Plan focused tests for this pull request, with the risk areas it touches first."
       ],
       "related_skills": [
         "cover",
         "webapp-testing",
         "story-refinement",
-        "bdd-scenarios"
+        "bdd-scenarios",
+        "failure-scenario-design",
+        "risk-area-mapping"
       ],
       "workflow_membership": [
         "feature-delivery",
         "security-sensitive-change",
-        "feature-refinement"
+        "feature-refinement",
+        "risk-based-testing"
       ],
       "documentation_completeness": {
         "status": "complete",
@@ -1449,7 +1604,8 @@ window.AGENT_TOOLBELT_DATA = {
         "security-audit",
         "pr-review",
         "test-case-design",
-        "system-design"
+        "system-design",
+        "reliability-review"
       ],
       "workflow_membership": [
         "security-sensitive-change"
@@ -2215,6 +2371,41 @@ window.AGENT_TOOLBELT_DATA = {
       ]
     },
     {
+      "id": "risk-based-testing",
+      "name": "Risk-based testing",
+      "purpose": "Map the paths where a defect has high impact, then give each pull request a focused test plan and a deeper review on those paths.",
+      "stages": [
+        {
+          "skill": "risk-area-mapping",
+          "rationale": "Draft risk areas from code, history, ownership, and the workspace map. A person approves each entry before it is applied.",
+          "example_invocation": "Sweep the repos in this folder for risk areas with the workspace map.",
+          "next_steps": [
+            "test-case-design",
+            "pr-review"
+          ]
+        },
+        {
+          "skill": "test-case-design",
+          "rationale": "Plan focused cases for a pull request. Cases in a matched risk area get high impact.",
+          "example_invocation": "Plan focused tests for PR 123.",
+          "next_steps": [
+            "cover",
+            "webapp-testing",
+            "pr-review"
+          ]
+        },
+        {
+          "skill": "pr-review",
+          "rationale": "Review the pull request with the risk-area tier floor and a lower threshold on matched paths.",
+          "example_invocation": "Review PR 123.",
+          "next_steps": [
+            "pr-improve",
+            "pr-review-reply"
+          ]
+        }
+      ]
+    },
+    {
       "id": "bug-fixing",
       "name": "Bug fixing",
       "purpose": "Move a concrete defect from reproduction through diagnosis, regression coverage, review, and release.",
@@ -2372,15 +2563,16 @@ window.AGENT_TOOLBELT_DATA = {
     },
     {
       "id": "security-sensitive-change",
-      "name": "System design and security",
-      "purpose": "Document architecture, review attack paths, and connect security requirements to implementation evidence.",
+      "name": "System design, security, and reliability",
+      "purpose": "Document architecture, review attack paths and failure modes, and connect security and reliability requirements to implementation evidence.",
       "stages": [
         {
           "skill": "system-design",
           "rationale": "Create the design record and linked threat review before implementation.",
           "example_invocation": "Document this system and its attack paths.",
           "next_steps": [
-            "threat-model"
+            "threat-model",
+            "reliability-review"
           ]
         },
         {
@@ -2393,13 +2585,32 @@ window.AGENT_TOOLBELT_DATA = {
           ]
         },
         {
+          "skill": "reliability-review",
+          "rationale": "Find failure modes, SLO and observability gaps, and recovery needs, and write testable reliability requirements.",
+          "example_invocation": "Run a reliability review on this design.",
+          "next_steps": [
+            "phased-delivery",
+            "failure-scenario-design"
+          ]
+        },
+        {
           "skill": "phased-delivery",
           "rationale": "Plan accepted requirements and preserve threat-to-verification links.",
           "example_invocation": "Plan the accepted design and security requirements.",
           "next_steps": [
+            "failure-scenario-design",
             "test-case-design",
             "cover",
             "security-audit"
+          ]
+        },
+        {
+          "skill": "failure-scenario-design",
+          "rationale": "Turn testable reliability risks into scenario cards, Given/When/Then forms, and staging experiment plans.",
+          "example_invocation": "Write failure scenarios for these reliability risks.",
+          "next_steps": [
+            "test-case-design",
+            "cover"
           ]
         },
         {

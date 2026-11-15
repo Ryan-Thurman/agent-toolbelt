@@ -33,7 +33,10 @@ present; otherwise it waits for explicit approval before creating `STYLE_GUIDE.m
 
 `test-case-design` turns requirements and risks into prioritized QA cases without writing tests. It
 covers relevant behavioral, boundary, state, failure, access, and UI states, then hands selected
-cases to `/cover` or `/webapp-test`.
+cases to `/cover` or `/webapp-test`. Give it a pull request number or a branch to plan focused cases
+for that change. It finds the affected callers and gives cases in a declared risk area high impact.
+Declare risk areas in a `## Risk areas` section of `.pr-review.md`, `AGENTS.md`, or `CLAUDE.md`, or draft them with `/risk-areas`.
+For a large set, it shows the first five to ten cases for your feedback before it writes the rest.
 
 ```sh
 ./install.sh --harness all test-case-design /path/to/project

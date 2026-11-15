@@ -44,7 +44,11 @@ generic one.
    2+ times are suppression candidates. Also established bespoke patterns a generic reviewer would
    flag (named helpers, documented process rules). Every suppression must name the exact helper,
    path, or condition; never emit a blanket suppression ("ignore style issues").
-6. **Tier floor** → `## Minimum tier`
+6. **Where a defect costs the most** → `## Risk areas`
+   Do not draft this section here. When the `risk-area-mapping` skill is installed, tell the user to
+   run `/risk-areas`. It drafts the list from evidence, for one repo or a folder of repos, into a
+   review file. If the repo `AGENTS.md`/`CLAUDE.md` already has the list, do not copy it.
+7. **Tier floor** → `## Minimum tier`
    Mostly production logic, hot paths, or a security-sensitive surface → `standard`. A docs/config
    repo may not need a floor at all.
 

@@ -1,6 +1,6 @@
 ---
 name: pr-review
-description: Review a PR, branch, or local diff with a tiered, multi-agent code-review process (light/standard/deep). Use before merge or when auditing changed code for bugs, security, performance, tests, maintainability, and standards compliance.
+description: Review a PR, branch, or local diff with a tiered, multi-agent code-review process (light/standard/deep). Use before merge or when auditing changed code for bugs, security, performance, reliability, tests, maintainability, and standards compliance.
 ---
 
 # pr-review

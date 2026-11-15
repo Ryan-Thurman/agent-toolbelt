@@ -1,0 +1,4 @@
+interface:
+  display_name: "Failure Scenario Design"
+  short_description: "Plan failure scenarios and staging chaos experiments as testable cards."
+  default_prompt: "Use $failure-scenario-design to turn these reliability risks into scenario cards with Given/When/Then forms, test-first cases, and staging experiment plans."

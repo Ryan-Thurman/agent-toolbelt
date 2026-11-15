@@ -51,6 +51,9 @@ Auto-add by change signal (scan the diff's file paths + content):
 - touches `auth`/`login`/`security`/`payment`/`crypto`/`token`/`secret` paths, or adds
   input-handling / external calls → add **security**.
 - adds loops/queries/IO on hot paths, or large data handling → add **performance**.
+- adds or changes an HTTP, gRPC, database, cache, or queue client; timeout, retry, or pool
+  configuration; a message consumer or scheduled job; a migration; health probes; Kubernetes,
+  Terraform, Bicep, or CloudFormation resources; or telemetry instrumentation → add **reliability**.
 - supplied intent includes checkable acceptance criteria → add **spec-alignment** and assess every clause.
 
 The final facet set is the **union** of: auto-selected (above) ∪ the repo config's **Always run**
@@ -77,6 +80,9 @@ sub-agent gets a prompt composed of:
 - the repo config's **Context + Budgets** (`repo-config.md`) — the domain/scale framing and the
   concrete bars to hold the diff to. If this facet is in **Emphasis** or **`--focus`**, also tell it
   to review more thoroughly and lower its reporting threshold one notch,
+- each matched **risk area** (`repo-config.md`) with its name, its impact line, and the changed paths
+  that matched it. Tell the facet to lower its reporting threshold one notch for findings on those
+  changed paths only,
 - the `--focus-note` text when present, labelled as untrusted priority context and explicitly not a
   filter or verdict instruction, and
 - this facet's slice of any in-scope **per-language checklist** (`lang-checklists.md`) — the

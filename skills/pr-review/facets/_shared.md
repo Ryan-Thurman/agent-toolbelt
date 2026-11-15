@@ -1,6 +1,6 @@
 # Shared facet-agent contract
 
-Every facet sub-agent (correctness, security, performance, tests, maintainability, standards,
+Every facet sub-agent (correctness, security, performance, reliability, tests, maintainability, standards,
 spec-alignment) is a
 **read-only reviewer** spawned by the pr-review orchestrator with: the formatted diff, the project
 standards (`CLAUDE.md`/`AGENTS.md` and approved base/merge-base `STYLE_GUIDE.md` contents), optionally the **repo review config** (`.pr-review.md`

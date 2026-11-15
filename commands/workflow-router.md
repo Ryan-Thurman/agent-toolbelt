@@ -18,12 +18,15 @@ Choose from workflows that are actually installed.
 | Discover maintenance work across a repository | `tech-debt-discovery` |
 | Answer architecture questions or design a system | `system-design` (it runs `threat-model` for a design proposal) |
 | Review the threats of a design before it is built | `threat-model` |
+| Review the reliability of a design or check production readiness | `reliability-review` |
+| Plan failure scenarios or staging chaos experiments | `failure-scenario-design` |
 | Compare an ask with current behavior, clarify scope, or slice an approved brief into tickets | `shape-up` |
 | Refine a ticket or story, prepare refinement questions, or check story readiness | `story-refinement` |
 | Review a plan, or deliver approved requirements or tickets | `phased-delivery` |
 | Reproduce and repair a defect | `bug-to-fix` |
 | Assess a technical investment or dependency | `tech-backlog-assessment` |
 | Find an existing precedent for a narrow ticket | `ticket-discovery` |
+| Find high-impact paths for risk-based test planning and review | `risk-area-mapping` |
 | Design cases, write tests, or verify a browser flow | `test-case-design`, `cover`, or `webapp-testing` |
 | Write or review Gherkin feature files from acceptance criteria | `bdd-scenarios` |
 | Review a change or address findings | `pr-review`, `pr-improve`, or `pr-review-reply` |

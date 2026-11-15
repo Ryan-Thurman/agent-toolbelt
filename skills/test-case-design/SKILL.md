@@ -1,6 +1,6 @@
 ---
 name: test-case-design
-description: Turn requirements and risks into prioritized, executable QA test cases without writing tests. Use before test implementation, QA handoff, or coverage planning.
+description: Turn requirements, risks, or a code change into prioritized, executable QA test cases without writing tests. Use before test implementation, QA handoff, coverage planning, or to plan focused tests for a pull request.
 ---
 
 # test-case-design
@@ -10,13 +10,15 @@ read it before you write for the user.
 
 Toolbelt paths: a path that starts with `shared/`, `skills/`, `templates/`, or `workflows/` is relative to the Toolbelt root, `${CLAUDE_PLUGIN_ROOT}`. If that variable is not replaced, use the nearest folder above this file that contains `shared/contracts/`.
 
-Design an evidence-based test case set from requirements and risks. This skill reports cases;
+Design an evidence-based test case set from requirements, risks, or a code change. This skill reports cases;
 it does not edit tests or production code. To find gaps in existing code, use the `cover` skill gap scan (`/cover-gaps`).
 
 ## Steps
 
 1. Identify requirements, observable risks, interfaces, existing test conventions,
    and missing information. Do not invent customer behavior or system constraints.
+   When the input is a pull request, a branch, a commit range, or a diff, follow
+   `references/change-risk-planning.md` and fill "Change Scope" in the template.
 2. Choose the least complex technique that exposes each risk:
    - Equivalence partitions and boundaries for input rules.
    - Decision tables for interacting conditions.
@@ -25,6 +27,8 @@ it does not edit tests or production code. To find gaps in existing code, use th
    Record each family as covered, `Not applicable` with a reason, or a gap.
    When the change adds one of the triggers in `shared/contracts/references/reliability-checklist.md`, add the failure cases
    from the story tier of `shared/contracts/references/reliability-checklist.md`.
+   Read `references/system-failure-cases.md` when the scope has a remote call, a queue, a job, a cache, or a data store.
+   Accept failure-scenario cards (`FS-` IDs) from `failure-scenario-design` as input.
 4. For a user-facing flow, add loading, empty, error, overflow, responsive, accessibility,
    console, and network states only when the interface makes them relevant.
    State the relevant UI state in the case.
@@ -32,8 +36,13 @@ it does not edit tests or production code. To find gaps in existing code, use th
    Write each case in `templates/test-case-design.md`. Give each case an ID, requirement or risk,
    preconditions and data, steps, expected result, test level, automation candidate, and priority.
 6. Set priority from impact and likelihood, not from an arbitrary numeric score.
+   A case in a declared risk area has high impact. Read `shared/contracts/references/risk-areas.md`.
    Record assumptions and uncovered risks. Do not invent expected behavior.
-7. Hand selected cases to `cover` (`/cover`) for code-level tests or `webapp-testing` (`/webapp-test`) for browser checks.
+7. When the set will have more than ten cases and a person can answer, calibrate first.
+   Show the five to ten cases with the highest priority and stop. Ask about domain terms, test level,
+   priority, and case size. Apply the answers to all remaining cases. When no person can answer,
+   write the full set and record each calibration point as an assumption.
+8. Hand selected cases to `cover` (`/cover`) for code-level tests or `webapp-testing` (`/webapp-test`) for browser checks.
 
 ## Completion
 

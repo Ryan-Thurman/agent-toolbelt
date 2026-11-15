@@ -3,7 +3,7 @@
 Use this workflow to review the delivery process after completed work.
 Use `product-outcome-review` to assess customer results.
 
-1. Read the original plan, actual changes, review findings, checks, incidents, and previous improvement actions.
+1. Read the original plan, actual changes, review findings, checks, incidents, previous improvement actions, and papercut reports from `papercuts`.
 2. Compare expected and observed delivery behavior with source evidence and time or scope limits.
 3. Identify recurring causes, useful practices, counterexamples, and unresolved questions.
 4. Record each lesson with the fields in `shared/contracts/references/execution-lessons.md`.

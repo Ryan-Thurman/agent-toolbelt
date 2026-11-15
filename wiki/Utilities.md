@@ -17,6 +17,7 @@ test authoring, BDD scenarios, release, codebase-wide change, handoff, and track
 - [Worktree](#worktree): isolated worktrees for parallel agents.
 - [CRAP Analysis](#crap-analysis): complexity + coverage risk via repo-configured commands.
 - [Handoff](#handoff): resumable handoffs.
+- [Papercuts](#papercuts): codebase friction reports for a shared team log.
 - [Ticket Sync](#ticket-sync): publish tickets to a tracker.
 
 ## Style guide init
@@ -244,6 +245,25 @@ It leads with the single concrete **next action**, references the lane's durable
 bug-investigation file, the implementation plan, or the retrofit plan) instead of duplicating it,
 captures what has been ruled out, redacts secrets, and stays compact. It is bundled with the
 `bug-to-fix` pack and also installs standalone for the other lanes.
+
+## Papercuts
+
+The `papercuts` skill reports what in the repository slowed the work.
+Examples are a doc that the code contradicts, two copies of one config, a misleading name, and a command that fails on the first try.
+The difficulty of the task itself is not in the report.
+
+```sh
+./install.sh --harness all papercuts /path/to/project
+```
+
+Run `/papercuts` at the end of a task, or `/papercuts --feature <branch>` at the end of a feature.
+The feature scope also reads phase plans, handoffs, PR review threads, CI runs, and commits.
+The skill saves a ranked table under `.atb-work/papercuts/` and edits no other file.
+Each row names the file that its fix changes, and has a key such as `tooling:packages/api/package.json`.
+
+To build a team log, add `--post` with a Markdown file, a GitHub issue URL, or an Azure Boards work item URL.
+The skill shows a preview first. It marks each row whose key is already in the log as a repeat, so the team can see which friction recurs.
+For Jira, paste the saved report, or turn selected rows into tickets with `ticket-sync`.
 
 ## Ticket sync
 

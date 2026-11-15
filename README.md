@@ -178,6 +178,7 @@ The [First repository setup](wiki/Installation.md#first-repository-setup) guide 
 | Prepare a release | `ship-it` |
 | Write a resumable handoff | `handoff` |
 | Review the delivery process after completed work | `workflows/delivery-retrospective-workflow.md` |
+| Report the codebase friction that slowed a task or a feature | `papercuts` |
 <!-- END routing table -->
 
 To install the standard commands and workflows, use the pack `all`.

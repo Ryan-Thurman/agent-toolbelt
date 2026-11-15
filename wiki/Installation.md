@@ -163,6 +163,8 @@ The root `AGENTS.md` and `CLAUDE.md` blocks contain the same writing-rule pointe
 and instructions to load matching skills. Reinstalling replaces the old workflow
 catalog inside the Toolbelt markers, including without `--force`.
 Content outside those markers remains in place.
+If `CLAUDE.md` is a symlink to `AGENTS.md`, the installer writes through the link.
+The link and the file mode stay the same, and the file gets one block.
 
 Existing Cursor rules remain unchanged without `--force`.
 To refresh the routing rule, review local edits and rerun the install command with `--force`.

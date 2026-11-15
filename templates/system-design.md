@@ -75,6 +75,13 @@ Distinguish proposed controls, observed implementation, and verified behavior.
 | Threat ID | Requirement and control status | Owner | Verification method and evidence | Remaining risk or decision |
 | --- | --- | --- | --- | --- |
 
+## Reliability review and requirements
+
+Link the reliability review and the reviewed design revision.
+
+| Requirement ID | Linked risks | Owner | Verification level and evidence | Status |
+| --- | --- | --- | --- | --- |
+
 ## Open questions and evidence gaps
 
 | ID | Question or missing evidence | Consequence | Owner or Unassigned | Resolution method |

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # DESC: architecture discussions, design documents, diagrams, and decision records
-# DEPENDS: threat-model simple-english
+# DEPENDS: threat-model reliability-review simple-english
 pack_system_design() {
   shared_contract references/human-readable-output.md
   shared_contract references/docs-writing.md

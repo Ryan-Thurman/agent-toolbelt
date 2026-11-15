@@ -51,6 +51,9 @@ Auto-add by change signal (scan the diff's file paths + content):
 - touches `auth`/`login`/`security`/`payment`/`crypto`/`token`/`secret` paths, or adds
   input-handling / external calls → add **security**.
 - adds loops/queries/IO on hot paths, or large data handling → add **performance**.
+- adds or changes an HTTP, gRPC, database, cache, or queue client; timeout, retry, or pool
+  configuration; a message consumer or scheduled job; a migration; health probes; Kubernetes,
+  Terraform, Bicep, or CloudFormation resources; or telemetry instrumentation → add **reliability**.
 - supplied intent includes checkable acceptance criteria → add **spec-alignment** and assess every clause.
 
 The final facet set is the **union** of: auto-selected (above) ∪ the repo config's **Always run**

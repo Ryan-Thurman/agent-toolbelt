@@ -7,11 +7,16 @@
 - Added the `story-refinement` skill and `/story-refinement` command. The skill finds ambiguity in a ticket, settles facts from the repository, asks the open decisions in batched rounds with defaults, writes Given/When/Then criteria with failure paths, and gives a readiness verdict from product, developer, QA, and SRE reviewer subagents.
 - Added the `bdd-scenarios` skill and `/bdd-scenarios` command. The skill writes Gherkin feature files from acceptance criteria, maps steps to existing step definitions, traces each criterion to a scenario or a unit test, reviews feature files, and plans a `playwright-bdd`, `pytest-bdd`, or Cucumber-JVM runner.
 - Added an acceptance loop to the shared TDD contract. A phase with BDD scenarios runs them red before the implementation and green after it, with unit TDD cycles inside. `phased-delivery` plans, plan readiness, implementation, and review now use it.
+- Added the `reliability-review` skill and `/reliability-review` command. The skill reviews a design for failure modes, SLOs, dependencies, recovery, capacity, and observability, and writes testable reliability requirements. Its readiness mode checks a built service against them. `system-design` runs it next to `threat-model`.
+- Added the `failure-scenario-design` skill and `/failure-scenario-design` command. The skill turns testable reliability risks into scenario cards with a Given/When/Then form, a test-first case, and a staging experiment plan with abort and no-go conditions. It writes plans only.
+- Added a `pr-review` reliability facet. It runs when the diff changes clients, timeouts, retries, consumers, jobs, migrations, probes, infrastructure, or telemetry.
+- Added a system-failure case reference to `test-case-design` and a reliability section to the `ship-it` readiness checklist.
 - Added the `feature-refinement` workflow and `story-refinement` and `bdd-scenarios` stages in `feature-delivery`.
 - Added the shared references `negative-testing.md`, `test-levels.md`, and `reliability-checklist.md`. `story-refinement`, `test-case-design`, and plan readiness use them. Their gaps are warnings.
 
 ### Changed
 
+- Renamed the `security-sensitive-change` workflow to "System design, security, and reliability" and added `reliability-review` and `failure-scenario-design` stages.
 - Changed `shape-up` to ask open decisions in numbered rounds instead of one question for each message. Added non-functional requirements and an open-questions table to the brief template, and Given/When/Then criteria and a "Must not change" section to the ticket template.
 - Added negative-family, boundary, and test-level steps to `test-case-design` and its template.
 - Added Test levels, Negative cases, and Reliability rows to `phased-delivery` plan readiness.

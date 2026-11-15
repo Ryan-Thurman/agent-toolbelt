@@ -18,6 +18,8 @@ Choose from workflows that are actually installed.
 | Discover maintenance work across a repository | `tech-debt-discovery` |
 | Answer architecture questions or design a system | `system-design` (it runs `threat-model` for a design proposal) |
 | Review the threats of a design before it is built | `threat-model` |
+| Review the reliability of a design or check production readiness | `reliability-review` |
+| Plan failure scenarios or staging chaos experiments | `failure-scenario-design` |
 | Compare an ask with current behavior, clarify scope, or slice an approved brief into tickets | `shape-up` |
 | Refine a ticket or story, prepare refinement questions, or check story readiness | `story-refinement` |
 | Review a plan, or deliver approved requirements or tickets | `phased-delivery` |

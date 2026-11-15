@@ -117,6 +117,13 @@ Key ideas:
 
 Use `system-design` for architecture questions, design documents, diagrams, decision records, and repository maps.
 A full design proposal also gets a linked `threat-model` review for the same revision.
+When the design adds or changes a service, a dependency, a data store, a queue, a job, or the topology,
+it also gets a `reliability-review` for the same revision. That review records the dependency inventory,
+the failure-mode register, SLO and observability gaps, and testable reliability requirements.
+`failure-scenario-design` turns the testable risks into scenario cards.
+Each card has a Given/When/Then form for `bdd-scenarios`, a test-first case, and, when needed, a staging experiment plan.
+Both skills write plans only. Chaos experiments run in staging, and production needs written approval.
+The `pr-review` reliability facet checks timeouts, retries, idempotency, migrations, probes, and telemetry in the diff.
 The [skill](../skills/system-design/SKILL.md) owns the modes and the completion rules.
 
 ```text
@@ -129,6 +136,7 @@ The compatibility install includes the design and decision-record templates:
 
 ```sh
 ./install.sh --harness all system-design /path/to/project
+./install.sh --harness all failure-scenario-design /path/to/project
 ```
 
 Keep generated internal documents in the project's designated location or outside the public Toolbelt repository.

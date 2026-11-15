@@ -16,7 +16,7 @@ pack_pr_review() {
     checklists/README.md checklists/python.md checklists/sql.md checklists/typescript.md \
     facets/_shared.md facets/correctness.md facets/maintainability-deep.md \
     facets/maintainability.md facets/performance.md facets/security.md \
-    facets/spec-alignment.md facets/standards.md facets/tests.md \
+    facets/reliability.md facets/spec-alignment.md facets/standards.md facets/tests.md \
     references/auto-tier.md references/benchmarking.md references/config-init.md \
     references/deep-tier.md \
     references/dual-judge.md references/fan-out.md references/finding-schema.md \

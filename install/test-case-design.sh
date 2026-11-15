@@ -9,5 +9,6 @@ pack_test_case_design() {
   shared_contract references/reliability-checklist.md
   cmd test-case-design
   skill test-case-design SKILL.md
+  skill test-case-design references/system-failure-cases.md
   template test-case-design.md
 }

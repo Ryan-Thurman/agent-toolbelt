@@ -30,6 +30,14 @@ skips the accessibility/Web-Vitals rows; a docs change skips most of this.
 - [ ] Color contrast meets WCAG 2.1 AA; errors are descriptive and associated with their fields.
 - [ ] No new axe-core / Lighthouse accessibility violations.
 
+## Reliability (new services, new hard dependencies, or data changes)
+
+- [ ] Each affected journey has an SLO and a burn-rate alert, or the gap is recorded with an owner.
+- [ ] Each paging alert has a runbook.
+- [ ] Each reliability requirement from `reliability-review` is `Verified`, or its gap is accepted by its owner.
+- [ ] The failure scenarios for each new hard dependency ran in staging or at a lower level, with a recorded result.
+- [ ] Backups exist and a restore was tested for each new data store.
+
 ## Infrastructure
 
 - [ ] Environment variables / config set for the target environment.

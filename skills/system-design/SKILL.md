@@ -48,6 +48,9 @@ Paths beginning `templates/` or `shared/` refer to the Toolbelt root.
 4. Run the installed `threat-model` skill against that draft and its revision.
    Keep a linked threat report with attack paths, control evidence, security requirements, verification methods, and remaining risks.
    If the skill or required evidence is unavailable, report the threat review as `Not verified` and identify the missing input.
+   When the design adds or changes a service, a dependency, a data store, a queue, a job, the topology, or a reliability target,
+   also run the installed `reliability-review` skill against the same draft and revision.
+   If it is unavailable, report the reliability review as `Not verified`.
 5. Resolve design findings and record their disposition.
    Apply the readiness checks from the design method.
    Resolve repository facts and delegated choices directly; surface only decisions that require the source owner.

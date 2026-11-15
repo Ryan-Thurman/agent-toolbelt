@@ -23,4 +23,5 @@ If the source gives no target, record `Decision needed`.
 
 An unanswered question for a hard dependency or a data change is a readiness warning.
 It does not block the work unless the project instructions make it a gate.
-Send a question about architecture, topology, or recovery targets to `system-design`.
+Send a question about architecture, topology, or recovery targets to `system-design` and `reliability-review`.
+Send a failure scenario that needs more than a unit or integration test to `failure-scenario-design`.

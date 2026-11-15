@@ -50,25 +50,33 @@ git fetch origin
 src=feature/x; tgt=main                          # strip the refs/heads/ prefix from the query output
 git diff "origin/$tgt...origin/$src"             # three-dot: changes on the source since it diverged
 git diff "origin/$tgt...origin/$src" --stat
+range="origin/$tgt...origin/$src"
 ```
 The three-dot diff matches what the PR shows (source changes vs the merge-base with target). Pull the
 PR description/title from `az repos pr show` so spec-alignment and the summary still have context.
 
 **Branch (no PR):**
 ```bash
-git fetch origin
-git log <base>..HEAD --oneline
-git diff <base>..HEAD
+git remote get-url origin >/dev/null 2>&1 && git fetch origin   # skip the fetch when there is no remote
+git log <base>..<branch> --oneline
+git diff <base>...<branch>       # three-dot: changes on the branch since it left the base
+range="<base>...<branch>"
 ```
+Use the branch name, not `HEAD`. The branch does not need to be checked out. If the branch is only on
+the remote, use `origin/<branch>`.
 
 **Local working changes (empty target):**
 ```bash
 base="$(git merge-base <base> HEAD)"
+range="$base"
 git diff "$base"            # committed + unstaged vs merge-base
 git diff "$base" --stat
 git status --porcelain      # surface staged/untracked too
 ```
 Covers committed, staged, unstaged, and (via status) untracked work — review before you push.
+
+Later steps (`auto-tier.md` signals and the frozen diff) use `git diff $range`. For a GitHub PR, the
+diff comes from `gh pr diff`, so compute the same signals from that diff.
 
 ## Format for line-anchored review
 

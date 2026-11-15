@@ -1,5 +1,12 @@
 # Changelog
 
+## Unreleased
+
+### Added
+
+- Added a rails mode to `style-guide-init` (`--rails`). It sets up one canonical quality command and connects local use, CI, and release to it with the tools that the repository already has. It does not change application code or fix findings. A new check that finds problems in existing code stays out of the required CI path and is listed as pending adoption.
+- Added an exact-text assertion rule to the shared TDD contract and `test-case-design`. An exact text assertion is for text that is the contract, such as a protocol, generated file, command output, or user-visible copy. `cover` gap scans mark tests that match source text or private names as weak.
+
 ## v1.3.0 - 2026-11-14
 
 ### Added

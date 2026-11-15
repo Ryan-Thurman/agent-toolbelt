@@ -53,6 +53,9 @@ Address partial success, retries, duplicates, concurrency, and dependency loss w
 | Option | Fit with requirements | Benefits and disadvantages | Effort and reversibility | Selection or rejection reason |
 | --- | --- | --- | --- | --- |
 
+| Decision | Solves | Makes worse | Change it when |
+| --- | --- | --- | --- |
+
 - Recommendation and its conditions:
 - Accepted decisions and approval evidence:
 - Delegated technical choices:
@@ -89,6 +92,9 @@ Link the reliability review and the reviewed design revision.
 
 ## Readiness, review, and handoff
 
+- Depth level and reason: Light / Standard / Deep
+- Weakest point:
+- Glossary link, if terms were defined:
 - Result: Ready for planning / Needs decision / Needs revision / Not verified
 - Source coverage and connected-flow review:
 - Findings, corrections, and disposition:

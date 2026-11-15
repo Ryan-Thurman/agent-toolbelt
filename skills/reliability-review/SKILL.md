@@ -15,6 +15,16 @@ Find how a design can fail, and turn each important failure mode into a requirem
 an experiment, or a check can verify. This skill is analysis only. It runs no fault injection,
 load test, or restore, and it changes no code or infrastructure.
 
+Choose the depth with `shared/contracts/references/depth-levels.md` and state it first.
+
+| Level | Work |
+| --- | --- |
+| Light | Answer the story tier of `shared/contracts/references/reliability-checklist.md` only. |
+| Standard | The design mode. Load each reference only when its step needs it. |
+| Deep | The design mode with every reference, a capacity estimate, and a list of the evidence that readiness mode will need before launch. |
+
+Readiness mode runs at any level when a person asks for it.
+
 | Request | Procedure | Result |
 | --- | --- | --- |
 | Review a design before it is built. | Design mode, steps 1 to 7. | `templates/reliability-review.md` with the failure-mode register and requirements. |

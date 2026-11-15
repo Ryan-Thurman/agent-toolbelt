@@ -14,6 +14,14 @@ A failure scenario states how the system must behave when one thing goes wrong.
 This skill writes scenario cards that become BDD scenarios, test-first cases, and staging chaos experiment plans.
 It never runs fault injection, load, or restore tools, and it never targets production.
 
+Choose the depth with `shared/contracts/references/depth-levels.md` and state it first.
+
+| Level | Work |
+| --- | --- |
+| Light | No cards. Write the failure criteria of the story as Given/When/Then scenarios only. |
+| Standard | Cards at the unit, integration, and BDD levels. Mark a card that needs a real platform fault as `Staging` and do not plan the experiment. |
+| Deep | All cards, plus staging experiment and game day plans. |
+
 ## Procedure
 
 1. Take the risks marked testable and the journeys from a `reliability-review` report.
@@ -25,7 +33,7 @@ It never runs fault injection, load, or restore tools, and it never targets prod
    and add the telemetry as a requirement.
 4. Choose the lowest verification level that exposes the risk.
 5. Read `references/bdd-mapping.md`. Write the Given/When/Then form and the test-first case of each card.
-6. For each card at the staging experiment or game day level, read `references/staging-experiment-plan.md`
+6. At the Deep level, or when a person asks, read `references/staging-experiment-plan.md` for each card at the staging experiment or game day level,
    and complete the blast radius, abort conditions, rollback, and no-go conditions.
 
 ## Rules

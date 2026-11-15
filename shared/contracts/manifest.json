@@ -346,6 +346,16 @@
         "story-refinement",
         "test-case-design"
       ]
+    },
+    {
+      "path": "references/depth-levels.md",
+      "owner": "shared/contracts",
+      "consumers": [
+        "failure-scenario-design",
+        "reliability-review",
+        "story-refinement",
+        "system-design"
+      ]
     }
   ],
   "artifacts": [

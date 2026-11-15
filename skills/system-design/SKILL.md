@@ -20,6 +20,19 @@ Choose the mode from the requested outcome.
 | Record or revisit a significant architecture decision. | Read `references/decision-records.md`. | Produce or update a decision record with evidence and its actual approval state. |
 | Map or maintain implemented architecture. | Read `references/repository-map.md`. | Deliver source-backed structure, dependencies, flows, and coverage limits. |
 
+Choose the depth with `shared/contracts/references/depth-levels.md` and state it first.
+At the Light level, give a short design note or a direct answer from the rows that can change it.
+At the Standard level, follow the full procedure and load each topic reference only when its trigger applies:
+
+| Trigger | Read |
+| --- | --- |
+| An API, an event, or a webhook is added or changed. | `references/interface-contracts.md` |
+| A data store, a schema, or data ownership changes. | `references/data-design.md` |
+| Terms are unclear, or the design crosses domain boundaries. | `references/domain-language.md` |
+| A flow crosses services, queues, or scheduled jobs. | `references/distributed-workflows.md` |
+| Scale or cost decides the design (also every Deep design). | `references/estimation.md` |
+| Deep level only: a person asks for a design review, or the project requires one. | `references/design-review.md` |
+
 Start with the team member's question and existing project evidence.
 In each mode, use `references/design-method.md` to check relevant design coverage and find material gaps.
 Scale the investigation to the decision's consequences.
@@ -58,9 +71,14 @@ Paths beginning `templates/` or `shared/` refer to the Toolbelt root.
 
 ## Completion and maintenance
 
+Name the weakest point of the design: the part that fails or limits the design first.
+
 For a design proposal, deliver the design document and linked threat review for the same design revision.
 Every important threat needs a disposition, owner or unassigned status, and a verification method.
 For discussion, decision-record, or mapping work, deliver the scoped result from the mode table.
 Record unresolved decisions and review limits instead of claiming readiness.
 Preserve decision history and recheck affected document sections after source changes.
 When an architecture, identity, data, trust boundary, or deployment changes, reassess the affected design and threats.
+
+Topic references adapted from proyecto26/system-design-skills, mattpocock/skills, addyosmani/agent-skills,
+wondelai/skills, cursor/plugins pstack (all MIT), and BMAD-METHOD (MIT). No source text is copied.

@@ -5,6 +5,7 @@ pack_system_design() {
   shared_contract references/human-readable-output.md
   shared_contract references/docs-writing.md
   shared_contract references/evidence-quality.md
+  shared_contract references/depth-levels.md
   cmd system-design
   skill system-design SKILL.md
   skill system-design references/design-method.md
@@ -12,6 +13,12 @@ pack_system_design() {
   skill system-design references/architecture-diagrams.md
   skill system-design references/decision-records.md
   skill system-design references/repository-map.md
+  skill system-design references/interface-contracts.md
+  skill system-design references/data-design.md
+  skill system-design references/domain-language.md
+  skill system-design references/distributed-workflows.md
+  skill system-design references/estimation.md
+  skill system-design references/design-review.md
   template system-design.md
   template architecture-decision-record.md
   workflow system-design-workflow.md

@@ -28,6 +28,9 @@ If the request does not decide, use `--scan`.
 | `--live` | Resolve the open questions with the user now. | Steps 1 to 6, then the live rounds in `references/question-strategy.md`. | Updated spec and decision log. |
 | `--check` | Check whether a story is ready. | Read `references/readiness-review.md`. | Readiness verdict with findings. The item does not change. |
 
+Choose the depth with `shared/contracts/references/depth-levels.md` and state it first.
+The depth sets how many reviewer lenses run in step 6. The scan and the criteria run at every level.
+
 ## Principles
 
 - **Resolve facts before you ask.** Read the code, the docs, and the tracker first.

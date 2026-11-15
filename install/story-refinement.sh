@@ -7,6 +7,7 @@ pack_story_refinement() {
   shared_contract references/negative-testing.md
   shared_contract references/test-levels.md
   shared_contract references/reliability-checklist.md
+  shared_contract references/depth-levels.md
   cmd story-refinement
   skill story-refinement SKILL.md
   skill story-refinement references/ambiguity-scan.md

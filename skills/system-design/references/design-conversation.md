@@ -28,7 +28,9 @@ Ask when an answer changes product behavior, a material constraint, ownership, o
 | Test the reasoning | Walk through a representative success case and important failure cases. | Each case has a credible flow, owner, observable outcome, and verification approach. |
 | Close or continue | Answer the scoped question or record the next unresolved decision. | The team can see what is settled, what remains unknown, and who acts next. |
 
-Ask one focused question at a time when conversation is needed.
+When conversation is needed, ask the open questions in numbered rounds.
+A round holds the questions whose prerequisites are settled. Give each one a recommended answer, worded so that "yes" accepts it.
+Ask one question at a time only for an early idea with no clear options.
 Explain which design choice the answer changes.
 Offer concrete options and a recommendation when available evidence supports them.
 Continue independent source inspection while awaiting an answer.
@@ -43,6 +45,14 @@ Identify irreversible commitments, migration effort, operator workload, and circ
 Keep estimated capacity, cost, and reliability separate from measured values and agreed targets.
 Verify version-dependent product capabilities and limits with current primary sources.
 When a consequential assumption can be tested cheaply, propose a bounded experiment with a success criterion.
+Find the bottleneck before you add a component. A new cache, queue, or service needs a measured or estimated limit that it removes.
+At the Deep level, or when the person asks, design it twice: give two subagents the same requirements and different constraints,
+then compare the two designs. Use the comparison to find choices that the first design did not consider.
+
+## When a constraint changes
+
+Name the assumption that the change breaks. List the design sections and decisions that depend on it.
+Recheck only those sections, and record what changed and why.
 
 ## Retain decisions and limits
 

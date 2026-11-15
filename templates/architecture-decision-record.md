@@ -27,15 +27,16 @@ State the proposed or accepted approach and why it fits the recorded constraints
 
 ## Consequences
 
-- Benefits:
-- Disadvantages, risks, and operational consequences:
+- What becomes easier:
+- What becomes harder, including risks and operational consequences:
+- Team familiarity with the option:
 - Migration, compatibility, and affected owners:
 
 ## Verification and reconsideration
 
 - How the decision's important assumptions and outcomes will be checked:
 - Remaining questions and their owners:
-- Conditions that require reconsideration:
+- Revisit when (a measurable trigger):
 
 ## References and history
 

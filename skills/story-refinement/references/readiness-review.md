@@ -16,9 +16,17 @@ run the lenses yourself one after another, and label the result `Self-review`.
 | QA | Each criterion is testable and has its failure path. Each family in `shared/contracts/references/negative-testing.md` is covered or marked `Not applicable` with a reason. Criteria do not conflict. |
 | SRE | The story tier of `shared/contracts/references/reliability-checklist.md` is answered when it applies. Non-functional requirements have units and sources, or `Unknown` with an owner. Rollout and rollback are stated. |
 
-Add a security lens when the item touches authentication, personal data, or money.
-Use `threat-model` for its checks. Add a design lens for a user-facing flow.
-For a small internal item, run only the QA lens and the builder check.
+Run the lenses that the depth level allows:
+
+| Level | Lenses |
+| --- | --- |
+| Light | The builder check, and a QA self-review with no subagent. |
+| Standard | The builder check and the QA lens. Add the SRE lens when the reliability story tier applies. |
+| Deep | All four lenses and the builder check. |
+
+The builder check is a required check. At any level, add a security lens when the item touches
+authentication, personal data, or money. The security lens is also a required check.
+Use `threat-model` for its checks. At the Deep level, add a design lens for a user-facing flow.
 
 ## Lens brief
 

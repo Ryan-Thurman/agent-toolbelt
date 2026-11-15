@@ -6,6 +6,7 @@ pack_reliability_review() {
   shared_contract references/docs-writing.md
   shared_contract references/evidence-quality.md
   shared_contract references/reliability-checklist.md
+  shared_contract references/depth-levels.md
   cmd reliability-review
   skill reliability-review SKILL.md
   skill reliability-review references/question-bank.md

@@ -127,6 +127,18 @@ Both skills write plans only. Chaos experiments run in staging, and production n
 The `pr-review` reliability facet checks timeouts, retries, idempotency, migrations, probes, and telemetry in the diff.
 The [skill](../skills/system-design/SKILL.md) owns the modes and the completion rules.
 
+The design skills use three [depth levels](../shared/contracts/references/depth-levels.md).
+The agent chooses one from the risk of the change and states it first. `--light`, `--standard`, or `--deep` overrides it.
+
+| Level | `system-design` does |
+| --- | --- |
+| Light | A short design note for a change inside existing boundaries. No topic references or design review. A design proposal still gets its threat review. |
+| Standard | The full design. Topic references load only when they apply: interface contracts, data design, domain language, distributed workflows, and estimation when scale or cost decides the design. |
+| Deep | Standard, plus estimation and "design it twice". A multi-lens design review by reviewer subagents runs on request or by project rule. |
+
+`story-refinement`, `reliability-review`, and `failure-scenario-design` use the same levels.
+At the Light level, they run the scan, the criteria, and the builder check, the story-tier reliability questions, or the failure criteria only.
+
 ```text
 $system-design
 Help our team work through this architecture question and compare the options.

@@ -1,6 +1,7 @@
 # Architecture decision records
 
-Use an architecture decision record (ADR) for a significant choice with lasting consequences or costly reversal.
+Use an architecture decision record (ADR) for a choice that is hard to reverse, that a future reader can find surprising,
+and that came from a real trade-off. All three must be true.
 Record routine choices in the existing design document.
 For a requested decision record, document the known choice and its evidence without expanding into unrelated design work.
 
@@ -16,6 +17,7 @@ When no convention exists, use `templates/architecture-decision-record.md` in th
 Capture the problem, requirements, constraints, and evidence that motivate the choice.
 Compare viable alternatives against the same criteria.
 State the selected approach and its benefits, disadvantages, operational consequences, and reversibility.
+Record what becomes easier, what becomes harder, and the trigger to revisit the decision. Include the team's familiarity with the option.
 Link the relevant design revision, affected components, verification approach, and reconsideration conditions.
 Record an owner or `Unassigned` and the actual decision status.
 Separate historical facts, current evidence, inferred rationale, and new recommendations.

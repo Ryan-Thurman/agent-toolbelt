@@ -15,6 +15,16 @@ This skill writes scenario cards that become BDD scenarios, test-first cases, an
 It never runs fault injection, load, or restore tools. It targets staging. It plans a production
 experiment only with a recorded written approval (see Rules).
 
+Choose the depth with `shared/contracts/references/depth-levels.md` and state it first.
+
+| Level | Work |
+| --- | --- |
+| Light | No cards. Write the failure criteria of the story as Given/When/Then scenarios only. |
+| Standard | Cards at the unit, integration, and BDD levels. Give a card that needs a real platform fault the level `Staging experiment` or `Game day`, and do not plan the experiment. |
+| Deep | All cards, plus staging experiment and game day plans. |
+
+At the Light level, do step 1, then write the failure criteria with `references/bdd-mapping.md`. Skip steps 2 to 6.
+
 ## Procedure
 
 1. Take the risks marked testable and the journeys from a `reliability-review` report.
@@ -26,7 +36,7 @@ experiment only with a recorded written approval (see Rules).
    and add the telemetry as a requirement.
 4. Choose the lowest verification level that exposes the risk.
 5. Read `references/bdd-mapping.md`. Write the Given/When/Then form and the test-first case of each card.
-6. For each card at the staging experiment or game day level, read `references/staging-experiment-plan.md`
+6. At the Deep level, or when a person asks, read `references/staging-experiment-plan.md` for each card at the staging experiment or game day level,
    and complete the blast radius, abort conditions, rollback, and no-go conditions.
 
 ## Rules
@@ -39,6 +49,6 @@ experiment only with a recorded written approval (see Rules).
 
 ## Completion
 
-Deliver the cards. Hand the Given/When/Then scenarios to `bdd-scenarios`,
+Deliver the cards, or the failure criteria at the Light level. Hand the Given/When/Then scenarios to `bdd-scenarios`,
 the lower-level cases to `test-case-design` or `cover`,
 and the staging experiment plans to the team that owns the chaos tooling.

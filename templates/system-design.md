@@ -7,6 +7,7 @@ Keep unknown targets and unresolved decisions explicit.
 ## Document identity and sources
 
 - Design status, owner, and revision:
+- Depth level and reason: Light / Standard / Deep
 - Source requirements, existing decisions, and inspected revisions:
 - Evidence limitations and relevant local changes:
 - Project review and approval evidence, if any:
@@ -53,6 +54,9 @@ Address partial success, retries, duplicates, concurrency, and dependency loss w
 | Option | Fit with requirements | Benefits and disadvantages | Effort and reversibility | Selection or rejection reason |
 | --- | --- | --- | --- | --- |
 
+| Decision | Solves | Makes worse | Change it when |
+| --- | --- | --- | --- |
+
 - Recommendation and its conditions:
 - Accepted decisions and approval evidence:
 - Delegated technical choices:
@@ -89,6 +93,8 @@ Link the reliability review and the reviewed design revision.
 
 ## Readiness, review, and handoff
 
+- Weakest point:
+- Glossary link, if terms were defined:
 - Result: Ready for planning / Needs decision / Needs revision / Not verified
 - Source coverage and connected-flow review:
 - Findings, corrections, and disposition:

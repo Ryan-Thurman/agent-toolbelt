@@ -13,7 +13,7 @@ Runner: <playwright-bdd | pytest-bdd | Cucumber-JVM | none yet>
 
 | Criterion | Scenario or unit test | Level | Expected before implementation |
 | --- | --- | --- | --- |
-| AC-1 |  | Integration, API, End-to-end, or Unit | Fails, Passes (existing behavior), or `@wip` (later phase) |
+| AC-1 |  | Unit, Integration (`@api` at the HTTP boundary), Contract, or End-to-end | Fails, Passes (existing behavior), or `@wip` (later phase) |
 
 Criteria with no test:
 

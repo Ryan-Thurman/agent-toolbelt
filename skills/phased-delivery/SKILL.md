@@ -58,7 +58,8 @@ Continue through ordinary code, file, and test discovery without a stop.
    interfaces, important branch and error cases, and focused test and coverage
    commands. Keep tests in the phase that implements the behavior.
    When the source has Given/When/Then criteria, list each phase's acceptance
-   scenarios. Use `bdd-scenarios` to write them when the repository has a BDD runner. Record
+   scenarios. Use `bdd-scenarios` to write them as feature-file scenarios when the repository
+   has a BDD runner. Without a runner, map each criterion to a named test. Record
    decisions the implementer cannot infer, and exact values that the source
    fixes. Give each step a checkable result, not a transcript of future edits.
    Present steps as **Do / Why / Done when**. Flag missing or cyclic

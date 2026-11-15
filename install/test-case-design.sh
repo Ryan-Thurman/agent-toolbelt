@@ -4,6 +4,9 @@
 pack_test_case_design() {
   shared_contract references/human-readable-output.md
   shared_contract references/docs-writing.md
+  shared_contract references/negative-testing.md
+  shared_contract references/test-levels.md
+  shared_contract references/reliability-checklist.md
   cmd test-case-design
   skill test-case-design SKILL.md
   template test-case-design.md

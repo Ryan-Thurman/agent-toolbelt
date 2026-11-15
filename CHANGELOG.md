@@ -2,13 +2,17 @@
 
 ## Unreleased
 
-### Fixed
+### Added
 
-- `pr-review` reviews a named branch with `git diff <base>...<branch>`, so the branch does not need to be checked out. It skips `git fetch` when the repository has no remote. Tier signals use the same diff range.
-- `pr-review` auto-tier treats only a contract that code outside the repository or package depends on as a public-contract hot path. A changed export that only the same application imports now gets the standard tier, not deep.
+- Added the `story-refinement` skill and `/story-refinement` command. The skill finds ambiguity in a ticket, settles facts from the repository, asks the open decisions in batched rounds with defaults, writes Given/When/Then criteria with failure paths, and gives a readiness verdict from product, developer, QA, and SRE reviewer subagents.
+- Added the `feature-refinement` workflow and a `story-refinement` stage in `feature-delivery`.
+- Added the shared references `negative-testing.md`, `test-levels.md`, and `reliability-checklist.md`. `story-refinement`, `test-case-design`, and plan readiness use them. Their gaps are warnings.
 
 ### Changed
 
+- Changed `shape-up` to ask open decisions in numbered rounds instead of one question for each message. Added non-functional requirements and an open-questions table to the brief template, and Given/When/Then criteria and a "Must not change" section to the ticket template.
+- Added negative-family, boundary, and test-level steps to `test-case-design` and its template.
+- Added Test levels, Negative cases, and Reliability rows to `phased-delivery` plan readiness.
 - Replaced the portal's amber accent with green. Recolored the brand icon and favicons to match.
 - Moved portal surfaces to a neutral slate scale in light mode and neutral grays in dark mode.
 - Limited green to the hero headline, the active filter, focus rings, and the workflow start buttons.
@@ -17,6 +21,11 @@
 - Set heading weights to 600, set card corners to 8 pixels, and removed the hover lift from task cards.
 - Added an install terminal with Cursor, Claude Code, and Codex tabs and a Copy button to the hero. Phones do not show it.
 - Showed the setup commands as terminal blocks with a Copy button.
+
+### Fixed
+
+- `pr-review` reviews a named branch with `git diff <base>...<branch>`, so the branch does not need to be checked out. It skips `git fetch` when the repository has no remote. Tier signals use the same diff range.
+- `pr-review` auto-tier treats only a contract that code outside the repository or package depends on as a public-contract hot path. A changed export that only the same application imports now gets the standard tier, not deep.
 
 ## v1.2.0 - 2026-11-10
 

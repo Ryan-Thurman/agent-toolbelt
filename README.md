@@ -155,6 +155,7 @@ completion checklist.
 | Deliver a requirement or tickets as human-reviewed PRs | `phased-delivery` |
 | Compare a product ask with current behavior and find gaps or missing questions | `shape-up` (gap review) |
 | Turn a vague idea into an approved brief first | `shape-up` |
+| Prepare a ticket for refinement, write Given/When/Then criteria, or check whether a story is ready | `story-refinement` |
 | Decide whether an opportunity is ready to shape | `product-discovery` |
 | Answer an architecture question or write a design | `system-design` |
 | Decide whether to do one technical backlog item | `tech-backlog-assessment` |
@@ -180,7 +181,7 @@ Quick map:
 |---|---|
 | [Installation](wiki/Installation.md) | Native plugin setup, `install.sh` compatibility path, harness selection, polyrepo `--sweep` |
 | [Portal](portal/generated/index.html) | Searchable skill discovery, taxonomy, examples, workflows, and host invocation guidance |
-| [Workflows](wiki/Workflows.md) | Phased Delivery, Phase Context, Bug to Fix, System Design, Product Discovery, Threat Model, Shape Up |
+| [Workflows](wiki/Workflows.md) | Phased Delivery, Phase Context, Bug to Fix, System Design, Product Discovery, Threat Model, Shape Up, Story Refinement |
 | [Code Review](wiki/Code-Review.md) | PR Review + triggers: Review Reply, Review on Open, Review Queue, Phase Gate, Cursor Hooks |
 | [Utilities](wiki/Utilities.md) | Code, test, security, and React utilities; release, worktree, handoff, and ticket sync |
 

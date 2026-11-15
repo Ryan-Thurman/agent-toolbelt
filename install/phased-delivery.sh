@@ -18,6 +18,9 @@ pack_phased_delivery() {
   shared_contract references/human-readable-output.md
   shared_contract references/docs-writing.md
   shared_contract references/test-driven-development.md
+  shared_contract references/test-levels.md
+  shared_contract references/negative-testing.md
+  shared_contract references/reliability-checklist.md
   shared_contract references/execution.md
   shared_contract references/execution-schema.md
   shared_contract references/failure-recovery.md

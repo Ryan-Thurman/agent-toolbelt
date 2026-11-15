@@ -10,8 +10,14 @@ slice is demoable or verifiable by itself.
 
 ## Acceptance criteria
 
+Use checkboxes or Given/When/Then scenarios. Give each rule its failure path.
+
 - [ ] <independently verifiable criterion>
 - [ ] <criterion>
+
+## Must not change
+
+Existing behavior that this slice must keep.
 
 ## Blocked by
 

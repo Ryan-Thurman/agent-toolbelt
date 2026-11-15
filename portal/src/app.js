@@ -209,6 +209,7 @@
 
     function renderHosts() {
       byId('skill-count').textContent = data.skills.length;
+      byId('plugin-skill-count').textContent = data.skills.length;
       byId('workflow-count').textContent = data.workflows.length;
       byId('host-count').textContent = data.hosts.length;
       const hosts = byId('hero-hosts');

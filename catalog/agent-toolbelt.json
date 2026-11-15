@@ -95,7 +95,7 @@
       ],
       "primary_purpose": "Turn acceptance criteria into Gherkin feature files that run as the outer test loop of test-first delivery.",
       "use_when": [
-        "A refined story or plan phase has Given/When/Then criteria that need executable scenarios.",
+        "A refined story or plan phase has Given/When/Then criteria that need executable scenarios, or a failure-scenario card (FS- ID) needs a scenario.",
         "A team wants feature files reviewed, or needs a BDD runner such as playwright-bdd, pytest-bdd, or Cucumber-JVM."
       ],
       "avoid_when": [
@@ -158,7 +158,8 @@
       "related_skills": [
         "cover",
         "webapp-testing",
-        "code-quality-gate"
+        "code-quality-gate",
+        "handoff"
       ],
       "workflow_membership": [
         "bug-fixing",
@@ -225,10 +226,12 @@
       ],
       "primary_purpose": "Add or improve focused test coverage for the behavior changed by a task.",
       "use_when": [
-        "A fix or feature needs regression protection and executable evidence of expected behavior."
+        "A fix or feature needs regression protection and executable evidence of expected behavior.",
+        "A test-case-design report has selected TC- cases that need executable tests."
       ],
       "avoid_when": [
-        "The repository has no testable seam and a test would only duplicate implementation details."
+        "The repository has no testable seam and a test would only duplicate implementation details.",
+        "The task is to plan cases from requirements. Use test-case-design."
       ],
       "preferred_context": "Acceptance criteria, changed code paths, existing test conventions, and failure cases.",
       "expected_outputs": [
@@ -330,7 +333,8 @@
         "reliability-review",
         "bdd-scenarios",
         "test-case-design",
-        "cover"
+        "cover",
+        "phased-delivery"
       ],
       "workflow_membership": [
         "security-sensitive-change",
@@ -428,10 +432,11 @@
       ],
       "primary_purpose": "Review whether a delivery phase met its evidence and acceptance criteria before proceeding.",
       "use_when": [
-        "Each phase PR needs an isolated subagent review before the next phase starts"
+        "Each phase PR needs an isolated subagent review before the next phase starts."
       ],
       "avoid_when": [
-        "There is no phase boundary or the work has no defined acceptance evidence."
+        "There is no phase boundary or the work has no defined acceptance evidence.",
+        "A single PR needs one review. Use pr-review."
       ],
       "preferred_context": "Phase plan, completed work, checks, acceptance criteria, risks, and deferred items.",
       "expected_outputs": [
@@ -476,7 +481,9 @@
         "An existing implementation plan needs a report-only readiness check before execution."
       ],
       "avoid_when": [
-        "The request is only to define requirements, or an unattended runner owns execution and merge."
+        "The request is only to define requirements, or an unattended runner owns execution and merge.",
+        "The requirement is vague. Use shape-up first.",
+        "The task is a code review of a phase PR. Use pr-review."
       ],
       "preferred_context": "Source requirement or approved tickets, acceptance criteria, dependencies, repository state, and PR branch strategy.",
       "expected_outputs": [
@@ -525,7 +532,8 @@
         "A pull request has actionable findings that need implementation and re-checking."
       ],
       "avoid_when": [
-        "No review findings exist or the task is a fresh implementation."
+        "No review findings exist or the task is a fresh implementation.",
+        "The task is to answer reviewer threads. Use pr-review-reply."
       ],
       "preferred_context": "Pull request diff, review findings, repository checks, and unresolved threads.",
       "expected_outputs": [
@@ -562,7 +570,9 @@
       ],
       "primary_purpose": "Review a change for correctness, regressions, maintainability, and delivery risk.",
       "use_when": [
-        "A pull request or diff needs an independent, evidence-backed review."
+        "A pull request or diff needs an independent, evidence-backed review.",
+        "A local diff needs review before a PR exists. Use /review-diff, which reports findings only and never posts.",
+        "A change needs a /pr-ready-check readiness verdict before a PR opens, or a /role-review from one role (product, engineering, design, QA, security, or release)."
       ],
       "avoid_when": [
         "The request is only to implement a known change and no review is needed yet."
@@ -611,7 +621,8 @@
         "Review comments need replies that explain fixes, decisions, or justified non-changes."
       ],
       "avoid_when": [
-        "The pull request has not been reviewed or needs implementation rather than communication."
+        "The pull request has not been reviewed or needs implementation rather than communication.",
+        "The task is to fix accepted findings in code. Use pr-improve."
       ],
       "preferred_context": "Review thread, changed code, check results, and project conventions.",
       "expected_outputs": [
@@ -735,7 +746,8 @@
         "A built service needs a production readiness review against its reliability requirements."
       ],
       "avoid_when": [
-        "The change has no remote call, data store, job, or deployment change. Use the story tier of the reliability checklist instead."
+        "The change has no remote call, data store, job, or deployment change. Use the story tier of the reliability checklist instead.",
+        "The task is to write test scenarios from existing reliability requirements. Use failure-scenario-design."
       ],
       "preferred_context": "Design document and revision, user journeys, dependencies and their owners, targets, telemetry, and deployment topology.",
       "expected_outputs": [
@@ -940,7 +952,9 @@
         "A repository, change, or configuration needs a security-focused inspection."
       ],
       "avoid_when": [
-        "The task is general quality review with no security-sensitive surface."
+        "The task is general quality review with no security-sensitive surface.",
+        "The design is not built yet. Use threat-model.",
+        "The task is the security facet of one diff. Use pr-review."
       ],
       "preferred_context": "Trust boundaries, sensitive data, dependencies, configuration, findings policy, and safe test scope.",
       "expected_outputs": [
@@ -1329,7 +1343,7 @@
         "The repository needs a bounded maintenance backlog with consequences and priority reasons."
       ],
       "avoid_when": [
-        "One supplied item already needs an options decision; use technical assessment."
+        "One supplied item already needs an options decision. Use tech-backlog-assessment."
       ],
       "preferred_context": "Repository revision, scoped paths, history period, tests, dependencies, operations, and existing debt records.",
       "expected_outputs": [
@@ -1371,7 +1385,8 @@
         "A pull request needs a focused test plan for the modules, callers, and risk areas it touches."
       ],
       "avoid_when": [
-        "The needed regression test is obvious and can be added directly."
+        "The needed regression test is obvious and can be added directly.",
+        "The task is to write tests or find coverage gaps in code. Use cover."
       ],
       "preferred_context": "Requirements, acceptance criteria, a pull request diff, declared risk areas, state transitions, failure modes, and test harness.",
       "expected_outputs": [

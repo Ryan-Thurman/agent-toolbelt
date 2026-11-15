@@ -76,6 +76,56 @@ window.AGENT_TOOLBELT_DATA = {
   "surface_note": "Commands, hooks, installers, build helpers, and internal repository copies are compatibility or tooling surfaces, not native plugin skills.",
   "skills": [
     {
+      "id": "bdd-scenarios",
+      "display_name": "BDD Scenarios",
+      "short_description": "Write or review Gherkin feature files from acceptance criteria.",
+      "default_prompt": "Use $bdd-scenarios to turn these acceptance criteria into feature files with a step map and a traceability table.",
+      "description": "Write or review Gherkin feature files from refined acceptance criteria, map steps to existing step definitions, and plan a BDD runner (playwright-bdd, pytest-bdd, or Cucumber-JVM). Use before test-first implementation or to review feature files.",
+      "category": "Testing & Verification",
+      "tags": [
+        "bdd",
+        "gherkin",
+        "acceptance-tests",
+        "playwright-bdd"
+      ],
+      "primary_purpose": "Turn acceptance criteria into Gherkin feature files that run as the outer test loop of test-first delivery.",
+      "use_when": [
+        "A refined story or plan phase has Given/When/Then criteria that need executable scenarios.",
+        "A team wants feature files reviewed, or needs a BDD runner such as playwright-bdd, pytest-bdd, or Cucumber-JVM."
+      ],
+      "avoid_when": [
+        "The criteria are still vague. Use story-refinement first.",
+        "The behavior is a unit-level rule that no reader outside the team needs. Use a unit test."
+      ],
+      "preferred_context": "Acceptance criteria with IDs, existing feature files and step definitions, the test runner, and the test levels.",
+      "expected_outputs": [
+        "Feature files with criterion and level tags",
+        "Step map against existing step definitions",
+        "Traceability from each criterion to a scenario or unit test"
+      ],
+      "example_prompts": [
+        "Write the feature files for PROJ-123's acceptance criteria.",
+        "Review our feature files for UI coupling and missing failure paths."
+      ],
+      "related_skills": [
+        "story-refinement",
+        "test-case-design",
+        "phased-delivery",
+        "webapp-testing"
+      ],
+      "workflow_membership": [
+        "feature-delivery",
+        "feature-refinement"
+      ],
+      "documentation_completeness": {
+        "status": "complete",
+        "notes": "Canonical skill and agent metadata are present."
+      },
+      "recommended_changes": [],
+      "source_path": "skills/bdd-scenarios/SKILL.md",
+      "source_url": "https://github.com/Ryan-Thurman/agent-toolbelt/blob/main/skills/bdd-scenarios/SKILL.md"
+    },
+    {
       "id": "bug-to-fix",
       "display_name": "Bug To Fix",
       "short_description": "Diagnostic bug workflow from triage and reproduction through root cause, minimal fix, and verification.",
@@ -440,7 +490,8 @@ window.AGENT_TOOLBELT_DATA = {
         "product-discovery",
         "shape-up",
         "phase-gate",
-        "handoff"
+        "handoff",
+        "bdd-scenarios"
       ],
       "workflow_membership": [
         "feature-delivery",
@@ -1100,7 +1151,8 @@ window.AGENT_TOOLBELT_DATA = {
         "shape-up",
         "test-case-design",
         "phased-delivery",
-        "ticket-sync"
+        "ticket-sync",
+        "bdd-scenarios"
       ],
       "workflow_membership": [
         "feature-delivery",
@@ -1347,7 +1399,8 @@ window.AGENT_TOOLBELT_DATA = {
       "related_skills": [
         "cover",
         "webapp-testing",
-        "story-refinement"
+        "story-refinement",
+        "bdd-scenarios"
       ],
       "workflow_membership": [
         "feature-delivery",
@@ -2056,6 +2109,15 @@ window.AGENT_TOOLBELT_DATA = {
           "rationale": "Resolve open questions and write testable criteria with failure paths before planning.",
           "example_invocation": "Refine this story and tell me whether it is ready.",
           "next_steps": [
+            "bdd-scenarios",
+            "phased-delivery"
+          ]
+        },
+        {
+          "skill": "bdd-scenarios",
+          "rationale": "Write the acceptance criteria as feature files that each phase turns from red to green.",
+          "example_invocation": "Write the feature files for this refined story.",
+          "next_steps": [
             "phased-delivery"
           ]
         },
@@ -2111,6 +2173,7 @@ window.AGENT_TOOLBELT_DATA = {
           "rationale": "Scan for ambiguity, batch owner questions with defaults, and write Given/When/Then criteria with failure paths.",
           "example_invocation": "Prepare PROJ-123 for refinement.",
           "next_steps": [
+            "bdd-scenarios",
             "test-case-design",
             "ticket-sync",
             "phased-delivery"
@@ -2120,6 +2183,15 @@ window.AGENT_TOOLBELT_DATA = {
           "skill": "test-case-design",
           "rationale": "Turn the criteria, negative families, and reliability answers into prioritized cases at the right test level.",
           "example_invocation": "Design the test cases for this refined story.",
+          "next_steps": [
+            "bdd-scenarios",
+            "phased-delivery"
+          ]
+        },
+        {
+          "skill": "bdd-scenarios",
+          "rationale": "Write the acceptance criteria as feature files that each phase turns from red to green.",
+          "example_invocation": "Write the feature files for this refined story.",
           "next_steps": [
             "phased-delivery"
           ]

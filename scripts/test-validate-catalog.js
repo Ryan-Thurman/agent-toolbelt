@@ -198,7 +198,7 @@ expectValidationFailure(
     fs.rmSync(path.join(root, 'skills', 'cover'), { recursive: true });
     writeCatalog(root, c);
   },
-  /canonical skill count is 39; expected 40/
+  /canonical skill count is 40; expected 41/
 );
 
 expectValidationFailure(

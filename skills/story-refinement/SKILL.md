@@ -61,7 +61,8 @@ and one question packet for each owner. Mark sources that you could not read as 
 
 The readiness verdict is a warning. It does not stop a handoff unless the project instructions make it a gate.
 
-Hand a ready spec to `test-case-design` for test cases and to `phased-delivery` for the plan.
+Hand a ready spec to `bdd-scenarios` for feature files, to `test-case-design` for test cases,
+and to `phased-delivery` for the plan.
 Use `ticket-sync` to publish approved story changes to the tracker. The `Tracker:` line makes it update
 the source ticket instead of creating an issue.
 

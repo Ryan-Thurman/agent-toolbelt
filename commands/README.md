@@ -27,6 +27,7 @@ Each row separates commands that can match the same request.
 | `/product-outcome-review` · `/ship-it` | `product-outcome-review` · `ship-it` | Customer outcome after an experiment or release · immediate release readiness and health. |
 | `/system-design` · `/dev-plan` | `system-design` · `phased-delivery` | Architecture questions, designs, decision records, repository maps · phase and PR map. `/implementation-plan` is an alias for `/dev-plan`. |
 | `/threat-model` · `/security-audit` | `threat-model` · `security-audit` | A design before it is built · implemented code. |
+| `/bdd-scenarios` | `bdd-scenarios` | Write or review feature files from acceptance criteria · plan a BDD runner. |
 | `/test-case-design` · `/cover` (`/write-tests`) · `/cover-gaps` · `/webapp-test` | `test-case-design` · `cover` · `webapp-testing` | Design cases only · write tests · find coverage gaps only · verify a browser flow. |
 | `/pr-review` · `/review-diff` | `pr-review` | A pull request · a local diff. |
 | `/pr-review` · `/code-quality-gate` · `/pr-ready-check` · `/dev-pr-review` | `pr-review` · `code-quality-gate` · none · `phased-delivery` | Code findings · policy gate with recorded evidence · readiness to open a PR · one Phased Delivery PR against its acceptance criteria. |

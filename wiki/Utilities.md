@@ -1,7 +1,7 @@
 # Utilities
 
 Cross-cutting tools that support the [delivery lanes](Workflows.md): cleanup,
-test authoring, release, codebase-wide change, handoff, and tracker sync.
+test authoring, BDD scenarios, release, codebase-wide change, handoff, and tracker sync.
 
 - [Simplify](#simplify) — active code cleanup plus detect-only smell scans.
 - [React quality specialists](#react-quality-specialists) — conditional Vercel
@@ -9,6 +9,7 @@ test authoring, release, codebase-wide change, handoff, and tracker sync.
 - [Code Quality Gate](#code-quality-gate) — policy- or risk-driven pre-PR quality evidence.
 - [Style Guide Init](#style-guide-init) — evidence-derived repository conventions.
 - [Test Case Design](#test-case-design) — report-only QA test design.
+- [BDD Scenarios](#bdd-scenarios) — Gherkin feature files from acceptance criteria.
 - [Cover](#cover) — test authoring.
 - [Security Audit](#security-audit) — bounded read-only security review.
 - [Ship It](#ship-it) — release readiness.
@@ -36,6 +37,18 @@ cases to `/cover` or `/webapp-test`.
 
 ```sh
 ./install.sh --harness all test-case-design /path/to/project
+```
+
+## BDD Scenarios
+
+`bdd-scenarios` turns acceptance criteria into Gherkin feature files, maps each step to an existing
+step definition, and traces each criterion to a scenario or a unit test. The scenarios are the outer
+test loop of `phased-delivery`: each phase runs its scenarios red before the implementation and green after it.
+Unit TDD cycles run inside that loop. The skill also reviews feature files and plans a runner:
+`playwright-bdd` for TypeScript, `pytest-bdd` for Python, or Cucumber-JVM for Java and Kotlin.
+
+```sh
+./install.sh --harness all bdd-scenarios /path/to/project
 ```
 
 ## Security Audit

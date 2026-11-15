@@ -1,0 +1,4 @@
+interface:
+  display_name: "BDD Scenarios"
+  short_description: "Write or review Gherkin feature files from acceptance criteria."
+  default_prompt: "Use $bdd-scenarios to turn these acceptance criteria into feature files with a step map and a traceability table."

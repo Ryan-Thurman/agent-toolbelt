@@ -6,6 +6,7 @@
       "path": "references/human-readable-output.md",
       "owner": "shared/contracts",
       "consumers": [
+        "bdd-scenarios",
         "bug-to-fix",
         "code-quality-gate",
         "cover",
@@ -52,6 +53,7 @@
       "path": "references/docs-writing.md",
       "owner": "shared/contracts",
       "consumers": [
+        "bdd-scenarios",
         "bug-to-fix",
         "code-quality-gate",
         "cover",
@@ -198,6 +200,7 @@
       "owner": "shared/contracts",
       "consumers": [
         "auto-agent-dev-lite",
+        "bdd-scenarios",
         "bug-to-fix",
         "cover",
         "phased-delivery",
@@ -301,6 +304,7 @@
       "path": "references/negative-testing.md",
       "owner": "shared/contracts",
       "consumers": [
+        "bdd-scenarios",
         "phased-delivery",
         "story-refinement",
         "test-case-design"
@@ -310,6 +314,7 @@
       "path": "references/test-levels.md",
       "owner": "shared/contracts",
       "consumers": [
+        "bdd-scenarios",
         "phased-delivery",
         "story-refinement",
         "test-case-design"

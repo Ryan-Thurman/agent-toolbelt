@@ -39,6 +39,22 @@ If a test expectation is mistaken, correct it from source evidence and repeat th
 For a bug fix, the first case must capture the confirmed symptom before repair.
 For existing passing behavior, use characterization tests and identify them separately from test-first evidence.
 
+## Acceptance loop with BDD scenarios
+
+Use this loop when the phase has Given/When/Then scenarios in feature files, for example from `bdd-scenarios`.
+The scenario is the outer loop. The unit TDD cycle above is the inner loop.
+
+| Step | Do | Done when |
+| --- | --- | --- |
+| Outer red | Put the phase's scenarios from the plan in the feature files, remove their `@wip` tag, and write the missing step definitions. Then run the scenarios before the implementation. | The runner selected each scenario of the phase. Each new scenario fails because the behavior is absent, not because a step is missing. |
+| Inner cycles | Implement the behavior with the red, green, and refactor cycle above, one unit behavior at a time. | Each unit behavior has red and green evidence. |
+| Outer green | Run the phase's scenarios again. | Every scenario of the phase passes, and scenarios of earlier phases still pass. |
+
+A scenario that passes before the implementation proves existing behavior. Record it as existing coverage.
+Remove `@wip` only from the scenarios of the current phase.
+During the inner cycles, the phase's scenarios stay red. This is expected until outer green.
+Record outer red and outer green evidence with the unit evidence.
+
 ## Unit tests that detect defects
 
 Name the observable behavior and the realistic defect each test detects.

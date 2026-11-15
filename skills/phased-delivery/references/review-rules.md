@@ -20,6 +20,8 @@ Check in this order:
    implementation are proportionate to the change. Missing feasible tests are
    a finding, blocking when core behavior or high-risk boundaries are unproved.
    Check recorded red/green evidence and uncovered branches in changed behavior.
+   When the phase has feature-file scenarios, check outer red and outer green evidence,
+   and check that no scenario of this phase still has `@wip`.
    Distinguish passing tests from measured coverage and checks that did not run.
 4. Branch and PR metadata are correct: ticket/phase ID, parent ticket and PR,
    base/head, target, merge order, checks, risks, and rollback or migration notes

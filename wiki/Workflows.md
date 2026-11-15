@@ -22,6 +22,7 @@ as files, interfaces, tests, and checks without changing ticket scope.
 
 Behavior changes use the [shared TDD procedure](../shared/contracts/references/test-driven-development.md).
 Each selected behavior starts with an observed failing test, then the smallest implementation that passes it.
+When a phase has Given/When/Then scenarios, the scenarios are the outer loop: they fail before the phase and pass after it.
 Plan unit tests for important branches, boundaries, and errors.
 Use existing coverage tools and report uncovered behavior or unmeasured coverage.
 
@@ -178,6 +179,7 @@ It also writes Given/When/Then criteria with failure paths and checks the negati
 When the story adds a dependency, a job, or a data change, it answers the reliability checklist.
 Run `--check` for the readiness verdict. Product, developer, QA, and SRE reviewer subagents check the story.
 The verdict is a warning, and a project can make it a gate.
+Hand the criteria to `bdd-scenarios` for feature files.
 The [workflow](../workflows/feature-refinement-workflow.md) gives the stage order.
 
 ```sh

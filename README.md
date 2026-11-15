@@ -156,6 +156,7 @@ completion checklist.
 | Compare a product ask with current behavior and find gaps or missing questions | `shape-up` (gap review) |
 | Turn a vague idea into an approved brief first | `shape-up` |
 | Prepare a ticket for refinement, write Given/When/Then criteria, or check whether a story is ready | `story-refinement` |
+| Write or review Gherkin feature files, or set up a BDD runner | `bdd-scenarios` |
 | Decide whether an opportunity is ready to shape | `product-discovery` |
 | Answer an architecture question or write a design | `system-design` |
 | Decide whether to do one technical backlog item | `tech-backlog-assessment` |

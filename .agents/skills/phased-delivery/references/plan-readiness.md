@@ -14,7 +14,7 @@ Assess whether planned work covers them without adding product scope.
 | Acceptance scenarios | When the source has Given/When/Then criteria, each criterion maps to a phase scenario or a named unit test. |
 | Test levels | Each boundary that the work crosses has a planned test at that boundary, or `Not covered` with a reason. See `shared/contracts/references/test-levels.md`. |
 | Negative cases | Each family in `shared/contracts/references/negative-testing.md` that applies has a planned case, or `Not applicable` with a reason. |
-| Reliability | New dependencies, write paths, jobs, and data changes answer the story tier of `shared/contracts/references/reliability-checklist.md`. Failure scenarios map to tests. |
+| Reliability | Work that adds a trigger in `shared/contracts/references/reliability-checklist.md` answers its story tier. Failure scenarios map to tests. |
 | Execution | Steps identify important files, owners, interfaces, source constraints, and checkable results. |
 | Scope | Each supplied ticket retains its approved phase and PR boundary. |
 

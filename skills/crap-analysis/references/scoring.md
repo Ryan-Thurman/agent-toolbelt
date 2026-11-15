@@ -5,7 +5,7 @@
 **CRAP** (Change Risk Anti-Patterns) combines cyclomatic complexity with test coverage to estimate
 how risky a function is to change. High complexity plus low coverage yields a high CRAP score.
 
-The repo's analysis tooling computes scores; agent-toolbelt does not calculate CRAP — it reads the
+The repo's analysis tooling computes scores. Agent-toolbelt does not calculate CRAP. It reads the
 report JSON the tooling produces.
 
 The usual formula is `complexity² × (1 − coverage)³ + complexity`, with coverage as a fraction.
@@ -29,13 +29,5 @@ Config default: **30**. Functions scoring above the threshold are flagged for re
 The default threshold flags only High scores.
 The bundled fixtures use `16` to show a stricter repository that also flags Moderate scores.
 Exact risk labels come from the report's `riskLevel` field when present.
-
-## Relationship to maintainability taxonomy
-
-CRAP is the **numeric gate** for complexity + coverage risk. When refactoring, use tactics from
-`shared/contracts/references/maintainability-taxonomy.md`:
-
-- **Complexity** smells → extract helpers, reduce nesting, simplify conditionals
-- **Coverage gaps** → add behavior-pinning tests (see `cover` skill for test authoring discipline)
 
 `references/cli.md` defines the exit codes for the orchestrator and the configured commands.

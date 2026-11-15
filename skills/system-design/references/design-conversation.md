@@ -2,7 +2,7 @@
 
 Use this procedure when a team member explores architecture, challenges a design, or compares approaches.
 Begin with the question they need to answer and the consequence of a wrong choice.
-Give the best supported answer available, with the conditions that could change it.
+Give the best supported answer available, with the conditions that can change it.
 
 ## Establish the decision
 
@@ -22,7 +22,7 @@ Ask when an answer changes product behavior, a material constraint, ownership, o
 | Step | Do | Done when |
 | --- | --- | --- |
 | Ground the question | Inspect the relevant records and connected code or infrastructure. | Current facts, prior decisions, and unavailable evidence are identified. |
-| Check coverage | Apply the relevant rows in `design-method.md`. | Important unknowns are visible; irrelevant areas have a reason for exclusion. |
+| Check coverage | Apply the relevant rows in `design-method.md`. | Important unknowns are visible. Irrelevant areas have a reason for exclusion. |
 | Resolve uncertainty | Ask the highest-impact unanswered question that requires the team member. | The answer is recorded, or the decision remains explicitly open. |
 | Compare approaches | Describe viable options and the conditions that favor each. | The recommendation names its benefits, costs, failure behavior, and uncertainty. |
 | Test the reasoning | Walk through a representative success case and important failure cases. | Each case has a credible flow, owner, observable outcome, and verification approach. |
@@ -41,7 +41,7 @@ Do not repeat questions already answered by the project or the team member.
 Include the current approach or no change when it is viable.
 Compare alternatives against the same requirements and constraints.
 Exclude infeasible options with a specific reason instead of creating artificial choices.
-Identify irreversible commitments, migration effort, operator workload, and circumstances that would reverse the recommendation.
+Identify irreversible commitments, migration effort, operator workload, and circumstances that can reverse the recommendation.
 Keep estimated capacity, cost, and reliability separate from measured values and agreed targets.
 Verify version-dependent product capabilities and limits with current primary sources.
 When a consequential assumption can be tested cheaply, propose a bounded experiment with a success criterion.
@@ -61,5 +61,3 @@ Use the existing project record when a durable design handoff is needed.
 State the owner or `Unassigned` for unresolved consequential decisions.
 Distinguish an agent recommendation from an accepted project decision.
 For a concrete architecture proposal, continue through the skill's design procedure and linked threat review.
-
-Method adapted from [Superpowers brainstorming](https://github.com/obra/superpowers/blob/main/skills/brainstorming/SKILL.md).

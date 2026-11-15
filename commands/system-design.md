@@ -5,7 +5,7 @@ argument-hint: "<architecture-question-design-or-repository-map-request> [--ligh
 
 # /system-design
 
-**Arguments:** `$ARGUMENTS` — an architecture question, a design to create or review, a decision to record, or a repository area to map.
+**Arguments:** `$ARGUMENTS`: an architecture question, a design to create or review, a decision to record, or a repository area to map.
 
 Use this for architecture questions and design records, not for implementation planning.
 

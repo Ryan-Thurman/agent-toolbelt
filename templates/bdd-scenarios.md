@@ -25,9 +25,9 @@ Criteria with no test:
 
 ## Negative coverage
 
-| Family | Scenario or reason |
-| --- | --- |
-|  |  |
+| Family | State | Scenario or reason |
+| --- | --- | --- |
+|  | `Covered`, `Not applicable`, or `Gap` |  |
 
 ## Handoff
 

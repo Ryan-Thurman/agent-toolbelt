@@ -1,7 +1,6 @@
 # Standalone review
 
-Use this when the user asks to review one existing branch or PR without the full delivery loop.
-Review it against its ticket or requirement with `review-rules.md`.
+Review the branch or PR against its ticket or requirement with `review-rules.md`.
 Check the current diff, acceptance evidence, tests, scope, and PR base.
 Preserve the project's supplied requirement and ticket links.
 Run its required PR checks without creating a second delivery lifecycle.

@@ -18,7 +18,7 @@ To review a change, follow the "React rule scan" section in
 
 | When | Rule | Fix | Impact | Found by |
 | --- | --- | --- | --- | --- |
-| Code maps or filters an array in render, then passes the new array to a FlatList, FlashList, or LegendList. | [`list-performance-function-references.md`](rules/list-performance-function-references.md) | Extract functions outside render | CRITICAL | scan |
+| Code maps or filters an array in render, then passes the new array to a FlatList, FlashList, or LegendList. | [`list-performance-function-references.md`](rules/list-performance-function-references.md) | Pass stable list data, do not map or filter inline | CRITICAL | scan |
 | A list item renders a remote image from its full-size URL instead of a resized thumbnail URL. | [`list-performance-images.md`](rules/list-performance-images.md) | Optimize images in lists | HIGH | scan |
 | A renderItem callback passes a new inline object or style object as a prop to the list item. | [`list-performance-inline-objects.md`](rules/list-performance-inline-objects.md) | Avoid inline style objects | HIGH | scan |
 | A virtualized list item component runs a query, reads several contexts, or does expensive computation. | [`list-performance-item-expensive.md`](rules/list-performance-item-expensive.md) | Move expensive work outside items | HIGH | judgment |
@@ -53,7 +53,7 @@ To review a change, follow the "React rule scan" section in
 | --- | --- | --- | --- | --- |
 | A setter calculates the next state from the current state variable, such as setCount(count + 1). | [`react-state-dispatcher.md`](rules/react-state-dispatcher.md) | Use dispatcher pattern for callbacks | MEDIUM | scan |
 | useState copies a prop or server value as its initial state and does not follow later changes to it. | [`react-state-fallback.md`](rules/react-state-fallback.md) | Show fallback on first render | MEDIUM | scan |
-| A component stores a value in state that it can calculate from other state or props. | [`react-state-minimize.md`](rules/react-state-minimize.md) | Minimize state subscriptions | MEDIUM | scan |
+| A component stores a value in state that it can calculate from other state or props. | [`react-state-minimize.md`](rules/react-state-minimize.md) | Derive values in render, do not store them in state | MEDIUM | scan |
 
 ## State architecture
 
@@ -78,7 +78,7 @@ To review a change, follow the "React rule scan" section in
 | Code adds an image lightbox with a Modal, a full-screen Image, or a JS image viewer library. | [`ui-image-gallery.md`](rules/ui-image-gallery.md) | Use Galeria for image lightboxes | MEDIUM | scan |
 | Code calls measure() or measureInWindow() on a view ref to get its size. | [`ui-measure-views.md`](rules/ui-measure-views.md) | Use onLayout, not measure() | MEDIUM | scan |
 | A screen wraps a ScrollView in SafeAreaView or pads it with safe area insets. | [`ui-safe-area-scroll.md`](rules/ui-safe-area-scroll.md) | Handle safe areas in ScrollViews | MEDIUM | scan |
-| A style uses legacy shadow props or elevation, or code uses a gradient library instead of boxShadow and backgroundImage. | [`ui-styling.md`](rules/ui-styling.md) | Use StyleSheet.create or Nativewind | MEDIUM | scan |
+| A style uses legacy shadow props or elevation, or code uses a gradient library instead of boxShadow and backgroundImage. | [`ui-styling.md`](rules/ui-styling.md) | Use borderCurve, gap, and boxShadow | MEDIUM | scan |
 | Code imports or renders TouchableOpacity or TouchableHighlight instead of Pressable. | [`ui-pressable.md`](rules/ui-pressable.md) | Use Pressable over TouchableOpacity | LOW | scan |
 | A ScrollView adds dynamic top or bottom padding in contentContainerStyle for a keyboard, toolbar, or header. | [`ui-scrollview-content-inset.md`](rules/ui-scrollview-content-inset.md) | Use contentInset for headers | LOW | scan |
 

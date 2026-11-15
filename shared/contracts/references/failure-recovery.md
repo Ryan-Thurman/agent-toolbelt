@@ -9,7 +9,7 @@ Record the relevant baseline checks and any pre-existing failures before the fir
 State the hypothesis, predicted observation, and bounded probe before each repair attempt.
 After each attempt, record the changed scope, command, failure identity, evidence path, and result.
 Persist attempt counts before another attempt can start, including across session resets.
-Use the caller's attempt limit when supplied; otherwise use the owning workflow's existing limit.
+Use the caller's attempt limit when supplied. Otherwise use the owning workflow's existing limit.
 For a general implementation repair, default to three attempts at the same hypothesis before reassessment.
 
 Compare behavior and failure causes, rather than error counts alone.
@@ -23,7 +23,7 @@ When the same failure repeats, findings oscillate, or changes spread without evi
 Compare the attempts and explain what each one disproved.
 Choose a different hypothesis only when new evidence supports it.
 If progress needs a scope, architecture, or authority change, record the decision needed and its owner.
-Keep `capped`, `blocked`, and `completed` distinct; exhausting a limit cannot establish completion.
+Keep `capped`, `blocked`, and `completed` distinct. Exhausting a limit cannot establish completion.
 Preserve existing workflow status names when they differ.
 
 Recover by inspecting the current diff and identifying changes owned by this attempt.
@@ -43,5 +43,5 @@ Manage only processes created by the current task.
 ## Resume
 
 Before another edit, reconcile state as [execution.md](execution.md) says, and include the attempt history.
-Resume from the recorded next action; a reset does not renew an exhausted attempt limit.
+Resume from the recorded next action. A reset does not renew an exhausted attempt limit.
 After a consequential failure, use [execution-lessons.md](execution-lessons.md) when a reusable lesson has evidence.

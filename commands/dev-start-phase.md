@@ -7,3 +7,4 @@ argument-hint: "<phase-or-ticket>"
 
 Use this command to prepare a phase branch and context before implementation.
 Follow the `phased-delivery` skill delivery loop step 3 for `$ARGUMENTS`.
+To write a context packet for `phase-context-workflow` instead, use `/phase-start`.

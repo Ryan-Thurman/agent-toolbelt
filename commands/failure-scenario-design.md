@@ -5,7 +5,7 @@ argument-hint: "<reliability-review-report-risk-ids-or-dependency> [--light | --
 
 # /failure-scenario-design
 
-**Arguments:** `$ARGUMENTS` — a reliability review report, risk IDs, or a journey and a dependency.
+**Arguments:** `$ARGUMENTS`: a reliability review report, risk IDs, or a journey and a dependency.
 
 Use this after `/reliability-review` and before test-first implementation. It writes plans only and never runs fault injection.
 

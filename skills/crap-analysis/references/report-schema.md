@@ -8,7 +8,7 @@ It needs these fields for a deterministic review:
 
 | Field | Type | Required | Use |
 |---|---|---|---|
-| `target` | string | yes | Target name (should match config key) |
+| `target` | string | yes | Target name (must match config key) |
 | `threshold` | number | yes | Threshold used for this run |
 | `passed` | boolean | yes | `true` only when no function has `exceeds: true` |
 | `summary.maxCrap.value` | number | yes | Headline worst score |
@@ -48,41 +48,14 @@ The report does not need to be sorted.
 See `skills/crap-analysis/fixtures/api.report.json` in the installed pack (bundled with
 agent-toolbelt).
 
-```json
-{
-  "target": "api",
-  "threshold": 16,
-  "passed": false,
-  "summary": {
-    "totalFunctions": 2,
-    "exceedingThreshold": 1,
-    "maxCrap": { "value": 42.5, "riskLevel": "High" }
-  },
-  "functions": [
-    {
-      "qualifiedName": "processOrder",
-      "filePath": "packages/api/src/orders.ts",
-      "startLine": 88,
-      "cyclomaticComplexity": 14,
-      "coveragePercent": 25.0,
-      "crap": 42.5,
-      "riskLevel": "High",
-      "threshold": 16,
-      "exceeds": true
-    },
-    {
-      "qualifiedName": "validateInput",
-      "filePath": "packages/api/src/orders.ts",
-      "startLine": 12,
-      "cyclomaticComplexity": 3,
-      "coveragePercent": 95.0,
-      "crap": 3.0,
-      "riskLevel": "Low",
-      "threshold": 16,
-      "exceeds": false
-    }
-  ]
-}
-```
-
 If a required field is missing or has the wrong type, the review outcome is **ERROR**.
+
+## Refactor brief
+
+The brief is a Markdown file for one target. It must have these parts:
+
+- The bullets `Function`, `Location`, and `CRAP`.
+- A `## Recommended actions` section with numbered actions.
+- A `## Complexity drivers` section with the lines that raise complexity.
+
+See `skills/crap-analysis/fixtures/api.refactor.md` for an example.

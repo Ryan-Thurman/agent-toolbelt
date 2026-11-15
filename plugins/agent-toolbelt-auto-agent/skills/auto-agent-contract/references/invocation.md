@@ -19,7 +19,7 @@ was three rebuilt minified bundles the phase legitimately committed.
 
 **Pass the PR reference, not the patch.** The agent has `gh` and fetches its own diff. This is the
 whole reason the standard `pr-review` skill takes a target rather than a blob (its
-`references/targets-and-diff.md`).
+`skills/pr-review/references/targets-and-diff.md` in the standard plugin).
 
 ### Two things that look like fixes and are not
 
@@ -29,12 +29,12 @@ GitHub's diff endpoint, and that endpoint ignores the repository's gitattributes
 
 **A whole-prompt character cap is not enough either.** Truncating the tail of a prompt cuts the
 instructions off the end and leaves the reviewer with a bundle. If you must embed a patch, **elide
-per-file bodies over a budget while keeping every file header** — a reviewer needs the complete set of
+per-file bodies over a budget while keeping every file header**. A reviewer needs the complete set of
 touched paths and every hand-written hunk, and needs none of the bundle. On that phase-7 PR:
-1,314,284 → 58,256 bytes, all 17 files still listed, only the three bundles elided.
+1,314,284 -> 58,256 bytes, all 17 files still listed, only the three bundles elided.
 
 Keep the whole-prompt cap as a last-resort backstop for anything else that grows. Size it at **half**
-of `ARG_MAX`, not all of it — environ shares the budget (`agent-runner` uses `MAX_PROMPT_BYTES =
+of `ARG_MAX`, not all of it, because environ shares the budget (`agent-runner` uses `MAX_PROMPT_BYTES =
 512 * 1024`).
 
 ### Truncate loudly
@@ -50,7 +50,7 @@ Full prompt: <path>
 A silently truncated review is worse than a loud one: it returns a confident verdict on code the
 reviewer never saw, and nothing downstream can tell.
 
-> Evidence: `5be094d` — "Bound the review prompt so a big diff can't blow ARG_MAX".
+> Evidence: `5be094d`: "Bound the review prompt so a big diff can't blow ARG_MAX".
 
 ---
 
@@ -61,8 +61,8 @@ that parses but means nothing. Extraction has to **fail closed**.
 
 **Find the last parseable JSON, not the first.** A reviewer that reasons in prose before emitting its
 verdict was breaking phases and spawning phantom fix jobs, because the parser only stripped a fence
-that opened the output. Take the **last** parseable ` ```json ` fenced block anywhere in the output;
-if there is none, take the **last bare top-level JSON object** found in prose.
+that opened the output. Take the **last** parseable ` ```json ` fenced block anywhere in the output.
+If there is none, take the **last bare top-level JSON object** found in prose.
 
 **Unwrap the envelope.** `claude -p --output-format json` wraps the agent's answer in a `result`
 field. Unwrap it before parsing, or every field you want is one level too deep.
@@ -70,13 +70,13 @@ field. Unwrap it before parsing, or every field you want is one level too deep.
 **Reject a payload byte-identical to the previous run's.** This is the rule that is easy to skip and
 expensive to omit. Agents echo. If the previous `review.json` is embedded anywhere in the prompt (as
 context for a fix round, say) and the agent parrots it back, "last JSON wins" cheerfully resurrects a
-**stale verdict** — a fix round can be adjudicated against the review it was supposed to fix. Compare
+**stale verdict**. A fix round can be adjudicated against the review it was supposed to fix. Compare
 against the previous payload and reject an exact match: echo-only output must fail closed, not pass.
 
 The same guard blunts injection. A verdict recovered from text the model was shown is not a verdict
 the model reached.
 
-> Evidence: `d78fd47` — "accept fenced reviewer json"; `406b24b` — "Fix review JSON extraction…".
+> Evidence: `d78fd47`: "accept fenced reviewer json". `406b24b`: "Fix review JSON extraction…".
 
 ---
 
@@ -90,7 +90,7 @@ These are not preferences. Each one is a job that died.
   `--disallowedTools Edit,Write` swallows the positional prompt the orchestrator appends last, and the
   job dies with `Input must be provided`. **Always use the `=`-joined form:**
   `--disallowedTools=Edit,Write,NotebookEdit`.
-- **Headless `-p` denies what it cannot ask.** An unmatched permission check does not prompt — it is
+- **Headless `-p` denies what it cannot ask.** An unmatched permission check does not prompt. It is
   denied, and the job aborts. A write role must **pre-allow** the Bash commands it needs, or it dies
   the first time it runs `git commit`. Scope the allowlist to `git`, `gh`, and the leading command of
   each configured check:
@@ -115,7 +115,7 @@ These are not preferences. Each one is a job that died.
 
 - `-p` must come **last** in the flag list, immediately before the positional prompt.
 
-> Evidence: `406b24b` — "…repair agent flag defaults". Note this commit's own review pass replaced an
+> Evidence: `406b24b`: "…repair agent flag defaults". Note this commit's own review pass replaced an
 > earlier `--dangerously-skip-permissions` default for write roles with the `acceptEdits` +
 > checks-derived allowlist above. Prefer the allowlist.
 
@@ -127,7 +127,7 @@ These are not preferences. Each one is a job that died.
 pull request it is reviewing. That is not a hypothetical: it is one `gh pr merge` in a prompt the
 model wrote itself, in a process nobody is watching.
 
-Two failure modes people reach for and shouldn't:
+Two failure modes people reach for and must avoid:
 
 - **Bare `Bash` in an allowlist grants *all* Bash.** `--allowedTools "Bash,Read,Grep,Glob"` looks
   restrictive and restricts nothing. If the prose next to it says "list only what review needs", the
@@ -144,11 +144,11 @@ Bash(git diff:*),Bash(git log:*),Bash(git show:*)
 ```
 
 Read verbs only. No `gh pr comment`, no `gh pr review`, no `gh pr merge`, no `git push`. The
-orchestrator posts and merges — those are host actions, derived from findings, and they never route
+orchestrator posts and merges. Those are host actions, derived from findings, and they never route
 through the model that produced the findings.
 
 This is defense in depth against prompt injection: a malicious diff that convinces the reviewer to
-approve itself still cannot reach an API that would record the approval.
+approve itself still cannot reach an API that records the approval.
 
 > Evidence: `agent_runner/config.py:256` (`claude_read_only_allowed_tools`).
 
@@ -156,6 +156,6 @@ approve itself still cannot reach an API that would record the approval.
 
 ## Related
 
-- `references/unattended.md` — why the orchestrator, not the model, owns every gate.
-- Standard `pr-review` skill's `references/finding-schema.md` — what the reviewer's JSON must contain.
-- Standard `pr-review` skill's `references/output-format.md` — deriving the verdict from it mechanically.
+- `references/unattended.md`: why the orchestrator, not the model, owns every gate.
+- Standard `pr-review` skill's `skills/pr-review/references/finding-schema.md` in the standard plugin: what the reviewer's JSON must contain. The orchestrator's prompt must ask the reviewer for the findings array as JSON, because `/pr-review` renders Markdown by default.
+- Standard `pr-review` skill's `skills/pr-review/references/output-format.md` in the standard plugin: deriving the verdict from it mechanically.

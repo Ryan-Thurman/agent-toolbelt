@@ -18,10 +18,12 @@ The workflow needs only normal file edits and git commands.
 
 ```text
 .acc/phases/<room-slug>/
-  phase-NN.md           from ../../templates/phase-file.md
-  phase-NN-handoff.md   from ../../templates/phase-handoff.md
-  context-packet.md     from ../../templates/context-packet.md
+  phase-NN.md           from templates/phase-file.md
+  phase-NN-handoff.md   from templates/phase-handoff.md
+  context-packet.md     from templates/context-packet.md
 ```
+
+A room is the folder name of one task, such as `checkout-redesign`.
 
 `.acc/` holds local session state by default.
 Recommend that the project adds `.acc/` to `.gitignore`.
@@ -33,7 +35,7 @@ When the project wants to track phase files, use `docs/agent-command-center/phas
 | --- | --- | --- |
 | Create a phase | Create or update `phase-NN.md`. Keep useful existing content. Fill missing goal, scope, acceptance criteria, relevant files, status, and notes. Link the source plan, ticket, or PRD by path or URL. | The phase file exists and names its source. |
 | Start a phase | Read the durable plan, `phase-NN.md`, and `phase-(NN-1)-handoff.md` when present. Capture `git status --short --branch` and a changed-file summary. Write `context-packet.md`. | The packet exists and is compact enough to paste into a fresh session. |
-| Close a phase | Write `phase-NN-handoff.md` with the `handoff` skill rules. Include completed work, decisions, changed files, checks and known failures, open issues, and risks. Set `Safe To Clear`. | The handoff exists. `Safe To Clear` is `Yes`, or `No` with the missing items listed. |
+| Close a phase | Write `phase-NN-handoff.md` with the `handoff` skill rules. Include completed work, decisions, changed files, checks and known failures, open issues, and risks. Set `Safe to clear`. Set `Status`, `Completed`, and `Handoff` in `phase-NN.md`. | The handoff exists. `Safe to clear` is `Yes`, or `No` with the missing items listed. |
 | Show status | List phase files, handoffs, and the latest packet. Match each phase to its handoff. Report the current branch and git status. | Each phase shows `handoff written`, `current`, or `not started`, and the next action is named. |
 
 After each operation, report the written path and the next command.
@@ -47,13 +49,7 @@ Keep attempt counts, unresolved operation outcomes, and the owner of each next a
 - Use `/clear` only after a handoff or context packet holds what the next session needs.
 - Use `/compact` while the phase continues and a summary of the session is still useful.
 - Before a reset in the middle of a phase, write a short recovery note in the phase file or packet.
-- Set `Safe To Clear` to `Yes` only when all important context is in files.
-
-## Subagents
-
-The main agent owns the phase.
-Use subagents only for bounded, noisy work, such as diff review, test-failure summaries, module inspection, or log analysis.
-Keep tightly coupled edits in the main agent.
+- Set `Safe to clear` to `Yes` only when all important context is in files.
 
 ## Related contracts and skills
 

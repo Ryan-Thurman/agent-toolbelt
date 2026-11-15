@@ -43,6 +43,8 @@ proposed control, testable, verification level, owner, and disposition.
 | `No` with a reason | It cannot be caused safely, for example the loss of a region with no test region. Verify it by review or a configuration check. |
 | `Conditional` | It becomes testable after a precondition, such as a missing steady-state signal or a test environment. |
 
-Choose the lowest level that exposes the risk: a unit test with a fake, an integration test with a fault proxy,
-a BDD scenario, a load test, a staging experiment, a restore drill, a configuration check, or a review.
+Choose the lowest level that exposes the risk.
+These levels go to `failure-scenario-design`: a unit test with a fake, an integration test with a fault proxy,
+a contract test, an end-to-end test, and a staging experiment.
+This review verifies these items: a load test plan, a restore drill, a configuration check, and a review.
 A staging experiment is for behavior that lower levels cannot reach, such as real failover, zone loss, or autoscaling.

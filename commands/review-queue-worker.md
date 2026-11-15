@@ -9,9 +9,9 @@ Use `/review-queue-worker` to review the jobs in the local queue. Use `/enqueue-
 
 **Arguments:** `$ARGUMENTS`
 
-- **`--worker=id`** — the worker label. Use distinct labels for parallel workers.
-- **`--max=N`** — the most jobs to review in this pass.
-- **`--tier=…`** — the tier for jobs that have no tier. Omit it to auto-tier.
-- **`--db=PATH`** — the queue file. The default is `$REVIEW_QUEUE_DB` or `~/.review-queue/queue.db`.
+- **`--worker=id`**: the worker label. Use distinct labels for parallel workers.
+- **`--max=N`**: the most jobs to review in this pass.
+- **`--tier=…`**: the tier for jobs that have no tier. Omit it to auto-tier.
+- **`--db=PATH`**: the queue file. The default is `$REVIEW_QUEUE_DB` or `~/.review-queue/queue.db`.
 
 Follow the consumer lane of the `review-queue` skill (`skills/review-queue/references/worker.md`).

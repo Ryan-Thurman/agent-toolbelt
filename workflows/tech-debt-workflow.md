@@ -6,7 +6,7 @@
 | Stage | Skill | Purpose | Next |
 | --- | --- | --- | --- |
 | 1 | `tech-debt-discovery` | Find demonstrated maintenance costs and report scoped evidence. | `tech-backlog-assessment` |
-| 2 | `tech-backlog-assessment` | Decide whether a selected item warrants implementation or further evidence. | `simplify`, `retrofit`, `phased-delivery` |
+| 2 | `tech-backlog-assessment` | Decide whether a selected item warrants implementation or further evidence. | `simplify`, `retrofit`, `phased-delivery`, `ticket-discovery`, `cover` |
 | 3 | `crap-analysis` | Use complexity and coverage signals to choose high-value targets. | `simplify`, `retrofit` |
 | 4 | `simplify` | Remove unnecessary complexity within a narrow behavior boundary. | `retrofit`, `cover` |
 | 5 | `retrofit` | Handle migrations and compatibility changes incrementally. | `cover`, `code-quality-gate` |

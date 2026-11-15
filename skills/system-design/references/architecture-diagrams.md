@@ -9,7 +9,7 @@ Use an optional HTML explanation only when requested and supported by the availa
 
 The C4 model separates architecture into context, container, component, and code views.
 Use only the levels that clarify the decision.
-A C4 container means an application or data store; it does not imply a Docker container.
+A C4 container means an application or data store. It does not imply a Docker container.
 
 | View | Show | Use when |
 | --- | --- | --- |
@@ -46,6 +46,3 @@ Render with an available project renderer and inspect layout, labels, syntax, an
 If rendering is unavailable, report that limit and retain the diagram source.
 Recheck affected views when responsibilities, interfaces, deployment, data ownership, or trust boundaries change.
 Do not claim a diagram proves runtime behavior.
-
-Sources: [C4 diagram guidance](https://c4model.com/diagrams), [C4 container views](https://c4model.com/diagrams/container), and
-[Visual Explainer](https://github.com/nicobailon/visual-explainer/blob/main/plugins/visual-explainer/SKILL.md).

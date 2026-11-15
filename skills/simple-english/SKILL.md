@@ -1,6 +1,6 @@
 ---
 name: simple-english
-description: Check or rewrite text against ASD-STE100 in Strict mode or rule by rule, and apply the patterns for error messages, runbooks, incident reports, and release notes. Everyday writing rules are in human-readable-output.md. Use this skill when the user asks for STE or a rewrite.
+description: Check or rewrite text against ASD-STE100, or review it for AI writing tropes. Use only for an STE or compliance request, a trope review of long text or client copy, or an error message, runbook, incident report, release note, commit message, or UI copy.
 ---
 
 # Simple English
@@ -81,5 +81,9 @@ The "Writing precedence" section in `shared/contracts/references/human-readable-
 wins over this file. It holds the order between the writing rule sources and the known conflicts.
 
 Toolbelt paths: a path that starts with `shared/`, `skills/`, `templates/`, or `workflows/` is relative to the Toolbelt root, `${CLAUDE_PLUGIN_ROOT}`. If that variable is not replaced, use the nearest folder above this file that contains `shared/contracts/`.
+
+## Trope review
+
+For a trope review of long text or client copy, or for a pattern that the table in `shared/contracts/references/human-readable-output.md` does not cover, read `references/trope-list.md`. Read `references/tropes.md` only when you need examples for a trope that you found.
 
 Source and license: [references/upstream-attribution.md](references/upstream-attribution.md).

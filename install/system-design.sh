@@ -19,6 +19,7 @@ pack_system_design() {
   skill system-design references/distributed-workflows.md
   skill system-design references/estimation.md
   skill system-design references/design-review.md
+  skill system-design references/upstream-attribution.md
   template system-design.md
   template architecture-decision-record.md
   workflow system-design-workflow.md

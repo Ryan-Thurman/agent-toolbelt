@@ -1,7 +1,7 @@
 # Apply discipline
 
 How to apply simplifications safely. Load this before editing (the `/simplify` apply step).
-`/code-smell` never reaches here — it stops at the report.
+`/code-smell` never reaches here. It stops at the report.
 
 ## Selection
 
@@ -12,10 +12,10 @@ How to apply simplifications safely. Load this before editing (the `/simplify` a
 
 - Preserve output, errors, side-effects, and ordering.
 - **All existing tests must still pass without modification.** If applying a change requires editing
-  a test to stay green, you changed behavior — revert it.
+  a test to stay green, you changed behavior. Revert it.
 - Submit cleanup separately from feature or bug-fix changes (its own commit/PR).
 
-## Chesterton's Fence — pre-removal checklist
+## Chesterton's fence: pre-removal checklist
 
 Before deleting or inlining anything, answer:
 
@@ -23,15 +23,15 @@ Before deleting or inlining anything, answer:
 - What calls it (including dynamic/reflective callers)?
 - What edge cases does it handle?
 - What tests cover it?
-- Why was it written this way — performance, platform, historical reason? Check `git blame`.
+- Why was it written this way (performance, platform, historical reason)? Check `git blame`.
 
-If you can't answer these, you're not ready to simplify it — mark it `review` and move on.
+If you cannot answer these, you are not ready to simplify it. Mark it `review` and move on.
 
 ## Apply loop
 
 - **One change at a time.** Run the relevant tests after each change. If they fail, revert and
   reconsider rather than piling on fixes.
-- **Rule of 500:** if a cleanup would touch more than ~500 lines, use a codemod / AST transform, not
+- **Rule of 500:** if a cleanup touches more than ~500 lines, use a codemod / AST transform, not
   hand edits.
 - Do not edit inside `simplify-ignore` blocks. Respect existing abstraction boundaries.
 

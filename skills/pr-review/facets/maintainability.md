@@ -8,20 +8,19 @@ and safety. Set `"facet": "maintainability"` on every finding.
 Use the shared maintainability vocabulary in
 `shared/contracts/references/maintainability-taxonomy.md` as the baseline:
 complexity, duplication, coupling, state, errors, performance, maintainability, thin wrappers, and
-the compact Fowler-style cues. Treat those cues as heuristics, not hard violations; documented repo
+the compact Fowler-style cues. Treat those cues as heuristics, not hard violations. Documented repo
 standards override the baseline.
 
 Read `shared/contracts/references/anti-slop-naming.md` for narration-comment and
 speculative-abstraction cues. Report them only where the changed code has a concrete
-maintenance, contract, or readability consequence; preserve the deep-tier behavior
-in `maintainability-deep.md`.
+maintenance, contract, or readability consequence.
 
 For React changes, read `shared/contracts/references/typescript-react-baseline.md`.
 Read every `vercel-composition-patterns` and `use-effect-killer` rule that the orchestrator's
 React rule scan lists, and return an `Applied` or `Not applicable` record for each. For
-`use-effect-killer`, classify every listed effect. Then check the rules in
+`use-effect-killer`, classify every listed effect. When the scan does not list that specialist as `missing`, check the rules in
 `skills/vercel-composition-patterns/references/rule-routing.md` that the scan cannot detect. Treat its patterns as
-evidence-backed review cues, not universal prohibitions; verify the repository's React version
+evidence-backed review cues, not universal prohibitions, and verify the repository's React version
 and public API compatibility first.
 
 For PR review, prioritize smells introduced or worsened by the diff:
@@ -31,7 +30,7 @@ For PR review, prioritize smells introduced or worsened by the diff:
 - duplicated logic, or a bespoke one-off where the codebase already has a canonical helper.
 - feature logic leaking into the wrong layer or across a boundary.
 - cast-heavy / `any` / `unknown` / needless optionality that obscures the real contract.
-- file-size sprawl: a change pushing a file past ~1000 lines — ask to decompose first.
+- file-size sprawl: a change pushing a file past ~1000 lines, so ask to decompose first.
 
 ## Do NOT flag
 
@@ -43,6 +42,3 @@ Be **ambitious** about structure: prefer findings where a restructuring deletes 
 layers ("code judo"), not just cosmetic cleanup. A maintainability blocker is a change that makes the
 codebase materially harder to reason about or maintain. Every finding still needs concrete evidence,
 a consequence, and a behavior-preserving direction for improvement.
-
-> Deep tier raises this facet to the full **thermo-nuclear** bar:
-> `../../../examples/thermo-nuclear-review.md`.

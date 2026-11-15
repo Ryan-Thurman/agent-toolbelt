@@ -1,7 +1,7 @@
 # Design review
 
 Read this only at the Deep level: when a person asks for a design review, or when the project instructions require one.
-For a high-risk design at the Standard level, suggest this review in the handoff. Do not run it without a request.
+For a high-risk design, suggest this review in the handoff. Do not run it without a request.
 The review reports findings. It does not change the design.
 
 ## Lenses

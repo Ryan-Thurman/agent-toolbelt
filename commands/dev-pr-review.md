@@ -7,4 +7,4 @@ argument-hint: "<phase-or-ticket-and-diff>"
 
 Use this command to check an open phase PR before human review.
 Use `/dev-phase-review` before the PR is open.
-Follow the `phased-delivery` skill review rules for `$ARGUMENTS`.
+Follow the `phased-delivery` skill review rules for `$ARGUMENTS`. Use `templates/dev-pr-review.md` for the report.

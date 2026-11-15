@@ -1,6 +1,6 @@
 ---
 name: security-audit
-description: Perform a read-only security audit of implemented code, configuration, dependencies, and secret exposure. Use threat-model for a design before it is built. Active testing requires explicit written authorization.
+description: Perform a read-only security audit of implemented code, configuration, dependencies, and secret exposure. Use threat-model for a design before it is built. Active testing requires explicit written authorization. Use pr-review for the security facet of one diff.
 ---
 
 # security-audit
@@ -24,7 +24,6 @@ Audit a bounded target for security risks. Default behavior is read-only review.
 4. Check dependencies offline first:
    - Read the manifests and lockfiles. Record the resolved versions of direct and security-relevant packages.
    - Run a lockfile audit command only when it can run without network access.
-   - Query an external advisory source only with network authority.
 5. Check secret exposure:
    - Search the working tree, CI definitions, and example configuration for credential patterns.
    - Search Git history with `git log -p` or `git grep` across revisions for removed secrets.
@@ -35,8 +34,7 @@ Audit a bounded target for security risks. Default behavior is read-only review.
 7. When a design or threat report exists, reconcile its requirements and threat IDs against
    implementation evidence. Record each required control as `Verified`, `Failed`, or
    `Not verified`, with the inspected revision and evidence.
-8. Stop before active testing. Continue only after the user gives written scope and
-   authorization immediately before the requested active action.
+8. Stop before active testing. See Active scope.
 
 ## Active scope
 

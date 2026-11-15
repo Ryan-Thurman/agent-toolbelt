@@ -1,10 +1,10 @@
-# Context Packet - <Room> Phase <N>
+# Context packet - <room> phase <N>
 
 ## Instructions
 
 You are starting fresh or after a context clear.
 
-Use this document as the source of truth. Do not rely on previous chat history.
+Start from this packet. The linked plan and phase file stay the source of truth. Do not rely on previous chat history.
 
 ## Room
 
@@ -13,9 +13,8 @@ Use this document as the source of truth. Do not rely on previous chat history.
 - Repo: `<repo-root>`
 - Branch:
 - Worktree:
-- tmux session:
 
-## Current Phase
+## Current phase
 
 Source:
 
@@ -29,7 +28,7 @@ Summary:
 - Scope:
 - Acceptance criteria:
 
-## Previous Handoff
+## Previous handoff
 
 Source:
 
@@ -46,38 +45,38 @@ Summary:
 
 If this is phase 1, say there is no previous handoff.
 
-## Current Git State
+## Current git state
 
 ```text
 <git status --short --branch>
 ```
 
-## Changed Files Summary
+## Changed files summary
 
 ```text
 <git diff --stat or equivalent>
 ```
 
-## Relevant Files
+## Relevant files
 
 - `path/to/file` - why it matters
 
-## Relevant Commands
+## Relevant commands
 
 ```bash
 <test or validation command>
 ```
 
-## Acceptance Criteria
+## Acceptance criteria
 
 - [ ] Criterion 1
 - [ ] Criterion 2
 
-## Known Risks / Open Questions
+## Known risks / open questions
 
 - Risk or question 1
 
-## Next Action
+## Next action
 
 The first concrete action for the next session.
 

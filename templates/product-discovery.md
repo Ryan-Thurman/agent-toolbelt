@@ -1,25 +1,25 @@
-# Product Discovery: <opportunity>
+# Product discovery: <opportunity>
 
-## Desired Outcome
+## Desired outcome
 
-## Evidence and Problem
+## Evidence and problem
 
 Separate observed evidence from assumptions.
 
-## Opportunity and Candidate
+## Opportunity and candidate
 
 Trace evidence to the opportunity and proposed feature without prescribing implementation.
 Compare selected, deferred, and rejected options when the request includes competing opportunities.
 
-## Risks and Assumptions
+## Risks and assumptions
 
 Value, usability, feasibility, viability, and the assumptions most likely to change the decision.
 
-## Cheapest Useful Experiments
+## Cheapest useful experiments
 
-What each experiment could change and what evidence it needs.
+What each experiment can change and what evidence it needs.
 
-## Success and Failure Thresholds
+## Success and failure thresholds
 
 Observable outcomes and decision thresholds.
 Link the measurement plan or record definitions, baseline, population, period, guardrails, and data limits here.

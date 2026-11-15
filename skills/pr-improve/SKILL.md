@@ -1,6 +1,6 @@
 ---
 name: pr-improve
-description: Iteratively fix an agreed PR review ledger within a frozen scope and verify each round. Use to improve a PR after findings exist; not for one-time review or broad cleanup.
+description: Iteratively fix an agreed PR review ledger within a frozen scope and verify each round. Use to improve a PR after findings exist; not for one-time review or broad cleanup. Use pr-review-reply to answer reviewer threads.
 ---
 
 # pr-improve
@@ -15,15 +15,15 @@ distinct from `pr-review` (findings only) and `simplify` (small cleanup).
 
 ## Inputs
 
-- **Findings** — use the source that the user names: a `pr-review` report, `pr-review-reply`
+- **Findings**: use the source that the user names: a `pr-review` report, `pr-review-reply`
   `needs-follow-up` blocks, or human review threads.
-- **Acceptance** — the user decides which findings are `accepted`. Record an agent recommendation
+- **Acceptance**: the user decides which findings are `accepted`. Record an agent recommendation
   as `deferred` until the user accepts it. A calling workflow can pre-accept findings when it
   states that rule, such as `phase-gate` solo mode for blockers.
-- **target** — the PR, branch, or diff that the findings apply to.
-- **Scope** (`--scope path[,path]`) — the allowed directories. If the user gives none, use the
+- **target**: the PR, branch, or diff that the findings apply to.
+- **Scope** (`--scope path[,path]`): the allowed directories. If the user gives none, use the
   baseline's changed paths.
-- **Round bound** (`--rounds N`) — the user's bound, else three rounds.
+- **Round bound** (`--rounds N`): the user's bound, else three rounds.
 
 ## Steps
 
@@ -34,7 +34,7 @@ Keep this skill's frozen ledger and existing round limit as the recovery record.
    and create the frozen baseline, initial diff, scope/untracked guard, and ledger.
    Do not edit outside scope.
 2. Assign stable IDs to findings. Record accepted, rejected, deferred, fixed, and
-   evidence changes; do not relitigate a decision unless new evidence changes it.
+   evidence changes. Do not relitigate a decision unless new evidence changes it.
 3. Select a bounded round of accepted findings. For a behavior correction, first add
    a failing test using `shared/contracts/references/test-driven-development.md`.
    When a test is not feasible, use the decisive behavior pin in `references/loop-contract.md`.

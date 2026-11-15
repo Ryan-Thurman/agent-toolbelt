@@ -15,9 +15,9 @@ Project repositories own the rules and content specific to those projects.
 |---|---|
 | Reusable planning, development, QA, review, research, and release methods | Agent Toolbelt, as those capabilities are implemented |
 | Shared output formats and ASD-STE100 writing rules | Agent Toolbelt |
-| Optional unattended workflows and reusable personal workflows | Agent Toolbelt; optional packages can have separate installation choices |
+| Optional unattended workflows and reusable personal workflows | Agent Toolbelt, and optional packages can have separate installation choices |
 | Project forms, required approvals, internal references, and workspace automation | The project repository |
-| Project adaptations of shared workflows | The project repository; shared methods retain their Toolbelt source |
+| Project adaptations of shared workflows | The project repository, and shared methods retain their Toolbelt source |
 
 Installed copies consume this library. Update reusable behavior here and
 project-specific behavior in its project owner.
@@ -70,7 +70,7 @@ It publishes `portal/generated/` only when the release version increases on `mai
 The version in `.cursor-plugin/plugin.json` is the comparison source.
 All six plugin manifests and the Claude marketplace versions must agree.
 
-Before the first publication, select **Settings → Pages → Build and deployment → Source → GitHub Actions** in this repository.
+Before the first publication, select **Settings -> Pages -> Build and deployment -> Source -> GitHub Actions** in this repository.
 Only the checked `portal/generated/` directory enters the Pages artifact.
 
 Development and bug-fix work use the [shared TDD procedure](shared/contracts/references/test-driven-development.md)
@@ -78,7 +78,7 @@ for behavior changes, with focused unit tests and explicit coverage gaps.
 
 Managed work can use the optional [task execution contract](shared/contracts/references/execution.md)
 for compact context, structured results, and explicit caller ownership.
-Its record checker validates declarations; the execution runtime still verifies evidence and controls transitions.
+Its record checker validates declarations, but the execution runtime still verifies evidence and controls transitions.
 
 ## Optional project-scoped compatibility install
 
@@ -104,8 +104,8 @@ Choose:
 ```
 
 `phased-delivery` is the canonical pack and skill. The old
-`dev-lite-workflow` pack selector remains an explicit compatibility alias;
-its installed skill is `$phased-delivery`. The `/dev-*` command names remain
+`dev-lite-workflow` pack selector remains an explicit compatibility alias.
+Its installed skill is `$phased-delivery`. The `/dev-*` command names remain
 available as shortcuts for the new workflow.
 
 The private [Auto Agent package](plugins/agent-toolbelt-auto-agent/README.md)
@@ -126,51 +126,61 @@ The generated `AGENTS.md` and `CLAUDE.md` blocks contain compact writing-rule an
 skill pointers. Skills load their own references and templates when needed.
 
 After install, open the target folder in your agent tool and run
-`/workflow-router` from chat. Full compatibility mechanics, including
+`/workflow-router` (installed with `phased-delivery` or `all`) from chat. Full compatibility mechanics, including
 polyrepo `--sweep`, are in the [Installation](wiki/Installation.md) guide.
 
 ### First repository setup
 
-Installing the packs makes the workflows available; it does not invent project
-policy. Bootstrap these repository-owned files before relying on style-aware
-implementation and review:
+Installing the packs does not create repository policy. Run `/style-guide-init` and `/pr-review-init`
+to draft the style guide and `.pr-review.md` from repository evidence.
+The [First repository setup](wiki/Installation.md#first-repository-setup) guide lists every file and the completion checklist.
 
-| File | Setup rule |
-|---|---|
-| Existing canonical style owner, or `STYLE_GUIDE.md` when none exists | Run `/style-guide-init`. Mine repository evidence, record the team's external baseline (for example, the Google TypeScript Style Guide), keep repo-specific TypeScript/React conventions local, and leave a new guide `Draft` until the team approves it. |
-| `.pr-review.md` | Run `/pr-review-init`. Keep only priorities supported by repository evidence, then have the team prune and commit the draft to the base branch. |
-| `AGENTS.md` for Cursor/Codex and `CLAUDE.md` for Claude Code | The installer creates or refreshes its compact entry instructions between markers. Preserve existing content and point to the canonical style owner instead of copying its rules. |
+## Which path do I start with?
 
-Do not pre-create empty product-discovery, QA test-case, threat-model, or
-security-audit documents. Produce those from their templates only when real work
-invokes the corresponding workflow. `.atb-work/pr-improve/` is generated,
-gitignored scratch state and is never a repository policy file. See
-[First repository setup](wiki/Installation.md#first-repository-setup) for the
-completion checklist.
+<!-- BEGIN routing table -->
+<!-- Generated from commands/workflow-router.md by scripts/build-routing-tables.js. Do not edit. -->
 
-## Which path should I start with?
-
-| Goal | Start with |
-|---|---|
-| Deliver a requirement or tickets as human-reviewed PRs | `phased-delivery` |
-| Compare a product ask with current behavior and find gaps or missing questions | `shape-up` (gap review) |
-| Turn a vague idea into an approved brief first | `shape-up` |
-| Prepare a ticket for refinement, write Given/When/Then criteria, or check whether a story is ready | `story-refinement` |
+| Task | Shared owner |
+| --- | --- |
+| Synthesize customer research | `user-research-synthesis` |
+| Decide whether an opportunity is ready to shape, or select an opportunity or experiment | `product-discovery` |
+| Assess customer outcomes after an experiment or release | `product-outcome-review` |
+| Discover maintenance work across a repository | `tech-debt-discovery` |
+| Answer architecture questions or design a system | `system-design` (it runs `threat-model` for a design proposal) |
+| Review the threats of a design before it is built | `threat-model` |
+| Audit existing code for security problems | `security-audit` |
+| Review the reliability of a design, or run a production readiness review | `reliability-review` |
+| Plan failure scenarios or staging chaos experiments | `failure-scenario-design` |
+| Check that a built service is ready to launch | `workflows/production-readiness-workflow.md` |
+| Follow up a mitigated incident with a fix and tests | `workflows/incident-follow-up-workflow.md` |
+| Compare a product ask with current behavior (gap review), shape a vague idea into an approved brief, or slice an approved brief into tickets | `shape-up` |
+| Refine a ticket or story, write Given/When/Then criteria, or check story readiness | `story-refinement` |
 | Write or review Gherkin feature files, or set up a BDD runner | `bdd-scenarios` |
-| Review a design for failure modes, SLOs, and recovery, or run a production readiness review | `reliability-review` |
-| Plan failure scenarios or a staging chaos experiment | `failure-scenario-design` |
-| Find the high-impact paths of a repo or a folder of repos for risk-based testing | `risk-area-mapping` |
-| Decide whether an opportunity is ready to shape | `product-discovery` |
-| Answer an architecture question or write a design | `system-design` |
-| Decide whether to do one technical backlog item | `tech-backlog-assessment` |
+| Plan, review, or deliver approved requirements or tickets as human-reviewed PRs | `phased-delivery` |
+| Reproduce and repair a defect | `bug-to-fix` |
+| Decide whether to do one technical backlog item, or assess a dependency | `tech-backlog-assessment` |
 | Adapt a pattern that a ticket names to a new area | `ticket-discovery` |
-| Review a design for threats, or audit implemented code | `threat-model`, `security-audit` |
-| Establish repository coding conventions | `style-guide-init` |
-| Run a deep code review on a PR or local diff | `pr-review` |
+| Find the high-impact paths of a repository or a folder of repositories for risk-based testing | `risk-area-mapping` |
+| Design test cases, write tests, or verify a browser flow | `test-case-design`, `cover`, or `webapp-testing` |
+| Review a pull request or a local diff | `pr-review` |
+| Check that a branch is ready to open as a PR | `pr-review` (`/pr-ready-check`) |
+| Fix accepted review findings, or answer a human reviewer's threads | `pr-improve` or `pr-review-reply` |
 | Run a policy- or risk-driven pre-PR maintainability gate | `code-quality-gate` |
-| Diagnose a bug before fixing it | `bug-to-fix` |
-| Keep a long implementation safe across context resets | `phase-context-workflow` |
-| Install the standard commands and workflows | `all` |
+| Clean up code with small behavior-preserving changes | `simplify` |
+| Apply one defined change across many sites | `retrofit` |
+| Review a phase PR at a phase boundary | `phase-gate` |
+| Review PRs automatically when they open or from a queue | `review-on-open` or `review-queue` |
+| Keep a long task safe across context resets | `phase-context-workflow` |
+| Set up or refresh repository conventions | `style-guide-init` |
+| Publish tickets to a tracker | `ticket-sync` |
+| Measure complexity and coverage risk | `crap-analysis` |
+| Isolate parallel agents in one repository | `worktree` |
+| Prepare a release | `ship-it` |
+| Write a resumable handoff | `handoff` |
+| Review the delivery process after completed work | `workflows/delivery-retrospective-workflow.md` |
+<!-- END routing table -->
+
+To install the standard commands and workflows, use the pack `all`.
 
 ## Documentation
 
@@ -179,15 +189,7 @@ examples, and the common workflow map. The [wiki](wiki/Home.md) supplies essenti
 operational and compatibility instructions. `SKILL.md` remains the canonical behavior source.
 Maintainer reports, project handoff documents, and evaluations stay outside the public repository.
 
-Quick map:
-
-| Page | Covers |
-|---|---|
-| [Installation](wiki/Installation.md) | Native plugin setup, `install.sh` compatibility path, harness selection, polyrepo `--sweep` |
-| [Portal](portal/generated/index.html) | Searchable skill discovery, taxonomy, examples, workflows, and host invocation guidance |
-| [Workflows](wiki/Workflows.md) | Phased Delivery, Phase Context, Bug to Fix, System Design, Product Discovery, Threat Model, Shape Up, Story Refinement |
-| [Code Review](wiki/Code-Review.md) | PR Review + triggers: Review Reply, Review on Open, Review Queue, Phase Gate, Cursor Hooks |
-| [Utilities](wiki/Utilities.md) | Code, test, security, and React utilities; release, worktree, handoff, and ticket sync |
+The [wiki home page](wiki/Home.md) lists every wiki page and what it covers.
 
 ## Packs
 
@@ -198,7 +200,7 @@ Project-specific delivery processes belong to their project repositories.
 See [What belongs here](#what-belongs-here) for ownership.
 
 Run `./install.sh --list` to see each pack and its purpose.
-The portal and the catalog list every skill and workflow.
+The catalog lists every skill and the 10 cross-skill workflows. `workflows/README.md` lists every playbook file.
 
 ## Repository layout
 
@@ -210,6 +212,9 @@ agent-toolbelt/
   install/          per-pack file lists (install/<pack>.sh) + shared install/lib.sh
   build-cursor-plugin.sh
                     assemble a private, user-scoped Cursor plugin from the packs
+  shared/           shared contracts and references that skills load
+  scripts/          catalog, portal, and release build and check scripts
+  wiki/             operational and compatibility guides
   commands/         slash commands and reusable command prompts
   skills/           agent skills with operating instructions
   plugins/agent-toolbelt-auto-agent/
@@ -221,7 +226,7 @@ agent-toolbelt/
   examples/         worked reference material
 ```
 
-Each major folder has a `README.md` describing what belongs there.
+The `commands/`, `skills/`, `workflows/`, `templates/`, and `examples/` folders each have a `README.md` that describes what belongs there.
 
 ## License
 

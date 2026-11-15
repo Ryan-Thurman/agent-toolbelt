@@ -1,7 +1,7 @@
 # Installation
 
 The native cross-host plugin is the primary installation path. The repository
-root exposes 44 skills for Cursor, Claude Code, and Codex from one canonical
+root exposes 43 skills for Cursor, Claude Code, and Codex from one canonical
 tree. For a local clone:
 
 ```sh
@@ -13,19 +13,19 @@ codex plugin add agent-toolbelt@agent-toolbelt
 
 Use `/skill-name` in Cursor, `/agent-toolbelt:skill-name` in Claude Code, and
 `$skill-name` or `/skills` in Codex. The [offline portal](../portal/generated/index.html)
-owns discovery and examples; this page covers installation and compatibility.
+owns discovery and examples. This page covers installation and compatibility.
 
 ## Optional project-scoped compatibility install
 
 `./install.sh` remains available when a project needs local commands, templates,
 workflow files, rules, or opt-in hooks. It answers **which packs**, **which
-harness(es)**, and **into which folder**, plus optional Cursor rule mode:
+harness(es)**, and **into which folder**:
 
 ```sh
 ./install.sh --harness <cursor|claude|codex|all> <pack ...|all> <target-folder>
 ```
 
-The most common command — install every standard pack into one project for Cursor:
+The most common command: install every standard pack into one project for Cursor:
 
 ```sh
 ./install.sh --harness cursor all /path/to/project
@@ -41,12 +41,22 @@ Other shapes:
 ./install.sh --harness all all ~/project                     # every pack, every harness
 ```
 
-New to the compatibility installer? Take the guided path:
+New to the compatibility installer? Read [Workflows](Workflows.md) for the shared workflow entry points.
 
-- `wiki/Workflows.md` — the shared workflow entry points.
+After install, open the target folder and run `/workflow-router` (installed with
+`phased-delivery` or `all`) or a specific pack's entry command from chat.
 
-After install, open the target folder and run `/workflow-router` (or a specific
-pack's entry command) from chat.
+Each pack's file list lives in `install/<pack>.sh`. The shared logic is in
+`install/lib.sh`. Use `--dry-run` to preview and `--force` only when replacing a
+previous install:
+
+```sh
+./install.sh --dry-run --harness cursor phased-delivery /path/to/pilot-folder
+```
+
+On macOS, non-developer pilot users can double-click `install.command`, which
+asks which pack(s) to install, which harness(es), whether to sweep child repos,
+and then the target folder (drag it into the Terminal prompt and press Enter).
 
 ## First repository setup
 
@@ -63,7 +73,7 @@ can consistently implement and review code in its local style.
 | Root `AGENTS.md` and/or `CLAUDE.md` | Let `install.sh` maintain its compact entry instructions between markers. Merge around existing content and add only a concise pointer to the canonical style owner when one is needed. | Installer-maintained pointer block plus any existing team-owned instructions. |
 
 An existing `CONTRIBUTING.md`, engineering handbook, or repository-specific
-standards document may already be the canonical style owner. Update that owner
+standards document can already be the canonical style owner. Update that owner
 instead of adding a competing `STYLE_GUIDE.md`.
 
 ### Conditional and generated artifacts
@@ -82,8 +92,9 @@ Do not create empty documents to make the repository look complete:
 
 ### React quality specialists
 
-Install `react-quality` to include the Vercel Labs composition and React/Next.js
-specialist skills, or install either pack separately:
+Install `react-quality` to include the five web React specialist packs, or install any of them
+separately. The [React quality specialists](Utilities.md#react-quality-specialists) section
+describes each one:
 
 ```sh
 ./install.sh --harness all react-quality /path/to/project
@@ -103,13 +114,13 @@ concrete performance impact before applying a rule.
 Repository bootstrap is complete when:
 
 - exactly one canonical style owner is named, its evidence paths resolve, and
-  weak or conflicting conventions are recorded as decisions rather than facts;
+  weak or conflicting conventions are recorded as decisions rather than facts,
 - the team baseline and any local TypeScript/React deviations are explicit,
-  without repeating formatter or linter configuration in prose;
+  without repeating formatter or linter configuration in prose,
 - `.pr-review.md` contains only repository-relevant priorities and is ready for
-  team review on the base branch;
+  team review on the base branch,
 - agent instruction files point to policy instead of maintaining duplicate
-  copies; and
+  copies, and
 - no placeholders, empty conditional artifacts, or accidentally tracked
   `.atb-work/` files remain.
 
@@ -135,15 +146,15 @@ Merge the reported files, then rerun the command. The `--force` flag does not
 resolve migration conflicts. Use `--dry-run` to preview migration without writes.
 The ignored `.atb-work/` directory keeps its current name.
 
-## Cursor rule modes
+## Cursor routing rule
 
-Cursor installs default to **minimal** project rules:
+Cursor installs write one minimal routing rule:
 
 ```sh
 ./install.sh --harness cursor all /path/to/project
 ```
 
-Minimal mode writes one small always-on router/guardrail rule at
+The install writes one small always-on router/guardrail rule at
 `.cursor/rules/agent-toolbelt-router.mdc`. The rule tells the agent to read the
 shared writing rules before responding and the documentation rules before writing
 project documents. The selected skill supplies its references and templates.
@@ -157,7 +168,7 @@ Existing Cursor rules remain unchanged without `--force`.
 To refresh the routing rule, review local edits and rerun the install command with `--force`.
 That flag replaces existing files selected by the install command.
 
-The former `--rules full` mode is retired.
+The former `--rules full` option is retired.
 The target repository owns process rules, forms, and approval requirements.
 
 The installer does not delete rules from earlier installations.
@@ -175,25 +186,25 @@ tooling works both inside a single repo and across the whole application:
 ./install.sh --sweep --harness cursor all /path/to/parent
 ```
 
-Each level is a self-contained install — its own `.agents/` folder (commands
+Each level is a self-contained install with its own `.agents/` folder (commands
 reference the skills tree by path), root instruction pointer files, and selected
-`.cursor/rules` mode — so a repo opened on its own carries its guardrails.
+`.cursor/rules` routing rule, so a repo opened on its own carries its guardrails.
 
 **Multi-root caveat (verified against Cursor):** in a Cursor multi-root workspace,
 only the **top root's `AGENTS.md`** reliably loads into context (nested per-repo
 `AGENTS.md` files do not auto-apply), and per-root `.cursor/rules` are not applied
 consistently across the session. This is a documented Cursor limitation, not an
 installer issue. The per-repo project rules this installs are reliable when you
-**open a single repo as the project**; for always-on behavior across the *whole
+**open a single repo as the project**. For always-on behavior across the *whole
 application* in a multi-root workspace, promote those rules to **Cursor User Rules**
-(Settings → Rules, Skills, Subagents → User) instead of relying on a repo's
+(Settings -> Rules, Skills, Subagents -> User) instead of relying on a repo's
 `.cursor/rules`.
 
 ## Cross-host plugin (Cursor, Claude Code, and Codex)
 
 The repository root is the canonical skills-only plugin package. It contains
-native manifests for all three hosts and one shared `skills/` tree, exposing 44
-on-demand skills, 0 commands, and 0 hooks; no committed skill copies are
+native manifests for all three hosts and one shared `skills/` tree, exposing 43
+on-demand skills, 0 commands, and 0 hooks, and no committed skill copies are
 generated. The root `commands/` remain available through `install.sh`. The
 `cursor-hooks` pack remains available through `install.sh`, but its manifest and
 scripts live under `optional/cursor-hooks/` so installing the plugin does not
@@ -201,19 +212,7 @@ enable hooks automatically.
 
 ### Local clone
 
-Use the host-native local plugin entry points:
-
-```sh
-# Cursor — load for one session
-cursor-agent --plugin-dir /path/to/agent-toolbelt
-
-# Claude Code — load for one session
-claude --plugin-dir /path/to/agent-toolbelt
-
-# Codex — add the repo-local marketplace, then install its entry
-codex plugin marketplace add /path/to/agent-toolbelt
-codex plugin add agent-toolbelt@agent-toolbelt
-```
+Use the host-native local plugin commands at the top of this page.
 
 The Claude and Codex marketplace catalogs both have a standard root entry and
 an optional Auto Agent entry. For
@@ -226,7 +225,7 @@ codex plugin marketplace add Ryan-Thurman/agent-toolbelt
 ```
 
 Cursor's public marketplace requires review and a manual submission at
-`https://cursor.com/marketplace/publish`; publishing has not been performed.
+`https://cursor.com/marketplace/publish`. Publishing has not been performed.
 Until approval, use `cursor-agent --plugin-dir` or a local plugin link.
 
 Validate the package and all catalogs from the repository root:
@@ -236,14 +235,14 @@ scripts/check-plugin-package.sh
 ```
 
 This check verifies the three manifests, aligned version and identity metadata,
-both catalog source paths, all 44 canonical skills, and that default plugin
+both catalog source paths, all 43 canonical skills, and that default plugin
 payloads do not include hooks or always-on rules. Claude's installed validator is
 run as part of the check. Run the repository check script from the clone rather
 than relying on an installation-specific validator path.
 The steps run in parallel, and the script prints the time of each step. A failed
 step prints its full log. Set `ATB_CHECK_SERIAL=1` to run the steps one at a time.
 
-### Optional Auto Agent package
+### Optional auto-agent package
 
 The unattended runner contract and its legacy Dev Lite adapter live in the separate
 [Auto Agent plugin](../plugins/agent-toolbelt-auto-agent/README.md). Neither the
@@ -258,7 +257,7 @@ marketplace, load its directory in Cursor, or use the compatibility installer:
 ### Private Cursor plugin build (one global install)
 
 Instead of installing into each repo, you can bundle the toolbelt as a **private,
-user-scoped Cursor plugin** — its skills become available in *every* project from a
+user-scoped Cursor plugin**. Its skills become available in *every* project from a
 single install, with nothing published. `build-cursor-plugin.sh` assembles the plugin:
 
 ```sh
@@ -268,26 +267,14 @@ ln -s "$(pwd)/build/cursor-plugin/agent-toolbelt" ~/.cursor/plugins/local/agent-
 ```
 
 Notes:
-- **Skills** are the reliable, self-contained unit here — Cursor auto-discovers them
+- **Skills** are the reliable, self-contained unit here, and Cursor auto-discovers them
   globally and surfaces them on demand with the same `agents/openai.yaml` metadata
   shipped by per-repo installs. This is the main reason to use the plugin.
-- **Rules are omitted by default**: most of the repo's rules are `alwaysApply: true`,
-  and a user-scoped plugin would fire them in *every* project. Pass `--with-rules` only
+- **Rules are omitted by default**: the routing rule is `alwaysApply: true`,
+  and a user-scoped plugin will fire it in *every* project. Pass `--with-rules` only
   if you want that. For scoped, per-project rules, use the per-repo `install.sh` instead.
 - **Commands** are intentionally not included in the global plugin build. Use the
   project-scoped `install.sh --harness cursor` flow for the `/command` UX and its
   project-local `.agents/` paths.
 
-The symlink picks up rebuilds live (Reload Window); `build/` is gitignored.
-
-Each pack's file list lives in `install/<pack>.sh`; the shared logic is in
-`install/lib.sh`. Use `--dry-run` to preview and `--force` only when replacing a
-previous install:
-
-```sh
-./install.sh --dry-run --harness cursor phased-delivery /path/to/pilot-folder
-```
-
-On macOS, non-developer pilot users can double-click `install.command`, which
-asks which pack(s) to install, which harness(es), whether to sweep child repos,
-and then the target folder (drag it into the Terminal prompt and press Enter).
+The symlink picks up rebuilds live (Reload Window). `build/` is gitignored.

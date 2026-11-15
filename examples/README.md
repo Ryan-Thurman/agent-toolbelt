@@ -11,3 +11,4 @@ Source credits are listed in the [review example attribution](../shared/contract
 - [Secure code review](secure-code-review.md): Vulnerability checks, security standards, and risk priorities for deep reviews.
 - [AI code security](ai-code-security.md): Automated security analysis and the need for human review.
 - [Defect density](defect-density.md): Defects per thousand lines of code as context for quality measurement.
+- [Thermo-nuclear review](thermo-nuclear-review.md): The strict maintainability bar that the `pr-review` deep tier applies.

@@ -225,7 +225,7 @@
 
 ### Upgrade notes
 
-- Read [the migration guide](docs/project-workflow-boundary.md) before updating an existing project. Installed legacy files are not removed automatically.
+- Read the migration guide before updating an existing project. Installed legacy files are not removed automatically.
 - Use `phased-delivery` for new delivery work. The `dev-lite-workflow` installer selector remains a compatibility alias.
 - Preview project installation changes with `--dry-run`. Preserve project-owned command adapters and instruction files.
 - All six plugin manifests and the Claude marketplace entries use version `1.0.0`.

@@ -428,7 +428,7 @@
       ],
       "primary_purpose": "Review whether a delivery phase met its evidence and acceptance criteria before proceeding.",
       "use_when": [
-        "A phased task needs an explicit checkpoint before the next implementation or release step."
+        "Each phase PR needs an isolated subagent review before the next phase starts"
       ],
       "avoid_when": [
         "There is no phase boundary or the work has no defined acceptance evidence."
@@ -444,8 +444,9 @@
         "Run a phase gate and list required corrections before continuing."
       ],
       "related_skills": [
-        "code-quality-gate",
-        "handoff",
+        "pr-review",
+        "pr-improve",
+        "phased-delivery",
         "phase-context-workflow"
       ],
       "workflow_membership": [
@@ -1058,12 +1059,14 @@
         "documentation",
         "ste",
         "plain-english",
-        "communication"
+        "communication",
+        "ai-tropes"
       ],
-      "primary_purpose": "Check or rewrite text against ASD-STE100 in Strict mode or rule by rule. The everyday writing rules live in human-readable-output.md.",
+      "primary_purpose": "Check or rewrite text against ASD-STE100 in Strict mode or rule by rule, and review long text for AI writing tropes. The everyday writing rules live in human-readable-output.md.",
       "use_when": [
         "The user asks for STE, ASD-STE100 compliance, or a plain-English rewrite.",
-        "An agent writes an error message, runbook, incident report, or release notes and needs the matching pattern."
+        "An agent writes an error message, runbook, incident report, or release notes and needs the matching pattern.",
+        "Long text or client-facing copy needs a trope review, or a pattern is not in the short list in human-readable-output.md."
       ],
       "avoid_when": [
         "The text is marketing or brand copy that needs persuasion."
@@ -1071,14 +1074,15 @@
       "preferred_context": "The draft text, its reader, and whether the user asks for Strict ASD-STE100 compliance.",
       "expected_outputs": [
         "Plain-English rewrite",
-        "Rule-numbered check report in check mode"
+        "Rule-numbered check report in check mode",
+        "Text without AI writing tropes"
       ],
       "example_prompts": [
         "Rewrite this README with simple-english.",
-        "Check this runbook against ASD-STE100."
+        "Check this runbook against ASD-STE100.",
+        "Check this draft for AI writing tropes."
       ],
       "related_skills": [
-        "writing-whip",
         "pr-review",
         "handoff",
         "ship-it"
@@ -1893,44 +1897,6 @@
         "notes": "Canonical skill and agent metadata are present."
       },
       "recommended_changes": []
-    },
-    {
-      "id": "writing-whip",
-      "category": "Agent Operations",
-      "tags": [
-        "writing",
-        "documentation",
-        "ai-tropes",
-        "communication",
-        "review"
-      ],
-      "primary_purpose": "Give the full AI writing trope catalog with examples. The short trope list lives in human-readable-output.md.",
-      "use_when": [
-        "Long text or client-facing copy needs a trope review.",
-        "A pattern is not in the short list in human-readable-output.md."
-      ],
-      "avoid_when": [
-        "The output is a required data format, such as JSON, where prose rules do not apply."
-      ],
-      "preferred_context": "The draft text and its reader.",
-      "expected_outputs": [
-        "Text without AI writing tropes",
-        "A one-line note for each rule that the output breaks on purpose"
-      ],
-      "example_prompts": [
-        "Check this draft for AI writing tropes.",
-        "Rewrite this README section without AI tells."
-      ],
-      "related_skills": [
-        "simple-english",
-        "pr-review"
-      ],
-      "workflow_membership": [],
-      "documentation_completeness": {
-        "status": "complete",
-        "notes": "Canonical skill and agent metadata are present."
-      },
-      "recommended_changes": []
     }
   ],
   "workflows": [
@@ -2266,7 +2232,9 @@
           "next_steps": [
             "simplify",
             "retrofit",
-            "phased-delivery"
+            "phased-delivery",
+            "ticket-discovery",
+            "cover"
           ]
         },
         {
@@ -2342,19 +2310,8 @@
           "rationale": "Find failure modes, SLO and observability gaps, and recovery needs, and write testable reliability requirements.",
           "example_invocation": "Run a reliability review on this design.",
           "next_steps": [
-            "phased-delivery",
-            "failure-scenario-design"
-          ]
-        },
-        {
-          "skill": "phased-delivery",
-          "rationale": "Plan accepted requirements and preserve threat-to-verification links.",
-          "example_invocation": "Plan the accepted design and security requirements.",
-          "next_steps": [
             "failure-scenario-design",
-            "test-case-design",
-            "cover",
-            "security-audit"
+            "phased-delivery"
           ]
         },
         {
@@ -2362,8 +2319,19 @@
           "rationale": "Turn testable reliability risks into scenario cards, Given/When/Then forms, and staging experiment plans.",
           "example_invocation": "Write failure scenarios for these reliability risks.",
           "next_steps": [
+            "phased-delivery",
             "test-case-design",
             "cover"
+          ]
+        },
+        {
+          "skill": "phased-delivery",
+          "rationale": "Plan accepted requirements and preserve threat-to-verification links.",
+          "example_invocation": "Plan the accepted design and security requirements.",
+          "next_steps": [
+            "test-case-design",
+            "cover",
+            "security-audit"
           ]
         },
         {
@@ -2483,7 +2451,7 @@
         },
         {
           "skill": "cover",
-          "rationale": "Write the planned tests and close the coverage gap that let the defect through.",
+          "rationale": "Pin the fixed behavior and the neighboring paths.",
           "example_invocation": "Write the planned tests for the incident fix.",
           "next_steps": [
             "pr-review"
@@ -2575,7 +2543,7 @@
         "scripts/check-portal.sh"
       ],
       "purpose": "Validate native manifests, catalogs, package inventory, and host-specific plugin contracts.",
-      "recommendation": "Keep as release checks; add catalog checks as a separate Phase 1 surface."
+      "recommendation": "Keep as release checks."
     },
     {
       "id": "skill-sync",

@@ -16,8 +16,10 @@ discovery, not a replacement for the approved implementation brief.
 
 ## Steps
 
+Default to report-only. Create external tickets only when the requested next action needs them.
+
 1. Separate known evidence from assumptions. Inspect supplied research, product
-   data, support reports, and repository context; never invent customer research.
+   data, support reports, and repository context. Never invent customer research.
    Reuse available research synthesis without treating interpretations as customer facts.
 2. Define the desired outcome, affected audience, problem, opportunity, and the
    candidate feature's evidence trail.
@@ -28,7 +30,7 @@ discovery, not a replacement for the approved implementation brief.
 4. Read `shared/contracts/references/product-measurement.md` when defining experiment or outcome measures.
    Define success and failure conditions with a supported baseline and explicit data limits.
    Use `templates/product-measurement-plan.md` when a separate measurement record is useful.
-5. Hand a sufficiently evidenced candidate to `shape-up`; otherwise report what
+5. Hand a sufficiently evidenced candidate to `shape-up`. Otherwise report what
    evidence or decision is still missing.
 
 Use `templates/product-discovery.md` when the user asks for a durable artifact.

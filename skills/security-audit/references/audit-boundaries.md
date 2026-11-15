@@ -1,4 +1,4 @@
-# Security Audit Boundaries
+# Security audit boundaries
 
 Read this file before you run a tool, send data to a network service, or start active testing.
 
@@ -18,8 +18,5 @@ Upload source code only with explicit authorization for that disclosure.
 ## Active testing
 
 Active testing includes probes, fuzzing against targets, exploit attempts, and credential checks.
-Before active testing, get written authorization for the target and the techniques.
-The authorization must give the time window and the stop conditions.
-Get it immediately before the active action.
 Specialized fuzzing, cryptography, and sanitizer techniques need a concrete stack or risk reason.
 These techniques are outside this core audit.

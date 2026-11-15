@@ -7,5 +7,5 @@ argument-hint: "[target-or-focus] (default: working diff; or previous)"
 
 **Arguments:** `$ARGUMENTS`
 
-Use this command to apply cleanup; use `/code-smell` for a detect-only scan and `/pr-review` for a verdict.
+Use this command to apply cleanup. Use `/code-smell` for a detect-only scan and `/pr-review` for a verdict.
 Follow the `simplify` skill in `/simplify` mode for `$ARGUMENTS`.

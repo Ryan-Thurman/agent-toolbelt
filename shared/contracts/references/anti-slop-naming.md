@@ -1,4 +1,4 @@
-# Anti-Slop and Naming Contract
+# Anti-slop and naming contract
 
 Use these as cross-language fallback rules after repository policy and local
 conventions. They are reasoning cues, not regex bans.
@@ -7,13 +7,13 @@ conventions. They are reasoning cues, not regex bans.
 
 - Name behavior truthfully. A read-like name must not persist, mutate, or trigger
   hidden work without making that responsibility clear.
-- Reuse the repository's canonical domain vocabulary. Different terms should mean
-  different things; do not introduce synonym drift for the same concept.
+- Reuse the repository's canonical domain vocabulary. Different terms must mean
+  different things. Do not introduce synonym drift for the same concept.
 - Prefer predicate names for booleans (`is`, `has`, `can`, `should`) and plural
   names for collections. Distinguish identifiers from loaded objects.
 - State units where a number is ambiguous (`timeoutMs`, `sizeBytes`).
-- Increase specificity with scope and lifetime. Tiny, obvious scopes may use
-  conventional short names; exported, asynchronous, or cross-module values need
+- Increase specificity with scope and lifetime. Tiny, obvious scopes can use
+  conventional short names. Exported, asynchronous, or cross-module values need
   names that preserve their domain meaning.
 - Treat `data`, `item`, `result`, `value`, `info`, `helper`, `manager`, and similar
   terms as cues to inspect context, not prohibited words. They are acceptable when
@@ -23,13 +23,13 @@ conventions. They are reasoning cues, not regex bans.
 
 ## Shape of a change
 
-- Comments explain constraints, tradeoffs, or reasons not evident from code; remove
+- Comments explain constraints, tradeoffs, or reasons not evident from code. Remove
   narration that merely restates the next statement.
 - Do not add a helper, wrapper, option, fallback, flag, or abstraction without a
   current consumer, boundary, policy, or repeated behavior it protects.
 - Keep diffs narrow. Do not restyle, rename, or reorganize unrelated code while
   implementing a focused behavior.
-- Tests should pin observable behavior, including errors and side effects, rather
+- Write tests that pin observable behavior, including errors and side effects, rather
   than private implementation arrangement.
 
 ## Review calibration

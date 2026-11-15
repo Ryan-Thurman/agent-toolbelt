@@ -7,5 +7,5 @@ argument-hint: "<url-or-feature-context>"
 
 **Arguments:** `$ARGUMENTS`
 
-Use this command to verify a user-facing flow in a browser; use `/cover` for code-level tests.
+Use this command to verify a user-facing flow in a browser. Use `/cover` for code-level tests.
 Follow the `webapp-testing` skill for `$ARGUMENTS`.

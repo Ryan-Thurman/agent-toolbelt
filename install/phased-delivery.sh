@@ -39,5 +39,4 @@ pack_phased_delivery() {
   template dev-pr-review.md
 
   workflow phased-delivery-workflow.md
-  workflow dev-ticket-to-pr.md
 }

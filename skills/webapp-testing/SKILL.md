@@ -12,7 +12,7 @@ Toolbelt paths: a path that starts with `shared/`, `skills/`, `templates/`, or `
 
 Verify webapp behavior from the user's point of view. The `/webapp-test` command uses this skill.
 
-## Operating Rules
+## Operating rules
 
 - Start from the requested user flow, acceptance criteria, or bug report.
 - Discover how the app runs and how tests run before you change code.
@@ -49,7 +49,7 @@ Verify webapp behavior from the user's point of view. The `/webapp-test` command
 | --- | --- |
 | `Pass` | Every target flow ran in a browser and met its expected result. |
 | `Needs Work` | A flow ran and showed a defect or an unmet acceptance criterion. |
-| `Blocked` | A flow could not run, for example because of a server, data, credential, or tool problem. |
+| `Blocked` | A flow was not able to run, for example because of a server, data, credential, or tool problem. |
 
 ## Output
 

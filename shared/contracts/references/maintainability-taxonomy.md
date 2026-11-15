@@ -1,56 +1,56 @@
-# Maintainability Taxonomy
+# Maintainability taxonomy
 
-What to look for. `/code-smell` scans by family; `/simplify` scans by axis. Treat cheap regex/lexical
+What to look for. `/code-smell` scans by family. `/simplify` scans by axis. Treat cheap regex/lexical
 cues as untrusted leads to verify by reading, never as truth.
 
 ## Baseline rules
 
 Use the smell names below as heuristics, not hard violations. A documented repo standard or local
-architecture note wins over the baseline; if the repo intentionally endorses a pattern, suppress the
+architecture note wins over the baseline. If the repo intentionally endorses a pattern, suppress the
 smell. Every finding still needs concrete evidence and a consequence.
 
 ## `/code-smell` families (structural scan)
 
-- **Complexity** — long functions, mixed responsibilities, deep nesting, boolean-flag control flow,
+- **Complexity**: long functions, mixed responsibilities, deep nesting, boolean-flag control flow,
   branch-heavy conditionals.
-- **Duplication** — copy-paste blocks, repeated condition chains, parallel representations of the
+- **Duplication**: copy-paste blocks, repeated condition chains, parallel representations of the
   same concept.
-- **Coupling** — modules reaching through boundaries, feature code importing internals,
+- **Coupling**: modules reaching through boundaries, feature code importing internals,
   circular-feeling dependencies.
-- **State** — redundant derived state, mutable globals, caches without invalidation, multiple
+- **State**: redundant derived state, mutable globals, caches without invalidation, multiple
   sources of truth.
-- **Errors** — swallowed errors, empty catch blocks, broad catch that hides failures, inconsistent
+- **Errors**: swallowed errors, empty catch blocks, broad catch that hides failures, inconsistent
   error mapping.
-- **Performance** — N+1 loops, repeated I/O, sequential awaits for independent work, hot-path
+- **Performance**: N+1 loops, repeated I/O, sequential awaits for independent work, hot-path
   blocking work.
-- **Maintainability** — debug remnants, commented-out code, TODO/HACK hiding required design,
+- **Maintainability**: debug remnants, commented-out code, TODO/HACK hiding required design,
   stringly-typed constants.
-- **Architecture** — shallow modules, weak seams, leakage across module interfaces, low locality,
-  and scattered edits that suggest a deeper module would concentrate behavior.
+- **Architecture**: shallow modules, weak seams, leakage across module interfaces, low locality,
+  and scattered edits that suggest a deeper module can concentrate behavior.
 
-## Compact Fowler-style baseline
+## Fowler-style compact baseline
 
 Use these as always-available maintainability cues when repo standards are missing or thin. Fold any
 hit back into the family list above rather than creating a separate report axis.
 
-- **Mysterious name** — a symbol name hides the concept or behavior it represents.
-- **Duplicated code** — the same logic shape appears in multiple places.
-- **Feature envy** — code spends more effort reaching into another module/object than using its own
+- **Mysterious name**: a symbol name hides the concept or behavior it represents.
+- **Duplicated code**: the same logic shape appears in multiple places.
+- **Feature envy**: code spends more effort reaching into another module/object than using its own
   data.
-- **Data clumps** — the same group of fields or parameters travels together and wants a named type.
-- **Primitive obsession** — strings, numbers, or booleans stand in for domain concepts with real
+- **Data clumps**: the same group of fields or parameters travels together and wants a named type.
+- **Primitive obsession**: strings, numbers, or booleans stand in for domain concepts with real
   invariants.
-- **Repeated switches** — matching condition chains recur on the same kind of value.
-- **Shotgun surgery** — one logical change forces scattered edits across many files.
-- **Divergent change** — one module changes for unrelated reasons.
-- **Speculative generality** — abstractions, knobs, or hooks exist for needs that are not real yet.
-- **Message chains** — callers navigate through object/module internals they should not know.
-- **Middle man** — a wrapper mostly delegates without protecting an API, boundary, or policy.
-- **Refused bequest** — an inheritance/interface relationship is mostly ignored or worked around.
+- **Repeated switches**: matching condition chains recur on the same kind of value.
+- **Shotgun surgery**: one logical change forces scattered edits across many files.
+- **Divergent change**: one module changes for unrelated reasons.
+- **Speculative generality**: abstractions, knobs, or hooks exist for needs that are not real yet.
+- **Message chains**: callers navigate through object/module internals they must not know.
+- **Middle man**: a wrapper mostly delegates without protecting an API, boundary, or policy.
+- **Refused bequest**: an inheritance/interface relationship is mostly ignored or worked around.
 
-Rank each by **severity** (high = likely bug/perf/user impact; medium = concrete maintenance cost;
-low = useful cleanup) **× confidence** (high only after reading enough to verify; medium for strong
-lexical hints; low = worth human inspection). Do not flag subjective style. Do not recommend large
+Rank each by **severity** (high = likely bug/perf/user impact, medium = concrete maintenance cost,
+low = useful cleanup) **× confidence** (high only after reading enough to verify, medium for strong
+lexical hints, low = worth human inspection). Do not flag subjective style. Do not recommend large
 rewrites unless a small first slice is clear.
 
 ## Architecture mode (`/code-smell --architecture`)
@@ -59,7 +59,7 @@ Use this mode for no-code architecture review.
 
 Scope before scanning. A user-named module, subsystem, or pain point is the
 authoritative target. When no target is named, inspect a meaningful stretch of
-recent history and start with files or modules that change repeatedly; those
+recent history and start with files or modules that change repeatedly. Those
 hotspots are where a better seam is most likely to repay its cost. If history is
 scattered and no hotspot emerges, widen the scan and say how the scope was
 chosen. Do not turn a localized request into a repository-wide architecture
@@ -67,19 +67,19 @@ program.
 
 Vocabulary:
 
-- **Module** — a coherent unit with an interface and implementation.
-- **Interface** — the surface other code uses; judge whether it is smaller than the implementation.
-- **Implementation** — the hidden work the module owns.
-- **Depth** — a deep module has a small interface over meaningful implementation; a shallow module
+- **Module**: a coherent unit with an interface and implementation.
+- **Interface**: the surface other code uses. Judge whether it is smaller than the implementation.
+- **Implementation**: the hidden work the module owns.
+- **Depth**: a deep module has a small interface over meaningful implementation. A shallow module
   exposes nearly as much complexity as it hides.
-- **Seam** — a substitution point worth naming only when it buys leverage.
-- **Adapter** — code that connects the module to an external or replaceable dependency.
-- **Locality** — related behavior can be understood and changed in one place.
-- **Leverage** — one change or test covers many call sites.
+- **Seam**: a substitution point worth naming only when it buys leverage.
+- **Adapter**: code that connects the module to an external or replaceable dependency.
+- **Locality**: related behavior can be understood and changed in one place.
+- **Leverage**: one change or test covers many call sites.
 
 Deepening cues:
 
-- A module is shallow: deleting it would just move the same complexity to the caller.
+- A module is shallow: deleting it only moves the same complexity to the caller.
 - Callers must know implementation details, message chains, data shapes, or ordering rules.
 - One concept requires bouncing through several files with little behavior in each.
 - The same change repeatedly touches scattered files or parallel condition chains.
@@ -95,20 +95,20 @@ ADR creation, and no full interface proposal until the user chooses a candidate.
 ## `/simplify` axes (cleanup scan)
 
 ### Reuse
-Before flagging, **search the codebase for an existing helper and quote the symbol you'd use.**
+Before flagging, **search the codebase for an existing helper and quote the symbol you will use.**
 - Duplicates an existing function.
 - Inline logic that already has a utility (hand-rolled string manipulation, manual path handling,
   custom env checks, ad-hoc type guards).
 - Reinvented framework primitive.
 
 ### Quality
-- **Dead code (safe)** — unused exports, orphan files, zombie variables, empty try/catch/if blocks.
-- **Debug remnants (safe)** — `console.log`, `console.debug`, `debugger`, and stale TODOs.
-- **Diagnostic output and flags (confirm)** — `console.warn`, `console.error`, and temporary feature
+- **Dead code (safe)**: unused exports, orphan files, zombie variables, empty try/catch/if blocks.
+- **Debug remnants (safe)**: `console.log`, `console.debug`, `debugger`, and stale TODOs.
+- **Diagnostic output and flags (confirm)**: `console.warn`, `console.error`, and temporary feature
   flags. Removal can change observability or a runtime path.
 - **Commented-out code (review)**.
-- **Over-engineering / thin wrappers (confirm)** — see the taxonomy below.
-- **Hacky patterns (confirm)** — redundant state (cache what could be derived), parameter sprawl,
+- **Over-engineering / thin wrappers (confirm)**: see the taxonomy below.
+- **Hacky patterns (confirm)**: redundant state (cache what can be derived), parameter sprawl,
   copy-paste with variation, leaky abstractions, stringly-typed code, unnecessary wrapper elements,
   nested conditionals 3+ deep (flatten with early returns or a lookup table), useless comments (keep
   only the non-obvious WHY).
@@ -116,7 +116,7 @@ Before flagging, **search the codebase for an existing helper and quote the symb
 ### Efficiency (confirm)
 - Unnecessary work (N+1, repeated reads), missed concurrency (sequential awaits for independent
   work), hot-path bloat, recurring no-op updates (add a change-detection guard), unnecessary
-  existence checks (TOCTOU — operate directly and handle the error), memory leaks/unbounded growth,
+  existence checks (TOCTOU: operate directly and handle the error), memory leaks/unbounded growth,
   overly broad operations.
 
 ## Risk and action vocabulary
@@ -132,30 +132,30 @@ Give each `/simplify` or `/code-smell` finding one risk tier and one action.
 | Action | Use when |
 | --- | --- |
 | `delete` | The code has no callers or no effect. |
-| `inline` | A wrapper or helper adds no protection; see the thin-wrapper taxonomy. |
+| `inline` | A wrapper or helper adds no protection. See the thin-wrapper taxonomy. |
 | `extract` | Repeated or mixed logic needs one named home. |
 | `refactor` | The structure changes, and behavior stays the same. |
 | `parallelize` | Independent async work runs in sequence. |
 | `guard` | A missing check or change-detection guard causes repeated or unsafe work. |
 | `inspect` | A lead needs more reading before a recommendation. |
 
-## Thin-wrapper taxonomy (the standout)
+## Thin-wrapper taxonomy
 
 Flag and inline/remove unless the keep-rule applies:
 
-- **Rename-only wrapper** — `foo()` just calls `bar()` with the same inputs. Inline unless `foo` is
+- **Rename-only wrapper**: `foo()` just calls `bar()` with the same inputs. Inline unless `foo` is
   a real public/domain concept.
-- **Constructor/factory wrapper** — `createX(args)` only returns `new X(args)`. Inline unless the
+- **Constructor/factory wrapper**: `createX(args)` only returns `new X(args)`. Inline unless the
   factory selects implementations or enforces policy.
-- **Scope-specific alias** — `SlackThing`/`ConversationThing` only wraps a generic helper. Delete
+- **Scope-specific alias**: `SlackThing`/`ConversationThing` only wraps a generic helper. Delete
   if the generic name is already clear at call sites.
-- **Single-call-site helper** — used once, especially one-line formatting/parsing/path helpers.
+- **Single-call-site helper**: used once, especially one-line formatting/parsing/path helpers.
   Inline it.
-- **Duplicated write APIs** — several `saveFooConfig` functions. Consolidate into one
+- **Duplicated write APIs**: several `saveFooConfig` functions. Consolidate into one
   `updateSettings(patch)`-style API.
-- **Test-only export** — exists only so a test can reach internals. Test the underlying public
+- **Test-only export**: exists only so a test can reach internals. Test the underlying public
   helper or observable behavior instead.
-- **Pass-through class method** — method only forwards to a function. Remove it or call the function
+- **Pass-through class method**: method only forwards to a function. Remove it or call the function
   directly.
 
 **Keep rule:** keep a wrapper if it protects a public API, documents a domain boundary, centralizes
@@ -163,10 +163,11 @@ cross-cutting behavior, or isolates an unstable dependency.
 
 ## Lexical leads (verify before trusting)
 
-- Large/complex function: > ~80 lines or > ~12 branches (`if|for|while|catch|case|&&|\|\|`); > ~140
-  lines or > ~18 branches = high.
+- Large/complex function: > ~80 lines or > ~12 branches (`if|for|while|catch|case|&&|\|\|`). High = > ~140
+  lines or > ~18 branches.
 - Repeated line: a normalized non-comment line (> ~20 chars) appearing 3+ times = duplication lead.
-- Debug remnant: `console.(log|debug|warn|error)` / `debugger` (the latter = high).
+- Debug remnant: `console.(log|debug)` / `debugger` (the latter = high).
+- Diagnostic output: `console.(warn|error)` (confirm before removal).
 - Commented-out code: a `//`-prefixed line starting with `if|for|while|return|const|let|var|
   function|class|import|export`.
 - Loose markers: `any`, `TODO`, `FIXME`, `HACK`, `XXX`.

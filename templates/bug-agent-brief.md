@@ -1,7 +1,7 @@
-# Fix Brief: <short title>
+# Fix brief: <short title>
 
-The contract for the fix. Keep it **durable** (no file paths or line numbers — they go stale) and
-**behavioral** (describe *what* should happen, not *how* to code it). This brief is what an
+The contract for the fix. Keep it **durable** (no file paths or line numbers, because they go stale) and
+**behavioral** (describe *what* must happen, not *how* to code it). This brief is what an
 implementer works from.
 
 - **Category:** bug fix
@@ -15,7 +15,7 @@ What happens now (the bug), in observable terms.
 
 ## Desired behavior
 
-What should happen after the fix, in observable terms.
+What must happen after the fix, in observable terms.
 
 ## Fix approach
 
@@ -36,24 +36,24 @@ Each independently verifiable.
 
 ## Out of scope
 
-What this fix must **not** do — explicitly fence out refactors, unrelated cleanup, and
+What this fix must **not** do. Explicitly fence out refactors, unrelated cleanup, and
 "while I'm here" changes so the diff stays minimal.
 
 ## Scope self-check
 
 - Files I touched (and why each is required):
-- Lines I was tempted to add but won't:
+- Lines I was tempted to add but will not:
 - Hypothetical cases I am NOT defending against:
 - Abstractions I considered and rejected:
 - Diff size (lines / files):
-- Could it be smaller?
+- Can it be smaller?
 - Follow-ups I did NOT do (surfaced, not smuggled in):
 
 ## Verification
 
 - **Reproduction status:**  # confirmed-manual | automated-red
-- **If automated:** regression test written; proven by revert → test fails → restore → test passes.
-- **If manual only:** documented manual re-test steps for QA; **flag "add automated regression
+- **If automated:** regression test written, and observed red before repair and green after.
+- **If manual only:** documented manual re-test steps for QA, and **flag "add automated regression
   test" as a Should-Fix follow-up** (do not silently skip the test).
 - [ ] Root cause addressed, not just the symptom.
 - [ ] Existing tests pass / build succeeds.

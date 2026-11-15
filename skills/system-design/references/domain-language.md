@@ -1,6 +1,5 @@
 # Domain language
 
-Read this at the Standard level or higher when terms are unclear, or when the design crosses domain boundaries.
 A bounded context is an area of the system in which each term has one meaning.
 
 ## Glossary

@@ -26,7 +26,7 @@ Run the lenses that the depth level allows:
 
 The builder check is a required check. At any level, add a security lens when the item touches
 authentication, personal data, or money. The security lens is also a required check.
-Use `threat-model` for its checks. At the Deep level, add a design lens for a user-facing flow.
+Use `threat-model` for its checks when it is installed. Otherwise list the trust-boundary questions as `Ask`.
 
 ## Lens brief
 
@@ -57,7 +57,7 @@ Sort each finding into one group:
 | Default | Choose an answer, and mark it as your call. |
 | Ask | Add it to the register with its owner. A finding that rejects the premise is a challenge. |
 
-## Definition of Ready checks
+## Definition of ready checks
 
 If the project has its own Definition of Ready, use it in place of this list.
 
@@ -82,6 +82,6 @@ Give one verdict and list each failed check with its evidence.
 | `Ready` | Every check passes. |
 | `Ready with defaults` | Every check passes, but the spec contains defaults that an owner has not confirmed. |
 | `Not ready` | One or more checks fail. |
-| `Not verified` | A required source or review could not run. Name the missing input. |
+| `Not verified` | A required source or review was unable to run. Name the missing input. |
 
 The verdict is a warning. It does not stop a handoff unless the project instructions make it a gate.

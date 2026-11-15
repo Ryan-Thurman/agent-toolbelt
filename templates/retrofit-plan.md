@@ -1,12 +1,12 @@
-# Retrofit Plan: <the change, e.g. moment → dayjs>
+# Retrofit plan: <the change, e.g. moment -> dayjs>
 
-The durable, resumable record of a retrofit. The site table is the source of truth — every site
+The durable, resumable record of a retrofit. The site table is the source of truth: every site
 ends `done` or `skipped (reason)`.
 
 ## Transform
 
 - **Rule:** <what changes, precisely>
-- **Before → after:**
+- **Before -> after:**
 
   ```
   // before
@@ -20,8 +20,8 @@ ends `done` or `skipped (reason)`.
 ## Discovery
 
 - **How sites were found:** grep/AST/`rct impact_of` (and the queries used)
-- **Cross-check:** <count via method A vs. method B — must match>
-- **Codemod:** yes/no — <script/tool, or why hand-edited>
+- **Cross-check:** <count via method A vs. method B, which must match>
+- **Codemod:** yes/no: <script/tool, or why hand-edited>
 
 ## Sites
 
@@ -46,5 +46,5 @@ cross-unit dependencies.
 ## Result
 
 - Transformed: <n> (<codemod> / <hand-edited>)
-- Skipped / deferred (explicit): <list with reasons> — or "none"
+- Skipped / deferred (explicit): <list with reasons>, or "none"
 - Status: complete | partial

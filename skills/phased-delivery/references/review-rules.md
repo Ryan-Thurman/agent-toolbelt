@@ -1,21 +1,20 @@
 # Phase PR review
 
-Read this before you open or update a phase PR, or when you check its readiness.
 Review the phase's own diff against its source acceptance criteria, plan, test
 evidence, and base branch. Check this phase's PR, not one final PR for the
 whole requirement. For a stacked PR, compare parent branch to child head, not
-default branch to child head; otherwise predecessor work can be mistaken for
+default branch to child head. Otherwise predecessor work can be mistaken for
 this ticket's scope.
 
 Check in this order:
 
 1. Every phase or ticket acceptance clause is met or explicitly unresolved,
-   with test or manual evidence. Distinguish verified, failed, and not inferable.
+   with test or manual evidence. Distinguish verified, failed, and `Not verified`.
    Trace behavior through implementation and component connections.
    File existence, symbol presence, and implementer summaries do not prove runtime behavior.
-   Record the observation and revision; retain `Not verified` when execution evidence is unavailable.
+   Record the observation and revision. Retain `Not verified` when execution evidence is unavailable.
 2. The diff stays within this phase's boundary. Any contract, schema, or API
-   change beyond it has source approval; there is no next-ticket leakage.
+   change beyond it has source approval. There is no next-ticket leakage.
 3. Tests, error paths, permissions, security, performance, UX, and maintainable
    implementation are proportionate to the change. Missing feasible tests are
    a finding, blocking when core behavior or high-risk boundaries are unproved.
@@ -44,10 +43,9 @@ Give the phase PR a separate readiness verdict:
 | `Blocked` | Progress needs an outside decision, a dependency, or a check that is not available. |
 
 Record the verdict, findings, evidence, and PR URL in the plan.
-Use `../../../templates/dev-phase-review.md` or `../../../templates/dev-pr-review.md`
-only when a separate report is useful.
+Use `templates/dev-phase-review.md` before the PR opens and `templates/dev-pr-review.md`
+after the PR opens, only when a separate report is useful.
 Open the phase PR only when the user authorized delivery.
-Merge authority follows `shared/contracts/references/execution.md`.
 
 ## Fix findings
 

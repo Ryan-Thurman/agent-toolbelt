@@ -1,7 +1,7 @@
 # SLOs and error budgets
 
 Read this in step 1 of the design mode. Do not supply default targets.
-A target comes from the project, a contract, or a named owner. Otherwise it is `Unknown`.
+A target comes from the project, a contract, or a named owner. Otherwise it is `Decision needed` with an owner.
 
 ## Indicators
 

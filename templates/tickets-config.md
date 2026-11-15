@@ -1,13 +1,13 @@
 <!--
   Copy this to the ROOT of a repo as `.tickets.md` (or `.claude/tickets.md`).
   It tells /ticket-sync WHERE ticket files get published and HOW their fields map. Every section is
-  optional; delete what you do not need. Where a base branch is meaningful, ticket-sync loads this
-  file from the BASE branch. Full contract: agent-toolbelt/skills/ticket-sync/references/config.md
+  optional. Delete what you do not need. Where a base branch is meaningful, ticket-sync loads this
+  file from the BASE branch. Full contract: skills/ticket-sync/references/config.md
 -->
 
 ## Provider
 <!-- One of: github | jira | azure. The tracker every other section targets.
-     If omitted, inferred from the origin remote (github.com → github, dev.azure.com → azure). -->
+     If omitted, inferred from the origin remote (github.com -> github, dev.azure.com -> azure). -->
 - jira
 
 ## Project

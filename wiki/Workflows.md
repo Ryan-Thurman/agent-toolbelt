@@ -1,7 +1,7 @@
 # Workflows
 
 The delivery lanes. The [offline portal](../portal/generated/index.html) owns
-discovery, examples, and the common workflow map; this page provides deeper
+discovery, examples, and the common workflow map. This page provides deeper
 operational guidance. Each workflow below identifies its commands and completion boundaries.
 
 - [Phased Delivery](#phased-delivery): requirements or tickets to one PR per phase.
@@ -16,7 +16,7 @@ operational guidance. Each workflow below identifies its commands and completion
 - [Product Discovery](#product-discovery): evidence before deciding what to shape.
 - [Threat Model](#threat-model): design-time security analysis.
 
-## Phased Delivery
+## Phased delivery
 
 Phased Delivery turns a raw requirement or existing approved plan into
 human-reviewed PRs. It reuses supplied approved tickets:
@@ -51,7 +51,7 @@ shared `.agents/skills/phased-delivery/` skill, templates, and the workflow
 playbook. The former
 `dev-lite-workflow` pack name remains an explicit compatibility alias. Quality
 gates are applied when repository policy, the user, or the phase's risk requires
-them; they are not a universal pre-PR dependency.
+them. They are not a universal pre-PR dependency.
 
 In Cursor or Claude Code, use `/dev-plan` with an approved source, adding
 `/dev-intake` only for an unclear raw requirement. In Codex, invoke the skill
@@ -63,7 +63,7 @@ $phased-delivery
 Plan these approved tickets as stacked PRs, one ticket per phase.
 ```
 
-## Phase Context Workflow
+## Phase context workflow
 
 The Phase Context Workflow keeps long agent work resumable by writing phase
 state into repo files before context resets:
@@ -92,8 +92,10 @@ The `bug-to-fix` tool is the diagnostic lane: it takes a bug report from triage
 to a verified fix.
 
 ```text
-Bug report -> /bug-intake -> /reproduce -> /rca -> /fix-plan -> /dev-implement-task -> /code-quality-gate -> /dev-pr-review
+Bug report -> /bug-intake -> /reproduce -> /rca -> /fix-plan -> /dev-implement-task -> /pr-review
 ```
+
+The `/dev-implement-task` and `/pr-review` commands come from the `phased-delivery` and `pr-review` packs.
 
 Install it into a project for Cursor, Claude Code, and Codex skill use:
 
@@ -102,13 +104,13 @@ Install it into a project for Cursor, Claude Code, and Codex skill use:
 ```
 
 Use `--dry-run` to preview and `--force` only when replacing a previous install.
-The installer adds the `/bug-*` commands, the `bug-to-fix` skill tree, the
+The installer adds the `/bug-intake`, `/reproduce`, `/rca`, and `/fix-plan` commands (`/handoff` comes with the `handoff` dependency), the `bug-to-fix` skill tree, the
 investigation/RCA/fix-brief templates, and the workflow playbook. On macOS,
 double-click `install.command` and follow the prompts.
 
 Key ideas:
 
-- A **durable investigation file** (`.agents/templates/bug-investigation.md`) is updated
+- A **durable investigation file** (`bug-investigation-<slug>.md`, started from `.agents/templates/bug-investigation.md`) is updated
   *before* each action, so the work survives a context reset and hands off cleanly.
 - **No fix without a confirmed root cause**, and **no "fixed" without verification**.
 - **Reproduction is manual-first**: `/reproduce` asks whether you or QA reproduced
@@ -116,7 +118,7 @@ Key ideas:
   harness exists.
 - `/rca --diagnose` runs a read-only root-cause analysis that never edits files.
 
-## System Design
+## System design
 
 Use `system-design` for architecture questions, design documents, diagrams, decision records, and repository maps.
 A full design proposal also gets a linked `threat-model` review for the same revision.
@@ -156,7 +158,7 @@ The compatibility install includes the design and decision-record templates:
 
 Keep generated internal documents in the project's designated location or outside the public Toolbelt repository.
 
-## Production Readiness
+## Production readiness
 
 Use this before the first launch of a service, or before a launch that adds a hard dependency or a data store.
 `/reliability-review --readiness` marks each reliability requirement `Verified`, `Failed`, or `Not verified`
@@ -168,7 +170,7 @@ The [workflow](../workflows/production-readiness-workflow.md) gives the stage or
 ./install.sh --harness all reliability-review failure-scenario-design ship-it /path/to/project
 ```
 
-## Incident Follow-Up
+## Incident follow-up
 
 Use this after an incident is mitigated. `bug-to-fix` fixes the root cause after a failing regression test.
 `/reliability-review` adds the failure mode to the register and records the missing detection or recovery
@@ -179,10 +181,10 @@ The [workflow](../workflows/incident-follow-up-workflow.md) gives the stage orde
 ./install.sh --harness all bug-to-fix reliability-review failure-scenario-design test-case-design cover /path/to/project
 ```
 
-## Product Discovery
+## Product discovery
 
-Use `product-discovery` before Shape Up when the open question is whether a candidate should be
-built at all. It separates evidence from assumptions, identifies value/usability/feasibility/viability
+Use `product-discovery` before Shape Up when the open question is whether to build a
+candidate at all. It separates evidence from assumptions, identifies value/usability/feasibility/viability
 risks, proposes the cheapest useful experiments, and sets observable success/failure thresholds.
 It hands only an evidenced candidate to `/shape-up`.
 
@@ -190,7 +192,7 @@ It hands only an evidenced candidate to `/shape-up`.
 ./install.sh --harness all product-discovery /path/to/project
 ```
 
-## Threat Model
+## Threat model
 
 Use `threat-model` before implementing a security-sensitive design. It maps assets, actors, flows,
 trust boundaries, abuse paths, mitigations, testable requirements, and residual risk. It is design
@@ -216,7 +218,7 @@ Use `/dev-intake` for an unclear raw request that has no approved brief, plan, o
 ./install.sh --harness all shape-up /path/to/project
 ```
 
-## Story Refinement
+## Story refinement
 
 Use `story-refinement` for a ticket or story that has a clear goal but open questions.
 Run `/story-refinement <ticket> --scan` before the refinement meeting.
@@ -232,7 +234,7 @@ The [workflow](../workflows/feature-refinement-workflow.md) gives the stage orde
 ./install.sh --harness all story-refinement /path/to/project
 ```
 
-## Risk-Based Testing
+## Risk-based testing
 
 Use `risk-area-mapping` to find the paths where a defect has high impact, for example personal
 data, access control, or exports. Run `/risk-areas` in one repository, or

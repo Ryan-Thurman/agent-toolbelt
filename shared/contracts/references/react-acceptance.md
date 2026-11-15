@@ -26,7 +26,7 @@ Record each missing tool once as a `Tooling gap` suggestion. A gap does not bloc
 
 - Use the linter that the repository has. Do not add a second linter to get one rule.
 - When the repository uses the React Compiler, it needs React Compiler validation.
-  A Biome-only repository can run Oxlint for these rules only. Suggest this; do not require it.
+  A Biome-only repository can run Oxlint for these rules only. Suggest this. Do not require it.
 - When a budget check exists, its result is the bundle verdict. Do not estimate bundle size by hand.
 
 ## Blocker
@@ -40,13 +40,13 @@ Use `blocker` only for these defaults. Each needs evidence in the changed code.
 | A server request path awaits independent operations in sequence. | `async-api-routes`, `async-parallel`, `server-parallel-fetching`, `server-parallel-nested-fetching` |
 | An effect sends a mutation or POST because state changed. Strict Mode or a re-render can send it again. | `use-effect-killer` #6 |
 | An effect fetches data and sets state without cleanup, so an old response can replace a new one. | `use-effect-killer` #13 |
-| A hook call breaks the Rules of Hooks. | Linter rule, or the hook-order rule in the diff |
+| A hook call breaks the Rules of Hooks. | Linter rule. With no linter, read the hook calls in the changed lines. |
 | React Native renders a string outside `<Text>`, or a falsy `&&` value can render `0` or `""`. The app crashes. | `rendering-text-in-text-component`, `rendering-no-falsy-and` (React Native) |
 | A configured bundle budget fails. | Budget check |
 
 ## Should-fix
 
-- Other `CRITICAL` and `HIGH` impact rules, when the changed code shows a concrete consequence.
+- Other `CRITICAL` and `HIGH` impact rules that no later line of this contract names, when the changed code shows a concrete consequence.
 - `rerender-no-inline-components`: a component defined in render remounts and loses state.
 - `use-effect-killer` #1, #3, #4, #5, #7, #8, #9, #10, #11, and #12.
 - React Native `list-performance-*` rules on a list that can grow without a limit.
@@ -56,7 +56,7 @@ Use `blocker` only for these defaults. Each needs evidence in the changed code.
 
 ## Needs evidence
 
-- `MEDIUM-HIGH` and lower impact rules: `client-*`, `rerender-*`, web `rendering-*`, `js-*`, and `advanced-*`.
+- `MEDIUM-HIGH` and lower impact rules. These are mostly `client-*`, `rerender-*`, web `rendering-*`, `js-*`, and `advanced-*`.
 - React Native rules that recommend a different library, such as `ui-expo-image`, `ui-image-gallery`,
   or `navigation-native-navigators`. Report a `nit` unless the change adds new code on the old library.
 - `use-effect-killer` #2 and manual memoization changes.
@@ -69,7 +69,9 @@ Use `blocker` only for these defaults. Each needs evidence in the changed code.
 - **Should-fix:** Accessibility, Focus States, and Forms rules, and the listed anti-patterns that block
   keyboard, screen reader, zoom, or paste use. Examples: a clickable `<div>`, a control without a label,
   `outline-none` without a replacement, or disabled zoom.
+- **Should-fix:** the Animation rule to honor `prefers-reduced-motion`.
 - **Nit:** Typography, Content & Copy, Hover, Dark Mode, and Touch rules.
+- **Nit:** all other sections, unless the finding blocks a task.
 - **Needs evidence:** the Performance section, as for other performance rules.
 - The repository's design system and copy style win. For example, its heading case wins
   over the Title Case rule.
@@ -79,3 +81,4 @@ Use `blocker` only for these defaults. Each needs evidence in the changed code.
 Record rules as the "React rule scan" section in `typescript-react-baseline.md` says.
 Add the severity to each `Applied` rule.
 State the evidence for each `blocker` and each evidence-based `should-fix`.
+When one effect matches a `use-effect-killer` number and a Vercel rule, record one finding with the `use-effect-killer` severity.

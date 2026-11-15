@@ -20,16 +20,16 @@ Resolved investigations can move to a `resolved/` subfolder. Pick a `<slug>` fro
 
 | Section | Rule | Why |
 |---|---|---|
-| **Symptoms** | IMMUTABLE after intake | the bug doesn't change; only our understanding does. Freezing it stops scope drift and "fixing a different bug." |
-| **Reproduction** | OVERWRITE until confirmed | `/reproduce` records the steps and status; keep it fixed after the gate passes. |
-| **Current Focus** | OVERWRITE before every action | always reflects the single thing in flight; `next_action` is the resume point. |
+| **Symptoms** | IMMUTABLE after intake | the bug does not change. Only our understanding does. Freezing it stops scope drift and "fixing a different bug." |
+| **Reproduction** | OVERWRITE until confirmed | `/reproduce` records the steps and status. Keep it fixed after the gate passes. |
+| **Current focus** | OVERWRITE before every action | always reflects the single thing in flight, and `next_action` is the resume point. |
 | **Eliminated** | APPEND only | a disproven hypothesis must never be re-investigated. |
 | **Evidence** | APPEND only | the audit trail of what was observed. |
-| **Reasoning checkpoint** | GATE | fill all 5 fields with concrete answers before any fix; if you can't, you don't have a root cause. |
+| **Reasoning checkpoint** | GATE | fill all 5 fields with concrete answers before any fix. If you cannot, you do not have a root cause. |
 | **Resolution** | OVERWRITE | firms up as the cause/fix/verification become clear. |
 
 `next_action` must be concrete and executable: *"Add logging at line 47 of auth.js before
-`jwt.verify()` to observe whether the token is present and its non-sensitive shape"* — never
+`jwt.verify()` to observe whether the token is present and its non-sensitive shape"*. Never
 *"continue investigating."*
 
 ## Status field
@@ -40,10 +40,10 @@ state while QA re-tests a fix manually (see `reproduction.md` and `fix-contract.
 
 ## Resume protocol (after a reset or handoff)
 
-1. Read the frontmatter → know the `status`.
-2. Read **Current Focus** → know exactly what was happening and the `next_action`.
-3. Read **Eliminated** → know what NOT to retry.
-4. Read **Evidence** → know what's already been learned.
+1. Read the frontmatter -> know the `status`.
+2. Read **Current focus** -> know exactly what was happening and the `next_action`.
+3. Read **Eliminated** -> know what NOT to retry.
+4. Read **Evidence** -> know what has already been learned.
 5. Continue from `next_action`.
 
 ## Cross-session knowledge base (optional, high-value)
@@ -61,11 +61,11 @@ to high-probability hypotheses when symptoms match. One entry per resolved bug:
 ```
 
 Read it at intake (`/bug-intake`) and at the start of `/rca`. A match (keyword overlap ≥ 2 tokens)
-is a **hypothesis candidate, not a confirmed diagnosis** — still run the loop, just start warmer.
+is a **hypothesis candidate, not a confirmed diagnosis**. Still run the loop, but start warmer.
 Write an entry in the close-out step, when the investigation resolves.
 
 ## Long investigations / context budget
 
 For a long run, keep the orchestrating context lean: hold only this file + project metadata, and
 pass file *paths* (never inlined file contents) to any sub-agent you spawn. The investigation
-state lives in the file, not in the agent — so a fresh agent can always pick it up.
+state lives in the file, not in the agent, so a fresh agent can always pick it up.

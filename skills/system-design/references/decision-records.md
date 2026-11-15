@@ -30,7 +30,7 @@ Existing implementation alone does not prove who approved a choice or why they c
 | Proposed | The choice awaits the project's required decision. |
 | Accepted | The authorized project decision is recorded with its evidence. |
 | Superseded | A linked decision replaces the earlier choice. |
-| Deprecated | The choice is retired; record its reason and any remaining dependencies. |
+| Deprecated | The choice is retired. Record its reason and any remaining dependencies. |
 
 Use the project's own states when they differ.
 Keep an agent recommendation proposed unless an authorized acceptance decision already exists.
@@ -38,12 +38,10 @@ Do not invent an approval, approver, date, or accepted status.
 When a decision materially changes, write a new record and link it to the previous record.
 Mark the previous record superseded while preserving its original rationale.
 Keep both records and update affected design references.
-Minor factual corrections may update the existing record with a traceable explanation.
+Minor factual corrections can update the existing record with a traceable explanation.
 
 ## Completion
 
 Check that referenced requirements, alternatives, consequences, and approval evidence support the recorded state.
 Keep unresolved decisions and unavailable evidence visible.
 For a concrete new architecture proposal, use the design procedure and linked threat review before claiming design readiness.
-
-Method adapted from [Addy Osmani's documentation and ADR guidance](https://github.com/addyosmani/agent-skills/blob/main/skills/documentation-and-adrs/SKILL.md).

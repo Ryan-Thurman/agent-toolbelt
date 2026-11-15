@@ -10,8 +10,7 @@ read it before you write for the user.
 
 Toolbelt paths: a path that starts with `shared/`, `skills/`, `templates/`, or `workflows/` is relative to the Toolbelt root, `${CLAUDE_PLUGIN_ROOT}`. If that variable is not replaced, use the nearest folder above this file that contains `shared/contracts/`.
 
-Below the line is the Vercel Labs guide. Long sections moved to
-[references/types-and-composition.md](references/types-and-composition.md).
+Below the line is the Vercel Labs guide.
 Source and license: [references/upstream-attribution.md](references/upstream-attribution.md).
 Repository policy, its design system, and its motion rules win over this guide.
 
@@ -161,5 +160,5 @@ Always add the reduced motion CSS from [references/css-recipes.md](references/cs
 - **[references/troubleshooting.md](references/troubleshooting.md)** — Symptom-driven debugging and runtime limitations.
 - **[references/css-recipes.md](references/css-recipes.md)** — Ready-to-use CSS animation recipes.
 - **[references/nextjs.md](references/nextjs.md)** — Next.js App Router patterns and Server Component details.
-- **[references/types-and-composition.md](references/types-and-composition.md)** — Transition types, shared elements, common patterns, and how multiple VTs interact (moved from this file).
+- **[references/types-and-composition.md](references/types-and-composition.md)** — Transition types, shared elements, common patterns, and how multiple VTs interact.
 - **[references/review-checklist.md](references/review-checklist.md)** — Review checklist for a change that adds or edits view transitions.

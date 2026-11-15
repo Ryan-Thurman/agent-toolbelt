@@ -1,4 +1,4 @@
-# Posting Contract
+# Posting contract
 
 Use this contract for any pack that writes comments or replies to an external
 pull-request host.
@@ -20,11 +20,11 @@ you write.
   degrade to report-only and say why.
 - Make posting idempotent with a stable marker or fingerprint so reruns do not
   duplicate comments.
-- Anchor line comments to the reviewed diff when possible; if an anchor is
+- Anchor line comments to the reviewed diff when possible. If an anchor is
   rejected or no longer in the diff, keep the finding in the summary rather
   than dropping it.
-- Suppress low-value noise by default. Post blockers and should-fix findings;
-  include nits only when explicitly requested or when no higher-severity
+- Suppress low-value noise by default. Post blockers and should-fix findings.
+  Include nits only when explicitly requested or when no higher-severity
   findings exist.
 
 Provider-specific payloads, review-thread APIs, and exact CLI calls belong in

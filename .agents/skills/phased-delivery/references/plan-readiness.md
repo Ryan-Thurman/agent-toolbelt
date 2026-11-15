@@ -1,6 +1,5 @@
 # Plan readiness
 
-Read this before implementation or when a user asks to review an existing plan.
 Start from the source outcome and acceptance criteria.
 Assess whether planned work covers them without adding product scope.
 
@@ -24,8 +23,6 @@ Report gaps in the Acceptance scenarios, Test levels, Negative cases, and Reliab
 They do not change the result unless the project instructions make them a gate.
 This assessment does not grant plan approval or authorize implementation.
 
-For review-only requests, report findings without changing the plan or starting execution.
 During authorized planning, correct technical gaps within existing scope and recheck the affected requirements.
 Run at most 2 revision passes. Then report the open findings and stop.
-Use a fresh reviewer when scope, risk, and authorized delegation justify it; otherwise perform a focused self-review.
-Do not require another approval when the user already approved the specific scope and PR boundaries.
+Use a fresh reviewer when scope, risk, and authorized delegation justify it. Otherwise perform a focused self-review.

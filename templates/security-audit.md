@@ -1,21 +1,21 @@
-# Security Audit: <target>
+# Security audit: <target>
 
 Status: Read-only | Authorized active scope: <reference>
 
-## Scope, Evidence, and Limitations
+## Scope, evidence, and limitations
 
 ## Findings
 
-| ID | Asset / entry point | Reachability and exploitability | Impact | CWE / OWASP if supported | Remediation | Verification | Confidence |
-|---|---|---|---|---|---|---|---|
+| ID | Asset / entry point / precondition | Reachability and exploitability | Impact | Evidence (file:line, revision) | CWE / OWASP if supported | Remediation | Verification | Confidence |
+|---|---|---|---|---|---|---|---|---|
 
-## Dependency and Secret Exposure Notes
+## Dependency and secret exposure notes
 
-Describe locations and types; redact all sensitive values.
+Describe locations and types. Redact all sensitive values.
 
-## Residual Risk and Next Actions
+## Residual risk and next actions
 
-## Design Requirement Verification
+## Design requirement verification
 
 When a linked design or threat report exists, reconcile its requirements against the inspected revision.
 

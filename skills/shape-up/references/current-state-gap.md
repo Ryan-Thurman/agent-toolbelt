@@ -9,25 +9,25 @@ read-only discovery report, not a brief-approval or implementation step.
    proof that the system behaves that way.
 2. Trace the relevant user path through entry points, permissions, data/model,
    business logic, integrations, UI/API, configuration, tests, and operational
-   behavior as applicable. Inspect code and docs; use safe runtime checks only
+   behavior as applicable. Inspect code and docs. Use safe runtime checks only
    when available and useful. Distinguish code behavior from documentation and
-   tests, which may be stale or incomplete.
+   tests, which can be stale or incomplete.
 3. Map each outcome to **covered**, **partial**, **missing**, or **unknown**.
    Attach exact file paths, symbols, tests, or observed outputs. A failed search
-   alone is not proof of absence; say what was searched and mark uncertainty.
-4. Identify contradictions and cross-cutting gaps that the ask may omit:
+   alone is not proof of absence. Say what was searched and mark uncertainty.
+4. Identify contradictions and cross-cutting gaps that the ask can omit:
    actor/authorization boundaries, empty and error states, existing data and
    migrations, backward compatibility, accessibility, observability, rollout,
    rollback, and verification. Include only those supported by the product
-   context or system evidence; do not produce a generic checklist.
+   context or system evidence. Do not produce a generic checklist.
 5. Separate **findings** (supported by evidence), **inferences** (reasoned but
    not verified), and **decisions needed** (product or policy choices the repo
    cannot settle). Prioritize questions by their effect on scope, risk, or PR
    boundaries. Suggest a recommended default when the evidence supports one.
 
-Report concisely in this order: requested outcome; current behavior and
-evidence; gap/status; consequence; prioritized unanswered questions; confidence
-and inspection limits. A small comparison table is useful for several outcomes.
+Report concisely in this order: (1) requested outcome, (2) current behavior and
+evidence, (3) gap/status, (4) consequence, (5) prioritized unanswered questions,
+(6) confidence and inspection limits. A small comparison table is useful for several outcomes.
 Complete this review without a phase plan, a PR, file edits, or approval.
 If the user then wants delivery, carry these findings into interactive shaping
 when product decisions remain open. Give already-approved scope directly to

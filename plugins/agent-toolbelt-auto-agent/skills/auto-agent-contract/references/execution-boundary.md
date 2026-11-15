@@ -8,7 +8,7 @@ For failed approaches, read `shared/contracts/references/failure-recovery.md` fr
 For external operations, read `shared/contracts/references/operation-retries.md` from that root.
 Compatibility installs place those files under the target's `.agents/` directory.
 
-The standard plugin supplies these shared contracts; this optional package supplies runner-specific guidance.
+The standard plugin supplies these shared contracts, and this optional package supplies runner-specific guidance.
 When the standard contracts are unavailable, report that limit rather than inventing a compatible interface.
 
 ## Runner responsibilities

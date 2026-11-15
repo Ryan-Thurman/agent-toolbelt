@@ -1,4 +1,4 @@
-# Phase Review
+# Phase review
 
 ## Phase
 
@@ -10,65 +10,57 @@
 
 Use one:
 
-- Pass
-- Pass with Notes
-- Needs Fixes
+- Ready
+- Needs Work
 - Blocked
 
-## Combined Review Verdicts
-
-Use one for each verdict: Pass, Pass with Notes, Needs Fixes, or Blocked.
-
-- Acceptance / Spec:
-- Code Quality:
-
-## Done-When / Acceptance Clauses Verified
+## Done-when / acceptance clauses verified
 
 List the clauses that were verified and the evidence used. Do not list a clause
-as verified when it is only Not Inferable.
+as verified when it is only Not verified.
 
 | Clause | Status | Evidence |
 |---|---|---|
-| ... | Verified / Failed / Not Inferable | ... |
+| ... | Verified / Failed / Not verified | ... |
 
-## Completed Tasks
+## Completed tasks
 
-## Acceptance Criteria Covered
+## Acceptance criteria covered
 
-## Verification Reach
+## Verification reach
 
-List important requirements or risks as Verified, Failed, or Not Inferable. For
-Not Inferable items, state the exact evidence needed next.
+List important requirements or risks as Verified, Failed, or Not verified. For
+Not verified items, state the exact evidence needed next.
 
 | Item | Reach | Evidence / Needed Evidence |
 |---|---|---|
-| ... | Verified / Failed / Not Inferable | ... |
+| ... | Verified / Failed / Not verified | ... |
 
 ## Findings
 
 ### Blocking
 
-### Should Fix
+### `Should Fix`
 
-### Nice to Have
+### `Nice to Have`
 
-Each request-changes finding should cite the specific plan, acceptance,
-contract, or boundary clause violated.
+Cite the specific plan, acceptance, contract, or boundary clause violated
+in each request-changes finding.
 
-## Required Fixes Before This Phase PR
+## Required fixes before this phase PR
 
-## Tests / Checks Reviewed
+## Tests / checks reviewed
 
-## Test Gaps
+## Test gaps
 
-List missing feasible tests and classify as Blocking, Should Fix, or Nice to
-Have.
+List missing feasible tests and classify as `Blocking`, `Should Fix`, or
+`Nice to Have`.
 
-## Remaining Risks
+## Remaining risks
 
-## Plan Document Updates
+## Plan document updates
 
 Summarize the phase status, review result, required fixes, PR target, next step,
 and resume instructions recorded in the existing plan or execution record.
 
-## Suggested Fix Commit Message
+## Suggested fix commit message

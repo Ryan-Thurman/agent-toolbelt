@@ -20,7 +20,7 @@ For an existing codebase, show your assumptions before you ask.
 Give each assumption its evidence, the consequence if it is wrong, and a confidence.
 The user corrects only the wrong rows.
 
-## Asking well (don't lead)
+## Asking well (do not lead)
 
 - Give your **recommended answer** with each question, and word the question so that "yes" accepts it.
   Offer choices when the options are known.
@@ -33,19 +33,19 @@ The user corrects only the wrong rows.
 ## Hunting contradictions (highest-value)
 
 - **Challenge a term against the code/glossary.** "Your code cancels entire Orders, but you just
-  said partial cancellation is possible — which is right?"
-- **Sharpen overloaded language to a canonical term.** "You said *account* — do you mean the
+  said partial cancellation is possible. Which is right?"
+- **Sharpen overloaded language to a canonical term.** "You said *account*. Do you mean the
   Customer or the User? Those are different things."
 - **Stress-test with invented edge cases.** Pose specific scenarios that force the user to be
   precise about boundaries between concepts ("what happens if the order is already shipped when
   they cancel?").
-- Surface every mismatch immediately; do not smooth it over to keep things moving.
+- Surface every mismatch immediately. Do not smooth it over to keep things moving.
 
 ## Brief self-audit (before emitting)
 
-- **Decision state** — separate agreed decisions, delegated technical choices, deferred ideas, and
+- **Decision state**: separate agreed decisions, delegated technical choices, deferred ideas, and
   unresolved questions. Resolve repository facts and delegated choices yourself.
-- **Internal consistency** — do any sections contradict each other?
-- **Ambiguity** — could any requirement be read two ways? If so, pick one and make it explicit.
-- **Placeholder scan** — no `TBD`/`TODO`/half-finished sections left; resolve or note them as open
+- **Internal consistency**: do any sections contradict each other?
+- **Ambiguity**: can any requirement be read two ways? If so, pick one and make it explicit.
+- **Placeholder scan**: no `TBD`/`TODO`/half-finished sections left. Resolve or note them as open
   questions with a recommended default.

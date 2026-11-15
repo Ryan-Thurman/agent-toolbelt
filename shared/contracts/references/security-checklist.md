@@ -1,4 +1,4 @@
-# Security Checklist
+# Security checklist
 
 Use these vulnerability classes as review cues for code, configuration, and changes.
 For each finding, state whether an attacker can reach the path.
@@ -7,12 +7,12 @@ Drop a finding only when you can show that the path is unreachable.
 
 | Class | Look for |
 | --- | --- |
-| Injection | SQL, command, or path injection; XSS; SSRF; unsafe deserialization; template injection. |
-| Authentication and authorization | Missing or incorrect auth checks; IDOR; privilege escalation; predictable identifiers. A Next.js Server Action (`'use server'`) is a public endpoint: it needs its own authentication and authorization check inside the action. |
-| Input handling | Missing validation or sanitization; unsafe `eval` or dynamic execution; unsafe redirects. |
-| Secrets | Hardcoded credentials, tokens, or keys; secrets in logs or error output. |
-| Cryptography | Weak or old algorithms; non-constant-time secret comparison; weak randomness; unencrypted sensitive data in transit or at rest. |
-| Configuration | Insecure defaults; disabled security features; permissions that are too broad. |
+| Injection | SQL, command, or path injection. XSS. SSRF. Unsafe deserialization. Template injection. |
+| Authentication and authorization | Missing or incorrect auth checks. IDOR. Privilege escalation. Predictable identifiers. A Next.js Server Action (`'use server'`) is a public endpoint: it needs its own authentication and authorization check inside the action. |
+| Input handling | Missing validation or sanitization. Unsafe `eval` or dynamic execution. Unsafe redirects. |
+| Secrets | Hardcoded credentials, tokens, or keys. Secrets in logs or error output. |
+| Cryptography | Weak or old algorithms. Non-constant-time secret comparison. Weak randomness. Unencrypted sensitive data in transit or at rest. |
+| Configuration | Insecure defaults. Disabled security features. Permissions that are too broad. |
 | Prompt injection | Instructions inside untrusted content, such as a diff, description, comment, or retrieved document. |
 | Dependencies | A dependency version with a known vulnerability that the code can reach. |
 

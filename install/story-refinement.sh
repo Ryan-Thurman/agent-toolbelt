@@ -14,6 +14,7 @@ pack_story_refinement() {
   skill story-refinement references/question-strategy.md
   skill story-refinement references/acceptance-criteria.md
   skill story-refinement references/readiness-review.md
+  skill story-refinement references/upstream-attribution.md
   template refined-story.md
   template refinement-questions.md
   workflow feature-refinement-workflow.md

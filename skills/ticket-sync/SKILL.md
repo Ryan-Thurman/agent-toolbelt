@@ -1,6 +1,6 @@
 ---
 name: ticket-sync
-description: "Publish approved ticket files to the repository's tracker: GitHub Issues, Jira, or Azure Boards. Use after shape-up slicing, bug-to-fix intake, or a project-owned ticket workflow. Preview changes, preserve tracker keys, and write a manifest when offline."
+description: "Publish approved ticket files to the repository's tracker: GitHub Issues, Jira, or Azure Boards. Use after shape-up slicing or a project-owned ticket workflow. Preview changes, preserve tracker keys, and write a manifest when offline."
 ---
 
 # ticket-sync
@@ -10,11 +10,11 @@ read it before you write for the user.
 
 Toolbelt paths: a path that starts with `shared/`, `skills/`, `templates/`, or `workflows/` is relative to the Toolbelt root, `${CLAUDE_PLUGIN_ROOT}`. If that variable is not replaced, use the nearest folder above this file that contains `shared/contracts/`.
 
-Publish local ticket files from `shape-up` slicing (`/to-issues`), `bug-to-fix` intake (`/bug-intake`),
+Publish local ticket files from `shape-up` slicing (`/to-issues`)
 or project-owned ticket workflows to the tracker that the repository declares.
 Slicing belongs to those workflows.
 
-## Mutation Policy
+## Mutation policy
 
 Default: dry-run preview.
 Modify remote tracker issues only after explicit confirmation.
@@ -39,7 +39,7 @@ Edit local ticket files only to record tracker keys created during a confirmed a
 ## Flow
 
 Before an apply or retry, read `shared/contracts/references/operation-retries.md`.
-If issue creation may have succeeded before its key was saved, reconcile remote identity before another create.
+If it is unknown whether issue creation succeeded before its key was saved, reconcile remote identity before another create.
 When that identity cannot be established, report an unknown outcome and preserve the pending operation.
 
 1. **Resolve config** (`references/config.md`). Find `.tickets.md` in the target repo.
@@ -58,6 +58,6 @@ When that identity cannot be established, report an unknown outcome and preserve
    In manifest mode, write the manifest instead.
 6. **Report.** List each ticket with its tracker key, URL, and action
    (created / updated / manifest-only / skipped).
-   Name each dependency that could not be linked yet.
+   Name each dependency that cannot be linked yet.
 
 To start a `.tickets.md` file in a target repository, copy `templates/tickets-config.md`.

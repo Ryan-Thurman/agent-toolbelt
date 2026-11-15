@@ -1,7 +1,5 @@
 # Data design
 
-Read this at the Standard level or higher when a design adds or changes a data store, a schema, or data ownership.
-
 ## Start from the queries
 
 1. List the reads and writes that the design needs, with their expected frequency and the result size.

@@ -12,9 +12,7 @@ Toolbelt paths: a path that starts with `shared/`, `skills/`, `templates/`, or `
 Read `shared/contracts/references/evidence-quality.md` when assessing the research evidence.
 
 Analyze supplied research or permitted connected sources.
-Default to report-only; write a requested research artifact without changing product code or publishing to external systems.
-
-Paths beginning `templates/` or `shared/` refer to the Toolbelt root.
+Default to report-only. Write a requested research artifact without changing product code or publishing to external systems.
 
 ## Procedure
 

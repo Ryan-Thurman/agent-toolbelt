@@ -31,8 +31,7 @@ into `AGENTS.md`. The default target is `.pr-review.md`.
 1. Find the repositories. For a sweep, a child folder is a repository when it is a git repository,
    or when it has a README, an `AGENTS.md`, or a build file. Follow symbolic links. Skip files,
    including an earlier `risk-areas-review.md`. Skip a folder that you cannot read and record the
-   reason. Record each signal that you cannot search, for example defect history without git, in
-   "Signals not available".
+   reason.
    Do not read `.env` files, key files, or other credential files. This includes configuration files
    that hold passwords or connection strings. Report the file name and whether `.gitignore`
    excludes it under "Other findings".
@@ -59,11 +58,11 @@ into `AGENTS.md`. The default target is `.pr-review.md`.
 1. Read the review file. Use only the repositories with the status `Approved`. A repository heading
    names a child folder of the folder that holds the review file. For a review file at a repository
    root, the heading names that repository.
-2. Write the entry lines and their `Paths:` lines, with the continuation lines. Do not write the
-   evidence lines or any other part of the review file into the target file.
-3. Before you write, read the discovery order of the contract. When a file earlier in the order than
+2. Before you write, read the discovery order of the contract. When a file earlier in the order than
    the target already has a `## Risk areas` section, readers use that list and ignore the new one.
    Warn the user and ask which file to write.
+3. Write the entry lines and their `Paths:` lines, with the continuation lines. Do not write the
+   evidence lines or any other part of the review file into the target file.
    Write a `## Risk areas` heading and the entries into the target file of each repository:
    - When the target file does not exist, create it with only that section.
    - When the file exists without the section, add the section at the end of the file.

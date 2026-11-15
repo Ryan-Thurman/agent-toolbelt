@@ -15,7 +15,6 @@ Documents rules in `human-readable-output.md`. Its "Writing precedence" section 
 ## Voice
 
 - Address the reader as "you". Do not use "the user" or "one".
-- Use "we" only for an action of the project team, such as "we recommend". Do not use "we" for the reader.
 - Do not ask rhetorical questions.
 
 ## Specific words
@@ -28,23 +27,21 @@ Documents rules in `human-readable-output.md`. Its "Writing precedence" section 
 
 ## Headings
 
-- Use sentence case for headings, unless the repository uses a different rule.
+- Follow the repository's heading case rule, if it has one.
 - Make each heading specific, so that the reader can predict the section content.
   Do not use one general word, such as "Overview", "Notes", or "Caveats", alone.
 
 ## Structure
 
 - Spell out an acronym at first use, for example "Content Security Policy (CSP)".
-- Define each term at first use, or link to the page that defines it.
-- Give each paragraph one idea. Use two to four sentences in each paragraph.
-- When a paragraph contains three or more parallel items, write a list.
+- For a term, link to the page that defines it, if one exists.
+- Give each paragraph one idea. Use at most six sentences in each paragraph.
 - Use a numbered list for steps in sequence. Use a bulleted list for other items.
 - Do not put a period after a list item that is not a full sentence.
 - For a list of terms, use this format: `- Term: description`.
 
 ## Emphasis and code
 
-- Use bold only for UI element names.
 - Use inline code for paths, file extensions, identifiers, commands, and short code.
 - Give each code block a language tag.
 - Keep each code block to 25 lines or fewer and 80 characters or fewer for each line.
@@ -66,8 +63,7 @@ Documents rules in `human-readable-output.md`. Its "Writing precedence" section 
 ## Punctuation and layout
 
 - Do not use a hyphen as punctuation. Use a colon, a comma, or a new sentence.
-- In Markdown source, use straight quotes and three periods, so that search and copy work.
-  UI text follows the typography rules of the web interface guidelines.
+- UI text follows the typography rules of the web interface guidelines.
 - Do not put horizontal rules (`---`) between sections.
 - Follow the line-wrap convention of the file that you edit.
 
@@ -77,4 +73,4 @@ Report each finding on one line, grouped by file: `path:line - problem. Fix.`
 Report only the changed text, unless the user names the files.
 
 Adapted from the MIT-licensed [Vercel Labs Writing Guidelines](https://github.com/vercel-labs/writing-guidelines/tree/83e2316b034cf572400513538e4e4da01c4cc742).
-Rules specific to the Vercel docs site are removed. The `simple-english` rules replace the rules that conflict with them.
+Rules specific to the Vercel docs site are removed. The rules in `human-readable-output.md` replace the rules that conflict with them.

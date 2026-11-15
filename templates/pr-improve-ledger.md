@@ -1,13 +1,13 @@
-# PR Improvement Ledger
+# PR improvement ledger
 
 Use this artifact with `skills/pr-improve/references/loop-contract.md`.
 
 ## Baseline
 
-## Scope and Untracked Guard
+## Scope and untracked guard
 
-## Finding Ledger
+## Finding ledger
 
 ## Round Log
 
-## Final Status
+## Final status

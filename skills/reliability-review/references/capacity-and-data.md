@@ -22,6 +22,6 @@ Read this when the change alters expected load, a capacity limit, a data store, 
 | --- | --- |
 | How can the data be lost? | Deletion by a person or a bug, slow corruption, a region outage, a ransomware or credential compromise, or a bad migration. |
 | Which layers defend it? | Soft delete, point-in-time recovery, backups, replicas, and a copy in a separate administrative domain. A replica copies corruption and deletion. It is not a backup. |
-| What are the RPO and RTO? | For each dataset, from the project or `Unknown` with an owner. |
+| What are the RPO and RTO? | For each dataset, from the project or `Decision needed` with an owner. |
 | Which recovery strategy applies? | Backup and restore, pilot light, warm standby, or active-active. Check that it meets the RTO and RPO. |
 | When was a restore last tested? | The date and the result. A restore drill restores to an isolated target and checks the data. It never restores over the live resource. |

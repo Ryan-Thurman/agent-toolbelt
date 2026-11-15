@@ -6,6 +6,7 @@ each path. Search code and configuration folders first. Skip a folder that holds
 A signal is not available when its input does not exist: no git history, no `CODEOWNERS`, or no
 output from the other skill. Check for tool output with one search. Do not run the other skill.
 Record each signal that is not available in "Signals not available".
+Record each signal that you searched and that found nothing in "Signals with no candidates".
 
 | Signal | What to search |
 | --- | --- |

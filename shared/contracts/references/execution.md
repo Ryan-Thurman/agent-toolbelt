@@ -6,7 +6,7 @@ The contract does not require a service, tracker, or new project document.
 
 ## Ownership
 
-The source requirement defines intended behavior; observations establish actual behavior.
+The source requirement defines intended behavior. Observations establish actual behavior.
 Record a conflict as a gap rather than rewriting requirements from code.
 The caller owns assignment, durable workflow state, attempt limits, and external actions.
 The worker owns its assigned analysis or changes and reports evidence.
@@ -31,12 +31,12 @@ Record unavailable or shortened context explicitly, with a path to the complete 
 
 Report the status, summary, changed paths, checks, acceptance outcomes, blockers, and proposed next action.
 Use `completed`, `partial`, `failed`, or `blocked` as the status.
-Evidence must identify an artifact or observation; a repeated claim of success is insufficient.
+Evidence must identify an artifact or observation. A repeated claim of success is insufficient.
 Keep missing checks and criteria visible even when the worker returns a partial result.
 `completed` means this assignment met its criteria and required checks.
 It does not mean the feature is approved, merged, or released.
 A completed review can report a failing implementation when the assignment was to perform that review.
-Record additional diagnostic checks separately from the caller's required checks; the caller determines whether their failures block advancement.
+Record additional diagnostic checks separately from the caller's required checks. The caller determines whether their failures block advancement.
 
 The caller derives permitted next actions from current state, evidence, policy, and authorization.
 When an action is unavailable, name its missing prerequisite and owner.

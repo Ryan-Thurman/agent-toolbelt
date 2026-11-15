@@ -4,6 +4,7 @@ Classify each effect as one numbered anti-pattern or one legitimate use.
 The catalog follows React's guide
 [You Might Not Need an Effect](https://react.dev/learn/you-might-not-need-an-effect).
 Upstream source and license: [upstream-attribution.md](upstream-attribution.md).
+"Skip" in the legitimate-use list means: do not report a finding. Still record the effect as `Legitimate`.
 
 ## Version and framework notes
 

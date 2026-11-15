@@ -24,14 +24,14 @@ UI files changed since the default branch.
 
 ## Output
 
-Group findings by file. Use `file:line` locations. Write one line for each finding:
-the problem and the fix. Add an explanation only when the fix is not obvious.
+Group findings by file. Use `file:line` locations. Write one line for each finding
+in this format: `file:line - [severity] problem. Fix.` Add an explanation only when the fix is not obvious.
 
 ```text
 ## src/Button.tsx
 
-src/Button.tsx:42 - icon button has no aria-label. Add aria-label="Close".
-src/Button.tsx:67 - transition: all. List the animated properties.
+src/Button.tsx:42 - [should-fix] icon button has no aria-label. Add aria-label="Close".
+src/Button.tsx:67 - [nit] transition: all. List the animated properties.
 
 ## src/Card.tsx
 

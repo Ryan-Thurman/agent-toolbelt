@@ -8,24 +8,20 @@ thread per location.
 
 ## Confirmation
 
-This section applies the confirmation rule in `shared/contracts/references/posting.md` to `--comment`.
-
-- A caller skill, CI job, review-queue worker, or review-on-open poller that passes `--comment`
-  has already confirmed. Post without a prompt.
-- An interactive user who passed `--comment` and said "post" has confirmed. Post without a prompt.
-- In other interactive runs, print the preview (see "Dry-run / preview") and ask before the POST.
+The confirmation rule for `--comment` is in `shared/contracts/references/posting.md`. The preview
+is the one in "Dry-run / preview".
 
 ## Preconditions
 
 - The target must resolve to a real PR on GitHub or Azure Repos.
-- The host CLI must be authenticated: GitHub `gh auth status`; Azure `az account show`.
+- The host CLI must be authenticated: GitHub `gh auth status`, Azure `az account show`.
 
 If a precondition fails, print the report and say why posting was skipped.
 
 ## What gets posted (provider-neutral)
 
 Post a **summary** plus **one inline comment per finding** at/above the posting threshold. Group them
-so the author gets minimal noise: GitHub batches all of it into one review; Azure posts one thread per
+so the author gets minimal noise: GitHub batches all of it into one review. Azure posts one thread per
 location (no batch object) plus a PR-level summary thread.
 
 - **Summary** = the report header: what the change does, the **host-derived verdict**, and the
@@ -34,7 +30,6 @@ location (no batch object) plus a PR-level summary thread.
   A partial review then keeps its scope gaps when posted.
 - End the summary with the **head-SHA review marker** (see Idempotency):
   `<!-- pr-review:head=<headSha> tier=<tier> -->`.
-- **One inline comment per surviving finding** at/above the posting threshold (below).
 - Each inline comment body =
   ```
   **<bucket·severity> — <title>**
@@ -49,31 +44,31 @@ location (no batch object) plus a PR-level summary thread.
   ```
   ````
   On **GitHub** this is a one-click committable suggestion. On **Azure Repos** there is no committable
-  suggestion — it renders as a plain code fence, so prefix it with `Suggested change:` so the author
+  suggestion. It renders as a plain code fence, so prefix it with `Suggested change:` so the author
   knows to apply it by hand.
 - The trailing HTML comment is an **idempotency marker** (`fingerprint` per `rejection-memory.md`).
-  It's invisible in the rendered PR but lets a re-run detect "already posted this" — see Idempotency.
+  It is invisible in the rendered PR but lets a re-run detect "already posted this" (see Idempotency).
 
 ## Posting threshold (anti-spam)
 
 Post the findings that survive the posting threshold in `output-format.md`. Questions and re-entry notes go in the
-**summary body**, not as inline comments (they're not line-anchored assertions). A `⟲ previously
+**summary body**, not as inline comments (they are not line-anchored assertions). A `⟲ previously
 rejected` finding (`rejection-memory.md`) still posts but keeps its tag in the comment body.
 
 ## Line anchoring
 
 Both hosts anchor to the **new side** of the change, but spell it differently:
 
-- **GitHub:** `side: "RIGHT"`, `line: <lineEnd>`; multi-line adds `start_line: <lineStart>` +
-  `start_side: "RIGHT"`. Only accepts a `line` that's part of the PR diff.
+- **GitHub:** `side: "RIGHT"`, `line: <lineEnd>`, and multi-line adds `start_line: <lineStart>` +
+  `start_side: "RIGHT"`. It accepts only a `line` that is part of the PR diff.
 - **Azure:** `threadContext.rightFileStart`/`rightFileEnd` = `{line, offset}` (1-based line **and**
-  column; use `offset: 1`), with `filePath` as a repo-root-absolute path (leading `/`). Anything on
-  the old side would use `leftFile*` instead — we always use right.
+  column, so use `offset: 1`), with `filePath` as a repo-root-absolute path (leading `/`). Anything on
+  the old side uses `leftFile*` instead. This skill always uses the right side.
 - If a finding's line is **not in the diff** (e.g. an unchanged line flagged for context), the host
-  may reject the anchor. Do **not** drop the finding — move it into the **summary** as
-  `**<file>:<line>** — <title>` so it's still reported. Track which findings couldn't anchor.
+  can reject the anchor. Do **not** drop the finding. Move it into the **summary** as
+  `**<file>:<line>** — <title>` so it is still reported. Track which findings failed to anchor.
 
-## Mechanics — GitHub (`gh`)
+## Mechanics: GitHub (`gh`)
 
 Resolve the PR number `N` and owner/repo, then build the review payload and POST it in one call.
 
@@ -109,12 +104,12 @@ gh api repos/{owner}/{repo}/pulls/<N>/reviews \
 }
 ```
 
-Build `payload.json` with a real JSON tool (e.g. `jq -n` or write the file), never string-concatenation
-— finding bodies contain backticks, quotes, and newlines.
+Build `payload.json` with a real JSON tool (e.g. `jq -n` or write the file), never string-concatenation,
+because finding bodies contain backticks, quotes, and newlines.
 
-## Mechanics — Azure Repos (`az`)
+## Mechanics: Azure Repos (`az`)
 
-Azure has **no batched-review object** — each location is its own **thread**, posted via the
+Azure has **no batched-review object**. Each location is its own **thread**, posted via the
 `pullRequestThreads` REST resource (no first-class `az repos pr` verb for it, so use `az devops
 invoke`). Get the routing IDs once (`providers.md`):
 
@@ -148,23 +143,23 @@ az devops invoke --area git --resource pullRequestThreads \
 
 The **summary thread** is the same call with no `threadContext` (a PR-level discussion thread). Build
 each `thread.json` with a real JSON tool, same as GitHub. (Optional: roll all comments into one thread
-to reduce noise — but per-location threads are what Azure reviewers expect, so default to that.)
+to reduce noise. Per-location threads are what Azure reviewers expect, so default to that.)
 
-## Verdict → review state
+## Verdict -> review state
 
-The verdict is **informational by default** on both hosts — put `**Verdict: REQUEST CHANGES**` in the
-summary text and don't gate the merge from the tool.
+The verdict is **informational by default** on both hosts. Put `**Verdict: REQUEST CHANGES**` in the
+summary text and do not gate the merge from the tool.
 
-- **GitHub:** always post `event: "COMMENT"` — GitHub forbids `APPROVE`/`REQUEST_CHANGES` on your own
-  PR, and a CLI review is usually "self". (Reviewing someone else's PR and explicitly want a blocking
-  review? They can pass that intent; default stays `COMMENT`.)
+- **GitHub:** always post `event: "COMMENT"`. GitHub forbids `APPROVE`/`REQUEST_CHANGES` on your own
+  PR, and a CLI review is usually "self". (Reviewing the PR of someone else and explicitly want a blocking
+  review? They can pass that intent. The default stays `COMMENT`.)
 - **Azure:** `az repos pr set-vote` *can* cast a vote (`approve`/`wait-for-author`/`reject`/`reset`),
-  and Azure permits self-votes. Still **don't auto-vote** by default — only map verdict → vote when
+  and Azure permits self-votes. Still **do not auto-vote** by default. Map verdict -> vote only when
   the user explicitly asks (e.g. "and set my vote"). Posting comments must never silently change a vote.
 
 ## Idempotency (re-running `--comment`)
 
-Re-running would otherwise double-post. Use two markers:
+Re-running otherwise double-posts. Use two markers:
 
 | Marker | Where | Meaning |
 |---|---|---|
@@ -203,6 +198,6 @@ Ask before the POST only when "Confirmation" requires it.
 
 ## Failure handling
 
-- A single comment rejected for a bad anchor → drop it to the summary body (above) and post the rest;
-  never let one un-anchorable finding sink the whole review.
-- Partial POST failure → report what posted and what didn't; the markdown report remains the source of truth.
+- A single comment rejected for a bad anchor -> drop it to the summary body (above) and post the rest.
+  Never let one un-anchorable finding sink the whole review.
+- Partial POST failure -> report what posted and what did not. The markdown report remains the source of truth.

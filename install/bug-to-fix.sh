@@ -1,5 +1,5 @@
 # DESC: diagnostic lane: triage, reproduce, root-cause analysis, minimal fix, verification
-# DEPENDS: simple-english
+# DEPENDS: handoff simple-english
 pack_bug_to_fix() {
   shared_contract references/human-readable-output.md
   shared_contract references/docs-writing.md
@@ -13,7 +13,7 @@ pack_bug_to_fix() {
   shared_contract references/providers.md
   shared_contract scripts/validate-execution.py
   local c
-  for c in bug-intake reproduce rca fix-plan handoff; do
+  for c in bug-intake reproduce rca fix-plan; do
     cmd "$c"
   done
 

@@ -14,7 +14,7 @@ Take a merged or approved change to "released safely".
 Make every release reversible, observable, and incremental.
 Prefer a feature flag and a staged rollout to a big-bang deploy.
 
-## Mutation Policy
+## Mutation policy
 
 - Prepare the release package by default.
 - Edit release artifacts only when the user explicitly asks.
@@ -26,24 +26,25 @@ Prefer a feature flag and a staged rollout to a big-bang deploy.
 ## Determine who owns the deploy
 
 Ask, or infer from the repo: a CI/CD config that deploys on merge to the default branch (GitHub
-Actions `deploy`, GitLab CI, a release pipeline) usually means **the pipeline owns it** — prepare
+Actions `deploy`, GitLab CI, a release pipeline) usually means **the pipeline owns it**: prepare
 and hand off. A repo with no deploy automation, or manual deploy scripts, usually means **you own
 it**. When unsure, ask before doing anything that deploys.
 
 ## Flow
 
 1. **Readiness check.** Read `references/readiness-checklist.md` and scope it to the change.
-   Give a **GO / NO-GO** verdict with the blocking gaps listed.
+   List the blocking gaps.
 2. **Rollback plan.** Read `references/rollout-and-rollback.md`. State how to revert and the
-   trigger that means "roll back now". When the project has no rollback trigger, the verdict is
-   NO-GO. List the missing trigger as the blocking gap.
+   trigger that means "roll back now". When the project has no rollback trigger, the verdict in
+   step 4 is NO-GO. List the missing trigger as the blocking gap.
 3. **Release notes.** Draft a release-notes entry from the merged commits or PRs since the last
    tag with `templates/release-notes.md`. Suggest the version or tag. Confirm the documentation
    gate in the readiness checklist.
-4. **Rollout and monitor plan.** Choose big-bang, flagged, staged, or canary rollout. List the
+4. **Verdict.** Give a **GO / NO-GO** verdict with the blocking gaps from steps 1 to 3 listed.
+5. **Rollout and monitor plan.** Choose big-bang, flagged, staged, or canary rollout. List the
    metrics, the observation window, and the advance, hold, and recover rules for each stage.
-5. **Hand off or roll out.**
-   - **Pipeline owns the deploy:** Give steps 1–4 as the release package. Frame step 4 as the
+6. **Hand off or roll out.**
+   - **Pipeline owns the deploy:** Give steps 1–5 as the release package. Frame step 5 as the
      watch-list for the pipeline deploy.
    - **You own the deploy:** Walk the staged rollout. Advance only when the stage's rules pass.
 

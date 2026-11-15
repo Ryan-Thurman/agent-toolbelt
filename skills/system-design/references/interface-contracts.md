@@ -1,6 +1,5 @@
 # Interface contracts
 
-Read this at the Standard level or higher when a design adds or changes an API, an event, or a webhook.
 An interface contract is what a caller can rely on: requests, responses, errors, limits, and how they change.
 
 ## Choose the protocol from the call

@@ -11,7 +11,7 @@ Environment: Staging. Production approval reference: <none, or the reference>
 | Hypothesis | When <fault> affects <target>, <journey SLI> stays within <tolerance>, and <expected behavior>. |
 | Steady state | Signal, source, baseline window, tolerance. `Conditional` if the signal does not exist. |
 | Fault | Type, size, duration, target, scope. |
-| Verification level | Unit, Integration, BDD, Staging experiment, or Game day |
+| Verification level | Unit, Integration, Contract, End-to-end, Staging experiment, or Game day |
 | Target and scope | Staging experiment and game day only. |
 | Blast radius | Staging experiment and game day only. |
 | Duration | Staging experiment and game day only. |
@@ -23,7 +23,7 @@ Environment: Staging. Production approval reference: <none, or the reference>
 | Result | `Not run`, `Supported`, `Contradicted`, or `Inconclusive`, with evidence. |
 
 ```gherkin
-@FS-001 @negative
+@FS-001 @integration @negative @REL-003
 Scenario: <name>
   Given <steady state and preconditions>
   When <fault>

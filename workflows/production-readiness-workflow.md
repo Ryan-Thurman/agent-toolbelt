@@ -31,6 +31,6 @@ Run `/reliability-review --readiness` again with the results.
 
 ## Release
 
-Run `/ship-it`. Its reliability section uses the readiness verdict.
+Run `/ship-it`. Its reliability section uses the requirement statuses.
 Each affected journey gets an SLO burn-rate rollback trigger, or the gap is recorded with an owner.
 A requirement that is `Failed` or `Not verified` blocks the release only when its owner does not accept the gap.

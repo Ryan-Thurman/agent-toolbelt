@@ -28,25 +28,14 @@ Report only. Edit files only after the user reviews the brief and asks to contin
    Use exact file paths, commands, and test seams from the repo.
 7. Give verification commands and unresolved questions.
 8. Name the next skill: `phased-delivery`, `cover` (author mode or gap-scan mode), or `retrofit`.
-   On hosts with commands, also name the command: `/implementation-plan`, `/dev-plan`, `/cover`, `/cover-gaps`, or `/retrofit`.
+   On hosts with commands, also name the command: `/implementation-plan`, `/cover`, `/cover-gaps`, or `/retrofit`.
    If the ticket becomes a "should we do this?" decision, hand off to `tech-backlog-assessment`.
 
 ## Output
 
 Use `templates/ticket-discovery-brief.md` when creating a durable artifact.
 Replace all placeholders before you present it.
-Always include:
-
-- Ticket summary.
-- Referenced precedent and the files/commands that prove it.
-- Target current state.
-- Source-vs-target gap analysis.
-- Recommended adaptation approach.
-- Specific test coverage to add or strengthen.
-- Verification commands.
-- Risks, unknowns, and next workflow.
 
 Completion criterion: every referenced precedent is backed by an exact path,
 command, or explicit "not found" result. Do not hand off implementation until
 the source pattern and target gap can be traced to repo evidence.
-End with the next command and whether the ticket is ready for implementation planning.

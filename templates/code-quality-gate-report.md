@@ -9,7 +9,7 @@ round_bound: 3
 rounds_completed: 0
 ---
 
-# Code Quality Gate Evidence
+# Code quality gate evidence
 
 ## Target and frozen scope
 

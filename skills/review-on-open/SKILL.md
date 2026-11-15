@@ -15,12 +15,12 @@ The **trigger** layer for `pr-review`. It decides *when* a fresh reviewer starts
 
 ## Two triggers, one reviewer
 
-Pick by host and appetite for infrastructure. They are not exclusive; a repo can wire both.
+Pick by host and appetite for infrastructure. They are not exclusive. A repo can wire both.
 
 | trigger | how it fires | fresh-context source | best for |
 |---|---|---|---|
-| **event (CI)** | the host's `PR opened/synchronize` event runs a headless `claude -p "/pr-review <n> --comment"` | each CI run is a brand-new process | **GitHub** repos — true event-driven, zero polling, no machine kept alive |
-| **poller** | `/review-on-open` lists open PRs and reviews the unseen ones; driven on an interval by `/loop` or `/schedule` | each `/pr-review` sub-run is a fresh sub-agent | **Azure Repos**, mixed hosts, or anywhere without a webhook→CI path; also good for local "watch my repos" |
+| **event (CI)** | the host's `PR opened/synchronize` event runs a headless `claude -p "/pr-review <n> --comment"` | each CI run is a brand-new process | **GitHub** repos (true event-driven, zero polling, no machine kept alive) |
+| **poller** | `/review-on-open` lists open PRs and reviews the unseen ones. Driven on an interval by `/loop` or `/schedule` | each `/pr-review` sub-run is a fresh sub-agent | **Azure Repos**, mixed hosts, or anywhere without a webhook->CI path. Also good for local "watch my repos" |
 
 Decision rule: **if the host can run CI on the PR event, prefer the event path.** Use the poller for
 hosts without event CI, mixed-host watching, several repos at once, or a laptop-side watcher.
@@ -38,19 +38,19 @@ This pack adds these rules:
 - Both triggers fire when a PR opens and when it gets a new push.
 - Unattended runs (CI, a `/schedule` routine) post without a prompt. An **interactive**
   `/review-on-open` confirms before its first post, then continues for the rest of the poll.
-- Event-path hardening is in `references/ci-event.md` → "Untrusted-diff hardening".
+- Event-path hardening is in `references/ci-event.md` -> "Untrusted-diff hardening".
 - The poller applies the self-loop guard in `references/poller.md`.
 
 ## Inputs (the `/review-on-open` poller)
 
-- **target filter** *(optional)* — restrict the poll: a repo path/slug, or a host filter like
+- **target filter** *(optional)*: restrict the poll: a repo path/slug, or a host filter like
   `--author=<bot>` / `--label=needs-review`. Empty = open PRs on the current repo/host.
-- **`--tier=light|standard|deep`** — passed through to `/pr-review`. Omit it to let pr-review
+- **`--tier=light|standard|deep`**: passed through to `/pr-review`. Omit it to let pr-review
   auto-tier per diff. This is the right default for a bot.
-- **`--max=<n>`** — cap PRs reviewed per poll (default 5). The rest wait for the next tick.
-- **`--dry-run`** — list the PRs that would be reviewed (and why: new / head-changed) and stop. No
+- **`--max=<n>`**: cap PRs reviewed per poll (default 5). The rest wait for the next tick.
+- **`--dry-run`**: list the PRs that will be reviewed (and why: new / head-changed) and stop. No
   review, no posting.
-- **`--host=auto|github|azure`** — override host detection (`shared/contracts/references/providers.md`).
+- **`--host=auto|github|azure`**: override host detection (`shared/contracts/references/providers.md`).
   Default `auto` from the origin remote.
 
 ## Completion
@@ -62,11 +62,11 @@ The `ANTHROPIC_API_KEY` secret must also exist.
 
 ## References
 
-- `references/poller.md` — list open PRs per host, due check, self-loop guard, fan-out, and scheduling.
-- `references/ci-event.md` — the GitHub Actions template explained, secrets, untrusted-diff hardening,
+- `references/poller.md`: list open PRs per host, due check, self-loop guard, fan-out, and scheduling.
+- `references/ci-event.md`: the GitHub Actions template explained, secrets, untrusted-diff hardening,
   and the Azure Pipelines sketch.
-- `skills/pr-review/references/triggers.md` — the invariants that apply to every review trigger.
-- `skills/pr-review/references/posting.md` — the head-SHA marker that makes every trigger idempotent.
-- `shared/contracts/references/providers.md` — host detection for PR listing and SHA reads.
-- `shared/contracts/references/posting.md` — the opt-in / idempotent posting policy.
-- `templates/review-on-open-github.yml` — the copyable workflow target repos drop into `.github/workflows/`.
+- `skills/pr-review/references/triggers.md`: the invariants that apply to every review trigger.
+- `skills/pr-review/references/posting.md`: the head-SHA marker that makes every trigger idempotent.
+- `shared/contracts/references/providers.md`: host detection for PR listing and SHA reads.
+- `shared/contracts/references/posting.md`: the opt-in / idempotent posting policy.
+- `templates/review-on-open-github.yml`: the copyable workflow target repos drop into `.github/workflows/`.

@@ -3,33 +3,33 @@
 Cross-cutting tools that support the [delivery lanes](Workflows.md): cleanup,
 test authoring, BDD scenarios, release, codebase-wide change, handoff, and tracker sync.
 
-- [Simplify](#simplify) — active code cleanup plus detect-only smell scans.
-- [React quality specialists](#react-quality-specialists) — conditional Vercel
+- [Simplify](#simplify): active code cleanup plus detect-only smell scans.
+- [React quality specialists](#react-quality-specialists): conditional Vercel
   composition and React/Next performance references.
-- [Code Quality Gate](#code-quality-gate) — policy- or risk-driven pre-PR quality evidence.
-- [Style Guide Init](#style-guide-init) — evidence-derived repository conventions.
-- [Test Case Design](#test-case-design) — report-only QA test design.
-- [BDD Scenarios](#bdd-scenarios) — Gherkin feature files from acceptance criteria.
-- [Cover](#cover) — test authoring.
-- [Security Audit](#security-audit) — bounded read-only security review.
-- [Ship It](#ship-it) — release readiness.
-- [Retrofit](#retrofit) — one change across many sites.
-- [Worktree](#worktree) — isolated worktrees for parallel agents.
-- [CRAP Analysis](#crap-analysis) — complexity + coverage risk via repo-configured commands.
-- [Handoff](#handoff) — resumable handoffs.
-- [Ticket Sync](#ticket-sync) — publish tickets to a tracker.
+- [Code Quality Gate](#code-quality-gate): policy- or risk-driven pre-PR quality evidence.
+- [Style Guide Init](#style-guide-init): evidence-derived repository conventions.
+- [Test Case Design](#test-case-design): report-only QA test design.
+- [BDD Scenarios](#bdd-scenarios): Gherkin feature files from acceptance criteria.
+- [Cover](#cover): test authoring.
+- [Security Audit](#security-audit): bounded read-only security review.
+- [Ship It](#ship-it): release readiness.
+- [Retrofit](#retrofit): one change across many sites.
+- [Worktree](#worktree): isolated worktrees for parallel agents.
+- [CRAP Analysis](#crap-analysis): complexity + coverage risk via repo-configured commands.
+- [Handoff](#handoff): resumable handoffs.
+- [Ticket Sync](#ticket-sync): publish tickets to a tracker.
 
-## Style Guide Init
+## Style guide init
 
 `style-guide-init` discovers existing instructions, enforced configuration, representative code/tests,
 and local vocabulary before proposing a canonical style owner. It updates an existing owner when
-present; otherwise it waits for explicit approval before creating `STYLE_GUIDE.md`.
+present. Otherwise it waits for explicit approval before creating `STYLE_GUIDE.md`.
 
 ```sh
 ./install.sh --harness all style-guide-init /path/to/project
 ```
 
-## Test Case Design
+## Test case design
 
 `test-case-design` turns requirements and risks into prioritized QA cases without writing tests. It
 covers relevant behavioral, boundary, state, failure, access, and UI states, then hands selected
@@ -42,7 +42,7 @@ For a large set, it shows the first five to ten cases for your feedback before i
 ./install.sh --harness all test-case-design /path/to/project
 ```
 
-## BDD Scenarios
+## BDD scenarios
 
 `bdd-scenarios` turns acceptance criteria into Gherkin feature files, maps each step to an existing
 step definition, and traces each criterion to a scenario or a unit test. The scenarios are the outer
@@ -54,7 +54,7 @@ Unit TDD cycles run inside that loop. The skill also reviews feature files and p
 ./install.sh --harness all bdd-scenarios /path/to/project
 ```
 
-## Security Audit
+## Security audit
 
 `security-audit` performs a bounded read-only review of code, configuration, dependencies, and
 secret exposure. It redacts sensitive values and requires written authorization immediately before
@@ -64,29 +64,9 @@ any active test or probe.
 ./install.sh --harness all security-audit /path/to/project
 ```
 
-## Code Quality Gate
+## Code quality gate
 
-Use `code-quality-gate` when a change needs one mechanically checkable pre-PR
-quality verdict. It composes the existing cleanup, review, and fix-loop workflows
-without duplicating them: repository checks and local style evidence first, then
-changed-hunk anti-slop/simplification assessment and focused standards/
-maintainability review.
-
-```sh
-./install.sh --harness all code-quality-gate /path/to/project
-```
-
-`/code-quality-gate --mode=report` is read-only for tracked files. Explicit
-`--mode=apply` permits only unambiguous, behavior-preserving in-scope repairs
-for at most three rounds; structural tradeoffs and behavior changes need a
-recorded human choice. Neither mode commits or pushes. The durable report records
-`PASS`, `FAIL`, `CAPPED`, or `BLOCKED`; its installed fingerprint script makes a
-PASS valid only for the same frozen diff, untracked content, and scope. A narrowed
-scope is partial evidence, so a policy-required final-diff gate needs a
-recomputed `coverage: final` PASS. The gate assesses only the current checked-out branch
-and local working tree; check out another branch before gating it, or use
-`/pr-review` for a named PR or remote target. Scope entries must be
-repository-relative worktree paths, never absolute paths or `..` escapes.
+The `code-quality-gate` skill has its own section in [Code Review](Code-Review.md#code-quality-gate).
 
 ## Simplify
 
@@ -97,11 +77,11 @@ and applies nothing, simplify *drives the cleanup* and applies it on opt-in.
 ./install.sh --harness all simplify /path/to/project
 ```
 
-- `/simplify` — diff/feature-scoped: propose high-conviction cleanups (dead code, debug
+- `/simplify` (diff/feature-scoped): propose high-conviction cleanups (dead code, debug
   remnants, thin wrappers, reuse, small inefficiencies), then apply the ones you select.
   Every candidate must state `rootIssue -> consequence -> benefit`, and changes are
   behavior-preserving (existing tests must pass unmodified).
-- `/code-smell` — detect-only scan of an area, ranked by severity × confidence; applies
+- `/code-smell`: detect-only scan of an area, ranked by severity × confidence. It applies
   nothing. Use `/code-smell <path> --architecture` for no-code architecture/deepening
   candidates.
 
@@ -117,11 +97,11 @@ Add `vercel-react-native-skills` in a React Native or Expo repository:
 
 Use `vercel-composition-patterns` for component API and composition decisions,
 `vercel-react-best-practices` for evidence-backed React/Next performance work,
-`use-effect-killer` to audit effects against React's "You Might Not Need an
-Effect" guide, `vercel-react-view-transitions` for View Transition animations,
+`use-effect-killer` to audit effects against React's
+"You Might Not Need an Effect" guide, `vercel-react-view-transitions` for View Transition animations,
 `vercel-web-interface-guidelines` for UI accessibility, forms, and interaction,
 and `vercel-react-native-skills` for React Native and Expo lists, animation,
-navigation, and native UI. Their copied MIT-licensed rule files are loaded selectively; local
+navigation, and native UI. Their copied MIT-licensed rule files are loaded selectively. Local
 policy, framework version, runtime boundary, and concrete impact decide applicability.
 
 The React rule scan makes the rules hard to skip:
@@ -144,22 +124,22 @@ sections of its base-branch `.pr-review.md`.
 
 ## Cover
 
-The `cover` tool is the test-authoring lane — the active/detect pair that mirrors `simplify`. It
+The `cover` tool is the test-authoring lane, the active/detect pair that mirrors `simplify`. It
 authors and strengthens **behavior-pinning** tests for a diff, a module, or a bug reproduction, and
-turns a bug repro into a committed regression test. It writes tests only — it never edits production
+turns a bug repro into a committed regression test. It writes tests only. It never edits production
 code.
 
 ```sh
 ./install.sh --harness all cover /path/to/project
 ```
 
-- `/cover` — author/strengthen tests for a diff, module, or bug reproduction, applied on opt-in.
-  Tests pin observable behavior (not implementation); every new test is **falsified** (confirmed to
-  fail when the behavior is broken); for a bug repro it writes the test that fails before the fix and
-  passes after (a red→green regression lock). It detects the repo's test framework first and keeps
+- `/cover`: author/strengthen tests for a diff, module, or bug reproduction, applied on opt-in.
+  Tests pin observable behavior (not implementation). Every new test is **falsified** (confirmed to
+  fail when the behavior is broken). For a bug repro it writes the test that fails before the fix and
+  passes after (a red->green regression lock). It detects the repo's test framework first and keeps
   tests deterministic (no real network/time/RNG, no flaky sleeps).
-- `/cover-gaps` — detect-only scan of an area for missing/weak coverage (untested branches, error
-  paths, boundary conditions, regressions waiting to happen), ranked by risk × likelihood; applies
+- `/cover-gaps`: detect-only scan of an area for missing/weak coverage (untested branches, error
+  paths, boundary conditions, regressions waiting to happen), ranked by risk × likelihood. It applies
   nothing and hands its top gaps to `/cover`.
 
 It is the hand-off target from `bug-to-fix`: `/reproduce` establishes a manual or failing-test repro,
@@ -168,8 +148,8 @@ suite green.
 
 ## Ship It
 
-The `ship-it` tool is the lightweight release step at the tail of the dev lanes — they end at
-"PR merged," this takes it to "released safely."
+The `ship-it` tool is the lightweight release step at the tail of the dev lanes. They end at
+"PR merged," and this takes it to "released safely."
 
 ```sh
 ./install.sh --harness all ship-it /path/to/project
@@ -179,31 +159,31 @@ Run `/ship-it` after a change is merged/approved. It produces a **go/no-go readi
 **rollback plan + trigger**, a **release-notes draft** (`.agents/templates/release-notes.md`), and a
 **rollout/monitor plan** with advance/hold/roll-back thresholds.
 
-It is **pipeline-aware**: when an external CI/CD pipeline you don't control owns the deploy (a
-common org setup), `/ship-it` prepares the release package and **hands off** — it does not run
-deploy steps, and frames the monitor plan as the watch-list for after the pipeline deploys. When
+It is **pipeline-aware**: when an external CI/CD pipeline you do not control owns the deploy (a
+common org setup), `/ship-it` prepares the release package and **hands off**. It does not run
+deploy steps, and it frames the monitor plan as the watch-list for after the pipeline deploys. When
 *you* own the deploy, it walks the staged rollout and proposes the exact commands, never executing
 a deploy without explicit confirmation. Project-owned release and document approvals remain with the target repository.
 
 ## Retrofit
 
-The `retrofit` tool applies **one defined change across every site that needs it** — a library
-swap (moment → dayjs), an API/symbol rename across N call sites, a framework upgrade, a pattern
+The `retrofit` tool applies **one defined change across every site that needs it**: a library
+swap (moment -> dayjs), an API/symbol rename across N call sites, a framework upgrade, a pattern
 replacement. It is *not* a database migration and does *not* decide what the change is.
 
 ```sh
 ./install.sh --harness all retrofit /path/to/project
 ```
 
-`/retrofit` runs **discover → transform → verify**: enumerate every site (grep / AST / the rct graph
+`/retrofit` runs **discover -> transform -> verify**: enumerate every site (grep / AST / the rct graph
 when available), classify mechanical vs. judgment, transform each in worktree isolation (a codemod
-for the mechanical bulk), and verify exhaustively — full suite green, the judgment sites
-adversarially checked, zero references to the old path before it's removed. Every site ends
-`done` or `skipped (reason)` — no silent truncation.
+for the mechanical bulk), and verify exhaustively: full suite green, the judgment sites
+adversarially checked, zero references to the old path before it is removed. Every site ends
+`done` or `skipped (reason)`, with no silent truncation.
 
-It's a deterministic fan-out, so it maps onto the `Workflow` orchestration tool and is **explicitly
+It is a deterministic fan-out, so it maps onto the `Workflow` orchestration tool and is **explicitly
 opt-in** (it can spawn many agents). Distinct from `/simplify`, which makes many small *different*
-cleanups in a diff; retrofit makes the *same* change in *many* places.
+cleanups in a diff. Retrofit makes the *same* change in *many* places.
 
 ## Worktree
 
@@ -215,45 +195,45 @@ checkout that yanks the branch out from under another agent.
 ./install.sh --harness all worktree /path/to/project
 ```
 
-`/worktree new [repo] [branch]` creates a worktree on a new branch and prints the path to `cd` into;
-omit the branch and it auto-names `agent/<repo|task>-<n>` so concurrent agents never collide (an
+`/worktree new [repo] [branch]` creates a worktree on a new branch and prints the path to `cd` into.
+Omit the branch and it auto-names `agent/<repo|task>-<n>` so concurrent agents never collide (an
 explicit name errors if taken). Worktrees live **outside** the repos at
 `<parent>/.worktrees/<repo>/<branch-slug>`, so repos stay clean and `worktree list --all` shows every
 agent's checkout across every repo. `worktree rm <branch> --delete-branch` tears one down (refusing a
-dirty tree or unmerged branch without `--force`). Pure bash + git — no runtime.
+dirty tree or unmerged branch without `--force`). Pure bash + git, with no runtime.
 
-Scope boundary: this is for **cross-session** work the harness can't coordinate. Parallel fan-out
-*inside a single `Workflow` run* should use the tool's `isolation: 'worktree'` (auto-cleanup)
-instead — the same discipline `retrofit` uses for its in-run transforms.
+Scope boundary: this is for **cross-session** work the harness cannot coordinate. For parallel fan-out
+*inside a single `Workflow` run*, use the tool's `isolation: 'worktree'` (auto-cleanup)
+instead. This is the same discipline `retrofit` uses for its in-run transforms.
 
-## CRAP Analysis
+## CRAP analysis
 
 The `crap-analysis` tool orchestrates CRAP (complexity + coverage) checks using **commands the repo
-defines** — no embedded analyzer, no language lock-in. A wizard hydrates `.crap-analysis.json`;
-a bash orchestrator runs coverage and analysis **once** per invocation; review is **deterministic**.
+defines**, with no embedded analyzer and no language lock-in. A wizard hydrates `.crap-analysis.json`.
+A bash orchestrator runs coverage and analysis **once** per invocation, and review is **deterministic**.
 
 ```sh
 ./install.sh --harness all crap-analysis /path/to/project
 ```
 
-- `/crap-config` — wizard: collect analysis, coverage, verify commands, output paths, threshold;
-  write `.crap-analysis.json`.
-- `/do-crap-analysis` — run on branch changes since the base (committed, staged, unstaged, and
+- `/crap-config`: wizard. Collect analysis, coverage, verify commands, output paths, threshold.
+  Write `.crap-analysis.json`.
+- `/do-crap-analysis`: run on branch changes since the base (committed, staged, unstaged, and
   untracked): orchestrator `execute --changed`, then `review` for the verdict (PASS, WARN, REFACTOR,
-  ERROR, or NO_TARGETS) with fixed templates. **Detect-only** — never edits source.
-- `/crap-refactor` — apply-on-opt-in: read refactor brief, change source/tests, run verify once,
+  ERROR, or NO_TARGETS) with fixed templates. **Detect-only**: never edits source.
+- `/crap-refactor`: apply-on-opt-in. Read refactor brief, change source/tests, run verify once,
   re-review.
 
 Config is loaded from the base branch, so a working branch cannot silently weaken thresholds. The base
 is `--base`, else `origin/HEAD`, `origin/main`, `origin/master`, `main`, or `master`. Use `--config` to
-override the config explicitly; the review then starts with `CONFIG_OVERRIDE`. When
+override the config explicitly. The review then starts with `CONFIG_OVERRIDE`. When
 CRAP exceeds threshold, the agent **must** read the refactor brief markdown into context before
 prompting the user toward `/crap-refactor`.
 
 ## Handoff
 
 The `handoff` tool is a small, cross-cutting capability: `/handoff` writes a resumable handoff so a
-fresh agent — or a teammate — can continue work without context loss (the most common cause of
+fresh agent (or a teammate) can continue work without context loss (the most common cause of
 multi-session and multi-agent failure). Useful in any lane.
 
 ```sh
@@ -262,31 +242,31 @@ multi-session and multi-agent failure). Useful in any lane.
 
 It leads with the single concrete **next action**, references the lane's durable state file (the
 bug-investigation file, the implementation plan, or the retrofit plan) instead of duplicating it,
-captures what's been ruled out, redacts secrets, and stays compact. It's bundled with the
+captures what has been ruled out, redacts secrets, and stays compact. It is bundled with the
 `bug-to-fix` pack and also installs standalone for the other lanes.
 
-## Ticket Sync
+## Ticket sync
 
 The `ticket-sync` tool is a **provider-agnostic issue-tracker adapter**. The lanes already slice work
 into tickets (`/to-issues`, `/bug-intake`, or project-owned workflows) but only ever as local markdown or
-GitHub Issues; `/ticket-sync` publishes those same ticket files to whichever tracker a repo declares
-— **GitHub Issues, Jira, or Azure Boards** — so approved local tickets can be published to Jira
-instead of staying as markdown. It mirrors how `pr-review` abstracts the gh-vs-az *host*; here the
+GitHub Issues. `/ticket-sync` publishes those same ticket files to whichever tracker a repo declares
+(**GitHub Issues, Jira, or Azure Boards**), so approved local tickets can be published to Jira
+instead of staying as markdown. It mirrors how `pr-review` abstracts the gh-vs-az *host*. Here the
 abstraction is the *tracker*.
 
 ```sh
 ./install.sh --harness all ticket-sync /path/to/project
 ```
 
-A target repo declares the tracker in a repo-local `.tickets.md` (copy `.agents/templates/tickets-config.md`)
-— `provider`, the project/board key, default issue type, labels/components, and FIELD MAPPINGS from
+A target repo declares the tracker in a repo-local `.tickets.md` (copy `.agents/templates/tickets-config.md`):
+`provider`, the project/board key, default issue type, labels/components, and FIELD MAPPINGS from
 the ticket-template fields (feature ID, release ID, acceptance criteria, dependencies, test
 expectation, doc-delta status) to the tracker's fields. When absent, ticket-sync infers the provider
 from the remote and asks for the project key.
 
-`/ticket-sync` is **idempotent** — it records the created issue's key back into each ticket (a
+`/ticket-sync` is **idempotent**: it records the created issue's key back into each ticket (a
 `Tracker:` line) and on re-run **updates** rather than duplicating. It **never creates or modifies
 remote issues without confirmation** (a dry-run preview first), takes credentials only from the
 tracker CLI's own auth, and **degrades to a publish-ready manifest** when no tracker CLI/credentials
-are present. Like pr-review, it loads `.tickets.md` from the base branch so a working branch can't
+are present. Like pr-review, it loads `.tickets.md` from the base branch so a working branch cannot
 silently retarget publishing.

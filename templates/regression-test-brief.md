@@ -1,7 +1,7 @@
 # Regression test brief
 
-A one-screen brief for a single regression lock — turning a bug reproduction into a committed test.
-Fill it before writing the test; keep it with the bug investigation. One brief per locked symptom.
+A one-screen brief for a single regression lock: turning a bug reproduction into a committed test.
+Fill it before writing the test. Keep it with the bug investigation. One brief per locked symptom.
 
 - **Bug / reference:** <id, link, or path to the bug-investigation file>
 - **Symptom (user-visible):** <the exact wrong behavior, as a user/caller observes it>
@@ -14,17 +14,17 @@ Fill it before writing the test; keep it with the bug investigation. One brief p
 - **Test file / name:** <path and test name, matching repo conventions>
 - **Framework / runner:** <detected framework + the run command>
 
-## Red → green
+## Red -> green
 
 - **Red command:** <the single command that runs just this test>
-- **Confirmed red on the bug:** <yes/no — failed for the right reason (the symptom), not a setup error>
-- **Confirmed green after fix:** <yes/no — fix lives in the dev/bug-to-fix lane, not here>
-- **Falsified:** <yes/no — re-breaking the behavior turns it red again>
+- **Confirmed red on the bug:** <yes/no: failed for the right reason (the symptom), not a setup error>
+- **Confirmed green after fix:** <yes/no: fix lives in the dev/bug-to-fix lane, not here>
+- **Falsified:** <yes/no: re-breaking the behavior turns it red again>
 
 ## Determinism
 
-- **Hazards handled:** <time / RNG / network / filesystem / async — how each is pinned or stubbed>
-- **Residual nondeterminism:** <none, or what remains and why it's acceptable / called out>
+- **Hazards handled:** <time / RNG / network / filesystem / async, and how each is pinned or stubbed>
+- **Residual nondeterminism:** <none, or what remains and why it is acceptable / called out>
 
 ## Notes
 

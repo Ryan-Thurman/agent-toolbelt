@@ -14,33 +14,23 @@ Use installed agent-toolbelt workflows when the task clearly matches one. Prefer
 the matching slash command or skill over re-creating the workflow from memory.
 Read the selected skill's `SKILL.md`, then load its references and templates as needed.
 
-Use `/workflow-router` when it is installed and the right workflow is unclear.
-Otherwise choose a matching installed skill directly.
+When the right workflow is unclear, use `/workflow-router` if it is installed.
+It holds the task-to-skill map. Otherwise choose the installed skill whose
+description matches the request.
 
 Select the lane from the user's request and the target project's requirements.
 Existing tickets, feature documents, or available skills alone do not require
 a formal lifecycle. Clear bounded changes can use direct implementation and
-relevant checks; use phased delivery for coordinated phase/PR work.
+relevant checks. Use phased delivery for coordinated phase/PR work.
 
-Common matches:
-
-- Feature or app work needing brief, flows, acceptance criteria, phased
-  implementation, commits, and reviews: `phased-delivery`.
-- Project-specific lifecycle, forms, and approvals: follow the target project's workflow owner.
-- Ticket or story refinement and readiness: `story-refinement`.
-- Gherkin feature files from acceptance criteria: `bdd-scenarios`.
-- Reliability of a design, or production readiness: `reliability-review`.
-- High-impact paths for risk-based testing: `risk-area-mapping`.
-- Code review: `pr-review`.
-- Debugging from symptom to fix: `bug-to-fix`.
-- Review comment follow-up: `pr-review-reply`.
-- Phase gate or merge readiness: `phase-gate`.
+For a project-specific lifecycle, forms, and approvals, follow the target
+project's workflow owner.
 
 General guardrails:
 
 - Respect existing repo instructions and project conventions.
 - Keep edits scoped to the user's task.
 - Avoid destructive git or filesystem actions unless explicitly requested.
-- Run relevant checks when practical; otherwise say what was not run and why.
+- Run relevant checks when practical. Otherwise say what was not run and why.
 - Put workflow-specific procedures, rubrics, and checklists in the matching skill
   context instead of applying them to unrelated chats.

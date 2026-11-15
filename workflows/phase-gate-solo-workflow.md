@@ -1,6 +1,6 @@
-# Phase-Gate Solo Workflow (personal flow)
+# Phase-gate solo workflow (personal flow)
 
-A phased build loop where **an agent reviews each phase and the main agent merges** — no human stop
+A phased build loop where **an agent reviews each phase and the main agent merges**, with no human stop
 to review PRs. Use it for personal or solo work where you trust the agent to review, fix, and merge
 a phase. This is the `--merge` mode of `/phase-gate`. A Phased Delivery PR needs your explicit
 authorization for solo merge.
@@ -36,7 +36,7 @@ Feature complete
 2. **Build the phase** on a focused branch, and commit as you go.
 3. **Open the phase PR** against the base (a feature/integration branch or `main`, per your repo).
 4. **Run the gate:** `/phase-gate --merge`. The steps, tier advice, and stop rules are in
-   `skills/phase-gate/references/modes.md` → "Solo Flow".
+   `skills/phase-gate/references/modes.md` -> "Solo flow".
 5. **Merge.** The main agent merges only under the precondition in
    `skills/phase-gate/references/merge.md`. If the merge is refused, it stops and reports.
 6. **Next phase.** Branch the next phase off the updated base and repeat.

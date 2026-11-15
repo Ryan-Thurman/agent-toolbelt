@@ -1,4 +1,4 @@
-# Technical Backlog Assessment Workflow
+# Technical backlog assessment workflow
 
 Use this workflow for technical backlog items where the first useful output is a
 decision: do the work, defer it, reject it, or run a bounded spike.

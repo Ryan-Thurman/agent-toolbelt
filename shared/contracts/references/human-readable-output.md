@@ -23,9 +23,9 @@ When two sources conflict, the higher row wins.
 | 4 | `vercel-web-interface-guidelines` | UI text only |
 | 5 | This file | All text |
 | 6 | [docs-writing.md](docs-writing.md) | Structure of project documentation |
-| 7 | The `simple-english` and `writing-whip` skills | Only the tasks in "Full writing skills" |
+| 7 | The `simple-english` skill | Only the tasks in "Full writing skills" |
 
-This file already settles the known conflicts with the two skills. Bold is allowed for
+This file already settles the known conflicts with that skill. Bold is allowed for
 emphasis in replies. Verification is never limited. Documentation and changelog updates
 follow user and repository instructions.
 
@@ -135,7 +135,7 @@ If a skill is not installed, use this file alone.
 | The user asks you to check text against STE | The "Modes" section of `skills/simple-english/SKILL.md` and its `references/rule-catalog.md` |
 | An error message, runbook, incident report, release notes, commit message, or UI copy | `skills/simple-english/references/use-cases.md` |
 | You need a plain word for an overused word | `skills/simple-english/references/word-swaps.md` |
-| A trope review of long text or client copy, or a pattern that the table above does not cover | `skills/writing-whip/SKILL.md`, then `skills/writing-whip/references/tropes.md` |
+| A trope review of long text or client copy, or a pattern that the table above does not cover | `skills/simple-english/references/trope-list.md`. Read `skills/simple-english/references/tropes.md` only when you need examples for a trope that you found. |
 
 ## Choose the format
 

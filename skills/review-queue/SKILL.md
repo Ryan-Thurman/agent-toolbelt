@@ -34,9 +34,9 @@ the schema, subcommands, flags, output formats, and env overrides.
 - **Exactly-once claim.** Claiming is a single `BEGIN IMMEDIATE` transaction with `RETURNING`, so two
   workers never review the same job.
 - **Crash-safe via leases.** A claim sets `claimed_at` and a lease (default 30m). If a worker dies
-  mid-review, the next `claim` reaps the stale job back to pending so it isn't lost. A job attempted
-  `MAX_ATTEMPTS` times (default 3) is **dead-lettered** (`status=dead`), never retried forever — one
-  poison PR can't wedge the queue. Inspect dead letters with `list --status dead`.
+  mid-review, the next `claim` reaps the stale job back to pending so it is not lost. A job attempted
+  `MAX_ATTEMPTS` times (default 3) is **dead-lettered** (`status=dead`), never retried forever, so one
+  poison PR cannot wedge the queue. Inspect dead letters with `list --status dead`.
 - **Local workers only.** The queue file is on this machine. Run the worker in a local session
   (`/loop`). A `/schedule` cloud routine cannot read the queue.
 - **Trigger invariants.** The worker is a review trigger. Apply
@@ -44,11 +44,11 @@ the schema, subcommands, flags, output formats, and env overrides.
 
 ## The two lanes
 
-**Producer** — wherever an agent finishes opening/updating a PR (e.g. end of
+**Producer**: wherever an agent finishes opening/updating a PR (e.g. end of
 `ship-it`, a dev PR step, or a manual `/enqueue-review`), it enqueues through
 `references/cli.md`.
 
-**Consumer** — the worker drains the queue with `/review-queue-worker`. Follow
+**Consumer**: the worker drains the queue with `/review-queue-worker`. Follow
 `references/worker.md`. Because claiming is atomic, more than one worker can run.
 
 ## Completion
@@ -59,9 +59,9 @@ Each claimed job ends as `done`, `pending` (requeued), or `dead`.
 
 ## References
 
-- `references/cli.md` — the full CLI contract: every subcommand + flags, the SQLite schema, the
+- `references/cli.md`: the full CLI contract: every subcommand + flags, the SQLite schema, the
   idempotency key, the lease/reaper and dead-letter semantics, env overrides, and exit/output formats.
-- `references/worker.md` — the consumer loop: claim→review→complete, failure→requeue, multi-job
+- `references/worker.md`: the consumer loop: claim->review->complete, failure->requeue, multi-job
   fan-out, the self-loop guard, and scheduling via `/loop`.
-- `skills/pr-review/SKILL.md` — the reviewer every claimed job runs.
-- `skills/pr-review/references/triggers.md` — the invariants that apply to every review trigger.
+- `skills/pr-review/SKILL.md`: the reviewer every claimed job runs.
+- `skills/pr-review/references/triggers.md`: the invariants that apply to every review trigger.

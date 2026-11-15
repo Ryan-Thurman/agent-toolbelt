@@ -1,28 +1,28 @@
-# review-queue CLI — contract
+# review-queue CLI: contract
 
 `bin/review-queue.sh` is the single interface to the queue. Pure bash + `sqlite3` (both present on
-stock macOS and most Linux) — no runtime to install. Invoke at its installed path:
+stock macOS and most Linux), so no runtime is needed. Invoke at its installed path:
 
 ```bash
 bash skills/review-queue/bin/review-queue.sh <command> [--db PATH] [flags]
 ```
 
-All commands print **JSON** to stdout (so agents can parse results); errors go to stderr with a
-non-zero exit. The DB and schema are created lazily on first use — no separate setup step.
+All commands print **JSON** to stdout (so agents can parse results). Errors go to stderr with a
+non-zero exit. The DB and schema are created lazily on first use, so no separate setup step is needed.
 
 ## Store & config (env)
 
-- **`REVIEW_QUEUE_DB`** — path to the SQLite file. Default `~/.review-queue/queue.db` (user-global, so
+- **`REVIEW_QUEUE_DB`**: path to the SQLite file. Default `~/.review-queue/queue.db` (user-global, so
   producers in any repo and a worker in any session share one queue). Per-call override: `--db PATH`.
   Set it to a repo-local path (e.g. `.git/review-queue.db`) if you want isolation per repo.
   Workers must run on the same machine as the file.
-- **`REVIEW_QUEUE_LEASE`** — claim lease in seconds (default `1800` = 30m). A claimed job whose
+- **`REVIEW_QUEUE_LEASE`**: claim lease in seconds (default `1800` = 30m). A claimed job whose
   `claimed_at` is older than the lease is reaped back to pending on the next `claim`. Per-call:
   `claim --lease SECS`.
-- **`REVIEW_QUEUE_MAX_ATTEMPTS`** — attempts before a job is dead-lettered (default `3`).
+- **`REVIEW_QUEUE_MAX_ATTEMPTS`**: attempts before a job is dead-lettered (default `3`).
 
 Concurrency is handled with WAL + a 10s busy timeout, so many producers/consumers can hit the DB at
-once; claiming is additionally wrapped in `BEGIN IMMEDIATE` for exactly-once semantics.
+once. Claiming is additionally wrapped in `BEGIN IMMEDIATE` for exactly-once semantics.
 
 ## Schema (`jobs`)
 
@@ -59,35 +59,35 @@ is a no-op. Output:
 Atomically reap any stale-leased jobs, then claim the **oldest pending** job and return it (consumer).
 Output is the claimed job, or `[]` when nothing is pending:
 ```json
-[{"id":1,"repo":"acme/api","target":"142","head_sha":"9c1f…","tier":"standard","attempts":1}]
+[{"id":1,"repo":"/Users/me/src/api","target":"142","head_sha":"9c1f…","tier":"standard","attempts":1}]
 []
 ```
-`tier` is `""` when the job had none (→ let `/pr-review` auto-tier). `--worker` labels the holder
-(default `worker`); use distinct ids if you run several workers.
+`tier` is `""` when the job had none (-> let `/pr-review` auto-tier). `--worker` labels the holder
+(default `worker`). Use distinct ids if you run several workers.
 
 ### `complete <id> --verdict V [--findings N] [--notes X]`
 Mark a claimed job reviewed (consumer), recording the verdict/finding count for the audit trail.
-Output: `[{"id":1,"status":"done","updated":1}]` (`updated:0` ⇒ no such id).
+Output: `[{"id":1,"status":"done","updated":1}]` (`updated:0` => no such id).
 
 ### `requeue <id> [--notes X]`   (alias: `fail`)
-Return a job to `pending` after a failed review attempt — **unless** it has reached `MAX_ATTEMPTS`, in
+Return a job to `pending` after a failed review attempt, **unless** it has reached `MAX_ATTEMPTS`, in
 which case it is dead-lettered (`status=dead`). Output: `[{"id":1,"status":"pending"}]` or
 `"status":"dead"`.
 
 ### `list [--status pending|claimed|done|dead]`   ·   `stats`
-Inspect. `list` returns rows (head SHA abbreviated to 8 chars); `stats` returns counts per status.
+Inspect. `list` returns rows (head SHA abbreviated to 8 chars). `stats` returns counts per status.
 `list --status dead` surfaces poison jobs for manual attention.
 
-## Idempotency, leases, dead-letter — how they interact
+## Idempotency, leases, dead-letter: how they interact
 
-- **Same commit twice** → `enqueue` returns `duplicate`, no new job. A worker therefore never
+- **Same commit twice** -> `enqueue` returns `duplicate`, no new job. A worker therefore never
   re-reviews a head SHA it (or a prior run) already queued.
-- **New push** → new `head_sha` → a fresh `pending` job → the PR is re-reviewed at the new commit.
-- **Worker dies mid-review** → its claimed job's lease expires → the next `claim` (any worker) reaps
+- **New push** -> new `head_sha` -> a fresh `pending` job -> the PR is re-reviewed at the new commit.
+- **Worker dies mid-review** -> its claimed job's lease expires -> the next `claim` (any worker) reaps
   it back to pending and re-claims it (attempts +1). No lost reviews.
-- **Repeatedly failing job** → after `MAX_ATTEMPTS` claims it becomes `dead` instead of pending, so it
-  stops being handed out. Find these with `list --status dead`; fix the cause and `enqueue` again (a
-  new row) or leave it as a record.
+- **Repeatedly failing job** -> after `MAX_ATTEMPTS` claims it becomes `dead` instead of pending, so it
+  stops being handed out. Find these with `list --status dead`. A dead job is reviewed again only after a
+  new push gives a new head SHA (the same key returns `duplicate`). Otherwise leave it as a record.
 
 ## Exit codes
 

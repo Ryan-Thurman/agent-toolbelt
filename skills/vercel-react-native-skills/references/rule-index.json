@@ -149,7 +149,7 @@
     {
       "path": "references/rules/list-performance-function-references.md",
       "when": "Code maps or filters an array in render, then passes the new array to a FlatList, FlashList, or LegendList.",
-      "fix": "Extract functions outside render",
+      "fix": "Pass stable list data, do not map or filter inline",
       "signals": [
         "\\bdata=\\{[^}]*\\.(?:map|filter|flatMap|concat|reduce)\\("
       ],
@@ -298,7 +298,7 @@
     {
       "path": "references/rules/react-state-minimize.md",
       "when": "A component stores a value in state that it can calculate from other state or props.",
-      "fix": "Minimize state subscriptions",
+      "fix": "Derive values in render, do not store them in state",
       "signals": [
         "^\\s*set[A-Z]\\w*\\(\\s*[\\w.]+\\.(?:reduce\\(|length\\s*\\))"
       ],
@@ -447,7 +447,7 @@
     {
       "path": "references/rules/ui-styling.md",
       "when": "A style uses legacy shadow props or elevation, or code uses a gradient library instead of boxShadow and backgroundImage.",
-      "fix": "Use StyleSheet.create or Nativewind",
+      "fix": "Use borderCurve, gap, and boxShadow",
       "signals": [
         "\\bshadowColor\\s*:",
         "from\\s+['\"](?:expo-linear-gradient|react-native-linear-gradient)['\"]"

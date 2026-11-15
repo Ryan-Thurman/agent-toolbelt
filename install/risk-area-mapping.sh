@@ -10,4 +10,5 @@ pack_risk_area_mapping() {
   skill risk-area-mapping references/signals.md
   skill risk-area-mapping references/sweep-fan-out.md
   template risk-areas-review.md
+  workflow risk-based-testing-workflow.md
 }

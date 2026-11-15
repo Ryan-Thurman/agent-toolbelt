@@ -1,11 +1,11 @@
-# <Issue title — a vertical slice>
+# <Issue title: a vertical slice>
 
 One file/section per ticket. Each ticket is a **vertical slice**: a narrow but complete path through
 every layer (schema, API, UI, tests), demoable on its own. Publish in dependency order.
 
 ## What to build
 
-The end-to-end behavior this slice delivers — described by behavior, not layer-by-layer. A completed
+The end-to-end behavior this slice delivers, described by behavior, not layer-by-layer. A completed
 slice is demoable or verifiable by itself.
 
 ## Acceptance criteria
@@ -33,4 +33,4 @@ Keep approved project ticket fields and scope authoritative.
 
 ## Parent
 
-Optional — the brief or epic this slice belongs to.
+Optional: the brief or epic this slice belongs to.

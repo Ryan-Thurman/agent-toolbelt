@@ -15,7 +15,7 @@ name: agent-pr-review
 
 on:
   pull_request:
-    types: [opened, synchronize, reopened]
+    types: [opened, synchronize, reopened, ready_for_review]
 
 permissions:
   contents: read          # read the code under review
@@ -54,5 +54,5 @@ jobs:
         # swallows the next argument.
         run: |
           claude -p "/pr-review $PR --comment" \
-            --allowedTools="Bash(gh auth status:*),Bash(gh pr view:*),Bash(gh pr diff:*),Bash(gh api:*),Bash(git diff:*),Bash(git log:*),Bash(git show:*),Bash(git status:*),Bash(git rev-parse:*),Bash(git merge-base:*),Bash(git symbolic-ref:*),Bash(git remote:*),Bash(git fetch:*),Bash(jq:*),Read,Grep,Glob,Task" \
+            --allowedTools="Bash(gh auth status:*),Bash(gh pr view:*),Bash(gh pr diff:*),Bash(gh issue view:*),Bash(gh api:*),Bash(git diff:*),Bash(git log:*),Bash(git show:*),Bash(git status:*),Bash(git rev-parse:*),Bash(git merge-base:*),Bash(git symbolic-ref:*),Bash(git remote:*),Bash(git fetch:*),Bash(jq:*),Read,Grep,Glob,Task" \
             --disallowedTools="Edit,Write,NotebookEdit,WebFetch,WebSearch"

@@ -1,6 +1,6 @@
 ---
 name: story-refinement
-description: Refine a ticket, story, or approved brief into a ready-to-build spec. Find ambiguity, resolve facts from the repository, batch owner questions with defaults, write Given/When/Then criteria with negative paths, and give a readiness verdict.
+description: Refine a ticket, story, or approved brief into a ready-to-build spec. Find ambiguity, resolve facts from the repository, batch owner questions with defaults, write Given/When/Then criteria with negative paths, and give a readiness verdict. Use shape-up for a vague idea.
 ---
 
 # story-refinement
@@ -52,7 +52,7 @@ The depth sets how many reviewer lenses run in step 6. The scan and the criteria
 4. Draft the spec in `templates/refined-story.md`. Read `references/acceptance-criteria.md`.
    Read `shared/contracts/references/negative-testing.md` and `shared/contracts/references/test-levels.md`.
    When the item adds one of the triggers in `shared/contracts/references/reliability-checklist.md`,
-   also answer the story tier in `shared/contracts/references/reliability-checklist.md`.
+   also answer its story tier.
 5. Read `references/question-strategy.md`. Put the assumptions table first.
    Group the remaining decisions by owner in `templates/refinement-questions.md`.
 6. Run the readiness review in `references/readiness-review.md` on the draft.
@@ -60,14 +60,9 @@ The depth sets how many reviewer lenses run in step 6. The scan and the criteria
 ## Completion
 
 Deliver the refined spec, the decision log, the open-questions register, the readiness verdict,
-and one question packet for each owner. Mark sources that you could not read as `Not verified`.
-
-The readiness verdict is a warning. It does not stop a handoff unless the project instructions make it a gate.
+and one question packet for each owner. Mark sources that you cannot read as `Not verified`.
 
 Hand a ready spec to `bdd-scenarios` for feature files, to `test-case-design` for test cases,
 and to `phased-delivery` for the plan.
 Use `ticket-sync` to publish approved story changes to the tracker. The `Tracker:` line makes it update
 the source ticket instead of creating an issue.
-
-Concepts adapted from mattpocock/skills, obra/superpowers, open-gsd/gsd-core, and garrytan/gstack
-(all MIT). No source text is copied.

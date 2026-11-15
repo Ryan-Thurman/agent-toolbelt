@@ -61,6 +61,7 @@ branch and PR target explicitly, including the parent branch for a stack.
   dependency order, and a checkable result per step. Include code only for
   decisions an interface and acceptance check cannot convey.
 - Test and verification plan, including exact commands when known:
+- Acceptance scenarios for this phase (feature file, scenario, criterion ID), or "none":
 - Unit-test targets: source criteria, observable interfaces, important branches, boundaries, and error paths:
 - Coverage command, measurement scope, and existing thresholds, or why coverage is unmeasured:
 - Doc delta, QA, and PR traceability expectations (if applicable):
@@ -69,6 +70,7 @@ branch and PR target explicitly, including the parent branch for a stack.
 - PR URL / status:
 - Checks and acceptance evidence:
 - Red/green evidence for selected behaviors: expected failure, commands, results, and tested revision:
+- Outer red and outer green evidence for the acceptance scenarios:
 - Uncovered changed behavior and remaining integration or manual verification gaps:
 - Review findings / disposition:
 - Human review / merge status:

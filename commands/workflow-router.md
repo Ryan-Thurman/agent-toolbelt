@@ -25,6 +25,7 @@ Choose from workflows that are actually installed.
 | Assess a technical investment or dependency | `tech-backlog-assessment` |
 | Find an existing precedent for a narrow ticket | `ticket-discovery` |
 | Design cases, write tests, or verify a browser flow | `test-case-design`, `cover`, or `webapp-testing` |
+| Write or review Gherkin feature files from acceptance criteria | `bdd-scenarios` |
 | Review a change or address findings | `pr-review`, `pr-improve`, or `pr-review-reply` |
 | Run a pre-PR quality gate or clean up code | `code-quality-gate` or `simplify` |
 | Apply one defined change across many sites | `retrofit` |

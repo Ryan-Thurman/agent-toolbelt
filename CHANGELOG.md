@@ -5,7 +5,9 @@
 ### Added
 
 - Added the `story-refinement` skill and `/story-refinement` command. The skill finds ambiguity in a ticket, settles facts from the repository, asks the open decisions in batched rounds with defaults, writes Given/When/Then criteria with failure paths, and gives a readiness verdict from product, developer, QA, and SRE reviewer subagents.
-- Added the `feature-refinement` workflow and a `story-refinement` stage in `feature-delivery`.
+- Added the `bdd-scenarios` skill and `/bdd-scenarios` command. The skill writes Gherkin feature files from acceptance criteria, maps steps to existing step definitions, traces each criterion to a scenario or a unit test, reviews feature files, and plans a `playwright-bdd`, `pytest-bdd`, or Cucumber-JVM runner.
+- Added an acceptance loop to the shared TDD contract. A phase with BDD scenarios runs them red before the implementation and green after it, with unit TDD cycles inside. `phased-delivery` plans, plan readiness, implementation, and review now use it.
+- Added the `feature-refinement` workflow and `story-refinement` and `bdd-scenarios` stages in `feature-delivery`.
 - Added the shared references `negative-testing.md`, `test-levels.md`, and `reliability-checklist.md`. `story-refinement`, `test-case-design`, and plan readiness use them. Their gaps are warnings.
 
 ### Changed

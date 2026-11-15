@@ -23,6 +23,8 @@ Read this before the first edit in a phase.
    behind an unverified dependency.
 5. Implement within this phase's scope. For behavior changes, follow
    `shared/contracts/references/test-driven-development.md`.
+   When the phase has acceptance scenarios, run the acceptance loop in that contract:
+   outer red first, unit cycles inside, and outer green last.
    Run focused checks during the edit loop and proportionate broader checks before PR review.
 6. Inspect the diff for unrelated changes, premature next-ticket work, and
    generated noise. Run the React rule scan in

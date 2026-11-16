@@ -37,6 +37,7 @@ Each row separates commands that can match the same request.
 | `/test-case-design` · `/cover` (`/write-tests`) · `/cover-gaps` · `/webapp-test` | `test-case-design` · `cover` · `webapp-testing` | Design cases only · write tests · find coverage gaps only · verify a browser flow. |
 | `/pr-review` · `/review-diff` · `/role-review` | `pr-review` | A pull request · a local diff before a PR exists (never posts) · a supplied artifact from one role's perspective. |
 | `/pr-review` · `/code-quality-gate` · `/pr-ready-check` · `/dev-pr-review` | `pr-review` · `code-quality-gate` · `pr-review` · `phased-delivery` | Code findings · policy gate with recorded evidence · readiness to open a PR · one Phased Delivery PR against its acceptance criteria. |
+| `/web-interface-review` · `/webapp-test` | `vercel-web-interface-guidelines` · `webapp-testing` | Read UI code against the interface guidelines, for a diff or an existing page · run the flow in a browser. |
 | `/pr-improve` · `/pr-review-reply` | `pr-improve` · `pr-review-reply` | Fix accepted findings · answer a human reviewer's threads. |
 | `/phase-gate` · `/review-on-open` · `/enqueue-review` + `/review-queue-worker` | `phase-gate` · `review-on-open` · `review-queue` | Review at a phase boundary · review when a PR opens or updates · review from a local queue. |
 | `/simplify` · `/code-smell` · `/retrofit` · `/crap-refactor` | `simplify` · `retrofit` · `crap-analysis` | Apply small cleanups · detect smells only · apply one defined change at every site · refactor after a CRAP verdict. |

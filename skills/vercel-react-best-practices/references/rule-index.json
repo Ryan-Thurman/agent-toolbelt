@@ -80,7 +80,10 @@
         "^\\s*export\\s+const\\s+(?:GET|POST|PUT|PATCH|DELETE|HEAD|OPTIONS)\\s*=",
         "^\\s*['\\\"]use server['\\\"]"
       ],
-      "file_signals": []
+      "file_signals": [],
+      "frameworks": [
+        "next"
+      ]
     },
     {
       "path": "references/rules/async-cheap-condition-before-await.md",
@@ -169,10 +172,10 @@
       "when": "A component statically imports a heavy editor, chart, or map library that the first render does not need.",
       "fix": "Use next/dynamic for heavy components",
       "signals": [
-        "^\\s*import\\s.*\\bfrom\\s+['\\\"](?:@monaco-editor/react|monaco-editor|react-monaco-editor|@codemirror/[\\w-]+|codemirror|react-quill|quill|@tiptap/[\\w-]+|draft-js|slate-react|lexical|@lexical/[\\w-]+|recharts|chart\\.js|react-chartjs-2|echarts|echarts-for-react|@nivo/[\\w-]+|victory|plotly\\.js[\\w-]*|react-plotly\\.js|d3|three|@react-three/[\\w-]+|mapbox-gl|maplibre-gl|react-map-gl|leaflet|react-leaflet|pdfjs-dist|react-pdf|@react-pdf/renderer|xlsx|exceljs|lottie-react|lottie-web|react-syntax-highlighter|highlight\\.js|prismjs|shiki|mermaid|katex)(?:/[^'\\\"]*)?['\\\"]",
-        "\\b(?:dynamic|lazy)\\(\\s*(?:async\\s*)?\\(\\)\\s*=>\\s*import\\("
+        "^\\s*import\\s.*\\bfrom\\s+['\\\"](?:@monaco-editor/react|monaco-editor|react-monaco-editor|@codemirror/[\\w-]+|codemirror|react-quill|quill|@tiptap/[\\w-]+|draft-js|slate-react|lexical|@lexical/[\\w-]+|recharts|chart\\.js|react-chartjs-2|echarts|echarts-for-react|@nivo/[\\w-]+|victory|plotly\\.js[\\w-]*|react-plotly\\.js|d3|three|@react-three/[\\w-]+|mapbox-gl|maplibre-gl|react-map-gl|leaflet|react-leaflet|pdfjs-dist|react-pdf|@react-pdf/renderer|xlsx|exceljs|lottie-react|lottie-web|react-syntax-highlighter|highlight\\.js|prismjs|shiki|mermaid|katex)(?:/[^'\\\"]*)?['\\\"]"
       ],
-      "file_signals": []
+      "file_signals": [],
+      "fix_other": "Use React.lazy or the bundler's dynamic import() for heavy components"
     },
     {
       "path": "references/rules/bundle-preload.md",
@@ -541,7 +544,9 @@
       "signals": [
         "\\buseMemo\\s*\\("
       ],
-      "file_signals": []
+      "file_signals": [
+        "\\buseMemo\\s*\\([\\s\\S]{0,1500}?\\n\\s*if\\s*\\([^\\n]*\\)\\s*(?:\\{\\s*)?return\\b"
+      ]
     },
     {
       "path": "references/rules/rerender-move-effect-to-event.md",
@@ -571,7 +576,7 @@
       "when": "useMemo wraps a simple expression that returns a boolean, number, or string.",
       "fix": "Avoid memo for simple primitives",
       "signals": [
-        "\\buseMemo\\s*\\("
+        "\\buseMemo\\s*\\(\\s*\\(\\)\\s*=>\\s*(?:!|(?:Boolean|Number|String)\\(|[\\w.?]+\\s*(?:===|!==|>=|<=|>|<|&&|\\|\\|))[^{<\\n]*,\\s*\\["
       ],
       "file_signals": []
     },
@@ -629,6 +634,9 @@
         "^\\s*export\\s+const\\s+(?:GET|POST|PUT|PATCH|DELETE|HEAD|OPTIONS)\\s*=",
         "from\\s+['\\\"]next/(?:server|headers|cache|og)['\\\"]",
         "from\\s+['\\\"]server-only['\\\"]"
+      ],
+      "frameworks": [
+        "next"
       ]
     },
     {

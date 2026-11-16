@@ -8,4 +8,5 @@ pack_use_effect_killer() {
   shared_contract references/typescript-react-baseline.md
   shared_contract scripts/react-rule-scan.py
   shared_contract references/react-acceptance.md
+  shared_contract references/execution.md
 }

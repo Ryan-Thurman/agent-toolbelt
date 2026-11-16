@@ -66,10 +66,13 @@ Use `blocker` only for these defaults. Each needs evidence in the changed code.
 
 ## Web interface guidelines
 
-- **Should-fix:** Accessibility, Focus States, and Forms rules, and the listed anti-patterns that block
-  keyboard, screen reader, zoom, or paste use. Examples: a clickable `<div>`, a control without a label,
-  `outline-none` without a replacement, or disabled zoom.
+- **Should-fix:** every rule in the Accessibility, Focus States, and Forms sections.
+  Examples: a clickable `<div>`, a control without a label, `outline-none` without a replacement,
+  disabled zoom, a decorative icon without `aria-hidden`, or `:focus` where `:focus-visible` fits.
+  Report a `nit` instead only when you show that no keyboard, screen reader, zoom, or paste user is affected.
+  State that evidence in the finding.
 - **Should-fix:** the Animation rule to honor `prefers-reduced-motion`.
+- **Should-fix:** a destructive action with no confirmation or undo window (Navigation & State).
 - **Nit:** Typography, Content & Copy, Hover, Dark Mode, and Touch rules.
 - **Nit:** all other sections, unless the finding blocks a task.
 - **Needs evidence:** the Performance section, as for other performance rules.

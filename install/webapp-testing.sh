@@ -3,6 +3,8 @@
 pack_webapp_testing() {
   shared_contract references/human-readable-output.md
   shared_contract references/docs-writing.md
+  shared_contract references/evidence-quality.md
+  shared_contract references/test-driven-development.md
   cmd webapp-test
 
   skill webapp-testing SKILL.md

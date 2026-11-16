@@ -2040,7 +2040,7 @@ window.AGENT_TOOLBELT_DATA = {
       "id": "vercel-web-interface-guidelines",
       "display_name": "Vercel Web Interface Guidelines",
       "short_description": "Review UI code against the Web Interface Guidelines.",
-      "default_prompt": "Use $vercel-web-interface-guidelines to review the UI files in this change.",
+      "default_prompt": "Use $vercel-web-interface-guidelines to review the UI files in this change, or the app when no file changed.",
       "description": "Review web UI code against the Vercel Web Interface Guidelines for accessibility, focus, forms, animation, typography, layout, theming, and interaction. Use when you review or build UI, or when the React rule scan lists this skill.",
       "category": "Codebase Improvement",
       "tags": [
@@ -3482,6 +3482,43 @@ window.AGENT_TOOLBELT_DATA = {
       ],
       "source_path": "wiki/use-cases/sre-run-a-production-readiness-review.md",
       "source_url": "https://github.com/Ryan-Thurman/agent-toolbelt/blob/main/wiki/use-cases/sre-run-a-production-readiness-review.md"
+    },
+    {
+      "slug": "ui-clean-up-react-effects",
+      "title": "Clean up React effects and re-render problems",
+      "summary": "This page is for a front-end developer whose React components have effects that run too often or state that re-renders too much. You get a scan report that lists each effect and each rule that applies, and one safe fix with a test that fails before the fix and passes after it.",
+      "group": "UI and front end",
+      "roles": "Front-end developer",
+      "skills": [
+        "vercel-react-best-practices",
+        "use-effect-killer"
+      ],
+      "source_path": "wiki/use-cases/ui-clean-up-react-effects.md",
+      "source_url": "https://github.com/Ryan-Thurman/agent-toolbelt/blob/main/wiki/use-cases/ui-clean-up-react-effects.md"
+    },
+    {
+      "slug": "ui-review-against-interface-guidelines",
+      "title": "Review a page for accessibility and interface quality",
+      "summary": "This page is for a designer, front-end developer, or QA engineer who must review a page or a UI change. You get a list of findings. Each finding has a file, a line, a severity, and a fix. No code changes.",
+      "group": "UI and front end",
+      "roles": "Designer, front-end developer, QA engineer",
+      "skills": [
+        "vercel-web-interface-guidelines"
+      ],
+      "source_path": "wiki/use-cases/ui-review-against-interface-guidelines.md",
+      "source_url": "https://github.com/Ryan-Thurman/agent-toolbelt/blob/main/wiki/use-cases/ui-review-against-interface-guidelines.md"
+    },
+    {
+      "slug": "ui-verify-a-browser-flow",
+      "title": "Prove a user flow works in the browser before the pull request merges",
+      "summary": "This page is for a QA engineer or developer who must show that a user flow works in a real browser. You get a written plan, a Playwright check that was seen failing and then passing, screenshots, a trace, and a verdict.",
+      "group": "UI and front end",
+      "roles": "QA engineer, developer",
+      "skills": [
+        "webapp-testing"
+      ],
+      "source_path": "wiki/use-cases/ui-verify-a-browser-flow.md",
+      "source_url": "https://github.com/Ryan-Thurman/agent-toolbelt/blob/main/wiki/use-cases/ui-verify-a-browser-flow.md"
     },
     {
       "slug": "write-make-a-runbook-plain",

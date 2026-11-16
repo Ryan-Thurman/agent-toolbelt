@@ -29,6 +29,10 @@ Before applying a rule:
    installed version supports it. Never assume React 19 or Next.js from syntax
    alone.
 
+For a scan-and-report run, a whole-codebase audit, or a rule that a repository
+convention overrides, follow the same section. It sets the report path, the rule
+table, and the sampling rule.
+
 Prefer behavior-preserving changes with a measurable or clearly bounded
 benefit. Preserve loading, error, cache, ordering, accessibility, and data
 consistency semantics. When a rule conflicts with repository conventions,

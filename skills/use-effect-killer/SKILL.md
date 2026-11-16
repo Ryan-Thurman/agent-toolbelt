@@ -10,7 +10,9 @@ read it before you write for the user.
 
 Toolbelt paths: a path that starts with `shared/`, `skills/`, `templates/`, or `workflows/` is relative to the Toolbelt root, `${CLAUDE_PLUGIN_ROOT}`. If that variable is not replaced, use the nearest folder above this file that contains `shared/contracts/`.
 
-Classify every effect in scope. Do not sample. An unclassified effect is an incomplete audit.
+Classify every effect in scope. Do not sample effects. An unclassified effect is an incomplete audit.
+
+**Scale:** the rule applies to every effect in the scope you set. For a whole app, set the scope first, such as a folder or the entry pages, and state it in the report. Exclude test and mock files, and name them as excluded.
 
 **Arguments:** an optional path. Without a path, audit the changed lines since the default branch.
 
@@ -22,12 +24,18 @@ Classify every effect in scope. Do not sample. An unclassified effect is an inco
    hooks lint configuration. These decide which fix is valid.
 3. Read [references/anti-patterns.md](references/anti-patterns.md).
 4. Read each effect with its component. Give it exactly one classification:
-   an anti-pattern number from 1 to 13, or `Legitimate` with the matching legitimate use.
-5. For each anti-pattern, record the location, the current code, the problem,
+   an anti-pattern number from 1 to 13, a check letter from A to E, or `Legitimate` with the matching legitimate use.
+5. Read [references/additional-checks.md](references/additional-checks.md). Check each component that holds an effect, and each component in scope that you read, for checks A to E.
+   Checks A and D are not effects. Record them with the component location.
+6. For each anti-pattern or check, record the location, the current code, the problem,
    and a concrete fix that the version notes allow.
-6. Change code only when the user asks for fixes or a calling workflow applies them.
+7. Change code only when the user asks for fixes or a calling workflow applies them.
    Keep the same behavior, including loading, error, ordering, and cleanup behavior.
    Run the focused tests after each fix.
+
+When the audit is a report run and the user names no path, write the report to
+`.atb-work/use-effect-killer/<scope-slug>.md`. Follow "Durable report location" in
+`shared/contracts/references/execution.md`.
 
 When a review or gate calls this skill, set each finding's severity with
 `shared/contracts/references/react-acceptance.md`.
@@ -43,10 +51,10 @@ Record a conflict instead of a finding.
 | --- | --- |
 | Files scanned | N |
 | Effects found | N |
-| Anti-patterns | N |
+| Anti-patterns and checks | N |
 | Legitimate | N |
 
-### <number>. <anti-pattern name> (N)
+### <number or letter>. <anti-pattern or check name> (N)
 
 `path/to/file.tsx:42`: <problem in one sentence>.
 Fix: <change in one sentence>.

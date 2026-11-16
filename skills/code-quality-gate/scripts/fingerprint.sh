@@ -7,7 +7,7 @@ set -o pipefail
 export LC_ALL=C
 
 usage() {
-  echo "usage: fingerprint.sh --base <commit> --allowed-paths-file <nul-delimited-file>" >&2
+  echo "usage: fingerprint.sh --base <commit> [--allowed-paths-file <nul-delimited-file>]" >&2
   exit 2
 }
 
@@ -21,10 +21,10 @@ while [ "$#" -gt 0 ]; do
   esac
 done
 
-[ -n "$base" ] && [ -n "$allowed_file" ] || usage
+[ -n "$base" ] || usage
 git rev-parse --is-inside-work-tree >/dev/null 2>&1 || { echo "not inside a Git work tree" >&2; exit 1; }
 base="$(git rev-parse --verify "${base}^{commit}")"
-[ -f "$allowed_file" ] || { echo "missing allowed paths file: $allowed_file" >&2; exit 1; }
+[ -z "$allowed_file" ] || [ -f "$allowed_file" ] || { echo "missing allowed paths file: $allowed_file" >&2; exit 1; }
 
 temp_dir="$(mktemp -d "${TMPDIR:-/tmp}/agent-toolbelt-gate-fingerprint.XXXXXX")"
 cleanup() { rm -rf "$temp_dir"; }
@@ -73,7 +73,7 @@ sort_unique_nul "$tracked_raw" "$tracked_sorted"
 sort_unique_nul "$untracked_raw" "$untracked_sorted"
 cat "$tracked_sorted" "$untracked_sorted" > "$scope_raw"
 sort_unique_nul "$scope_raw" "$scope_sorted"
-sort_unique_nul "$allowed_file" "$allowed_sorted"
+if [ -n "$allowed_file" ]; then sort_unique_nul "$allowed_file" "$allowed_sorted"; else cp "$scope_sorted" "$allowed_sorted"; fi
 
 while IFS= read -r -d '' path; do
   case "$path" in
@@ -94,16 +94,8 @@ head_fingerprint="$({
   done < "$untracked_sorted"
 } | git hash-object --stdin)"
 
-scope_fingerprint="$({
-  printf 'code-quality-gate-scope-v1\0base\0%s\0paths\0' "$base"
-  cat "$scope_sorted"
-  printf 'allowed\0'
-  cat "$allowed_sorted"
-} | git hash-object --stdin)"
-
 coverage="partial"
 cmp -s "$scope_sorted" "$allowed_sorted" && coverage="final"
 
 printf 'head_fingerprint=%s\n' "$head_fingerprint"
-printf 'scope_fingerprint=%s\n' "$scope_fingerprint"
 printf 'coverage=%s\n' "$coverage"

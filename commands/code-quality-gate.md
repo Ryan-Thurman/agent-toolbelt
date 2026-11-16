@@ -1,6 +1,6 @@
 ---
 description: Run a focused pre-PR quality gate when policy, user request, or risk calls for it
-argument-hint: "[--mode=report|apply] [--rounds N] [--scope path[,path]] [--disposition-json '<object>']"
+argument-hint: "[--mode=report|apply]"
 ---
 
 # /code-quality-gate

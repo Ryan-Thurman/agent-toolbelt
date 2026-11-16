@@ -64,7 +64,7 @@ in each request-changes finding.
 - Why required (repository policy, user request, or phase risk):
 - Status: PASS / FAIL / CAPPED / BLOCKED / Missing / Stale / Not required
 - Coverage: final / partial / unknown
-- Current base/head/scope fingerprints recomputed and verified: Yes / No
+- Current base and head fingerprint recomputed and verified: Yes / No
 - Blocking gate outcome or remaining disposition:
 
 ## Tests / checks reviewed

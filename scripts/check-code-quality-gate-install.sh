@@ -31,10 +31,8 @@ for path in \
   .agents/skills/code-quality-gate/references/gate-contract.md \
   .agents/skills/code-quality-gate/scripts/fingerprint.sh \
   .agents/skills/code-quality-gate/agents/openai.yaml \
-  .cursor/commands/simplify.md \
   .cursor/commands/pr-review.md \
   .cursor/commands/pr-improve.md \
-  .agents/skills/simplify/SKILL.md \
   .agents/skills/pr-review/SKILL.md \
   .agents/skills/pr-improve/SKILL.md \
   .agents/shared/contracts/references/style-precedence.md \
@@ -46,7 +44,7 @@ do
   require_file "$gate_target/$path"
 done
 
-if ! grep -q '.agents/shared/contracts/references/style-precedence.md' "$gate_target/.agents/skills/code-quality-gate/SKILL.md"; then
+if ! grep -q '.agents/shared/contracts/references/typescript-react-baseline.md' "$gate_target/.agents/skills/code-quality-gate/references/gate-contract.md"; then
   echo "installed gate skill did not rewrite shared-contract path" >&2
   exit 1
 fi
@@ -62,7 +60,7 @@ if ! grep -q '.agents/skills/crap-analysis/bin/crap-analysis.sh' "$gate_target/.
   echo "installed gate contract did not rewrite crap-analysis script path" >&2
   exit 1
 fi
-for field in head_fingerprint scope_fingerprint coverage allowed_paths_file; do
+for field in head_fingerprint coverage allowed_paths_file; do
   if ! grep -q "^$field:" "$gate_target/.agents/templates/code-quality-gate-report.md"; then
     echo "installed gate report template is missing $field" >&2
     exit 1
@@ -111,6 +109,15 @@ printf 'changed again\n' > "$fingerprint_repo/untracked.txt"
 third="$(cd "$fingerprint_repo" && bash "$fingerprint_script" --base HEAD --allowed-paths-file "$allowed_paths")"
 if [ "$first" = "$third" ]; then
   echo "fingerprint script did not detect untracked-content change" >&2
+  exit 1
+fi
+if printf '%s\n' "$first" | grep -q '^scope_fingerprint='; then
+  echo "fingerprint script still prints scope_fingerprint" >&2
+  exit 1
+fi
+no_file="$(cd "$fingerprint_repo" && bash "$fingerprint_script" --base HEAD)"
+if ! printf '%s\n' "$no_file" | grep -q '^coverage=final$'; then
+  echo "fingerprint script needs the allowed paths file or did not report final coverage without it" >&2
   exit 1
 fi
 partial_paths="$TMP_ROOT/partial-paths.nul"

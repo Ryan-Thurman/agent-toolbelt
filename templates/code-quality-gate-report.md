@@ -2,11 +2,8 @@
 status: "BLOCKED"
 base_sha: ""
 head_fingerprint: ""
-scope_fingerprint: ""
-coverage: "partial"
+coverage: "final"
 allowed_paths_file: ""
-round_bound: 3
-rounds_completed: 0
 ---
 
 # Code quality gate evidence
@@ -17,7 +14,7 @@ rounds_completed: 0
 - Canonical merge-base SHA:
 - Allowed paths:
 - Untracked paths at baseline:
-- Style evidence:
+- Style sources that `/pr-review` used:
 
 ## Required checks
 
@@ -33,13 +30,12 @@ Required checks that also fail at `base_sha`, with the same failure. List them a
 
 ## Findings and dispositions
 
-| ID | Source | Severity | Consequence | Decision | Status | Reason / evidence | Owner / follow-up | Verification | Round |
-|---|---|---|---|---|---|---|---|---|---|
+| ID | Source | Severity | Consequence | Decision | Status | Reason / evidence | Owner / follow-up | Verification |
+|---|---|---|---|---|---|---|---|---|
 
-## Rounds
+## Apply hand-off
 
-| Round | Changes assessed or applied | Scope guard | Checks and rereview | Result |
-|---|---|---|---|---|
+For apply mode only. Pointer to the `/pr-improve` ledger and its end state:
 
 ## Status rationale
 

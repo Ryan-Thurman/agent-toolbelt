@@ -11,28 +11,23 @@ read it before you write for the user.
 Toolbelt paths: a path that starts with `shared/`, `skills/`, `templates/`, or `workflows/` is relative to the Toolbelt root, `${CLAUDE_PLUGIN_ROOT}`. If that variable is not replaced, use the nearest folder above this file that contains `shared/contracts/`.
 
 Orchestrate the existing quality owners into one current, durable verdict. This
-is not another simplifier or taxonomy: `/simplify` owns behavior-preserving
-cleanup, `/pr-review` owns findings, and `/pr-improve` owns the frozen-scope
-fix/rereview ledger.
+is not another reviewer: `/pr-review` owns findings and `/pr-improve` owns the
+frozen-scope fix and rereview ledger.
 
 Read `references/gate-contract.md` before step 1.
-It owns the target, modes, scope rules, dispositions, evidence files, and status decisions.
+It owns the target, modes, dispositions, evidence files, and status decisions.
 
 ## Run
 
-1. Freeze the target, scope, round bound, and fingerprints as the contract defines.
-   Use `scripts/fingerprint.sh` for the fingerprints.
-2. Build the style evidence packet using
-   `shared/contracts/references/style-precedence.md`. Load
-   `shared/contracts/references/anti-slop-naming.md`,
-   `shared/contracts/references/maintainability-taxonomy.md`, and
-   `shared/contracts/references/typescript-react-baseline.md` when their
-   language/scope applies. Record uncertainty rather than inventing policy.
-3. Run the required repository checks, the CRAP analysis check, the React rules check, and the
-   changed-hunk assessment, as the contract's sections define them.
+1. Freeze the target, `base_sha`, and `head_fingerprint` as the contract defines.
+   Use `scripts/fingerprint.sh` for the fingerprint.
+2. Run `/pr-review --tier=standard --show-nits` on the frozen target. Record each finding
+   and nit, and name the style sources that `/pr-review` used.
+3. Run the required repository checks, the CRAP analysis check, and the React rules check,
+   as the contract's sections define them.
 4. Record every finding and its disposition in the durable evidence.
-5. In apply mode, run the bounded repair loop from the contract's assessment and
-   repair section. In report mode, stop after step 4.
+5. In apply mode, hand the accepted findings to `/pr-improve`, then run steps 1 to 4 again in
+   report mode. In report mode, stop after step 4.
 
 ## Completion
 

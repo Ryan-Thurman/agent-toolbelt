@@ -45,4 +45,5 @@ and print the path. Read `shared/contracts/references/execution.md#Durable repor
 
 Finish with a traceable result and an explicit decision state: ready to
 shape, needs evidence, or deferred. Give each claim a verdict: `Supported`,
-`Contradicted`, or `Unknown`. Leave implementation design to later stages.
+`Contradicted`, `Mixed`, or `Insufficient evidence`, with a reason. `shared/contracts/references/evidence-quality.md`
+wins if the lists differ. Leave implementation design to later stages.

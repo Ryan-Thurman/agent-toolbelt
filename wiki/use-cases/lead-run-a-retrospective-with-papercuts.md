@@ -10,8 +10,8 @@ This page is for a tech lead or engineering manager who wants to collect the fri
 
 1. Start Claude Code in the repository with the Toolbelt loaded: `claude --plugin-dir <toolbelt-folder>`.
 2. Collect the friction: `/agent-toolbelt:papercuts --feature <branch | pr-number | ticket-id>`. Do not add `--post` here. Step 6 of Steps explains that flag.
-3. Open the saved report in `.atb-work/papercuts/`. For each row, run the narrowest command that shows the stated cause: `<test command> <path>`. Note the environment it needs, such as a database or a variable. If the command cannot run, mark the row `not verified`. Also check that the fix names one file.
-4. Tell the agent: `Follow <toolbelt-folder>/workflows/delivery-retrospective-workflow.md for <branch>. Use the papercut report <report-path>. Write a local report only.` With the plugin, `<toolbelt-folder>` is the plugin folder. With an installed copy, it is `.agents`, the folder that holds `workflows/` in the project. The workflow names the output path, `.atb-work/delivery-retrospective/<scope-slug>.md`.
+3. The reply gives the report state: `saved`. Open the report in `.atb-work/papercuts/`. For each row, run the narrowest command that shows the stated cause: `<test command> <path>`. Note the environment it needs, such as a database or a variable. If the command cannot run, keep the row out of the table (see Decision points). Also check that the fix names one file.
+4. Tell the agent: `Follow <toolbelt-folder>/workflows/delivery-retrospective-workflow.md for <branch>. Use the papercut report <report-path>. Write a local report only.` With the plugin, `<toolbelt-folder>` is the plugin folder. With an installed copy, it is `.agents`, the folder that holds `workflows/` in the project. The workflow writes the report to `.atb-work/delivery-retrospective/<scope-slug>.md`.
 
 You get a ranked papercut report and a local retrospective report. Nothing is posted, committed, or sent to a tracker.
 The sections below explain each step, when to stop, and what the output looks like. If you already have a saved papercut report, start at step 7 of Steps and pass its path.
@@ -40,12 +40,12 @@ The procedure has this order because the workflow reads the papercut report as a
 
 | Step | Do | Why | Done when |
 | --- | --- | --- | --- |
-| 1 | Load the Toolbelt in Claude Code: `claude --plugin-dir /path/to/agent-toolbelt`. Or install both packs into the project: `./install.sh --harness all papercuts ship-it /path/to/project`. | The `ship-it` pack carries the retrospective workflow file. The `papercuts` pack alone does not. | You type `/` and see `/agent-toolbelt:papercuts` (plugin) or `/papercuts` (installed copy). |
+| 1 | Load the Toolbelt in Claude Code: `claude --plugin-dir /path/to/agent-toolbelt`. Or install the pack into the project: `./install.sh --harness all papercuts /path/to/project`. | The `papercuts` pack carries the retrospective workflow file. The `ship-it` pack does too. | You type `/` and see `/agent-toolbelt:papercuts` (plugin) or `/papercuts` (installed copy). |
 | 2 | Start in the repository folder. Check the branch and its commits: `git log --format='%h %s' <base>..<branch>`. In the sample: `git log --format='%h %s' 30b68e1..feat/con-12-bookmarks-1`. | The skill needs the branch. For a pull request or a ticket, it finds the branch first. | You can name the branch, the base, and the records that exist. |
-| 3 | Run `/agent-toolbelt:papercuts --feature <branch \| pr-number \| ticket-id>`. In the sample: `/agent-toolbelt:papercuts --feature feat/con-12-bookmarks-1`. | The skill reads only the records that exist. For a pull request it uses the host CLI that the Toolbelt selects (`gh` or `az`). Without the host CLI it uses the local branch and states the limit. | The reply gives the path of a report in `.atb-work/papercuts/<date>-<scope-slug>.md`. |
-| 4 | For each row, run one command that shows the cause. In the sample: `DATABASE_URL=postgresql://u:p@localhost:5432/db JWT_SECRET=x npx jest src/tests/services/auth.service.test.ts`. Then swap two lines and run it again. Restore the file with `git checkout <file>`. | A record can state a wrong cause. The skill asks for a codebase cause. It now also requires that you read the source or the command output that shows the cause. A cause from a record alone is a candidate, not a row. | Each row has a cause that a command shows, or you mark the row `not verified`. |
+| 3 | Run `/agent-toolbelt:papercuts --feature <branch \| pr-number \| ticket-id>`. In the sample: `/agent-toolbelt:papercuts --feature feat/con-12-bookmarks-1`. | The skill reads only the records that exist. For a pull request it uses the host CLI that the Toolbelt selects (`gh` or `az`). Without the host CLI it uses the local branch and states the limit. | The reply gives the state `saved` and the path of a report in `.atb-work/papercuts/<date>-<scope-slug>.md`. |
+| 4 | For each row, run one command that shows the cause. In the sample: `DATABASE_URL=postgresql://u:p@localhost:5432/db JWT_SECRET=x npx jest src/tests/services/auth.service.test.ts`. Then swap two lines and run it again. Restore the file with `git checkout <file>`. | A record can state a wrong cause. The skill asks for a codebase cause. It also requires that you read the source or the command output that shows the cause. A cause from a record alone is a candidate, not a row. | Each row has a cause that a command or a source file shows. A row with no check is a candidate, so keep it in a note. |
 | 5 | Read the report. Check the rank, the `Fix` column, the `Key` column, and the line that lists the sources. | The skill requires a named file and a change for each fix. It ranks the cause that every future person will hit first. | Each row is not yet fixed, has a key, and names the file that its fix changes. |
-| 6 | Only when you have a team log: run the whole command from step 3 again with `--post <team-log.md>`. The skill makes the report again. For a Markdown file, it reads the target, marks repeated keys, and shows the exact text. A flag from a script counts as confirmed, so run it by hand. | The preview shows the text that the write adds, before anything changes. The skill appends to the end of the file and does not commit or push. | You saw the text and the path. After you confirm, the last lines of the file hold the marker. If you decline, the file is unchanged. |
+| 6 | Only when you have a team log: run the whole command from step 3 again with `--post <team-log.md>`. For a Markdown file, the skill reads the target, marks repeated keys, and shows the exact text. A flag from a caller skill, CI job, worker, or poller counts as consent, so run it by hand. | The preview shows the text that the write adds, before anything changes. The skill appends to the end of the file and does not commit or push. | The reply gives the state `preview`, the text, and the path. After you confirm, the state is `posted` and the end of the file holds the entry. Its first line is the marker. If you decline, the file is unchanged. |
 | 7 | Start the retrospective. Use the prompt in the Quick path, with your branch and the report path. | The workflow reads the plan, the changes, the review findings, the checks, and the papercut reports. | The report holds the inputs, expected and observed results, lessons, and improvements. |
 | 8 | Read each improvement. Give each one a person who accepts it, or discard it. | The workflow selects improvements with owners and review triggers. It does not invent approvals. | Each kept improvement has a named person. Policy changes go to the project that owns them. |
 
@@ -56,75 +56,89 @@ The procedure has this order because the workflow reads the papercut report as a
 - If the target log already holds the marker of this entry, the skill does not post again. It reports the earlier entry.
 - If you have no team log, skip `--post`. The saved report is the entry, and you can paste it where you want.
 - If the target is a GitHub issue, the skill adds one comment. For an Azure Boards work item, it adds one discussion comment. For Jira or another tracker, it shows the entry and you paste it. Read `report-format.md` in the skill before you use one of these targets.
-- If a row has no checked cause, do not fix it. In this run, such a row is marked `not verified` and stays in the report. The skill does not define this mark. It requires the cause check and treats an unchecked cause as a candidate.
+- If a row has no checked cause, do not fix it. The skill treats a cause from a record or from memory alone as a candidate, not a row. Keep it in a note until a command or a source file shows the cause. In this run, rows 3, 5, 6, 7, and 8 rest on reading source files or on a count command, and rows 1, 2, and 4 also have a before-and-after run. Any `not verified` mark is your own convention, not a skill field.
 - If the feature is not finished, run the retrospective as a checkpoint and say so. The workflow says "after completed work". Name what the next phase can still change.
 - If a candidate is a defect, track it as a bug. A failed test from a real bug is not a papercut. The sample has one, which the run read in the code and did not execute: favoriting an unknown slug returns status 500.
-- Stop the papercut run when the report file exists, and each row is not yet fixed, has a key, and names a fix file. This is what the skill requires, with a checked cause for each row. This page adds the mark `not verified` for a row whose check cannot run.
+- Stop the papercut run when the report file exists, and each row is not yet fixed, has a key, and names a fix file. The skill also requires a checked cause for each row.
 - Stop the retrospective when each improvement has an owner, a done condition, and a review trigger.
 - If you want only the repository fixes, skip the retrospective. If you already have a papercut report, start at step 7 of Steps and pass its path.
 - Choose [Review product outcomes after a release](product-review-outcomes-after-release.md) when you want customer results. Choose [Follow up an incident](sre-follow-up-an-incident.md) when the friction is an incident. Choose [Choose technical debt to pay](lead-choose-tech-debt-to-pay.md) when the report shows more rows than the team can pay.
 
 ## What you get
 
-The run was headless, so no person was present. The skill asks one question: confirm before the write. The run stopped at the preview and wrote nothing. The skill now gives the report state in the reply: `saved`, `preview`, or `posted`. This run ended in `preview`. All reviews in the records are Self-reviews. A real run on a project with pull requests also reads review threads and CI runs. This run had neither, and the report says so in its sources line.
+The run had no person present. The consent rule of `posting.md` has one question: confirm before the write. The run used the report-only path of a first trial. It stopped at the preview and wrote nothing. The reply gives one report state: `saved`, `preview`, or `posted`. This run ended in `preview`. All reviews in the records are Self-reviews. A real run on a project with pull requests also reads review threads and CI runs. This run had neither, and the report says so in its sources line.
 
 First, row 1 of the papercut report. It corrects the cause that three records gave.
 
-Excerpt from a run on the Conduit sample API at commit `6a33a58`. This is row 1 of 8, with its cells unchanged.
+Excerpt from the rerun on the Conduit sample API at commit `6a33a58` (Toolbelt `8ac3e11`). This is row 1 of 8, with its cells unchanged.
 
 | # | Papercut | Cost | Fix | Key |
 | --- | --- | --- | --- | --- |
-| 1 | `src/tests/services/auth.service.test.ts` imports the service before `../prisma-mock`. The `jest.mock` call in `prisma-mock.ts` therefore comes too late, and 7 of 12 tests use the real Prisma client. | 7 tests fail on every run and look like "no database". Every phase record carried them as a known baseline. A real auth regression hides among them. | Swap lines 2 and 3, so `prismaMock` loads first. With that swap, 12 of 12 tests pass with no database. | `tooling:src/tests/services/auth.service.test.ts` |
+| 1 | `src/tests/services/auth.service.test.ts` imports the service before `../prisma-mock`. The `jest.mock` call in `prisma-mock.ts` therefore comes too late, and 7 of 12 tests use the real Prisma client. Cause checked: the test file gives 7 failed and 5 passed, and 12 passed after lines 2 and 3 swap. | 7 tests fail on every run and look like "no database". Every phase record carried them as a known baseline. A real auth regression hides among them. | Swap lines 2 and 3 of the test file, so `prismaMock` loads first. | `tooling:src/tests/services/auth.service.test.ts` |
 
-The run executed the check. Before the swap, the file showed 7 failed and 5 passed. After the swap, it showed 12 passed. Nothing in the file needed a database. The key has the form `<category>:<path-or-command>`. A team uses it to match the same papercut in later reports. The report has seven more rows. They cover the mock type error, the repeated article response code, and the Prettier configuration. They also cover `src/main.ts`, the README, the lint baseline, and a stale e2e test.
+The Papercut cell holds the check. Before the swap, the file showed 7 failed and 5 passed. After the swap, it showed 12 passed. Nothing in the file needed a database. The key has the form `<category>:<path-or-command>`. A team uses it to match the same papercut in later reports. The report has seven more rows. They cover the mock type error, the repeated article response code, and the Prettier configuration. They also cover `src/main.ts`, the README, the lint baseline, and a stale e2e test. The run ran its own check for rows 1, 2, and 4. For row 2 it removed one `@ts-ignore` line, and the suite then failed with TS2615.
 
-The report also lists what the run removed. One example is the line "`prisma format` realigned 15 lines". On `master`, `prisma format` changes nothing, so the new relation fields caused it and the formatter is correct.
+The report lists each removed candidate on a `Removed:` line. One example is the line "`prisma format` realigned 15 lines". On `master`, `prisma format` changes nothing, so the new relation fields caused it and the formatter is correct. The report cites commands and repository paths only, so a team log can resolve each source.
 
 Next, the preview for the team log.
 
-Excerpt from a run on the Conduit sample API at commit `6a33a58`. This is the head of `post-preview.md`. Lines are wrapped, and `...` marks skipped text: the end of the Status line, which names a private run lesson, and the report text after the marker. That report is the one from the first excerpt. The `repo/` in the Target line is the run's own folder, which you do not have.
+Excerpt from the rerun on the Conduit sample API at commit `6a33a58` (Toolbelt `8ac3e11`). This is the head of the saved preview. Lines are wrapped, and `...` marks skipped text: the report text after the marker. That report is the one from the first excerpt.
 
 ```text
 Command: `/papercuts --feature feat/con-12-bookmarks-1
   --post docs/papercuts.md`
-Target: `docs/papercuts.md` in the Conduit copy (`repo/`).
-  The file does not exist, so no earlier entry has a
-  repeated key and the marker is new.
+Target: `docs/papercuts.md` in the Conduit copy. The file
+  does not exist, so no earlier entry has a repeated key
+  and the marker is new.
 Action: append the text below at the end of the file.
   No commit, no push.
-Status: preview only. Nothing was written. ...
+Consent: the flag came from a person-less run, not from a
+  caller skill, a CI job, a worker, or a poller. No person
+  said to post. This is a first trial (report-only path).
+State: `preview`. Nothing was posted.
+
 --- preview of the exact text ---
 <!-- papercuts:con-12-bookmarks:2026-11-15:6a33a58 -->
+## Papercuts: con-12-bookmarks (2026-11-15)
+...
 ```
 
-The command and the target are the run's examples. Check three things in your own preview. The target is the file that you meant. The marker is new, or the skill names the earlier entry. The text has no names of people and no secrets.
+The Command, Target, Action, Consent, and State lines are the run's own layout. The skill requires the exact text, the target, and a state. The command and the target are the run's examples. Check three things in your own preview. The target is the file that you meant. The marker is new, or the skill names the earlier entry. The text has no names of people and no secrets.
 
 Last, two rows of the retrospective report.
 
-The `checks/` files in the Source cell are the run's saved command output and are not in the repository.
-
-Condensed from the run report: the "Expected and observed" row for the baseline and the improvement `I-1`. The other rows are cut. The cells are unchanged.
+Condensed from the rerun report (Conduit sample at commit `6a33a58`, Toolbelt `8ac3e11`): the "Expected and observed" row for the baseline and the improvement `I-1`. The other rows are cut. The cells are unchanged.
 
 | Topic | Expected (plan) | Observed | Source |
 | --- | --- | --- | --- |
-| Baseline | 7 tests in `auth.service.test.ts` fail because no database runs. | The cause is the import order in that test file. After a two-line swap, 12 of 12 pass with no database. | `checks/01-` and `checks/02-` |
+| Baseline | 7 tests in `auth.service.test.ts` fail because no database runs. | The cause is the import order in that test file. After a two-line swap, 12 of 12 pass with no database. | `npx jest src/tests/services/auth.service.test.ts` before and after the swap |
 
-| ID | Improvement | Proposed owner | Done when | Review trigger |
-| --- | --- | --- | --- | --- |
-| I-1 | Swap lines 2 and 3 of `src/tests/services/auth.service.test.ts`. Remove "7 known failures" from the plan baseline. | The developer who opens the phase 1 pull request | `npx jest src/tests/services/auth.service.test.ts` reports 12 passed. The plan baseline line reads "no known failures". | A new service test file shows a failure that comes from the real client |
+| ID | Improvement | Owner | Status | Done when | Review trigger | Suggested role |
+| --- | --- | --- | --- | --- | --- | --- |
+| I-1 | Swap lines 2 and 3 of `src/tests/services/auth.service.test.ts`. Remove "7 known failures" from the plan baseline. | Unassigned | Proposed | `npx jest src/tests/services/auth.service.test.ts` reports 12 passed. The plan baseline reads "no known failures". | A new service test file shows a failure from the real client | The developer of the phase 1 pull request |
 
-The report has five improvements and three lessons. Check each improvement for an owner, a done condition that a command can show, and a review trigger. In this run the owners are roles, and the section heading marks the items as proposed, because no person accepted anything. The run predates PR #60. The workflow now lists such an item as `Proposed` with the owner `Unassigned`. The "Limits" paragraph of the report states the limits on duration and on owner decisions. The records have no timestamps and no recorded opinions.
+The report has five improvements and three lessons. Check each improvement for an owner, a done condition that a command can show, and a review trigger. No person accepted anything, so the workflow lists each item as `Proposed` with the owner `Unassigned`. The Suggested role column is the run's choice, not a workflow field. The report also says that the project has no action store, so the report is the only record. Its Scope and sources section states the limits on duration and on owner decisions. The records have no timestamps and no recorded opinions.
 
-What the run did not execute: any test that needs a database, `nx lint`, `nx test`, and the e2e project. The e2e finding comes from reading `e2e/src/server/server.spec.ts` and `src/main.ts`. The run applied no fix. It tried the import swap and restored the file. It wrote nothing to `docs/papercuts.md`.
+The run applied no fix. It tried the import swap and restored the file. It wrote nothing to `docs/papercuts.md`. The list of unproven items is in Not exercised.
 
-The run used the skill files and the workflow as they were at the commit of this run. The two input runs used `story-refinement` and `phased-delivery` before this page. After a skill update, check the claims of this page again.
+The rerun used the skill files and the workflow at Toolbelt commit `8ac3e11`. The two input runs used `story-refinement` and `phased-delivery` before this page. After a skill update, check the claims of this page again.
+
+## Not exercised
+
+- Tests that need a database. Proof: run each of the five `Not verified` checks of the phase review on a disposable database, and record pass or fail.
+- `nx lint`, `nx test`, and the e2e project. Proof: run them in a prepared copy and compare the output with rows 7 and 8. The e2e finding comes from reading `e2e/src/server/server.spec.ts` and `src/main.ts`.
+- The bookmark tests. They did not compile, because the shared Prisma client has no `Bookmark` model (TS2339). This is a setup limit of the run. Proof: run `prisma generate` in a private `node_modules` copy, then run `npx jest src/tests/services/bookmark.service.test.ts`.
+- A post that lands. Proof: a person confirms the preview, and `docs/papercuts.md` then ends with the entry and its marker. Run the same command again and see that the skill reports the earlier entry.
+- A real pull request, review thread, or CI run as a source. Proof: run step 3 on a branch with a pull request, and check that the sources line names them.
+- That the host loads the plugin or the installed copy. The install check was a dry run that listed the workflow file. Proof: type `/` in the host and see the command.
+- Owner decisions and durations. The records have none. Proof: ask the team, then change `Unassigned` to a named person.
 
 ## Common mistakes
 
 - You copy a cause from a record. Three records said "no database", and the real cause was an import order. A reader who trusts the records starts a database for nothing. Run one command per row before you rank it.
 - You report formatter noise as friction. On the base commit, `prisma format` changes nothing. Run the formatter on the base before you write the row.
 - You write "improve the docs" as a fix. The skill requires the exact file and the change. A row without a fix file does not belong in the report.
-- You pass `--post` before you read the target. The skill shows a preview and asks for confirmation. The posting contract says that a flag from a script or a CI job counts as confirmed when the pack names it as its posting flag. Pass `--post` only when you want the write.
+- You pass `--post` before you read the target. In an interactive run, the skill shows a preview and asks for confirmation. A flag from a caller skill, CI job, worker, or poller counts as consent, because the pack names `--post` as its posting flag. A first trial stays report-only. Pass `--post` only when you want the write.
 - You put a name in a row. The skill allows files, commands, and records only. The person who posts the entry can add their own name.
 - You call an improvement accepted. The workflow does not invent approvals. An item is accepted only when a person says so.
 - You use this retrospective as a source of team opinions. It reads records only. Ask the team, then add their answers.

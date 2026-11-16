@@ -58,4 +58,5 @@ What this fix must **not** do. Explicitly fence out refactors, unrelated cleanup
 - [ ] Root cause addressed, not just the symptom.
 - [ ] Existing tests pass / build succeeds.
 - [ ] Original bug scenario verified end-to-end.
-- [ ] Durable file `status` set to `resolved`, and the knowledge-base entry appended.
+- [ ] Or, when the end-to-end check cannot run here: marked `Not verified`, with the command that runs it and the reason it cannot run.
+- [ ] Durable file `status` set to `resolved`, or to `resolved-unverified` when the end-to-end check is `Not verified`. Append the knowledge-base entry.

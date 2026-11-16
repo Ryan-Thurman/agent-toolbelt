@@ -2,6 +2,7 @@
 """Exercise fresh installs and migration from the former duplicate layout."""
 
 import os
+import re
 import shutil
 import subprocess
 import tempfile
@@ -235,6 +236,48 @@ class InstallLayoutTests(unittest.TestCase):
         self.assertIn("link or special file", result.stderr)
         self.assertFalse(list(outside.iterdir()))
         self.assertTrue((self.target / ".atb/templates/file.md").is_file())
+
+    def totals(self, text):
+        match = re.search(r": (\d+) (?:to )?create[d]?, (\d+) (?:to change|updated), (\d+) same, (\d+) skipped", text)
+        self.assertTrue(match, text)
+        return tuple(int(n) for n in match.groups())
+
+    def test_dry_run_and_real_run_count_each_path_once(self):
+        dry = self.totals(self.install("--dry-run", "all").stdout)
+        real = self.totals(self.install("all").stdout)
+        self.assertEqual(dry, real)
+
+    def test_force_dry_run_separates_same_changed_and_new_files(self):
+        self.install("handoff")
+        edited = self.target / ".agents/skills/handoff/SKILL.md"
+        edited.write_text(edited.read_text() + "Local edit.\n")
+        (self.target / ".agents/skills/handoff/references").mkdir(exist_ok=True)
+        removed = [f for f in (self.target / ".agents/skills/handoff").rglob("*") if f.is_file() and f != edited][0]
+        removed.unlink()
+        before = self.snapshot()
+        out = self.install("--force", "--dry-run", "handoff").stdout
+        self.assertEqual(before, self.snapshot())
+        self.assertIn(f"~ would change: {edited}", out)
+        self.assertIn(f"+ would install: {removed}", out)
+        self.assertIn("= same: ", out)
+        self.assertNotIn("would overwrite", out)
+        created, changed, same, _ = self.totals(out)
+        self.assertGreaterEqual(created, 1)
+        self.assertGreaterEqual(changed, 1)
+        self.assertGreater(same, 0)
+
+    def test_sweep_names_a_repository_below_a_folder_that_is_not_a_repository(self):
+        parent = Path(self.temp.name) / "workspace"
+        (parent / "group/nested/.git").mkdir(parents=True)
+        (parent / "plain").mkdir()
+        result = subprocess.run(
+            [str(ROOT / "install.sh"), "--harness", "claude", "--sweep", "--dry-run", "handoff", str(parent)],
+            capture_output=True, text=True,
+        )
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+        self.assertIn("skipped (not a git repository): " + str(parent / "group"), result.stdout)
+        self.assertIn(f"holds a repository at {parent / 'group/nested'}", result.stdout)
+        self.assertNotIn("plain holds", result.stdout)
 
 
 if __name__ == "__main__":

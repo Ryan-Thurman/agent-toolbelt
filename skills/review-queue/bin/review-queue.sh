@@ -152,7 +152,15 @@ cmd_complete() {
   worker="$(esc "$(flag worker)")"
   [ -n "$id" ] || die "complete: job id required"
   [ -n "$worker" ] || die "complete: --worker required (the id that claimed the job)"
-  local f_sql="NULL"; [[ "$findings" =~ ^[0-9]+$ ]] && f_sql="$findings"
+  case "$verdict" in
+    ""|"APPROVE"|"REQUEST CHANGES"|"NEEDS DISCUSSION") ;;
+    *) die "complete: --verdict must be APPROVE, REQUEST CHANGES, or NEEDS DISCUSSION" ;;
+  esac
+  local f_sql="NULL"
+  if [ -n "$findings" ]; then
+    [[ "$findings" =~ ^[0-9]+$ ]] || die "complete: --findings must be a whole number"
+    f_sql="$findings"
+  fi
   # Guarded update: only the worker that holds the claim can complete the job.
   out="$(sqljson <<SQL
 UPDATE jobs SET status='done', verdict='$verdict', findings=$f_sql,

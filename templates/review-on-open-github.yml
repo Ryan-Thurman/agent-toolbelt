@@ -51,6 +51,9 @@ jobs:
         # A PR must not change the rules that review it. Restore the base versions of the
         # root instruction files, and remove the ones that the base does not have. Replace the
         # .agents/ and .claude/ folders too: they hold the reviewer skills and the scan script.
+        # The replace is whole on purpose. A PR must not change .claude/settings.json or the
+        # commands that the reviewer uses. The review run also discards other tracked files
+        # that the PR changes in these two folders.
         run: |
           for f in CLAUDE.md AGENTS.md .pr-review.md .claude/pr-review.md STYLE_GUIDE.md
           do

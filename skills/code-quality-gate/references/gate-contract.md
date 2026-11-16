@@ -76,13 +76,25 @@ A consumer must rerun this script with the report's `base_sha` and treat PASS as
 ## Status decision
 
 A **pre-existing failure** is a required check that also fails at `base_sha`
-with the same failure. The same failure means the same set of failing test names, or the same
-lint rule IDs with the same repository-relative paths. Compare names and IDs, not raw output,
-because raw output holds machine paths and timings. Run each failed required check at `base_sha`
-in a separate worktree, and save the output in `baseline.md`, before you classify a
-failure. List each pre-existing failure in the report's "Pre-existing failures"
-table, apart from the new failures. A pre-existing failure does not change the
-status by itself. A check that starts but does not finish, such as a timeout,
+with the same failure. The same failure means no new failure at head. Count the failures per
+failing test name, and per lint rule ID and repository-relative path. A pair at head is new when
+it is absent at base or its count is higher than at base. A lower count is not new. Compare
+names, IDs, and counts, not raw output, because raw output holds machine paths and timings.
+A new error of a rule that already fails in the same file is a new failure.
+Run each failed required check at `base_sha` in a separate worktree, and save the output in
+`baseline.md`, before you classify a failure.
+
+The base worktree needs the same dependencies and environment as the head run. Install them
+with the repository's own install command from the base lockfile. You can link the head
+dependency folder when the lockfile is the same at both commits. Record the install command
+and its result in `baseline.md`. A base failure that comes from a missing install or
+environment is not a pre-existing failure. Mark that check `BLOCKED`, and name the missing
+prerequisite.
+
+Write the `Required checks` Result column with one of these values: `Passed`, `Failed`,
+`Failed (pre-existing)`, `Skipped`, or `BLOCKED`. List each pre-existing failure in the report's
+"Pre-existing failures" table, apart from the new failures. A pre-existing failure does not
+change the status by itself. A check that starts but does not finish, such as a timeout,
 is `BLOCKED` for that check.
 
 - **PASS**: every required repository check is green or is a pre-existing
@@ -114,9 +126,10 @@ status is BLOCKED only when no new failure is confirmed.
 2. Run `/pr-review --tier=standard --show-nits` on the frozen target. `/pr-review` loads the
    project style sources itself. The gate names the standard tier, so the depth does not change
    with the size of the diff. `--show-nits` keeps every nit that the posting threshold hides.
-   Record every evidence-backed standards or maintainability finding and nit in the gate
-   record, and add one line that names the style sources `/pr-review` used.
-   The PR report remains the review source of truth for other findings.
+   Record every evidence-backed finding and nit from every facet of that review, including
+   the tests and correctness facets, in the gate record. Give each nit a disposition.
+   Add one line that names the style sources `/pr-review` used.
+   The PR report remains the review source of truth for the finding text.
 3. For apply mode, pass the accepted findings to `/pr-improve`. Then rerun all required checks
    and this assessment in report mode.
 

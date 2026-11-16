@@ -55,6 +55,7 @@ that runs it and the reason it cannot run here. Do not use `resolved` for this c
 An append-only `bug-knowledge-base.md` records resolved investigations so future sessions can jump
 to high-probability hypotheses when symptoms match. Its location is the path that the user names.
 Otherwise it is `.atb-work/bug-to-fix/bug-knowledge-base.md`, which stays on this machine and out of git.
+Before you write under `.atb-work/`, make sure `.atb-work/.gitignore` contains `*`, as `shared/contracts/references/execution.md` ("Durable report location") says.
 Name a tracked path when the team must share it. One entry per resolved bug:
 
 ```

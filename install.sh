@@ -229,7 +229,8 @@ done
 # Reset per-target counters and support-file records.
 install_into_target() {
   TARGET="$1"
-  created=0; updated=0; skipped=0; gated=0
+  created=0; updated=0; skipped=0; unchanged=0; gated=0
+  SEEN_PATHS=""
   HOOKS_NOT_WIRED=0
   INSTALLED_SHARED_CONTRACTS=()
 
@@ -250,10 +251,10 @@ install_into_target() {
   local p pre pre_g touched
   for p in "${selected[@]}"; do
     CURRENT_PACK="$p"
-    pre=$((created + updated + skipped)); pre_g=$gated
+    pre=$((created + updated + skipped + unchanged)); pre_g=$gated
     echo "--- $p ---"
     "pack_${p//-/_}"
-    touched=$(( (created + updated + skipped) - pre ))
+    touched=$(( (created + updated + skipped + unchanged) - pre ))
     if [ "$touched" = 0 ]; then
       if [ -n "$(pack_dependencies "$p")" ]; then
         echo "  note: $p is a dependency bundle; its payload was handled by declared dependencies"
@@ -272,9 +273,9 @@ install_into_target() {
     echo "  cursor-hooks: Not wired. Merge the entries printed above into .cursor/hooks.json."
   fi
   if [ "$DRY_RUN" = "1" ]; then
-    echo "  (dry run) $TARGET: $created to create, $updated to update, $skipped skipped."
+    echo "  (dry run) $TARGET: $created to create, $updated to change, $unchanged same, $skipped skipped."
   else
-    echo "  $TARGET: $created created, $updated updated, $skipped skipped."
+    echo "  $TARGET: $created created, $updated updated, $unchanged same, $skipped skipped."
   fi
 }
 
@@ -300,6 +301,10 @@ if [ "$SWEEP" = "1" ]; then
     [ -d "$child" ] || continue
     if [ ! -e "$child/.git" ]; then
       echo "skipped (not a git repository): $child"
+      nested="$(find "$child" -mindepth 2 -maxdepth 4 -name .git -not -path '*/node_modules/*' -print -quit 2>/dev/null)"
+      if [ -n "$nested" ]; then
+        echo "  note: $child holds a repository at ${nested%/.git}. The sweep does not reach it. Run the install in that repository."
+      fi
       continue
     fi
     if [ "$(cd "$child" 2>/dev/null && pwd)" = "$ROOT" ]; then

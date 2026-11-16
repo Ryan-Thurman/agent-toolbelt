@@ -49,6 +49,11 @@ reviews every job later.
 3. Print one line per job: id, target, verdict, and head SHA. Print the full review output for each job.
    Post nothing and change no job.
 
+A trial never claims, so it cannot see that another worker holds a job. Each trial reviews the same
+pending jobs again and pays the full review cost again. Run one trial, then start the real worker.
+A job that is added during a trial is not part of that trial. The trial output does not mark it.
+Run `list --status pending` after the trial to find jobs that the trial did not review.
+
 ## Multiple jobs / fan-out
 
 For a backlog, you can claim several and review them as **parallel sub-agents**. Claiming is atomic,

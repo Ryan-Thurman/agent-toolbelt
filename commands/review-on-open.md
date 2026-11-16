@@ -1,6 +1,6 @@
 ---
 description: Auto-review trigger for pr-review — poll open PRs and run /pr-review --comment on the ones not yet reviewed at their current head SHA (drive on an interval with /loop or /schedule). Event-driven GitHub Actions path ships as a template.
-argument-hint: "[repo-or-filter] [--tier=light|standard|deep] [--max=N] [--host=auto|github|azure] [--dry-run]"
+argument-hint: "[repo-or-filter] [--tier=light|standard|deep] [--max=N] [--since=ISO-time] [--label=name] [--author=name] [--host=auto|github|azure] [--dry-run]"
 ---
 
 # /review-on-open

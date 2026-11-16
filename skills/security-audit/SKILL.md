@@ -61,5 +61,6 @@ Deliver `templates/security-audit.md` with evidence-backed findings, residual ri
 read-only or authorized-active status. Use the template's severity scale for each finding.
 Do not claim complete coverage or compliance.
 Save the report to `.atb-work/security-audit/<scope-slug>.md` when the user names no path.
-Print the path. The durable-output rule is in `shared/contracts/references/execution.md`.
+Print the path. Before you write, make sure `.atb-work/.gitignore` contains `*`. The rule is in
+`shared/contracts/references/execution.md` ("Durable report location").
 Keep repository files unchanged, and do not commit.

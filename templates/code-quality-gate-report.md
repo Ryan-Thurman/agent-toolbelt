@@ -18,12 +18,12 @@ allowed_paths_file: ""
 
 ## Required checks
 
-| Command | Required because | Result | Evidence |
+| Command | Required because | Result (`Passed`, `Failed`, `Failed (pre-existing)`, `Skipped`, `BLOCKED`) | Evidence |
 |---|---|---|---|
 
 ## Pre-existing failures
 
-Required checks that also fail at `base_sha`, with the same failure. List them apart from new failures.
+Required checks that also fail at `base_sha`, with no new failure at head (count per rule and path). List them apart from new failures.
 
 | Command | Base evidence (baseline.md) | Head evidence | Same failure at base |
 |---|---|---|---|

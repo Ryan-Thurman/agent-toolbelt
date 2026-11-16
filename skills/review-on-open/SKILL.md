@@ -59,7 +59,8 @@ This pack adds these rules:
 
 A poll is complete when each due PR has a posted review or a logged failure.
 The poll also writes a ledger entry per reviewed PR and prints the summary from `references/poller.md`.
-The event path is wired when `templates/review-on-open-github.yml` is in `.github/workflows/`.
+The installer writes `templates/review-on-open-github.yml` to `.agents/templates/`. It does not wire the event path.
+Copy the file to `.github/workflows/agent-pr-review.yml`. The event path is wired after the copy.
 The `ANTHROPIC_API_KEY` secret must also exist.
 
 ## References
@@ -71,4 +72,4 @@ The `ANTHROPIC_API_KEY` secret must also exist.
 - `skills/pr-review/references/posting.md`: the head-SHA marker that makes every trigger idempotent.
 - `shared/contracts/references/providers.md`: host detection for PR listing and SHA reads.
 - `shared/contracts/references/posting.md`: the opt-in / idempotent posting policy.
-- `templates/review-on-open-github.yml`: the copyable workflow target repos drop into `.github/workflows/`.
+- `templates/review-on-open-github.yml`: the copyable workflow that target repos copy into `.github/workflows/`.

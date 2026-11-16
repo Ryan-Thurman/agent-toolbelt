@@ -1,5 +1,20 @@
 # Changelog
 
+## v1.4.1 - 2026-11-15
+
+### Changed
+
+- Divided the portal into four pages: the skill library, workflows, use cases, and setup. The header marks the current page. The About section is on the setup page, and the footer links to it. Links to the earlier one-page portal, such as `#workflow/<id>`, `#use-cases`, and `#hosts`, open the new page.
+- The workflows page shows an index of the workflows. A workflow opens alone, with a list of the other workflows next to it. Each workflow has its own icon and color, and a row of dots shows the category of each stage.
+- The use-cases page groups the cards below a heading for each role. Each role has a color. A card shows who the page is for, then what the reader gets, and each skill chip has the color of its category.
+- Color now marks the skill category on cards, filters, workflow stages, and the skill dialog. Green stays for the brand, the primary action, and focus. Codebase Improvement changed from green to lime. Dark surfaces have more contrast between levels.
+- A skill card is one target that opens the skill details. The `View details` button is gone.
+- Portal pages come from `portal/src/layout.html` and the fragments in `portal/src/pages/`.
+
+### Fixed
+
+- Use-case summaries in the portal no longer show Markdown marks such as backticks and link targets.
+
 ## v1.4.0 - 2026-11-15
 
 ### Added

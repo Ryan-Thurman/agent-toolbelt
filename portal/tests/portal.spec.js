@@ -4,7 +4,8 @@ const { pathToFileURL } = require('url');
 const { test, expect } = require('@playwright/test');
 const AxeBuilder = require('@axe-core/playwright').default;
 
-const portalURL = pathToFileURL(path.resolve(__dirname, '../generated/index.html')).href;
+const pageURL = (file) => pathToFileURL(path.resolve(__dirname, '../generated', file)).href;
+const portalURL = pageURL('index.html');
 const diagnostics = new WeakMap();
 
 async function capture(page, testInfo, name) {
@@ -50,7 +51,6 @@ test('readable catalog, filters, and skill details', async ({ page }, testInfo) 
   await capture(page, testInfo, 'home');
   await checkAccessibility(page, testInfo, 'catalog');
   await checkTaskShortcuts(page);
-  await checkProductDesignWorkflows(page, testInfo);
 
   const guide = page.locator('.discovery-walkthrough');
   await expect(guide).not.toHaveAttribute('open');
@@ -104,31 +104,105 @@ test('readable catalog, filters, and skill details', async ({ page }, testInfo) 
   await page.getByRole('button', { name: 'Reset filters', exact: true }).click();
   await expect(page.locator('#result-summary')).toHaveText('Showing all 44 skills');
 
-  await page.locator('#workflows .section-heading').evaluate((element) => {
-    const headerHeight = document.querySelector('.site-header').getBoundingClientRect().height;
-    window.scrollTo({ top: element.getBoundingClientRect().top + window.scrollY - headerHeight - 20, behavior: 'instant' });
-  });
-  await capture(page, testInfo, 'workflows');
-  await checkLayout(page);
+  await expect(page.getByRole('navigation', { name: 'Primary navigation' }).locator('[aria-current="page"]')).toHaveText('Skill library');
+  await expect(page.locator('#workflow-list, #use-case-list, #host-setup-list')).toHaveCount(0);
   expect(errors).toEqual([]);
   expect(remoteRequests).toEqual([]);
 });
 
-test('use cases render, filter by role, and link from skill details', async ({ page }) => {
-  await page.goto(portalURL);
+test('workflows page shows the index, then one workflow at a time', async ({ page }, testInfo) => {
+  const { errors, remoteRequests } = diagnostics.get(page);
+  await page.goto(pageURL('workflows.html'));
+  await expect(page.getByRole('navigation', { name: 'Primary navigation' }).locator('[aria-current="page"]')).toHaveText('Workflows');
+  const cards = page.locator('#start-here-list .start-card');
+  await expect(cards).toHaveCount(11);
+  await expect(page.locator('#workflow-detail')).toBeHidden();
+  await expect(cards.first().locator('.stage-dot')).toHaveCount(6);
+  await checkLayout(page);
+  await capture(page, testInfo, 'workflows');
+  await checkAccessibility(page, testInfo, 'workflow-index');
+
+  await cards.first().click();
+  await expect(page).toHaveURL(/#workflow\/product-learning$/);
+  await expect(page.locator('#start-here-list')).toBeHidden();
+  await expect(page.locator('#workflow-list .workflow-card')).toHaveCount(1);
+  await expect(page.locator('#workflow-rail-list [aria-current="true"]')).toHaveText('Product decisions and learning');
+  await checkLayout(page);
+  await capture(page, testInfo, 'workflow-stages');
+  await checkProductLearningWorkflow(page, testInfo);
+
+  await page.locator('#workflow-rail-list').getByRole('link', { name: 'Technical health and modernization' }).click();
+  const improvement = page.locator('#workflow-codebase-improvement');
+  await expect(improvement.locator('.stage-skill').first()).toHaveText('Technical Debt Discovery');
+  await expect(improvement.locator('.stage-skill[data-open-skill="tech-backlog-assessment"]')).toHaveText('Tech Backlog Assessment');
+  await expect(page.locator('#workflow-product-learning')).toHaveCount(0);
+  await page.goto(`${pageURL('workflows.html')}#workflow/security-sensitive-change`);
+  const architecture = page.locator('#workflow-security-sensitive-change');
+  await expect(architecture.locator('.stage-skill').first()).toHaveText('System Design');
+  await expect(architecture.locator('.stage-skill[data-open-skill="threat-model"]')).toHaveText('Threat Model');
+
+  await page.locator('#workflow-back').click();
+  await expect(cards).toHaveCount(11);
+  await expect(page.locator('#start-here-list')).toBeVisible();
+  await expect(page.locator('#workflow-detail')).toBeHidden();
+  expect(errors).toEqual([]);
+  expect(remoteRequests).toEqual([]);
+});
+
+test('use cases page groups by role, filters, and links to skill details', async ({ page }, testInfo) => {
+  const { errors } = diagnostics.get(page);
+  await page.goto(pageURL('use-cases.html'));
+  await expect(page.getByRole('navigation', { name: 'Primary navigation' }).locator('[aria-current="page"]')).toHaveText('Use cases');
   const cards = page.locator('#use-case-list .use-case-card');
   const total = await cards.count();
   expect(total).toBeGreaterThan(0);
+  expect(await page.locator('#use-case-list .use-case-section').count()).toBeGreaterThan(1);
+  for (const summary of await page.locator('.use-case-summary').allTextContents()) expect(summary).not.toMatch(/`|\]\(/);
+  await checkLayout(page);
+  await capture(page, testInfo, 'use-cases');
+  await checkAccessibility(page, testInfo, 'use-cases');
   const qa = page.locator('#use-case-groups').getByRole('button', { name: 'QA and test' });
   await qa.click();
   await expect(qa).toHaveAttribute('aria-pressed', 'true');
+  await expect(page.locator('#use-case-list .use-case-section')).toHaveCount(1);
   const qaCount = await cards.count();
   expect(qaCount).toBeGreaterThan(0);
-  expect(qaCount).toBeLessThanOrEqual(total);
-  await expect(cards.first().locator('.use-case-group')).toHaveText('QA and test');
+  expect(qaCount).toBeLessThan(total);
+  await expect(page.locator('#use-case-list .use-case-group-name')).toHaveText('QA and test');
+  await checkAccessibility(page, testInfo, 'use-cases-filtered');
   await cards.first().locator('.detail-related button').first().click();
   await expect(page.getByRole('dialog')).toBeVisible();
   await expect(page.locator('.detail-use-cases li').first()).toBeVisible();
+  await page.locator('.detail-workflows button').first().click();
+  await expect(page).toHaveURL(/workflows\.html#workflow\//);
+  await expect(page.locator('#workflow-list .workflow-card')).toHaveCount(1);
+  expect(errors).toEqual([]);
+});
+
+test('setup page shows host commands and the plugin contents', async ({ page }, testInfo) => {
+  const { errors, remoteRequests } = diagnostics.get(page);
+  await page.goto(pageURL('setup.html'));
+  await expect(page.getByRole('navigation', { name: 'Primary navigation' }).locator('[aria-current="page"]')).toHaveText('Setup');
+  await expect(page.locator('#host-setup-list .host-setup-card')).toHaveCount(3);
+  await expect(page.locator('#plugin-skill-count')).toHaveText('44');
+  await expect(page.locator('#tooling-groups .tooling-group').first()).toBeVisible();
+  await checkLayout(page);
+  await capture(page, testInfo, 'setup');
+  await checkAccessibility(page, testInfo, 'setup');
+  expect(errors).toEqual([]);
+  expect(remoteRequests).toEqual([]);
+});
+
+test('links to the earlier one-page portal reach the new pages', async ({ page }) => {
+  await page.goto(`${portalURL}#workflow/bug-fixing`);
+  await expect(page).toHaveURL(/workflows\.html#workflow\/bug-fixing$/);
+  await expect(page.locator('#workflow-bug-fixing')).toBeVisible();
+  await page.goto(`${portalURL}#use-cases`);
+  await expect(page).toHaveURL(/use-cases\.html$/);
+  await page.goto(`${portalURL}#hosts`);
+  await expect(page).toHaveURL(/setup\.html$/);
+  await page.goto(`${portalURL}#skill/pr-review`);
+  await expect(page.locator('#detail-title')).toHaveText('PR Review');
 });
 
 test('theme preference persists and keyboard focus is visible', async ({ page }, testInfo) => {
@@ -197,10 +271,8 @@ async function checkTaskShortcuts(page) {
 }
 
 
-async function checkProductDesignWorkflows(page, testInfo) {
-  await expect(page.locator('#workflow-count')).toHaveText('11');
+async function checkProductLearningWorkflow(page, testInfo) {
   const learning = page.locator('#workflow-product-learning');
-  await learning.scrollIntoViewIfNeeded();
   const stages = learning.getByRole('list', { name: 'Product decisions and learning stages' });
   await expect(stages.getByRole('listitem')).toHaveCount(6);
   const firstStage = stages.getByRole('listitem').first();
@@ -218,6 +290,7 @@ async function checkProductDesignWorkflows(page, testInfo) {
   await expect(page.locator('#detail-title')).toHaveText('User Research Synthesis');
   await page.keyboard.press('Escape');
   await expect(first).toBeFocused();
+  await expect(page).toHaveURL(/#workflow\/product-learning$/);
   // The timeline shows the following stage, so only branches appear as handoff links.
   await expect(firstStage.locator('.next-link')).toHaveCount(0);
   const handoff = stages.getByRole('listitem').nth(1).locator('.next-link[data-open-skill="product-outcome-review"]');
@@ -231,10 +304,4 @@ async function checkProductDesignWorkflows(page, testInfo) {
   await expect(page.getByRole('dialog')).toContainText('population');
   await page.keyboard.press('Escape');
   await expect(outcome).toBeFocused();
-  const architecture = page.locator('#workflow-security-sensitive-change');
-  await expect(architecture.locator('.stage-skill').first()).toHaveText('System Design');
-  await expect(architecture.locator('.stage-skill[data-open-skill="threat-model"]')).toHaveText('Threat Model');
-  const improvement = page.locator('#workflow-codebase-improvement');
-  await expect(improvement.locator('.stage-skill').first()).toHaveText('Technical Debt Discovery');
-  await expect(improvement.locator('.stage-skill[data-open-skill="tech-backlog-assessment"]')).toHaveText('Tech Backlog Assessment');
 }

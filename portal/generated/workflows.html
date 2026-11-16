@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Agent Toolbelt workflows: sequences of skills for one task, from the first stage to the last.">
+  <title>Workflows — Agent Toolbelt</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+  <link rel="icon" type="image/png" sizes="48x48" href="favicon-48.png">
+  <link rel="icon" type="image/svg+xml" sizes="any" href="favicon.svg">
+</head>
+<body data-page="workflows">
+  <a class="skip-link" href="#main-content">Skip to content</a>
+  <header class="site-header">
+    <div class="shell header-inner">
+      <a class="brand" href="index.html" aria-label="Agent Toolbelt home">
+        <img class="brand-mark" src="brand-icon.svg" width="33" height="33" alt="" aria-hidden="true">
+        <span>Agent Toolbelt</span>
+      </a>
+      <nav class="top-nav" aria-label="Primary navigation">
+        <a href="index.html" data-nav="index">Skill library</a>
+        <a href="workflows.html" data-nav="workflows" aria-current="page">Workflows</a>
+        <a href="use-cases.html" data-nav="use-cases">Use cases</a>
+        <a href="setup.html" data-nav="setup">Setup</a>
+      </nav>
+      <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Use dark theme" aria-pressed="false">Dark mode</button>
+    </div>
+  </header>
+
+  <main id="main-content">
+    <section class="section workflows" id="workflows" aria-labelledby="workflows-title">
+      <div class="shell">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Workflows</p>
+            <h1 class="page-title" id="workflows-title">Follow a task from start to finish.</h1>
+          </div>
+          <p class="section-intro">A workflow is a sequence of skills for one task. Each dot is one stage, in the color of its skill category. Choose the stages that fit your task.</p>
+        </div>
+        <div class="start-grid" id="start-here-list"></div>
+        <div class="workflow-layout" id="workflow-detail" hidden>
+          <nav class="workflow-rail" aria-label="Workflows">
+            <a class="inline-link" id="workflow-back" href="workflows.html"><span aria-hidden="true">←</span> All workflows</a>
+            <div class="workflow-rail-list" id="workflow-rail-list"></div>
+          </nav>
+          <div class="workflow-list" id="workflow-list"></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="shell footer-inner">
+      <p><strong>Agent Toolbelt</strong> is an independent, general-purpose skill collection.</p>
+      <p>Source paths stay canonical in <code>skills/&lt;id&gt;/SKILL.md</code>. <a class="inline-link" href="setup.html#capabilities">About the plugin</a></p>
+    </div>
+  </footer>
+
+  <dialog class="detail-dialog" id="skill-dialog" aria-labelledby="detail-title">
+    <div class="dialog-inner">
+      <div class="dialog-topbar">
+        <span class="dialog-kicker" id="detail-kicker">Skill details</span>
+        <button class="icon-button" id="detail-close" type="button" aria-label="Close skill details">×</button>
+      </div>
+      <div id="skill-detail"></div>
+    </div>
+  </dialog>
+
+  <script src="data.js"></script>
+  <script src="app.js" defer></script>
+</body>
+</html>

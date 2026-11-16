@@ -59,6 +59,10 @@ To rebuild or open the offline portal:
 open portal/generated/index.html   # macOS; use your browser on other hosts
 ```
 
+The portal has four pages: the skill library (`index.html`), `workflows.html`, `use-cases.html`, and `setup.html`.
+The build puts each fragment in `portal/src/pages/` into `portal/src/layout.html`, which holds the header, the footer, and the skill dialog.
+To add a page, add a fragment and an entry in `PAGES` in `scripts/build-portal.js`, and a link in the layout navigation.
+
 For screenshots of both themes at desktop and mobile sizes, run
 `npm run portal:screenshots`. Generated reports stay under ignored `.atb-work/portal/`.
 Use `npm run portal:report` to open the local browser report.

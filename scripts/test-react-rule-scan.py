@@ -192,6 +192,67 @@ class ScannerLogicTests(unittest.TestCase):
         self.assertEqual(rule["hit_count"], 3)
         self.assertEqual(len(rule["hits"]), 2)
 
+    def test_path_scan_works_without_git(self):
+        plain = Path(self.temp.name) / "plain"
+        (plain / "src").mkdir(parents=True)
+        (plain / "src/a.tsx").write_text(EFFECT_COMPONENT)
+        code, result = scan(plain, "--skills-dir", str(self.skills), "src")
+        self.assertEqual(code, 0, result)
+        self.assertEqual(result["source_files"], ["src/a.tsx"])
+        self.assertIn(("use-effect-killer", "anti-patterns"), self.listed(result))
+        code, result = scan(plain, "--skills-dir", str(self.skills))
+        self.assertEqual(code, 2)
+
+    def test_test_files_are_grouped_last_and_can_be_excluded(self):
+        self.fixture.write("src/__tests__/a.test.tsx", EFFECT_COMPONENT)
+        self.fixture.write("src/__mocks__/m.tsx", EFFECT_COMPONENT)
+        self.fixture.write("src/z.tsx", EFFECT_COMPONENT)
+        self.fixture.commit()
+        _, result = self.scan("--max-hits", "1", "src")
+        rule = self.listed(result)[("use-effect-killer", "anti-patterns")]
+        self.assertEqual(rule["hits"], ["src/z.tsx:5"])
+        self.assertEqual((rule["production_hit_count"], rule["test_hit_count"]), (1, 2))
+        self.assertEqual(result["test_files"], ["src/__mocks__/m.tsx", "src/__tests__/a.test.tsx"])
+        _, result = self.scan("--exclude-tests", "src")
+        self.assertEqual(result["source_files"], ["src/base.tsx", "src/z.tsx"])
+        self.assertEqual(self.listed(result)[("use-effect-killer", "anti-patterns")]["hit_count"], 1)
+
+    def test_rules_are_ranked_by_impact_and_can_be_capped(self):
+        write_index(self.skills, "vercel-composition-patterns", [
+            {"path": "references/rules/low.md", "when": "Low.", "signals": [r"\buseEffect\s*\("]},
+            {"path": "references/rules/high.md", "when": "High.", "signals": [r"\buseEffect\s*\("]},
+        ])
+        for name, impact in (("low", "LOW"), ("high", "CRITICAL")):
+            rule_file = self.skills / "vercel-composition-patterns/references/rules" / f"{name}.md"
+            rule_file.parent.mkdir(parents=True, exist_ok=True)
+            rule_file.write_text(f"---\nimpact: {impact}\n---\n")
+        self.fixture.write("src/effect.tsx", EFFECT_COMPONENT)
+        _, result = self.scan("--base", "main")
+        self.assertEqual([r["rule"] for r in result["rules"]][:2], ["high", "low"])
+        _, result = self.scan("--base", "main", "--max-rules", "1", "--relative-paths")
+        self.assertEqual([r["rule"] for r in result["rules"]], ["high"])
+        self.assertEqual([r["rule"] for r in result["omitted_rules"]], ["low", "anti-patterns"])
+        self.assertEqual(result["rules"][0]["path"], "skills/vercel-composition-patterns/references/rules/high.md")
+
+    def test_framework_rules_run_only_for_the_detected_framework(self):
+        write_index(self.skills, "vercel-composition-patterns", [
+            {"path": "references/rules/next-only.md", "when": "Next.", "frameworks": ["next"],
+             "signals": [r"\buseEffect\s*\("], "fix": "Use next/dynamic", "fix_other": "Use lazy"},
+            {"path": "references/rules/any.md", "when": "Any.", "signals": [r"\buseEffect\s*\("],
+             "fix": "Use next/dynamic", "fix_other": "Use lazy"},
+        ])
+        self.fixture.write("src/effect.tsx", EFFECT_COMPONENT)
+        _, result = self.scan("--base", "main")
+        self.assertNotIn(("vercel-composition-patterns", "next-only"), self.listed(result))
+        self.assertEqual(result["skipped_rules"], [{"skill": "vercel-composition-patterns", "rule": "next-only",
+                                                    "frameworks": ["next"]}])
+        self.assertEqual(self.listed(result)[("vercel-composition-patterns", "any")]["fix"], "Use lazy")
+        self.fixture.write("package.json", json.dumps({"dependencies": {"next": "15.0.0"}}))
+        _, result = self.scan("--base", "main")
+        self.assertEqual(result["frameworks"], ["next"])
+        self.assertIn(("vercel-composition-patterns", "next-only"), self.listed(result))
+        self.assertEqual(self.listed(result)[("vercel-composition-patterns", "any")]["fix"], "Use next/dynamic")
+
     def test_errors_are_json_with_exit_2(self):
         code, result = self.scan("--base", "no-such-ref")
         self.assertEqual(code, 2)
@@ -239,6 +300,28 @@ class RealIndexTests(unittest.TestCase):
             self.assertEqual(sorted(guideline["hits"]), ["src/Detail.tsx:4", "src/detail.css:1"])
             native = [r for r in result["rules"] if r["skill"] == "vercel-react-native-skills"]
             self.assertTrue(all(h.startswith("app/Count.tsx") for r in native for h in r["hits"]), native)
+
+    def test_real_indexes_split_memo_rules_and_skip_next_rules(self):
+        with tempfile.TemporaryDirectory() as temp:
+            fixture = FixtureRepo(temp)
+            fixture.write("src/Early.tsx", "import { useMemo } from 'react';\n"
+                          "export function A({ user, loading }) {\n"
+                          "  const avatar = useMemo(() => <b>{user.name}</b>, [user]);\n"
+                          "  if (loading) return null;\n  return avatar;\n}\n")
+            fixture.write("src/Simple.tsx", "import { useMemo } from 'react';\n"
+                          "export function B({ a }) {\n"
+                          "  const ok = useMemo(() => a.count > 3, [a]);\n  return <p>{String(ok)}</p>;\n}\n")
+            fixture.write("src/Routes.tsx", "import { lazy } from 'react';\n"
+                          "const Page = lazy(() => import('./Page'));\n"
+                          "export async function GET() { const a = await one(); const b = await two(); }\n")
+            code, result = scan(fixture.repo, "--skills-dir", str(ROOT / "skills"), "--base", "main")
+            self.assertEqual(code, 0, result)
+            hits = {r["rule"]: r["hits"] for r in result["rules"]}
+            self.assertEqual(hits["rerender-memo"], ["src/Early.tsx:3"])
+            self.assertEqual(hits["rerender-simple-expression-in-memo"], ["src/Simple.tsx:3"])
+            self.assertNotIn("bundle-dynamic-imports", hits)
+            self.assertNotIn("async-api-routes", hits)
+            self.assertIn("async-api-routes", {r["rule"] for r in result["skipped_rules"]})
 
     def test_installed_scanner_finds_installed_skills(self):
         with tempfile.TemporaryDirectory() as temp:

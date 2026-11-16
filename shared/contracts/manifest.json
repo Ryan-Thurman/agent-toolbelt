@@ -193,7 +193,8 @@
         "tech-backlog-assessment",
         "tech-debt-discovery",
         "threat-model",
-        "user-research-synthesis"
+        "user-research-synthesis",
+        "webapp-testing"
       ]
     },
     {
@@ -214,7 +215,8 @@
         "cover",
         "phased-delivery",
         "pr-improve",
-        "test-case-design"
+        "test-case-design",
+        "webapp-testing"
       ]
     },
     {
@@ -235,7 +237,8 @@
         "reliability-review",
         "security-audit",
         "system-design",
-        "threat-model"
+        "threat-model",
+        "use-effect-killer"
       ]
     },
     {

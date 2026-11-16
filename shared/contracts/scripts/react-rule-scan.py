@@ -2,11 +2,21 @@
 """List the React specialist rules that changed code triggers.
 
 Usage:
-  react-rule-scan.py [--base REF] [--repo DIR] [--skills-dir DIR] [--max-hits N] [PATH ...]
+  react-rule-scan.py [--base REF] [--repo DIR] [--skills-dir DIR] [--max-hits N]
+                     [--exclude-tests] [--max-rules N] [--relative-paths] [PATH ...]
 
 Without PATH, the scan reads the lines changed since the merge base with the
 default branch: committed, staged, unstaged, and untracked files. With PATH,
-the scan reads every line of the named files and directories.
+the scan reads every line of the named files and directories. A PATH scan
+needs no git history, so it also works on a plain folder copy.
+
+Each rule lists production hits before test hits. Test files are test, spec,
+story, mock, fixture, and end-to-end files. `--exclude-tests` drops them from
+the scan. `rules` is ranked by impact, then by hit count. `--max-rules N` keeps
+the first N rules and reports the rest in `omitted_rules`. `--relative-paths`
+prints each rule path relative to the directory that holds the skills folder.
+A rule with a `frameworks` list in its index entry runs only when the scan
+detects one of those frameworks. The rule is then listed in `skipped_rules`.
 
 The scan reads `references/rule-index.json` from each installed specialist
 skill. `rules` lists the rules that the changed lines trigger. `judgment_rules`
@@ -18,6 +28,7 @@ imports React Native or Expo. Output is JSON on stdout. Exit 0 on success and
 
 import argparse
 import json
+import os
 import re
 import subprocess
 import sys
@@ -37,6 +48,11 @@ NATIVE_FILE = re.compile(
     r"""from\s+['"](?:react-native(?:-[\w-]+)?|expo(?:-[\w-]+)?|@expo/[\w-]+)(?:/[^'"]*)?['"]""")
 # Specialists whose judgment rules apply only to React Native files.
 NATIVE_ONLY = {"vercel-react-native-skills"}
+IMPACT_ORDER = ["CRITICAL", "HIGH", "MEDIUM-HIGH", "MEDIUM", "LOW-MEDIUM", "LOW"]
+TEST_PATH = re.compile(
+    r"(^|/)(__tests__|__mocks__|__snapshots__|tests?|e2e|cypress|mocks?|fixtures?|stories)/"
+    r"|\.(test|spec|stories|mock|e2e)\.[cm]?[jt]sx?$")
+NEXT_FILE = re.compile(r"""from\s+['"]next(/[^'"]*)?['"]|require\(['"]next(/[^'"]*)?['"]\)""")
 HUNK = re.compile(r"^@@ -\d+(?:,\d+)? \+(\d+)(?:,(\d+))? @@")
 
 
@@ -71,6 +87,28 @@ def resolve_base(repo, override):
             raise ScanError("cannot find the default branch; pass --base REF")
     merge_base = git(repo, "merge-base", "HEAD", ref).strip()
     return ref, merge_base
+
+
+def is_test(name):
+    return bool(TEST_PATH.search(name))
+
+
+def detect_frameworks(repo, texts):
+    """Return the frameworks that the scanned files or the repository root use."""
+    found = set()
+    if any(NEXT_FILE.search(text) for text in texts):
+        found.add("next")
+    package = repo / "package.json"
+    try:
+        data = json.loads(package.read_text()) if package.is_file() else {}
+        deps = {**data.get("dependencies", {}), **data.get("devDependencies", {})}
+        if "next" in deps:
+            found.add("next")
+    except (OSError, ValueError, AttributeError):
+        pass
+    if any(next(repo.glob(f"next.config.{ext}"), None) for ext in ("js", "mjs", "ts", "cjs")):
+        found.add("next")
+    return found
 
 
 def is_source(path):
@@ -138,6 +176,8 @@ def load_indexes(skills_dir):
                 "signals": [re.compile(s) for s in rule.get("signals", [])],
                 "file_signals": [re.compile(s, re.MULTILINE) for s in rule.get("file_signals", [])],
                 "defer_to": rule.get("defer_to"),
+                "frameworks": rule.get("frameworks", []),
+                "fix_other": rule.get("fix_other"),
             })
     active = [r for r in rules if not (r["defer_to"] and r["defer_to"] in installed)]
     scanned = [r for r in active if r["signals"] or r["file_signals"]]
@@ -152,13 +192,21 @@ def judgment_list(judged, native):
 
 
 def scan(repo, targets, rules, max_hits):
+    texts = {}
+    for name in sorted(targets):
+        try:
+            texts[name] = (repo / name).read_text(errors="replace")
+        except OSError:
+            continue
+    frameworks = detect_frameworks(repo, texts.values())
+    skipped = [r for r in rules if r["frameworks"] and not (set(r["frameworks"]) & frameworks)]
+    rules = [r for r in rules if r not in skipped]
     hits = {id(rule): [] for rule in rules}
     react_files, native = [], False
     for name, wanted in sorted(targets.items()):
-        try:
-            text = (repo / name).read_text(errors="replace")
-        except OSError:
+        if name not in texts:
             continue
+        text = texts[name]
         if REACT_FILE.search(text) or Path(name).suffix in {".jsx", ".tsx"}:
             react_files.append(name)
         native = native or bool(NATIVE_FILE.search(text))
@@ -174,10 +222,21 @@ def scan(repo, targets, rules, max_hits):
                         break  # A file-level trigger needs one location per file.
     listed = []
     for rule in rules:
-        if hits[id(rule)]:
+        found = hits[id(rule)]
+        if found:
+            found = [h for h in found if not is_test(h)] + [h for h in found if is_test(h)]
+            fix = rule["fix"]
+            if rule["fix_other"] and "next" not in frameworks:
+                fix = rule["fix_other"]
             listed.append({"skill": rule["skill"], "rule": rule["rule"], "path": rule["path"],
-                           "when": rule["when"], "fix": rule["fix"], "impact": rule["impact"], "hits": hits[id(rule)][:max_hits] if max_hits else hits[id(rule)], "hit_count": len(hits[id(rule)])})
-    return react_files, native, listed
+                           "when": rule["when"], "fix": fix, "impact": rule["impact"],
+                           "hits": found[:max_hits] if max_hits else found, "hit_count": len(found),
+                           "production_hit_count": sum(1 for h in found if not is_test(h)),
+                           "test_hit_count": sum(1 for h in found if is_test(h))})
+    listed.sort(key=lambda r: (IMPACT_ORDER.index(r["impact"]) if r["impact"] in IMPACT_ORDER else len(IMPACT_ORDER),
+                               -r["production_hit_count"], -r["hit_count"], r["skill"], r["rule"]))
+    skipped_list = [{"skill": r["skill"], "rule": r["rule"], "frameworks": r["frameworks"]} for r in skipped]
+    return react_files, native, listed, sorted(frameworks), skipped_list
 
 
 def main(argv):
@@ -186,12 +245,21 @@ def main(argv):
     parser.add_argument("--repo", default=".", help="repository to scan (default: current directory)")
     parser.add_argument("--skills-dir", help="directory that holds the installed specialist skills")
     parser.add_argument("--max-hits", type=int, default=20, help="locations to print per rule; 0 prints all")
+    parser.add_argument("--exclude-tests", action="store_true", help="skip test, story, mock, and fixture files")
+    parser.add_argument("--max-rules", type=int, default=0, help="rules to print, highest impact first; 0 prints all")
+    parser.add_argument("--relative-paths", action="store_true",
+                        help="print rule paths relative to the directory that holds the skills folder")
     parser.add_argument("paths", nargs="*", help="files or directories to scan in full")
     args = parser.parse_args(argv)
 
     skills_dir = Path(args.skills_dir) if args.skills_dir else Path(__file__).resolve().parents[3] / "skills"
     try:
-        repo = Path(git(Path(args.repo), "rev-parse", "--show-toplevel").strip()).resolve()
+        try:
+            repo = Path(git(Path(args.repo), "rev-parse", "--show-toplevel").strip()).resolve()
+        except ScanError:
+            if not args.paths:
+                raise
+            repo = Path(args.repo).resolve()  # A PATH scan needs no git history.
         if args.paths:
             base_ref = merge_base = None
             targets = named_files(repo, args.paths)
@@ -199,7 +267,18 @@ def main(argv):
             base_ref, merge_base = resolve_base(repo, args.base)
             targets = changed_lines(repo, merge_base)
         installed, missing, rules, judged = load_indexes(skills_dir)
-        react_files, native, listed = scan(repo, targets, rules, args.max_hits)
+        if args.exclude_tests:
+            targets = {name: lines for name, lines in targets.items() if not is_test(name)}
+        react_files, native, listed, frameworks, skipped = scan(repo, targets, rules, args.max_hits)
+        omitted = []
+        if args.max_rules and len(listed) > args.max_rules:
+            omitted = [{"skill": r["skill"], "rule": r["rule"], "impact": r["impact"], "hit_count": r["hit_count"]}
+                       for r in listed[args.max_rules:]]
+            listed = listed[:args.max_rules]
+        if args.relative_paths:
+            base = skills_dir.resolve().parent
+            for item in listed + judged:
+                item["path"] = os.path.relpath(item["path"], base)
     except (ScanError, json.JSONDecodeError, KeyError, re.error) as error:
         print(json.dumps({"error": str(error)}))
         return 2
@@ -212,7 +291,11 @@ def main(argv):
         "react_files": react_files,
         "installed": installed,
         "missing": missing if react_files else [],
+        "frameworks": frameworks,
+        "test_files": sorted(name for name in targets if is_test(name)),
         "rules": listed,
+        "omitted_rules": omitted,
+        "skipped_rules": skipped,
         "judgment_rules": judgment_list(judged, native) if react_files else [],
         "next": ("No React files changed. Record the React rules check as Skipped."
                  if not react_files else

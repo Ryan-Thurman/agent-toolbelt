@@ -39,7 +39,7 @@ function prepareOutputDirectory(output, generatedFiles) {
 const USE_CASE_GROUPS = [
   ['qa', 'QA and test'], ['dev', 'Developer'], ['product', 'Product'],
   ['arch', 'Architecture, SRE, and security'], ['sre', 'Architecture, SRE, and security'], ['sec', 'Architecture, SRE, and security'],
-  ['lead', 'Tech lead'], ['ops', 'Platform and operators'], ['write', 'Writers'], ['ui', 'UI'], ['journey', 'End-to-end journeys']
+  ['lead', 'Tech lead'], ['ops', 'Platform and operators'], ['write', 'Writers'], ['ui', 'UI and front end'], ['journey', 'End-to-end journeys']
 ];
 
 // Read wiki/use-cases/*.md. The pages own the content; the portal shows the title, the summary,

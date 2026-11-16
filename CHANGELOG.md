@@ -4,6 +4,7 @@
 
 ### Added
 
+- Added three UI use-case pages from real runs on the public RealWorld React front end (`realworld-react-fsd`, React 19): verify a user flow in the browser, clean up React effects, and review a page for accessibility and interface quality. Added the `/web-interface-review` command.
 - Added use-case pages in `wiki/use-cases/` for QA, developers, product, architecture and SRE, security, tech leads, platform operators, and writers, plus end-to-end journeys. Each page has a quick path, the reasons for the path, decision points, and excerpts from a real run on the RealWorld Conduit sample API. The portal lists the pages in a Use cases section with role filters, and each skill detail links to the pages that use it.
 - Added the `idea-to-release` workflow. It takes one feature through seven gated stages, from define to close, with a `Ready`, `Ready with risks`, or `Blocked` gate after each stage. Agents draft and check, and people own each decision. It defines two delivery modes (human team and agent pod), keeps early stages cheap, puts QA test cases before development, and makes code follow the ticket and its approved plan.
 - Added the `papercuts` skill and `/papercuts` command. The skill reports the codebase friction that slowed a session, such as stale docs, misleading names, duplicate config, and failing commands. The report is a ranked table with a fix file and a stable key for each row. `--feature` covers one feature across sessions from phase plans, handoffs, review threads, CI runs, and commits. `--post` adds the report to a shared Markdown file, a GitHub issue, or an Azure Boards work item after a preview, and marks rows that repeat an earlier entry.
@@ -19,6 +20,7 @@
 
 ### Fixed
 
+- Fixed the UI skill gaps that these runs and two private React app runs found. `webapp-testing` has a mocked-backend verdict, a folder for its scripts and evidence, a fresh-server check, a required red run, and rules for a sign-in that needs an identity provider or an install that needs a private registry. `vercel-web-interface-guidelines` reviews existing pages with no diff, hands browser-only checks to `webapp-testing`, and records conflicts. The React rule scan works on a folder that is not a git repository, separates test files, ranks rules by impact, skips framework rules that do not apply, and drops two noisy signals. `vercel-react-best-practices` and `use-effect-killer` have a whole-codebase audit procedure and rules for side effects in render, polling with no in-flight guard, and async effects with no cancel flag.
 - Fixed 84 skill gaps that the second batch of use-case runs found. The high-severity fixes:
   - `review-on-open` restores the root instruction files and the `.agents/` and `.claude/` folders from the base ref before the CI reviewer starts, so a pull request cannot change the rules or the reviewer that judge it.
   - `/review-queue-worker --report-only` reviews the queue with no post and no job change. `/enqueue-review` takes the default `--sha` from the target branch, not from `HEAD`.

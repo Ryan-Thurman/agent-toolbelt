@@ -16,7 +16,12 @@
         "\\bautoFocus\\b",
         "<img\\b(?![^>]*\\b(width|height)\\s*=)[^>]*>",
         ">[^<>{}]*\\w\\.\\.\\.\\s*<",
-        "[\"'`](Loading|Saving|Searching|Uploading|Processing)\\.\\.\\.[\"'`]"
+        "[\"'`](Loading|Saving|Searching|Uploading|Processing)\\.\\.\\.[\"'`]",
+        "\\bplaceholder\\s*=\\s*[\"'][^\"']*\\.\\.\\.[\"']",
+        "<input\\b(?![^>]*\\baria-label(ledby)?\\s*=)[^>]*\\bplaceholder\\s*=",
+        "<input\\b(?=[^>]*\\btype\\s*=\\s*[\"']email[\"'])(?![^>]*\\bspellCheck\\s*=)[^>]*>",
+        ":focus(?![-\\w])",
+        "\\b(transition|animation)\\s*:\\s*[^;]*\\d\\s*m?s\\b"
       ],
       "file_signals": []
     }

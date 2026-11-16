@@ -83,6 +83,16 @@ Each page in this folder shows a real run of Toolbelt skills on the Conduit samp
 | --- | --- | --- |
 | [Rewrite a README setup section as a plain runbook](write-make-a-runbook-plain.md) | `simple-english` | A list of rule violations, a runbook in plain English, and a list of the facts that the old text left out. |
 
+### UI and front end
+
+These pages use a second public sample: the RealWorld React front end ([realworld-react-fsd](https://github.com/yurisldk/realworld-react-fsd), MIT, React 19 and TypeScript).
+
+| Situation | Skills | What you get |
+| --- | --- | --- |
+| [Prove a user flow works in the browser before the pull request merges](ui-verify-a-browser-flow.md) | `webapp-testing` | A plan, a Playwright check that was seen failing and then passing, screenshots, a trace, and a verdict. |
+| [Clean up React effects and re-render problems](ui-clean-up-react-effects.md) | `vercel-react-best-practices` | A scan report of effects and rules, and one safe fix with a test that fails before it and passes after it. |
+| [Review a page for accessibility and interface quality](ui-review-against-interface-guidelines.md) | `vercel-web-interface-guidelines` | Findings with a file, a line, a severity, and a fix. No code changes. |
+
 ### End-to-end journeys
 
 | Situation | Skills | What you get |
@@ -122,7 +132,6 @@ Each row comes from the "Why this path" section of the linked page.
 
 ## Not covered yet
 
-- Verifying a browser flow with `webapp-testing`, React effect and performance cleanup, and UI review against interface guidelines. These need a UI sample app and come in a later batch.
 - Migrating a Selenium flow to Playwright. No Toolbelt skill exists for it yet.
 - Integration tests against a real database. The runs used unit tests and code reading, so each page states what it did not execute.
 

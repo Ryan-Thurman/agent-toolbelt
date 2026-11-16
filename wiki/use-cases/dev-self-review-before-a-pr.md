@@ -9,8 +9,8 @@ This page is for a developer who has a finished branch and wants to find problem
 ## Quick path
 
 1. Start Claude Code in your repository, on your branch, with the Toolbelt loaded: `claude --plugin-dir <toolbelt-folder>`.
-2. Run your own checks inside the Claude Code session, or ask the agent to run them, so the results are in the session for step 4: `<test-command>`, `<type-check-command>`, and `<lint-command>`.
-3. Review the local change: `/agent-toolbelt:review-diff` (or `/review-diff` for an installed copy). Add `--intent=<ticket-file-or-url>` when you have a ticket. Do not pass a branch name or a PR. Copy the report into a file or your notes before you start fixing. The skill only prints it.
+2. Run your own checks inside the Claude Code session, or ask the agent to run them, so that you know the results before step 4. The readiness check runs the required checks itself: `<test-command>`, `<type-check-command>`, and `<lint-command>`.
+3. Review the local change: `/agent-toolbelt:review-diff` (or `/review-diff` for an installed copy). Add `--intent=<ticket-file-or-url>` when you have a ticket. Do not pass a branch name or a PR. The skill saves the report to `.atb-work/pr-review/<scope-slug>.md` and prints the path. Keep that file before you start fixing.
 4. Fix each blocker and should-fix finding, and answer each question. Then run `/agent-toolbelt:pr-ready-check <branch-name>`.
 5. Open the PR when the verdict is `Ready`. If the verdict is `Needs Work` or `Blocked`, fix the gap and run step 4 again. Stop and ask your team if a check cannot run. Copy the open questions and the check results into the PR description.
 
@@ -36,7 +36,7 @@ This page uses these terms:
 
 ## Why this path
 
-The obvious alternative is to push the branch, open the PR, and run `/pr-review <pr-number>`. The review is the same skill. The cost is that the PR is already visible to your reviewers when the findings arrive. With `--comment`, `/pr-review` can also post findings to the PR. `/review-diff` never posts. It accepts only `--tier`, `--intent`, `--focus`, and `--focus-note`.
+The obvious alternative is to push the branch, open the PR, and run `/pr-review <pr-number>`. The review is the same skill. The cost is that the PR is already visible to your reviewers when the findings arrive. With `--comment`, `/pr-review` can also post findings to the PR. `/review-diff` never posts. It accepts only `--tier`, `--intent`, `--focus`, `--focus-note`, and `--show-nits`.
 
 The other alternatives each do a different job:
 
@@ -51,7 +51,7 @@ The order is `/review-diff` first and `/pr-ready-check` second. The skill does n
 | --- | --- | --- | --- |
 | 1 | Load the Toolbelt: `claude --plugin-dir /path/to/agent-toolbelt`. Or install the skill into the project: `./install.sh --harness all pr-review /path/to/project`. | The commands must exist in your session. | You type `/` and see `/agent-toolbelt:review-diff` and `/agent-toolbelt:pr-ready-check` (plugin), or `/review-diff` and `/pr-ready-check` (installed copy). |
 | 2 | Open the repository on your branch. Run `git log --format='%h %s' <base>..HEAD` and `git diff <base>...HEAD --stat`. For the sample, `<base>` is 88b258c. | You see the range that the review covers. The review uses the merge base with `origin/HEAD`, then `main`, then `master`. A wrong base adds work that is not yours. | The list shows only your commits and files. |
-| 3 | Run your checks inside the agent session, or ask the agent to run them. For the sample: `DATABASE_URL=postgresql://u:p@localhost:5432/db JWT_SECRET=x npx jest src`, then `npx tsc --noEmit -p tsconfig.app.json`, then `npx eslint src/app/routes/auth/auth.service.ts`. | The readiness check needs current results for your tests and repository checks. It reads them from the session, and the skill does not say who runs them. | Each command has a result. Run the same commands on the merge base (`git switch --detach <base>`). You know which failures are not yours. |
+| 3 | Run your checks inside the agent session, or ask the agent to run them. For the sample: `DATABASE_URL=postgresql://u:p@localhost:5432/db JWT_SECRET=x npx jest src`, then `npx tsc --noEmit -p tsconfig.app.json`, then `npx eslint src/app/routes/auth/auth.service.ts`. | The readiness check needs current results for your tests and repository checks. The skill now says that the check runs the required checks itself. This run predates that rule. | Each command has a result. Run the same commands on the merge base (`git switch --detach <base>`). You know which failures are not yours. |
 | 4 | Run `/agent-toolbelt:review-diff`. For a ticket, run `/agent-toolbelt:review-diff --intent=<ticket-file-or-url>`. | An empty target reviews your committed, staged, unstaged, and untracked changes against the merge base. It never fetches a PR. The ticket gives the acceptance criteria. Without it, the report says "No acceptance criteria supplied". | The report has a header with tier and verdict, a summary, and a coverage line. |
 | 5 | Read the tier in the header. The skill states the choice and the trigger. | The tier sets the cost. Deep costs about 8 times light, and the skill chose it here because the path has `auth/`. | You can say why the tier fits. If it does not fit, run `--tier=standard` or `--tier=light`. An explicit tier always wins. |
 | 6 | Read each blocker, should-fix, and question. Open the cited file and line. | A finding names a cause and a consequence. You check it against the code before you act. | You marked each finding as true, false, or unknown. |
@@ -98,7 +98,7 @@ acceptance criteria supplied. React rules: 0 listed · 0 applied · 0 not
 applicable (skipped: no React files)._
 ```
 
-The verdict follows from three facts. The report has no blocker. It has one question with confidence 0.45, which is below the 0.5 line for a statement. The skill gives `NEEDS DISCUSSION` for no blocker plus an open question that needs the author's input. The should-fix finding does not move the verdict. Which question needs the author is a judgment. The skill gives no test, so this run decided that the old-token question does. The run did not treat the unrun end-to-end test as a gap in the review scope. The coverage line also lists the unrun test and the judges that were not independent.
+The verdict follows from three facts. The report has no blocker. It has one question with confidence 0.45, which is below the 0.5 line for a statement. The skill at that time gave `NEEDS DISCUSSION` for no blocker plus an open question that needs the author's input. The should-fix finding does not move the verdict. The run decided that the old-token question needs the author. The run predates the current rule. The skill now gives `NEEDS DISCUSSION` only for an approval-blocking question, which the critic or judge marks. A question from a finding below confidence 0.5 is not approval-blocking unless the critic marks it, so this verdict can now be `APPROVE`. The run did not treat the unrun end-to-end test as a gap in the review scope. The coverage line also lists the unrun test and the judges that were not independent.
 
 Next, the one should-fix finding and the one question.
 
@@ -149,14 +149,14 @@ The existing test passes on both commits in this probe. It cannot tell the fixed
 
 Last, the readiness check.
 
-Excerpt from a run on the Conduit sample API at commit 667bbe6. Condensed from the run report. The table layout and the status words are the run's choice, not a layout that the skill prescribes: the Evidence column and the rows for scope, documentation, and branch are left out. The text of the cells that remain is verbatim.
+Excerpt from a run on the Conduit sample API at commit 667bbe6. Condensed from the run report. The table layout and the status words are the run's choice. The skill now prescribes a layout with the columns Area, Result, and Evidence: the Evidence column and the rows for scope, documentation, and branch are left out. The text of the cells that remain is verbatim.
 
 | Area | Status | Blocking gap |
 | --- | --- | --- |
 | Checks | Failed | Yes. The test file that holds the only `getCurrentUser` test fails, so no current result covers the change. |
 | Handoff | Gap | Not blocking. Put the question and the test result in the PR description. |
 
-The verdict was `Needs Work`. The reason is the failed test file, and moving the import fixes it. Two other checks did not block in this run. The lint run had 2 errors (`no-explicit-any`, lines 84 and 151), and the same 2 errors exist on 88b258c. The end-to-end suite did not run, because it needs a database and a running API. The repository names no required checks, so the run chose the unit tests as the required check. The skill gives no rule for this case. If your team requires the end-to-end suite, the verdict is `Blocked` until you can run it.
+The verdict was `Needs Work`. The reason is the failed test file, and moving the import fixes it. Two other checks did not block in this run. The lint run had 2 errors (`no-explicit-any`, lines 84 and 151), and the same 2 errors exist on 88b258c. The end-to-end suite did not run, because it needs a database and a running API. The repository names no required checks, so the run chose the unit tests as the required check. The skill now names a default set for this case: the test command, the lint command, and the build or type-check command. The report must say that the default set was used. If your team requires the end-to-end suite, the verdict is `Blocked` until you can run it.
 
 What you must check in the output:
 

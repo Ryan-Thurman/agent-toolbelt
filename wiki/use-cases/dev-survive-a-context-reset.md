@@ -14,7 +14,7 @@ This page is for a developer whose task is too long for one agent session. You g
 4. Before work: `/agent-toolbelt:phase-context-workflow start phase <n> of room <room-slug>`.
 5. Do part of the work. Commit what is finished.
 6. Before `/clear`: `/agent-toolbelt:phase-context-workflow close phase <n> of room <room-slug>`. Make sure that the handoff says `Safe to clear` is `Yes`.
-7. After `/clear`, repeat step 4 and tell the agent to read `phase-<nn>-handoff.md`. The agent reads the files and names the next action.
+7. After `/clear`, repeat step 4. Start reads `phase-<nn>-handoff.md` when it exists. The agent reads the files and names the next action.
 
 These prompts are natural-language forms. The run itself used the skill operations by name, for example `/agent-toolbelt:phase-start pagination-validation --phase 1`, and the author session followed the skill text for the other operations. If you installed the commands with `./install.sh`, the argument forms are `/phase-create <room-slug> --phase <n> --title <title>`, `/phase-start <room-slug> --phase <n>`, `/phase-close <room-slug> --phase <n>`, and `/phase-status`.
 
@@ -49,7 +49,7 @@ The `handoff` skill alone is the smaller alternative. It writes one resumable no
 
 The sibling for a ticket that becomes several pull requests is [`phased-delivery`](../../skills/phased-delivery/SKILL.md). It owns the plan and one PR for each phase. Its command `/dev-start-phase` prepares a phase branch. This skill writes a packet instead, and `/phase-start` is the command for that. When both are in use, the delivery plan stays the source of truth and the packet holds only session state. The page [Deliver a ticket as phased pull requests](dev-deliver-a-ticket-as-phased-prs.md) covers that path.
 
-The phase file gives the goal and the criteria. The packet copies them with the git state. The handoff records what the session did to them. Start reads the handoff of the previous phase, not of the same phase (see Common mistakes).
+The phase file gives the goal and the criteria. The packet copies them with the git state. The handoff records what the session did to them. Start reads the handoff of the same phase when it exists (a resume in the middle), and the handoff of the previous phase (see Common mistakes).
 
 ## Steps
 
@@ -63,9 +63,9 @@ The phase file gives the goal and the criteria. The packet copies them with the 
 | 6 | Do part of the work. Run the checks that you can run. Commit what is finished. | The handoff records which results are current. A commit marks the work that a fresh session must not redo. | Each finished item is a commit. The rest is in the working tree. |
 | 7 | Before you clear, close the phase: `close phase <n> of room <room-slug>`. | The handoff records the completed work, decisions, ruled-out paths, checks, and a concrete next action. | `phase-NN-handoff.md` exists. `Safe to clear` is `Yes`, or `No` with the missing items listed. |
 | 8 | Read the "Next action" line and the "Validation" results. Mark a check stale when a later edit changed its code. | A fresh session trusts these lines. | The next action names a file and a test, and each stale result says that it is stale. |
-| 9 | Run `/clear` and start the fresh session in the same folder. Ask for `start phase <n> of room <room-slug>` and tell the agent to read `phase-<nn>-handoff.md`. | The agent compares the files with the branch, the diff, and the check results, as `execution.md` requires, before it reuses them. | The new packet states which handoff claims match the tree and which do not, and names a next action. In this run the packet had a reconciliation table. That is the run's format, and the skill sets none. |
+| 9 | Run `/clear` and start the fresh session in the same folder. Ask for `start phase <n> of room <room-slug>`. Start reads `phase-<nn>-handoff.md` when it exists. | The agent compares the files with the branch, the diff, and the check results, as `execution.md` requires, before it reuses them. | The new packet states which handoff claims match the tree and which do not, and names a next action. In this run the packet had a reconciliation table. That is the run's format, and the skill sets none. |
 | 10 | Tell the agent to do the next action. Read its report and run the checks yourself. | The agent can claim a check that it did not run. | You see the same result in your own terminal. |
-| 11 | At the end of the phase, close it again. Close sets `Status`, `Completed`, and `Handoff` in the phase file. Check them. | In this run `Status` stayed `in progress` after the first close, and the author set `done` by hand. `phase-status` reports a phase as complete only when a handoff or a status field says so. | `phase-status` shows the phase as `handoff written`, and the status field says `done`. |
+| 11 | At the end of the phase, close it again. Close sets `Status` (`done` or `paused`), `Completed`, and `Handoff` in the phase file. Check them. | In this run `Status` stayed `in progress` after the first close, and the author set `done` by hand. The run predates the rule that Close sets `done` or `paused`. `phase-status` reports a phase as complete only when a handoff or a status field says so. | `phase-status` shows the phase as `handoff written`, and the status field says `done` (or `paused` for a phase that closed early). |
 
 ## Decision points
 

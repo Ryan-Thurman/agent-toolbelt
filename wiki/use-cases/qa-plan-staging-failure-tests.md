@@ -9,8 +9,8 @@ This page is for a QA or SRE engineer who must plan failure tests for a service 
 ## Quick path
 
 1. Start Claude Code in the service repository with the Toolbelt loaded: `claude --plugin-dir <toolbelt-folder>`.
-2. Review the service first: `/agent-toolbelt:reliability-review <design-document-or-service-folder>`. Ask the agent to save the report to a file.
-3. Plan the failures: `/agent-toolbelt:failure-scenario-design <report-path> --deep`. Ask the agent to save the cards to a file.
+2. Review the service first: `/agent-toolbelt:reliability-review <design-document-or-service-folder>`. The skill saves the report to `.atb-work/reliability-review/<scope-slug>.md` and prints the path.
+3. Plan the failures: `/agent-toolbelt:failure-scenario-design <report-path> --deep`. The skill saves the cards to `.atb-work/failure-scenario-design/<scope-slug>.md`.
 4. Give each `Decision needed` row to its owner. Give each staging plan to the team that owns the chaos tooling. Do not start a plan while a no-go condition fails. If a card has no steady-state signal, add the telemetry requirement first, then ask the agent to update the plan.
 
 You get a register of failure modes, one card for each testable risk, and a staging plan for each risk that needs the real platform.
@@ -54,7 +54,7 @@ The order has a reason. The skill takes the testable risks and the journeys from
 | 3 | Run `/agent-toolbelt:reliability-review <design-document-or-service-folder>`. In the sample, the input is the repository folder. | The cards need a register of failure modes with the risks marked testable. | The report has a register with `REL-` IDs, a `Testable` value for each row, and one result: `Ready for planning`, `Needs decision`, `Needs revision`, or `Not verified`. |
 | 4 | Read the "Open decisions and handoff" table. Give each row to its owner. | The skill does not choose a target. A missing SLO, owner, or deadline stays `Decision needed`. | Each decision has an owner's name or role. You do not need an answer yet. |
 | 5 | Run `/agent-toolbelt:failure-scenario-design <report-path> --deep`. | Deep is the level that plans staging experiments. At Standard, a card that needs a platform fault gets the level `Staging experiment` and no plan. The result at Standard is `Blocked`, with the reason `Deep level needed for the staging plan`. This run predates the rule that a request for staging plans selects Deep. `--deep` is still the clear way to ask. | Each risk marked testable has a card, or the report says why it has none. |
-| 6 | Check each card. The hypothesis must name a fault, a target, a signal, and a tolerance. The steady state must name its source. | A hypothesis that no signal can contradict proves nothing. A card with no signal is `Conditional`. | Each hypothesis can fail. Each `Conditional` card has a telemetry requirement. |
+| 6 | Check each card. The hypothesis must name a fault, a target, a signal, and a tolerance. The steady state must name its source. | A hypothesis that no signal can contradict proves nothing. A card with no signal is `Conditional`, and its result is `Blocked` until the signal exists. | Each hypothesis can fail. Each `Conditional` card has a telemetry requirement. |
 | 7 | Check each staging plan against the six no-go conditions of `staging-experiment-plan.md`: spent error budget (the amount of failure that the SLO allows), active incident or freeze, an abort path or rollback that was not tested, no steady-state signal, absent owner, no timebox. | A run that starts with one of these true cannot give a trusted result. | The plan has a value for each condition. A plan that fails a condition is blocked. Write who must fix it. |
 | 8 | Send each output to its next owner. Given/When/Then scenarios go to `bdd-scenarios`. If the repository has no BDD runner, `bdd-scenarios` stops for a runner choice first ([Set up a BDD runner](qa-set-up-a-bdd-runner.md)). Lower-level cases go to `test-case-design`. Test-first cases go to the test-first loop of `phased-delivery`, when it is installed. `cover` takes cases for behavior that exists today, so it does not fit these cards. Staging plans go to the owner of the chaos tooling. | The skill stops at the plans. It never runs a fault. | Each handoff has a named receiver. |
 
@@ -132,7 +132,7 @@ Excerpt from a run on the Conduit sample API at commit 30b68e1. Condensed from t
 | No-go check | Not clear. Condition 4 fails (no signal). Conditions 3 and 5 are `Decision needed`. |
 | Result | Not run in staging. The current behavior was observed locally. |
 
-`Not clear` is the run's own wording. The template defines no value for a failed no-go check.
+`Not clear` is the run's own wording. The template defines no value for a failed no-go check. This run predates the result `Blocked`. The template now allows it, and it names the missing signal or the no-go condition that stopped the run.
 
 The card's test-first case says that the client got no reply after 1.0 s when the run sent SIGTERM (the signal that asks a process to stop) during a request. The probe holds one request open for about 5 s, because the database host never answers.
 

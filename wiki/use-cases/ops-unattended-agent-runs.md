@@ -4,7 +4,7 @@ This page is for a platform engineer who wants a runner program to implement and
 
 | Roles | Skills and commands | Depth | You need |
 | --- | --- | --- | --- |
-| Platform engineer | [`auto-agent-contract`](../../plugins/agent-toolbelt-auto-agent/skills/auto-agent-contract/SKILL.md) (`/auto-agent-plan`), [`auto-agent-dev-lite`](../../plugins/agent-toolbelt-auto-agent/skills/auto-agent-dev-lite/SKILL.md), the [task execution contract](../../shared/contracts/references/execution.md) with its checker `validate-execution.py` | No levels. Neither skill has a depth setting. | A repository with a test command, a roadmap or ticket list, and a runner program such as `agent-runner`. The Toolbelt does not ship `agent-runner` and gives no install source, so you need your own copy. Without it you can still draft the plan, but you cannot validate it. |
+| Platform engineer | [`auto-agent-contract`](../../plugins/agent-toolbelt-auto-agent/skills/auto-agent-contract/SKILL.md) (`/auto-agent-plan`), [`auto-agent-dev-lite`](../../plugins/agent-toolbelt-auto-agent/skills/auto-agent-dev-lite/SKILL.md), the [task execution contract](../../shared/contracts/references/execution.md) with its checker `validate-execution.py` | No levels. Neither skill has a depth setting. | A repository with a test command, a roadmap or ticket list, and a runner program such as `agent-runner`. The Toolbelt does not ship `agent-runner`. The plugin README says to install it from its own checkout and names no source, so you need your own copy. Run `agent-runner --version` to check it. Without it you can still draft the plan, but you cannot validate it. |
 
 ## Quick path
 
@@ -35,7 +35,7 @@ The sibling for in-session review is `phase-gate`. A subagent reviews at each ph
 
 This path moves the loop into a program that spawns agent CLIs, keeps state in SQLite, and decides each next step. The skill states a principle: never let a model decide a verdict or a merge. Choosing an outside loop is practice that follows from it. The pack adds no review logic. You also install the standard plugin, so that `pr-review` supplies the findings and the verdict.
 
-This path has a cost. You must own and run an outside program with no stated install source. This run verified only the plan and one hand-run worker job. The loop never started, and `agent-runner` 0.1.0 does not read execution records.
+This path has a cost. You must own and run an outside program that the Toolbelt does not ship and whose source the plugin README does not name. This run verified only the plan and one hand-run worker job. The loop never started, and `agent-runner` 0.1.0 does not read execution records.
 
 The steps have this order for one reason. Each step needs a command that decides "done". The skill finds that command first, then writes phases that use it, then validates the plan with the runner's own parser.
 

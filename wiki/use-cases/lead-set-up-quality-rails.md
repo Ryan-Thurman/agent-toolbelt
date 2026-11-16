@@ -11,7 +11,7 @@ This page is for a tech lead whose repository has separate check tools but no si
 1. Start Claude Code in the repository root with the Toolbelt loaded: `claude --plugin-dir <toolbelt-folder>`.
 2. Set up the rails: `/agent-toolbelt:style-guide-init --rails`.
 3. Read the report. Find the command name (sample: `npm run quality`), the CI and release steps, and the list of checks pending adoption with counts.
-4. Set the environment that your tests need (sample: a dummy `DATABASE_URL` and `JWT_SECRET`, see step 5). Run the command that the report names. Expect a red result with exit code 1 while pending checks have findings. Run `<command> -- required` to see what CI blocks on. Then run `git status --short --untracked-files=all` and read `git diff`.
+4. Set the environment that your tests need (sample: a dummy `DATABASE_URL` and `JWT_SECRET`, see step 5). Run the command that the report names. In the sample run, the result was red with exit code 1 while pending checks had findings. The skill now runs a pending check in the command only in a report-only mode, so a pending check alone does not fail a correct setup. Check the exit code that your command gives, and run `<command> -- required` to see what CI blocks on. Then run `git status --short --untracked-files=all` and read `git diff`.
 
 Stop when each check prints a result and the pending list has counts.
 
@@ -79,7 +79,7 @@ The skill prescribes the checks' order (fast checks first), a non-interactive co
 - The new GitHub Actions workflow (Node 18, taken from the `@types/node` version, because the repository declares no runtime).
 - The `docker-build` change.
 - The new `CONTRIBUTING.md` and `AGENTS.md`.
-- The `/tmp` entry in `.prettierignore`.
+- The `/tmp` entry in `.prettierignore`. The skill now says that an ignore entry for build output is not a suppression, and an ignore entry for a source file is.
 
 The script lists the groups in one place. This is the part that decides what blocks.
 
@@ -108,7 +108,7 @@ Excerpt from a run on the Conduit sample API at commit 30b68e1. The last three s
         continue-on-error: true
 ```
 
-Then the full command on the unchanged code. It exits with 1, because three checks have findings.
+Then the full command on the unchanged code. It exits with 1, because three checks have findings. The run predates PR #60. The skill now keeps a pending check in the command only in a report-only mode, or leaves it out, so the exit code can differ.
 
 Excerpt from a run on the Conduit sample API at commit 30b68e1. Selected lines of the output of `npm run quality`, from three places in the output. The summary block is complete, apart from the `exit 1` line that the run's wrapper added after it.
 
@@ -155,7 +155,7 @@ What you must check in the output:
 ## Common mistakes
 
 - You run `prettier --write .` as part of the setup. Rails mode does not format files. The command changes 18 files, including `README.md`, and hides the pending count. Fix findings in later, separate changes.
-- You read the red result of `npm run quality` as a failed setup. The skill keeps checks with findings out of required CI. The sample command exits 1 while a pending check fails, because this run wrote the script that way. Use `npm run quality -- required` to see what CI blocks on.
+- You read the red result of `npm run quality` as a failed setup. The skill keeps checks with findings out of required CI. The sample command exits 1 while a pending check fails, because this run wrote the script that way. The skill now asks for report-only mode for a pending check. Use `npm run quality -- required` to see what CI blocks on.
 - You make the pending checks required in CI on the first day. A new required step that fails today turns every pull request red. Keep it report-only until the count is zero.
 - You format after a build and see one more finding. In this run, Prettier 2.8.8 checked `tmp/api/main-with-require-overrides.js`. This file is gitignored build output. The format count went from 18 to 19 until `/tmp` was ignored. Compare counts from a clean tree, and check each ignore entry against `.gitignore`.
 - You treat the test failures as code findings. In this run no database was available, and the cause of each failure is not confirmed. Run the tests against a database before you assign the work.

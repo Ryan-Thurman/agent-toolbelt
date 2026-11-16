@@ -294,7 +294,7 @@ function main() {
     process.exitCode = 1;
     return;
   }
-  console.log('Catalog validation passed: 44 standard skills, 10 workflows, and tooling audit are consistent.');
+  console.log('Catalog validation passed: 44 standard skills, 11 workflows, and tooling audit are consistent.');
 }
 
 if (require.main === module) main();

@@ -121,7 +121,8 @@
       ],
       "workflow_membership": [
         "feature-delivery",
-        "feature-refinement"
+        "feature-refinement",
+        "idea-to-release"
       ],
       "documentation_completeness": {
         "status": "complete",
@@ -510,7 +511,8 @@
         "feature-delivery",
         "product-learning",
         "security-sensitive-change",
-        "feature-refinement"
+        "feature-refinement",
+        "idea-to-release"
       ],
       "documentation_completeness": {
         "status": "complete",
@@ -599,7 +601,8 @@
         "pr-review",
         "codebase-improvement",
         "security-sensitive-change",
-        "risk-based-testing"
+        "risk-based-testing",
+        "idea-to-release"
       ],
       "documentation_completeness": {
         "status": "complete",
@@ -683,7 +686,8 @@
       ],
       "workflow_membership": [
         "feature-delivery",
-        "product-learning"
+        "product-learning",
+        "idea-to-release"
       ],
       "documentation_completeness": {
         "status": "complete",
@@ -723,7 +727,8 @@
         "ship-it"
       ],
       "workflow_membership": [
-        "product-learning"
+        "product-learning",
+        "idea-to-release"
       ],
       "documentation_completeness": {
         "status": "complete",
@@ -1015,7 +1020,8 @@
       "workflow_membership": [
         "feature-delivery",
         "product-learning",
-        "feature-refinement"
+        "feature-refinement",
+        "idea-to-release"
       ],
       "documentation_completeness": {
         "status": "complete",
@@ -1057,7 +1063,8 @@
       "workflow_membership": [
         "feature-delivery",
         "product-learning",
-        "production-readiness"
+        "production-readiness",
+        "idea-to-release"
       ],
       "documentation_completeness": {
         "status": "complete",
@@ -1185,7 +1192,8 @@
       ],
       "workflow_membership": [
         "feature-delivery",
-        "feature-refinement"
+        "feature-refinement",
+        "idea-to-release"
       ],
       "documentation_completeness": {
         "status": "complete",
@@ -1284,7 +1292,8 @@
       ],
       "workflow_membership": [
         "security-sensitive-change",
-        "feature-delivery"
+        "feature-delivery",
+        "idea-to-release"
       ],
       "documentation_completeness": {
         "status": "complete",
@@ -1415,7 +1424,8 @@
         "security-sensitive-change",
         "feature-refinement",
         "risk-based-testing",
-        "incident-follow-up"
+        "incident-follow-up",
+        "idea-to-release"
       ],
       "documentation_completeness": {
         "status": "complete",
@@ -2514,6 +2524,93 @@
           "next_steps": [
             "pr-review"
           ]
+        }
+      ]
+    },
+    {
+      "id": "idea-to-release",
+      "name": "Idea to release",
+      "purpose": "Take one feature from a raw idea to a released, accepted change through seven gated stages. Agents draft and check. People own each decision and approval.",
+      "stages": [
+        {
+          "skill": "product-discovery",
+          "rationale": "Stage 1, Define: frame the problem, the outcome, and the evidence. Stay cheap: no repository scan.",
+          "example_invocation": "Decide whether this idea is worth building.",
+          "next_steps": [
+            "shape-up"
+          ]
+        },
+        {
+          "skill": "shape-up",
+          "rationale": "Stages 1 to 3: shape the brief, compare it with current behavior, and slice it into draft tickets.",
+          "example_invocation": "Shape this idea into a brief, then slice it into tickets.",
+          "next_steps": [
+            "system-design",
+            "story-refinement"
+          ]
+        },
+        {
+          "skill": "system-design",
+          "rationale": "Stage 2, Feature refine: design the change at the depth that its risk needs, with threat and reliability reviews.",
+          "example_invocation": "Design this feature at the Standard level.",
+          "next_steps": [
+            "test-case-design"
+          ]
+        },
+        {
+          "skill": "test-case-design",
+          "rationale": "Stage 2: the QA lead owns test cases before development. Gate 2 waits for them.",
+          "example_invocation": "Design the test cases for this brief before development starts.",
+          "next_steps": [
+            "story-refinement"
+          ]
+        },
+        {
+          "skill": "story-refinement",
+          "rationale": "Stage 4: write Given/When/Then criteria with failure paths and get the product, developer, and QA review.",
+          "example_invocation": "Prepare each story for refinement and give the readiness verdict.",
+          "next_steps": [
+            "bdd-scenarios",
+            "phased-delivery"
+          ]
+        },
+        {
+          "skill": "bdd-scenarios",
+          "rationale": "Stage 4: turn the criteria into feature files that delivery turns from red to green.",
+          "example_invocation": "Write the feature files for these refined stories.",
+          "next_steps": [
+            "phased-delivery"
+          ]
+        },
+        {
+          "skill": "phased-delivery",
+          "rationale": "Stages 5 and 6: propose an order, then write the just-in-time plan and deliver one ticket test-first after a person approves the plan.",
+          "example_invocation": "Plan this ticket from the current code and stop for plan approval.",
+          "next_steps": [
+            "pr-review"
+          ]
+        },
+        {
+          "skill": "pr-review",
+          "rationale": "Stage 6: a separate review agent pre-reviews each pull request. People still verify before close.",
+          "example_invocation": "Review this pull request against its ticket.",
+          "next_steps": [
+            "ship-it"
+          ]
+        },
+        {
+          "skill": "ship-it",
+          "rationale": "Stage 7: check release readiness and rollback triggers.",
+          "example_invocation": "Prepare this release.",
+          "next_steps": [
+            "product-outcome-review"
+          ]
+        },
+        {
+          "skill": "product-outcome-review",
+          "rationale": "Stage 7: check the outcome after release, then run papercuts and the delivery retrospective.",
+          "example_invocation": "Did this release move the outcome that the brief named?",
+          "next_steps": []
         }
       ]
     }

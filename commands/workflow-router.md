@@ -28,6 +28,7 @@ Choose from workflows that are actually installed.
 | Refine a ticket or story, write Given/When/Then criteria, or check story readiness | `story-refinement` |
 | Write or review Gherkin feature files, or set up a BDD runner | `bdd-scenarios` |
 | Plan, review, or deliver approved requirements or tickets as human-reviewed PRs | `phased-delivery` |
+| Take one feature from a raw idea to an accepted release, with gates and human approvals | `workflows/idea-to-release-workflow.md` |
 | Reproduce and repair a defect | `bug-to-fix` |
 | Decide whether to do one technical backlog item, or assess a dependency | `tech-backlog-assessment` |
 | Adapt a pattern that a ticket names to a new area | `ticket-discovery` |

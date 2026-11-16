@@ -541,6 +541,53 @@
       });
     }
 
+    function renderUseCases() {
+      const list = byId('use-case-list');
+      const chips = byId('use-case-groups');
+      if (!list || !chips) return;
+      const useCases = data.use_cases || [];
+      const groups = [...new Set(useCases.map((useCase) => useCase.group))];
+      let active = null;
+      function draw() {
+        list.replaceChildren();
+        useCases.filter((useCase) => !active || useCase.group === active).forEach((useCase) => {
+          const card = createElement('article', 'use-case-card');
+          card.id = `use-case-${useCase.slug}`;
+          card.appendChild(createElement('span', 'use-case-group', useCase.group));
+          const title = createElement('h3');
+          const link = createElement('a', '', useCase.title);
+          link.href = useCase.source_url;
+          link.target = '_blank';
+          link.rel = 'noopener';
+          title.appendChild(link);
+          card.appendChild(title);
+          if (useCase.summary) card.appendChild(createElement('p', 'use-case-summary', useCase.summary));
+          const skills = createElement('div', 'detail-related');
+          useCase.skills.forEach((skillId) => {
+            const button = createElement('button', '', skillById.has(skillId) ? skillById.get(skillId).display_name : skillId);
+            button.type = 'button';
+            button.dataset.openSkill = skillId;
+            skills.appendChild(button);
+          });
+          card.appendChild(skills);
+          list.appendChild(card);
+        });
+      }
+      chips.replaceChildren();
+      [null, ...groups].forEach((group) => {
+        const chip = createElement('button', 'chip', group || 'All roles');
+        chip.type = 'button';
+        chip.setAttribute('aria-pressed', String(group === active));
+        chip.addEventListener('click', () => {
+          active = group;
+          chips.querySelectorAll('.chip').forEach((other) => other.setAttribute('aria-pressed', String(other === chip)));
+          draw();
+        });
+        chips.appendChild(chip);
+      });
+      draw();
+    }
+
     function renderTooling() {
       const target = byId('tooling-groups');
       target.replaceChildren();
@@ -658,6 +705,23 @@
       });
       related.appendChild(relatedList);
       grid.appendChild(related);
+      const cases = (data.use_cases || []).filter((useCase) => useCase.skills.includes(skill.id));
+      if (cases.length) {
+        const caseBlock = createElement('section', 'detail-block');
+        caseBlock.appendChild(createElement('h3', '', 'Use cases'));
+        const caseList = createElement('ul', 'detail-use-cases');
+        cases.forEach((useCase) => {
+          const item = createElement('li');
+          const link = createElement('a', '', useCase.title);
+          link.href = useCase.source_url;
+          link.target = '_blank';
+          link.rel = 'noopener';
+          item.appendChild(link);
+          caseList.appendChild(item);
+        });
+        caseBlock.appendChild(caseList);
+        grid.appendChild(caseBlock);
+      }
       const memberships = createElement('section', 'detail-block');
       memberships.appendChild(createElement('h3', '', 'Workflow membership'));
       const workflowList = createElement('div', 'detail-workflows');
@@ -900,6 +964,7 @@
     renderSkills();
     renderCategoryBucketPanel();
     renderWorkflows();
+    renderUseCases();
     renderTooling();
     applyHash();
     return { state, openSkill, openWorkflow, renderSkills };

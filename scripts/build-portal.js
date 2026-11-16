@@ -36,6 +36,51 @@ function prepareOutputDirectory(output, generatedFiles) {
   }
 }
 
+const USE_CASE_GROUPS = [
+  ['qa', 'QA and test'], ['dev', 'Developer'], ['product', 'Product'],
+  ['arch', 'Architecture, SRE, and security'], ['sre', 'Architecture, SRE, and security'], ['sec', 'Architecture, SRE, and security'],
+  ['lead', 'Tech lead'], ['ops', 'Platform and operators'], ['write', 'Writers'], ['ui', 'UI'], ['journey', 'End-to-end journeys']
+];
+
+// Read wiki/use-cases/*.md. The pages own the content; the portal shows the title, the summary,
+// the group from the file-name prefix, and the skills that the header table names.
+function loadUseCases(root, skillIds) {
+  const folder = path.join(root, 'wiki', 'use-cases');
+  if (!fs.existsSync(folder)) return [];
+  return fs.readdirSync(folder).filter((name) => name.endsWith('.md') && name !== 'README.md').sort().map((name) => {
+    const slug = name.replace(/\.md$/, '');
+    const text = fs.readFileSync(path.join(folder, name), 'utf8');
+    const lines = text.split('\n');
+    const titleLine = lines.find((line) => line.startsWith('# '));
+    if (!titleLine) throw new Error(`Use-case page has no title: wiki/use-cases/${name}`);
+    const start = lines.indexOf(titleLine) + 1;
+    const summary = [];
+    for (const line of lines.slice(start)) {
+      if (!line.trim()) { if (summary.length) break; continue; }
+      if (line.startsWith('|') || line.startsWith('#')) break;
+      summary.push(line.trim());
+    }
+    const headerRow = lines.find((line, i) => i > start && line.startsWith('|') && !/^\|\s*(Roles|-)/.test(line));
+    const cells = headerRow ? headerRow.split('|').slice(1, -1).map((cell) => cell.trim()) : [];
+    const named = new Set((text.match(/`([a-z0-9-]+)`/g) || []).map((token) => token.slice(1, -1)));
+    const headerSkills = cells[1] ? (cells[1].match(/`\/?([a-z0-9-]+)`/g) || []).map((token) => token.replace(/[`/]/g, '')) : [];
+    const skills = [...new Set(headerSkills.filter((id) => skillIds.has(id)))];
+    if (!skills.length) named.forEach((id) => { if (skillIds.has(id)) skills.push(id); });
+    const prefix = slug.split('-')[0];
+    const group = (USE_CASE_GROUPS.find(([key]) => key === prefix) || [null, 'Other'])[1];
+    return {
+      slug,
+      title: titleLine.slice(2).trim(),
+      summary: summary.join(' '),
+      group,
+      roles: cells[0] || '',
+      skills,
+      source_path: `wiki/use-cases/${name}`,
+      source_url: `${REPOSITORY_URL}/blob/main/wiki/use-cases/${name}`
+    };
+  });
+}
+
 function normalizePortalPayload(root = ROOT) {
   const errors = validate(root);
   if (errors.length) throw new Error(`Catalog validation failed before portal build:\n${errors.join('\n')}`);
@@ -81,6 +126,7 @@ function normalizePortalPayload(root = ROOT) {
     surface_note: catalog.catalog.surface_note,
     skills,
     workflows: catalog.workflows,
+    use_cases: loadUseCases(root, new Set(skills.map((skill) => skill.id))),
     tooling_audit: catalog.tooling_audit
   };
 }

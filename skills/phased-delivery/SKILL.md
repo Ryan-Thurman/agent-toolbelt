@@ -33,6 +33,11 @@ This is the interactive delivery lane, not the unattended Auto Agent runner.
   interface discovery, steps, checks, risks, and technical context. Do not add
   product requirements or work from another ticket. Keep the project's own
   readiness and evidence requirements.
+- **Refined story:** Use the story's Given/When/Then criteria, dependencies, and QA
+  trace from the story-refinement record (`templates/refined-story.md`). Its
+  `Readiness` value sets the next step. `Ready` or `Ready with defaults`: use the
+  story as the source, and list each default as a material assumption for its
+  owner. `Not ready` with a blocking question: stop for that story as below.
 - **Raw requirement:** Inspect the repository and clarify material ambiguity.
   Record a concise outcome, boundaries, and testable acceptance criteria before
   you slice phases. Make reversible technical assumptions explicit. Use
@@ -44,6 +49,8 @@ Stop for a human scope decision in these conditions:
 - A ticket needs another ticket's work, or its acceptance criteria conflict or are missing.
 - A stack dependency or base is unclear.
 - Required project document, test, or QA evidence is unresolved.
+- A refined story has a `Not ready` verdict with a blocking question. Keep the
+  question in the plan. Plan the other tickets only when they do not depend on it.
 
 Do not quietly split, combine, or expand tickets to make the workflow fit.
 Continue through ordinary code, file, and test discovery without a stop.
@@ -71,6 +78,9 @@ Continue through ordinary code, file, and test discovery without a stop.
    approved these specific phase and PR boundaries. A general request to "start
    when ready" or an approved source ticket does not approve an unreviewed stack
    topology or an unresolved product or release decision.
+   In a headless run with no person to answer, do not wait. Mark the map `Draft for approval`,
+   record that this default was used, start no implementation, and name the approval
+   request as the next action.
 3. **Start and implement one phase.** Read `references/implementation-rules.md`
    before the first edit. When the user asks only to start a phase, prepare the
    branch and context. Implement only when implementation is requested or approved.

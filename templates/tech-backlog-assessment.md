@@ -38,6 +38,7 @@ framework upgrade. Otherwise write `Not applicable`.
 | Runtime/bundle/performance impact |  |
 | Migration cost |  |
 | Reversibility/lock-in |  |
+| Version delta | Installed version -> target version, the APIs used, and the changes that intersect them (see `references/version-delta.md`). |
 
 ## Proposed implementation shape
 
@@ -65,6 +66,11 @@ Keep implementation code in the development step.
 ## Open questions
 
 - <question> Recommended default: <default>
+
+## Sources, dates, and checks not run
+
+| Source or check | Date | Result, or the reason it did not run |
+|---|---|---|
 
 ## Next workflow
 

@@ -1,5 +1,7 @@
 # Contributing
 
+Status: Draft | Approved
+
 <!-- Adapt existing doc structure where present. Remove irrelevant sections and
 template instructions. Keep detailed rules with their current owner. -->
 

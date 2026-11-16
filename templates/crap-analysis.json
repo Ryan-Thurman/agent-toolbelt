@@ -10,8 +10,8 @@
       "src": "packages/api/src",
       "commands": {
         "coverage": "npm run test:coverage --workspace packages/api",
-        "analysis": "npm run crap:analyze -- --target api --highest",
-        "verify": "npm run crap:analyze -- --target api --coverage"
+        "analysis": "REPLACE_WITH_ANALYSIS_COMMAND --target api --highest",
+        "verify": "REPLACE_WITH_VERIFY_COMMAND --target api --coverage"
       },
       "outputs": {
         "report": "reports/crap/api.json",
@@ -22,8 +22,8 @@
       "src": "packages/shared/src",
       "commands": {
         "coverage": "npm run test:coverage --workspace packages/shared",
-        "analysis": "npm run crap:analyze -- --target shared --highest",
-        "verify": "npm run crap:analyze -- --target shared --coverage"
+        "analysis": "REPLACE_WITH_ANALYSIS_COMMAND --target shared --highest",
+        "verify": "REPLACE_WITH_VERIFY_COMMAND --target shared --coverage"
       },
       "outputs": {
         "report": "reports/crap/shared.json",

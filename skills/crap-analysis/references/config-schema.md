@@ -45,7 +45,8 @@ The result JSON then has `config.changedInDiff: true`, and the review starts wit
 
 Write only `.crap-analysis.json`. Write another file, such as npm scripts in `package.json`, only
 after the user explicitly confirms it. Do not assume a language, framework, or repo layout.
-Start from `templates/crap-analysis.json`.
+Start from `templates/crap-analysis.json`. Its `analysis` and `verify` commands are placeholders
+(`REPLACE_WITH_...`). Replace them with the repository's own commands before you preview the file.
 
 1. **Discover.** Look for `.crap-analysis.json`, `.agents/crap-analysis.json`, or the legacy `.atb/crap-analysis.json`.
    If a file exists and the argument is `edit`, load it and offer to update fields.

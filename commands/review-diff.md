@@ -1,6 +1,6 @@
 ---
 description: Review your local diff before you push or open a PR. Reports findings only and never posts
-argument-hint: "[--tier=light|standard|deep] [--intent=<path|url>] [--focus=<facet>] [--focus-note=\"<text>\"]"
+argument-hint: "[--tier=light|standard|deep] [--intent=<path|url>] [--focus=<facet>] [--focus-note=\"<text>\"] [--show-nits]"
 ---
 
 # /review-diff
@@ -9,7 +9,8 @@ Use `/review-diff` to review your local changes and the current branch against i
 
 **Arguments:** `$ARGUMENTS`
 
-Accept only the tier, intent, and focus options: `--tier`, `--intent`, `--focus`, and `--focus-note`.
+Accept only the tier, intent, focus, and nit options: `--tier`, `--intent`, `--focus`, `--focus-note`, and `--show-nits`.
+`--show-nits` keeps every nit in the local report, so you can read nits that the posting threshold hides.
 Do not accept `--comment`, `--repost`, or any other posting option. This command never posts.
 If the arguments name a PR, a PR URL, or a branch, stop. Tell the user to run `/pr-review` for that target.
 

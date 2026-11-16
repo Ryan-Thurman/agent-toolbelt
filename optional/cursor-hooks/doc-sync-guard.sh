@@ -35,6 +35,14 @@ if [ -z "$files" ]; then
       files="$(git diff --name-only HEAD 2>/dev/null)" ;;
   esac
 fi
+# A chained add, such as `git add -A && git commit`, runs after this hook, so nothing is
+# staged yet. The files that the add form stages are tracked changes and untracked files.
+if [ -z "$files" ]; then
+  case "$input" in
+    *"git add -A"*|*"git add --all"*|*"git add -a "*|*"git add ."*)
+      files="$(git diff --name-only HEAD 2>/dev/null; git ls-files --others --exclude-standard 2>/dev/null)" ;;
+  esac
+fi
 [ -n "$files" ] || allow   # nothing to evaluate (e.g. empty/--amend with no changes)
 
 # Documentation paths satisfy the check; lockfiles/binaries don't count as "code".

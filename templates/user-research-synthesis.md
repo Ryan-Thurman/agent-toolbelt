@@ -2,12 +2,25 @@
 
 ## Question, sources, and sample
 
-Record source IDs, dates, collection method, sample, and access limits.
+Record the research question, collection method, and participant sample.
+
+| Source ID | Type | Date | Participants | Access and permission |
+| --- | --- | --- | --- | --- |
+
+## Observations
+
+Record each observation with its source ID and location.
+Kind is `reported`, `observed`, or `interpretation`. Use `paraphrase` in the text column when permission for a quotation is unknown.
+
+| Observation ID | Source ID and location | Text or paraphrase | Kind |
+| --- | --- | --- | --- |
 
 ## Themes and counterexamples
 
-| Theme ID | Observation and source evidence | Counterexamples | Interpretation and confidence | Product implication |
+| Theme ID | Observation IDs and source evidence | Counterexamples | Interpretation and confidence | Product implication |
 | --- | --- | --- | --- | --- |
+
+Confidence is `Supported`, `Mixed`, or `Insufficient evidence`.
 
 ## Limits and next evidence
 

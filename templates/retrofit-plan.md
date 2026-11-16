@@ -25,10 +25,12 @@ ends `done` or `skipped (reason)`.
 
 ## Sites
 
-| # | Site (file / module / unit) | Class | Status | Notes |
-|---|---|---|---|---|
-| 1 |  | mechanical / judgment | pending / done / skipped / needs-review |  |
-| 2 |  |  |  |  |
+| # | Site (file / module / unit) | Class | Code status | Dependency status | Notes |
+|---|---|---|---|---|---|
+| 1 |  | mechanical / judgment | pending / done / skipped / needs-review | old kept / old removed / new added |  |
+| 2 |  |  |  |  |  |
+
+Code status tracks each site. Dependency status tracks the package that the site uses, in the manifest and the lockfile.
 
 ## Slices / order
 

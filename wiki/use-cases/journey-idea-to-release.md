@@ -11,7 +11,7 @@ This page is for a team lead or product owner who plans one feature from idea to
 The quick path covers stages 1 to 4. Stages 5 to 7 follow the Steps table. Stop at each gate and wait for its owner.
 
 1. Start Claude Code in the repository with the Toolbelt loaded: `claude --plugin-dir <toolbelt-folder>`. The `/agent-toolbelt:` prefix works in plugin mode only. In an installed copy, type `/<skill>` with no prefix. No installer pack copies this workflow file, so use the plugin or a Toolbelt checkout.
-2. Define (stage 1). Run this line. The workflow names no file for gate reports, so the gate file is this page's choice.
+2. Define (stage 1). Run this line. The workflow now names `templates/idea-to-release-gate-report.md` for gate reports. This page predates that template, so the gate file in the line below is this page's choice.
    `Follow <toolbelt-folder>/workflows/idea-to-release-workflow.md for <feature>. Write each gate report to <work-folder>/gates.md. Stop at each gate and wait for the named approver.`
    Then run `/agent-toolbelt:product-discovery <request>. Evidence: <evidence-file>. Write the report to <work-folder>/discovery.md with the product-discovery template.` Read the result line of `discovery.md`. Stop on `Needs evidence` or `Deferred`.
 3. Shape and design (stages 1 and 2). Run these commands in order. Gate 2 stays `Blocked` until the QA lead's cases exist in `<work-folder>/qa-cases.md`.
@@ -88,7 +88,7 @@ The last quote is improvement I-3 of the retrospective. The report lists it unde
 
 ## Gate verdicts
 
-A gate gives `Ready`, `Ready with risks`, or `Blocked`. `Ready with risks` needs a named owner for each risk. This page assigned the verdicts below by the gate rules of the workflow. No skill or template writes a gate report, and no earlier run produced one. Each row gives the verdict that a person gets when they ask for this gate after the run.
+A gate gives `Ready`, `Ready with risks`, or `Blocked`. `Ready with risks` needs a named owner for each risk. This page assigned the verdicts below by the gate rules of the workflow. The workflow now has a gate report template and a result-to-verdict table, and this page predates both. No earlier run produced a gate report. Each row gives the verdict that a person gets when they ask for this gate after the run.
 
 | Stage | Gate verdict | Reason, from the evidence | Approval that stays with people |
 | --- | --- | --- | --- |
@@ -100,7 +100,7 @@ A gate gives `Ready`, `Ready with risks`, or `Blocked`. `Ready with risks` needs
 | 6. Assignment and delivery | `Blocked` | Phase 1 has red and green evidence, but no person approved the plan, and no mode or start authorization is recorded. | In a human team, the assigned developer and QA accept the ticket and the plan. In an agent pod, a person approves the plan and the product owner authorizes the start. |
 | 7. Close and learn | `Blocked` | No human technical review, QA verification, or acceptance exists. The release check says `NO-GO` and the outcome review says `Gather evidence`. | A named human technical reviewer and a named human QA verify the result. The product owner accepts it. The project names who approves the release. |
 
-The result of a skill is not a gate verdict. A skill says `Ready with defaults`, `Needs decision`, or `NO-GO` for its own check. The gate also needs the approvals in the last column. As practice, and not a skill rule: `Ready with defaults` from `story-refinement` can support `Ready with risks` when a named person owns each default.
+The result of a skill is not a gate verdict. A skill says `Ready with defaults`, `Needs decision`, or `NO-GO` for its own check. The gate also needs the approvals in the last column. The workflow's result-to-verdict table maps `Ready with defaults` to `Ready with risks` when a named person owns each default. This page applied that mapping by hand. The table maps `Needs decision` to `Blocked`, and this page did the same.
 
 None of the gates reaches `Ready`. This is the correct result for runs with no person to approve. It also lists the work for a real team: answer the owner questions, name the reviewers, and record each approval.
 
@@ -130,7 +130,7 @@ The earlier runs match neither mode. The delivery run played the implementation 
 ## Decision points
 
 - If stage 1 ends in `Needs evidence`, stop. Run the cheapest experiment, or defer. The bookmark journey stops here. This page shows stages 2 to 7 only to map the later runs.
-- If the idea can duplicate a feature that exists, run one narrow search of that code at stage 1. The stage 1 run did, and it found that favorites already serve as a saved list. The workflow row says "no repository scan", but step 1 of `product-discovery` says to inspect repository context. Decide which one your project follows, and write it in your project instructions.
+- If the idea can duplicate a feature that exists, run one narrow search of that code at stage 1. The stage 1 run did, and it found that favorites already serve as a saved list. The workflow row says "no repository scan", and step 1 of `product-discovery` now says the same. The narrow search went beyond both. Decide whether your project allows a narrow search at stage 1, and write it in your project instructions.
 - Every design proposal gets a threat review, because `system-design` runs `threat-model` for each one. A data store, as bookmarks add, a queue, a job, or another listed change also runs `reliability-review`. The page [Design a new capability](arch-design-a-new-capability.md) shows that path.
 - If the ticket already has a clear goal, you can start at `story-refinement`, but that shortcut belongs to the feature-refinement workflow. This workflow still needs the QA lead's cases and the design decision (or its deferral) before gate 4, and slices that cite the cases before gate 3. For a single story, use [Refine a vague story](qa-refine-a-vague-story.md) instead.
 - If a criterion cannot be built as written, stop and raise a question. A person changes the ticket and the plan. Then the work continues.

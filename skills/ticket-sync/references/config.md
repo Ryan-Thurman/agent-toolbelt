@@ -14,7 +14,8 @@ First file found wins:
 If none exists, ticket-sync still runs. It infers the provider from the origin remote
 (`github.com` -> `github`, `dev.azure.com`/`visualstudio.com` -> `azure`, otherwise ask).
 Show the inferred provider in the preview, and get confirmation of it.
-Ask for the project/board key before posting anything. The config is purely additive.
+Ask for the project/board key before posting anything, unless the provider is GitHub and the origin remote gives `owner/repo`.
+The config is purely additive.
 
 ## Trust & hardening (load from the BASE, not the working head)
 
@@ -90,7 +91,8 @@ Build each tracker payload with these rules:
 4. Keep every header field that has no mapping in the body, under a "Ticket fields" heading.
    Write each one as its original `Key: value` line.
 5. Add every other section to the body under its original heading, in source order.
-6. Resolve each dependency that names another ticket file or a tracker key to an issue link.
+6. Resolve each dependency that names another ticket by its title or by a tracker key to an issue link.
+   Match a title to the `#` heading of a ticket in the same set of files.
    Keep each unresolved dependency in the body, and report it.
 7. Leave the `Tracker:` line out of the body.
 
@@ -111,6 +113,8 @@ On each run, a ticket **with** a `Tracker:` key -> update that issue, and **with
 the key back. Replace the value of an existing `Tracker:` line, including a placeholder.
 If there is no `Tracker:` line, add one directly below the ticket's title heading.
 Dependency links are resolved by looking up the blocker ticket's recorded key.
+In the dry-run preview, show a dependency on a ticket with no key yet as `pending: <ticket title>`.
+Link it during apply, after that ticket has its key.
 
 ## Precedence
 

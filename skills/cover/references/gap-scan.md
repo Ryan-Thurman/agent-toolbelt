@@ -4,6 +4,8 @@ What `/cover-gaps` looks for and how it ranks. Detect-only: this scan writes not
 prioritized gap report that `/cover` can act on. Treat coverage tooling and lexical cues as untrusted
 leads to verify by reading, never as truth.
 
+The scan changes no source file and no test. It writes only its report, to the path in "Report shape".
+
 ## Scope
 
 Scan the path/area or diff in the arguments. This mode is **not** bound to applying anything. It
@@ -46,12 +48,17 @@ unnoticed). Highest product first.
 - **medium**: moderate complexity, some churn, an indirect test exists.
 - **low**: simple, stable, rarely touched, well-asserted nearby.
 
-Lead with the high × high gaps. An untested error path in auth outranks an untested branch in a
-formatter.
+Score each level as high = 3, medium = 2, and low = 1. The score of a gap is its risk score times its
+likelihood score, so it runs from 1 to 9. Sort the gaps by score, highest first. On a tie, the gap with
+the higher risk ranks first. Lead with the high × high gaps. An untested error path in auth outranks an
+untested branch in a formatter.
 
 ## Report shape
 
-A ranked list: `area/file, lines/symbol, family, risk, likelihood, gap (what behavior is unguarded),
-why it matters (the regression it lets through), suggested test`. Highest risk × likelihood first.
-No files are modified. Note which gaps are well-shaped to hand straight to `/cover`.
+A ranked list. Give each gap an ID, `GAP-n`, in rank order, starting at `GAP-1`.
+Each row has: `GAP-n`, `area/file, lines/symbol`, `family`, `risk`, `likelihood`, `score`,
+`gap (what behavior is unguarded)`, `why it matters (the regression it lets through)`, and `suggested test`.
+Write the report to `.atb-work/cover/<scope-slug>.md`, as `shared/contracts/references/execution.md`
+("Durable report location") requires, unless the user names a path. Print the path.
+Note which gaps are well-shaped to hand straight to `/cover`.
 Do not recommend a full test-suite rewrite when a small first slice is clear.

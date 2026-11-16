@@ -213,7 +213,8 @@
         "bug-to-fix",
         "cover",
         "phased-delivery",
-        "pr-improve"
+        "pr-improve",
+        "test-case-design"
       ]
     },
     {
@@ -221,10 +222,20 @@
       "owner": "shared/contracts",
       "consumers": [
         "auto-agent-contract",
+        "bdd-scenarios",
         "bug-to-fix",
+        "code-quality-gate",
+        "cover",
+        "failure-scenario-design",
         "handoff",
+        "papercuts",
         "phase-context-workflow",
-        "phased-delivery"
+        "phased-delivery",
+        "pr-review",
+        "reliability-review",
+        "security-audit",
+        "system-design",
+        "threat-model"
       ]
     },
     {
@@ -257,6 +268,8 @@
         "auto-agent-contract",
         "bug-to-fix",
         "handoff",
+        "papercuts",
+        "papercuts",
         "phase-context-workflow",
         "phased-delivery",
         "pr-improve"
@@ -283,7 +296,8 @@
       "owner": "shared/contracts",
       "consumers": [
         "pr-review",
-        "security-audit"
+        "security-audit",
+        "threat-model"
       ]
     },
     {
@@ -388,6 +402,7 @@
         "code-quality-gate",
         "phased-delivery",
         "pr-review",
+        "review-on-open",
         "simplify",
         "use-effect-killer",
         "vercel-composition-patterns",

@@ -6,6 +6,7 @@ pack_security_audit() {
   shared_contract references/docs-writing.md
   shared_contract references/evidence-quality.md
   shared_contract references/security-checklist.md
+  shared_contract references/execution.md
   cmd security-audit
   skill security-audit SKILL.md
   skill security-audit references/audit-boundaries.md

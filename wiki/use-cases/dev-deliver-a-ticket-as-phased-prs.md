@@ -58,7 +58,7 @@ The procedure has this order because each step limits the next one. The plan com
 | 1 | Load the Toolbelt: `claude --plugin-dir /path/to/agent-toolbelt`. Or install the skill into the project: `./install.sh --harness all phased-delivery /path/to/project`. | The commands must be available in your session. | You type `/` and see `/agent-toolbelt:dev-plan` (plugin) or `/dev-plan` (installed copy). |
 | 2 | Start in the repository folder. Run the full test suite before any change: `<your-test-command>`. In the sample: `DATABASE_URL=postgresql://u:p@localhost:5432/db JWT_SECRET=x npx jest`. | You must know which tests fail before your change. The skill's test-first contract asks for this baseline. | You have the list of failing tests. The sample has 7 failures in `auth.service.test.ts`. |
 | 3 | Run `/agent-toolbelt:dev-plan <ticket-id \| ticket-file \| plan-file>`. In the sample, the argument is the refined story file `CON-12-refined.md`. | The skill maps each criterion to a phase, a branch, a PR target, and a named test. In ticket mode it does not invent Foundation, Polish, or Testing phases. | The plan has one row for each PR. Each row has its source, its acceptance link, its dependency, its branch, and its target. |
-| 4 | Run `/agent-toolbelt:plan-review <plan-file>`. | The command checks coverage, decisions, dependencies, test levels, negative cases, reliability, and right size. It changes nothing. | The result is `Ready`, `Needs revision`, or `Not verified`, with evidence. Run at most 2 revision passes. |
+| 4 | Run `/agent-toolbelt:plan-review <plan-file>`. | The command checks coverage, decisions, dependencies, test levels, negative cases, reliability, and right size. It changes nothing. | The result is `Ready`, `Ready with warnings`, `Needs revision`, or `Not verified`, with evidence. Run at most 2 revision passes. |
 | 5 | Read the phase and PR map. Approve it or change it. | The skill waits for approval of the map before implementation. A passing readiness check does not grant that approval. | The plan's `Plan approval` line names who approved the map and when, and each row has a status. |
 | 6 | Run `/agent-toolbelt:dev-start-phase 1`. | The command creates the phase branch, confirms the PR target, and checks the preconditions that the phase names. | The branch exists, the base is known, and each precondition passed. |
 | 7 | For each plan step, run `/agent-toolbelt:dev-implement-task <plan-step>`. The agent writes a test, runs it, and checks the failure before it writes code. The skill asks for one test for each cycle. This run grouped three to seven tests by function in each red run. | A test that never failed proves nothing. The skill says a setup or compile failure is not a valid red result. Practice from this run, not a skill rule: in a typed language, add a stub that throws, so the failure comes from behavior. | Each behavior has a red result (the test fails for the right reason) and a green result (it passes). |
@@ -86,7 +86,7 @@ This run stopped before step 10. It opened no PR and pushed nothing.
 
 ## What you get
 
-The run was headless. No person approved the map, and no subagent was available. The plan review and the phase review are therefore a Self-review (one author checks their own work). They are not an independent review.
+The run was headless. No person approved the map, and no subagent was available. The skill now marks a headless map `Draft for approval`. This run predates that rule. The plan review and the phase review are therefore a Self-review (one author checks their own work). They are not an independent review.
 
 First, the phase and PR map. The run split the ticket in two, using the story's own slice. The phase review later moved AC-10 and AC-11 into phase 1, and the update notes in the map say so.
 
@@ -180,7 +180,7 @@ What was not executed in this run:
 
 - You treat a story with the verdict `Not ready` as approved. Q-1 blocks the start in this sample. This run used defaults only because the run instruction said so. Get the owner's answers first.
 - You treat a green mock test as proof of database behavior. The tests check the query that the service builds, and the real list order is untested. Write `Not verified` and run an integration check before merge.
-- You count a test that fails on a compile error as red evidence. The skill says a setup or compile failure is not a valid red result. This run added a stub that throws, then ran the test again. That stub is practice from this run, not a skill rule.
+- You count a test that fails on a compile error as red evidence. The skill says a setup or compile failure is not a valid red result. This run added a stub that throws, then ran the test again. That stub was practice from this run. The shared TDD contract now has a stub step for typed languages, added after this run.
 - You skip the baseline run. The 7 old failures look like your own regressions, and a real regression hides among them.
 - You let phase 1 take work from phase 2, or you leave a rule for the new endpoint in phase 2. The review in this run moved the paging rule into phase 1, because the new list must not ship without it. Check the diff against the plan before review.
 - You report a Self-review as an independent review. Say which one you ran. Use a fresh reviewer when the risk and the delegation allow it.

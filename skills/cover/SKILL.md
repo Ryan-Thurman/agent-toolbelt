@@ -36,7 +36,8 @@ Never edit production code to make a test pass.
 - **Hand production changes away.** If a green result needs a production edit, that is a fix.
   Hand it to the implementation or bug-to-fix lane.
 - **Match the repository.** Detect the test framework, runner, and conventions before you write.
-  Do not add a new framework or a parallel convention.
+  Do not add a new framework or a parallel convention. Do not copy a convention from a nearby test
+  when that convention makes the test fail. Name that test and its failure in the proposal.
 - **Make the case.** Every proposed test states the behavior it pins and the risk it guards.
   Drop a test that has no named risk.
 
@@ -44,7 +45,8 @@ Never edit production code to make a test pass.
 
 1. **Scope** the target: a diff (default if the tree is dirty), a named module/path, a
    regression-coverage gap recorded in a `bug-investigation.md` file, or selected cases from a
-   `test-case-design` report (`TC-` IDs). Name the case ID in the test.
+   `test-case-design` report (`TC-` IDs). Name the case ID in the test. A `TC-` case names a test
+   level. Write the test at that level. When the case names none, state the level that you choose in the proposal.
 2. **Detect** the framework, runner, and conventions from the repo. Never assume. Read 2–3 nearby
    tests and match their style.
    - Manifest or config: `package.json` scripts and devDeps (jest, vitest, mocha, node:test,
@@ -56,18 +58,22 @@ Never edit production code to make a test pass.
      fixtures, setup and teardown, and mocking approach.
    - Run command: the command the repo uses (`npm test`, `pytest -q`, `go test ./...`,
      `cargo test`). Prefer a single-file or single-test run for the fast falsify loop.
+   - Baseline: run the existing suite once with the run command before you write a test. Record the result,
+     and the name of each failing test, in the proposal. `Completion` compares the final run with this baseline.
 3. **Identify** what to lock: for a diff/module, the behaviors and branches worth pinning (lean on a
    `/cover-gaps` report if one exists). For a recorded bug gap, the exact user-visible symptom.
 4. **Propose** each test with the behavior it pins, the risk it guards, its kind (pinning or
    red -> green regression lock), and its target file. Flag determinism hazards.
-   Stop here and wait for the user's selection.
+   Stop here and wait for the user's selection. When no person can answer, apply no test. Write the
+   proposal to `.atb-work/cover/<scope-slug>.md`, as `shared/contracts/references/execution.md`
+   ("Durable report location") requires, and print its path. Then stop.
 5. **Apply on opt-in.** Before you write a test, read `references/authoring.md`.
 
 ## Completion
 
 The report lists each proposed test with its behavior, risk, and kind.
 After apply, each written test was seen red when its behavior broke, or is marked `Not verified`.
-The existing suite still passes, and no production code changed.
+The existing suite passes, or it matches the baseline with no new failing test. No production code changed.
 
 ## Hand-offs
 

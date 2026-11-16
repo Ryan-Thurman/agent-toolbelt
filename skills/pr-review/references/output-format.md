@@ -7,8 +7,13 @@ Compute the verdict mechanically from the findings. Never let the model "decide"
 - `APPROVE`: zero blockers, no approval-blocking open questions, and no required
   review scope gaps (should-fix / nits can remain).
 - `REQUEST CHANGES`: one or more blockers.
-- `NEEDS DISCUSSION`: no blockers, but an open question / low-confidence finding that needs the
-  author's input before approving, or an incomplete required review scope.
+- `NEEDS DISCUSSION`: no blockers, but an approval-blocking question or an incomplete required
+  review scope.
+
+An **approval-blocking question** is an open question that the author must answer before approval.
+The critic or dual-judge marks a question as approval-blocking and names the fact that settles it. A
+question from a finding below confidence 0.5 is not approval-blocking unless the critic marks it. It
+stays in the Questions section, and it does not change APPROVE to NEEDS DISCUSSION.
 
 Invariant: **blockers > 0 -> REQUEST CHANGES**, **blockers = 0 + an approval-blocking question or
 scope gap -> NEEDS DISCUSSION**, and **blockers = 0 + neither -> APPROVE**.
@@ -71,6 +76,7 @@ The orchestrator owns it. Keep it separate from the facet findings arrays.
 
 ```markdown
 ## PR Review — <target>  ·  tier: <light|standard|deep>  ·  **<VERDICT>**
+Head: <full commit SHA of the reviewed revision>
 
 <one-paragraph summary: what the change does, main files, overall read>
 
@@ -110,6 +116,9 @@ Rules:
 - Lead the summary with *what the change does*, then the overall read. Put context before criticism.
 - Keep "What's working well" short and real. Do not pad.
 - With `--benchmark`, append the token-usage footer from `benchmarking.md`. Never post that footer.
+- Save the report to `.atb-work/pr-review/<scope-slug>.md` when the user names no path. The folder
+  and the ignore file follow `shared/contracts/references/execution.md` (Durable report location).
+  Print the saved path in the result.
 
 ## Audit footers
 

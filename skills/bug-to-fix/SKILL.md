@@ -64,6 +64,8 @@ and verify it. Keep the investigation state in one durable file, so another sess
    path and record the regression coverage gap. `/cover` (when installed) can close that gap later.
    Gate: the verification contract is satisfied.
 6. **Close out.** After verification passes, set the durable file `status` to `resolved`.
+   When the regression test passes but an end-to-end check cannot run here, set `resolved-unverified` instead.
+   Record the check as `Not verified`, with the command that runs it.
    Append the knowledge-base entry from `references/durable-state.md`.
 
 ## Escalation
@@ -84,7 +86,8 @@ and verify it. Keep the investigation state in one durable file, so another sess
 - The smallest safe fix is applied, and each diff line serves the fix.
 - Verification is automated (observed red, then green) or a documented manual re-test.
   Any automated-test gap is a recorded follow-up.
-- The durable file has `status: resolved`, and the knowledge base has the new entry.
+- The durable file has `status: resolved`, or `status: resolved-unverified` with the unrun check named.
+  The knowledge base has the new entry.
 - With `--diagnose`, the work is complete when **Resolution** has the root cause, evidence,
   fix direction, and prevention.
 

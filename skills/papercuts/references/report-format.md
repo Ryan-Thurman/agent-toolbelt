@@ -15,6 +15,7 @@ Put a detail that does not fit in a short note under the table.
 
 The categories are `wrong-path`, `discovery`, `stale-doc`, `duplication`, `tooling`, `structure`, and `trap`.
 For the key path, use the file that the fix changes. Use the command for a tooling papercut without a file.
+When a fix changes two files, the key names the file that holds the cause. The Fix column names the other file.
 Keep the key stable: use a repository-relative path, and no line numbers.
 
 ## Example
@@ -31,10 +32,13 @@ Repository: `acme/web` at `4f2c1d0`. Scope: feature. Sources: this session, PR #
 | 1 | `npm test` in `packages/api/` runs no tests and exits 0. The script reads `tests/`, but the tests are in `src/**/*.test.ts`. | The first change looked green. CI found the failure. | Point the `test` script in `packages/api/package.json` at `src/`. Delete the empty `tests/` folder. | `tooling:packages/api/package.json` |
 | 2 | The README names `config/limits.json`, but the server reads the values in `src/server/limits.ts`. | About 20 minutes to find why the edit had no effect. | Delete `config/limits.json` and correct the README line. | `duplication:config/limits.json` |
 
-Also hit and fixed: the missing `.env.example` entry for `EXPORT_BUCKET`.
+Removed: `.env.example` lacked `EXPORT_BUCKET`, which this branch fixed.
 ```
 
 Do not pad the table with weak rows. Do not report a row without a named fix file.
+
+Under the table, add one `Removed:` line for each candidate that step 2 of `SKILL.md` drops.
+Give the reason in a few words. Friction that is already fixed goes on this line too.
 
 ## Shared-log entry
 
@@ -42,10 +46,19 @@ The saved report is the entry. Its heading gives the scope slug and the date.
 Its first line gives the repository, the short commit, the scope, and the evidence sources.
 Do not add the name of a person. The person who posts the entry can add their own name.
 
+The report has one state. Give it in the reply:
+`saved` means that the file exists and nothing is posted.
+`preview` means that a post is shown and no person has confirmed it.
+`posted` means that the target has the entry.
+
 ## Posting
 
-Read `shared/contracts/references/posting.md` before a post.
+Read `shared/contracts/references/posting.md` before a post. Its rules win over this file.
 Without `--post`, show the saved report so that the user can paste it into the team log.
+This pack names `--post` as its posting flag. A caller, CI job, worker, or poller that passes `--post` gives consent.
+An interactive user who passed `--post` and said to post has confirmed.
+In any other interactive run, show the preview and ask before the write.
+A first trial uses the report-only path: save the report and show the preview, with no write.
 
 | Target | How to post |
 | --- | --- |
@@ -61,5 +74,5 @@ A repeat shows the team which papercuts recur.
 Put the marker `<!-- papercuts:<scope-slug>:<YYYY-MM-DD>:<short-commit> -->` at the top of the posted entry.
 If the target already contains the marker, do not post again. Report the earlier entry.
 
-Show a preview of the exact text and the target, and get confirmation before the write.
+Before a write, show the exact text and the target, as the consent rule above requires.
 If the host CLI is missing or not signed in, do not post. Save the report, and give the reason and the path.

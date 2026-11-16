@@ -62,7 +62,7 @@ EXCLUDED = {
 PROPER = {"React", "Native", "Expo", "Next.js", "TypeScript", "JavaScript", "ESLint", "Biome", "Oxlint",
           "ASD-STE100", "STE", "Vercel", "CRAP", "UI", "API", "PR", "Markdown", "Server", "Actions",
           "GitHub", "Azure", "Cursor", "Claude", "Codex", "Playwright", "Gherkin", "Jira", "Toolbelt",
-          "Given", "When", "Then"}
+          "Given", "When", "Then", "Prisma", "PostgreSQL", "Node.js", "Express", "Jest", "Nx"}
 # Multiword product names: removed from a heading before the title-case test.
 PRODUCTS = ["Claude Code", "Azure Repos", "Azure Boards", "GitHub Issues", "Agent Toolbelt Auto Agent"]
 RULES = [

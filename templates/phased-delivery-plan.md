@@ -34,6 +34,16 @@ branch and PR target explicitly, including the parent branch for a stack.
 |---|---|---|---|---|
 | 1 / <source ID> |  |  |  |  |
 
+## Deferred parts
+
+List each part that the plan defers under Right size. Put each trigger in a
+measurable form. When the source gives no number for a trigger, write
+`Decision needed` and name the owner. Do not invent a threshold.
+
+| Deferred part | Ground for deferring | Trigger to add it | Owner |
+|---|---|---|---|
+| | | | |
+
 ## Current state
 
 - Current phase / ticket:

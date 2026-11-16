@@ -22,6 +22,8 @@ Existing behavior that this slice must keep.
 ## Blocked by
 
 The ticket(s) that must land first, or "None - can start immediately."
+Name each blocker by its ticket title, as its `# <Issue title>` heading reads. Do not name a local file.
+The tracker issue cannot open a local file.
 
 ## Source, boundaries, and verification
 

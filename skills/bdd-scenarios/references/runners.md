@@ -23,6 +23,13 @@ then need a second runner later. The user chooses.
   Do not commit the generated test files. Add their folder to `.gitignore`.
 - Write step definitions with Playwright fixtures. Use `page` for `@e2e` scenarios and `request` for `@api` scenarios.
   An `@api` scenario does not start a browser.
+- An `@api` scenario sends its requests to the base URL in `use.baseURL` in `playwright.config`. A server
+  must run at that URL when the tests run. Start it with the `webServer` option, or start it before the test command.
+- In a repository with many feature files, run the first scenario alone. Point the feature path at one file, so
+  that a missing step in another file cannot stop the first run. Widen the path after that run passes.
+- The playwright-bdd documentation is at https://vitalets.github.io/playwright-bdd/. Read the page for the installed version.
+- In an Nx repository, put the feature and step paths and the generator run in the Playwright project's own
+  configuration and target. Run the tests through that project, not from the repository root.
 - Use separate Playwright projects or tag filters to run `@api` and `@e2e` scenarios at different times.
 - The package is third-party (MIT). Pin its version together with `@playwright/test`, because each release supports a range of Playwright versions.
 

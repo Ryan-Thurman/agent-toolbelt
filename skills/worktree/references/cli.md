@@ -42,8 +42,10 @@ The worktrees live outside every repo, so they never appear in a repo's `git sta
 
 Create a worktree on a **newly created** branch and print where it is.
 
-- **`repo`** *(optional, positional)*: resolved per the table above.
-- **`branch`** *(optional, positional)*: the branch to create.
+- **`repo`** *(optional, positional)*: resolved per the table above. It is the first positional
+  argument. To name a branch, pass the repo first: `new <repo> <branch>`. Passing a branch alone,
+  as in `new agent/fix-login`, fails with `no such directory`.
+- **`branch`** *(optional, positional)*: the branch to create. It is the second positional argument.
   - **Omitted** -> auto-name `agent/<base>-<n>`, where `<base>` is `--task`'s slug if given else the
     repo name, and `<n>` is bumped until **both** the branch and the target path are free. Safe for
     many concurrent agents.
@@ -91,13 +93,19 @@ Remove a worktree and prune its metadata.
 
 Run `git worktree prune` for the current repo (clears metadata for worktrees whose directories were
 deleted out from under git) and tidy empty `.worktrees` dirs. Use after manual deletions.
+`prune` keeps the branch. To delete that branch after a prune, run `git branch -d <branch>`, or
+`git branch -D <branch>` when it is not merged.
 
 ## Notes
 
 - The script needs only `bash` and `git` on `PATH`. No executable bit is required (it is invoked via
   `bash <path>`).
-- `git`'s own worktree locking + the unique-path/branch checks make concurrent `new` calls from
-  different agents safe: two agents asking for an auto branch get distinct `-<n>` suffixes. If two
-  agents name the **same** explicit branch, the second errors instead of colliding.
+- Two agents that ask for an auto branch at the same moment can pick the same `-<n>` suffix. The
+  script checks for a free name before it creates anything, and it does not lock. The second
+  `git worktree add` then fails with a branch-exists error and creates no worktree. Run `new` again
+  to get the next free suffix. If two agents name the **same** explicit branch, the second errors
+  instead of colliding.
+- A new worktree has no installed dependencies or build output. Run the repository's install
+  command inside the worktree before you run its checks.
 - Removing a worktree does **not** touch its commits. They live in the shared object store and on its
   branch until the branch itself is deleted.

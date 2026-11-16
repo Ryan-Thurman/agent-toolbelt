@@ -37,6 +37,13 @@ Never change behavior or edit tests to make cleanup pass.
   `simplify-ignore-end` comments, in any comment syntax. Take care with error handling,
   security logic, migration files, and dynamic callers.
 
+## Reports and hand-off
+
+Both modes write the report to `.atb-work/simplify/<scope-slug>.md` when the user names no path, and print the path.
+Read `shared/contracts/references/execution.md#Durable report location`.
+`/code-smell` puts its `safe` rows in a table in that report, with the finding `id` of each row.
+`/simplify` reads that table when the user names the report, and it applies only the rows that the user selects.
+
 ## Mode routing
 
 - **`/simplify`**: diff- or feature-scoped cleanup. Report, let the user select, then apply.
@@ -48,6 +55,8 @@ Never change behavior or edit tests to make cleanup pass.
 ## Flow
 
 1. **Scope** the target. Use the named path, area, or focus. With none, use the working diff. Use `previous` for `git diff HEAD~1..HEAD`.
+   When the named file has no diff, the scope is the whole file. In `/code-smell` mode, scan the whole file.
+   In `/simplify` mode, report that the file has no diff, and flag nothing in untouched code unless the user names a focus.
 2. **Detect** candidates using `shared/contracts/references/maintainability-taxonomy.md`. For reuse
    candidates, search the codebase for the existing helper first and quote the symbol you will use.
    Use the anti-slop contract only where the consequence is concrete.
@@ -55,9 +64,12 @@ Never change behavior or edit tests to make cleanup pass.
 3. **Make the case** for each candidate (rootIssue -> consequence -> benefit).
    Give it a `risk` and an `action` from the taxonomy. Drop anything without a real consequence.
 4. **Report** the findings as a table, with no prose dump. Return an empty list if nothing survives.
-   - `/simplify` fields: `category, file, lines, rootIssue, consequence, benefit, risk, action`.
-   - `/code-smell` fields: `category, severity, confidence, file, lines, smell, evidence, impact,
+   - `/simplify` fields: `id, category, file, lines, rootIssue, consequence, benefit, risk, action`.
+   - `/code-smell` fields: `id, category, severity, confidence, file, lines, smell, evidence, impact, risk,
      recommendation, action`. Mark the findings that are `safe` to route to `/simplify`.
+   - Put each defect or security lead outside the scope in an `Out of scope` section. Name the lead and its file.
+     Do not fix it in this cleanup. Hand a confirmed defect to `bug-to-fix`, and a confirmed security lead to `security-audit`.
+   - When a cleanup keeps a known defect, name its ID in the report, and state that the cleanup keeps its behavior.
    - `--architecture` fields: use the taxonomy's architecture report shape.
    Stop here for `/code-smell`.
 5. **Apply on opt-in** (`/simplify`). Before you edit, read `references/apply-discipline.md`.

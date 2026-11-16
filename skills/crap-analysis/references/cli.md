@@ -44,6 +44,20 @@ The orchestrator exits `2` when no base ref exists.
 It also exits `2` when the base ref has no config.
 The error message names the fix: commit the config to the base branch, or pass `--config PATH`.
 
+## Test suite failures
+
+A coverage or verify command that exits non-zero stops the run with an `ERROR` outcome.
+One failing test then blocks the whole analysis, even when the failure is outside the task.
+
+When the suite fails for a reason outside the task, choose one of these:
+
+1. Fix the failing test in a separate change, then run the analysis again.
+2. Append `|| true` to `commands.coverage` in the config. A failing test run still writes coverage,
+   so the analysis covers the code that the tests ran. Name the failing tests in the final answer,
+   because the review output does not list them.
+
+Do not add `|| true` to `commands.analysis` or `commands.verify`. It hides a tooling failure.
+
 ## Ops
 
 ### `validate-config`
@@ -129,6 +143,7 @@ The orchestrator also writes it to `.atb-work/crap-analysis/last-result.json`:
 Run `commands.verify` once for one target.
 The orchestrator adds `--threshold` as for `analysis`.
 `--changed` sets the review scope to functions in changed files, as for `execute`.
+For a test-only change, `--changed` puts no function in scope. Run `verify --target NAME` without `--changed` for it.
 Stdout uses the `execute` result shape with `"op": "verify"` and a `verify` object in place of `analysis`.
 The orchestrator also writes it to `last-result.json`.
 The exit code is the verify command code, or `2` for any code above `1`.

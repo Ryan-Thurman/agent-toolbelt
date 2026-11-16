@@ -21,6 +21,8 @@ Default to report-only. Write a requested register without editing code, install
 2. Inspect code structure, tests, dependencies, build and deployment, operations, and documentation.
    Read `references/discovery-method.md` for candidate validation and prioritization.
    Use existing configured tools only within the task's authority and record whether they actually ran.
+   A configured tool that no pipeline runs must either run within the task's authority, or it is recorded as `Not run`
+   with its reason. Never report that scope as clean.
 3. Validate candidates against callers, configuration, intended architecture, and existing tests.
    Record exact evidence, concrete consequence, confidence, and alternatives.
    Reject safe patterns and duplicate reports with a reason.
@@ -28,8 +30,11 @@ Default to report-only. Write a requested register without editing code, install
    Keep unknown estimates explicit.
 5. Update an existing suitable register or use `templates/tech-debt-register.md` when a durable output is requested.
    Preserve IDs and earlier decisions. Mark resolved or stale evidence explicitly.
+   When the user names no path, write the register to `.atb-work/tech-debt-discovery/<scope-slug>.md` and print the path.
+   Read `shared/contracts/references/execution.md#Durable report location`.
    Name `tech-backlog-assessment` as the next owner for selected items when available.
    Perform that separate assessment only when the user requests it.
+   Hand a confirmed defect to `bug-to-fix`, and a confirmed vulnerability to `security-audit`, and record each hand-off in the register.
 
 ## Completion
 

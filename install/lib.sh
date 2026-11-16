@@ -32,10 +32,18 @@ harness_enabled() {
   esac
 }
 
+# DRY_DIRS: newline-separated directories that a dry run already reported. A directory
+# prints once, not once per file inside it.
+DRY_DIRS=""
+
 ensure_dir() {
   local dir="$1"
   if [ "$DRY_RUN" = "1" ]; then
-    [ -d "$dir" ] || echo "+ would create directory: $dir"
+    [ -d "$dir" ] && return 0
+    case $'\n'"$DRY_DIRS" in
+      *$'\n'"$dir"$'\n'*) ;;
+      *) echo "+ would create directory: $dir"; DRY_DIRS="$DRY_DIRS$dir"$'\n' ;;
+    esac
   else
     mkdir -p "$dir" || exit 1
   fi
@@ -188,9 +196,20 @@ shared_contract() {
 }
 
 # hook_json <src> — the Cursor hooks manifest (cursor only). install_file skips an existing
-# .cursor/hooks.json (no --force), so we never clobber hooks you already have — merge manually.
+# .cursor/hooks.json (no --force), so we never clobber hooks you already have. The hooks then
+# stay Not wired until you merge the entries that this function prints.
 hook_json() {
-  if harness_enabled cursor; then _install "optional/cursor-hooks/$1" ".cursor/hooks.json"; else gated=$((gated + 1)); fi
+  if harness_enabled cursor; then
+    if [ -e "$TARGET/.cursor/hooks.json" ] && [ "$FORCE" != "1" ]; then
+      HOOKS_NOT_WIRED=1
+      echo "! $TARGET/.cursor/hooks.json exists, so it was not changed. Not wired."
+      echo "  Merge these entries into its beforeShellExecution list:"
+      sed -n '/"command"/p' "$REPO_ROOT/optional/cursor-hooks/$1" | sed 's/^ */    /'
+    fi
+    _install "optional/cursor-hooks/$1" ".cursor/hooks.json"
+  else
+    gated=$((gated + 1))
+  fi
   return 0
 }
 
@@ -228,17 +247,18 @@ write_marked_pointer_file() {
   block="$(toolbelt_instructions_block; printf x)"
   block="${block%x}"
 
-  if [ "$DRY_RUN" = "1" ]; then
-    if [ -f "$f" ]; then echo "~ would update $display block: $f"; else echo "+ would create $display: $f"; fi
-    return 0
-  fi
-
-  ensure_dir "$(dirname "$f")"
   if [ ! -f "$f" ]; then
+    if [ "$DRY_RUN" = "1" ]; then
+      echo "+ would create $display: $f"; created=$((created + 1)); return 0
+    fi
+    ensure_dir "$(dirname "$f")"
     printf '%s' "$block" > "$f" || exit 1
     echo "+ installed: $f"; created=$((created + 1)); return 0
   fi
   if ! grep -q "^$AGENTS_BEGIN\$" "$f"; then
+    if [ "$DRY_RUN" = "1" ]; then
+      echo "~ would update $display block: $f"; updated=$((updated + 1)); return 0
+    fi
     { printf '\n'; printf '%s' "$block"; } >> "$f" || exit 1
     echo "~ updated: $f"; updated=$((updated + 1)); return 0
   fi
@@ -255,7 +275,17 @@ write_marked_pointer_file() {
     skip && $0==e { skip=0; next }
     skip { next }
     { print }
-  ' "$f" > "$tmp" && cat "$tmp" > "$f" || { rm -f "$tmp" "$blkfile"; exit 1; }
+  ' "$f" > "$tmp" || { rm -f "$tmp" "$blkfile"; exit 1; }
+  # A rerun with the same block text changes nothing, so it does not count as an update.
+  if cmp -s "$tmp" "$f"; then
+    rm -f "$tmp" "$blkfile"
+    echo "= unchanged: $display block in $f"; skipped=$((skipped + 1)); return 0
+  fi
+  if [ "$DRY_RUN" = "1" ]; then
+    rm -f "$tmp" "$blkfile"
+    echo "~ would update $display block: $f"; updated=$((updated + 1)); return 0
+  fi
+  cat "$tmp" > "$f" || { rm -f "$tmp" "$blkfile"; exit 1; }
   rm -f "$tmp" "$blkfile"
   echo "~ updated: $f"; updated=$((updated + 1)); return 0
 }

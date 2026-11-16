@@ -12,12 +12,12 @@ Terms: a harness is one host (`cursor`, `claude`, or `codex`). A pack is one gro
 
 1. Clone the Toolbelt once and open its folder in a terminal: `git clone <toolbelt-repository-url> <toolbelt-folder>`.
 2. Preview the install: `./install.sh --dry-run --harness all --sweep all <workspace-folder>`. The command writes no file.
-   The pack `all` includes Cursor hooks, which change what Cursor users see on `git commit` and `git push` in every repository. Decide first: see the first point in Decision points.
+   The pack `all` leaves out the opt-in Cursor hooks, which change what Cursor users see on `git commit` and `git push`. Name `cursor-hooks` in the pack list only when you want them. This run used the installer before that change, when `all` included them. See the first point in Decision points.
 3. Save and filter the preview: add `> preview.txt 2>&1` to the command in step 2, and run it from the Toolbelt folder. Then run `grep -E 'Packs:|Sweep targets|child repo|AGENTS.md|CLAUDE.md' preview.txt`. The file has more than 3700 lines, so read only these lines. Make sure that each of your repositories appears as `(child repo)`. You can delete `preview.txt` afterwards.
 4. Install for real. Run the same command without `--dry-run`.
 5. In each repository, run `git status --short`, review the new files, and commit them.
 
-You get one identical install in the folder and in each repository under it. A second run creates no file. Each target still shows `2 updated`: these are the `AGENTS.md` and `CLAUDE.md` blocks, which the installer rewrites on every run.
+You get one identical install in the folder and in each repository under it. A second run creates no file. Each target showed `2 updated` in this run: these are the `AGENTS.md` and `CLAUDE.md` blocks. The fixed installer prints `= unchanged` for them on a rerun. This run did not repeat the rerun with the fixed installer.
 The sections below explain each step, when to stop, and what the output looks like.
 
 ## Situation
@@ -49,27 +49,27 @@ The steps have this order for two reasons. The real install writes about 590 fil
 | 1 | Clone the Toolbelt: `git clone <toolbelt-repository-url> <toolbelt-folder>`. Then run `cd <toolbelt-folder>` and `./install.sh --list`. | The installer lives in the Toolbelt clone, and the list shows the pack names. | The list prints the packs, with one line for each pack. |
 | 2 | Put your repositories side by side under one parent folder, for example `<workspace-folder>/<repo-a>` and `<workspace-folder>/<repo-b>`. | `--sweep` finds only immediate child folders that have a `.git` entry. | `ls -a <workspace-folder>/<repo-a>` shows `.git`. |
 | 3 | Preview the install: `./install.sh --dry-run --harness all --sweep all <workspace-folder>`. Save the output: add `> preview.txt 2>&1`. The file lands in the Toolbelt folder, so delete it when you are done. | The preview shows the targets and the packs before any file exists. | The output ends with `Dry run complete.` and no `.agents/` folder exists in your repositories. |
-| 4 | Read the preview. Check the "Sweep targets" lines, the "Packs:" line, and the line for any `AGENTS.md` that you already have. | A repository that is not a target gets no files, and the installer prints no reason. | Each repository has a `(child repo)` line. An existing `AGENTS.md` shows `would update AGENTS.md block`. |
+| 4 | Read the preview. Check the "Sweep targets" lines, the "Packs:" line, and the line for any `AGENTS.md` that you already have. | A folder without `.git` gets no files. The installer prints a `skipped` line for it. | Each repository has a `(child repo)` line. An existing `AGENTS.md` shows `would update AGENTS.md block`. |
 | 5 | Install: `./install.sh --harness all --sweep all <workspace-folder>`. | This writes the files for all three hosts into the parent and each repository. | The last line is `Install complete.` and each target shows a `created` count. |
 | 6 | Check each repository: `git -C <repo> status --short`, `ls <repo>/.agents/skills \| wc -l`, and `grep -c 'BEGIN agent-toolbelt' <repo>/AGENTS.md`. | A repository that you open alone must carry its own files. | The skill folder count equals the number of folders in `<toolbelt-folder>/skills` (44 in this run), and the grep count is 1. |
-| 7 | Run the install command from step 5 again. | The rerun shows that the install is safe to repeat. | Each target shows `0 created` and `2 updated`. The 2 are the `AGENTS.md` and `CLAUDE.md` blocks. |
+| 7 | Run the install command from step 5 again. | The rerun shows that the install is safe to repeat. | Each target shows `0 created` and `2 updated` in this run. The 2 are the `AGENTS.md` and `CLAUDE.md` blocks. The fixed installer shows `0 updated` and prints `= unchanged` for each block, and the skipped count is 2 higher. |
 | 8 | Review the new files in each repository and commit them. This is practice, not a Toolbelt rule. | A committed install gives every clone the same files and the same version. | `git status --short` is clean after the commit. |
 | 9 | For people who want no files in the repository, give them plugin mode: `claude --plugin-dir <toolbelt-folder>` for Claude Code. For Codex, run the two `codex plugin` commands on the Installation page. | These people get the skills without repository files. | In Claude Code, `/agent-toolbelt:` lists the skills. In Codex, `/skills` lists them. |
 
 ## Decision points
 
-- If you do not want Cursor commit and push prompts, do not use `all` as is. The pack `all` includes `cursor-hooks`, which writes `.cursor/hooks.json` and two scripts into each repository. The Toolbelt docs call hooks opt-in, but this run installed them. The hooks ask for confirmation and never block (see [Code-Review](../Code-Review.md#cursor-hooks)). To skip them, copy the pack names from the `Packs:` line of the preview, remove `cursor-hooks`, and pass the rest in place of `all`. Do not build the list from `./install.sh --list`: that list also holds a private pack (`auto-agent-contract`) and two deprecated aliases (`dev-lite-workflow`, `writing-whip`), which `all` leaves out. A cheaper option is to install `all` and set `TOOLBELT_DOC_CHECK=0` and `TOOLBELT_REVIEW_NUDGE=0` to turn the hooks off (Code-Review). This run tested neither option.
+- If you do not want Cursor commit and push prompts, do not name `cursor-hooks` in the pack list. The fixed `all` leaves it out. This run used the installer before that change, when `all` included `cursor-hooks`. That pack wrote `.cursor/hooks.json` and two scripts into each repository, although the Toolbelt docs call hooks opt-in. The hooks ask for confirmation and never block (see [Code-Review](../Code-Review.md#cursor-hooks)). If you name `cursor-hooks` and want it off, set `TOOLBELT_DOC_CHECK=0` and `TOOLBELT_REVIEW_NUDGE=0` to turn the hooks off (Code-Review). This run tested neither option.
 - Do not leave `cursor` out of `--harness` to avoid the hooks. Then Cursor users get no files at all: no `.cursor/commands`, no router rule, and no Cursor pointer in `AGENTS.md`. This run did not test it.
 - If everyone uses one host and no repository needs commands or templates, stop here and use plugin mode from [Installation](../Installation.md).
 - If some people use only one host, pass only that host, for example `--harness claude`. The installer then writes only that host's files and the shared `.agents/` folder. This run did not test a single-host install.
 - If a repository already has an `AGENTS.md` or `CLAUDE.md`, rerun is safe. The installer replaces only the text between its two markers and keeps the rest. In this run, the team line stayed. If `CLAUDE.md` is a symlink to `AGENTS.md`, the installer writes through the link and the file gets one block (Installation). This run did not test the symlink.
 - If installed files already exist, the installer skips them. A rerun does not update them. After you update the Toolbelt clone, review local edits first, then rerun with `--force`. The flag overwrites each file that you select, including local edits. It also replaces a `.cursor/hooks.json` that your team edited, although a normal run skips that file. Copy it first, or merge by hand (see [Code-Review](../Code-Review.md#cursor-hooks)). The installer cannot show which files differ, so use `git diff` in each repository after the run.
-- If your repositories are not direct children of one folder, run the installer once for each parent. A plain folder, or a repository two levels down, gets no files and no message.
+- If your repositories are not direct children of one folder, run the installer once for each parent. A plain folder gets a `skipped` line. A repository two levels down gets no files. The sweep prints a note about its depth limit.
 - If your people use Cursor with several repositories in one workspace, expect that only the top root's `AGENTS.md` loads reliably. The Installation page documents this limit. Open one repository as the project, or move the always-on rules to Cursor User Rules. This run did not test it.
 - If your team members are not developers, the Installation page names the macOS `install.command` wrapper. It asks the same questions. This run did not use it.
 - Stop when each target shows one skill folder for each skill in `<toolbelt-folder>/skills` (44 in this run), one marker block, and `0 created` on the rerun. Then read the "Not executed" list below.
 - Choose [Set up a new team repository](lead-set-up-a-new-team-repo.md) when you also need repository policy files, such as the style guide and `.pr-review.md`. The installer creates no policy file.
-- Choose [Run Cursor hooks](ops-cursor-hooks.md) when you want to understand or tune the hooks that `all` installed.
+- Choose [Run Cursor hooks](ops-cursor-hooks.md) when you want to understand or tune the hooks that an install with `cursor-hooks` adds.
 
 ## What you get
 
@@ -121,7 +121,7 @@ Excerpt from a run on the Conduit sample API at commit 30b68e1. Condensed from t
   workspace/conduit-api: 0 created, 2 updated, 593 skipped.
 ```
 
-On the first run, the 7 skipped files are files that an earlier pack in the same run already wrote. On the rerun, the 2 updated files are the `AGENTS.md` and `CLAUDE.md` blocks. The installer rewrites them on every run. The marker block count stayed at 1, and the `git diff` of `AGENTS.md` stayed at 10 added lines.
+On the first run, the 7 skipped files are files that an earlier pack in the same run already wrote. On the rerun, the 2 updated files are the `AGENTS.md` and `CLAUDE.md` blocks. The installer before the fix rewrote them on every run. The fixed installer prints `= unchanged` for them. The marker block count stayed at 1, and the `git diff` of `AGENTS.md` stayed at 10 added lines.
 
 Last, the `git diff` of the `AGENTS.md` file that had team text.
 
@@ -143,7 +143,7 @@ Excerpt from a run on the Conduit sample API at commit 30b68e1. Condensed from t
 +<!-- END agent-toolbelt -->
 ```
 
-The numbers below come from the saved output and the installed folders. The dry run prints no totals, so the first four rows are counts that the run made by hand.
+The numbers below come from the saved output and the installed folders. This run used the installer before the totals change, so its dry run printed no totals. The first four rows are counts that the run made by hand.
 
 | Check | Result in this run |
 | --- | --- |

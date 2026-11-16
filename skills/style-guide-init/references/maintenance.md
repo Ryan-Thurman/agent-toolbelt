@@ -23,7 +23,8 @@ python3 scripts/conventions_state.py check --repo /path/to/repo \
   --state docs/conventions-state.json
 ```
 
-Choose actual paths. These examples do not imply that every repo uses Node or
+Choose actual paths. When the repository names no checkpoint path, use `docs/conventions-state.json`,
+and keep that path for each refresh. These examples do not imply that every repo uses Node or
 those filenames. A scope can be an existing or future file/directory. Include
 the controlling config, instruction and documentation owners, not just the code
 sample. Use `--scope .` only when repository-wide fingerprinting is appropriate.

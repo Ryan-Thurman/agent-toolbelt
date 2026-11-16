@@ -30,6 +30,7 @@ With no flag and no clear request, use explain or draft.
 - **Set up quality rails (`--rails`):** add one canonical quality command and connect local use,
   CI, and release to it. Read [references/rails.md](references/rails.md) first.
   The flag or a plain request to set up quality checks authorizes these edits.
+  Run the sections of that file in their order. Do not run the Derive steps below in this mode.
 - **Scope (`--scope PATH`):** limit discovery to one package or subtree.
   Repeat the flag for more areas. With no scope, use the whole repository.
 

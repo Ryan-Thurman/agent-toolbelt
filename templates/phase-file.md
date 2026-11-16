@@ -6,6 +6,7 @@
 - Phase: `NN`
 - Status: `planned`
 - Created: `YYYY-MM-DD`
+- Base: (commit where the phase started, set by Start)
 - Completed:
 - Handoff:
 

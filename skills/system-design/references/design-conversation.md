@@ -36,6 +36,10 @@ Offer concrete options and a recommendation when available evidence supports the
 Continue independent source inspection while awaiting an answer.
 Do not repeat questions already answered by the project or the team member.
 
+In a headless run with no person to answer, do not wait for a round.
+Take the recommended answer of each question as the run's choice, label it as the run's choice, and list the question as open in the record.
+Do not present a recommended answer as the team member's answer.
+
 ## Compare credible options
 
 Include the current approach or no change when it is viable.
@@ -57,6 +61,9 @@ Recheck only those sections, and record what changed and why.
 ## Retain decisions and limits
 
 Keep a compact record of the answer, rationale, source references, open questions, and next action.
+The record has these sections in this order: answer, rationale, source references, open questions, and next action.
+When the user names no path, write the record to `.atb-work/system-design/<scope-slug>.md`.
+Follow the durable report location rule in `shared/contracts/references/execution.md`, and print the path in the result.
 Use the existing project record when a durable design handoff is needed.
 State the owner or `Unassigned` for unresolved consequential decisions.
 Distinguish an agent recommendation from an accepted project decision.

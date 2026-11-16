@@ -15,6 +15,10 @@
 <!-- END catalog stages -->
 
 `tech-backlog-assessment` decides `Do`, `Defer`, `Reject`, or `Spike` for each selected item.
+
+Before stage 4, run the existing tests for the target area on the base commit, and save the output.
+The saved output shows which failures existed before the change. Stages 4 and 5 must not add failures.
+Stage 6 adds tests only for behavior that the baseline does not cover.
 Start implementation only when it is authorized.
 Verify the selected result against its recorded baseline and update the debt register.
 

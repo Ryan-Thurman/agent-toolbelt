@@ -21,7 +21,7 @@ Evidence limits:
 
 | Area | Question | Status | Evidence or owner |
 | --- | --- | --- | --- |
-|  |  | Answered, Decision needed, or Not applicable |  |
+|  |  | Answered, Answered with a gap, Decision needed, or Not applicable |  |
 
 ## Failure-mode register
 
@@ -47,9 +47,9 @@ Demand inputs, the first resource to run out, headroom with the largest failure 
 
 ## Reliability requirements
 
-| Requirement | Linked risks | Verification level | Status |
-| --- | --- | --- | --- |
-| REL-REQ-1 | REL-001 |  | Proposed, Verified, Failed, or Not verified |
+| Requirement | Linked risks | Verification level | Status | Evidence |
+| --- | --- | --- | --- | --- |
+| REL-REQ-1 | REL-001 |  | Proposed, Verified, Failed, or Not verified | Command, source, or record that shows the status |
 
 ## Open decisions and handoff
 

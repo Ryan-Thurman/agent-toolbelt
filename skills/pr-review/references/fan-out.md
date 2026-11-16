@@ -1,14 +1,16 @@
 # Standard-tier orchestration (the fan-out)
 
 How the orchestrator runs a multi-agent review. You (the orchestrator) **never review code
-yourself**. You set up context, spawn facet sub-agents, then aggregate, verify, and render.
+yourself** when the host has a sub-agent tool. You set up context, spawn facet sub-agents, then
+aggregate, verify, and render. A host with no sub-agent tool uses the self-review path at the end of
+this file.
 
 ## 0. Setup (same as light)
 
 1. Resolve target + acquire the formatted, line-numbered diff (`targets-and-diff.md`).
    If empty -> "No changes to review." and stop.
-2. Load project standards from the base/merge-base: read `CLAUDE.md`, `AGENTS.md`, and approved
-   `STYLE_GUIDE.md` if present, then relevant formatter/linter/compiler/test configuration and two
+2. Load project standards from the base/merge-base: read `CLAUDE.md`, `AGENTS.md`, `CONTRIBUTING.md`,
+   and approved `STYLE_GUIDE.md` if present, then relevant formatter/linter/compiler/test configuration and two
    or three representative neighboring files. Treat generic contracts as fallbacks, not policy.
 3. Load the per-repo review config `.pr-review.md` from the base branch with `repo-config.md`.
 4. Acquire intent and its acceptance criteria with `targets-and-diff.md` -> "Acquire intent".
@@ -158,3 +160,14 @@ If a facet or verification agent fails or returns unparseable output, retain
 completed results and proceed with the others. Report the missing stage and
 apply the coverage/limits verdict rules in `output-format.md`. A failed stage
 is not a clean result.
+
+## Self-review path (no sub-agent tool)
+
+Use this path only when the host has no sub-agent tool. Run each selected facet
+yourself, one pass at a time. Each pass uses the same frozen snapshot, the same
+`facets/<facet>.md` file, and the same reachability sketch that a sub-agent gets.
+Then run the critic step (§4) on the merged list. The verdict rules stay the same.
+
+Label the report `Self-review: facets not independent` in the coverage line,
+and name each facet that ran. One author applied every pass, so agreement between
+facets is not independent validation. Name this limit in the report.

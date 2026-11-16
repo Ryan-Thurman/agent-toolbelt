@@ -12,7 +12,7 @@
 - Workspace map: <path, or None>
 - Summary: <repositories>, <entries> entries, <inferred> with inferred evidence
 
-## <repository>
+## <folder name>
 
 Status: Draft
 

@@ -74,6 +74,10 @@ Publish generated documents only when the project authorizes it.
 ## Completion and maintenance
 
 Name the weakest point of the design: the part that fails or limits the design first.
+Name each design revision. In a git repository, use the commit hash and the design file path.
+Without git, use a version label, the date, and the SHA-256 hash of the design file (`sha256sum`, or `shasum -a 256` on macOS). Record the same revision in the threat report.
+When step 5 changes the design, run the threat review of step 4 again on the changed revision, and run the reliability review again when its trigger applies.
+A review of an earlier revision does not cover the change.
 
 For a design proposal, deliver the design document and linked threat review for the same design revision.
 Every important threat needs a disposition, owner or unassigned status, and a verification method.

@@ -31,6 +31,9 @@ After aggregate and dedup (`fan-out.md` §3), run the procedure in `dual-judge.m
 **refute** a finding (false or no real consequence, not stale), record it in the rejection memory
 (`rejection-memory.md`), as the standard critic does.
 
+Without a sub-agent tool, use the self-review path in `fan-out.md`. The two judges then run in one
+session and are not blind to each other. Label the report `Self-review: facets not independent`.
+
 ## 4. Remaining steps
 
 Run `fan-out.md` §5–8 and its failure handling unchanged. With `--benchmark`, the token footer

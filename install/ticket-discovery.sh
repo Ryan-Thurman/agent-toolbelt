@@ -6,6 +6,7 @@ pack_ticket_discovery() {
   skill ticket-discovery SKILL.md
   shared_contract references/human-readable-output.md
   shared_contract references/docs-writing.md
+  shared_contract references/execution.md
 
   template ticket-discovery-brief.md
 

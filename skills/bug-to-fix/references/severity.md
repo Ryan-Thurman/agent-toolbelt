@@ -43,7 +43,8 @@ durable file still gets created so the post-incident RCA has a spine.
 - **Errors**: error messages / stack traces with credentials and sensitive user data redacted.
 - **Environment**: where it happens (prod/staging/local), version/build, browser/OS/device, and
   relevant configuration names or non-sensitive values.
-- **Recent changes**: deploys, migrations, config flips, or commits around when it started.
+- **Recent changes**: deploys, migrations, config flips, or commits around when it started. Record them in
+  **First observed / since** of the template.
 - **Reproduction steps**: exactly what the reporter did, and whether they/QA were able to reproduce it.
 - **Impact scope**: who and how many are affected, and whether there is a workaround.
 

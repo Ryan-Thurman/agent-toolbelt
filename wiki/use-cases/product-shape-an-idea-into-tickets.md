@@ -222,7 +222,7 @@ The run did not apply the sync. It created no issue, wrote no key, and did not t
 - You approve a brief that still has a question that blocks the start. The self-audit exists to catch this. Settle the question with its owner first.
 - You confirm the sync from a clone whose remote is not your team's repository. The run's copy pointed at the public upstream. Read the project line in the preview.
 - You keep the tickets in a folder that you delete. `ticket-sync` records each issue key in the ticket file. Without the file, a second run creates duplicates.
-- You leave local file names in the ticket text. The tickets in this run name `02-brief-reading-list.md` in their Source and Parent sections. The tracker reader cannot open that path. Rename the references to titles before you confirm. The skills have no rule for this.
+- You leave local file names in the ticket text. The tickets in this run name `02-brief-reading-list.md` in their Source and Parent sections. The tracker reader cannot open that path. Rename the references to titles before you confirm. This run predates the fix. The template now says to name each blocker by its title, but it does not cover the Source and Parent sections.
 - You copy the favorite routes for the error case. The favorite code has no check for a missing article, and the run inferred that it returns 500. The brief asks for 404 with the shape that `getArticle` uses.
 - You expect the skills to build the feature. They write the brief and the tickets, and they edit no code.
 

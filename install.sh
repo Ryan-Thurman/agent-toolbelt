@@ -34,7 +34,7 @@ available_packs() {
 default_packs() {
   local p
   for p in $(available_packs); do
-    if ! grep -Eq '^# (PRIVATE: true|ALIAS: .+)$' "$INSTALL_DIR/$p.sh"; then
+    if ! grep -Eq '^# (PRIVATE: true|ALIAS: .+|OPT_IN: true)$' "$INSTALL_DIR/$p.sh"; then
       printf '%s\n' "$p"
     fi
   done
@@ -154,7 +154,8 @@ fi
 TARGET="${positionals[${#positionals[@]}-1]}"
 packs=("${positionals[@]:0:${#positionals[@]}-1}")
 
-# Expand 'all' to the standard packs. Private packs remain explicit opt-ins.
+# Expand 'all' to the standard packs. Private, alias, and opt-in packs (OPT_IN: true,
+# such as cursor-hooks) remain explicit.
 all_packs=$(default_packs)
 expanded=()
 for p in "${packs[@]}"; do
@@ -229,6 +230,7 @@ done
 install_into_target() {
   TARGET="$1"
   created=0; updated=0; skipped=0; gated=0
+  HOOKS_NOT_WIRED=0
   INSTALLED_SHARED_CONTRACTS=()
 
   if [ ! -d "$TARGET" ]; then
@@ -266,8 +268,11 @@ install_into_target() {
   write_agents_md
   write_claude_md
 
+  if [ "$HOOKS_NOT_WIRED" = "1" ]; then
+    echo "  cursor-hooks: Not wired. Merge the entries printed above into .cursor/hooks.json."
+  fi
   if [ "$DRY_RUN" = "1" ]; then
-    echo "  (dry run) $TARGET"
+    echo "  (dry run) $TARGET: $created to create, $updated to update, $skipped skipped."
   else
     echo "  $TARGET: $created created, $updated updated, $skipped skipped."
   fi
@@ -292,13 +297,21 @@ if [ "$SWEEP" = "1" ]; then
   children=()
   for child in "$PARENT"/*/; do
     child="${child%/}"
-    [ -e "$child/.git" ] || continue
-    [ "$(cd "$child" 2>/dev/null && pwd)" = "$ROOT" ] && continue  # skip our own checkout
+    [ -d "$child" ] || continue
+    if [ ! -e "$child/.git" ]; then
+      echo "skipped (not a git repository): $child"
+      continue
+    fi
+    if [ "$(cd "$child" 2>/dev/null && pwd)" = "$ROOT" ]; then
+      echo "skipped (Toolbelt checkout): $child"
+      continue
+    fi
     children+=("$child")
   done
   echo "Sweep targets:"
   echo "  $PARENT  (parent / workspace root)"
   for child in "${children[@]:-}"; do [ -n "$child" ] && echo "  $child  (child repo)"; done
+  echo "  note: the sweep reaches the immediate child folders only. Run the install in a deeper repository itself."
   echo
   install_into_target "$PARENT"
   for child in "${children[@]:-}"; do

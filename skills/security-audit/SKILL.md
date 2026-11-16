@@ -24,16 +24,22 @@ Audit a bounded target for security risks. Default behavior is read-only review.
 4. Check dependencies offline first:
    - Read the manifests and lockfiles. Record the resolved versions of direct and security-relevant packages.
    - Run a lockfile audit command only when it can run without network access.
+   - Record a dependency check that has no advisory data as `Not verified`, never as clean.
+     Record the tool and its version with the result.
 5. Check secret exposure:
    - Search the working tree, CI definitions, and example configuration for credential patterns.
-   - Search Git history with `git log -p` or `git grep` across revisions for removed secrets.
+   - Search Git history for removed secrets with `git log --all -G<pattern> --format='%h %s'` and
+     `git log --all --diff-filter=A --name-only`. For a revision, use `git grep -l <pattern> <revision>`.
+     These forms print commit IDs and file names only. Do not use `git log -p` or `git grep`
+     without `-l`, because they print the matched line or the removed line.
    - Record each location and secret type. Do not print the secret value.
 6. For each finding, record the affected asset, entry point, precondition, reachability,
    exploitability, impact, evidence, remediation, verification, and confidence.
    Map a finding to CWE or OWASP only when the evidence supports the mapping.
 7. When a design or threat report exists, reconcile its requirements and threat IDs against
    implementation evidence. Record each required control as `Verified`, `Failed`, or
-   `Not verified`, with the inspected revision and evidence.
+   `Not verified`, with the inspected revision and evidence. When no design or threat report
+   exists, write `Not applicable` and the reason in that table.
 8. Stop before active testing. See Active scope.
 
 ## Active scope
@@ -52,5 +58,8 @@ An active scope does not replace step 8. Confirm with the user immediately befor
 ## Completion
 
 Deliver `templates/security-audit.md` with evidence-backed findings, residual risk, and a clear
-read-only or authorized-active status. Do not claim complete coverage or compliance.
+read-only or authorized-active status. Use the template's severity scale for each finding.
+Do not claim complete coverage or compliance.
+Save the report to `.atb-work/security-audit/<scope-slug>.md` when the user names no path.
+Print the path. The durable-output rule is in `shared/contracts/references/execution.md`.
 Keep repository files unchanged, and do not commit.

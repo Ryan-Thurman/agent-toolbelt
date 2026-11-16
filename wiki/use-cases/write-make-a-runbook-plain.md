@@ -139,7 +139,7 @@ The claim about `npm ci` comes from `NODE_ENV=production npm config get omit`, w
 
 What you must check in the output:
 
-- Each rule number in the report exists in `rule-catalog.md`. A citation that starts with "Skill rule" names a numbered rule of `SKILL.md` that the catalog does not number.
+- Each rule number in the report exists in `rule-catalog.md`. A citation that starts with "Document rule" names a numbered rule in the Document list of `SKILL.md`. The catalog does not number it.
 - The runbook keeps each README command. Each added command or step has evidence in your notes.
 - Each fact in the runbook is marked as run or read. In this run, the seed numbers (12 users, 12 articles each) and the `JWT_SECRET` default come from reading code.
 - The runbook has no `Not executed` step that reads as if it worked.

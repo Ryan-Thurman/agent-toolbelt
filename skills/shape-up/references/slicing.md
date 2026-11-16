@@ -11,10 +11,10 @@ Each slice must be demoable or verifiable by itself.
 | --- | --- | --- |
 | 1 | Read the approved brief and its source requirements. | The scope, exclusions, and decisions are known. |
 | 2 | Cut the work into vertical slices. Put any necessary prefactoring in the first slice. | No slice delivers only one layer. |
-| 3 | Write each slice with `templates/shape-up-issues.md`. Describe end-to-end behavior, checkbox acceptance criteria, and `Blocked by`. | Each slice has all template sections. |
+| 3 | Write each slice as one file in the `tickets/` folder with `templates/shape-up-issues.md`. Describe end-to-end behavior, checkbox acceptance criteria, and `Blocked by`. Name each blocker by its ticket title. | Each slice has all template sections. |
 | 4 | Put setup, tests, and documentation in the slice that needs them. | No separate test-only or docs-only slice remains. |
 | 5 | Quiz the breakdown. Check granularity, dependencies, and slices to merge or split. | Each slice is the right size, and each dependency is real. |
-| 6 | Map each source requirement to a ticket and a verification method. | Missing coverage, contradictory decisions, and dependency cycles are reported. |
+| 6 | Map each source requirement to a ticket and a verification method in `requirement-map.md`, with one row for each requirement. | Missing coverage, contradictory decisions, and dependency cycles are reported. |
 | 7 | Order the tickets by dependency, with blockers first. | Each `Blocked by` reference points to an earlier ticket. |
 
 Keep supplied project requirements and ticket fields.

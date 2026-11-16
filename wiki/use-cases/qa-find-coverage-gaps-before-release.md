@@ -29,7 +29,7 @@ The run used Agent Toolbelt 1.3.0. The last commit that changed the `cover` and 
 
 The obvious alternative is to read the coverage percentage from the test runner. Here it is 25.72% of lines and 15.6% of branches. That number tells you how much code is untested. It does not tell you where the weakness is, or what a failure there costs. The number is also too high in this repository. Seven of the 27 tests fail, and a failing test still counts the lines that it ran before it failed.
 
-The `cover` gap scan (`/cover-gaps`) ranks gaps by risk (what a regression costs) and likelihood (the chance that it breaks unnoticed). It reads the tests, not only the percentage. The skill treats coverage data as a lead and not as a verdict. It writes no test and changes no file. This page uses the scan for that reason. The scan has a cost too. It reads the code, so the order of the gaps rests on judgment. The skill gives no number scale and no tie-break, so two runs can order the gaps differently. The scan also needs the unit tests to run, if you want a coverage lead (step 2).
+The `cover` gap scan (`/cover-gaps`) ranks gaps by risk (what a regression costs) and likelihood (the chance that it breaks unnoticed). It reads the tests, not only the percentage. The skill treats coverage data as a lead and not as a verdict. It writes no test and changes no source file. It writes only its report. This page uses the scan for that reason. The scan has a cost too. It reads the code, so the order of the gaps rests on judgment. This run predates the number scale and tie-break in `gap-scan.md`. The current skill sets both. The scan also needs the unit tests to run, if you want a coverage lead (step 2).
 
 Two sibling skills answer other questions. `test-case-design` (`/test-case-design`) plans cases from a requirement or a change, as in [Plan tests for a small authentication pull request](qa-plan-tests-for-a-small-pr.md). It does not scan the tests that exist. `/cover` writes the tests. Use `/cover` after this page, when you know which gaps come first. The page [Turn test cases into tests](qa-turn-test-cases-into-tests.md) covers that step.
 
@@ -76,7 +76,7 @@ Excerpt from a run on the Conduit sample API at commit 30b68e1. Condensed from t
 
 The skill sets no coverage threshold, so the run states no pass level. A failing test counts the lines that it ran before it failed, so the first row overstates the protection of `auth.service.ts`. The cause is that the test file imports `auth.service` before `../prisma-mock`. The service then uses the real database client, and the 7 tests fail because no database runs.
 
-Next, the gap report. The IDs G-1 to G-12 are labels that this report uses. The skill defines no ID scheme. The ranking uses the skill's scale of high, medium, and low. The skill gives no number. The run multiplied high = 3, medium = 2, and low = 1.
+Next, the gap report. The IDs G-1 to G-12 are labels that this report uses. This run predates the `GAP-n` scheme in `gap-scan.md`. The ranking uses the skill's scale of high, medium, and low. This run predates the numeric scale too. The run multiplied high = 3, medium = 2, and low = 1, the same values that `gap-scan.md` now gives.
 
 Excerpt from a run on the Conduit sample API at commit 30b68e1. Condensed from the run report: the table shows 8 of the 12 gaps. Each row keeps the title, family, risk, and likelihood. The other text of each entry is cut.
 
@@ -177,7 +177,7 @@ What to check in the output:
 - You run `/do-crap-analysis` on a branch with no change under the source folder and read the result as a pass. The outcome is `NO_TARGETS` with exit code 0, and the run scanned nothing. In this run, `execute --changed --coverage` returned `NO_TARGETS`. Use `execute --coverage` without `--changed`. `/do-crap-analysis` loads the config from the base branch, so without a merged config it fails with a config error (exit code 2). Pass `--config` to avoid this.
 - You trust a test because its name promises a check. The tests named "no user found" for `favoriteArticle` pass because of a `TypeError`. The function never looks up the user. The run called the function and saw `Cannot destructure property '_count'` and 0 calls to `user.findUnique`.
 - You write the config on a branch and expect `/do-crap-analysis` to find it. The orchestrator loads the config from the base branch. Until you merge it, pass `--config .crap-analysis.json` to each op.
-- You expect `/crap-config` to supply the scoring command. The wizard stores the commands that you give it. The template names `npm run crap:analyze`, which most repositories do not have.
+- You expect `/crap-config` to supply the scoring command. The wizard stores the commands that you give it. The template now holds placeholder commands (`REPLACE_WITH_ANALYSIS_COMMAND`), and the Toolbelt ships no analyzer. This run predates the placeholders. Then the template named `npm run crap:analyze`, which most repositories do not have.
 - You expect a list of tests from the scan. It writes no test. `/cover` writes tests after you select them.
 
 ## Next

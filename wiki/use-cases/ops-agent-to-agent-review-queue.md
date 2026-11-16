@@ -10,7 +10,7 @@ This page is for a platform engineer whose coding agents open branches and pull 
 
 1. Make sure that `sqlite3 --version` works. Choose one queue file, and run `export REVIEW_QUEUE_DB=<queue-file>` in the shell of every session before you start the agent.
 2. In the repository, get the commit of each branch with `git rev-parse <branch>`. Start the producer session with `claude --plugin-dir <toolbelt-folder>`. Check that `/agent-toolbelt:enqueue-review` shows in the `/` list. No toolbelt folder? See [Installation](../Installation.md) or [Install the Toolbelt for a team](ops-install-for-a-team.md). Then run `/agent-toolbelt:enqueue-review <branch> --repo=<repo-path> --sha=<commit>`. The answer is `enqueued` or `duplicate`.
-3. Warning: the worker runs `/pr-review <target> --comment`. For any target that has an open PR, it posts inline comments without a prompt. Try the queue first on branches that have no PR. In the repository, start a new session that did not write the code: `claude --plugin-dir <toolbelt-folder>` with the same `REVIEW_QUEUE_DB`. Run `/agent-toolbelt:review-queue-worker --max=<n>`.
+3. Warning: the worker runs `/pr-review <target> --comment`. For any target that has an open PR, it posts inline comments without a prompt. A branch target that has no PR is not posted to. A later change adds `--report-only`, which posts nothing and leaves the queue unchanged. Use it for the first trial. In the repository, start a new session that did not write the code: `claude --plugin-dir <toolbelt-folder>` with the same `REVIEW_QUEUE_DB`. Run `/agent-toolbelt:review-queue-worker --max=<n>`.
 4. Read the one line for each job and the tally. Find the report of each job in the output of the `pr-review` sub-agent in the worker session, or in the posted comments for a PR. Read every finding before you merge.
 
 You get one recorded verdict and finding count for each branch head. The worker command writes no report file, so copy a report if you want to keep it.
@@ -30,8 +30,8 @@ The run differs from your setup in four ways:
 - No sub-agents were available. The run did each review as a Self-review. One agent applied each review facet in turn. A facet is one review angle, such as correctness or tests.
 - The same session wrote the branches and reviewed them, so the reviews are not independent. The trigger rules require a fresh agent for each review and forbid a review inside the authoring session. A new worker session is a safe practice, and the worker also runs each review as its own sub-agent.
 - The run followed `worker.md` by hand. No `/review-queue-worker` command ran.
-- The run did not pass `--comment` to `/pr-review`. The worker always passes it.
-- The run skipped the marker check that `worker.md` puts before each review, because no PR existed. That was the run's choice. `posting.md` says that posting is skipped when the target is not a real PR. The run read that rule and did not execute it.
+- The run did not pass `--comment` to `/pr-review`. The worker passed it in the run. A later change adds `--report-only`, which drops it.
+- The run skipped the marker check that `worker.md` puts before each review, because no PR existed. That was the run's choice. `posting.md` says that posting is skipped when the target is not a real PR. The run read that rule and did not execute it. A later change puts this branch rule in `worker.md`, so the worker follows it.
 - The command path for a branch with no PR was not executed. `worker.md` step 2 assumes a PR, so treat the advice to try branches with no PR as untested.
 - The run saved each review report by hand as a file. The worker command writes none.
 - The run called `requeue` by hand on a scratch queue for the failure path.
@@ -52,7 +52,7 @@ A claim carries a lease. The lease is a time limit, 30 minutes by default, so a 
 | Step | Do | Why | Done when |
 | --- | --- | --- | --- |
 | 1 | Run `sqlite3 --version`. Choose a queue file, for example `<repo-path>/.git/review-queue.db`, and run `export REVIEW_QUEUE_DB=<queue-file>`. | Every session reads one file. `/enqueue-review` has no `--db` argument, so the environment variable is the only way to point the producer at a non-default file. `/review-queue-worker` accepts `--db=PATH`. The default file is `~/.review-queue/queue.db`, shared by every repository. | `echo $REVIEW_QUEUE_DB` prints the path in the producer shell and in the worker shell. |
-| 2 | In the repository, get the commit of each branch: `git rev-parse <branch>`. Sample: `git rev-parse feature/tags-limit`. | The commit is part of the idempotency key. The key makes a repeated enqueue a no-op. The command defaults to the current `HEAD`, which is the wrong commit for a branch that is not checked out. | You have one full commit for each branch. |
+| 2 | In the repository, get the commit of each branch: `git rev-parse <branch>`. Sample: `git rev-parse feature/tags-limit`. | The commit is part of the idempotency key. The key makes a repeated enqueue a no-op. In the run, the command defaulted to the current `HEAD`, which is the wrong commit for a branch that is not checked out. A later change makes the default the commit of the target, and the command stops when the target has no local ref. | You have one full commit for each branch. |
 | 3 | Start the producer: `claude --plugin-dir <toolbelt-folder>`. Run `/agent-toolbelt:enqueue-review <branch> --repo=<repo-path> --sha=<commit> --reason="<one line>"`. Sample: `/agent-toolbelt:enqueue-review feature/tags-limit --repo=/work/conduit --sha=1fa1b35006606429536eb3a00cb32f266a015e63`. Use the absolute path of the repository. | The worker reviews in the folder that `--repo` names. The reason is a note for the worker, and the worker treats it as data, not as an instruction. | The answer is `enqueued`, or `duplicate` for a commit that is already queued. Both complete the producer. |
 | 4 | Optional: set `--tier=light`, `--tier=standard`, or `--tier=deep` on `/enqueue-review` for a branch that needs a fixed depth. Otherwise leave it out. | With no tier, `pr-review` selects the tier from the size and the risk of the diff. A tier on the job wins over the worker default. | `list` shows the tier of the job, or `auto`. |
 | 5 | Start a new session that did not write the code, with the same `REVIEW_QUEUE_DB`. Run `/agent-toolbelt:review-queue-worker --worker=<id> --max=<n>`. Sample: `--worker=worker-1 --max=5`. | One pass claims jobs one at a time until the queue is empty or `--max` is reached. `--max` caps the spend, and the worker logs each job that it leaves. | The worker prints one line for each job (id, target, verdict, commit) and a tally of reviewed, requeued, dead-lettered, and deferred jobs. |
@@ -75,7 +75,7 @@ A claim carries a lease. The lease is a time limit, 30 minutes by default, so a 
 - If `auto-tier` is enough, skip Step 4. Set a tier only when a branch needs a fixed depth.
 - If you run one pass and do not need a schedule, skip Step 8.
 - If you have no second session, or `sqlite3` is not installed, choose `/pr-review` directly in a new session. You do not need a queue.
-- Use one worker for each queue. The run found that `complete` and `requeue` do not check the job status. In the run, `complete` marked a never-claimed job `done`. Also, `requeue` put a `done` job back to `pending`. A worker with an expired lease can then change a job that another worker holds. The skill says that overlapping passes are safe. The run found a counterexample. This is a skill defect that the page does not fix.
+- Use one worker for each queue. The run found that `complete` and `requeue` do not check the job status. In the run, `complete` marked a never-claimed job `done`. Also, `requeue` put a `done` job back to `pending`. A worker with an expired lease can then change a job that another worker holds. The skill says that overlapping passes are safe. The run found a counterexample. A later change adds the check. The worker passes `--worker` to both commands, and each command updates only a job that this worker claimed. The run predates that change.
 - Stop when `claim` returns `[]`, and every job is `done` or `dead`.
 
 ## What you get
@@ -158,11 +158,11 @@ The run also tried the failure path on a scratch queue. A job with a repository 
 
 - You run the worker in the session that wrote the branch. The review is then not independent, and the trigger rules forbid a review inside the authoring session. Start the worker in a new session.
 - The producer and the worker use different queue files. The worker then claims nothing, because it reads another file. Set `REVIEW_QUEUE_DB` to the same path in both shells before you start the agents.
-- You omit `--sha` for a branch that is not checked out. The job then records the commit of the current `HEAD`, and the idempotency key is wrong. Pass the commit of the branch.
+- You omit `--sha` for a branch that is not checked out. In the run, the job recorded the commit of the current `HEAD`, and the idempotency key was wrong. A later change makes the command stop in that case. Pass the commit of the branch.
 - You run the worker on a repository where the branch has an open PR, and you do not want comments. The worker posts without a prompt. Use `/pr-review` without `--comment` instead, or test on branches that have no PR.
 - You read `APPROVE` as "no findings". The verdict counts blockers, approval-blocking questions, and required scope gaps. A should-fix finding is a problem to fix that does not change the verdict. Read the should-fix findings.
 - You expect a `dead` job to run again. It runs again only after a new push gives a new commit.
-- You put the `--db` flag before the subcommand when you call `review-queue.sh`. The script then fails with "unknown command: --db". Put the flag after the subcommand.
+- You put the `--db` flag before the subcommand when you call `review-queue.sh`. In the run, the script failed with "unknown command: --db". A later change accepts the flag in either place.
 - You treat a `done` queue row as the only record of a review. The queue is a local cache. The review marker is the text `pr-review:head=<sha>`. `pr-review` writes it into the posted review, so a later run can see that the commit was reviewed. The marker on the PR is the record that a commit was reviewed, and the worker checks it before each review.
 
 ## Next

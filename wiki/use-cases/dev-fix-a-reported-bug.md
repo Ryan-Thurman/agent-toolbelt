@@ -72,13 +72,13 @@ The order of the loop comes from the skill. The skill allows no fix without a co
 - If you want the cause but no code change, run `/rca --diagnose`. It makes no source edits, and the investigation file is the only permitted write.
 - If the next doubt cycle of the root-cause check finds only trivial points, stop. After three cycles, stop and ask a person. The skill allows a skip only for a trivially obvious cause with a small blast radius. The run judged that this cause did not qualify, so it ran a Self-review. This was the choice of the run: 16 places read the id.
 - If three fixes fail in different places, stop. The skill treats this as a sign of a design problem and says not to try a fourth fix.
-- Stop when the investigation file has `status: resolved`, the test is red before and green after, and the knowledge-base entry exists. In this run the status stopped at `awaiting_human_verify`. The hand re-test needs a database, and the run had none. The skill requires `resolved` and defines `awaiting_human_verify` only for a manual QA re-test, so this status was the choice of the run.
+- Stop when the investigation file has `status: resolved`, the test is red before and green after, and the knowledge-base entry exists. In this run the status stopped at `awaiting_human_verify`. The hand re-test needs a database, and the run had none. The skill requires `resolved`, or `resolved-unverified` when an end-to-end check cannot run. This run predates `resolved-unverified`. The skill defines `awaiting_human_verify` only for a manual QA re-test, so this status was the choice of the run.
 - Choose [Follow up an incident](sre-follow-up-an-incident.md) when the bug came from a production incident and you must prevent a repeat.
 - Choose [Deliver a ticket as phased pull requests](dev-deliver-a-ticket-as-phased-prs.md) when the report is a missing feature or the fix needs several phases.
 
 ## What you get
 
-The run had no person and no subagent tool, so it differs from a real session in these ways. The question in step 4 took the answer "not sure", so the run reproduced the bug itself. The root-cause check was a Self-review (the author ran the doubt cycle alone), which is not independent of the claim. The run stopped at `awaiting_human_verify`, a choice for a case that the skill does not cover (see "Decision points").
+The run had no person and no subagent tool, so it differs from a real session in these ways. The question in step 4 took the answer "not sure", so the run reproduced the bug itself. The root-cause check was a Self-review (the author ran the doubt cycle alone), which is not independent of the claim. The run stopped at `awaiting_human_verify`, a choice for a case that the skill did not cover when this run ran (see "Decision points").
 
 The first excerpt is the failing test. The regression test calls `getCurrentUser(123)`. It uses a mock (a stand-in for the database) that returns only the columns that the query selects, as a real database does. The test sends the returned token through `auth.required`, the middleware that the routes use. It expects the user id to arrive.
 

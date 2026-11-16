@@ -60,13 +60,13 @@ Rails mode does not fix findings. It does not format files, and it adds no suppr
 
 - If the repository already has one entry point that runs most checks, such as `make check`, the skill reuses it. It then wires CI and release to that entry point. Skip the search for a new command.
 - If a required CI workflow already passes, it must still pass after the setup. The skill keeps existing correctness, security, release, and operating checks in place.
-- If a new check finds problems in existing code, keep it in the command. The skill lists it as pending adoption with its count, and adds it to CI as a step that reports and does not block, or leaves it out of CI. Move it to required when the team has fixed the findings.
-- If the repository has no CI, no release step, no contribution guide, or no agent file, the skill does not say whether to create them. The run on this page chose to create a CI workflow, a contribution guide, and an agent file, and it edited the existing `docker-build` target for release. Decide before you start, and review each new file in step 6.
+- If a new check finds problems in existing code, the skill lists it as pending adoption with its count. It keeps the check in the command only in a report-only mode, when the tool has one. Otherwise it leaves the check out of the command. Move it to required when the team has fixed the findings.
+- If the repository has no CI, no release step, no contribution guide, or no agent file, the skill skips the step that connects the missing file and names that file in the report. It does not create the file. The run on this page chose to create a CI workflow, a contribution guide, and an agent file, and it edited the existing `docker-build` target for release. Decide before you start, and review each new file in step 6.
 - If you want guidance and no file changes yet, run `/style-guide-init --print`. That mode changes no file, and it does not set up the command.
-- If a check fails only because of the environment, such as a missing database, the skill does not separate that case from a finding in the code. Write the cause next to the count.
+- If a check fails only because of the environment, such as a missing database, the skill separates that case from a finding in the code. It is not a pass. Write the cause next to the count.
 - Stop when the command runs and prints a result for each check, the pending list has counts, and a second run makes no more changes.
 - Choose [Set up a new team repository](lead-set-up-a-new-team-repo.md) when you start a repository from nothing and also need conventions and review configuration.
-- The `required` and `pending` groups are the run's design. The skill requires only the outcome: a check with findings stays in the command and out of required CI.
+- The `required` and `pending` groups are the run's design. The skill requires only the outcome: a check with findings stays out of required CI, and it runs in the command only in report-only mode.
 - Choose [Enforce a pre-PR gate](ops-enforce-a-pre-pr-gate.md) when the project instructions or policy require a gate verdict for each pull request.
 
 ## What you get
@@ -155,7 +155,7 @@ What you must check in the output:
 ## Common mistakes
 
 - You run `prettier --write .` as part of the setup. Rails mode does not format files. The command changes 18 files, including `README.md`, and hides the pending count. Fix findings in later, separate changes.
-- You read the red result of `npm run quality` as a failed setup. The skill keeps checks with findings in the command, so the command fails until the team fixes them. Use `npm run quality -- required` to see what CI blocks on.
+- You read the red result of `npm run quality` as a failed setup. The skill keeps checks with findings out of required CI. The sample command exits 1 while a pending check fails, because this run wrote the script that way. Use `npm run quality -- required` to see what CI blocks on.
 - You make the pending checks required in CI on the first day. A new required step that fails today turns every pull request red. Keep it report-only until the count is zero.
 - You format after a build and see one more finding. In this run, Prettier 2.8.8 checked `tmp/api/main-with-require-overrides.js`. This file is gitignored build output. The format count went from 18 to 19 until `/tmp` was ignored. Compare counts from a clean tree, and check each ignore entry against `.gitignore`.
 - You treat the test failures as code findings. In this run no database was available, and the cause of each failure is not confirmed. Run the tests against a database before you assign the work.

@@ -12,6 +12,10 @@ The `bug-to-fix` skill (`skills/bug-to-fix/SKILL.md`) owns the gates, escalation
 4. **`/fix-plan`**: write the fix brief and the verification plan.
 5. **`/dev-implement-task`** (when installed): implement the fix test-first.
 6. **`/pr-review`** (or **`/dev-pr-review`**, when installed): review the change before the PR is ready.
-7. **Close out**: set the investigation `status` to `resolved` and append the knowledge-base entry.
+7. **QA hand-off**: when the re-test is manual, give QA the manual re-test steps from the fix brief. Keep the
+   investigation `status` at `awaiting_human_verify` until QA confirms the fix. Keep the automated
+   regression test as an open follow-up when no harness exists.
+8. **Close out**: set the investigation `status` to `resolved`, or to `resolved-unverified` when an end-to-end
+   check cannot run here. Append the knowledge-base entry.
 
 Run `/handoff` at any point to write a resumable summary.

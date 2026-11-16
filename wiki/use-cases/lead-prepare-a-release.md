@@ -111,7 +111,7 @@ What you must check in the output:
 - The verdict has a gap for each failed or missing check, not one. In this run, four gaps stand behind NO-GO.
 - Each result says if the run executed it or read it. The auth test file did not run (7 of 12 tests failed, no database). Do not read that as a pass.
 - Lint had 33 errors on 30b68e1 and 33 on its parent. The change adds none.
-- On NO-GO, the checklist says not to run or hand off a deploy. The run listed the deploy and tag commands under "not run, held until the verdict is GO". That section is the run's choice, not a skill rule. The listed commands are not a go-ahead.
+- On NO-GO, the skill now omits the deploy and tag commands. This run predates that rule. The run listed the deploy and tag commands under "not run, held until the verdict is GO". That section is the run's choice, not a skill rule. The listed commands are not a go-ahead.
 - The release-notes draft has a rollback section that mirrors the plan. The suggested version `v0.0.1` is the run's suggestion. The repository has no tag.
 
 ## Common mistakes

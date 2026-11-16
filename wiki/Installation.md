@@ -38,8 +38,23 @@ Other shapes:
 ./install.sh --harness cursor phased-delivery ~/pilot    # one pack, one harness
 ./install.sh --harness cursor,claude bug-to-fix simplify shape-up ~/project
 ./install.sh --harness all react-quality ~/project
-./install.sh --harness all all ~/project                     # every pack, every harness
+./install.sh --harness all all ~/project                     # every standard pack, every harness
 ```
+
+`all` leaves out the private packs, the deprecated aliases, and the opt-in
+`cursor-hooks` pack. Name `cursor-hooks` in the pack list to install it. The pack
+writes these files for Cursor:
+
+- `.cursor/hooks.json`, with the `git commit` and `git push` entries
+- `.cursor/hooks/doc-sync-guard.sh` and `.cursor/hooks/review-nudge.sh`
+
+Every install also writes the shared writing contracts under `.agents/shared/contracts/`.
+A Cursor install also writes `.cursor/rules/agent-toolbelt-router.mdc` and the `AGENTS.md`
+pointer block. These files come from the installer, not from the hooks pack.
+
+The installer never overwrites an existing `.cursor/hooks.json` without `--force`. It
+prints the two entries to merge into that file. The hooks stay Not wired until you merge
+them. Do not use `--force` for the merge, because it replaces the whole file.
 
 New to the compatibility installer? Read [Workflows](Workflows.md) for the shared workflow entry points.
 
@@ -57,6 +72,19 @@ previous install:
 On macOS, non-developer pilot users can double-click `install.command`, which
 asks which pack(s) to install, which harness(es), whether to sweep child repos,
 and then the target folder (drag it into the Terminal prompt and press Enter).
+
+### Installed files in a team repository
+
+An `all` install adds several hundred files to each target. Git lists them as
+untracked. Choose one approach before the first install in a team repository:
+
+- Commit `.agents/`, `.cursor/`, `.claude/`, `AGENTS.md`, and `CLAUDE.md`, so every clone
+  gets the same files.
+- Add `.agents/`, `.cursor/`, and `.claude/` to `.gitignore`, and run the installer in each
+  clone. Commit the pointer blocks in `AGENTS.md` and `CLAUDE.md` either way.
+
+The installer does not change `.gitignore`. Run `git status --short` to list the installed
+files before you commit them.
 
 ## First repository setup
 
@@ -223,7 +251,9 @@ GitHub-backed installation, replace the local path with
 
 ```sh
 claude plugin marketplace add Ryan-Thurman/agent-toolbelt
+claude plugin install agent-toolbelt@agent-toolbelt
 codex plugin marketplace add Ryan-Thurman/agent-toolbelt
+codex plugin add agent-toolbelt@agent-toolbelt
 ```
 
 Cursor's public marketplace requires review and a manual submission at

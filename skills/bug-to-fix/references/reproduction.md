@@ -20,6 +20,9 @@ Ask the user: **"Did you or QA reproduce this yourself before dev?"**
 - **Yes:** record the manual reproduction.
 - **No or not sure:** reproduce the bug yourself.
 
+When no person can answer, take the **No or not sure** path. That path is the skill's default. Record
+`Reproduced by: <you>, no person answered the reproduction question`, so that the record does not show a confirmed manual reproduction.
+
 When you reproduce it yourself, compare your failure with the reported failure.
 A different failure is a different bug.
 

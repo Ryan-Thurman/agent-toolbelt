@@ -18,11 +18,15 @@ loop, not chat history.
 Freeze the start before editing: `baseline.md` records the base or merge-base SHA,
 changed paths, untracked files, explicit allowed directories, initial review source,
 and round bound. The allowed directories can widen only with an explicit recorded
-reason. `initial.diff` is the immutable review snapshot.
+reason. A behavior fix that needs a failing test adds that test file to the allowed paths, with the
+reason `test for accepted finding <ID>`, even when the change did not touch it.
+`initial.diff` is the immutable review snapshot.
 
 Each ledger row contains `ID`, source/location, decision, evidence, owner, round,
 status, verification, and notes. Decisions are `accepted`, `rejected`, or `deferred`.
-Statuses are `open`, `fixed`, `verified`, `superseded`, or `escalated`.
+Statuses are `open`, `fixed`, `verified`, `superseded`, `escalated`, or `closed`.
+A row with decision `rejected` or `deferred` ends at status `closed`, with the reason in notes.
+A `closed` row stays in the ledger. The loop reopens it only when new evidence changes the decision.
 
 Before and after each round, compare changed and untracked paths against scope and
 append the result to the round log. Stop if edits escape scope. For behavior fixes,

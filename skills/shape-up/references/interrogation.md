@@ -10,6 +10,9 @@ Put the rest in the next round. Number the questions in a round, and put the que
 Hold a question that depends on another open question for a later round.
 Settle facts from the repository before you ask, and do not stop a round to wait for a fact search.
 
+A group of low-cost defaults counts as one decision in a round. Each decision that changes scope, risk, security,
+money, or the user experience counts as a separate decision, and it takes its own question.
+
 Ask one open question at a time only when the user cannot yet name the outcome.
 When the outcome is named, change to rounds.
 For a ticket or story that is almost ready, use `story-refinement`.

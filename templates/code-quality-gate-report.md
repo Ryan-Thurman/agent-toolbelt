@@ -24,6 +24,13 @@ rounds_completed: 0
 | Command | Required because | Result | Evidence |
 |---|---|---|---|
 
+## Pre-existing failures
+
+Required checks that also fail at `base_sha`, with the same failure. List them apart from new failures.
+
+| Command | Base evidence (baseline.md) | Head evidence | Same failure at base |
+|---|---|---|---|
+
 ## Findings and dispositions
 
 | ID | Source | Severity | Consequence | Decision | Status | Reason / evidence | Owner / follow-up | Verification | Round |

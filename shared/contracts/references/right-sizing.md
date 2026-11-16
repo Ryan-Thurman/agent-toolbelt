@@ -36,7 +36,9 @@ Record each deferred part with a measurable trigger to add it.
 Examples are a measured failure rate that a daily reconciliation cannot absorb,
 an audit requirement for longer history than the source keeps, or an availability target that needs total-outage detection.
 In a design, use the "Change it when" column of the decision table.
-In a plan, list deferred parts and their triggers in the plan's exclusions.
+In a plan, list deferred parts and their triggers in the Deferred parts table of the plan template and in the plan's exclusions.
+When the source gives no number for a trigger, write the trigger as `Decision needed` with its owner, or `Unassigned`.
+Do not invent a threshold. A run that needs a value labels it as the run's choice and shows the effect of two or three values.
 
 ## Example
 

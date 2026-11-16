@@ -18,6 +18,10 @@ old and new coexist until the sweep finishes:
 For a small, fast sweep you can do in one pass, a single atomic change is fine, but still verify
 each unit.
 
+For a library swap, add the new package first, and migrate the sites to it. Remove the old package from the
+manifest and the lockfile last, after the zero-usage gate passes. Until then, both packages stay installed,
+so the build keeps working.
+
 ## Isolate parallel work
 
 When you transform units in parallel, give each unit its own git worktree.
@@ -30,6 +34,9 @@ For each unit: apply the defined change (codemod output for the mechanical bulk,
 judgment sites), then **self-verify before moving on**: compile/type-check and run the unit's tests.
 A site that needs a test edited to pass means behavior changed: stop and treat it as a judgment site,
 do not paper over it. Update the site's status in the plan.
+
+When a unit has no tests, or its tests do not run, set the site to `needs-review`. Name the test that must run
+for the unit. Do not mark the site `done` on a build or type-check alone, and do not claim that its tests pass.
 
 ## Verify the whole
 

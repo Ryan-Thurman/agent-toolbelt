@@ -98,11 +98,14 @@ Install it into a project:
 
 It adds `/handoff`, `/phase-create`, `/phase-start`, `/phase-close`, and
 `/phase-status`, plus templates for `.acc/phases/<room>/` phase files,
-handoffs, and context packets. `/phase-close` reuses the `handoff` rules
+handoffs, and context packets. The plugin build has no slash commands for
+these operations. Name the operation to the skill instead, for example
+`start phase 1 of room <room-slug>`. `/phase-close` reuses the `handoff` rules
 (reference durable artifacts, lead with the next action, capture ruled-out
-paths, redact secrets, keep it compact) but saves into the tracked phase
-directory. It pairs well with `phased-delivery` for phased implementation and
-with `phase-gate` when each phase opens its own PR.
+paths, redact secrets, keep it compact). It saves into `.acc/phases/<room>/`,
+which is local state, unless the project tracks phase files in
+`docs/agent-command-center/phases/`. It pairs well with `phased-delivery` for
+phased implementation and with `phase-gate` when each phase opens its own PR.
 
 ## Bug to Fix
 
@@ -131,9 +134,8 @@ Key ideas:
 - A **durable investigation file** (`bug-investigation-<slug>.md`, started from `.agents/templates/bug-investigation.md`) is updated
   *before* each action, so the work survives a context reset and hands off cleanly.
 - **No fix without a confirmed root cause**, and **no "fixed" without verification**.
-- **Reproduction is manual-first**: `/reproduce` asks whether you or QA reproduced
-  the bug before dev, and keeps the automated failing-test path for when a test
-  harness exists.
+- **Reproduction uses an automated failing test when a harness exists**: `/reproduce` asks whether you
+  or QA reproduced the bug before dev. Without a harness, it confirms a manual reproduction.
 - `/rca --diagnose` runs a read-only root-cause analysis that never edits files.
 
 ## System design

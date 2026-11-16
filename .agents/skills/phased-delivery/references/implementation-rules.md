@@ -26,7 +26,8 @@
    Run focused checks during the edit loop and proportionate broader checks before PR review.
 6. Inspect the diff for unrelated changes, premature next-ticket work, and
    generated noise. Run the React rule scan in
-   `shared/contracts/references/typescript-react-baseline.md`. Fix each applied rule
+   `shared/contracts/references/typescript-react-baseline.md`. Skip the scan when the
+   phase changes no React, TSX, or JSX file, and record the skip. Fix each applied rule
    before PR review. Record changed files, checks, acceptance evidence, risks,
    and next action in the existing plan or execution record.
 

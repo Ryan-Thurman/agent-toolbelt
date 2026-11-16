@@ -1,6 +1,6 @@
 # Enforce a pre-PR gate on every branch
 
-This page is for a tech lead whose policy says every pull request passes a quality gate. You get one status for the checked-out branch: `PASS`, `FAIL`, `CAPPED`, or `BLOCKED`. You also get a folder of evidence and a way to see when the status is stale. The sample run ends `FAIL`, because two required checks are already red on the base commit. The page shows how to tell that from a new failure.
+This page is for a tech lead whose policy says every pull request passes a quality gate. You get one status for the checked-out branch: `PASS`, `FAIL`, `CAPPED`, or `BLOCKED`. You also get a folder of evidence and a way to see when the status is stale. The sample run ends `FAIL`, because two required checks were already red on the base commit. The run predates the pre-existing failure rule. Under the current contract, those two checks are pre-existing failures, and only a new failure sets `FAIL`.
 
 | Roles | Skills and commands | Depth | You need |
 | --- | --- | --- | --- |
@@ -12,7 +12,7 @@ This page is for a tech lead whose policy says every pull request passes a quali
 2. Start Claude Code in the repository root with the Toolbelt loaded: `claude --plugin-dir <toolbelt-folder>`.
 3. Run the gate in report mode: `/agent-toolbelt:code-quality-gate --mode=report`.
 4. Open `.atb-work/code-quality-gate/<target-slug>/report.md`. The slug is the branch name plus the short head commit. Read `status` and `coverage` in the header, then the "Required checks" table.
-5. Count only `status: "PASS"` with `coverage: "final"` as a pass. If the status is `FAIL` or `BLOCKED`, run each failed command again at the base commit (steps 6 and 8) and read "Decision points" before you act. A check that already fails on the base keeps the branch at `FAIL`.
+5. Count only `status: "PASS"` with `coverage: "final"` as a pass. If the status is `FAIL` or `BLOCKED`, run each failed command again at the base commit (steps 6 and 8) and read "Decision points" before you act. The run predates the pre-existing failure rule. Under the current contract, a check that already fails on the base does not set `FAIL` by itself.
 6. Before you open the pull request, run `fingerprint.sh` from the repository root and compare both values with the report header (step 9). If one value differs, the status is stale. Run the gate again.
 
 You get one status record and the evidence behind it. The status stays valid only while the branch is unchanged. The evidence folder is ignored by git, so it is not part of the pull request. To show the status to a reviewer, copy `report.md` into the pull request description. That hand-off is practice, not a skill step.
@@ -48,16 +48,16 @@ The gate has this order because each step limits the next one:
 | 3 | Install the dependencies. Export the environment values that the tests need before you start the agent. In the sample: `export DATABASE_URL=postgresql://u:p@localhost:5432/db JWT_SECRET=x`, then `npm ci --ignore-scripts`, then `npx prisma generate`. | The gate runs the checks that the repository requires. A check that cannot run makes the status `BLOCKED`, unless the repository marks it non-required. | The test and lint commands of the repository start in your shell. If a prerequisite is missing, read the Evidence cell of the row. In this run, a check that ran and failed for a missing database was recorded as `Failed`. By the contract, a check that cannot start is `BLOCKED`. The contract has no rule for the mixed case. The sample run had no database, and 7 tests failed. |
 | 4 | Run `/agent-toolbelt:code-quality-gate --mode=report`. Add `--scope <path>[,<path>]` only when you want partial evidence. | Report mode is the default. It writes only generated evidence and changes no source, test, configuration, or documentation file. The skill gives no step that asks a question in report mode. The headless run asked none. | The agent names one status and the path of `report.md`. |
 | 5 | Open the report header. Read `status`, `base_sha`, `head_fingerprint`, `scope_fingerprint`, and `coverage`. | The contract calls the header the status interface. `coverage: "final"` means that the allowed paths equal every changed and untracked path. | You can say which commit the status is for and if the coverage is `final` or `partial`. |
-| 6 | Read the "Required checks" table. For each row with the result `Failed`, run the same command at the base commit. Check out `<base-sha>` in a separate worktree (a second working folder of the same repository: `git worktree add <folder> <base-sha>`) and install the dependencies there. | The contract has no rule for a check that fails on the base. A failure that exists on the base is not caused by this branch, and the owner of the fix is different. This comparison is practice, not a skill step. | Each failed row says if the failure is new or also exists on the base. The sample run gave identical lint output on both commits and the same 7 test failures on both commits. |
+| 6 | Read the "Required checks" table. For each row with the result `Failed`, run the same command at the base commit. Check out `<base-sha>` in a separate worktree (a second working folder of the same repository: `git worktree add <folder> <base-sha>`) and install the dependencies there. | The run's contract had no rule for a check that fails on the base. The current contract lists such a check as a pre-existing failure. A failure that exists on the base is not caused by this branch, and the owner of the fix is different. This comparison is practice, not a skill step. | Each failed row says if the failure is new or also exists on the base. The sample run gave identical lint output on both commits and the same 7 test failures on both commits. |
 | 7 | Read "Findings and dispositions". For each finding, read the decision (`accepted`, `rejected`, or `deferred`) and its reason. | Every standards, naming, anti-slop, simplification, and maintainability finding needs a decision. A nit must have a decision or a follow-up. | Each finding has a decision, or the table says that there are none. |
 | 8 | Read "Status rationale". Act on its "Remaining work or unblocker" line. | The template has fields for the unblocker and the next owner. | You know who does what next, or the status is `PASS` with `coverage: "final"`. |
-| 9 | Before you open the pull request, start in the repository root and run `bash <script> --base <base-sha> --allowed-paths-file <evidence-folder>/allowed-paths.nul`. For `<script>`, use `<toolbelt-folder>/skills/code-quality-gate/scripts/fingerprint.sh` in plugin mode, or `.agents/skills/code-quality-gate/scripts/fingerprint.sh` in the project after `install.sh`. Compare both values with the report. | The contract gives the script path relative to the Toolbelt root, so it fails in the target repository. The contract says to treat `PASS` as stale when either fingerprint differs. | Both values equal the report header. If one differs, run the gate again. |
+| 9 | Before you open the pull request, start in the repository root and run `bash <script> --base <base-sha> --allowed-paths-file <evidence-folder>/allowed-paths.nul`. For `<script>`, use `<toolbelt-folder>/skills/code-quality-gate/scripts/fingerprint.sh` in plugin mode, or `.agents/skills/code-quality-gate/scripts/fingerprint.sh` in the project after `install.sh`. Compare both values with the report. | The run's contract gave the script path relative to the Toolbelt root, so it fails in the target repository. The current contract puts `${CLAUDE_PLUGIN_ROOT}/` in front of that path in plugin mode. The contract says to treat `PASS` as stale when either fingerprint differs. | Both values equal the report header. If one differs, run the gate again. |
 
 ## Decision points
 
 - If the policy covers the whole pull request, run the gate without `--scope`. A run with `--scope` gives `coverage: "partial"`. Only a `PASS` with `coverage: "final"` can satisfy a policy-required gate.
 - If no policy, request, or risk of the change calls for a gate, skip it. Use `/review-diff` for findings.
-- If a required check fails on the base commit too, as in this run, the contract allows one exit: the repository marks the check non-required for the target. It does not name the file. Putting the mark in `AGENTS.md` is practice. Fixing the red check on the base is the other practical exit. It comes from the run's own status rationale, not from the contract. This run tried neither exit.
+- If a required check fails on the base commit too, as in this run, the contract allows one exit: the repository marks the check non-required for the target. It does not name the file. Putting the mark in `AGENTS.md` is practice. Fixing the red check on the base is the other practical exit. It comes from the run's own status rationale, not from the contract. This run tried neither exit. The current contract also lists the check as a pre-existing failure, which does not set `FAIL` by itself.
 - Stop when `git diff <base>...HEAD` is empty. There is nothing to gate. This is practice, not a contract rule.
 - If the status is `BLOCKED`, supply the prerequisite that the report names and run the gate again. A missing `crap-analysis` pack and a missing React rule scanner are examples that the contract gives.
 - If the status is `FAIL` because of a finding, decide who fixes it. Run `/code-quality-gate --mode=apply` only when you authorize edits. Apply mode makes only unambiguous, behavior-preserving repairs in scope. It never commits or pushes. After the round bound (three by default) with work left, the status is `CAPPED`, which is not a pass.
@@ -69,7 +69,7 @@ The gate has this order because each step limits the next one:
 
 ## What you get
 
-The run was headless. No person answered and no subagent started. The run did the `/simplify` pass and the `/pr-review --focus=standards,maintainability --show-nits` pass itself and labeled both Self-review (one agent, no separate reviewer). The gate does not set a review tier. By the rules in `auto-tier.md`, a diff of this size gets the light tier (one review pass, the lowest effort level). That is a reading of the rules. The run did not start a tier.
+The run was headless. No person answered and no subagent started. The run did the `/simplify` pass and the `/pr-review --focus=standards,maintainability --show-nits` pass itself and labeled both Self-review (one agent, no separate reviewer). The run's contract set no review tier. The current contract names `--tier=standard`. By the rules in `auto-tier.md`, a diff of this size gets the light tier (one review pass, the lowest effort level). That is a reading of the rules. The run did not start a tier.
 
 The status is one of four values. The contract defines them as follows.
 
@@ -94,7 +94,7 @@ round_bound: 3
 rounds_completed: 1
 ```
 
-The evidence folder is `.atb-work/code-quality-gate/<target-slug>/`. The parent folder holds a `.gitignore` that contains `*`, so git ignores all generated files. The slug is the branch name plus the short head commit.
+The evidence folder is `.atb-work/code-quality-gate/<target-slug>/`. The run's contract put the `.gitignore` in the parent folder. The current contract names `.atb-work/.gitignore`, which contains `*`, so git ignores all generated files. The run wrote `rounds_completed: 1` in report mode. The current contract sets `0` for report mode. The slug is the branch name plus the short head commit.
 
 Excerpt from a run on the Conduit sample API at commit 057bf6c. Condensed from three listings. Blank lines separate them: the folder `.atb-work/code-quality-gate`, then its slug folder `copy-clearer-403-messages-057bf6c`, then the `checks` folder inside the slug folder.
 
@@ -187,7 +187,7 @@ Excerpt from a run on the Conduit sample API at commit 057bf6c. Lines are wrappe
   between the two options. Rerun the gate after the decision. ...
 ```
 
-The gate gave `FAIL` for a three-line copy change, and the branch did not cause the failure. The contract has no rule that separates failures on the base from new ones. The run followed the contract text and reported what it found.
+The gate gave `FAIL` for a three-line copy change, and the branch did not cause the failure. The run's contract had no rule that separates failures on the base from new ones. The current contract has that rule, so the same two checks do not set `FAIL` by themselves. The run followed the contract text and reported what it found.
 
 What the run did not execute:
 

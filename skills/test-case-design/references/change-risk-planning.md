@@ -35,13 +35,17 @@ from the base (the base branch, the merge base, or the first commit of a range),
 Read the linked ticket, the pull request description, and the commit messages. Use their
 acceptance criteria as the requirements. When no source states the intended behavior of a
 change, do not take the expected result from the new code. Write `Confirm with the owner` as
-the expected result and list the case in "Inputs and assumptions".
+the expected result and list the case in "Inputs and assumptions". Use the same wording for a
+`Decision needed` or `Not set` value from another skill.
 
 ## 6. Check the existing tests
 
 Find the tests that already exercise each changed module. Do not write a new case for behavior
 that an existing test already covers. Name that test in "Coverage notes". A changed behavior
 with no test is a gap. A removed or weakened assertion is a gap.
+A regression test that the same range adds counts as existing coverage only when it was seen red on the
+base commit for the expected reason, as `shared/contracts/references/test-driven-development.md`
+("Implement one behavior at a time") requires. Record a test that was not seen red as a gap.
 Read the body of each named test. A test that cannot fail when the change is wrong, for example
 because a mock returns the changed value for any input, is not coverage.
 When you can run the test in this environment, run it and record the result. A test that does not

@@ -14,4 +14,6 @@ pack_simplify() {
   shared_contract references/typescript-react-baseline.md
   shared_contract scripts/react-rule-scan.py
   shared_contract references/react-acceptance.md
+  shared_contract references/execution.md
+  shared_contract references/test-driven-development.md
 }

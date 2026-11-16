@@ -24,6 +24,10 @@ Choose the depth with `shared/contracts/references/depth-levels.md` and state it
 
 At the Light level, do step 1, then write the failure criteria with `references/bdd-mapping.md`. Skip steps 2 to 4.
 
+A request for staging tests, a staging plan, or a game day selects the Deep level. State that choice and its reason
+in the first sentence. A request for cards selects at least Standard. Staging experiment plans exist only at Deep.
+A card that needs a staging experiment at Standard gets the result `Blocked`, with the reason `Deep level needed for the staging plan`.
+
 ## Procedure
 
 1. Take the risks marked testable and the journeys from a `reliability-review` report.
@@ -44,7 +48,10 @@ At the Light level, do step 1, then write the failure criteria with `references/
 
 ## Completion
 
-Deliver the cards, or the failure criteria at the Light level. Hand the Given/When/Then scenarios to `bdd-scenarios`,
+Deliver the cards, or the failure criteria at the Light level. Write the cards to
+`.atb-work/failure-scenario-design/<scope-slug>.md`, as `shared/contracts/references/execution.md`
+("Durable report location") requires, unless the user names a path. Print the path.
+Hand the Given/When/Then scenarios to `bdd-scenarios`,
 the lower-level cases to `test-case-design`.
 Hand test-first cases to the test-first loop of `phased-delivery` (when installed).
 Hand cases for behavior that already exists to `cover`.

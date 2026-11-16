@@ -10,6 +10,10 @@ that branch/current-local context (a sanitized branch name plus short local
 number, remote branch, or other local branch as a target. Use `/pr-review` for
 those reviews. Check out the intended branch before running this gate.
 
+A path that starts with `skills/` or `shared/` is relative to the Toolbelt root. In plugin mode, put
+`${CLAUDE_PLUGIN_ROOT}/` in front of it, or the absolute Toolbelt path. Run every script from the
+target repository.
+
 ## Modes and authority
 
 `/code-quality-gate [--mode=report|apply] [--rounds N] [--scope path[,path]] [--disposition-json '<object>']`
@@ -51,8 +55,8 @@ No mode commits or pushes.
 
 ## Durable evidence
 
-Use `.atb-work/code-quality-gate/<target-slug>/`. Ensure its parent has a
-`.gitignore` containing `*`. Never place these generated artifacts in tracked
+Use `.atb-work/code-quality-gate/<target-slug>/`. Ensure `.atb-work/.gitignore` contains the
+line `*`, as the durable-output rule in `shared/contracts/references/execution.md` requires. Never place these generated artifacts in tracked
 source. Keep `baseline.md`, `allowed-paths.nul`, `report.md`, and (for apply mode) the
 `pr-improve` ledger or a pointer to it. Start `report.md` from
 `templates/code-quality-gate-report.md`.
@@ -90,26 +94,41 @@ It computes:
 - `coverage=final` only when the sorted allowed paths exactly equal every
   changed and untracked path. Otherwise `coverage=partial`.
 
-Rewrite the report after each assessment round. A consumer must rerun this
+Rewrite the report after each assessment round. In report mode the gate makes one assessment
+and runs no repair round, so `rounds_completed` is `0`. In apply mode it counts the completed
+repair rounds. A consumer must rerun this
 script and treat PASS as stale when either fingerprint differs. Only final
 coverage PASS can satisfy a policy-required pre-PR gate. Partial coverage can
 have its own PASS/FAIL status but cannot prove the entire PR diff.
 
 ## Status decision
 
-- **PASS**: all required repository checks are green. The frozen scope is
-  intact. Every standards, naming, anti-slop, simplification, and
-  maintainability finding is either `rejected` with required evidence,
-  `deferred` as a low-impact nit with required follow-up, or `accepted` with a
-  verified fix. No blocker or should-fix remains.
-- **FAIL**: assessment completed but a required check failed, scope escaped,
-  or any blocker, should-fix, unresolved evidence-backed quality issue, or
-  undispositioned nit remains. Report mode does not edit to turn FAIL into PASS.
+A **pre-existing failure** is a required check that also fails at `base_sha`
+with the same failure. Run each failed required check at `base_sha` in a
+separate worktree, and save the output in `baseline.md`, before you classify a
+failure. List each pre-existing failure in the report's "Pre-existing failures"
+table, apart from the new failures. A pre-existing failure does not change the
+status by itself. A check that starts but does not finish, such as a timeout,
+is `BLOCKED` for that check.
+
+- **PASS**: every required repository check is green or is a pre-existing
+  failure. The frozen scope is intact. Every standards, naming, anti-slop,
+  simplification, and maintainability finding is either `rejected` with
+  required evidence, `deferred` as a low-impact nit with required follow-up, or
+  `accepted` with a verified fix. No blocker or should-fix remains.
+- **FAIL**: assessment completed but a new required-check failure, a scope
+  escape, or any blocker, should-fix, unresolved evidence-backed quality issue,
+  or undispositioned nit remains. Report mode does not edit to turn FAIL into
+  PASS.
 - **CAPPED**: apply mode reached its round bound with unresolved work. Record
   the remaining ledger rows and next owner. Do not describe this as converged.
 - **BLOCKED**: a necessary target, baseline, evidence source, required check,
   or authorization cannot be obtained. State the exact missing prerequisite and
   what unblocks it.
+
+**Precedence:** FAIL outranks BLOCKED. A confirmed new failure makes the status
+FAIL even when another required check is BLOCKED. The rationale names both. The
+status is BLOCKED only when no new failure is confirmed.
 
 ## Assessment and repair
 
@@ -121,8 +140,9 @@ have its own PASS/FAIL status but cannot prove the entire PR diff.
 2. Inspect every changed hunk against style evidence and the shared contracts.
    Run `/simplify` in report mode to identify high-conviction cleanup candidates,
    and do not treat a generic-name cue as a finding without a consequence.
-3. Run `/pr-review --focus=standards,maintainability --show-nits` on the frozen
-   target. `--show-nits` keeps every nit that the posting threshold hides.
+3. Run `/pr-review --tier=standard --focus=standards,maintainability --show-nits` on the frozen
+   target. The gate names the standard tier, so the depth does not change with the size of the diff.
+   `--show-nits` keeps every nit that the posting threshold hides.
    Record every evidence-backed standards or maintainability nit in the gate
    record. The PR report remains the review source of truth for other findings.
 4. For apply mode, use `/pr-improve`'s baseline, allowed-scope guard, stable
@@ -155,7 +175,7 @@ The `crap-analysis` skill runs the repository's own CRAP commands.
 
    `--base <base_sha>` makes the CRAP config and changed paths use the frozen base.
    An `execute` exit code of `1` is not a check failure. The `review` outcome decides.
-5. Run `scripts/fingerprint.sh` again with the same arguments.
+5. Run `skills/code-quality-gate/scripts/fingerprint.sh` again with the same arguments.
    If a fingerprint changed, the CRAP commands wrote a path that git does not ignore.
    Record BLOCKED, and name the new paths from `git status --porcelain`.
 6. Record the review JSON `outcome`, and each target outcome, threshold, and `worstInScope`, as `Required checks` evidence.

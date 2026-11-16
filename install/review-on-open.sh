@@ -11,6 +11,7 @@ pack_review_on_open() {
   shared_contract references/providers.md
   shared_contract references/posting.md
   shared_contract references/operation-retries.md
+  shared_contract scripts/react-rule-scan.py
 
   template review-on-open-github.yml
 }

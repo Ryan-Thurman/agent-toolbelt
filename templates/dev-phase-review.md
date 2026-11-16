@@ -34,6 +34,8 @@ Not verified items, state the exact evidence needed next.
 
 | Item | Reach | Evidence / Needed Evidence |
 |---|---|---|
+| Red/green evidence for selected behaviors: expected failure, commands, results, tested revision | Verified / Failed / Not verified | ... |
+| Outer red and outer green for feature-file scenarios, and no `@wip` left on this phase's scenarios | Verified / Failed / Not verified / Not applicable | ... |
 | ... | Verified / Failed / Not verified | ... |
 
 ## Findings

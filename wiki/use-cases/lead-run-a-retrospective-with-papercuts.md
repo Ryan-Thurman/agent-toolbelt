@@ -11,7 +11,7 @@ This page is for a tech lead or engineering manager who wants to collect the fri
 1. Start Claude Code in the repository with the Toolbelt loaded: `claude --plugin-dir <toolbelt-folder>`.
 2. Collect the friction: `/agent-toolbelt:papercuts --feature <branch | pr-number | ticket-id>`. Do not add `--post` here. Step 6 of Steps explains that flag.
 3. Open the saved report in `.atb-work/papercuts/`. For each row, run the narrowest command that shows the stated cause: `<test command> <path>`. Note the environment it needs, such as a database or a variable. If the command cannot run, mark the row `not verified`. Also check that the fix names one file.
-4. Tell the agent: `Follow <toolbelt-folder>/workflows/delivery-retrospective-workflow.md for <branch>. Use the papercut report <report-path>. Write the report to .atb-work/retrospective.md. Write a local report only.` With the plugin, `<toolbelt-folder>` is the plugin folder. With an installed copy, it is `.agents`, the folder that holds `workflows/` in the project. The workflow names no output file, so the path `.atb-work/retrospective.md` is this page's choice.
+4. Tell the agent: `Follow <toolbelt-folder>/workflows/delivery-retrospective-workflow.md for <branch>. Use the papercut report <report-path>. Write a local report only.` With the plugin, `<toolbelt-folder>` is the plugin folder. With an installed copy, it is `.agents`, the folder that holds `workflows/` in the project. The workflow names the output path, `.atb-work/delivery-retrospective/<scope-slug>.md`.
 
 You get a ranked papercut report and a local retrospective report. Nothing is posted, committed, or sent to a tracker.
 The sections below explain each step, when to stop, and what the output looks like. If you already have a saved papercut report, start at step 7 of Steps and pass its path.
@@ -124,7 +124,7 @@ The run used the skill files and the workflow as they were at the commit of this
 - You copy a cause from a record. Three records said "no database", and the real cause was an import order. A reader who trusts the records starts a database for nothing. Run one command per row before you rank it.
 - You report formatter noise as friction. On the base commit, `prisma format` changes nothing. Run the formatter on the base before you write the row.
 - You write "improve the docs" as a fix. The skill requires the exact file and the change. A row without a fix file does not belong in the report.
-- You pass `--post` before you read the target. The skill shows a preview and asks for confirmation. The posting contract says that a flag from a script or a CI job counts as confirmed. Pass `--post` only when you want the write.
+- You pass `--post` before you read the target. The skill shows a preview and asks for confirmation. The posting contract says that a flag from a script or a CI job counts as confirmed when the pack names it as its posting flag. Pass `--post` only when you want the write.
 - You put a name in a row. The skill allows files, commands, and records only. The person who posts the entry can add their own name.
 - You call an improvement accepted. The workflow does not invent approvals. An item is accepted only when a person says so.
 - You use this retrospective as a source of team opinions. It reads records only. Ask the team, then add their answers.

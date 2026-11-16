@@ -49,8 +49,8 @@ Posting replies to the host requires `--post`, confirmation, and idempotency.
    threads. Degrade to report-only when host access is unavailable.
 2. **Find the reviewed SHA and diff since it** (`references/thread-roundtrip.md` -> "Diff since the
    review"). Diff `<reviewedSha>..HEAD`. That delta is the evidence pool for `changed` claims.
-3. **Triage each OPEN thread** as `answered`, `changed`, or `needs-follow-up` with
-   `references/thread-roundtrip.md` -> "Triage rubric".
+3. **Triage each OPEN thread** as `answered`, `changed`, `partial`, `declined`, or
+   `needs-follow-up` with `references/thread-roundtrip.md` -> "Triage rubric".
 4. **Reply per-thread** using the reply contract (`references/thread-roundtrip.md` -> "Reply
    contract"): one block per OPEN thread, in fetch order.
 5. **Report or post.** Default: print the reply blocks. With `--post`, follow
@@ -63,7 +63,7 @@ latest comment is already your marked reply is skipped (`references/thread-round
 "Posting & idempotency"). Print:
 
 - the reply blocks, in fetch order.
-- a one-line triage summary: `N answered · M changed · K needs-follow-up`.
+- a one-line triage summary: `N answered · M changed · P partial · D declined · K needs-follow-up`.
 - with `--post`, the posting result: `posted X new, skipped Y already replied`.
 - when the host is unavailable, a note that the result is report-only and why.
 

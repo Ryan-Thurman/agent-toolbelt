@@ -1,6 +1,6 @@
 # Staging experiment plan
 
-Read this for each card at the staging experiment or game day level.
+Read this for each card at the staging experiment or game day level. Write these plans at the Deep level, which a request for a staging plan selects.
 The plan is for the team that runs the chaos tooling. This skill does not run it.
 
 ## Required fields
@@ -31,6 +31,7 @@ Do not start the run when one of these is true:
 
 Read the actual signals after the run. Do not trust a tool status of "completed".
 Record the hypothesis result as `Supported`, `Contradicted`, or `Inconclusive`, with the evidence.
+Record `Blocked` when a no-go condition stopped the run before it started. Name the condition.
 A contradicted hypothesis is a finding. Add a reliability requirement or a defect for it.
 
 ## Game day

@@ -21,7 +21,7 @@ Read this in step 4 of `bdd-scenarios`.
 3. A `Given` step sets up state. It asserts nothing.
 4. A `Then` step checks a result that is observable from outside the code:
    a response, a message, a stored record, or a screen state.
-5. Keep a scenario to about ten steps or fewer. A longer scenario usually tests more than one behavior.
+5. Keep a scenario to ten steps or fewer. A longer scenario usually tests more than one behavior.
 6. Put only the data that matters to the rule in the scenario. Hide other required data in the step definitions.
 7. Each scenario sets up its own data. No scenario depends on another scenario or on run order.
 
@@ -32,7 +32,8 @@ Read this in step 4 of `bdd-scenarios`.
 | `@<ticket-key>` | The tracker key, for example `@PROJ-123`. |
 | `@AC-<n>` | The acceptance criterion that the scenario proves. |
 | `@FS-<n>` | The failure-scenario card that the scenario proves, from `failure-scenario-design`. A reliability register row can add `@REL-<n>`. |
-| `@integration`, `@e2e` | The Integration or End-to-end level from `shared/contracts/references/test-levels.md`. The runner configuration selects scenarios by this tag. |
+| `@unit`, `@integration`, `@e2e`, `@staging` | The Unit, Integration, End-to-end, or Staging level from `shared/contracts/references/test-levels.md`. `@staging` marks a scenario that runs only in the staging environment. The runner configuration selects scenarios by this tag. `failure-scenario-design` uses the same level tags. |
+| `@open-question` | A scenario that waits on an open question. Name the question in the same way as `@wip`. Exclude this tag in the runner filter, as CI excludes `@wip`. Remove the tag when the answer is recorded. |
 | `@api` | An Integration scenario at the HTTP boundary. It starts no browser. |
 | `@negative` | A failure-path scenario. |
 | `@wip` | A scenario of a later phase that is not implemented yet. CI does not run it. Scenarios of later phases can go into the repository early with this tag. Remove the tag when its phase starts. |

@@ -72,16 +72,16 @@ The two-skill path costs more than either alternative. You run two commands, rea
 | 6 | Open `.atb-work/pr-improve/<target-slug>/ledger.md`. Read the finding rows, the round log, and the final status. | The ledger is the record of what was fixed, with which evidence. A behavior fix needs a failing test first, or a decisive behavior pin with a recorded reason. | Each accepted row is `verified` with test evidence (or a recorded behavior pin). The scope check says "in scope", with no untracked file. |
 | 7 | Read the re-review that ends the round. Add each new finding to the ledger and decide on it. | The skill runs `pr-review` on the round's delta again. A fix can raise a new finding. | No accepted finding is open, or the round bound is reached and you know why. |
 | 8 | Commit and push the fix yourself. | `pr-improve` does not commit or push unless you authorize it. `pr-review-reply` reads the diff from the reviewed commit to `HEAD`, so it cannot see uncommitted work. | `git log <reviewed-commit>..HEAD --oneline` lists your fix commit. In the sample run, the commit 5c6378e was local only. Nothing was pushed. |
-| 9 | Run `/agent-toolbelt:pr-review-reply <pr-number>`. Without an open PR or a host CLI, the skill runs report-only and triages comments that you paste. In the sample, run `/agent-toolbelt:pr-review-reply --since=baa6d31` and paste the four comments into the message. | The skill triages each open, unresolved, human thread as `answered`, `changed`, or `needs-follow-up`, and drafts one reply block each. | The output has one block per open thread and a summary line, such as `1 answered · 2 changed · 1 needs-follow-up`. |
+| 9 | Run `/agent-toolbelt:pr-review-reply <pr-number>`. Without an open PR or a host CLI, the skill runs report-only and triages comments that you paste. In the sample, run `/agent-toolbelt:pr-review-reply --since=baa6d31` and paste the four comments into the message. | The skill triages each open, unresolved, human thread as `answered`, `changed`, `partial`, `declined`, or `needs-follow-up`, and drafts one reply block each. | The output has one block per open thread and a summary line, such as `1 answered · 2 changed · 1 needs-follow-up`. |
 | 10 | Read each block. Run `git diff <reviewed-commit>..HEAD --stat` and make sure that each cited line exists. Edit a reply that claims more than the code shows. Post the replies yourself. | A `changed` reply must cite a line in the diff since the review. The skill does not resolve a thread unless you ask it to. The reviewer decides whether to resolve it. | Each citation matches the diff and each reply says what the thread needs. |
 
 ## Decision points
 
 - If a thread needs a design choice or an environment that you do not have, defer it. Reply `needs-follow-up` with the exact question or the missing change. Thread T-3 needed an index migration and a query plan. The run had no database, so it deferred.
 - If a thread rests on a wrong reading, or the code already behaves as the reviewer wants, reject it in the ledger with evidence. Do not change the code. The reply is `answered` and cites the existing line.
-- If you decline a correct finding and give a reason, the fit is looser. Thread T-4 is an example: the mapper does fail when a caller omits `_count`, and the run kept that behavior. The run used `answered` and stated the reason in Response. This is the run's choice. The skill defines `answered` as a concern that existing code already addresses, and it has no status for declined. Use `needs-follow-up` with a question when you want the reviewer to agree.
+- If you decline a correct finding and give a reason, the fit is looser. Thread T-4 is an example: the mapper does fail when a caller omits `_count`, and the run kept that behavior. The run used `answered` and stated the reason in Response. This is the run's choice. The run predates the `declined` status. The current skill uses `declined` when you decide not to change the code and a fact settles the decision. Use `needs-follow-up` with a question when you want the reviewer to agree first.
 - If a thread asks only a question, skip `pr-improve`. Go to step 9, and the reply is `answered`.
-- If a fix covers only part of what the thread asks, write the gap in the reply. Thread T-2 asked for tests of the service paths. The run covered 4 of 7 paths and said so. Use `needs-follow-up` when the reviewer wants all of them.
+- If a fix covers only part of what the thread asks, write the gap in the reply. Thread T-2 asked for tests of the service paths. The run covered 4 of 7 paths and said so. The run predates the `partial` status. The current skill uses `partial` for the part that is done and names the open part. Use `needs-follow-up` when the reviewer wants all of them first.
 - If the report says `capped-not-converged`, read the remaining ledger rows. Raise `--rounds` only when each round still lowered the open count. Otherwise stop and decide by hand. This rule is practice, not stated by the skill.
 - If an edit leaves the scope, the loop must stop. Widen the scope only with a recorded reason.
 - If the same issue returns, severity changes back and forth, or a fix only moves the defect, stop editing. `pr-improve` escalates the design question to you. A cap of three rounds is not convergence.
@@ -95,7 +95,7 @@ The two-skill path costs more than either alternative. You run two commands, rea
 
 ## What you get
 
-The run was headless, so no person made the decisions in steps 4 and 5. The run made them and labeled each one in the ledger as "run (stand-in for the author)". The skill reserves these decisions for you. The run also made a local commit for step 8, which the skill does not do on its own.
+The run was headless, so no person made the decisions in steps 4 and 5. The run made them and labeled each one in the ledger as "run (stand-in for the author)". The skill reserves these decisions for you. The run predates the headless default for step 4. The current skill accepts each blocker and defers the rest when no person answers and no calling rule applies. The run also made a local commit for step 8, which the skill does not do on its own.
 
 The ledger after one round. It shows the four decisions and the result of each. The row T-5 is left out: it is a deferred nit from the re-review of the round, with status `open`.
 
@@ -108,7 +108,7 @@ Excerpt from a run on the Conduit sample API at commit 5c6378e. Condensed from t
 | T-3 | deferred | No index on Comment.articleId ... | open | Not run: needs a database and a query plan. |
 | T-4 | rejected | article.mapper.ts:11-12 (before the change) already read article.favoritedBy with no guard ... | open | Not applicable: no change made. |
 
-Two rows show a gap in the ledger vocabulary. T-3 and T-4 end with the status `open`, because the skill lists no final status for a deferred or rejected row. The final status of the run reads "converged for the accepted findings", which is the run's wording.
+Two rows show a gap in the ledger vocabulary. T-3 and T-4 end with the status `open`. The run predates the `closed` status, which the current skill sets for a deferred or rejected row. The final status of the run reads "converged for the accepted findings", which is the run's wording.
 
 The first test run before the fix, for T-1. The two favorite tests failed for the intended reason: the field was absent.
 
@@ -171,10 +171,10 @@ Not executed in this run: any test against a real database, any HTTP request, th
 ## Common mistakes
 
 - You draft the replies before you commit the fix. The skill reads the diff from the reviewed commit to `HEAD`, so it finds no change to cite. By the skill text, you get `needs-follow-up` for threads that you already fixed. The run did not test this order.
-- You let the agent decide which findings to accept. The skill keeps an agent recommendation as `deferred` until you accept it, so nothing gets fixed. Name the accepted threads in your message.
+- You let the agent decide which findings to accept. The skill keeps an agent recommendation as `deferred` until you accept it, so nothing gets fixed in a session with you. A headless run with no calling rule accepts each blocker by default. Name the accepted threads in your message.
 - You leave the test folder out of `--scope`. The default scope is the changed paths of the baseline. A fix that needs a test in an untouched file stops at the scope guard.
 - You count a test that mocks the database as proof of the database behavior. T-2 asserts the arguments of a mocked query. The reply says so. Confirm the behavior against a real database before you merge.
-- You write `changed` for a thread that the fix covers only in part. Name the gap in the reply, or use `needs-follow-up`.
+- You write `changed` for a thread that the fix covers only in part. Name the gap in the reply, or use `partial`.
 - You treat `changed` as "resolved". The reviewer decides whether to resolve the thread. By default the skill does not change a thread's resolved state. It sets one only when you explicitly ask it to resolve answered threads.
 - You post with `--post` before you read the blocks. This page drafts only. The skill asks for confirmation first. It writes each reply into its thread with an idempotency marker, so a rerun does not repeat it. It does not resolve the thread unless you ask. Read each block before you post.
 

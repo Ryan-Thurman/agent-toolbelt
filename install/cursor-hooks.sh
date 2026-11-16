@@ -1,4 +1,5 @@
 # DESC: Cursor project hooks — doc-sync gate on git commit + /pr-review nudge on git push
+# OPT_IN: true
 pack_cursor_hooks() {
   hook_json hooks.json
   hook_script doc-sync-guard.sh

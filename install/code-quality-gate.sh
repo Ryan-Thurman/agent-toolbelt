@@ -4,6 +4,7 @@
 pack_code_quality_gate() {
   shared_contract references/human-readable-output.md
   shared_contract references/docs-writing.md
+  shared_contract references/execution.md
   cmd code-quality-gate
   skill code-quality-gate SKILL.md
   skill code-quality-gate references/gate-contract.md

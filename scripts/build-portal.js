@@ -7,10 +7,39 @@ const { ROOT, discoverCanonicalSkills, loadCatalog } = require('./catalog-lib');
 const { validate } = require('./validate-catalog');
 
 const REPOSITORY_URL = 'https://github.com/Ryan-Thurman/agent-toolbelt';
-const SOURCE_FILES = [
-  'index.html', 'styles.css', 'app.js', 'brand-icon.svg',
+const STATIC_FILES = [
+  'styles.css', 'app.js', 'brand-icon.svg',
   'favicon.svg', 'favicon-16.png', 'favicon-32.png', 'favicon-48.png'
 ];
+// Each page is portal/src/layout.html with one fragment from portal/src/pages/ in its main element.
+const PAGES = [
+  { id: 'index', file: 'index.html', title: 'Agent Toolbelt — Skills for software delivery', description: 'Agent Toolbelt: reusable software delivery skills for Cursor, Claude Code, and Codex.' },
+  { id: 'workflows', file: 'workflows.html', title: 'Workflows — Agent Toolbelt', description: 'Agent Toolbelt workflows: sequences of skills for one task, from the first stage to the last.' },
+  { id: 'use-cases', file: 'use-cases.html', title: 'Use cases — Agent Toolbelt', description: 'Agent Toolbelt use cases: the skills on real work, grouped by role.' },
+  { id: 'setup', file: 'setup.html', title: 'Setup — Agent Toolbelt', description: 'Install Agent Toolbelt in Cursor, Claude Code, or Codex, and see what the plugin contains.' }
+];
+const SOURCE_FILES = [...STATIC_FILES, 'layout.html', ...PAGES.map((page) => `pages/${page.file}`)];
+const GENERATED_FILES = [...STATIC_FILES, ...PAGES.map((page) => page.file), 'data.js'];
+
+function renderPage(sourceDirectory, page) {
+  const layout = fs.readFileSync(path.join(sourceDirectory, 'layout.html'), 'utf8');
+  const main = fs.readFileSync(path.join(sourceDirectory, 'pages', page.file), 'utf8');
+  const values = { title: page.title, description: page.description, page: page.id, main };
+  const html = layout.replace(/\{\{(title|description|page|main)\}\}/g, (_, key) => values[key]);
+  const navLink = `data-nav="${page.id}"`;
+  if (!html.includes(navLink)) throw new Error(`Portal layout has no navigation link for page: ${page.id}`);
+  return html.replace(navLink, `${navLink} aria-current="page"`);
+}
+
+// The portal shows the summary as plain text, so remove the Markdown marks.
+function plainText(markdown) {
+  return markdown
+    .replace(/\[([^\]]+)\]\([^)]*\)/g, '$1')
+    .replace(/`([^`]*)`/g, '$1')
+    .replace(/\*\*([^*]+)\*\*/g, '$1')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
 
 function prepareOutputDirectory(output, generatedFiles) {
   let outputStat = null;
@@ -72,7 +101,7 @@ function loadUseCases(root, skillIds) {
       order: USE_CASE_GROUPS.findIndex(([key]) => key === prefix),
       slug,
       title: titleLine.slice(2).trim(),
-      summary: summary.join(' '),
+      summary: plainText(summary.join(' ')),
       group,
       roles: cells[0] || '',
       skills,
@@ -145,8 +174,9 @@ function build(outputDirectory, root = ROOT) {
   for (const sourceFile of SOURCE_FILES) {
     if (!fs.existsSync(path.join(sourceDirectory, sourceFile))) throw new Error(`Missing portal source: portal/src/${sourceFile}`);
   }
-  prepareOutputDirectory(output, [...SOURCE_FILES, 'data.js']);
-  for (const sourceFile of SOURCE_FILES) fs.copyFileSync(path.join(sourceDirectory, sourceFile), path.join(output, sourceFile));
+  prepareOutputDirectory(output, GENERATED_FILES);
+  for (const staticFile of STATIC_FILES) fs.copyFileSync(path.join(sourceDirectory, staticFile), path.join(output, staticFile));
+  for (const page of PAGES) fs.writeFileSync(path.join(output, page.file), renderPage(sourceDirectory, page));
   const dataScript = `window.AGENT_TOOLBELT_DATA = ${JSON.stringify(payload, null, 2)};\n`;
   fs.writeFileSync(path.join(output, 'data.js'), dataScript);
   return { output, payload };
@@ -165,4 +195,4 @@ function main() {
 
 if (require.main === module) main();
 
-module.exports = { build, normalizePortalPayload, prepareOutputDirectory, REPOSITORY_URL };
+module.exports = { build, normalizePortalPayload, plainText, prepareOutputDirectory, renderPage, GENERATED_FILES, PAGES, REPOSITORY_URL };

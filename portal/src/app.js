@@ -18,9 +18,45 @@
     'Debugging & Repair': { tone: 'orange', path: 'M8 8h8v7a4 4 0 0 1-8 0V8Zm2-3h4l2 3H8l2-3ZM3 11h5m8 0h5M3 16h5m8 0h5M6 3l3 3m9-3-3 3M12 8v11' },
     'Review & Quality': { tone: 'indigo', path: 'M21 11v1a9 9 0 1 1-5.3-8.2M8 11l4 4L22 5' },
     'Security & Risk': { tone: 'rose', path: 'M12 3 4 6v6c0 5 8 9 8 9s8-4 8-9V6l-8-3Zm-4 9 3 3 5-6' },
-    'Codebase Improvement': { tone: 'green', path: 'm12 3 9 5-9 5-9-5 9-5Zm-9 9 9 5 9-5M3 16l9 5 9-5' },
+    'Codebase Improvement': { tone: 'lime', path: 'm12 3 9 5-9 5-9-5 9-5Zm-9 9 9 5 9-5M3 16l9 5 9-5' },
     'Testing & Verification': { tone: 'cyan', path: 'M9 3h6m-5 0v7l-5 8a2 2 0 0 0 2 3h10a2 2 0 0 0 2-3l-5-8V3M8 14h8' },
     'Agent Operations': { tone: 'slate', path: 'M4 4h16v16H4zM7 8l3 3-3 3m6 1h4' }
+  };
+
+  // Each workflow has its own icon and tone. A workflow with no entry uses the category of its first stage.
+  const workflowVisuals = {
+    'product-learning': { tone: 'violet', path: categoryVisuals['Discovery & Planning'].path },
+    'feature-delivery': { tone: 'blue', path: categoryVisuals['Feature Delivery'].path },
+    'feature-refinement': { tone: 'indigo', path: 'M4 6h9M4 12h9M4 18h6m6-11 2 2 3-4m-5 9 2 2 3-4' },
+    'risk-based-testing': { tone: 'cyan', path: categoryVisuals['Testing & Verification'].path },
+    'bug-fixing': { tone: 'orange', path: categoryVisuals['Debugging & Repair'].path },
+    'pr-review': { tone: 'slate', path: categoryVisuals['Review & Quality'].path },
+    'codebase-improvement': { tone: 'lime', path: categoryVisuals['Codebase Improvement'].path },
+    'security-sensitive-change': { tone: 'rose', path: categoryVisuals['Security & Risk'].path },
+    'production-readiness': { tone: 'magenta', path: 'M3 12h4l3-8 4 16 3-8h4' },
+    'incident-follow-up': { tone: 'orange', path: 'M12 4 2.5 20h19L12 4Zm0 6v4m0 3v.5' },
+    'idea-to-release': { tone: 'blue', path: 'M5 21V4m0 1h12l-2.5 4 2.5 4H5' }
+  };
+
+  const roleTones = {
+    'QA and test': 'cyan',
+    Developer: 'blue',
+    Product: 'violet',
+    'Architecture, SRE, and security': 'rose',
+    'Tech lead': 'indigo',
+    'Platform and operators': 'slate',
+    'UI and front end': 'magenta',
+    Writers: 'orange',
+    'End-to-end journeys': 'lime'
+  };
+
+  // Hashes of the earlier one-page portal, and the page that now holds each section.
+  const movedSections = {
+    workflows: 'workflows.html',
+    'start-here': 'workflows.html',
+    'use-cases': 'use-cases.html',
+    hosts: 'setup.html',
+    capabilities: 'setup.html#capabilities'
   };
 
   function normalizeText(value) {
@@ -110,8 +146,11 @@
   function init(data, documentOverride) {
     const documentRef = documentOverride || (typeof document !== 'undefined' ? document : null);
     if (!data || !documentRef) return null;
-    const state = { ...clearFilters(), expandedCategory: null };
+    const state = { ...clearFilters(), expandedCategory: null, workflow: null };
     const byId = (id) => documentRef.getElementById(id);
+    const page = documentRef.body.dataset.page || 'index';
+    const on = (id, type, handler) => { const element = byId(id); if (element) element.addEventListener(type, handler); };
+    const setText = (id, text) => { const element = byId(id); if (element) element.textContent = text; };
     const skillById = new Map(data.skills.map((skill) => [skill.id, skill]));
     const workflowById = new Map(data.workflows.map((workflow) => [workflow.id, workflow]));
     const dialog = byId('skill-dialog');
@@ -128,27 +167,52 @@
       element.dataset.categoryTone = (categoryVisuals[category] || categoryVisuals['Agent Operations']).tone;
     }
 
-    function categoryIcon(category) {
-      const visual = categoryVisuals[category] || categoryVisuals['Agent Operations'];
+    function iconElement(iconPath) {
       const wrapper = createElement('span', 'category-icon');
       wrapper.setAttribute('aria-hidden', 'true');
-      const svgNamespace = documentRef.querySelector('.search-icon').namespaceURI;
-      const svg = documentRef.createElementNS(svgNamespace, 'svg');
-      svg.setAttribute('viewBox', '0 0 24 24');
-      svg.setAttribute('fill', 'none');
-      svg.setAttribute('stroke', 'currentColor');
-      svg.setAttribute('stroke-width', '1.7');
-      svg.setAttribute('stroke-linecap', 'round');
-      svg.setAttribute('stroke-linejoin', 'round');
-      const path = documentRef.createElementNS(svgNamespace, 'path');
-      path.setAttribute('d', visual.path);
-      svg.appendChild(path);
-      wrapper.appendChild(svg);
+      // The paths are constants in this file. The parser gives the elements the SVG namespace.
+      wrapper.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="${iconPath}"/></svg>`;
       return wrapper;
+    }
+
+    function categoryIcon(category) {
+      return iconElement((categoryVisuals[category] || categoryVisuals['Agent Operations']).path);
+    }
+
+    function workflowVisual(workflow) {
+      if (workflowVisuals[workflow.id]) return workflowVisuals[workflow.id];
+      const firstSkill = skillById.get(workflow.stages[0].skill);
+      return categoryVisuals[firstSkill && firstSkill.category] || categoryVisuals['Agent Operations'];
+    }
+
+    // One dot for each stage, in the color of the stage category.
+    function stageDots(workflow) {
+      const dots = createElement('span', 'stage-dots');
+      dots.setAttribute('aria-hidden', 'true');
+      workflow.stages.forEach((stage) => {
+        const dot = createElement('span', 'stage-dot');
+        const skill = skillById.get(stage.skill);
+        if (skill) applyCategory(dot, skill.category);
+        dots.appendChild(dot);
+      });
+      return dots;
+    }
+
+    function skillChip(skillId) {
+      const skill = skillById.get(skillId);
+      const button = createElement('button', 'skill-chip');
+      button.type = 'button';
+      button.dataset.openSkill = skillId;
+      if (skill) applyCategory(button, skill.category);
+      const dot = createElement('span', 'tone-dot');
+      dot.setAttribute('aria-hidden', 'true');
+      button.append(dot, createElement('span', '', skill ? skill.display_name : skillId));
+      return button;
     }
 
     function renderTaskShortcuts() {
       const target = byId('task-shortcuts');
+      if (!target) return;
       target.replaceChildren();
       const groups = [
         {
@@ -208,11 +272,12 @@
     }
 
     function renderHosts() {
-      byId('skill-count').textContent = data.skills.length;
-      byId('plugin-skill-count').textContent = data.skills.length;
-      byId('workflow-count').textContent = data.workflows.length;
-      byId('host-count').textContent = data.hosts.length;
+      setText('skill-count', data.skills.length);
+      setText('plugin-skill-count', data.skills.length);
+      setText('workflow-count', data.workflows.length);
+      setText('host-count', data.hosts.length);
       const hosts = byId('hero-hosts');
+      if (!hosts) return;
       hosts.replaceChildren();
       data.hosts.forEach((host) => {
         const row = createElement('div', 'host-pill');
@@ -237,6 +302,7 @@
 
     function renderHeroInstall() {
       const target = byId('hero-install');
+      if (!target) return;
       target.replaceChildren();
       const bar = createElement('div', 'install-bar');
       const tabs = createElement('div', 'install-tabs');
@@ -292,6 +358,7 @@
 
     function renderHostSetup() {
       const target = byId('host-setup-list');
+      if (!target) return;
       target.replaceChildren();
       data.hosts.forEach((host) => {
         const card = createElement('article', 'host-setup-card');
@@ -315,18 +382,20 @@
 
     function renderStartHere() {
       const target = byId('start-here-list');
+      if (!target) return;
       target.replaceChildren();
       data.workflows.forEach((workflow) => {
         const link = createElement('a', 'start-card');
         link.href = serializeHash('workflow', workflow.id);
-        const firstSkill = skillById.get(workflow.stages[0].skill);
-        if (firstSkill) applyCategory(link, firstSkill.category);
+        const visual = workflowVisual(workflow);
+        link.dataset.categoryTone = visual.tone;
         const top = createElement('div');
-        if (firstSkill) top.appendChild(categoryIcon(firstSkill.category));
-        top.appendChild(createElement('h3', '', workflow.name));
+        top.appendChild(iconElement(visual.path));
+        top.appendChild(createElement('h2', '', workflow.name));
         top.appendChild(createElement('p', '', workflow.purpose));
         link.appendChild(top);
-        const footer = createElement('span', 'inline-link', `Open sequence · ${workflow.stages.length} stages →`);
+        const footer = createElement('span', 'start-card-footer');
+        footer.append(stageDots(workflow), createElement('span', 'start-card-count', `${workflow.stages.length} stages →`));
         link.appendChild(footer);
         target.appendChild(link);
       });
@@ -420,21 +489,20 @@
       head.appendChild(category);
       if (skill.documentation_completeness.status === 'specialized') head.appendChild(createElement('span', 'specialized-badge', 'Specialized'));
       card.appendChild(head);
-      const title = createElement('h3', '', skill.display_name);
+      // The title button covers the whole card, so the card is one target.
+      const title = createElement('h3');
+      const open = createElement('button', 'card-open', skill.display_name);
+      open.type = 'button';
+      open.dataset.openSkill = skill.id;
+      title.appendChild(open);
       card.appendChild(title);
+      card.appendChild(createElement('p', 'skill-id', skill.id));
       card.appendChild(createElement('p', 'skill-purpose', skill.short_description));
       const output = createElement('div', 'skill-output');
       output.appendChild(createElement('span', 'output-label', 'Result'));
       const outputs = skill.expected_outputs || [];
       output.appendChild(createElement('p', '', outputs[outputs.length - 1] || skill.primary_purpose));
       card.appendChild(output);
-      const footer = createElement('div', 'skill-card-footer');
-      footer.appendChild(createElement('p', 'skill-id', skill.id));
-      const open = createElement('button', 'card-open', 'View details →');
-      open.type = 'button';
-      open.dataset.openSkill = skill.id;
-      footer.appendChild(open);
-      card.appendChild(footer);
       return card;
     }
 
@@ -453,92 +521,119 @@
       clearSearch.hidden = !state.query;
     }
 
-    function renderWorkflows() {
-      const target = byId('workflow-list');
-      target.replaceChildren();
-      data.workflows.forEach((workflow) => {
-        const article = createElement('article', 'workflow-card');
-        article.id = `workflow-${workflow.id}`;
-        const firstSkill = skillById.get(workflow.stages[0].skill);
-        const header = createElement('div', 'workflow-card-header');
-        if (firstSkill) header.appendChild(categoryIcon(firstSkill.category));
-        const headerCopy = createElement('div', 'workflow-heading');
-        headerCopy.append(createElement('h3', '', workflow.name), createElement('p', '', workflow.purpose));
-        header.appendChild(headerCopy);
-        const meta = createElement('div', 'workflow-meta');
-        meta.appendChild(createElement('span', 'workflow-count', `${workflow.stages.length} stages`));
-        if (firstSkill) {
-          const first = createElement('button', 'workflow-start', 'View first skill →');
-          first.type = 'button';
-          first.dataset.openSkill = firstSkill.id;
-          meta.appendChild(first);
+    function renderWorkflow(workflow) {
+      const article = createElement('article', 'workflow-card');
+      article.id = `workflow-${workflow.id}`;
+      const visual = workflowVisual(workflow);
+      article.dataset.categoryTone = visual.tone;
+      const firstSkill = skillById.get(workflow.stages[0].skill);
+      const header = createElement('div', 'workflow-card-header');
+      header.appendChild(iconElement(visual.path));
+      const headerCopy = createElement('div', 'workflow-heading');
+      const heading = createElement('h2', '', workflow.name);
+      heading.id = `workflow-title-${workflow.id}`;
+      heading.tabIndex = -1;
+      article.setAttribute('aria-labelledby', heading.id);
+      headerCopy.append(heading, createElement('p', '', workflow.purpose));
+      header.appendChild(headerCopy);
+      const meta = createElement('div', 'workflow-meta');
+      const count = createElement('span', 'workflow-count');
+      count.append(stageDots(workflow), createElement('span', '', `${workflow.stages.length} stages`));
+      meta.appendChild(count);
+      if (firstSkill) {
+        const first = createElement('button', 'workflow-start', 'View first skill →');
+        first.type = 'button';
+        first.dataset.openSkill = firstSkill.id;
+        meta.appendChild(first);
+      }
+      header.appendChild(meta);
+      article.appendChild(header);
+      const stages = createElement('ol', 'workflow-stages');
+      stages.setAttribute('role', 'list');
+      stages.setAttribute('aria-label', `${workflow.name} stages`);
+      workflow.stages.forEach((stage, index) => {
+        const stageElement = createElement('li', 'workflow-stage');
+        const skill = skillById.get(stage.skill);
+        if (skill) applyCategory(stageElement, skill.category);
+        const number = createElement('span', 'stage-number', String(index + 1));
+        number.setAttribute('aria-hidden', 'true');
+        stageElement.appendChild(number);
+
+        const main = createElement('div', 'stage-main');
+        const title = createElement('h3', 'stage-title');
+        const stageButton = createElement('button', 'stage-skill', skill ? skill.display_name : stage.skill);
+        stageButton.type = 'button';
+        stageButton.dataset.openSkill = stage.skill;
+        stageButton.id = `${workflow.id}-stage-${index + 1}`;
+        title.appendChild(stageButton);
+        stageElement.setAttribute('aria-labelledby', stageButton.id);
+        main.appendChild(title);
+        if (skill) {
+          const identity = createElement('div', 'stage-identity');
+          identity.append(categoryIcon(skill.category), createElement('span', 'stage-category', skill.category));
+          main.appendChild(identity);
         }
-        header.appendChild(meta);
-        article.appendChild(header);
-        const stages = createElement('ol', 'workflow-stages');
-        stages.setAttribute('role', 'list');
-        stages.setAttribute('aria-label', `${workflow.name} stages`);
-        workflow.stages.forEach((stage, index) => {
-          const stageElement = createElement('li', 'workflow-stage');
-          const skill = skillById.get(stage.skill);
-          if (skill) applyCategory(stageElement, skill.category);
-          const number = createElement('span', 'stage-number', String(index + 1));
-          number.setAttribute('aria-hidden', 'true');
-          stageElement.appendChild(number);
+        main.appendChild(createElement('p', 'stage-rationale', stage.rationale));
+        stageElement.appendChild(main);
 
-          const main = createElement('div', 'stage-main');
-          const title = createElement('h4', 'stage-title');
-          const stageButton = createElement('button', 'stage-skill', skill ? skill.display_name : stage.skill);
-          stageButton.type = 'button';
-          stageButton.dataset.openSkill = stage.skill;
-          stageButton.id = `${workflow.id}-stage-${index + 1}`;
-          title.appendChild(stageButton);
-          stageElement.setAttribute('aria-labelledby', stageButton.id);
-          main.appendChild(title);
-          if (skill) {
-            const identity = createElement('div', 'stage-identity');
-            identity.append(categoryIcon(skill.category), createElement('span', 'stage-category', skill.category));
-            main.appendChild(identity);
-          }
-          main.appendChild(createElement('p', 'stage-rationale', stage.rationale));
-          stageElement.appendChild(main);
-
-          const aside = createElement('div', 'stage-aside');
-          if (skill && skill.expected_outputs.length) {
-            const output = createElement('div', 'stage-output');
-            output.append(createElement('span', 'stage-label', 'Output'), createElement('p', '', skill.expected_outputs[0]));
-            aside.appendChild(output);
-          }
-          const prompt = createElement('details', 'stage-prompt');
-          prompt.appendChild(createElement('summary', '', 'Example prompt'));
-          prompt.appendChild(createElement('p', 'stage-example', stage.example_invocation));
-          aside.appendChild(prompt);
-          // The timeline already shows the following stage; list only branches and exits.
-          const followingSkill = workflow.stages[index + 1] && workflow.stages[index + 1].skill;
-          const branches = stage.next_steps.filter((nextId) => nextId !== followingSkill);
-          if (branches.length) {
-            const handoff = createElement('div', 'stage-handoff');
-            handoff.appendChild(createElement('span', 'stage-label', followingSkill ? 'Can also lead to' : 'After this workflow'));
-            const next = createElement('div', 'stage-next');
-            branches.forEach((nextId) => {
-              const nextButton = createElement('button', 'next-link');
-              nextButton.type = 'button';
-              nextButton.dataset.openSkill = nextId;
-              nextButton.appendChild(createElement('span', '', skillById.has(nextId) ? skillById.get(nextId).display_name : nextId));
-              const arrow = createElement('span', 'next-arrow', '→');
-              arrow.setAttribute('aria-hidden', 'true');
-              nextButton.appendChild(arrow);
-              next.appendChild(nextButton);
-            });
-            handoff.appendChild(next);
-            aside.appendChild(handoff);
-          }
-          stageElement.appendChild(aside);
-          stages.appendChild(stageElement);
-        });
-        article.appendChild(stages);
-        target.appendChild(article);
+        const aside = createElement('div', 'stage-aside');
+        if (skill && skill.expected_outputs.length) {
+          const output = createElement('div', 'stage-output');
+          output.append(createElement('span', 'stage-label', 'Output'), createElement('p', '', skill.expected_outputs[0]));
+          aside.appendChild(output);
+        }
+        const prompt = createElement('details', 'stage-prompt');
+        prompt.appendChild(createElement('summary', '', 'Example prompt'));
+        prompt.appendChild(createElement('p', 'stage-example', stage.example_invocation));
+        aside.appendChild(prompt);
+        // The timeline already shows the following stage; list only branches and exits.
+        const followingSkill = workflow.stages[index + 1] && workflow.stages[index + 1].skill;
+        const branches = stage.next_steps.filter((nextId) => nextId !== followingSkill);
+        if (branches.length) {
+          const handoff = createElement('div', 'stage-handoff');
+          handoff.appendChild(createElement('span', 'stage-label', followingSkill ? 'Can also lead to' : 'After this workflow'));
+          const next = createElement('div', 'stage-next');
+          branches.forEach((nextId) => {
+            const nextButton = createElement('button', 'next-link');
+            nextButton.type = 'button';
+            nextButton.dataset.openSkill = nextId;
+            nextButton.appendChild(createElement('span', '', skillById.has(nextId) ? skillById.get(nextId).display_name : nextId));
+            const arrow = createElement('span', 'next-arrow', '→');
+            arrow.setAttribute('aria-hidden', 'true');
+            nextButton.appendChild(arrow);
+            next.appendChild(nextButton);
+          });
+          handoff.appendChild(next);
+          aside.appendChild(handoff);
+        }
+        stageElement.appendChild(aside);
+        stages.appendChild(stageElement);
       });
+      article.appendChild(stages);
+      return article;
+    }
+
+    // The workflows page shows the index of all workflows, or one workflow with a rail of the others.
+    function renderWorkflowView() {
+      const index = byId('start-here-list');
+      const detail = byId('workflow-detail');
+      if (!index || !detail) return;
+      const workflow = workflowById.get(state.workflow);
+      index.hidden = Boolean(workflow);
+      detail.hidden = !workflow;
+      if (!workflow) return;
+      const rail = byId('workflow-rail-list');
+      rail.replaceChildren();
+      data.workflows.forEach((entry) => {
+        const link = createElement('a', 'workflow-rail-link');
+        link.href = serializeHash('workflow', entry.id);
+        const visual = workflowVisual(entry);
+        link.dataset.categoryTone = visual.tone;
+        if (entry.id === workflow.id) link.setAttribute('aria-current', 'true');
+        link.append(iconElement(visual.path), createElement('span', '', entry.name));
+        rail.appendChild(link);
+      });
+      byId('workflow-list').replaceChildren(renderWorkflow(workflow));
     }
 
     function renderUseCases() {
@@ -550,33 +645,57 @@
       let active = null;
       function draw() {
         list.replaceChildren();
-        useCases.filter((useCase) => !active || useCase.group === active).forEach((useCase) => {
-          const card = createElement('article', 'use-case-card');
-          card.id = `use-case-${useCase.slug}`;
-          card.appendChild(createElement('span', 'use-case-group', useCase.group));
-          const title = createElement('h3');
-          const link = createElement('a', '', useCase.title);
-          link.href = useCase.source_url;
-          link.target = '_blank';
-          link.rel = 'noopener';
-          title.appendChild(link);
-          card.appendChild(title);
-          if (useCase.summary) card.appendChild(createElement('p', 'use-case-summary', useCase.summary));
-          const skills = createElement('div', 'detail-related');
-          useCase.skills.forEach((skillId) => {
-            const button = createElement('button', '', skillById.has(skillId) ? skillById.get(skillId).display_name : skillId);
-            button.type = 'button';
-            button.dataset.openSkill = skillId;
-            skills.appendChild(button);
+        groups.filter((group) => !active || group === active).forEach((group, groupIndex) => {
+          const cases = useCases.filter((useCase) => useCase.group === group);
+          const section = createElement('section', 'use-case-section');
+          section.dataset.categoryTone = roleTones[group] || 'slate';
+          const heading = createElement('h2', 'use-case-group');
+          heading.id = `use-case-group-${groupIndex}`;
+          section.setAttribute('aria-labelledby', heading.id);
+          const dot = createElement('span', 'tone-dot');
+          dot.setAttribute('aria-hidden', 'true');
+          heading.append(dot, createElement('span', 'use-case-group-name', group), createElement('span', 'filter-count', String(cases.length)));
+          section.appendChild(heading);
+          const grid = createElement('div', 'use-case-grid');
+          cases.forEach((useCase) => {
+            const card = createElement('article', 'use-case-card');
+            card.id = `use-case-${useCase.slug}`;
+            const title = createElement('h3');
+            const link = createElement('a', '', useCase.title);
+            link.href = useCase.source_url;
+            link.target = '_blank';
+            link.rel = 'noopener';
+            title.appendChild(link);
+            card.appendChild(title);
+            // Show who the page is for, then what the reader gets, so the cards scan in the same order.
+            const sentences = (useCase.summary || '').split(/(?<=\.)\s+(?=[A-Z])/);
+            const outcome = sentences.slice(1).find((sentence) => /^You (get|finish with)\b/.test(sentence));
+            if (outcome && /^This page is for /.test(sentences[0])) {
+              card.appendChild(createElement('p', 'use-case-summary', sentences[0].replace(/^This page is for /, 'For ')));
+              card.appendChild(createElement('p', 'use-case-outcome', outcome));
+            } else if (useCase.summary) {
+              card.appendChild(createElement('p', 'use-case-summary', useCase.summary));
+            }
+            const skills = createElement('div', 'detail-related use-case-skills');
+            useCase.skills.forEach((skillId) => skills.appendChild(skillChip(skillId)));
+            card.appendChild(skills);
+            grid.appendChild(card);
           });
-          card.appendChild(skills);
-          list.appendChild(card);
+          section.appendChild(grid);
+          list.appendChild(section);
         });
       }
       chips.replaceChildren();
       [null, ...groups].forEach((group) => {
-        const chip = createElement('button', 'chip', group || 'All roles');
+        const chip = createElement('button', 'chip');
         chip.type = 'button';
+        if (group) {
+          chip.dataset.categoryTone = roleTones[group] || 'slate';
+          const dot = createElement('span', 'tone-dot');
+          dot.setAttribute('aria-hidden', 'true');
+          chip.appendChild(dot);
+        }
+        chip.appendChild(createElement('span', '', group || 'All roles'));
         chip.setAttribute('aria-pressed', String(group === active));
         chip.addEventListener('click', () => {
           active = group;
@@ -590,6 +709,7 @@
 
     function renderTooling() {
       const target = byId('tooling-groups');
+      if (!target) return;
       target.replaceChildren();
       const order = ['still-required', 'optional-compatibility', 'deprecated', 'removable'];
       const labels = {
@@ -626,7 +746,7 @@
         group.appendChild(list);
         target.appendChild(group);
       });
-      byId('tooling-count').textContent = `${data.tooling_audit.length} cataloged surfaces`;
+      setText('tooling-count', `${data.tooling_audit.length} cataloged surfaces`);
     }
 
     function renderDetail(skill) {
@@ -697,11 +817,7 @@
       related.appendChild(createElement('h3', '', 'Related skills'));
       const relatedList = createElement('div', 'detail-related');
       skill.related_skills.forEach((relatedId) => {
-        const relatedSkill = skillById.get(relatedId);
-        const button = createElement('button', '', relatedSkill ? relatedSkill.display_name : relatedId);
-        button.type = 'button';
-        button.dataset.openSkill = relatedId;
-        relatedList.appendChild(button);
+        relatedList.appendChild(skillChip(relatedId));
       });
       related.appendChild(relatedList);
       grid.appendChild(related);
@@ -771,6 +887,12 @@
       byId('detail-close').focus();
     }
 
+    // The address to show when no skill dialog is open.
+    function restingUrl() {
+      if (page === 'workflows' && state.workflow) return serializeHash('workflow', state.workflow);
+      return `${window.location.pathname}${window.location.search}`;
+    }
+
     function closeDialog(updateUrl) {
       if (dialog.open && typeof dialog.close === 'function') dialog.close();
       else dialog.removeAttribute('open');
@@ -778,7 +900,7 @@
       const returnFocus = dialogReturnFocus;
       dialogReturnFocus = null;
       if (returnFocus && typeof returnFocus.focus === 'function') returnFocus.focus();
-      if (updateUrl && window.location.hash.startsWith('#skill/')) window.history.pushState(null, '', '#skills');
+      if (updateUrl && window.location.hash.startsWith('#skill/')) window.history.pushState(null, '', restingUrl());
     }
 
     function openSkill(id, updateUrl) {
@@ -791,24 +913,47 @@
       if (updateUrl !== false && window.location.hash !== serializeHash('skill', id)) window.history.pushState(null, '', serializeHash('skill', id));
     }
 
+    function showWorkflow(id, moveFocus) {
+      state.workflow = workflowById.has(id) ? id : null;
+      renderWorkflowView();
+      if (!state.workflow) return;
+      const heading = byId(`workflow-title-${state.workflow}`);
+      byId('workflow-detail').scrollIntoView({ block: 'start' });
+      if (moveFocus && heading) heading.focus({ preventScroll: true });
+    }
+
     function openWorkflow(id, updateUrl) {
-      const workflow = workflowById.get(id);
-      if (!workflow) return;
-      closeDialog(false);
-      const target = byId(`workflow-${workflow.id}`);
-      if (target) {
-        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        target.dataset.selected = 'true';
-        window.setTimeout(() => { delete target.dataset.selected; }, 1100);
+      if (!workflowById.has(id)) return;
+      if (page !== 'workflows') {
+        window.location.href = `workflows.html${serializeHash('workflow', id)}`;
+        return;
       }
+      closeDialog(false);
+      showWorkflow(id, true);
       if (updateUrl !== false && window.location.hash !== serializeHash('workflow', id)) window.history.pushState(null, '', serializeHash('workflow', id));
     }
 
     function applyHash() {
       const locationHash = parseHash(window.location.hash);
-      if (locationHash.type === 'skill' && skillById.has(locationHash.id)) openSkill(locationHash.id, false);
-      else if (locationHash.type === 'workflow' && workflowById.has(locationHash.id)) openWorkflow(locationHash.id, false);
-      else if (locationHash.type === 'start' || locationHash.type === 'skills') closeDialog(false);
+      if (page === 'index') {
+        // Send links to the earlier one-page portal to the page that now holds the section.
+        if (locationHash.type === 'workflow' && workflowById.has(locationHash.id)) {
+          window.location.replace(`workflows.html${serializeHash('workflow', locationHash.id)}`);
+          return;
+        }
+        if (movedSections[locationHash.type]) {
+          window.location.replace(movedSections[locationHash.type]);
+          return;
+        }
+      }
+      if (locationHash.type === 'skill' && skillById.has(locationHash.id)) {
+        openSkill(locationHash.id, false);
+        return;
+      }
+      closeDialog(false);
+      if (page !== 'workflows') return;
+      if (locationHash.type === 'workflow' && workflowById.has(locationHash.id)) showWorkflow(locationHash.id, true);
+      else if (locationHash.type === 'start') showWorkflow(null, false);
     }
 
     function updateFilter(group, value) {
@@ -880,19 +1025,7 @@
       toggle.setAttribute('aria-pressed', String(resolved.isDark));
     }
 
-    byId('skill-search').addEventListener('input', (event) => {
-      state.query = event.target.value;
-      renderSkills();
-      renderCategoryBucketPanel();
-    });
-    byId('clear-search').addEventListener('click', () => {
-      state.query = '';
-      byId('skill-search').value = '';
-      renderSkills();
-      renderCategoryBucketPanel();
-      byId('skill-search').focus();
-    });
-    byId('clear-filters').addEventListener('click', () => {
+    function resetFinder() {
       Object.assign(state, clearFilters());
       state.expandedCategory = null;
       byId('skill-search').value = '';
@@ -900,27 +1033,42 @@
       renderSkills();
       renderCategoryBuckets();
       renderCategoryBucketPanel();
-    });
-    byId('empty-clear').addEventListener('click', () => {
-      Object.assign(state, clearFilters());
-      state.expandedCategory = null;
-      byId('skill-search').value = '';
-      renderFilters();
-      renderSkills();
-      renderCategoryBuckets();
-      renderCategoryBucketPanel();
-    });
-    byId('category-buckets').addEventListener('click', (event) => {
-      const button = event.target.closest('[data-category-bucket]');
-      if (button) toggleCategoryBucket(button.dataset.categoryBucket);
-    });
-    byId('category-filters').addEventListener('click', (event) => {
-      const button = event.target.closest('[data-filter-group="category"]');
-      if (button) updateFilter('category', button.dataset.filterValue);
-    });
-    byId('tag-filters').addEventListener('click', (event) => {
-      const button = event.target.closest('[data-filter-group="tag"]');
-      if (button) updateFilter('tag', button.dataset.filterValue);
+    }
+
+    const hasFinder = Boolean(byId('skills-grid'));
+    if (hasFinder) {
+      on('skill-search', 'input', (event) => {
+        state.query = event.target.value;
+        renderSkills();
+        renderCategoryBucketPanel();
+      });
+      on('clear-search', 'click', () => {
+        state.query = '';
+        byId('skill-search').value = '';
+        renderSkills();
+        renderCategoryBucketPanel();
+        byId('skill-search').focus();
+      });
+      on('clear-filters', 'click', resetFinder);
+      on('empty-clear', 'click', resetFinder);
+      on('category-buckets', 'click', (event) => {
+        const button = event.target.closest('[data-category-bucket]');
+        if (button) toggleCategoryBucket(button.dataset.categoryBucket);
+      });
+      on('category-filters', 'click', (event) => {
+        const button = event.target.closest('[data-filter-group="category"]');
+        if (button) updateFilter('category', button.dataset.filterValue);
+      });
+      on('tag-filters', 'click', (event) => {
+        const button = event.target.closest('[data-filter-group="tag"]');
+        if (button) updateFilter('tag', button.dataset.filterValue);
+      });
+    }
+    on('workflow-back', 'click', (event) => {
+      event.preventDefault();
+      showWorkflow(null, false);
+      window.history.pushState(null, '', restingUrl());
+      byId('main-content').scrollIntoView({ block: 'start' });
     });
     documentRef.addEventListener('click', (event) => {
       const skillButton = event.target.closest('[data-open-skill]');
@@ -931,7 +1079,7 @@
       if (copyButton && !skillButton) copyText(copyButton, copyButton.dataset.copyText);
     });
     documentRef.addEventListener('keydown', (event) => {
-      if (!(event.ctrlKey || event.metaKey) || event.key.toLowerCase() !== 'k' || dialog.open) return;
+      if (!(event.ctrlKey || event.metaKey) || event.key.toLowerCase() !== 'k' || dialog.open || !hasFinder) return;
       event.preventDefault();
       byId('skill-search').focus();
     });
@@ -959,11 +1107,13 @@
     renderHeroInstall();
     renderHostSetup();
     renderStartHere();
-    renderCategoryBuckets();
-    renderFilters();
-    renderSkills();
-    renderCategoryBucketPanel();
-    renderWorkflows();
+    if (hasFinder) {
+      renderCategoryBuckets();
+      renderFilters();
+      renderSkills();
+      renderCategoryBucketPanel();
+    }
+    renderWorkflowView();
     renderUseCases();
     renderTooling();
     applyHash();

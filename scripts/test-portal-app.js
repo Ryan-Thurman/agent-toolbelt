@@ -5,7 +5,7 @@ const assert = require('assert');
 const fs = require('fs');
 const os = require('os');
 const path = require('path');
-const { build, normalizePortalPayload } = require('./build-portal');
+const { build, normalizePortalPayload, plainText, renderPage, PAGES } = require('./build-portal');
 const { categoryBucketState, categorySkillIds, filterSkills, invocationFor, parseHash, serializeHash, clearFilters, skillSearchText, themeState } = require('../portal/src/app');
 
 const payload = normalizePortalPayload();
@@ -40,7 +40,15 @@ assert.deepStrictEqual(themeState('dark', false), { theme: 'dark', isDark: true,
 assert.deepStrictEqual(themeState(null, true), { theme: 'dark', isDark: true, buttonText: 'Light mode', ariaLabel: 'Use light theme' }, 'system dark should be respected without a saved theme');
 assert(skillSearchText(payload.skills.find((skill) => skill.id === 'threat-model')).includes('trust-boundary'), 'search text should include tags and metadata');
 
-const indexSource = fs.readFileSync(path.join(__dirname, '..', 'portal', 'src', 'index.html'), 'utf8');
+const sourceDirectory = path.join(__dirname, '..', 'portal', 'src');
+const indexSource = renderPage(sourceDirectory, PAGES.find((page) => page.id === 'index'));
+PAGES.forEach((page) => {
+  const html = renderPage(sourceDirectory, page);
+  assert(html.includes(`data-page="${page.id}"`), `page should name itself for the app: ${page.id}`);
+  assert(html.includes(`data-nav="${page.id}" aria-current="page"`), `page should mark its navigation link: ${page.id}`);
+});
+assert.strictEqual(plainText('Use [Design a capability](arch-design.md) for a `Needs decision` and **bold** text.'), 'Use Design a capability for a Needs decision and bold text.', 'use-case summaries should be plain text');
+assert.deepStrictEqual(parseHash('#use-cases'), { type: 'use-cases', id: null }, 'a section hash of the earlier one-page portal should parse');
 const appSource = fs.readFileSync(path.join(__dirname, '..', 'portal', 'src', 'app.js'), 'utf8');
 assert(indexSource.includes('aria-labelledby="detail-title"'), 'dialog should identify its title');
 assert(indexSource.includes('id="browse"'), 'Browse all navigation must target the results anchor');
@@ -50,7 +58,7 @@ assert(appSource.includes("detailTitle.id = 'detail-title'"), 'dialog title shou
 assert(appSource.includes('copy-status'), 'host copy status should preserve structured markup');
 assert(appSource.includes("copyStatus.setAttribute('role', 'status')"), 'host copy status should be announceable');
 assert(appSource.includes('Copy failed'), 'copy rejection should report failure accurately');
-assert(appSource.includes("addEventListener('input'"), 'search should update from input events');
+assert(appSource.includes("on('skill-search', 'input'"), 'search should update from input events');
 assert(appSource.includes('toggleCategoryBucket'), 'category buckets should have an expansion behavior');
 
 const tempOutput = fs.mkdtempSync(path.join(os.tmpdir(), 'agent-toolbelt-portal-sentinel-'));

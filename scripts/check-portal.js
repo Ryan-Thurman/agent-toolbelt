@@ -6,6 +6,7 @@ const fs = require('fs');
 const path = require('path');
 const vm = require('vm');
 const { ROOT, discoverCanonicalSkills } = require('./catalog-lib');
+const { GENERATED_FILES, PAGES } = require('./build-portal');
 
 function readPayload(outputDirectory) {
   const scriptPath = path.join(outputDirectory, 'data.js');
@@ -15,36 +16,47 @@ function readPayload(outputDirectory) {
   return context.window.AGENT_TOOLBELT_DATA;
 }
 
-function checkSamePageAnchors(html, label) {
-  const ids = new Set(Array.from(html.matchAll(/\bid="([^"]+)"/g), (match) => match[1]));
-  const links = Array.from(html.matchAll(/\bhref="#([^"#]+)"/g), (match) => match[1]);
-  links.forEach((target) => assert(ids.has(target), `${label} has a broken same-page anchor: #${target}`));
-  assert(links.includes('browse'), `${label} must keep the Browse all anchor: #browse`);
+// Each link must point to an anchor on its page, to another generated page, or to an anchor on that page.
+function checkLinks(pages, label) {
+  const idsByFile = new Map(Array.from(pages, ([file, html]) => [file, new Set(Array.from(html.matchAll(/\bid="([^"]+)"/g), (match) => match[1]))]));
+  pages.forEach((html, file) => {
+    Array.from(html.matchAll(/\bhref="([^"]*)"/g), (match) => match[1]).forEach((href) => {
+      if (!href.startsWith('#') && !/\.html(#|$)/.test(href)) return;
+      const [target, anchor] = href.split('#');
+      const targetFile = target || file;
+      assert(idsByFile.has(targetFile), `${label} ${file} links to a page that does not exist: ${href}`);
+      if (anchor) assert(idsByFile.get(targetFile).has(anchor), `${label} ${file} has a broken anchor: ${href}`);
+    });
+  });
 }
 
 function check(outputDirectory, root = ROOT) {
   const output = path.resolve(outputDirectory);
-  const requiredFiles = [
-    'index.html', 'styles.css', 'app.js', 'data.js', 'brand-icon.svg',
-    'favicon.svg', 'favicon-16.png', 'favicon-32.png', 'favicon-48.png'
-  ];
-  requiredFiles.forEach((file) => assert(fs.existsSync(path.join(output, file)), `missing generated portal file: ${file}`));
-  const index = fs.readFileSync(path.join(output, 'index.html'), 'utf8');
+  GENERATED_FILES.forEach((file) => assert(fs.existsSync(path.join(output, file)), `missing generated portal file: ${file}`));
+  const pages = new Map(PAGES.map((page) => [page.file, fs.readFileSync(path.join(output, page.file), 'utf8')]));
+  const index = pages.get('index.html');
+  const allPages = Array.from(pages.values()).join('\n');
   const styles = fs.readFileSync(path.join(output, 'styles.css'), 'utf8');
   const app = fs.readFileSync(path.join(output, 'app.js'), 'utf8');
-  checkSamePageAnchors(index, 'generated portal index');
-  const authoredIndex = fs.readFileSync(path.join(root, 'portal', 'src', 'index.html'), 'utf8');
-  checkSamePageAnchors(authoredIndex, 'authored portal index');
-  assert(index.includes('href="styles.css"'), 'index must reference styles.css');
-  assert(index.includes('src="data.js"'), 'index must reference data.js');
-  assert(index.includes('src="app.js"'), 'index must reference app.js');
-  assert(index.includes('id="hosts"'), 'index must include host setup guidance');
-  assert(index.includes('aria-labelledby="detail-title"'), 'dialog must label itself with detail-title');
+  checkLinks(pages, 'generated portal page');
+  assert(index.includes('href="#browse"') && index.includes('id="browse"'), 'the skill library must keep the Browse results anchor: #browse');
+  pages.forEach((html, file) => {
+    assert(html.includes('href="styles.css"'), `${file} must reference styles.css`);
+    assert(html.includes('src="data.js"'), `${file} must reference data.js`);
+    assert(html.includes('src="app.js"'), `${file} must reference app.js`);
+    assert(html.includes('aria-labelledby="detail-title"'), `${file}: dialog must label itself with detail-title`);
+    assert(/<h1[ >]/.test(html), `${file} must have a level-one heading`);
+    assert((html.match(/aria-current="page"/g) || []).length === 1, `${file} must mark one navigation link as the current page`);
+    assert(!/\{\{/.test(html), `${file} has a layout placeholder with no value`);
+  });
+  assert(pages.get('setup.html').includes('id="hosts"'), 'the setup page must include host setup guidance');
+  assert(pages.get('workflows.html').includes('id="workflow-list"'), 'the workflows page must include the workflow stages target');
+  assert(pages.get('use-cases.html').includes('id="use-case-list"'), 'the use-cases page must include the use-case list target');
   assert(index.includes('id="category-buckets"'), 'portal must include the guided category walkthrough');
   assert(index.includes('id="category-bucket-panel"'), 'portal must include the category bucket panel');
-  assert(!/fetch\s*\(|\bimport\s*\(/.test(`${index}\n${styles}\n${app}`), 'portal runtime must not fetch or import remote data');
-  assert(!/https?:\/\//.test(`${index}\n${styles}\n${app}`), 'portal shell must not depend on remote URLs');
-  assert(!/https?:\/\//.test(index), 'portal index must not include remote assets');
+  assert(!/fetch\s*\(|\bimport\s*\(/.test(`${allPages}\n${styles}\n${app}`), 'portal runtime must not fetch or import remote data');
+  assert(!/https?:\/\//.test(`${allPages}\n${styles}\n${app}`), 'portal shell must not depend on remote URLs');
+  assert(!/https?:\/\//.test(allPages), 'portal pages must not include remote assets');
   assert(styles.includes('.search-field'), 'portal must style the search control');
   assert(styles.includes('grid-column: 1 / -1'), 'search control should use a compact full-width row');
   const payload = readPayload(output);
@@ -57,6 +69,7 @@ function check(outputDirectory, root = ROOT) {
   const skillIds = new Set(payload.skills.map((skill) => skill.id));
   payload.use_cases.forEach((useCase) => {
     assert(useCase.title && useCase.summary && useCase.group, `use case is incomplete: ${useCase.slug}`);
+    assert(!/`|\]\(/.test(useCase.summary), `use-case summary must be plain text, not Markdown: ${useCase.slug}`);
     assert(fs.existsSync(path.join(root, useCase.source_path)), `use-case source is missing: ${useCase.source_path}`);
     useCase.skills.forEach((id) => assert(skillIds.has(id), `use case ${useCase.slug} names an unknown skill: ${id}`));
   });

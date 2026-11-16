@@ -11,20 +11,19 @@
   <link rel="icon" type="image/png" sizes="48x48" href="favicon-48.png">
   <link rel="icon" type="image/svg+xml" sizes="any" href="favicon.svg">
 </head>
-<body>
+<body data-page="index">
   <a class="skip-link" href="#main-content">Skip to content</a>
   <header class="site-header">
     <div class="shell header-inner">
-      <a class="brand" href="#start" aria-label="Agent Toolbelt home">
+      <a class="brand" href="index.html" aria-label="Agent Toolbelt home">
         <img class="brand-mark" src="brand-icon.svg" width="33" height="33" alt="" aria-hidden="true">
         <span>Agent Toolbelt</span>
       </a>
       <nav class="top-nav" aria-label="Primary navigation">
-        <a href="#skills">Skill library</a>
-        <a href="#workflows">Workflows</a>
-        <a href="#use-cases">Use cases</a>
-        <a href="#hosts">Setup</a>
-        <a href="#capabilities">About</a>
+        <a href="index.html" data-nav="index" aria-current="page">Skill library</a>
+        <a href="workflows.html" data-nav="workflows">Workflows</a>
+        <a href="use-cases.html" data-nav="use-cases">Use cases</a>
+        <a href="setup.html" data-nav="setup">Setup</a>
       </nav>
       <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Use dark theme" aria-pressed="false">Dark mode</button>
     </div>
@@ -39,7 +38,7 @@
           <p class="hero-lede">Find what to use, when to use it, and what you will get.</p>
           <p class="library-overview" aria-label="Library overview"><span><strong id="skill-count">44</strong> skills</span><span><strong id="workflow-count">11</strong> workflows</span><span><strong id="host-count">3</strong> agent hosts</span></p>
           <div class="install-block" id="hero-install"></div>
-          <p class="install-note">Replace <code>/path/to/agent-toolbelt</code> with your local clone. <a class="inline-link" href="#hosts">All setup steps</a></p>
+          <p class="install-note">Replace <code>/path/to/agent-toolbelt</code> with your local clone. <a class="inline-link" href="setup.html">All setup steps</a></p>
         </div>
         <section class="task-entry" aria-labelledby="task-entry-title">
           <h2 id="task-entry-title">Start with a task</h2>
@@ -56,7 +55,7 @@
             <h2 id="finder-title">Skill library</h2>
             <p class="catalog-intro">Choose a category. Compare each skill by its purpose and result.</p>
           </div>
-          <a class="inline-link" href="#start-here">Explore workflows <span aria-hidden="true">↗</span></a>
+          <a class="inline-link" href="workflows.html">Explore workflows <span aria-hidden="true">→</span></a>
         </div>
         <div class="catalog-layout">
           <aside class="catalog-sidebar" aria-label="Filter skills">
@@ -73,7 +72,7 @@
             <div class="sidebar-hosts">
               <p class="filter-label">Available in</p>
               <div class="host-list" id="hero-hosts"></div>
-              <a class="inline-link" href="#hosts">View setup instructions <span aria-hidden="true">↗</span></a>
+              <a class="inline-link" href="setup.html">View setup instructions <span aria-hidden="true">→</span></a>
             </div>
           </aside>
           <div class="catalog-content">
@@ -122,95 +121,12 @@
         </div>
       </div>
     </section>
-
-    <section class="section start-here" id="start-here" aria-labelledby="start-here-title">
-      <div class="shell">
-        <div class="section-heading">
-          <div>
-            <p class="eyebrow">Start here</p>
-            <h2 id="start-here-title">Start with a workflow.</h2>
-          </div>
-          <p class="section-intro">Choose a task to see its sequence of skills.</p>
-        </div>
-        <div class="start-grid" id="start-here-list"></div>
-      </div>
-    </section>
-
-    <section class="section host-guidance" id="hosts" aria-labelledby="hosts-title">
-      <div class="shell">
-        <div class="section-heading">
-          <div>
-            <p class="eyebrow">Setup</p>
-            <h2 id="hosts-title">Use skills in your agent host.</h2>
-          </div>
-          <p class="section-intro">An agent host runs your skills. Choose your host below for installation commands.</p>
-        </div>
-        <div class="host-setup-grid" id="host-setup-list"></div>
-      </div>
-    </section>
-
-    <section class="section workflows" id="workflows" aria-labelledby="workflows-title">
-      <div class="shell">
-        <div class="section-heading">
-          <div>
-            <p class="eyebrow">Common workflows</p>
-            <h2 id="workflows-title">Follow a task from start to finish.</h2>
-          </div>
-          <p class="section-intro">Each stage shows its category, output, and possible next skills. Choose the stages that fit your task.</p>
-        </div>
-        <div class="workflow-list" id="workflow-list"></div>
-      </div>
-    </section>
-
-    <section class="section use-cases" id="use-cases" aria-labelledby="use-cases-title">
-      <div class="shell">
-        <div class="section-heading">
-          <div>
-            <p class="eyebrow">Use cases</p>
-            <h2 id="use-cases-title">See the skills on real work.</h2>
-          </div>
-          <p class="section-intro">Each page starts from a situation, gives a quick path, and explains when to stop or choose another path. The examples come from real runs on a sample API.</p>
-        </div>
-        <div class="chip-list" id="use-case-groups" role="group" aria-label="Filter use cases by role"></div>
-        <div class="use-case-list" id="use-case-list"></div>
-      </div>
-    </section>
-
-    <section class="section capabilities" id="capabilities" aria-labelledby="capabilities-title">
-      <div class="shell">
-        <div class="section-heading">
-          <div>
-            <p class="eyebrow">Capabilities</p>
-            <h2 id="capabilities-title">Skills and supporting tools.</h2>
-          </div>
-          <p class="section-intro">The plugin contains the skill library. Installers, commands, hooks, and build tools support installation and maintenance.</p>
-        </div>
-        <div class="capability-columns">
-          <article class="capability-card plugin-capability">
-            <span class="capability-icon" id="plugin-skill-count" aria-hidden="true">44</span>
-            <h3>Plugin skills</h3>
-            <p>Reusable skills for planning, building, testing, reviewing, debugging, security, and release work across Cursor, Claude Code, and Codex.</p>
-            <a class="inline-link" href="#skills">Browse all skills <span aria-hidden="true">→</span></a>
-          </article>
-          <div class="tooling-card">
-            <div class="tooling-heading">
-              <div>
-                <span class="eyebrow">Compatibility inventory</span>
-                <h3>Optional utilities and legacy surfaces</h3>
-              </div>
-              <span class="tooling-count" id="tooling-count"></span>
-            </div>
-            <div class="tooling-groups" id="tooling-groups"></div>
-          </div>
-        </div>
-      </div>
-    </section>
   </main>
 
   <footer class="site-footer">
     <div class="shell footer-inner">
       <p><strong>Agent Toolbelt</strong> is an independent, general-purpose skill collection.</p>
-      <p>Source paths stay canonical in <code>skills/&lt;id&gt;/SKILL.md</code>.</p>
+      <p>Source paths stay canonical in <code>skills/&lt;id&gt;/SKILL.md</code>. <a class="inline-link" href="setup.html#capabilities">About the plugin</a></p>
     </div>
   </footer>
 

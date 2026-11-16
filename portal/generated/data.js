@@ -2938,7 +2938,7 @@ window.AGENT_TOOLBELT_DATA = {
     {
       "slug": "qa-review-feature-files",
       "title": "Review feature files that a developer wrote",
-      "summary": "Use this page to review feature files that a developer wrote. You get a list of findings, ranked by risk, and each finding has a suggested rewrite. Gherkin is the Given/When/Then text format that behavior-driven development (BDD) tools read. This page is not for you if the feature files do not exist yet (use the write mode of `bdd-scenarios`) or if the criteria are vague (use [Refine a vague story](qa-refine-a-vague-story.md) first). You must say if the files are good enough to build against.",
+      "summary": "Use this page to review feature files that a developer wrote. You get a list of findings, ranked by risk, and each finding has a suggested rewrite. Gherkin is the Given/When/Then text format that behavior-driven development (BDD) tools read. This page is not for you if the feature files do not exist yet (use the write mode of bdd-scenarios) or if the criteria are vague (use Refine a vague story first). You must say if the files are good enough to build against.",
       "group": "QA and test",
       "roles": "QA engineer. The developer who wrote the files answers the findings.",
       "skills": [
@@ -3061,7 +3061,7 @@ window.AGENT_TOOLBELT_DATA = {
     {
       "slug": "dev-self-review-before-a-pr",
       "title": "Check a branch before you open a pull request",
-      "summary": "This page is for a developer who has a finished branch and wants to find problems before a reviewer does. You get a local review report with a verdict, a list of findings and open questions, and a readiness verdict. Nothing is posted anywhere. If your PR is already open, use `/pr-review` instead (see Decision points).",
+      "summary": "This page is for a developer who has a finished branch and wants to find problems before a reviewer does. You get a local review report with a verdict, a list of findings and open questions, and a readiness verdict. Nothing is posted anywhere. If your PR is already open, use /pr-review instead (see Decision points).",
       "group": "Developer",
       "roles": "Developer",
       "skills": [
@@ -3073,7 +3073,7 @@ window.AGENT_TOOLBELT_DATA = {
     {
       "slug": "dev-survive-a-context-reset",
       "title": "Survive a context reset in the middle of a task",
-      "summary": "This page is for a developer whose task is too long for one agent session. You get phase files, a handoff, and a context packet (a short file that gives a fresh session the goal, git state, and next action). They sit in the repository, and a fresh session continues from them, not from chat history. For a task that fits one session, use `/handoff` alone.",
+      "summary": "This page is for a developer whose task is too long for one agent session. You get phase files, a handoff, and a context packet (a short file that gives a fresh session the goal, git state, and next action). They sit in the repository, and a fresh session continues from them, not from chat history. For a task that fits one session, use /handoff alone.",
       "group": "Developer",
       "roles": "Developer",
       "skills": [
@@ -3122,7 +3122,7 @@ window.AGENT_TOOLBELT_DATA = {
     {
       "slug": "product-review-outcomes-after-release",
       "title": "Review product outcomes after a release",
-      "summary": "This page is for a product manager who ships a change and must judge whether it moved the outcome. You get a review with the original hypothesis, the before and after comparisons that are valid, and the uncertainty of the result. It ends with one of four decisions: `Continue`, `Revise`, `Stop`, or `Gather evidence`.",
+      "summary": "This page is for a product manager who ships a change and must judge whether it moved the outcome. You get a review with the original hypothesis, the before and after comparisons that are valid, and the uncertainty of the result. It ends with one of four decisions: Continue, Revise, Stop, or Gather evidence.",
       "group": "Product",
       "roles": "Product manager",
       "skills": [
@@ -3159,7 +3159,7 @@ window.AGENT_TOOLBELT_DATA = {
     {
       "slug": "arch-answer-an-architecture-question",
       "title": "Answer an architecture question",
-      "summary": "This page is for a developer or architect with one focused architecture question about an existing codebase. You get a direct answer with its evidence and the alternatives that the code rules out. You also get a list of decisions that only the owner can make. To design a whole feature, use [Design a new capability](arch-design-a-new-capability.md) instead.",
+      "summary": "This page is for a developer or architect with one focused architecture question about an existing codebase. You get a direct answer with its evidence and the alternatives that the code rules out. You also get a list of decisions that only the owner can make. To design a whole feature, use Design a new capability instead.",
       "group": "Architecture, SRE, and security",
       "roles": "Developer, architect",
       "skills": [
@@ -3171,7 +3171,7 @@ window.AGENT_TOOLBELT_DATA = {
     {
       "slug": "arch-design-a-new-capability",
       "title": "Design a new capability before you build it",
-      "summary": "This page is for an architect or senior developer who must design a new capability in an existing codebase. You get a design document with diagrams and recorded decisions, a threat review, and a reliability review. A verdict, such as `Needs decision`, says whether the design can go to planning.",
+      "summary": "This page is for an architect or senior developer who must design a new capability in an existing codebase. You get a design document with diagrams and recorded decisions, a threat review, and a reliability review. A verdict, such as Needs decision, says whether the design can go to planning.",
       "group": "Architecture, SRE, and security",
       "roles": "Architect or senior developer",
       "skills": [
@@ -3213,7 +3213,7 @@ window.AGENT_TOOLBELT_DATA = {
     {
       "slug": "sre-run-a-production-readiness-review",
       "title": "Run a production readiness review before a launch",
-      "summary": "This page is for an SRE or a tech lead who must decide if a service is ready for its first launch. You get a status for each reliability requirement (`Verified`, `Failed`, or `Not verified`). You also get a list of the missing evidence and a GO or NO-GO verdict with its blocking gaps.",
+      "summary": "This page is for an SRE or a tech lead who must decide if a service is ready for its first launch. You get a status for each reliability requirement (Verified, Failed, or Not verified). You also get a list of the missing evidence and a GO or NO-GO verdict with its blocking gaps.",
       "group": "Architecture, SRE, and security",
       "roles": "SRE, tech lead",
       "skills": [
@@ -3263,7 +3263,7 @@ window.AGENT_TOOLBELT_DATA = {
     {
       "slug": "lead-decide-one-backlog-item",
       "title": "Decide one technical backlog item",
-      "summary": "This page is for a tech lead who must decide one backlog item, such as a major dependency upgrade. You get one verdict (`Do`, `Defer`, `Reject`, or `Spike`) with the evidence, the options, the risks, and the next command. For a dependency upgrade, the report also lists version changes that touch your code.",
+      "summary": "This page is for a tech lead who must decide one backlog item, such as a major dependency upgrade. You get one verdict (Do, Defer, Reject, or Spike) with the evidence, the options, the risks, and the next command. For a dependency upgrade, the report also lists version changes that touch your code.",
       "group": "Tech lead",
       "roles": "Tech lead",
       "skills": [
@@ -3275,7 +3275,7 @@ window.AGENT_TOOLBELT_DATA = {
     {
       "slug": "lead-prepare-a-release",
       "title": "Prepare a release and decide go or no-go",
-      "summary": "This page is for a tech lead who must decide go or no-go for a release after a change is merged. You get a release package with a GO or NO-GO verdict and its blocking gaps, a rollback plan, a release-notes draft, and a rollout and monitor plan. Use it after the merge. For a change before the pull request, use the pre-PR gate ([`/pr-ready-check`](ops-enforce-a-pre-pr-gate.md)). For a new service, use the [production readiness review](sre-run-a-production-readiness-review.md).",
+      "summary": "This page is for a tech lead who must decide go or no-go for a release after a change is merged. You get a release package with a GO or NO-GO verdict and its blocking gaps, a rollback plan, a release-notes draft, and a rollout and monitor plan. Use it after the merge. For a change before the pull request, use the pre-PR gate (/pr-ready-check). For a new service, use the production readiness review.",
       "group": "Tech lead",
       "roles": "Tech lead",
       "skills": [
@@ -3338,7 +3338,7 @@ window.AGENT_TOOLBELT_DATA = {
     {
       "slug": "ops-cursor-hooks",
       "title": "Add commit and push checks for Cursor users",
-      "summary": "This page is for a platform engineer whose team uses Cursor. You install two advisory Cursor hooks into a repository. One hook asks for a confirmation when a commit changes code but no documentation. The other hook reminds the team to run `/pr-review` before a push. Both hooks are advisory: they ask, and they never block. Both hooks are fail-open: on a hook error, the action goes ahead.",
+      "summary": "This page is for a platform engineer whose team uses Cursor. You install two advisory Cursor hooks into a repository. One hook asks for a confirmation when a commit changes code but no documentation. The other hook reminds the team to run /pr-review before a push. Both hooks are advisory: they ask, and they never block. Both hooks are fail-open: on a hook error, the action goes ahead.",
       "group": "Platform and operators",
       "roles": "Platform engineer",
       "skills": [
@@ -3351,7 +3351,7 @@ window.AGENT_TOOLBELT_DATA = {
     {
       "slug": "ops-enforce-a-pre-pr-gate",
       "title": "Enforce a pre-PR gate on every branch",
-      "summary": "This page is for a tech lead whose policy says every pull request passes a quality gate. You get one status for the checked-out branch: `PASS`, `FAIL`, `CAPPED`, or `BLOCKED`. You also get a folder of evidence and a way to see when the status is stale. The sample run ends `PASS`. Two required checks were already red on the base commit, and the gate lists them as pre-existing failures, apart from new ones.",
+      "summary": "This page is for a tech lead whose policy says every pull request passes a quality gate. You get one status for the checked-out branch: PASS, FAIL, CAPPED, or BLOCKED. You also get a folder of evidence and a way to see when the status is stale. The sample run ends PASS. Two required checks were already red on the base commit, and the gate lists them as pre-existing failures, apart from new ones.",
       "group": "Platform and operators",
       "roles": "Tech lead",
       "skills": [
@@ -3477,7 +3477,7 @@ window.AGENT_TOOLBELT_DATA = {
     {
       "slug": "journey-idea-to-release",
       "title": "From an idea to an accepted release",
-      "summary": "This page is for a team lead or product owner who plans one feature from idea to an accepted release with agents and people. It maps the seven stages of the idea-to-release workflow to nine earlier runs and shows why no gate reaches `Ready`. No run released the feature. You get the use-case page for each stage, the gate verdict that the evidence supports, and the approvals that stay with people.",
+      "summary": "This page is for a team lead or product owner who plans one feature from idea to an accepted release with agents and people. It maps the seven stages of the idea-to-release workflow to nine earlier runs and shows why no gate reaches Ready. No run released the feature. You get the use-case page for each stage, the gate verdict that the evidence supports, and the approvals that stay with people.",
       "group": "End-to-end journeys",
       "roles": "Product owner, team lead, QA lead, developers. Each stage names its own owner.",
       "skills": [

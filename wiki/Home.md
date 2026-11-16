@@ -13,6 +13,7 @@ Commands and hooks are optional project-scoped compatibility surfaces.
 
 | Page | Covers |
 |---|---|
+| [Use cases](use-cases/README.md) | Real tasks for QA, developers, product, architecture and SRE, tech leads, platform operators, and writers: a quick path, the reasons, decision points, and real output from a sample API |
 | [Installation](Installation.md) | Native plugin setup, `install.sh`, harness selection, polyrepo `--sweep`, Cursor routing rule, first repository setup |
 | [Workflows](Workflows.md) | Phased Delivery, Phase Context, Bug to Fix, System Design, Production Readiness, Incident Follow-Up, Product Discovery, Threat Model, Shape Up, Story Refinement, Risk-Based Testing |
 | [Code Review](Code-Review.md) | PR Review, Code Quality Gate, PR Improve, and the triggers: Review Reply, Review on Open, Review Queue, Phase Gate, Cursor Hooks |

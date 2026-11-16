@@ -11,6 +11,8 @@ The [offline portal](../portal/generated/index.html) owns discovery and examples
 `scripts/build-workflow-stages.js` writes each stage table between the `catalog stages` markers.
 Do not edit a table by hand. `scripts/check-catalog.sh` fails when a table does not match the catalog.
 
+- `idea-to-release-workflow.md` - one feature from idea to accepted release through seven gated stages,
+  with delivery modes for human teams and agent pods.
 - `feature-refinement-workflow.md` - ticket or story refinement into a ready-to-build spec, with
   owner questions, Given/When/Then criteria, feature files, and a readiness verdict.
 - `risk-based-testing-workflow.md` - risk areas mapped once from code, history, and a workspace map,

@@ -114,6 +114,23 @@ test('readable catalog, filters, and skill details', async ({ page }, testInfo) 
   expect(remoteRequests).toEqual([]);
 });
 
+test('use cases render, filter by role, and link from skill details', async ({ page }) => {
+  await page.goto(portalURL);
+  const cards = page.locator('#use-case-list .use-case-card');
+  const total = await cards.count();
+  expect(total).toBeGreaterThan(0);
+  const qa = page.locator('#use-case-groups').getByRole('button', { name: 'QA and test' });
+  await qa.click();
+  await expect(qa).toHaveAttribute('aria-pressed', 'true');
+  const qaCount = await cards.count();
+  expect(qaCount).toBeGreaterThan(0);
+  expect(qaCount).toBeLessThanOrEqual(total);
+  await expect(cards.first().locator('.use-case-group')).toHaveText('QA and test');
+  await cards.first().locator('.detail-related button').first().click();
+  await expect(page.getByRole('dialog')).toBeVisible();
+  await expect(page.locator('.detail-use-cases li').first()).toBeVisible();
+});
+
 test('theme preference persists and keyboard focus is visible', async ({ page }, testInfo) => {
   const initial = testInfo.project.use.colorScheme;
   const next = initial === 'dark' ? 'light' : 'dark';
@@ -181,7 +198,7 @@ async function checkTaskShortcuts(page) {
 
 
 async function checkProductDesignWorkflows(page, testInfo) {
-  await expect(page.locator('#workflow-count')).toHaveText('10');
+  await expect(page.locator('#workflow-count')).toHaveText('11');
   const learning = page.locator('#workflow-product-learning');
   await learning.scrollIntoViewIfNeeded();
   const stages = learning.getByRole('list', { name: 'Product decisions and learning stages' });

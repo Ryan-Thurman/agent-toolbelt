@@ -52,7 +52,14 @@ function check(outputDirectory, root = ROOT) {
   const canonical = discoverCanonicalSkills(root).skills;
   assert.strictEqual(payload.skills.length, 44, 'generated portal must contain 44 standard skills');
   assert.strictEqual(JSON.stringify(Array.from(payload.skills, (skill) => skill.id).sort()), JSON.stringify(canonical.map((skill) => skill.id).sort()), 'generated skill IDs must match canonical IDs');
-  assert.strictEqual(payload.workflows.length, 10, 'generated portal must contain ten workflows');
+  assert.strictEqual(payload.workflows.length, 11, 'generated portal must contain eleven workflows');
+  assert(Array.isArray(payload.use_cases) && payload.use_cases.length > 0, 'generated portal must list the use-case pages');
+  const skillIds = new Set(payload.skills.map((skill) => skill.id));
+  payload.use_cases.forEach((useCase) => {
+    assert(useCase.title && useCase.summary && useCase.group, `use case is incomplete: ${useCase.slug}`);
+    assert(fs.existsSync(path.join(root, useCase.source_path)), `use-case source is missing: ${useCase.source_path}`);
+    useCase.skills.forEach((id) => assert(skillIds.has(id), `use case ${useCase.slug} names an unknown skill: ${id}`));
+  });
   assert.strictEqual(JSON.stringify(Object.keys(payload.category_guidance)), JSON.stringify(Array.from(payload.categories)), 'generated category guidance must cover the catalog taxonomy exactly');
   payload.categories.forEach((category) => assert(payload.category_guidance[category].trim(), `generated category guidance is empty: ${category}`));
   assert(payload.hosts.length === 3 && payload.hosts.every((host) => host.id && host.name && host.invocation_template && host.invocation_template.includes('{skill_id}') && host.local_install_commands && host.local_install_commands.length), 'generated host records are incomplete');

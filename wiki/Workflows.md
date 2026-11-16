@@ -4,6 +4,7 @@ The delivery lanes. The [offline portal](../portal/generated/index.html) owns
 discovery, examples, and the common workflow map. This page provides deeper
 operational guidance. Each workflow below identifies its commands and completion boundaries.
 
+- [Idea to Release](#idea-to-release): one feature from a raw idea to an accepted release, through seven gated stages.
 - [Phased Delivery](#phased-delivery): requirements or tickets to one PR per phase.
 - [Phase Context Workflow](#phase-context-workflow): durable state across resets.
 - [Bug to Fix](#bug-to-fix): the diagnostic lane.
@@ -15,6 +16,23 @@ operational guidance. Each workflow below identifies its commands and completion
 - [Incident Follow-Up](#incident-follow-up): fix the root cause of an incident and prove detection and recovery with tests.
 - [Product Discovery](#product-discovery): evidence before deciding what to shape.
 - [Threat Model](#threat-model): design-time security analysis.
+
+## Idea to release
+
+The [idea-to-release workflow](../workflows/idea-to-release-workflow.md) connects the other lanes for one feature.
+It has seven stages: define, feature refine, development refine, story refinement, planning, assignment and delivery, and close.
+Each stage ends with a gate that gives `Ready`, `Ready with risks`, or `Blocked`, with the evidence and the owner of each risk.
+Agents draft the records and assemble the evidence. People own each decision and approval.
+
+The workflow keeps early stages cheap: define reads notes and tracker items and does not scan the repository.
+QA test cases exist before development starts. Each ticket runs in one of two delivery modes.
+In a human team, the assigned developer and QA accept the work first.
+In an agent pod, a person approves the implementation plan and authorizes the agents to start.
+Human reviewers still verify the result before the product owner closes the ticket.
+After a ticket exists, code follows the ticket and its plan. A change in scope goes back to the ticket first.
+
+The project names its records, tracker fields, and approval roles. The workflow gives the stages, the gates, and the skills for each stage.
+The use case [From idea to release](use-cases/journey-idea-to-release.md) shows the workflow on a sample feature.
 
 ## Phased delivery
 

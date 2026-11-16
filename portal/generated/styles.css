@@ -501,3 +501,14 @@ code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; animation-duration: .01ms !important; }
 }
+
+.use-cases { background: var(--paper); }
+#use-case-groups { margin-bottom: 18px; }
+.use-case-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 14px; }
+.use-case-card { display: flex; flex-direction: column; gap: 8px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--paper-raised); padding: 16px; }
+.use-case-card h3 { margin: 0; font-size: 16px; }
+.use-case-card h3 a { color: var(--ink); text-decoration: none; }
+.use-case-card h3 a:hover { text-decoration: underline; }
+.use-case-group { color: var(--quiet); font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; }
+.use-case-summary { margin: 0; color: var(--muted); font-size: 13px; }
+.detail-use-cases { margin: 0; padding-left: 18px; }

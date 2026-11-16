@@ -3210,7 +3210,7 @@ window.AGENT_TOOLBELT_DATA = {
     {
       "slug": "ops-enforce-a-pre-pr-gate",
       "title": "Enforce a pre-PR gate on every branch",
-      "summary": "This page is for a tech lead whose policy says every pull request passes a quality gate. You get one status for the checked-out branch: `PASS`, `FAIL`, `CAPPED`, or `BLOCKED`. You also get a folder of evidence and a way to see when the status is stale. The sample run ends `FAIL`, because two required checks were already red on the base commit. The run predates the pre-existing failure rule. Under the current contract, those two checks are pre-existing failures, and only a new failure sets `FAIL`.",
+      "summary": "This page is for a tech lead whose policy says every pull request passes a quality gate. You get one status for the checked-out branch: `PASS`, `FAIL`, `CAPPED`, or `BLOCKED`. You also get a folder of evidence and a way to see when the status is stale. The sample run ends `FAIL`, because two required checks were already red on the base commit. The run predates the pre-existing failure rule. Under the current contract, those two checks are pre-existing failures, and only a new failure sets `FAIL`. The run also predates the right-sizing change of the gate. The excerpts below keep the run's text verbatim. That text names `scope_fingerprint`, `round_bound`, `rounds_completed`, `--scope`, and a separate `/simplify` pass. The current gate has none of them. It has one `head_fingerprint` and one `/pr-review --tier=standard --show-nits` call.",
       "group": "Platform and operators",
       "roles": "Tech lead",
       "skills": [

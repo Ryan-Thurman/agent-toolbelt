@@ -16,50 +16,37 @@ target repository.
 
 ## Modes and authority
 
-`/code-quality-gate [--mode=report|apply] [--rounds N] [--scope path[,path]] [--disposition-json '<object>']`
+`/code-quality-gate [--mode=report|apply]`
 
-No mode commits or pushes.
+No mode commits or pushes. The gate always covers the whole diff, so `coverage` is always `final`.
 
 - `report` is the default. It inspects and writes only generated evidence.
   It does not change source, tests, configuration, or documentation.
-- `apply` permits only unambiguous, evidence-backed, behavior-preserving,
-  in-scope repairs when the caller explicitly chose it or the surrounding
-  implementation request already authorizes edits. It does not authorize
-  commits, pushes, scope widening, broad refactors, behavior changes, or a
-  structural remedy with meaningful tradeoffs. Those need a recorded human
-  choice before implementation.
-- `--rounds` defaults to `3`. It must be a positive integer. A cap is not
-  convergence.
-- `--scope` selects a subset of the frozen changed-path scope. Expand it into
-  exact repository-relative paths within the worktree and write those
-  NUL-delimited paths to `allowed-paths.nul`. Reject absolute paths and any
-  `..` escape. An allowed scope can widen only with explicit authorization
-  recorded in the evidence.
-- `--disposition-json` is repeatable JSON, for example:
+- `apply` hands the accepted findings to `/pr-improve`. `/pr-improve` owns the frozen scope,
+  the rounds, the round bound, and its ledger. The gate does not edit files itself.
+  Use it only when the caller explicitly chose it or the surrounding implementation request
+  already authorizes edits. It does not authorize commits, pushes, scope widening, broad
+  refactors, behavior changes, or a structural remedy with meaningful tradeoffs. Those need
+  a recorded human choice first. After `/pr-improve` ends, run the gate again in report mode
+  and write the status from that run. If `/pr-improve` reports `capped-not-converged`, the status is `CAPPED`.
 
-  ```json
-  {"id":"QG-12","state":"deferred","reason":"Follow after release","owner":"frontend","follow_up":"PROJ-123"}
-  ```
+Record each decision in the report's findings table. These fields are required by state:
 
-  Required fields by state are:
+- `accepted`: `id`, `state`. The finding is valid and remains unresolved
+  until an in-scope fix is `verified`.
+- `rejected`: `id`, `state`, `reason`, `evidence`. Rejection can clear only
+  that finding. It cannot suppress a related independent finding.
+- `deferred`: `id`, `state`, `reason`, `owner`, `follow_up`. It is permitted
+  only for a low-impact nit.
 
-  - `accepted`: `id`, `state`. The finding is valid and remains unresolved
-    until an in-scope fix is `verified`.
-  - `rejected`: `id`, `state`, `reason`, `evidence`. Rejection can clear only
-    that finding. It cannot suppress a related independent finding.
-  - `deferred`: `id`, `state`, `reason`, `owner`, `follow_up`. It is permitted
-    only for a low-impact nit.
-
-  Store the JSON object verbatim or normalized in the evidence. Never silently
-  omit a nit or treat an accepted-but-unfixed finding as resolved.
+Never silently omit a nit or treat an accepted-but-unfixed finding as resolved.
 
 ## Durable evidence
 
 Use `.atb-work/code-quality-gate/<target-slug>/`. Ensure `.atb-work/.gitignore` contains the
 line `*`, as the durable-output rule in `shared/contracts/references/execution.md` requires. Never place these generated artifacts in tracked
-source. Keep `baseline.md`, `allowed-paths.nul`, `report.md`, and (for apply mode) the
-`pr-improve` ledger or a pointer to it. Start `report.md` from
-`templates/code-quality-gate-report.md`.
+source. Keep `baseline.md`, `allowed-paths.nul`, `report.md`, and (for apply mode) a pointer to the
+`/pr-improve` ledger. Start `report.md` from `templates/code-quality-gate-report.md`.
 
 The report frontmatter is the status interface:
 
@@ -67,45 +54,32 @@ The report frontmatter is the status interface:
 status: "PASS | FAIL | CAPPED | BLOCKED"
 base_sha: "<canonical immutable merge-base commit SHA>"
 head_fingerprint: "<fingerprint script output>"
-scope_fingerprint: "<fingerprint script output>"
-coverage: "final | partial"
+coverage: "final"
 allowed_paths_file: ".atb-work/code-quality-gate/<target-slug>/allowed-paths.nul"
-round_bound: 3
-rounds_completed: 0
 ```
 
-Before assessment, write each frozen allowed path as a NUL-delimited,
-repository-relative entry in `allowed-paths.nul`. With no `--scope`, it must
-contain every tracked changed path and every untracked path. With `--scope`, it
-contains only the selected exact paths.
+Before assessment, write every tracked changed path and every untracked path as a
+NUL-delimited, repository-relative entry in `allowed-paths.nul`.
 
 Resolve the frozen merge base to its canonical commit SHA with
 `git rev-parse "<base>^{commit}"`, record that SHA as `base_sha`, then run
-`bash skills/code-quality-gate/scripts/fingerprint.sh --base <base_sha>
---allowed-paths-file <allowed-paths.nul>` at baseline and after every
-assessment round. The script independently canonicalizes its `--base` input.
-It computes:
+`bash skills/code-quality-gate/scripts/fingerprint.sh --base <base_sha>` at baseline and after
+the assessment. The `--allowed-paths-file <allowed-paths.nul>` argument is optional.
+The script independently canonicalizes its `--base` input.
+It computes `head_fingerprint` by hashing the base SHA, the binary full-index diff from
+that base, and each sorted untracked path plus its `git hash-object` content
+hash. It writes no Git objects. It also prints `coverage=final`.
 
-- `head_fingerprint` by hashing the base SHA, the binary full-index diff from
-  that base, and each sorted untracked path plus its `git hash-object` content
-  hash. It writes no Git objects.
-- `scope_fingerprint` by hashing the base SHA, sorted changed paths, sorted
-  untracked paths, and sorted allowed paths.
-- `coverage=final` only when the sorted allowed paths exactly equal every
-  changed and untracked path. Otherwise `coverage=partial`.
-
-Rewrite the report after each assessment round. In report mode the gate makes one assessment
-and runs no repair round, so `rounds_completed` is `0`. In apply mode it counts the completed
-repair rounds. A consumer must rerun this
-script and treat PASS as stale when either fingerprint differs. Only final
-coverage PASS can satisfy a policy-required pre-PR gate. Partial coverage can
-have its own PASS/FAIL status but cannot prove the entire PR diff.
+A consumer must rerun this script with the report's `base_sha` and treat PASS as stale when
+`head_fingerprint` differs. Only a PASS with `coverage: "final"` can satisfy a policy-required pre-PR gate.
 
 ## Status decision
 
 A **pre-existing failure** is a required check that also fails at `base_sha`
-with the same failure. Run each failed required check at `base_sha` in a
-separate worktree, and save the output in `baseline.md`, before you classify a
+with the same failure. The same failure means the same set of failing test names, or the same
+lint rule IDs with the same repository-relative paths. Compare names and IDs, not raw output,
+because raw output holds machine paths and timings. Run each failed required check at `base_sha`
+in a separate worktree, and save the output in `baseline.md`, before you classify a
 failure. List each pre-existing failure in the report's "Pre-existing failures"
 table, apart from the new failures. A pre-existing failure does not change the
 status by itself. A check that starts but does not finish, such as a timeout,
@@ -120,7 +94,7 @@ is `BLOCKED` for that check.
   escape, or any blocker, should-fix, unresolved evidence-backed quality issue,
   or undispositioned nit remains. Report mode does not edit to turn FAIL into
   PASS.
-- **CAPPED**: apply mode reached its round bound with unresolved work. Record
+- **CAPPED**: apply mode ended with `/pr-improve` reporting `capped-not-converged`. Record
   the remaining ledger rows and next owner. Do not describe this as converged.
 - **BLOCKED**: a necessary target, baseline, evidence source, required check,
   or authorization cannot be obtained. State the exact missing prerequisite and
@@ -130,29 +104,24 @@ is `BLOCKED` for that check.
 FAIL even when another required check is BLOCKED. The rationale names both. The
 status is BLOCKED only when no new failure is confirmed.
 
-## Assessment and repair
+## Assessment and apply
 
 1. Derive required checks from repository instructions, manifests, checked-in
    wrappers, CI, and changed-language conventions. Record commands, outcomes,
    and unavailable prerequisites. A check that cannot be run is BLOCKED unless
    the repository explicitly marks it non-required for this target. The CRAP
    check below is a required check when its config exists on the base.
-2. Inspect every changed hunk against style evidence and the shared contracts.
-   Run `/simplify` in report mode to identify high-conviction cleanup candidates,
-   and do not treat a generic-name cue as a finding without a consequence.
-3. Run `/pr-review --tier=standard --focus=standards,maintainability --show-nits` on the frozen
-   target. The gate names the standard tier, so the depth does not change with the size of the diff.
-   `--show-nits` keeps every nit that the posting threshold hides.
-   Record every evidence-backed standards or maintainability nit in the gate
-   record. The PR report remains the review source of truth for other findings.
-4. For apply mode, use `/pr-improve`'s baseline, allowed-scope guard, stable
-   IDs, behavior pins, rereview, and structural-escalation rules. Before any
-   deletion or inlining, follow `/simplify`'s Chesterton's Fence and its rule
-   that existing tests must pass unmodified. Rerun all required checks plus the
-   changed-hunk assessment after each round.
+2. Run `/pr-review --tier=standard --show-nits` on the frozen target. `/pr-review` loads the
+   project style sources itself. The gate names the standard tier, so the depth does not change
+   with the size of the diff. `--show-nits` keeps every nit that the posting threshold hides.
+   Record every evidence-backed standards or maintainability finding and nit in the gate
+   record, and add one line that names the style sources `/pr-review` used.
+   The PR report remains the review source of truth for other findings.
+3. For apply mode, pass the accepted findings to `/pr-improve`. Then rerun all required checks
+   and this assessment in report mode.
 
 Use the report table to list finding ID, source, severity, consequence,
-decision, status, reason/evidence, owner/follow-up, verification, and round.
+decision, status, reason/evidence, owner/follow-up, and verification.
 Do not make claims about whether a human or model authored the code.
 
 ## CRAP analysis check
@@ -176,7 +145,7 @@ The `crap-analysis` skill runs the repository's own CRAP commands.
    `--base <base_sha>` makes the CRAP config and changed paths use the frozen base.
    An `execute` exit code of `1` is not a check failure. The `review` outcome decides.
 5. Run `skills/code-quality-gate/scripts/fingerprint.sh` again with the same arguments.
-   If a fingerprint changed, the CRAP commands wrote a path that git does not ignore.
+   If the fingerprint changed, the CRAP commands wrote a path that git does not ignore.
    Record BLOCKED, and name the new paths from `git status --porcelain`.
 6. Record the review JSON `outcome`, and each target outcome, threshold, and `worstInScope`, as `Required checks` evidence.
    If `config.changedInDiff` is `true`, also record the `CONFIG_CHANGE` line from the crap-analysis review contract.
@@ -187,10 +156,6 @@ The `crap-analysis` skill runs the repository's own CRAP commands.
    | `PASS`, `WARN`, or `NO_TARGETS` | The check passes. `WARN` failures are outside the frozen scope. |
    | `REFACTOR` | The check passes. Record one `should-fix` finding with source `crap-analysis` for each `REFACTOR` target. Cite its `worstInScope` and `refactorBrief`. |
    | `ERROR` | The check fails. Cite `error.command`, `error.exitCode`, and `error.reason`. |
-
-With `--scope`, read the target report.
-Record the `should-fix` finding only when an exceeding function is in an allowed path.
-Record exceeding functions in other paths as evidence only.
 
 ## React rules check
 

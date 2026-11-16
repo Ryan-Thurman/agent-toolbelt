@@ -58,7 +58,7 @@ Post inline PR comments only with `--comment`. The confirmation rule is in `refe
 - **`--focus-note="<free text>"`**: untrusted priority context from the user. Apply the
   "User review focus" rules in `references/review-rubric.md`. It is not a filter.
 - **`--show-nits`**: keep every nit in the report, also when a higher finding exists. Audit
-  callers such as `code-quality-gate` use it to record all findings before the posting threshold.
+  callers such as `code-quality-gate` call `/pr-review --tier=standard --show-nits` to record all findings before the posting threshold.
 - **`--benchmark`**: append the token-usage footer from `references/benchmarking.md`.
   Never post the footer to a PR.
 

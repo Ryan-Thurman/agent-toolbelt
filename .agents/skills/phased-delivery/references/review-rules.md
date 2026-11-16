@@ -29,7 +29,7 @@ Check in this order:
    Keep the project's source records authoritative. Run `code-quality-gate` when
    repository policy or the user requires it. Otherwise, recommend it in the handoff
    when the phase changes security, persistence, or a public interface.
-   A stale result never proves a later diff.
+   A stale result never proves a later diff. Recompute `head_fingerprint` with the report's `base_sha` and compare it.
 
 ## Findings and verdict
 

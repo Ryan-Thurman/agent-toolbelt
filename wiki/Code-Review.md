@@ -76,28 +76,27 @@ nudges once toward the generator.
 `code-quality-gate` is the pre-PR orchestration layer over the existing
 `simplify`, `pr-review`, and `pr-improve` owners. It freezes the current scope,
 discovers required repository checks, assesses every changed hunk against local
-style evidence and the shared anti-slop/maintainability contracts, then runs a
-focused standards and maintainability review.
+style evidence and the shared anti-slop/maintainability contracts, then runs one
+`/pr-review --tier=standard --show-nits` call for the standards and maintainability review.
 
 ```sh
 ./install.sh --harness all code-quality-gate /path/to/project
 ```
 
 ```text
-/code-quality-gate [--mode=report|apply] [--rounds N] [--scope path[,path]] [--disposition-json '<object>']
+/code-quality-gate [--mode=report|apply]
 ```
 
-Report mode is the default and never edits tracked files. Apply mode is explicit,
-uses the frozen-scope `pr-improve` ledger, preserves simplify's behavior and
-test safety, and stops after three rounds by default. Its durable scratch report
+Report mode is the default and never edits tracked files. Apply mode is explicit.
+It hands the accepted findings to `pr-improve`, which owns the scope, the rounds,
+and the ledger, then runs the gate again in report mode. Its durable scratch report
 is `.atb-work/code-quality-gate/<target-slug>/report.md`, with exactly one of:
 `PASS`, `FAIL`, `CAPPED`, or `BLOCKED`. A cap is not a pass. PASS requires green
 required checks, unchanged scope, no unresolved blocker/should-fix/evidence-backed
 quality issue, verified fixes for accepted findings, and an explicit disposition
 for every nit. Its installed fingerprint script records the frozen diff and
-untracked content, then makes a PASS stale when either fingerprint changes.
-`--scope` creates partial evidence only. A policy-required final-diff gate
-needs `coverage: final`.
+untracked content, then makes a PASS stale when `head_fingerprint` changes.
+The gate covers the whole diff, so `coverage` is always `final`.
 When `.crap-analysis.json` exists on the base commit, the gate also runs
 `crap-analysis` on the changed files. A REFACTOR verdict becomes a should-fix
 finding, and an ERROR verdict is a failed check. Without that config, the gate

@@ -32,9 +32,12 @@ For source-to-target upgrades, read `references/version-delta.md`.
 5. Recommend one verdict.
 6. For `Do` or `Spike`, define the smallest implementation shape and the verification strategy.
    Create a phased implementation plan only when the user asks to continue.
-7. Name the next skill: `ticket-discovery`, `phased-delivery`, `simplify`, `retrofit`, `cover`, or no action.
+7. Name the next skill: `ticket-discovery`, `phased-delivery`, `simplify`, `retrofit`, `cover`, `bug-to-fix`
+   when the item is a defect, or no action.
    On hosts with commands, also name the command: `/ticket-discover`, `/dev-plan`,
-   `/implementation-plan`, `/simplify`, `/retrofit`, `/cover-gaps`, or `/cover`.
+   `/implementation-plan`, `/simplify`, `/retrofit`, `/cover-gaps`, `/cover`, or `/bug-intake` for a defect.
+   For `Spike`, state the question that the spike answers and its time limit. The repository has no
+   spike command, so run the spike as a bounded investigation, then assess the item again.
 
 ## Verdicts
 
@@ -49,6 +52,8 @@ For source-to-target upgrades, read `references/version-delta.md`.
 ## Output and completion
 
 Use `templates/tech-backlog-assessment.md` when creating a durable artifact.
+When the user names no path, write it to `.atb-work/tech-backlog-assessment/<scope-slug>.md` and print the path.
+Read `shared/contracts/references/execution.md#Durable report location`.
 Replace all placeholders before you present it.
 The assessment is complete when it states:
 

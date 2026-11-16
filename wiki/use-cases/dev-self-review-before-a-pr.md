@@ -78,7 +78,7 @@ The order is `/review-diff` first and `/pr-ready-check` second. The skill does n
 
 ## What you get
 
-The run was headless. No subagent tool existed, so one agent ran each facet lens in turn and then the two judge passes. The run labels these as Self-review. Self-review is not independent of the author of the findings. In a session with subagents, the standard and deep tiers start one subagent for each facet, and deep adds two separate judges. The skill asked no person a question in this run.
+The run was headless. No subagent tool existed, so one agent ran each facet lens in turn and then the two judge passes. The run labels these as Self-review. The run predates the self-review path in `fan-out.md`, which now names this case. Self-review is not independent of the author of the findings. In a session with subagents, the standard and deep tiers start one subagent for each facet, and deep adds two separate judges. The skill asked no person a question in this run.
 
 The header and the coverage line come first.
 
@@ -121,7 +121,7 @@ Excerpt from a run on the Conduit sample API at commit 667bbe6. Lines are wrappe
 
 The "14 routes" count comes from a search of the source for `req.auth?.user?.id`. It finds 16 reads, 2 in the auth controller and 14 in the article, profile, and tag controllers. So the 14 is a count of reads, and the run did not check the count of routes. The run did not call those routes on a running API. The claim about their failure with a token that has no ID comes from reading the code.
 
-The skill hides a nit when a higher finding exists. The run found one nit: the same five-field `select` appears in `createUser`, `getCurrentUser`, and `updateUser`. The report does not show it, and `/review-diff` does not accept `--show-nits`.
+The skill hides a nit when a higher finding exists. The run found one nit: the same five-field `select` appears in `createUser`, `getCurrentUser`, and `updateUser`. The report does not show it. The run predates the `--show-nits` option, which `/review-diff` now accepts.
 
 The report also lists re-entry notes. These are not graded and never change the verdict. One note says that the cast `as User` types `user.id` as a number even when the select omits it. This is why the compiler did not catch the original bug.
 
@@ -168,7 +168,7 @@ What you must check in the output:
 
 ## Common mistakes
 
-- You pass your branch name to `/review-diff`. The command stops and sends you to `/pr-review`. Run it with no target, or with only `--tier`, `--intent`, `--focus`, and `--focus-note`.
+- You pass your branch name to `/review-diff`. The command stops and sends you to `/pr-review`. Run it with no target, or with only `--tier`, `--intent`, `--focus`, `--focus-note`, and `--show-nits`.
 - You read `NEEDS DISCUSSION` as a soft `REQUEST CHANGES`. The skill forbids that reading. The verdict means that an open question needs your answer. Answer it, then run the review again.
 - You count the existing `getCurrentUser` test as coverage. It returns `id: 123` whatever the query selects, so it cannot fail on this bug. In this repository it also fails to run.
 - You skip the base run in step 3. You then blame your change for the 7 failing tests and the 2 lint errors that exist before it.

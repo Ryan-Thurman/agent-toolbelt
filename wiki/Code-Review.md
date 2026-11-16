@@ -310,3 +310,8 @@ hook error allows the action). Bypass per-action with `[skip-docs]` / `[skip-rev
 the command, or disable entirely with `TOOLBELT_DOC_CHECK=0` / `TOOLBELT_REVIEW_NUDGE=0`.
 If the target already has a `.cursor/hooks.json`, the installer **skips** it rather than
 clobber your hooks. Merge the two entries from `optional/cursor-hooks/hooks.json` by hand.
+
+The pack is opt-in: `install.sh ... all` does not install it. The files that it writes are listed in
+[Installation](Installation.md#optional-project-scoped-compatibility-install). The doc-sync guard reads the staged files when the hook
+runs. A chained command such as `git add -A && git commit -m "..."` stages nothing before the hook
+runs, so the guard allows it. Stage the files in a separate command first to get the check.

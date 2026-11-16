@@ -1,6 +1,6 @@
 ---
 name: ship-it
-description: Prepare a change for release with readiness checks, rollback, release notes, and rollout monitoring. Use after PR merge or approval. Follow the project's release policy and deployment owner.
+description: Prepare a change for release with readiness checks, rollback, release notes, and rollout monitoring. Use after PR merge or approval, or for the first launch of a service that has no earlier release. Follow the project's release policy and deployment owner.
 ---
 
 # ship-it
@@ -39,7 +39,8 @@ it**. When unsure, ask before doing anything that deploys.
    step 4 is NO-GO. List the missing trigger as the blocking gap.
 3. **Release notes.** Draft a release-notes entry from the merged commits or PRs since the last
    tag with `templates/release-notes.md`. Suggest the version or tag. Confirm the documentation
-   gate in the readiness checklist.
+   gate in the readiness checklist. With no tag or earlier release, start the range at the first
+   commit of this release, and state that range in the draft.
 4. **Verdict.** Give a **GO / NO-GO** verdict with the blocking gaps from steps 1 to 3 listed.
 5. **Rollout and monitor plan.** Choose big-bang, flagged, staged, or canary rollout. List the
    metrics, the observation window, and the advance, hold, and recover rules for each stage.
@@ -53,4 +54,5 @@ it**. When unsure, ask before doing anything that deploys.
 Give a release package: the GO / NO-GO verdict with blockers, the rollback plan and trigger,
 the release-notes draft, and the rollout and monitor plan.
 When you own the deploy, add the proposed deploy and tag commands.
+On a NO-GO verdict, omit them. The NO-GO rule in `references/readiness-checklist.md` wins over this rule.
 After the release, recommend `workflows/delivery-retrospective-workflow.md` to review the delivery process.

@@ -125,7 +125,7 @@ Give each `/simplify` or `/code-smell` finding one risk tier and one action.
 
 | Risk | Meaning | Apply rule |
 | --- | --- | --- |
-| `safe` | Behavior is the same by inspection, and no caller depends on the removed code. | Pre-select it. Apply it only after the user confirms the selection. |
+| `safe` | Behavior is the same by inspection, and no caller depends on the removed code. For `extract`, use the checks in the section below. | Pre-select it. Apply it only after the user confirms the selection. |
 | `confirm` | Behavior is probably the same, but the change touches behavior-adjacent code. | Apply it only when the user selects it. |
 | `review` | The change needs human judgment, or the Chesterton's Fence questions have no answer. | Report it. Apply it only when the user selects it after review. |
 
@@ -138,6 +138,19 @@ Give each `/simplify` or `/code-smell` finding one risk tier and one action.
 | `parallelize` | Independent async work runs in sequence. |
 | `guard` | A missing check or change-detection guard causes repeated or unsafe work. |
 | `inspect` | A lead needs more reading before a recommendation. |
+
+## Safe tier for extract
+
+An `extract` that removes no code does not remove a caller, so the removed-caller test does not apply.
+Assign `safe` to such an extract only when every check below passes:
+
+- The moved code keeps its inputs, its result, and the order of its side effects.
+- Each original call site gets the same result, and any import of the old location still resolves.
+- Type-inference check: the inferred type of the moved expression and of its result stays the same after the move.
+  Read the declared types, or run the repository's type checker when one exists.
+  A widened literal, a new `any`, a changed generic argument, or a narrowed union counts as a change.
+
+Assign `confirm` when a check fails. Assign `confirm` also when the type-inference check did not run, and name that check in the finding.
 
 ## Thin-wrapper taxonomy
 

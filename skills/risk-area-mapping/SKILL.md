@@ -47,6 +47,7 @@ into `AGENTS.md`. The default target is `.pr-review.md`.
    Do not list process rules, such as a version bump or a coverage target, as findings.
 5. Write the review file from `templates/risk-areas-review.md`. For one repository, write it to
    `risk-areas-review.md` at the repository root. For a sweep, write `<dir>/risk-areas-review.md`.
+   Name each repository heading with its folder name, not its remote or package name.
    Do not edit any target file in this step.
 6. Stop. Give the user the path of the review file. Tell the user to confirm, edit, or delete each
    entry, and to change the status of each repository to `Approved` or `Skip`. Tell the user which

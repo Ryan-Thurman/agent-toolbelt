@@ -14,6 +14,7 @@ The steady state is the normal value of the journey signal, measured before the 
 Take it from an OpenTelemetry metric or span query, or from an existing alert.
 Record the signal, its source, the baseline window, and the tolerance.
 If the signal does not exist, the card is `Conditional`. Add the missing telemetry as a requirement.
+A `Conditional` card gets the result `Blocked` until the signal exists. Name the missing signal in the result.
 
 ## One variable
 

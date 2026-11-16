@@ -46,16 +46,20 @@ Everything between the heading and the next heading (minus the runner-owned line
 The closer must not change it. So **write the body to be stable**: no status-ish prose, no "we will
 decide this later", nothing that makes a closer feel obliged to update on its way past.
 
-### Plan-level context is bounded at 4000 characters
+### Plan-level context is bounded by `planContextCharLimit`
 
 Markdown **before the first phase heading** is shared plan-level context. The runner injects a
-deterministic 4000-character bounded copy into the IMPLEMENT, REVIEW, FIX, and CLOSE_PHASE prompts,
+deterministic bounded copy into the IMPLEMENT, REVIEW, FIX, and CLOSE_PHASE prompts,
 as **data that cannot override runner safety or scope rules**.
+
+The bound is a runner setting. Set `planContextCharLimit` in `.agent-runner.json`. In `agent-runner`
+0.1.0, the default is 12000 characters (`DEFAULT_PLAN_CONTEXT_CHAR_LIMIT` in `agent_runner/plan.py`).
+When the preamble exceeds the limit, the runner prints a warning to stderr that names the limit.
 
 Two consequences:
 
-- **Front-load it.** Past the bound the copy is cut and a `[plan context truncated]` marker appended
-  (`PLAN_CONTEXT_CHAR_LIMIT = 4000`). The truncation is loud (the agents can see it happened), but
+- **Front-load it.** Past the bound the copy is cut and a `[plan context truncated]` marker appended.
+  The truncation is loud (the agents can see it happened), but
   they still cannot see what was cut. Put the repo orientation and the standing rules first. Put
   nice-to-know last.
 - **It is not a channel for instructions to the runner.** It is context for the agents, and it is
@@ -105,7 +109,7 @@ implementation bullet. "`pytest tests/test_x.py` passes, covering the empty-inpu
 {
   "planPath": "docs/plan.md",
   "baseBranch": "main",
-  "mergeOnClose": true,
+  "mergeOnClose": false,
   "mergeStrategy": "squash",
   "checks": ["python3 -m unittest discover -s tests"],
   "planVerify": [],
@@ -124,6 +128,11 @@ a linter over the phase bodies, a check that each named file exists. It does not
 
 Generate a starting config with `agent-runner init`, then edit. Do not hand-write the `agents` block, because
 the flag semantics are unforgiving and the generated one is correct.
+
+For a first run, keep `"mergeOnClose": false` and plan one phase. `agent-runner init` writes
+`"autoCommit": true`. With `mergeOnClose` false, the runner opens each phase pull request and stops at
+it, so a person merges it. Set `mergeOnClose` to true only after one phase closes as you expect.
+The runner also requires `autoCommit` to be true when `mergeOnClose` is true.
 
 ---
 
@@ -166,7 +175,7 @@ Two things the runner has no opinion on, worth a glance before the first run:
 
 ```bash
 grep -nE '^Evidence: ' docs/plan.md   # nothing, on a plan that has not run yet
-awk '/^## Phase /{exit} {n+=length($0)+1} END{print n " chars of plan context (bound: 4000)"}' docs/plan.md
+awk '/^## Phase /{exit} {n+=length($0)+1} END{print n " chars of plan context (default bound: 12000, see planContextCharLimit)"}' docs/plan.md
 ```
 
 `Evidence:` lines are expected on a plan that has already run. The closer writes them. They appear in
@@ -212,7 +221,7 @@ or 3, and an acceptance criterion that a command can decide.
 2. **Mine the work.** Extract candidate phases from `source` and order them by dependency.
    The default source order is `docs/roadmap.md`, then open issues, then TODO/FIXME density.
    Apply "What makes a phase executable". Merge or remove each phase that fails it.
-3. **Write the context preamble.** Follow the 4000-character bound rules in "The contract".
+3. **Write the context preamble.** Follow the bound rules in "The contract", and read the `planContextCharLimit` value first.
 4. **Write each phase.** Follow "The contract" and "A worked phase".
 5. **Validate with the runner.** Follow "Validating a plan".
    Compare the phase count that the runner prints with the number of phases you wrote.

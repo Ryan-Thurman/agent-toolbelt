@@ -9,6 +9,11 @@ semantics and how each is applied live in `repo-config.md`. This file only cover
 with `--print`) and tell the user to prune and commit. Never commit it yourself: the config only
 takes effect once it exists on the base branch, and that promotion is a policy decision.
 
+**Order with risk areas.** `/risk-areas --apply <file>` and `/pr-review-init` both write `.pr-review.md`.
+Run `/risk-areas --apply <file>` first. It writes the approved `## Risk areas` section to `.pr-review.md`,
+or to `AGENTS.md` with `--target agents`. Then run `/pr-review-init`. The init finds the existing file,
+uses refresh mode, and leaves the `## Risk areas` section as written.
+
 ## Mining pass (evidence -> section)
 
 Work through the sources in order. Each feeds a specific section. **If a source yields nothing,
@@ -38,7 +43,8 @@ generic one.
    sample in `templates/pr-review.md`. A host-side re-rate fires even when one facet agent under-grades.
    The most common class is missing input validation on request paths.
    Keep rules specific: path globs plus a named condition, so they re-rate the real class, not every
-   defensive nit. Pair such rules with a `## Minimum tier: standard` floor.
+   defensive nit. Add a `## Minimum tier: standard` floor only when the same evidence names the class.
+   The floor follows the evidence, as the Rules below require.
 5. **What noise keeps getting rejected?** -> `## Do not flag`
    The rejection memory (`.git/pr-review-rejections.jsonl`, `rejection-memory.md`): entries refuted
    2+ times are suppression candidates. Also established bespoke patterns a generic reviewer will

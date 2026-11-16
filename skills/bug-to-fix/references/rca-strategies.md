@@ -90,4 +90,6 @@ the bug, explain the missing signal and ask how the user wants to provide it sec
 
 `root cause` · `evidence` (the specific observations/logs/test that prove it) · `fix direction`
 (not the full diff: `/fix-plan` writes the fix contract and the implementation step makes the diff) · `prevention`. Write these into the durable file's
-**Resolution** and into `templates/rca-report.md` if a shareable report is wanted.
+**Resolution** and into `templates/rca-report.md` if a shareable report is wanted. Write that report to
+`.atb-work/bug-to-fix/<scope-slug>/rca-report.md`, as `shared/contracts/references/execution.md`
+("Durable report location") requires, unless the user names a path. Print the path.

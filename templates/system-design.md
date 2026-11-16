@@ -63,6 +63,15 @@ Address partial success, retries, duplicates, concurrency, and dependency loss w
 - Linked architecture decision records and their status:
 - Conditions that change the recommendation:
 
+## Right size
+
+Check each moving part with the right-sizing check in `right-sizing.md`.
+Record each part, its ground, and its result: kept, merged, removed, or deferred.
+For a deferred part, put its trigger in the "Change it when" column of the decision table.
+
+| Moving part | Ground | Result |
+| --- | --- | --- |
+
 ## Operation, rollout, capacity, and cost
 
 - Runtime placement and operating owners:

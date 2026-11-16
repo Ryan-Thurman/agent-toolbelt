@@ -23,3 +23,27 @@ Keep sensitive values out of outputs.
 Use permitted source IDs, locations, and redacted descriptions.
 The project owns access rules, controlled records, approval requirements, and publication authority.
 Preserve those rules when projecting generic findings into project documents.
+
+## Thresholds and defaults
+
+When a skill sets no threshold, target, default, or status rule, record `Decision needed` or `Not set`, and name the open question.
+Do not invent a number, a target, or a status rule to make the result look complete.
+If the run needs a value to continue, label the value as the run's choice, and show the effect of two or three values.
+Use a default only when the skill names it as the default, and record that the default was used.
+
+## Unexercised and unverified checks
+
+Setup, install, trigger, audit, and readiness results list the checks that were not exercised or not verified.
+For each item, name the evidence that verifies it.
+A file listing does not prove that a host loads a plugin, a hook fires, a CI job runs, a post lands, or a deployment works.
+Put this list in the result itself, not only in a caveat.
+
+## Numbers and snapshot data
+
+Take each number from a saved output file, not from memory.
+Record the command that produces the number next to it, and say which counts the tool printed and which the run derived.
+Spot-check each cited line number at the commit that the excerpt names.
+Registry, advisory, and audit data are dated snapshots. Record the date, and name what the check did not cover, such as private advisories or code reachability.
+Read the advisory text and the build artifact before you call a finding relevant.
+Check the dist-tags of a package before you call a version the latest release.
+Treat a zero from an offline audit as `Not verified`.

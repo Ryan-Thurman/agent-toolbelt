@@ -1,5 +1,5 @@
 ---
-status: gathering   # gathering | investigating | fixing | verifying | awaiting_human_verify | resolved
+status: gathering   # gathering | investigating | fixing | verifying | awaiting_human_verify | resolved | resolved-unverified
 trigger: ""          # the bug report, with credentials and sensitive user data redacted
 severity: ""         # SEV1 | SEV2 | SEV3 | SEV4 (see skills/bug-to-fix/references/severity.md)
 created: YYYY-MM-DD
@@ -28,6 +28,7 @@ Redact credentials and sensitive user data from this file, including logs and re
 - Expected:
 - Actual:
 - Errors / stack traces:
+- Environment: <where it happens (prod/staging/local), version/build, browser/OS/device, non-sensitive config names>
 - First observed / since:
 - Affected area / users:
 
@@ -75,6 +76,7 @@ Redact credentials and sensitive user data from this file, including logs and re
 
 - root_cause:
 - fix:
+- mitigation_applied:         # live incidents only: the step that stopped the impact, kept separate from the fix
 - verification:               # automated test observed red before repair and green after, or documented manual QA verification
 - files_changed:
 - prevention / follow-ups:    # incl. "automated regression test" when repro was manual-only

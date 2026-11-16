@@ -54,6 +54,26 @@ A gate report lists the evidence found, the missing evidence, the blockers, each
 | 6. Assignment and delivery | Assigned developer and QA | `phased-delivery`, `worktree`, `cover`, `pr-review`, `pr-improve`, `phase-gate`, `code-quality-gate` | The delivery mode, the approved implementation plan, and, for an agent pod, the explicit authorization to start. Gate 6 authorizes delivery, not close. |
 | 7. Close and learn | Product owner | `ship-it`, `product-outcome-review`, `papercuts`, `workflows/delivery-retrospective-workflow.md` | Human technical review, human QA verification against the QA cases and criteria, and the product owner's acceptance. |
 
+### Gate reports and the result-to-verdict table
+
+Write each gate report from `templates/idea-to-release-gate-report.md`.
+Save it in the feature record folder that the project names. Without a named folder, save it to `.atb-work/idea-to-release/<feature-slug>-gate-<n>.md`, as `shared/contracts/references/execution.md` says.
+Each gate report maps every skill result that it uses to one verdict:
+
+| Skill result | Gate verdict | What the gate owner does |
+| --- | --- | --- |
+| `Ready`, or `Ready for planning` (`reliability-review`) | `Ready` | Approves the gate. An agent does not mark the gate `Ready` alone. |
+| `Ready with defaults` (`story-refinement`) | `Ready with risks` | Accepts each default as a risk, and names the owner of each risk. |
+| `Needs decision` (`reliability-review`) | `Blocked` | Answers each open decision. The answer goes into the gate report. |
+| `Needs revision` (`system-design`, `phased-delivery` plan readiness) | `Blocked` | Revises the artifact, then reruns the skill on the new revision. |
+| `Not verified`, from any skill | `Blocked` | Supplies the missing evidence. Or accepts a named risk, which makes the verdict `Ready with risks`. |
+| `GO` (`ship-it`) | `Blocked` | Adds the human technical review, human QA, and product owner acceptance. `GO` supplies evidence only. |
+| `NO-GO` (`ship-it`) | `Blocked` | Clears each blocking gap that the release package lists. |
+| `Proposed order` (`phased-delivery`, stage 5) | `Blocked` | Records the selected stories, their order, and the person who selected them. An agent proposal alone does not pass stage 5. |
+| No `test-case-design` result with the QA lead's approval (gate 2) | `Blocked` | The QA lead approves the test cases. |
+
+A skill result with no row in this table keeps its meaning. State the verdict that you map it to in the gate report.
+
 ## Spend tokens where the stage needs them
 
 Early stages stay cheap. Define reads notes, transcripts, and tracker items. It does not scan the repository,

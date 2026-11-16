@@ -18,6 +18,9 @@ skips the accessibility/Web-Vitals rows. A docs change skips most of this.
 - [ ] Input validation and authz checks on any new user-facing surface.
 - [ ] CORS / security headers / rate limits unchanged or correctly updated.
 
+A finding that this change does not introduce is `Pre-existing`. Record it with its owner and the date of the
+advisory or audit. It blocks the release only when the project release policy makes it a gate, or when this change makes it reachable.
+
 ## Performance (if it touches hot paths or the client)
 
 - [ ] No N+1 queries or unindexed queries added on a critical path.
@@ -58,4 +61,4 @@ performance, update the docs that describe it in the same change. A later promis
 ## Verdict
 
 - **GO**: no blocking gaps. Proceed to the rollout.
-- **NO-GO**: list each blocking gap and what is needed to clear it. On NO-GO, deliver the package with the blockers. Do not run or hand off a deploy.
+- **NO-GO**: list each blocking gap and what is needed to clear it. On NO-GO, deliver the package with the blockers. Do not run or hand off a deploy, and do not propose deploy or tag commands. This rule wins over the Output rule in `SKILL.md`.

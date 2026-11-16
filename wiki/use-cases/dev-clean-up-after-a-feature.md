@@ -55,7 +55,7 @@ The procedure has this order because each step limits the next one. `/code-smell
 - If your target is your own working diff, run `/simplify` with no argument, and skip step 3. The scan covers a whole area, and your diff is already the scope. Without a scan, step 4 reads the `/simplify` table instead, and step 5 needs no file path.
 - If the baseline fails, record the failing tests by name and compare the same set after the change. Or fix the cause first, in a separate commit. The sample did the first: 7 tests in `auth.service.test.ts` failed before and after. If the repository has no tests, do step 6 first and expect no test result. If it has no type check, skip that command.
 - If a candidate is `confirm` or `review`, apply it only after you select it by name. The skill leaves these rows unselected. Apply each one in its own step, with its own test run.
-- If the scan lists a security or defect lead, record it and do not fix it in the cleanup commit. The skill has no step for leads. Practice: write the lead in your pull request notes and run `security-audit` on it. The cleanup preserves behavior, including a faulty behavior. Use [`security-audit`](../../skills/security-audit/SKILL.md) or `pr-review` for the lead. Section "What you get" gives the sample lead.
+- If the scan lists a security or defect lead, record it and do not fix it in the cleanup commit. The skill now lists leads in an `Out of scope` section. This run predates that section. Practice: write the lead in your pull request notes and run `security-audit` on it. The cleanup preserves behavior, including a faulty behavior. Use [`security-audit`](../../skills/security-audit/SKILL.md) or `pr-review` for the lead. Section "What you get" gives the sample lead.
 - If a cleanup touches more than about 500 lines, use a code transform (codemod) instead of hand edits. The skill sets this limit.
 - If a test must change to stay green, revert the change. The skill treats this as a change of behavior.
 - If the code sits between `simplify-ignore-start` and `simplify-ignore-end` comments, leave it. The skill skips those blocks.
@@ -66,7 +66,7 @@ The procedure has this order because each step limits the next one. `/code-smell
 
 ## What you get
 
-The run was headless, with no person to answer questions. Checked against the `simplify` skill files at Toolbelt version 1.3.0. No person selected rows, so the run used the skill's rule that `safe` rows are pre-selected, and the run instruction to apply one change. The skill saves no report file. The run saved both replies as files. The run also added the `ID` and `Route to /simplify` columns. The skill field list has neither column (see "Common mistakes").
+The run was headless, with no person to answer questions. Checked against the `simplify` skill files at Toolbelt version 1.3.0. No person selected rows, so the run used the skill's rule that `safe` rows are pre-selected, and the run instruction to apply one change. The skill saved no report file in this run. It now writes one to `.atb-work/simplify/<scope-slug>.md`. The run saved both replies as files. The run also added the `ID` and `Route to /simplify` columns. The skill field list had neither column when the run happened. It now has an `id` field (see "Common mistakes").
 
 The scan found 13 findings: 2 `safe`, 4 `confirm`, and 7 `review`. The first excerpt shows three rows with the risk tiers.
 
@@ -80,7 +80,7 @@ Excerpt from a run on the Conduit sample API at commit 30b68e1. Condensed from t
 
 S1 is the row that the run applied. The plan calls this row C1. S7 is also `safe`, but the run instruction allowed one change, so S7 stayed unselected. S9 is `confirm`, so the skill does not pre-select it.
 
-The scan also set aside a lead that is not a cleanup. The favorite routes spread the loaded `favoritedBy` relation into the response, and the relation holds full user rows. The run read this in the code and did not execute it, because no database is available. No step of the skill reports defects, so the run listed it apart and did not touch it.
+The scan also set aside a lead that is not a cleanup. The favorite routes spread the loaded `favoritedBy` relation into the response, and the relation holds full user rows. The run read this in the code and did not execute it, because no database is available. This run predates the `Out of scope` section, so the run listed it apart and did not touch it.
 
 Next, the answer that the plan gave to the question about tests.
 
@@ -136,7 +136,7 @@ Excerpt from a run on the Conduit sample API at commit 30b68e1. Condensed from t
 
 The 7 failed tests are in `auth.service.test.ts`. They fail before and after. The apply log states the error is `PrismaClientInitializationError`, because the run had no database. They do not touch the article service. The ESLint findings exist before the change, and the change adds none.
 
-The run also tested its own check. It removed `bio: true` from the new constant. The 5 article tests still passed, and the recorded-argument check failed. The skill does not prescribe the recorded-argument check. It is a choice of the run, written as a throwaway test that is not part of the repository.
+The run also tested its own check. It removed `bio: true` from the new constant. The 5 article tests still passed, and the recorded-argument check failed. This run predates the mutation check in the apply loop, and the skill does not prescribe the recorded-argument check. It is a choice of the run, written as a throwaway test that is not part of the repository.
 
 What you must check in the output:
 
@@ -149,8 +149,8 @@ What you must check in the output:
 
 - You accept "tests pass" as proof. A mocked data layer ignores the query arguments, so a wrong `include` passes every test in the sample. Record the arguments before and after, or add a test that reads them.
 - You select a `confirm` or `review` row in the same pass as a `safe` row. If the tests then fail, you cannot tell which change caused it. Apply one row at a time. The skill does this and runs the tests after each row.
-- You fix a defect lead inside the cleanup. A reviewer expects a refactor to keep behavior. Put the fix in its own change. The skill has no step for leads, so write the lead in your pull request notes.
-- You expect the scan to save a file, or to pass its findings to `/simplify`. The skill names no output path and no handoff format, and `/simplify` detects again from the start. Save the reply yourself, and select rows by their description.
+- You fix a defect lead inside the cleanup. A reviewer expects a refactor to keep behavior. Put the fix in its own change. The skill now lists leads in an `Out of scope` section. This run predates that section, so write the lead in your pull request notes.
+- You expect the scan to save a file, or to pass its findings to `/simplify`. The skill now writes to `.atb-work/simplify/` and passes the `safe` rows in a hand-off table. This run predates both rules, and `/simplify` detects again from the start. Save the reply yourself, and select rows by their description.
 - You read a missing `risk` column as "safe". The skill field list for `/code-smell` has no `risk` field, but the taxonomy says that every finding has a tier. Ask for the tier if the table has none.
 - You treat the lint and format output as a result of the cleanup. In the sample, ESLint reported 14 problems and Prettier warned before the change, with the same results after. Run both on the base commit first.
 

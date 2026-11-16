@@ -29,7 +29,10 @@ paths=$(git diff $range --name-only)
   - a change to an **existing public contract**: a changed or removed signature, contract, or
     observable behavior that code outside this repository or package depends on. Examples are the
     entry-point exports of a published package, an HTTP, gRPC, or event contract, a CLI interface,
-    and a shared database schema. A function that is exported from a module but imported only
+    and a shared database schema. Adding a field to an HTTP response, gRPC message, or event payload is
+    not a changed contract. Clients that ignore unknown fields keep working, so such a change is
+    logic-bearing production and holds at standard. Removing, renaming, or retyping a field is a changed contract.
+    A function that is exported from a module but imported only
     inside the same application or package is not a public contract. A change to it is
     logic-bearing production, and the production-logic floor holds it at standard.
 

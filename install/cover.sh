@@ -5,6 +5,7 @@ pack_cover() {
   shared_contract references/human-readable-output.md
   shared_contract references/docs-writing.md
   shared_contract references/test-driven-development.md
+  shared_contract references/execution.md
   cmd cover
   cmd cover-gaps
 

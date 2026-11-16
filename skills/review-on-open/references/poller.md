@@ -37,6 +37,9 @@ Apply the **target filter** if given: a repo slug restricts to one repo. `--auth
 `--label=<y>` narrow the list (host-side flags where available, else filter the JSON). **Skip drafts**
 by default (a draft is not ready for review) unless the filter explicitly asks for them.
 
+Apply `--since=<ISO time>` if given. Keep only the PRs whose age field is later than that time.
+Step 4 explains when to use it.
+
 ## 2. The due check (idempotency)
 
 Idempotency is keyed on the PR's **head SHA**: review a given commit at most once.
@@ -69,6 +72,11 @@ To skip the PRs of the review bot account, filter out its author before the due 
 Take the first **N** due PRs, oldest age field first (longest-waiting served first). If more
 than N are due, `log` the deferred PRs by number and never silently truncate. They are picked up next
 tick. Default N small (e.g. 5) so an unattended routine cannot spend unbounded tokens in one wake.
+
+The ledger and the marker only skip PRs that a review has already seen. On the first run, every
+open PR without a marker is due, so the oldest stale PRs use `--max` before recent ones. On the first
+run, pass `--since=<ISO time>` with the time from which reviews must start, for example the day the
+bot was set up. PRs older than that time are then skipped and never reviewed by this poller.
 
 `--dry-run`: print the due list with the reason per PR (`new` / `head-changed <old>→<new>`) and the
 deferred remainder, then stop. No review, no ledger write.

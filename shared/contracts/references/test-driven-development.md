@@ -27,13 +27,15 @@ Unit tests alone do not establish browser behavior or external service compatibi
 
 | Step | Do | Done when |
 | --- | --- | --- |
+| Stub | For a typed language, add the new function, type, or member as a stub before the test. The stub throws or returns a placeholder value. | The test target compiles. A missing symbol is a compile error, and a compile error is not a red test. |
 | Red | Write one focused test for an unmet source requirement, then run it. | The test fails because the required behavior is absent or wrong. |
-| Check red | Inspect the failure before implementing the behavior. | The failure matches the intended case. Setup, syntax, and infrastructure failures are excluded. |
+| Check red | Inspect the failure before implementing the behavior. | The assertion fails for the intended reason. A compile error, setup failure, syntax error, or infrastructure failure is not red. |
 | Green | Add only the implementation needed for that behavior, then rerun the test. | The assertion passes without weakening the requirement or hiding the failure. |
 | Check related behavior | Run the affected tests after the behavior change. | Relevant tests pass, or failures are investigated and reported. |
 | Refactor if useful | Make a small behavior-preserving cleanup within the approved scope after green. | The affected tests still pass. No new behavior or unrelated cleanup enters the change. |
 
 Complete each cycle before you write the next test.
+A test counts as red only when you saw it fail for the expected reason. Record the failing assertion and its message as the red evidence.
 If a new test already passes, record existing coverage and select an unmet requirement.
 If a test expectation is mistaken, correct it from source evidence and repeat the red check.
 For a bug fix, the first case must capture the confirmed symptom before repair.
@@ -66,6 +68,7 @@ Keep each expected result independent of the implementation and its algorithm.
 
 Keep project logic real inside the unit under test.
 Replace external I/O, clocks, or randomness at their boundaries when needed for deterministic tests.
+A stand-in for external I/O answers like the real boundary. It returns only the fields or columns that the code selects, and it records the arguments of each call. Assert on the recorded arguments as well as the result. A fixed-answer stand-in lets a wrong selection pass, so the test proves what the code asks for, not what the real boundary returns.
 Replace live network services with substitutes in unit tests.
 Keep fixtures isolated and clean up temporary state.
 Assert results and contractual effects. A successful mock invocation alone does not prove the behavior works.

@@ -5,7 +5,7 @@ scales to the risk of the change.
 
 ## Rollback plan (required before release)
 
-State both:
+State both, and the no-release case below when it applies:
 - **How to revert**: the cheapest safe mechanism for this change: flag-off (if behind a feature
   flag), `git revert` + redeploy, roll back to the prior release/tag, or run the migration's
   down-step. Note any irreversible step (a destructive migration, a data backfill) explicitly, because it
@@ -14,6 +14,9 @@ State both:
   release policy. When the project has no trigger, the readiness verdict is NO-GO, and the missing
   trigger is the blocking gap. Do not invent a universal threshold.
   When the project has an SLO and an error budget policy, a burn-rate alert on the affected journey can be the trigger.
+- **No prior release:** With no earlier tag or release (a first launch), the prior-release revert does not exist.
+  Name the mechanism that removes this release instead: flag-off, or taking the new deployment down.
+  If no such mechanism exists, the readiness verdict is NO-GO, and the missing mechanism is the blocking gap.
 
 ## Example sequences
 

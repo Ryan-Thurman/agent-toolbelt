@@ -32,6 +32,7 @@ Readiness mode runs at any level when a person asks for it.
 | Review a design before it is built. | Design mode, steps 1 to 7. | `templates/reliability-review.md` with the failure-mode register and requirements. |
 | Review a story or a feature plan. | Story tier of the checklist, to the depth in the level table. | Answers, warnings, and the failure scenarios that become acceptance criteria. |
 | Check that a built service is ready for production. | Readiness mode below. | Each requirement as `Verified`, `Failed`, or `Not verified`, with evidence. |
+| Review a built service that has no design document, or follow up an incident. | Readiness mode below, with the code revision as the design source. Take the failure modes from the incident report when one exists. | Each requirement as `Verified`, `Failed`, or `Not verified`, with evidence. |
 
 ## Design mode
 
@@ -39,7 +40,8 @@ Readiness mode runs at any level when a person asks for it.
    Read `references/slos-and-budgets.md`. Record a missing target as `Decision needed` with an owner. Do not choose a target.
 2. Build the dependency inventory. Ask the owners about asynchronous links, because diagrams often miss them.
 3. Read `references/question-bank.md`. Ask the questions for each area that the change touches.
-   Record each answer as `Answered` with evidence, `Decision needed` with an owner, or `Not applicable` with a reason.
+   Record each answer as `Answered` with evidence, `Answered with a gap` when the evidence does not cover the whole question,
+   `Decision needed` with an owner, or `Not applicable` with a reason.
 4. Read `references/failure-modes.md`. Walk each component and dependency through the failure categories,
    and fill the failure-mode register. Use `references/resilience-patterns.md` for proposed controls.
    Use `references/capacity-and-data.md` when the change alters load, a data store, or recovery targets.
@@ -55,11 +57,18 @@ Readiness mode runs at any level when a person asks for it.
 Reconcile each reliability requirement with the implementation and operating evidence.
 Check the SLO, the alerts, the runbooks, the dashboards, the capacity evidence, the restore evidence,
 and the results of the failure scenarios. A tool run that finished is not a pass. Read the actual result.
-Mark each requirement `Verified`, `Failed`, or `Not verified`. Do not claim readiness that the evidence does not show.
+Mark each requirement `Verified`, `Failed`, or `Not verified`, and name its evidence in the Evidence column.
+Do not claim readiness that the evidence does not show.
+
+A probe is a read-only request, such as a health check, to a copy of the service that runs on the reviewer's machine.
+The default is no probe. Run a probe only when the user agrees. Record the command and its output as evidence.
+A probe never touches a shared environment. Fault injection, load tests, and restores stay outside this skill.
 
 ## Completion
 
 Give one result: `Ready for planning`, `Needs decision`, `Needs revision`, or `Not verified`.
+Write the report to `.atb-work/reliability-review/<scope-slug>.md`, as `shared/contracts/references/execution.md`
+("Durable report location") requires, unless the user names a path. Print the path.
 In readiness mode, the result is the list of requirement statuses. Do not give a `Ready for planning` result.
 List the open decisions with their owners. For a design proposal, review the same revision as `threat-model`.
 Reassess the affected rows when the topology, a dependency, a data store, or a target changes.

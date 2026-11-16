@@ -19,14 +19,19 @@ Default to report-only. Write a requested research artifact without changing pro
 1. Record the research question, source IDs, collection dates, method, participant sample, and unavailable inputs.
    Distinguish participants from repeated comments by the same participant.
 2. Extract observations with exact source locations.
-   Keep quotations faithful and permitted for the intended output.
+   Keep quotations faithful. Quote a participant only when permission for the intended output is known.
+   When permission is unknown, paraphrase the statement and label it `paraphrase`.
    Distinguish what a participant reported from observed behavior and analyst interpretation.
 3. Group observations into themes and preserve counterexamples.
    Give counts only when the denominator is known.
    A convenience sample cannot establish population prevalence or invented customer segments.
 4. Explain each theme's consequence, evidence strength, uncertainty, and potential opportunity.
    Compare conflicting accounts rather than removing them to simplify the story.
+   Give each theme a confidence label from `shared/contracts/references/evidence-quality.md`:
+   `Supported`, `Mixed`, or `Insufficient evidence`.
 5. For a durable report, use the project's research record when suitable, or `templates/user-research-synthesis.md`.
+   When the user names no path, write the report to `.atb-work/user-research-synthesis/<scope-slug>.md`
+   and print the path. Read `shared/contracts/references/execution.md#Durable report location`.
    Hand a selected opportunity to `product-discovery` only when that decision is requested.
 
 ## Completion

@@ -79,7 +79,7 @@ The run was headless, so no person answered. The skill asks no question of a per
 
 The review uses IDs that the run chose, not the skill. S1 to S4 are the four success criteria from the brief. M1 to M4 are the metrics that measure them. G-1 to G-8 are findings, and N-1 to N-5 are next actions. The four decision states come from the skill. The labels `Supported` and `Insufficient evidence` come from the evidence-quality reference, which lists them for factual claims. The skill requires only that unsupported conclusions say `insufficient evidence`.
 
-First, the weekly values. The Toolbelt gives no calculator. The skill and the measurement rules say to use a checked statistical implementation and name none, so the agent picks the method. Ask the review to name its method and its check. This run used a script (`analysis.py`, in a private folder, so you cannot open it). It uses only the Python standard library because no statistics package was installed, and it checks itself against a textbook example before it prints. That check is the run's choice, and it is one example of a check. M1 is the share of active readers who favorited. M2 is the share who opened a favorited article. M3 is remove events divided by add events. The p75 load time is the 75th percentile: three quarters of page loads are faster.
+First, the weekly values. The Toolbelt gives no calculator. The skill and the measurement rules say to use a checked statistical implementation. The skill now names a two-proportion z-test with the standard library as the fallback. This run predates that fallback, so the agent picked the method. Ask the review to name its method and its check. This run used a script (`analysis.py`, in a private folder, so you cannot open it). It uses only the Python standard library because no statistics package was installed, and it checks itself against a textbook example before it prints. That check is the run's choice, and it is one example of a check. M1 is the share of active readers who favorited. M2 is the share who opened a favorited article. M3 is remove events divided by add events. The p75 load time is the 75th percentile: three quarters of page loads are faster.
 
 Excerpt from a run on invented sample input, with the Conduit sample API at commit 30b68e1 as the repository. The values are made up.
 
@@ -133,7 +133,7 @@ Release health: no rollback reason. S4 is under the budget in all 8 weeks.
 Keep the redesign live.
 ```
 
-The skill has no `Release health` field and no rule to choose between the four states. The run added the `Release health` line because the measurement rules say to separate release-health action from the longer-term decision. Do not expect the line in every review, and check the reason for the state yourself.
+The skill has no `Release health` field. This run predates its rule for choosing among the four states. The run added the `Release health` line because the measurement rules say to separate release-health action from the longer-term decision. Do not expect the line in every review, and check the reason for the state yourself.
 
 The review then lists five actions with an owner and the observation that closes each one. The first two ask the analytics team to reprocess the earlier weeks with the new bot filter. They also ask for a `surface` property (card or article page) on the event. The third asks the product owner to set the size of success. The fourth waits for four weeks with a normal share of new readers. The fifth asks the product owner to decide on a random holdout group.
 
@@ -154,7 +154,7 @@ What this run did not execute: no analytics source or database was available, so
 - You read a rise as proof of cause. No holdout group existed, so the campaign and the filter can explain part of it. Use the word "associated" and record the missing evidence.
 - You read the interval as exact. The review treats weeks as independent. Read the week range next to it.
 - You treat the run's recommendation as the owner's decision. The run answered no open question. The product owner sets the size of success and decides on a holdout group.
-- You drop the rollout week without saying so. The run excluded it from both periods, and the review states this. The skill does not name this case, so write your choice in the review.
+- You drop the rollout week without saying so. The run excluded it from both periods, and the review states this. The skill now says to compare complete periods only, and to report a partial week with its exact dates. This run predates that rule, so write your choice in the review.
 - You use invented numbers as findings. The data on this page is made up. Do not copy it into a report about a real product.
 
 ## Next

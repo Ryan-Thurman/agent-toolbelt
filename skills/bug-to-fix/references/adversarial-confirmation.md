@@ -25,6 +25,8 @@ Skip only for a trivially obvious, low-blast-radius cause (and say so).
 
    **Do not hand the reviewer your conclusion.** Pass the evidence and the code, not the claim.
    Handing over the verdict biases it toward agreement.
+   If no subagent can start, run the DOUBT step yourself with the same prompt and the same evidence.
+   Label that result `Self-review` in the **Evidence** section, because it is not an independent review.
 4. **RECONCILE**: classify each finding (first match wins): (1) you misread the contract/evidence
    -> fix your understanding. (2) valid + actionable -> the cause is wrong or incomplete, so keep
    investigating. (3) valid trade-off / acceptable -> note it. (4) noise. The reviewer's output is

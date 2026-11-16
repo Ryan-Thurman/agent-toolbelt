@@ -15,9 +15,23 @@ boundary. They differ in what happens after the review is posted.
 | Merge | never | main agent merges when the verdict is `APPROVE` |
 | After the gate | stop for human review | proceed to the next phase |
 
-`--no-post` makes either mode report-only: drop `--comment`, print the review,
-and do not write to the host. With `--no-post`, `--rereview` needs no `--repost`.
-If the host CLI is absent, posting degrades to the same report-only path. Host detection follows `shared/contracts/references/providers.md`.
+`--no-post` makes either mode report-only: drop `--comment`, print the full review report as
+`pr-review` renders it (`skills/pr-review/references/output-format.md`), and do not write to the host.
+The verdict-summary row of the matrix applies only when the review posts. With `--no-post`,
+`--rereview` needs no `--repost`. If the host CLI is absent, posting degrades to the same report-only
+path. Host detection follows `shared/contracts/references/providers.md`.
+
+## Inputs before the review
+
+- **Test evidence.** The main agent runs the project's required checks on the phase head before the
+  review starts. Team mode: the author runs them. The reviewer is read-only and does not run tests.
+  Put each result in the reviewer packet with its command, exit code, and run date. A failed check or a
+  check that did not run is a scope gap in the review. Team mode reports it. Solo mode stops and reports it.
+- **Branch with no PR.** Team and solo flows need a PR to post to. For a branch target with no open PR,
+  run as `--no-post`, print the verdict, and stop. Solo mode never merges a branch.
+- **No sub-agent tool.** The main agent runs the review in its own session, labeled
+  `Self-review: facets not independent`. Team mode posts it with that label. Solo mode does not merge a
+  self-review. It stops and reports, and the user decides the next step.
 
 ## Tier
 

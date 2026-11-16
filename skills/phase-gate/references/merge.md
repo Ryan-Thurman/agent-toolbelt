@@ -43,10 +43,12 @@ Record the head branch and SHA when the review subagent returns, and compare her
 **re-review. Do not merge.** A fix that landed after the review is the code most likely to be wrong,
 and no review has read it. The solo flow therefore re-reviews after every fix commit (`modes.md`).
 
-Then confirm the host agrees, since a merge is decided on the host's view of the PR, not yours:
+Then confirm the host agrees, since a merge is decided on the host's view of the PR, not yours.
+On GitHub, read the head SHA with `gh`. On Azure Repos, read the source commit with `az`:
 
 ```bash
-gh pr view <pr> --json headRefOid --jq .headRefOid    # must equal the reviewed SHA
+gh pr view <pr> --json headRefOid --jq .headRefOid    # GitHub: must equal the reviewed SHA
+az repos pr show --id <id> --query lastMergeSourceCommit.commitId -o tsv   # Azure Repos: must equal the reviewed SHA
 ```
 
 Expect this to lag: GitHub reports the pre-push head for a few seconds after a push. Re-read it a

@@ -6,6 +6,7 @@ pack_product_outcome_review() {
   shared_contract references/docs-writing.md
   shared_contract references/evidence-quality.md
   shared_contract references/product-measurement.md
+  shared_contract references/execution.md
   cmd product-outcome-review
   skill product-outcome-review SKILL.md
   template product-outcome-review.md

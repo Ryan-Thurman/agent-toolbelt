@@ -35,7 +35,7 @@ The obvious alternative is to read the files in the pull request diff, or to run
 
 A second alternative is [`story-refinement`](../../skills/story-refinement/SKILL.md) with `--check`. It tests the criteria, not the scenarios. Use it first when the criteria are vague. The cost is a round of owner questions before any scenario review. The page [Refine a vague story](qa-refine-a-vague-story.md) shows that path.
 
-The review mode of `bdd-scenarios` uses a fixed checklist of 11 checks (`references/review-checklist.md`). It also uses the negative-testing families and the test-level rules that the skill writes with. A negative family is a kind of failure, such as bad input, no sign-in, limits, or concurrency. The review reads files and reports. It does not run a scenario, and it does not edit a file. You can run it before any code exists.
+The review mode of `bdd-scenarios` uses a fixed checklist of 14 checks (`references/review-checklist.md`). It also uses the negative-testing families and the test-level rules that the skill writes with. A negative family is a kind of failure, such as bad input, no sign-in, limits, or concurrency. The review reads files and reports. It does not run a scenario, and it does not edit a file. You can run it before any code exists.
 
 ## Steps
 
@@ -57,16 +57,16 @@ The review mode of `bdd-scenarios` uses a fixed checklist of 11 checks (`referen
 - If the feature files do not exist yet, choose the write mode (`/bdd-scenarios` with no flag). The same page shows the write mode.
 - If the repository has no runner, continue the review. Feature files do not depend on the runner, and the review reads only text. To plan a runner, use `--setup`. The page [Set up a BDD runner](qa-set-up-a-bdd-runner.md) shows that path.
 - If a finding depends on an unanswered question, mark it as an open question. Do not accept the scenario as correct, and do not ask the developer to delete it.
-- If a scenario has exactly ten steps, decide with the team. The checklist flags "about ten or more steps". The writing guide accepts "about ten steps or fewer".
+- If a scenario has exactly ten steps, decide with the team. The checklist flags more than ten steps, and the writing guide accepts ten steps or fewer. This run predates that alignment, when the checklist said "about ten or more steps".
 - Stop when each top finding has an answer, and the criteria check is complete.
 - Choose [`/review-diff` or `/pr-review`](../../skills/pr-review/SKILL.md) for the step definitions and the application code in the same pull request.
 - Choose [`test-case-design`](../../skills/test-case-design/SKILL.md) when the question is what to test, not whether the scenarios are good. The page [Plan tests for a small authentication pull request](qa-plan-tests-for-a-small-pr.md) shows it.
 
 ## What you get
 
-The run was headless, so no person answered a question. This mode asks none. The skill names no output location. Findings normally appear in the reply. This run saved them in a file. The run did not pass the criteria, so the criteria check stayed half done.
+The run was headless, so no person answered a question. This mode asks none. This run predates the output location in `SKILL.md`. The skill now writes the findings to `.atb-work/bdd-scenarios/<scope-slug>.md` unless the user names a path. This run saved them in a file. The run did not pass the criteria, so the criteria check stayed half done.
 
-The report has nine findings. A finding ID such as F-1 is this run's numbering. The skill sets no ID scheme. The risk labels High, Medium, and Low are also the run's choice, because the skill says only "sort the findings by risk". Two findings ranked High: F-1 and F-2.
+The report has nine findings. A finding ID such as F-1 is this run's numbering. The skill sets no ID scheme. The risk labels High, Medium, and Low are also the run's choice. This run predates the checklist's definitions of High and Low. Two findings ranked High: F-1 and F-2.
 
 F-1 is a missing failure path. Rule 1 rejects a bookmark on an unknown article (AC-3). Rule 2, which removes a bookmark, has no such case. AC-3 and AC-6 are criteria from the earlier refinement run.
 
@@ -88,7 +88,7 @@ Scenario: Remove a bookmark from an article that does not exist
 
 The review does not invent the criterion ID. The rewrite keeps `AC-<n>`, because the owner must add the criterion. The review also notes that AC-6 expects success when the bookmark does not exist. The two "does not exist" cases can give different results, and the owner must say which result is right.
 
-F-2 is a step with no setup in a Scenario Outline. The run found it by reading the Independence check with the writing guide rule "Put only the data that matters to the rule in the scenario". The checklist names no setup check for outline rows, so do not expect the skill to prescribe this check.
+F-2 is a step with no setup in a Scenario Outline. The run found it by reading the Independence check with the writing guide rule "Put only the data that matters to the rule in the scenario". This run predates the Outline data check in the checklist. The current checklist names that check.
 
 Excerpt from a run on the Conduit sample API at commit 30b68e1. Lines are wrapped. The text is verbatim.
 
@@ -116,7 +116,7 @@ Excerpt from a run on the Conduit sample API at commit 30b68e1. Condensed from t
 What you must check in the output:
 
 - A finding about a scenario names the file, the scenario, the rule, and a rewrite. A finding without a rewrite is incomplete. A finding about a check that the review did not finish, or one that needs an owner answer, gives a question instead. In this run, F-5 (criteria check) and F-9 (time ordering) are of that kind.
-- The report says which check is unfinished. This run had no criteria. The traceability check confirmed only that the tags `@AC-1` to `@AC-18` have no number missing (finding F-5).
+- The report says which check is unfinished. This run had no criteria. This run predates the rule that marks Traceability `Not verified` when the reviewer holds feature files only. The traceability check confirmed only that the tags `@AC-1` to `@AC-18` have no number missing (finding F-5).
 - The run did not execute any scenario. It did not parse the files, because the sample has no Gherkin parser.
 - This run's report also lists the checks with no finding. No scenario had more than one `When` action or more than four steps. The skill does not require that list.
 
@@ -127,7 +127,7 @@ What you must check in the output:
 - You accept the criteria check without the criteria. Without a list, the check can compare only tags. A missing criterion stays invisible.
 - You accept a `Not applicable` reason without reading it. A wrong reason turns a gap into a pass.
 - You skip a review because the author is careful. In this run the same agent wrote and reviewed the files. The review still found two findings that it ranked High.
-- You treat the risk labels as a standard. The skill sets none. Ask the team how it ranks findings before you compare two reports.
+- You treat the risk labels as a standard. The checklist defines the labels, but no scoring method. Ask the team how it ranks findings before you compare two reports.
 
 ## Next
 

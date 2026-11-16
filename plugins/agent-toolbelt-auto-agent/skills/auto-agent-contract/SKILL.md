@@ -61,6 +61,7 @@ reviews at a phase boundary, with a human in the session).
 
 `agent-runner` is a local Python 3 CLI. It drives a markdown plan through `IMPLEMENT -> REVIEW ->
 FIX -> CLOSE_PHASE -> MERGE`, one PR per phase, with state in SQLite.
+Install it from its own checkout before you validate a plan. The README in this plugin gives the steps.
 When observed runner behavior differs from this contract, report the difference.
 The implementation does not change required behavior.
 Write a plan with **`/auto-agent-plan`** (`references/plan-format.md`).

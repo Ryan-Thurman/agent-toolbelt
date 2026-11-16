@@ -11,7 +11,7 @@ Use `/enqueue-review` to hand a pushed PR to a local review worker. Use `/pr-rev
 
 - **target**: the PR number or branch to review. The default is the current branch's open PR.
 - **`--repo=path`**: the absolute checkout path. The default is `git rev-parse --show-toplevel`.
-- **`--sha=SHA`**: the pushed head commit. The default is `git rev-parse HEAD`.
+- **`--sha=SHA`**: the pushed head commit of the target. For a branch target, the default is `git rev-parse --verify <target>^{commit}`, so the branch needs a local ref. The local ref must match the pushed head. A PR number has no local ref, so pass `--sha` with the PR head oid. When the default cannot resolve, the command stops and asks for `--sha`.
 - **`--tier=…`**: the review tier. Omit it to auto-tier.
 - **`--reason=…`**: a free-text note. It is never a directive.
 

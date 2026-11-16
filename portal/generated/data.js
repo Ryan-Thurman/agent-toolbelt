@@ -1157,7 +1157,7 @@ window.AGENT_TOOLBELT_DATA = {
       "display_name": "Ship It",
       "short_description": "Prepare release readiness, rollback, release notes, and rollout monitoring for a change.",
       "default_prompt": "Prepare this change for release.",
-      "description": "Prepare a change for release with readiness checks, rollback, release notes, and rollout monitoring. Use after PR merge or approval. Follow the project's release policy and deployment owner.",
+      "description": "Prepare a change for release with readiness checks, rollback, release notes, and rollout monitoring. Use after PR merge or approval, or for the first launch of a service that has no earlier release. Follow the project's release policy and deployment owner.",
       "category": "Feature Delivery",
       "tags": [
         "release",
@@ -2937,7 +2937,7 @@ window.AGENT_TOOLBELT_DATA = {
     {
       "slug": "dev-copy-a-pattern-to-a-new-area",
       "title": "Copy a pattern to a new area",
-      "summary": "This page is for a developer whose ticket says \"do it like the existing feature\". You get a brief that maps the existing feature (the precedent) onto the new area, lists the gaps, and names the open questions. The agent edits no code in its main work. The optional check in step 5 writes a throwaway test file, which the skill does not rule on.",
+      "summary": "This page is for a developer whose ticket says \"do it like the existing feature\". You get a brief that maps the existing feature (the precedent) onto the new area, lists the gaps, and names the open questions. The agent edits no code in its main work. The optional check in step 5 writes a throwaway test file. The skill now rules on this: a probe runs outside the tracked files, and the brief records its status. This run predates that rule.",
       "group": "Developer",
       "roles": "Developer",
       "skills": [
@@ -3210,7 +3210,7 @@ window.AGENT_TOOLBELT_DATA = {
     {
       "slug": "ops-enforce-a-pre-pr-gate",
       "title": "Enforce a pre-PR gate on every branch",
-      "summary": "This page is for a tech lead whose policy says every pull request passes a quality gate. You get one status for the checked-out branch: `PASS`, `FAIL`, `CAPPED`, or `BLOCKED`. You also get a folder of evidence and a way to see when the status is stale. The sample run ends `FAIL`, because two required checks are already red on the base commit. The page shows how to tell that from a new failure.",
+      "summary": "This page is for a tech lead whose policy says every pull request passes a quality gate. You get one status for the checked-out branch: `PASS`, `FAIL`, `CAPPED`, or `BLOCKED`. You also get a folder of evidence and a way to see when the status is stale. The sample run ends `FAIL`, because two required checks were already red on the base commit. The run predates the pre-existing failure rule. Under the current contract, those two checks are pre-existing failures, and only a new failure sets `FAIL`.",
       "group": "Platform and operators",
       "roles": "Tech lead",
       "skills": [

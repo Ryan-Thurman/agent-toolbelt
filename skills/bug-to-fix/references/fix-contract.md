@@ -45,3 +45,6 @@ Read this file after `/rca` completes the reasoning checkpoint, when you write t
 A fix brief with the scope self-check and verification plan complete, the durable file updated
 (status and Resolution), and the next command. For a manual-only reproduction, list the
 automated-regression-test follow-up as Should-Fix.
+
+Write the fix brief to `.atb-work/bug-to-fix/<scope-slug>/fix-brief.md`, as `shared/contracts/references/execution.md`
+("Durable report location") requires, unless the user names a path. Print the path.

@@ -31,6 +31,9 @@ If you cannot answer these, you are not ready to simplify it. Mark it `review` a
 
 - **One change at a time.** Run the relevant tests after each change. If they fail, revert and
   reconsider rather than piling on fixes.
+- **Check that the test can fail.** For each change that a test protects, remove the protected line, run the test,
+  and see it fail for the expected reason. Restore the line, and run the test again. Record each mutation and its result.
+  Read `shared/contracts/references/test-driven-development.md#Implement one behavior at a time` for the red rule.
 - **Rule of 500:** if a cleanup touches more than ~500 lines, use a codemod / AST transform, not
   hand edits.
 - Do not edit inside `simplify-ignore` blocks. Respect existing abstraction boundaries.

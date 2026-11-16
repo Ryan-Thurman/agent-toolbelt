@@ -13,6 +13,8 @@ read-only discovery report, not a brief-approval or implementation step.
    when available and useful. Distinguish code behavior from documentation and
    tests, which can be stale or incomplete.
 3. Map each outcome to **covered**, **partial**, **missing**, or **unknown**.
+   Use **partial** when the code or docs cover one part of the outcome and a named part is missing.
+   Use **unknown** when the search did not reach the outcome.
    Attach exact file paths, symbols, tests, or observed outputs. A failed search
    alone is not proof of absence. Say what was searched and mark uncertainty.
 4. Identify contradictions and cross-cutting gaps that the ask can omit:

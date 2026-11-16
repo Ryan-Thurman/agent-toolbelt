@@ -14,9 +14,12 @@ allow() { printf '{"permission":"allow"}\n'; exit 0; }
 
 input="$(cat)"
 [ "${TOOLBELT_REVIEW_NUDGE:-1}" = "0" ] && allow
-case "$input" in *"git push"*) ;; *) allow ;; esac
+# Match `git push` only where a command starts: at the start of the input, after a shell
+# operator, or as the first word of the "command" value. An echo of "git push" does not match.
+push_re='(^|[;&|(]|"command"[[:space:]]*:[[:space:]]*")[[:space:]]*git[[:space:]]+push([[:space:]"]|$)'
+printf '%s' "$input" | grep -Eq "$push_re" || allow
 case "$input" in *"[skip-review]"*) allow ;; esac
 
-msg="About to push: have you run /pr-review on this branch? Approve to push, or cancel and review first. Bypass: set TOOLBELT_REVIEW_NUDGE=0."
+msg="About to push: have you run /pr-review on this branch? Approve to push, or cancel and review first. Bypass: add [skip-review] to the command, or set TOOLBELT_REVIEW_NUDGE=0."
 printf '{"permission":"ask","user_message":"%s","agent_message":"%s"}\n' "$msg" "$msg"
 exit 0

@@ -29,13 +29,22 @@ A room is the folder name of one task, such as `checkout-redesign`.
 Recommend that the project adds `.acc/` to `.gitignore`.
 When the project wants to track phase files, use `docs/agent-command-center/phases/` and commit them.
 
+The `Status` field in `phase-NN.md` has four values:
+
+| Status | Meaning |
+| --- | --- |
+| `planned` | The phase file exists. Start has not run. |
+| `in progress` | Start ran. The phase is not complete. |
+| `paused` | Close ran before the acceptance criteria were met. The handoff lists what remains. |
+| `done` | The acceptance criteria are met, and the handoff says so. |
+
 ## Operations
 
 | Operation | Do | Done when |
 | --- | --- | --- |
 | Create a phase | Create or update `phase-NN.md`. Keep useful existing content. Fill missing goal, scope, acceptance criteria, relevant files, status, and notes. Link the source plan, ticket, or PRD by path or URL. | The phase file exists and names its source. |
-| Start a phase | Read the durable plan, `phase-NN.md`, and `phase-(NN-1)-handoff.md` when present. Capture `git status --short --branch` and a changed-file summary. Write `context-packet.md`. | The packet exists and is compact enough to paste into a fresh session. |
-| Close a phase | Write `phase-NN-handoff.md` with the `handoff` skill rules. Include completed work, decisions, changed files, checks and known failures, open issues, and risks. Set `Safe to clear`. Set `Status`, `Completed`, and `Handoff` in `phase-NN.md`. | The handoff exists. `Safe to clear` is `Yes`, or `No` with the missing items listed. |
+| Start a phase | Read the durable plan, `phase-NN.md`, `phase-NN-handoff.md` when present (a resume in the middle of the phase), and `phase-(NN-1)-handoff.md` when present. If `Base` in `phase-NN.md` is empty, set it to the current `HEAD` commit. Set `Status` to `in progress`. Capture `git status --short --branch` and a changed-file summary with `git diff --stat <Base>`. Write `context-packet.md`. | The packet exists and is compact enough to paste into a fresh session. `Base` names the commit where the phase started. |
+| Close a phase | Write `phase-NN-handoff.md` with the `handoff` skill rules. Include completed work, decisions, changed files from `git diff --stat <Base>` (this covers earlier commits and uncommitted edits), checks and known failures, open issues, and risks. When `--tests <command-or-summary>` is given, record that command or summary in the handoff Validation section. Set `Safe to clear`. Set `Status` to `done` when the acceptance criteria are met, or to `paused` when the phase closes before it is complete. Set `Completed` only for `done`, and set `Handoff`. | The handoff exists. `Safe to clear` is `Yes`, or `No` with the missing items listed. `Status` is `done` or `paused`. |
 | Show status | List phase files, handoffs, and the latest packet. Match each phase to its handoff. Report the current branch and git status. | Each phase shows `handoff written`, `current`, or `not started`, and the next action is named. |
 
 After each operation, report the written path and the next command.

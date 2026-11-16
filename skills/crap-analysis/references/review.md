@@ -12,11 +12,20 @@ Do not edit source files in this flow.
 
 1. Run `bash skills/crap-analysis/bin/crap-analysis.sh validate-config`.
    If it reports that the config is missing, suggest `/crap-config` and stop.
+
+   **No analyzer.** If a target still has a `REPLACE_WITH_` placeholder command, or its analysis command
+   reports a tooling error (exit `2` or more), stop. Tell the user that the Toolbelt ships no analyzer, that the
+   repository must supply a command that writes the report in `references/report-schema.md`, and
+   that `/crap-config` records that command. Do not write a report by hand.
 2. Unless `--report-only`, run `execute --changed` once, and wait for it to exit.
    Add `--coverage` and `--target NAME` only when the user passed them.
    `--target NAME` limits the run to that target. The review scope stays the changed files.
+   With `--all`, run `execute` with no `--changed` flag, so every target and every function is in scope.
+   A test-only change adds no function to scope, so `--changed` can give `NO_TARGETS`. Use `--all` for it.
+   If the suite fails for a reason outside the task, read `references/cli.md`, "Test suite failures".
 3. Run `review`. With `--report-only`, run `review --report-only --changed`, plus `--target NAME`
    when given. This reviews the reports on disk without running commands.
+   With `--all`, omit `--changed` from each `review` command.
 4. Read the review JSON from stdout. `references/cli.md` defines its fields.
 5. If a target outcome is `REFACTOR`, read its `refactorBrief` file in full.
 6. Write the prefix lines that apply, then one template block for each target in name order.

@@ -1,6 +1,6 @@
 ---
 description: Run CRAP analysis on branch changes — orchestrator loads the base-branch config, runs configured coverage and analysis commands once, and reviews the report deterministically. Detect-only; never edits source.
-argument-hint: "[--coverage] [--target NAME] [--report-only]"
+argument-hint: "[--coverage] [--target NAME] [--report-only] [--all] [--config PATH] [--base REF]"
 ---
 
 # /do-crap-analysis

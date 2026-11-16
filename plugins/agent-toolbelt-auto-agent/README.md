@@ -18,6 +18,12 @@ The package does not run an unattended job by itself. Its skills define the
 runner's invocation, plan, review, and merge contracts. The caller controls
 execution and approval policy.
 
+`agent-runner` is a separate Python 3 CLI. It is not part of this repository.
+Install it from its own checkout, then confirm the install with `agent-runner --version`.
+Run `agent-runner init` in the target repository to create `.agent-runner.json`.
+For a first run, follow the first-run settings in
+[`plan-format.md`](skills/auto-agent-contract/references/plan-format.md#the-config).
+
 Managed assignment and result guidance is in
 [`execution-boundary.md`](skills/auto-agent-contract/references/execution-boundary.md).
 The standard plugin owns the optional version 1 execution record and its read-only checker.

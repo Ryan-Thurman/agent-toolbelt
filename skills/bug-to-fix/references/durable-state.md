@@ -38,6 +38,10 @@ Resolved investigations can move to a `resolved/` subfolder. Pick a `<slug>` fro
 state loops back to `investigating` when verification fails. `awaiting_human_verify` is the normal
 state while QA re-tests a fix manually (see `reproduction.md` and `fix-contract.md`).
 
+Use `resolved-unverified` when the regression test was observed red before the fix and green after it, but
+an end-to-end check cannot run in this environment. Record that check as `Not verified`, with the command
+that runs it and the reason it cannot run here. Do not use `resolved` for this case.
+
 ## Resume protocol (after a reset or handoff)
 
 1. Read the frontmatter -> know the `status`.
@@ -49,7 +53,9 @@ state while QA re-tests a fix manually (see `reproduction.md` and `fix-contract.
 ## Cross-session knowledge base (optional, high-value)
 
 An append-only `bug-knowledge-base.md` records resolved investigations so future sessions can jump
-to high-probability hypotheses when symptoms match. One entry per resolved bug:
+to high-probability hypotheses when symptoms match. Its location is the path that the user names.
+Otherwise it is `.atb-work/bug-to-fix/bug-knowledge-base.md`, which stays on this machine and out of git.
+Name a tracked path when the team must share it. One entry per resolved bug:
 
 ```
 ## <slug> — <short description>

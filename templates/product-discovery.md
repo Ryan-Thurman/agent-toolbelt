@@ -6,10 +6,16 @@
 
 Separate observed evidence from assumptions.
 
+| Claim | Verdict | Source ID |
+| --- | --- | --- |
+
+Verdict is `Supported`, `Contradicted`, or `Unknown`. Give each source a stable ID.
+
 ## Opportunity and candidate
 
 Trace evidence to the opportunity and proposed feature without prescribing implementation.
 Compare selected, deferred, and rejected options when the request includes competing opportunities.
+Include the current experience (no change) as one option.
 
 ## Risks and assumptions
 
@@ -23,6 +29,7 @@ What each experiment can change and what evidence it needs.
 
 Observable outcomes and decision thresholds.
 Link the measurement plan or record definitions, baseline, population, period, guardrails, and data limits here.
+When no supported baseline exists, record each threshold as `Not set` and name the missing baseline.
 
 ## Decision
 

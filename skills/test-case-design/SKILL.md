@@ -41,8 +41,13 @@ It does not edit tests or production code. To rank untested behavior in code as 
    A draft from `risk-area-mapping` is not declared. Use a draft entry only when the user says so,
    and record it as an assumption.
    Record assumptions and uncovered risks. Do not invent expected behavior.
-   Write the expected result as observable behavior. Give exact text only when the text is the contract,
+   Write the expected result as observable behavior, not as a mock call count or call order.
+   A call argument at an external boundary belongs in the expected result only as
+   `shared/contracts/references/test-driven-development.md` ("Unit tests that detect defects") allows.
+   Give exact text only when the text is the contract,
    such as a protocol message, generated file, command output, or user-visible copy.
+   Map a `Decision needed` or `Not set` value from an input skill to `Confirm with the owner`, and list
+   the case in the assumptions.
 7. When the set will have more than ten cases and a person can answer, calibrate first.
    Show the five to ten cases with the highest priority and stop. Ask about domain terms, test level,
    priority, and case size. Apply the answers to all remaining cases. When no person can answer,

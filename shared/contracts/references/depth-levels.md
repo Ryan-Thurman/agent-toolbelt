@@ -18,3 +18,15 @@ Most features need the Light level. Deep work runs only when a person asks for i
 5. Move up one level when the work finds a signal of a higher level. State the change and the reason.
 
 A lower level does not skip a required check. A skill that must run `threat-model` for a trust boundary still runs it at the Light level.
+
+## Named level below a signal
+
+Rule 1 wins over rule 5 when the named level is below a signal. Keep the named level for the depth of the work.
+State the signal and the higher level that it implies in the first sentence, so that the person can ask for that level.
+Run the checks that the signal requires. The named level does not remove them.
+
+## Answers that recommend a new table
+
+An answer that recommends a new table changes a data store, so its level is at least Standard.
+Choose the level from the recommendation, not from the wording of the question.
+An answer at the Light level cannot recommend a new table.

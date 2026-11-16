@@ -48,6 +48,15 @@ Before you advance or resume, compare the branch, worktree state, actual diff, a
 Verify referenced evidence. Mark a result that no longer matches as stale, and rerun its check before you rely on it.
 Do not reuse completed work from memory alone.
 
+## Durable report location
+
+When a skill writes a report and the user names no path, the skill writes the report to `.atb-work/<skill>/<scope-slug>.md`.
+Derive `<scope-slug>` from the reviewed target, such as a branch, a PR number, a ticket key, or a path.
+Write the slug in lower case with hyphens, and reuse it when the same target runs again.
+Before you write, make sure that `.atb-work/.gitignore` contains the line `*`. Create the file, or add the line, when it is missing.
+Print the report path in the result. A path that the user names replaces this default.
+A skill that writes several files uses the folder `.atb-work/<skill>/<scope-slug>/` with the same ignore file.
+
 ## Related contracts
 
 When a caller produces or validates CONTEXT or RESULT JSON, read [execution-schema.md](execution-schema.md).

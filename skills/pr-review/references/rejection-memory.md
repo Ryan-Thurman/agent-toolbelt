@@ -24,11 +24,24 @@ entirely. It is a pure optimization, never a hard dependency.
 Line numbers move every commit, so the fingerprint is **content-based, not location-based**:
 
 ```
-fingerprint = short_hash( facet + "|" + path + "|" + normalize(rootIssue) )
+fingerprint = first 12 hex characters of SHA-256( facet + "|" + path + "|" + normalize(rootIssue) )
 ```
 
-- `normalize()` = lowercase, collapse whitespace, strip line numbers / hex literals / quoted
-  identifiers, so "token === stored at L142" and "token === stored at L150" hash the same.
+Compute the hash over the UTF-8 text of `$key`, with no trailing newline. `$key` holds
+`facet|path|` followed by the normalized root issue:
+
+```bash
+printf '%s' "$key" | shasum -a 256 | cut -c1-12   # use sha256sum where shasum is missing
+```
+
+- `normalize()` runs these steps in order:
+  1. Lowercase the text.
+  2. Replace each backtick, single-quoted, or double-quoted span with the token `q`.
+  3. Replace each hex literal (`0x` and hex digits) with `h`.
+  4. Replace each run of digits with `n`. This removes line numbers.
+  5. Collapse each run of whitespace to one space, and trim both ends.
+- Both "token === stored at L142" and "token === stored at L150" normalize to "token === stored at ln",
+  so they hash the same.
 - Include `path` and `facet` so the same root issue in two files stays distinct.
 - **Exclude** `lineStart`/`lineEnd`, severity, and confidence, because those legitimately change between runs.
 

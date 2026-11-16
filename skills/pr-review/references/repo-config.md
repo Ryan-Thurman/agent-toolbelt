@@ -12,8 +12,8 @@ First file found wins:
 1. `.pr-review.md` (repo root)
 2. `.claude/pr-review.md`
 
-If none exists, the review runs without it. The repo's `CLAUDE.md`/`AGENTS.md` and approved
-`STYLE_GUIDE.md` are always loaded as general standards. `.pr-review.md` is the review-specific
+If none exists, the review runs without it. The repo's `CLAUDE.md`/`AGENTS.md`, `CONTRIBUTING.md`,
+and approved `STYLE_GUIDE.md` are always loaded as general standards. `.pr-review.md` is the review-specific
 layer on top. The no-config nudge rules are in `output-format.md`.
 
 ## Trust & hardening (load from the BASE, not the PR head)
@@ -26,6 +26,7 @@ untrusted. But a PR can try to weaken its own review by editing the config in th
   base="$(…)"                              # the resolved base (targets-and-diff.md)
   git show "$base:.pr-review.md" 2>/dev/null || git show "$base:.claude/pr-review.md" 2>/dev/null
   git show "$base:STYLE_GUIDE.md" 2>/dev/null
+  git show "$base:CONTRIBUTING.md" 2>/dev/null
   ```
   For local/branch review, read it from the merge-base. The config *in effect* is the one already
   approved on the target branch, so a PR cannot relax the rules that judge it.

@@ -38,7 +38,8 @@ Read `references/modes.md` before you run either flow. It owns the steps and the
 
 ## Inputs
 
-- **target**: the phase PR (number/URL) or branch. Empty = the current branch's open PR.
+- **target**: the phase PR (number/URL) or branch. Empty = the current branch's open PR. A branch with no
+  open PR runs report-only and stops (`references/modes.md` -> "Inputs before the review").
 - **`--merge`**: solo mode. Without it, team mode posts and stops.
 - **`--no-post`**: report-only. Posting is otherwise on, and degrades to report-only without a host CLI.
 - **`--tier=light|standard|deep`**: review depth passed to `pr-review`. See `references/modes.md`.

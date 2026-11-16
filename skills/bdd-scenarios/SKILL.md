@@ -25,6 +25,11 @@ Choose the mode from the flag. With no flag, choose from the request:
 Write feature files to the repository only when the user asks, or inside an authorized `phased-delivery` phase.
 Otherwise, report the feature text.
 
+The `--setup` runner plan and the `--review` findings are reports. Write each one to
+`.atb-work/bdd-scenarios/<scope-slug>.md`, as `shared/contracts/references/execution.md`
+("Durable report location") requires, unless the user names a path. Print the path.
+The runner plan goes in the "Runner plan" section of `templates/bdd-scenarios.md`.
+
 ## Procedure
 
 1. Read the acceptance criteria and their IDs, or failure-scenario cards (`FS-` IDs). Prefer the output of `story-refinement`.
@@ -32,6 +37,8 @@ Otherwise, report the feature text.
    If many criteria are vague, send the item to `story-refinement` first.
 2. Find the runner, the feature folder, and the existing step definitions.
    If the repository has no runner, read `references/runners.md` and propose its default for the stack.
+   Before you propose one, check the package manifest, the config files, and the test folders for a runner
+   that is already installed. Record the check in the runner plan.
    Feature files do not depend on the runner, so continue. Mark the runner as `Proposed` in the template,
    and ask the user to choose before you install or connect a runner.
 3. Choose the level of each criterion with `shared/contracts/references/test-levels.md`.

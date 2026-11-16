@@ -16,8 +16,12 @@ per-feature plugins. For an API rename: overloads, re-exports, dynamic reference
 Find *all* of them. A missed site is the failure mode:
 - **Grep / ripgrep** for the import, symbol, or pattern (and its aliases, re-exports, and string/
   dynamic references).
-- **AST** when the pattern is structural (a call shape, a JSX element) rather than textual.
-- Cross-check counts two ways (grep vs. AST). A mismatch means hidden sites.
+- **AST** when the pattern is structural (a call shape, a JSX element) rather than textual. Name the AST tool and its version
+  for the count, such as ts-morph or jscodeshift. When no AST tool is installed, record the AST count as `Not run`.
+- Search the non-source sites too: package manifests, lockfiles, build and bundler config, CI config, images or other
+  generated assets that name the symbol, and docs. Record each one as a site.
+- Cross-check counts two ways (grep vs. AST). A mismatch means hidden sites. When the AST count is `Not run`,
+  the claim that the sweep is complete is `Not verified`.
 
 Record every site in the plan with a status (`pending`/`done`/`skipped`/`needs-review`).
 

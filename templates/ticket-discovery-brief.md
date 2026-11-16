@@ -40,6 +40,12 @@ Success signal: <how we will know it is done>
 
 | Area | Precedent Has | Target Has | Action and why |
 |---|---|---|---|
+| Feature or behavior: <name> |  |  | Reuse / adapt / create |
+
+Add these rows only when the ticket adds tests or changes that setup:
+
+| Area | Precedent Has | Target Has | Action and why |
+|---|---|---|---|
 | Test setup |  |  | Reuse / adapt / create |
 | Fixtures |  |  | Reuse / adapt / create |
 | Auth / permissions |  |  | Reuse / adapt / create |
@@ -75,7 +81,9 @@ Describe the smallest useful adaptation, preserving the source ticket's scope.
 
 ## Implementation handoff
 
-Ready for implementation planning: Yes / No
+| Slice | Ready for implementation planning | Blocking question |
+|---|---|---|
+| <slice name> | Yes / No |  |
 
 Recommended next command: `/implementation-plan` / `/cover` /
 `/cover-gaps` / `/retrofit` / `/tech-assess`

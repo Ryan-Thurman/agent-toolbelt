@@ -4,6 +4,9 @@ Record installed source versions, proposed target versions, runtime support, and
 Read official migration notes for that version pair.
 Report only changes that intersect actual usage, with file or symbol evidence.
 
+When the newest major version is a pre-release (an `alpha`, `beta`, or `rc` tag), do not use it as the target.
+Read the `latest` dist-tag or the list of stable releases first. Name the pre-release only as an option, with its support status.
+
 Distinguish removed APIs, silent behavior changes, build or configuration changes, and dependency compatibility.
 For silent behavior changes, name a characterization test that records the current behavior before migration.
 Compare keeping the current version, a smaller supported update, and the proposed migration.

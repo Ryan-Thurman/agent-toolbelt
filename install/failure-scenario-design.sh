@@ -6,6 +6,7 @@ pack_failure_scenario_design() {
   shared_contract references/docs-writing.md
   shared_contract references/reliability-checklist.md
   shared_contract references/depth-levels.md
+  shared_contract references/execution.md
   cmd failure-scenario-design
   skill failure-scenario-design SKILL.md
   skill failure-scenario-design references/scenario-design.md

@@ -1,14 +1,15 @@
 ---
 description: Drain the local review queue — claim pending PR-review jobs and run /pr-review --comment on each in a fresh sub-agent. One pass; repeat with a local /loop. The consumer half of the review-queue pack.
-argument-hint: "[--worker=id] [--max=N] [--tier=light|standard|deep] [--db=PATH]"
+argument-hint: "[--report-only] [--worker=id] [--max=N] [--tier=light|standard|deep] [--db=PATH]"
 ---
 
 # /review-queue-worker
 
-Use `/review-queue-worker` to review the jobs in the local queue. Use `/enqueue-review` to add jobs.
+Use `/review-queue-worker --report-only` for a trial. It reviews the pending jobs without `--comment`, posts nothing, and changes no job. Use `/enqueue-review` to add jobs.
 
 **Arguments:** `$ARGUMENTS`
 
+- **`--report-only`**: review without `--comment`. The worker posts nothing and leaves the queue as it is. Use it for the first pass of a new worker.
 - **`--worker=id`**: the worker label. Use distinct labels for parallel workers.
 - **`--max=N`**: the most jobs to review in this pass.
 - **`--tier=…`**: the tier for jobs that have no tier. Omit it to auto-tier.

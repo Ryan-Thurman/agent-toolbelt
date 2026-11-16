@@ -3,6 +3,7 @@
 pack_shape_up() {
   shared_contract references/human-readable-output.md
   shared_contract references/docs-writing.md
+  shared_contract references/execution.md
   cmd shape-up
   cmd to-issues
 

@@ -11,8 +11,22 @@
 - Added a rails mode to `style-guide-init` (`--rails`). It sets up one canonical quality command and connects local use, CI, and release to it with the tools that the repository already has. It does not change application code or fix findings. A new check that finds problems in existing code stays out of the required CI path and is listed as pending adoption.
 - Added an exact-text assertion rule to the shared TDD contract and `test-case-design`. An exact text assertion is for text that is the contract, such as a protocol, generated file, command output, or user-visible copy. `cover` gap scans mark tests that match source text or private names as weak.
 
+### Changed
+
+- `install.sh ... all` no longer installs the `cursor-hooks` pack. The pack is opt-in (`# OPT_IN: true`), as the docs said. Name `cursor-hooks` in the pack list to install it. A dry run now prints its counts, and a sweep prints each child folder that it skips.
+- Skills that write a report and get no path from the user now write to `.atb-work/<skill>/<scope-slug>.md` and print the path. The rule is in `shared/contracts/references/execution.md`.
+- A caller flag counts as posting consent only when the pack names it as its posting flag (`shared/contracts/references/posting.md`). Each outward action has a report-only or dry-run path, and a first trial uses it.
+
 ### Fixed
 
+- Fixed 84 skill gaps that the second batch of use-case runs found. The high-severity fixes:
+  - `review-on-open` restores the root instruction files and the `.agents/` and `.claude/` folders from the base ref before the CI reviewer starts, so a pull request cannot change the rules or the reviewer that judge it.
+  - `/review-queue-worker --report-only` reviews the queue with no post and no job change. `/enqueue-review` takes the default `--sha` from the target branch, not from `HEAD`.
+  - `security-audit` searches Git history with forms that print commit IDs and file names, not secret values. A dependency check with no advisory data is `Not verified`, not clean.
+  - `code-quality-gate` reports a required check that also fails on the base commit as a pre-existing failure, apart from new failures, and states the `FAIL` and `BLOCKED` rules.
+  - `papercuts` has one consent rule for writes, which matches the shared posting rules.
+- The shared contracts now carry the lessons from the runs: a stub before the red test in typed languages and a test counts only when it was seen to fail for the expected reason, test stand-ins that answer like the real boundary, a `Decision needed` result when a skill sets no threshold, a list of checks that a setup or audit did not exercise, numbers from saved output, and dated snapshots for registry and audit data. `depth-levels.md` states which rule wins when a named level is below a signal, and the `system-design` template has a Right size section.
+- `idea-to-release` has a gate report template (`templates/idea-to-release-gate-report.md`) and a table that maps skill results to gate verdicts.
 - Fixed 20 skill gaps that real use-case runs found. `story-refinement` names its output files, has a depth line in the template, a Self-review fallback for the builder check, a warning state for reliability check 7, and a rule that the spec holds every criterion as a scenario. `bdd-scenarios` maps `--review` and `--setup` to its modes, proposes a default runner and continues when the repository has none (including Jest-only TypeScript APIs), and its template has a runner plan and a "waits on a question" state. `test-case-design` names change mode, supports commit ranges, defines `High`, `Medium`, and `Low` priority, names its output file, runs or flags existing tests, and treats a risk-area draft as an assumption. `risk-area-mapping` defines its coverage exclusions and states that it sets no coverage threshold. `pr-review` auto-tier states that a route path with a risk keyword is a hot path. `check-writing-rules.py --files` accepts files outside the repository.
 - The installer no longer replaces a `CLAUDE.md` -> `AGENTS.md` symlink with a regular file when it updates the Toolbelt block. It also keeps the file mode of `AGENTS.md` and `CLAUDE.md`. Before this fix, a reinstall changed both files to mode `0600`.
 

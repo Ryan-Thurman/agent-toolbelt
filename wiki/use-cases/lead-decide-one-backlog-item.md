@@ -9,7 +9,7 @@ This page is for a tech lead who must decide one backlog item, such as a major d
 ## Quick path
 
 1. Start Claude Code in the repository with the Toolbelt loaded: `claude --plugin-dir <toolbelt-folder>`.
-2. Assess the item and name a save folder, because the skill sets none. Sample: `/agent-toolbelt:tech-assess "Must we upgrade Prisma 4 to the current major version? Save the report in .atb-work/."`
+2. Assess the item and name a save folder. Without a named path, the skill writes to `.atb-work/tech-backlog-assessment/<scope-slug>.md`. Sample: `/agent-toolbelt:tech-assess "Must we upgrade Prisma 4 to the current major version? Save the report in .atb-work/."`
 3. Read the verdict and its confidence first. Then read "Open questions" and answer each one. Look for checks that the report leaves unexecuted. This run marks them `Not run`. The skill's own term is `Not verified`.
 4. Run the command that the report names under "Next workflow". For `Spike`, the skill has no command. Copy the repository and run the spike table from the report by hand.
 
@@ -69,7 +69,7 @@ The agent runs searches and reads files in step 3. Commands that install or gene
 
 ## What you get
 
-The agent saved the report with the layout of the skill's template, `templates/tech-backlog-assessment.md`. The skill sets no save folder. Name one if you want the file in a place you control. The skill defines the verdict names. The template sets the confidence values: `High`, `Medium`, or `Low`. A release candidate is a build that the vendor published before the final release.
+The agent saved the report with the layout of the skill's template, `templates/tech-backlog-assessment.md`. This run predates the default save folder, `.atb-work/tech-backlog-assessment/`. Name a folder if you want the file in a place you control. The skill defines the verdict names. The template sets the confidence values: `High`, `Medium`, or `Low`. A release candidate is a build that the vendor published before the final release.
 
 Excerpt from a run on the Conduit sample API at commit 30b68e1. The text is verbatim. Lines are wrapped for width, and `...` marks cut text.
 

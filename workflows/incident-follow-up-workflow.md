@@ -17,8 +17,10 @@ Start this workflow after the incident is mitigated. Mitigation comes first and 
 
 ## Fix the root cause
 
-Run `/bug-intake`, then `/reproduce`, then `/rca`, then the fix in `bug-to-fix`.
+Run `/bug-intake`, then `/reproduce`, then `/rca`, then `/fix-plan`, then the fix in `bug-to-fix`.
 The first test captures the confirmed symptom and fails before the fix.
+A fix at Light depth (`shared/contracts/references/depth-levels.md`) still writes that test. Light depth skips
+optional references, not required checks.
 Use `/rca --diagnose` when the team wants the analysis before anyone edits code.
 
 ## Record the failure mode
@@ -29,9 +31,13 @@ Record missing SLOs or alerts with an owner. Do not choose a target.
 
 ## Prove detection and recovery
 
-Run `/failure-scenario-design` for the new requirements. Each card states the fault, the steady state,
+Run `/failure-scenario-design` for the new requirements at Standard depth. A Light run writes no cards, so the
+steps below have nothing to hand off. Each card states the fault, the steady state,
 and the lowest level that proves the behavior: a unit fake, a fault proxy, a BDD scenario, or a staging experiment.
 Give the Given/When/Then cards to `/bdd-scenarios`.
+A card at the Staging experiment or Game day level stays unplanned at Standard depth, with the result `Blocked`.
+Request Deep depth to get its staging plan. Give that plan to the team that owns the chaos tooling. This workflow
+does not run the experiment.
 Run `/test-case-design` on the fix, then `/cover` to write the tests.
 
 ## Update the risk areas

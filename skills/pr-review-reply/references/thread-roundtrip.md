@@ -99,12 +99,14 @@ If nothing in the delta touches the thread's concern, it is **not** resolved by 
 ## Triage rubric
 
 Classify each OPEN thread into **exactly one** status. Default to `needs-follow-up` when evidence is
-thin. Never upgrade to `answered`/`changed` without a citation.
+thin. Never upgrade to `answered`/`changed`/`partial`/`declined` without a citation.
 
 | Status | When | Required evidence |
 |---|---|---|
 | **`answered`** | The concern was already addressed in code that **predates** the review, or it rests on a misreading the existing code/prior discussion refutes. No new change needed. | Cite the existing `file:line` (or the prior comment) that already satisfies it. |
 | **`changed`** | Code was **changed in response** to this thread, in the since-SHA diff. | Cite the commit + `file:line` in `git diff <reviewedSha>..HEAD` that resolves it. |
+| **`partial`** | The since-SHA diff answers **part** of the concern. The rest is still open and no change or question settles it yet. | Cite the commit + `file:line` for the part that is done. Name the missing change (what + where) for the rest. |
+| **`declined`** | The concern is valid, but the author **decides not to change the code**, and a fact settles the decision: the code, a spec clause, or a linked decision. The agent drafts this reply, and the author confirms the decision before `--post`. | Cite the fact (`file:line`, spec clause, or decision link) and state the reason in one sentence. |
 | **`needs-follow-up`** | Still open: a code change is warranted but **not yet made**, *or* the thread needs a clarifying question back to the reviewer before you can act. | State the missing change (what + where) or the exact question. No false-resolution. |
 
 Resolved threads are **skipped entirely** (not given a status). Outdated but unresolved threads get a status.
@@ -128,15 +130,17 @@ One block per OPEN thread, in fetch order. The block is mandatory and exactly:
 
 ```
 [[thread:<id>]]
-Status: answered | changed | needs-follow-up
+Status: answered | changed | partial | declined | needs-follow-up
 Response: <concise, evidence-bearing — cite file:line / commit, or state the change/question>
 ```
 
 - `<id>` is the host thread id (GitHub root comment id / Azure thread id), or `pasted-<n>` on the
   degrade path.
-- `Status:` is exactly one of the three rubric values.
+- `Status:` is exactly one of the five rubric values.
 - `Response:` is 1–4 sentences. For `changed`/`answered`, it **must** carry the citation. For
-  `needs-follow-up`, it states the concrete missing change *or* the question, nothing vague.
+  `partial`, it cites the done part and names the open part. For `declined`, it cites the fact and
+  states the reason. For `needs-follow-up`, it states the concrete missing change *or* the question,
+  nothing vague.
 - Never write a block for a resolved thread (those are skipped), and never close a thread
   inside the Response without a substantive answer above it.
 

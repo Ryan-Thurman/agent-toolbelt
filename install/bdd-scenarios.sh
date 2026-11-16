@@ -8,6 +8,7 @@ pack_bdd_scenarios() {
   shared_contract references/reliability-checklist.md
   shared_contract references/test-levels.md
   shared_contract references/test-driven-development.md
+  shared_contract references/execution.md
   cmd bdd-scenarios
   skill bdd-scenarios SKILL.md
   skill bdd-scenarios references/writing-features.md

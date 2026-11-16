@@ -7,6 +7,8 @@ stock macOS and most Linux), so no runtime is needed. Invoke at its installed pa
 bash skills/review-queue/bin/review-queue.sh <command> [--db PATH] [flags]
 ```
 
+The `--db PATH` flag works before or after the subcommand.
+
 All commands print **JSON** to stdout (so agents can parse results). Errors go to stderr with a
 non-zero exit. The DB and schema are created lazily on first use, so no separate setup step is needed.
 
@@ -65,18 +67,25 @@ Output is the claimed job, or `[]` when nothing is pending:
 `tier` is `""` when the job had none (-> let `/pr-review` auto-tier). `--worker` labels the holder
 (default `worker`). Use distinct ids if you run several workers.
 
-### `complete <id> --verdict V [--findings N] [--notes X]`
-Mark a claimed job reviewed (consumer), recording the verdict/finding count for the audit trail.
-Output: `[{"id":1,"status":"done","updated":1}]` (`updated:0` => no such id).
+### `complete <id> --worker W --verdict V [--findings N] [--notes X]`
+Mark a job reviewed (consumer), recording the verdict/finding count for the audit trail.
+`--worker` is required. Pass the same id that `claim` used. The update runs only when job `<id>` is
+`claimed` by `W`, so a worker whose lease expired cannot overwrite the result of the worker that took
+the job over. Output: `[{"id":1,"status":"done","updated":1}]`. With `updated:0`, the command exits
+non-zero and the job is not changed, because `W` does not hold the claim.
 
-### `requeue <id> [--notes X]`   (alias: `fail`)
-Return a job to `pending` after a failed review attempt, **unless** it has reached `MAX_ATTEMPTS`, in
-which case it is dead-lettered (`status=dead`). Output: `[{"id":1,"status":"pending"}]` or
-`"status":"dead"`.
+### `requeue <id> --worker W [--notes X]`   (alias: `fail`)
+Return a claimed job to `pending` after a failed review attempt, **unless** it has reached
+`MAX_ATTEMPTS`, in which case it is dead-lettered (`status=dead`). `--worker` is required and is
+checked the same way as in `complete`. Output: `[{"id":1,"status":"pending","updated":1}]` or
+`"status":"dead"`. With `updated:0`, the command exits non-zero.
 
 ### `list [--status pending|claimed|done|dead]`   ·   `stats`
 Inspect. `list` returns rows (head SHA abbreviated to 8 chars). `stats` returns counts per status.
 `list --status dead` surfaces poison jobs for manual attention.
+
+Job ids are not contiguous. A duplicate `enqueue` uses an id before SQLite finds the conflict, so the
+next job skips that number. A gap does not mean a lost job.
 
 ## Idempotency, leases, dead-letter: how they interact
 

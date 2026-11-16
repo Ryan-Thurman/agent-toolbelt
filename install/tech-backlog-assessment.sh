@@ -8,6 +8,7 @@ pack_tech_backlog_assessment() {
   shared_contract references/human-readable-output.md
   shared_contract references/docs-writing.md
   shared_contract references/evidence-quality.md
+  shared_contract references/execution.md
 
   template tech-backlog-assessment.md
 

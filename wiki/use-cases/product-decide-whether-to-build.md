@@ -59,8 +59,8 @@ The procedure has this order because each step limits the next one. The skill se
 - If your evidence is interview notes or survey answers, run `user-research-synthesis` first. The skill then reuses its findings and does not treat interpretations as customer facts.
 - If an approved brief exists, skip this page. The skill is for deciding what to build, not for a brief that is already approved. Use [`shape-up`](../../skills/shape-up/SKILL.md).
 - If you have no repository, skip step 3. The report then cannot say what the product already does.
-- If you run the [idea-to-release workflow](../../workflows/idea-to-release-workflow.md), its stage 1 says "no repository scan". The skill lists repository context as an input, and its step 1 says to inspect it. In the sample run, the check covered only the one area where a similar feature can exist. That is the run's practice, not a rule of the skill.
-- If the evidence contains no baseline for a measure, leave the threshold to the owner. Do not accept a number that nothing supports.
+- If you run the [idea-to-release workflow](../../workflows/idea-to-release-workflow.md), its stage 1 says "no repository scan". This run predates the fix that makes step 1 of the skill say the same. In the sample run, the check covered only the one area where a similar feature can exist. That is the run's practice. The skill does not allow a scan, so decide this for your project.
+- If the evidence contains no baseline for a measure, the skill records the threshold as `Not set`, and the owner sets it. Do not accept a number that nothing supports.
 - If the state is `Needs evidence`, do not hand the candidate to `shape-up`. Run the experiment first. The project owns research access and experiment approval.
 - If the state is `Deferred`, record the reason and stop. Create a ticket only if your next action needs one.
 - Stop when the report has a decision state, a traceable result, and a list of what is still missing.

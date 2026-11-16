@@ -44,7 +44,7 @@ When that identity cannot be established, report an unknown outcome and preserve
 
 1. **Resolve config** (`references/config.md`). Find `.tickets.md` in the target repo.
    Read the provider, project/board key, default issue type, labels/components, and field mappings.
-   If it is absent, use the defaults, and ask for the project/board key before posting.
+   If it is absent, use the defaults. Ask for the project/board key before posting, unless the GitHub origin remote gives it.
 2. **Collect tickets.** Gather the ticket files named in `$ARGUMENTS` (paths, a directory, or a
    feature/brief context). Parse each ticket with the rules in `references/config.md`.
 3. **Detect provider + auth** (`references/providers.md`). Confirm that the tracker CLI is installed and

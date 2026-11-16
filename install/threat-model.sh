@@ -5,6 +5,8 @@ pack_threat_model() {
   shared_contract references/human-readable-output.md
   shared_contract references/docs-writing.md
   shared_contract references/evidence-quality.md
+  shared_contract references/security-checklist.md
+  shared_contract references/execution.md
   cmd threat-model
   skill threat-model SKILL.md
   template threat-model.md

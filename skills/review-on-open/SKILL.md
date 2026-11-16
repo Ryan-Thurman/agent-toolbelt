@@ -48,6 +48,8 @@ This pack adds these rules:
 - **`--tier=light|standard|deep`**: passed through to `/pr-review`. Omit it to let pr-review
   auto-tier per diff. This is the right default for a bot.
 - **`--max=<n>`**: cap PRs reviewed per poll (default 5). The rest wait for the next tick.
+- **`--since=<ISO time>`**: review only PRs updated after this time. Use it on the first run, so old
+  PRs do not use `--max` (`references/poller.md`, step 4).
 - **`--dry-run`**: list the PRs that will be reviewed (and why: new / head-changed) and stop. No
   review, no posting.
 - **`--host=auto|github|azure`**: override host detection (`shared/contracts/references/providers.md`).

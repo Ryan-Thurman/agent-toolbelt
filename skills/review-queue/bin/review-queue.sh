@@ -146,30 +146,43 @@ SQL
 }
 
 cmd_complete() {
-  local id verdict findings notes
+  local id verdict findings notes worker out
   id="$(esc "${POSITIONAL[0]-$(flag id)}")"
   verdict="$(esc "$(flag verdict)")"; findings="$(flag findings)"; notes="$(esc "$(flag notes)")"
+  worker="$(esc "$(flag worker)")"
   [ -n "$id" ] || die "complete: job id required"
+  [ -n "$worker" ] || die "complete: --worker required (the id that claimed the job)"
   local f_sql="NULL"; [[ "$findings" =~ ^[0-9]+$ ]] && f_sql="$findings"
-  sqljson <<SQL
+  # Guarded update: only the worker that holds the claim can complete the job.
+  out="$(sqljson <<SQL
 UPDATE jobs SET status='done', verdict='$verdict', findings=$f_sql,
   notes='$notes', updated_at=datetime('now')
-  WHERE id=$id;
+  WHERE id=$id AND status='claimed' AND worker='$worker';
 SELECT id, status, changes() AS updated FROM jobs WHERE id=$id;
 SQL
+)"
+  printf '%s\n' "$out"
+  case "$out" in *'"updated":1'*) ;; *) die "complete: job $id is not claimed by $worker" ;; esac
 }
 
 cmd_requeue() {
-  local id notes; id="$(esc "${POSITIONAL[0]-$(flag id)}")"; notes="$(esc "$(flag notes)")"
+  local id notes worker out
+  id="$(esc "${POSITIONAL[0]-$(flag id)}")"; notes="$(esc "$(flag notes)")"
+  worker="$(esc "$(flag worker)")"
   [ -n "$id" ] || die "requeue: job id required"
+  [ -n "$worker" ] || die "requeue: --worker required (the id that claimed the job)"
   # Back to pending, unless it has exhausted its attempts → dead-letter.
-  sqljson <<SQL
+  # Guarded like complete: a worker can release only a job it still holds.
+  out="$(sqljson <<SQL
 UPDATE jobs
    SET status = CASE WHEN attempts >= $MAX_ATTEMPTS THEN 'dead' ELSE 'pending' END,
        worker = NULL, notes='$notes', updated_at=datetime('now')
- WHERE id=$id;
-SELECT id, status FROM jobs WHERE id=$id;
+ WHERE id=$id AND status='claimed' AND worker='$worker';
+SELECT id, status, changes() AS updated FROM jobs WHERE id=$id;
 SQL
+)"
+  printf '%s\n' "$out"
+  case "$out" in *'"updated":1'*) ;; *) die "requeue: job $id is not claimed by $worker" ;; esac
 }
 
 cmd_list() {
@@ -183,7 +196,15 @@ cmd_stats() {
 }
 
 main() {
-  local sub="${1-}"; shift || true
+  local sub=""
+  # --db may come before or after the subcommand.
+  while [ $# -gt 0 ] && [ -z "$sub" ]; do
+    case "$1" in
+      --db)   DB="${2-}"; shift 2 ;;
+      --db=*) DB="${1#*=}"; shift ;;
+      *)      sub="$1"; shift ;;
+    esac
+  done
   parse_flags "$@"
   db_init
   case "$sub" in
@@ -199,8 +220,8 @@ main() {
 review-queue <command> [--db PATH]
   enqueue  --repo R --target T --sha S [--tier light|standard|deep] [--reason X] [--by WHO]
   claim    [--worker W] [--lease SECS]          # atomic; prints the claimed job as JSON ([] if none)
-  complete <id> --verdict V [--findings N] [--notes X]
-  requeue  <id> [--notes X]                     # back to pending (or dead-letter if attempts exhausted)
+  complete <id> --worker W --verdict V [--findings N] [--notes X]
+  requeue  <id> --worker W [--notes X]          # back to pending (or dead-letter if attempts exhausted)
   list     [--status pending|claimed|done|dead]
   stats
 Store: $REVIEW_QUEUE_DB or ~/.review-queue/queue.db. Full contract: references/cli.md

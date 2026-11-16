@@ -12,6 +12,8 @@ Toolbelt paths: a path that starts with `shared/`, `skills/`, `templates/`, or `
 
 CRAP (Change Risk Anti-Patterns) combines complexity and test coverage into one risk score.
 This skill does not calculate CRAP.
+The Toolbelt ships no analyzer. The repository must supply an analysis command that writes the report
+in `references/report-schema.md`. Without that command, the run stops (see `references/review.md`, "No analyzer").
 Each repository configures its own coverage, analysis, and verify commands in `.crap-analysis.json`.
 The orchestrator runs those commands once, then reviews the report that they write.
 
@@ -28,7 +30,7 @@ The orchestrator writes generated files only under `.atb-work/crap-analysis/` an
 ## Mode routing
 
 - **`/crap-config [edit]`**: follow `references/config-schema.md` -> "Wizard".
-- **`/do-crap-analysis [--coverage] [--target NAME] [--report-only]`**: follow
+- **`/do-crap-analysis [--coverage] [--target NAME] [--report-only] [--all] [--config PATH] [--base REF]`**: follow
   `references/review.md` -> "Procedure".
 - **`/crap-refactor <target>`**: follow `references/refactor.md` -> "Flow".
 

@@ -11,6 +11,9 @@ Do not assume that services, extra layers, or additional abstractions improve a 
 
 For dependency candidates, inspect installed versions, actual usage, support constraints, and migration work.
 Verify current support, advisories, compatibility, and alternatives from primary sources when they affect the decision.
+For each advisory, record whether the vulnerable package is in the build artifact or the installed dependency tree.
+Record whether the code path that calls it is reachable from an input. Record an advisory with no reachable path as
+`Exists, not reachable`, and name the search that found no path. Read the advisory text before you call it relevant.
 An update within the current library and replacement with another library are separate options.
 Keep the current implementation as an explicit option.
 

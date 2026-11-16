@@ -20,9 +20,11 @@ distinct from `pr-review` (findings only) and `simplify` (small cleanup).
 - **Acceptance**: the user decides which findings are `accepted`. Record an agent recommendation
   as `deferred` until the user accepts it. A calling workflow can pre-accept findings when it
   states that rule, such as `phase-gate` solo mode for blockers.
+  In a headless run with no user and no calling rule, this skill's default accepts each blocker
+  and defers the rest. Mark the accepted rows `headless default` in the ledger.
 - **target**: the PR, branch, or diff that the findings apply to.
 - **Scope** (`--scope path[,path]`): the allowed directories. If the user gives none, use the
-  baseline's changed paths.
+  baseline's changed paths, plus the test file that step 3 needs for an accepted behavior fix.
 - **Round bound** (`--rounds N`): the user's bound, else three rounds.
 
 ## Steps
@@ -40,7 +42,8 @@ Keep this skill's frozen ledger and existing round limit as the recovery record.
    When a test is not feasible, use the decisive behavior pin in `references/loop-contract.md`.
    Keep red/green evidence and coverage gaps in the existing ledger.
 4. Apply only in-scope fixes, run relevant checks, guard against untracked or
-   out-of-scope changes, then re-run `pr-review` on the current delta.
+   out-of-scope changes, then re-run `pr-review` on the current delta at `--tier=standard`
+   (this skill's default tier), unless the user names another tier. Use one tier for every round.
 5. Reconcile the ledger after every round. Stop at the configured bound, clean
    convergence, or structural escalation for repeated/oscillating findings.
 
@@ -49,3 +52,8 @@ Keep this skill's frozen ledger and existing round limit as the recovery record.
 Report the baseline, scope, ledger status, changes, checks, remaining findings,
 and one of: converged, capped-not-converged, or escalated. Do not commit or push
 unless the user or the calling workflow explicitly authorizes it.
+
+Fixes that are not committed do not count as changes for `pr-review-reply`. That skill reads only
+commits after the reviewed SHA. Before the hand-off to `pr-review-reply`, the author commits the
+fixes on the phase or PR branch once the user or calling workflow authorizes it. Push the commits
+when the reviewer must see the new head SHA.

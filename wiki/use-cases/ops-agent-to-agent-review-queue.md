@@ -10,32 +10,28 @@ This page is for a platform engineer whose coding agents open branches and pull 
 
 1. Make sure that `sqlite3 --version` works. Choose one queue file, and run `export REVIEW_QUEUE_DB=<queue-file>` in the shell of every session before you start the agent.
 2. In the repository, get the commit of each branch with `git rev-parse <branch>`. Start the producer session with `claude --plugin-dir <toolbelt-folder>`. Check that `/agent-toolbelt:enqueue-review` shows in the `/` list. No toolbelt folder? See [Installation](../Installation.md) or [Install the Toolbelt for a team](ops-install-for-a-team.md). Then run `/agent-toolbelt:enqueue-review <branch> --repo=<repo-path> --sha=<commit>`. The answer is `enqueued` or `duplicate`.
-3. Warning: the worker runs `/pr-review <target> --comment`. For any target that has an open PR, it posts inline comments without a prompt. A branch target that has no PR is not posted to. The `--report-only` flag posts nothing and leaves the queue unchanged. Use it for the first trial. In the repository, start a new session that did not write the code: `claude --plugin-dir <toolbelt-folder>` with the same `REVIEW_QUEUE_DB`. Run `/agent-toolbelt:review-queue-worker --report-only --max=<n>`. When the trial output is good, run the command again without `--report-only`.
+3. Warning: the worker runs `/pr-review <target> --comment`. For a PR number, it posts inline comments without a prompt. A branch name has no PR, so the worker reviews it without `--comment`. The `--report-only` flag posts nothing and does not claim, complete, or requeue a job. Use it for the first trial. In the repository, start a new session that did not write the code: `claude --plugin-dir <toolbelt-folder>` with the same `REVIEW_QUEUE_DB`. Run `/agent-toolbelt:review-queue-worker --report-only --max=<n>`. When the trial output is good, run `/agent-toolbelt:review-queue-worker --worker=<id> --max=<n>`.
 4. Read the one line for each job and the tally. Find the report of each job in the output of the `pr-review` sub-agent in the worker session, or in the posted comments for a PR. Read every finding before you merge.
 
-You get one recorded verdict and finding count for each branch head. The worker command writes no report file, so copy a report if you want to keep it.
+You get one recorded verdict and finding count for each branch head. The worker command writes no report file, so copy a report if you want to keep it. The run followed the command files by hand, so the slash commands themselves did not run (see Not exercised).
 The sections below explain each step, when to stop, and what the output looks like.
 
 ## Situation
 
 You run several coding agents. Each agent finishes a branch and must not review its own work. You want a second agent to review each branch, and you do not want a CI pipeline, a webhook, or an API key for it.
 
-The sample is the RealWorld "Conduit" API in TypeScript (Express, Prisma, Jest). The run used a local copy of the repository at commit 30b68e1, with the remote removed, so no post was possible. Two local branches wait for review:
+The sample is the RealWorld "Conduit" API in TypeScript (Express, Prisma, Jest). The run used a local copy of the repository at commit 30b68e1, with the remote removed, so no post was possible. Three local commits wait for review:
 
-- `feature/tags-limit` (commit 1fa1b35) adds a `limit` query parameter to `GET /api/tags`. It has no test.
-- `fix/article-title-whitespace` (commit 664d625) makes `createArticle` reject a title of only spaces. It adds one unit test.
+- `feature/tags-limit` (commit 1ed8c60) adds a `limit` query parameter to `GET /api/tags`. It has no test.
+- `fix/article-title-whitespace` (commit fc9792f) makes `createArticle` reject a title of only spaces. It adds one unit test.
+- Commit c903493 on the same branch adds `// @ts-ignore` to that test. It is the author's fix in Step 7.
 
-The run differs from your setup in four ways:
+The run differs from your setup in these ways:
 
 - No sub-agents were available. The run did each review as a Self-review. One agent applied each review facet in turn. A facet is one review angle, such as correctness or tests.
-- The same session wrote the branches and reviewed them, so the reviews are not independent. The trigger rules require a fresh agent for each review and forbid a review inside the authoring session. A new worker session is a safe practice, and the worker also runs each review as its own sub-agent.
-- The run followed `worker.md` by hand. No `/review-queue-worker` command ran.
-- The run did not pass `--comment` to `/pr-review`. The worker passed it in the run. The worker now drops it only with `--report-only`.
-- The run skipped the marker check that `worker.md` puts before each review, because no PR existed. That was the run's choice. `posting.md` says that posting is skipped when the target is not a real PR. The run read that rule and did not execute it. Since PR #60, `worker.md` step 2 has this branch rule, so the worker follows it.
-- The command path for a branch with no PR was not executed. `worker.md` step 2 now covers a branch target, but no run has tried that path, so treat it as untested.
-- The run saved each review report by hand as a file. The worker command writes none.
-- The run called `requeue` by hand on a scratch queue for the failure path.
-- The skill files were re-checked against `main` at 695056c (PR #58). That PR did not change the queue files. It changed the `pr-review` auto-tier rules, and the tier explanation below still holds for this diff.
+- The same session wrote the branches and reviewed them, so the reviews are not independent. The trigger rules require a fresh agent for each review and forbid a review inside the authoring session. A new worker session is a safe practice.
+- The run followed the command files and `worker.md` by hand. No slash command ran.
+- Both branches have no PR, so `worker.md` step 2 applies its branch rule: no marker check and no `--comment`. The run saved each review as a file by hand. The worker command writes none.
 
 ## Why this path
 
@@ -52,13 +48,13 @@ A claim carries a lease. The lease is a time limit, 30 minutes by default, so a 
 | Step | Do | Why | Done when |
 | --- | --- | --- | --- |
 | 1 | Run `sqlite3 --version`. Choose a queue file, for example `<repo-path>/.git/review-queue.db`, and run `export REVIEW_QUEUE_DB=<queue-file>`. | Every session reads one file. `/enqueue-review` has no `--db` argument, so the environment variable is the only way to point the producer at a non-default file. `/review-queue-worker` accepts `--db=PATH`. The default file is `~/.review-queue/queue.db`, shared by every repository. | `echo $REVIEW_QUEUE_DB` prints the path in the producer shell and in the worker shell. |
-| 2 | In the repository, get the commit of each branch: `git rev-parse <branch>`. Sample: `git rev-parse feature/tags-limit`. | The commit is part of the idempotency key. The key makes a repeated enqueue a no-op. In the run, the command defaulted to the current `HEAD`, which is the wrong commit for a branch that is not checked out. A later change makes the default the commit of the target, and the command stops when the target has no local ref. | You have one full commit for each branch. |
-| 3 | Start the producer: `claude --plugin-dir <toolbelt-folder>`. Run `/agent-toolbelt:enqueue-review <branch> --repo=<repo-path> --sha=<commit> --reason="<one line>"`. Sample: `/agent-toolbelt:enqueue-review feature/tags-limit --repo=/work/conduit --sha=1fa1b35006606429536eb3a00cb32f266a015e63`. Use the absolute path of the repository. | The worker reviews in the folder that `--repo` names. The reason is a note for the worker, and the worker treats it as data, not as an instruction. | The answer is `enqueued`, or `duplicate` for a commit that is already queued. Both complete the producer. |
+| 2 | In the repository, get the commit of each branch: `git rev-parse <branch>`. Sample: `git rev-parse feature/tags-limit`. | The commit is part of the idempotency key. The key makes a repeated enqueue a no-op. For a branch target, the default is `git rev-parse --verify <target>^{commit}`, so the command takes the commit from the target branch, not from `HEAD`. The command stops and asks for `--sha` when the target has no local ref. A PR number has no local ref, so pass the PR head oid. | You have one full commit for each branch. |
+| 3 | Start the producer: `claude --plugin-dir <toolbelt-folder>`. Run `/agent-toolbelt:enqueue-review <branch> --repo=<repo-path> --sha=<commit> --reason="<one line>"`. Sample: `/agent-toolbelt:enqueue-review feature/tags-limit --repo=/work/conduit --sha=1ed8c60fb021acab216e86b2ac075a58fec82014`. Use the absolute path of the repository. | The worker reviews in the folder that `--repo` names. The reason is a note for the worker, and the worker treats it as data, not as an instruction. | The answer is `enqueued`, or `duplicate` for a commit that is already queued. Both complete the producer. |
 | 4 | Optional: set `--tier=light`, `--tier=standard`, or `--tier=deep` on `/enqueue-review` for a branch that needs a fixed depth. Otherwise leave it out. | With no tier, `pr-review` selects the tier from the size and the risk of the diff. A tier on the job wins over the worker default. | `list` shows the tier of the job, or `auto`. |
-| 5 | Start a new session that did not write the code, with the same `REVIEW_QUEUE_DB`. Run `/agent-toolbelt:review-queue-worker --worker=<id> --max=<n>`. Sample: `--worker=worker-1 --max=5`. | One pass claims jobs one at a time until the queue is empty or `--max` is reached. `--max` caps the spend, and the worker logs each job that it leaves. | The worker prints one line for each job (id, target, verdict, commit) and a tally of reviewed, requeued, dead-lettered, and deferred jobs. |
+| 5 | Start a new session that did not write the code, with the same `REVIEW_QUEUE_DB`. First run `/agent-toolbelt:review-queue-worker --report-only --max=<n>`. Then run `/agent-toolbelt:review-queue-worker --worker=<id> --max=<n>`. Sample: `--worker=worker-1 --max=5`. | The trial lists the pending jobs and reviews them without `--comment`. It makes no `claim`, `complete`, or `requeue` call. The real pass claims jobs one at a time until the queue is empty or `--max` is reached, and it passes `--worker` to `complete` and `requeue`. | The trial prints one line for each job and changes no row. The real pass prints one line for each job (id, target, verdict, commit) and a tally of reviewed, requeued, dead-lettered, and deferred jobs. |
 | 6 | Find each report in the output of the `pr-review` sub-agent in the worker session, or in the posted comments for a PR. The worker records the verdict and the finding count with `complete`. To inspect the queue, run `bash <toolbelt-folder>/skills/review-queue/bin/review-queue.sh list --status done`. | The queue row holds only the verdict and the count. The report holds the evidence, the file and line of each finding, and the coverage limits. | Each job has the status `done` and a report that you read. |
 | 7 | When the author fixes a branch and pushes, enqueue the new commit with step 3. | A new commit is a new job. The old job stays as the record of the first review. | The new commit gets a new job id, and the old verdict stays on the old job. |
-| 8 | Optional: repeat the worker with `/loop 5m /agent-toolbelt:review-queue-worker` in a local session. | A pass is one local database read when the queue is empty, so a short interval costs little. The skill says that each operation is idempotent or atomic, so a missed or overlapping pass is safe. The run found a gap (see Decision points), so use one worker for each queue. | The queue empties without a manual start. |
+| 8 | Optional: repeat the worker with `/loop 5m /agent-toolbelt:review-queue-worker` in a local session. | A pass is one local database read when the queue is empty, so a short interval costs little. The skill says that each operation is idempotent or atomic, so a missed or overlapping pass is safe. | The queue empties without a manual start. |
 
 ## Decision points
 
@@ -72,39 +68,46 @@ A claim carries a lease. The lease is a time limit, 30 minutes by default, so a 
 - If you want the worker on a schedule, use a local `/loop`. A `/schedule` cloud routine cannot read the queue file.
 - If the review bot account also opens PRs, have the producer skip those PRs. The worker must not review its own PRs, unless you ask for it.
 - If the verdict is `APPROVE`, read the should-fix findings before you merge. A blocker must be fixed before the merge. A should-fix is a problem to fix that does not block the merge on its own. The verdict counts blockers, approval-blocking questions, and required scope gaps only. In the sample run, an `APPROVE` job had two should-fix findings.
-- If `auto-tier` is enough, skip Step 4. Set a tier only when a branch needs a fixed depth.
+- If `auto-tier` is enough, skip Step 4. If you do not want a trial, skip the `--report-only` run in Step 5. Set a tier only when a branch needs a fixed depth.
 - If you run one pass and do not need a schedule, skip Step 8.
 - If you have no second session, or `sqlite3` is not installed, choose `/pr-review` directly in a new session. You do not need a queue.
-- Use one worker for each queue. The run found that `complete` and `requeue` do not check the job status. In the run, `complete` marked a never-claimed job `done`. Also, `requeue` put a `done` job back to `pending`. A worker with an expired lease can then change a job that another worker holds. The skill says that overlapping passes are safe. The run found a counterexample. A later change adds the check. The worker passes `--worker` to both commands, and each command updates only a job that this worker claimed. The run predates that change.
+- If a worker has lost its lease, its `complete` or `requeue` exits non-zero with `updated:0` and changes nothing. Do not retry. Log the job id and continue. Both commands need `--worker` and act only on a job that this worker claimed.
 - Stop when `claim` returns `[]`, and every job is `done` or `dead`.
 
 ## What you get
 
-The run enqueued the first branch twice and the second branch once. The second command was a duplicate. Job 2 does not exist: the duplicate used up that id, so the second branch has id 3.
+The run enqueued the first branch twice and the second branch once. The repeat of the first branch was a duplicate. It used up id 3, so the later job for the fixed commit has id 4.
 
-Excerpt from a run on the Conduit sample API at commit 30b68e1. Condensed from the run output: the `$ rq` command lines, the `list` output, and the `stats` output are cut. These are the three output lines of the three `enqueue` commands, in order.
+Excerpt from a run on the Conduit sample API at master 30b68e1 (rerun, current skill files). Condensed from the run output: the `$` command lines and the `list` and `stats` output are cut. These are the three output lines of the `enqueue` commands, in order. Each `--sha` came from `git rev-parse --verify <target>^{commit}` while `master` was checked out.
 
 ```text
 [{"id":1,"status":"pending","result":"enqueued"}]
+[{"id":2,"status":"pending","result":"enqueued"}]
 [{"id":1,"status":"pending","result":"duplicate"}]
-[{"id":3,"status":"pending","result":"enqueued"}]
 ```
 
-The worker claimed job 1.
+The report-only trial listed both jobs and reviewed them with no `--comment`. A dump of the `jobs` table before and after the trial was identical (`diff` printed nothing). Both rows stayed `pending` with `attempts` 0.
 
-Excerpt from a run on the Conduit sample API at commit 30b68e1. Condensed from the run output: the `repo` value is replaced with `<repo>`, and the lines are wrapped. The text of the other fields is verbatim.
+Excerpt from a run on the Conduit sample API at master 30b68e1. This is the dump after the trial, from `sqlite3` with the run folder prefix replaced by `...`. The columns are id, repo, target, head SHA, tier, status, worker, attempts, verdict, findings, notes, claimed_at, and updated_at. Empty fields stay empty.
 
 ```text
-[{"id":1,"repo":"<repo>","target":"feature/tags-limit",
-"head_sha":"1fa1b35006606429536eb3a00cb32f266a015e63","tier":"",
-"attempts":1}]
+1|.../repo|feature/tags-limit|1ed8c60fb021acab216e86b2ac075a58fec82014||pending||0|||||2026-11-16 02:11:46
+2|.../repo|fix/article-title-whitespace|fc9792f23c784bb636ccf831674cff21b0cd4ab0||pending||0|||||2026-11-16 02:11:46
+```
+
+The real pass then claimed job 1.
+
+Excerpt from a run on the Conduit sample API at master 30b68e1. The `repo` value is replaced with `...`. The text of the other fields is verbatim.
+
+```text
+[{"id":1,"repo":".../repo","target":"feature/tags-limit","head_sha":"1ed8c60fb021acab216e86b2ac075a58fec82014","tier":"","attempts":1}]
 ```
 
 The empty `tier` means that the job has no tier, so `pr-review` selects one. Both jobs ran at the standard tier. The report header of job 1 states why: `tier: standard (auto - 5 added production lines, 2 files, no hot path, but the diff changes a route handler and a query, so the production-logic floor applies)`. A change to production logic never goes below standard in auto mode.
 
 The review of job 1 found one problem that the verdict does not show. The run sent sample values of the new `limit` parameter through the Prisma mock. It recorded the `take` value that reaches the query.
 
-Excerpt from a run on the Conduit sample API at commit 1fa1b35. This is the executed output of a scratch test against the Prisma mock. The indent and the jest summary lines (`PASS` and `Tests: 7 passed`) are cut. The scratch test was removed from the repository after the run. It shows the value that reaches Prisma. It does not show how Prisma answers, because no database ran.
+Excerpt from a run on the Conduit sample API at commit 1ed8c60. This is the executed output of a scratch test against the Prisma mock. The indent and the jest summary lines (`PASS` and `Tests: 7 passed`) are cut. The scratch test was removed from the repository after the run. It shows the value that reaches Prisma. It does not show how Prisma answers, because no database ran.
 
 ```text
 no limit param (Number(undefined)) -> take=10
@@ -116,54 +119,69 @@ limit=2.5 -> take=2.5
 limit=1000000 -> take=1000000
 ```
 
-The review rated this should-fix, not blocker. A blocker is wrong behavior on a documented happy path, valid input, a public contract, or a path that is shown to be request-controlled. The run shows that `-5` and `2.5` reach Prisma. It does not show that Prisma returns wrong data, because no database ran. The review put its confidence at 0.7, which is the run's number. The rubric therefore keeps the finding at should-fix. The verdict of job 1 is `APPROVE` with two should-fix findings.
+The review rated this should-fix, not blocker. The `limit` value comes from the request, but a blocker also needs shown wrong behavior (on a documented happy path, valid input, a public contract, or a request-controlled path). The run shows that `-5` and `2.5` reach Prisma. It does not show that Prisma returns wrong data, because no database ran. The review put its confidence at 0.7, which is the run's number. The rubric therefore keeps the finding at should-fix. The verdict of job 1 is `APPROVE` with two should-fix findings.
 
-Job 3, the second branch, got a different result. The run chose to run the test file of the branch, because the new test is the only test of the change. The `pr-review` files do not require a test run. The run found the blocker only because it ran the test, so ask for test evidence if you want it.
+Job 2, the second branch, got a different result. The run chose to run the test file of the branch, because the new test is the only test of the change. The `pr-review` files do not require a test run. The run found the blocker only because it ran the test, so ask for test evidence if you want it.
 
-Excerpt from a run on the Conduit sample API at commit 664d625. Lines are wrapped, and `...` marks skipped text. This is the blocker of the Self-review report.
+Excerpt from a run on the Conduit sample API at commit fc9792f. Lines are wrapped. This is the blocker of the Self-review report.
 
 ```markdown
-### 🚫 Blockers (1)
+### Blockers (1)
 - **src/tests/services/article.service.test.ts:17** — The new
   assertion `expect(prismaMock.article.create)` fails type-checking
   with `TS2615: Type of property 'AND' circularly references
   itself`. ts-jest reports "Test suite failed to run", so the file
   runs 0 tests. On `master` the same file runs 5 tests and all pass.
-  ...
+  The other assertions in this file put `// @ts-ignore` on the line
+  above the mock call.
 ```
 
-The author added `// @ts-ignore` in commit f55cc57. The enqueue of that commit made job 4 (a new commit is a new job). The second review covers the whole branch against `master`, not only the new commit. The earlier blocker is gone.
+The author added `// @ts-ignore` in commit c903493. The test file then runs 6 of 6. The enqueue of that commit made job 4 (a new commit is a new job). The second review covers the whole branch against `master`, not only the new commit. The earlier blocker is gone.
 
-The job 3 report also holds one question, about whether `description` and `body` need the same whitespace check. The excerpt shows only the blocker, and the count of 1 in the table is the blocker only. The question is still open after job 4, and the author must answer it. An open question that blocks approval makes the verdict `NEEDS DISCUSSION`.
+The job 2 report also holds one question, about whether `description` and `body` need the same whitespace check. The excerpt shows only the blocker, and the count of 1 in the table is the blocker only. The question is still open after job 4, and the author must answer it. The run marked it as blocking approval, and the skill then sets the verdict to `NEEDS DISCUSSION`.
 
-Excerpt from a run on the Conduit sample API at commit f55cc57. This is the output of a query on the queue file after the second pass. The sha column is cut to 7 characters by the query.
+Excerpt from a run on the Conduit sample API at commit c903493. This is the output of a query on the queue file after the second pass. The sha column is cut to 7 characters by the query.
 
 ```text
 id|target|sha|status|verdict|findings
-1|feature/tags-limit|1fa1b35|done|APPROVE|2
-3|fix/article-title-whitespace|664d625|done|REQUEST CHANGES|1
-4|fix/article-title-whitespace|f55cc57|done|NEEDS DISCUSSION|0
+1|feature/tags-limit|1ed8c60|done|APPROVE|2
+2|fix/article-title-whitespace|fc9792f|done|REQUEST CHANGES|1
+4|fix/article-title-whitespace|c903493|done|NEEDS DISCUSSION|0
 ```
 
 What you must check in the output:
 
 - Each job has the status `done` and a verdict. A job in `claimed` has no verdict yet.
-- Each report states how it was made. In this run, every report starts with "Self-review" (one agent applied each review facet in turn), and the job notes say "not independent". In your setup, the review runs in a fresh agent, and the report names the sub-agents that ran.
+- Each report states how it was made. In this run, every report has a Self-review line (one agent applied each review facet in turn) and says the review is not independent. The wording of that line is the run's own. The skill's label is `Self-review: facets not independent`. In your setup, the review runs in a fresh agent, and the report names the sub-agents that ran.
 - The coverage line states what was not run. In this run, no test touched a database.
 - A job with `NEEDS DISCUSSION` waits for an answer from the author. It is not a softer `REQUEST CHANGES`.
 
-The run also tried the failure path on a scratch queue. A job with a repository path that does not exist went back to `pending` after the first and second failure. It became `dead` after the third, and the next `claim` returned `[]`. The run called `requeue` by hand after each failure.
+The run also tried the status checks. `complete` on a job that is already `done` printed `updated:0` and exited with status 1:
+
+```text
+[{"id":1,"status":"done","updated":0}]
+review-queue: complete: job 1 is not claimed by worker-1
+```
+
+On a scratch queue, a job with a repository path that does not exist went back to `pending` after the first and second `requeue`. It became `dead` after the third, and the next `claim` returned `[]`. The run called `requeue` by hand after each failure.
+
+## Not exercised
+
+- The slash commands. The run followed `commands/enqueue-review.md` and `commands/review-queue-worker.md` by hand, and no host loaded the plugin. Proof: start the plugin in a session and run `/agent-toolbelt:review-queue-worker --report-only`.
+- A post. No remote and no PR existed, so `--comment` never ran. Proof: a trial on a PR target with `--report-only`, then a check that the PR has no new comment.
+- The PR marker check, `/loop`, parallel workers, and the 30 minute lease reaper. Proof: run two worker sessions on a queue with one PR job and read the job rows.
+- Real sub-agents. All reviews were Self-review.
 
 ## Common mistakes
 
 - You run the worker in the session that wrote the branch. The review is then not independent, and the trigger rules forbid a review inside the authoring session. Start the worker in a new session.
 - The producer and the worker use different queue files. The worker then claims nothing, because it reads another file. Set `REVIEW_QUEUE_DB` to the same path in both shells before you start the agents.
-- You omit `--sha` for a branch that is not checked out. In the run, the job recorded the commit of the current `HEAD`, and the idempotency key was wrong. A later change makes the command stop in that case. Pass the commit of the branch.
-- You run the worker on a repository where the branch has an open PR, and you do not want comments. The worker posts without a prompt. Start the worker with `--report-only` first, or use `/pr-review` without `--comment`.
+- You pass `--sha` by hand and take it from `HEAD`. For a branch that is not checked out, `HEAD` is another commit, and the idempotency key is wrong. Omit `--sha` to use the commit of the branch, or pass `git rev-parse <branch>`.
+- You run the worker on a repository where the target is a PR number, and you do not want comments. The worker posts without a prompt. Start the worker with `--report-only` first, or use `/pr-review` without `--comment`.
 - You read `APPROVE` as "no findings". The verdict counts blockers, approval-blocking questions, and required scope gaps. A should-fix finding is a problem to fix that does not change the verdict. Read the should-fix findings.
 - You expect a `dead` job to run again. It runs again only after a new push gives a new commit.
-- You put the `--db` flag before the subcommand when you call `review-queue.sh`. In the run, the script failed with "unknown command: --db". A later change accepts the flag in either place.
-- You treat a `done` queue row as the only record of a review. The queue is a local cache. The review marker is the text `pr-review:head=<sha>`. `pr-review` writes it into the posted review, so a later run can see that the commit was reviewed. The marker on the PR is the record that a commit was reviewed, and the worker checks it before each review.
+- You expect contiguous job ids. A duplicate `enqueue` uses an id, so ids can skip a number. In the run the ids were 1, 2, and 4. A gap does not mean a lost job.
+- You treat a `done` queue row as the only record of a review. The queue is a local cache. The review marker is the text `pr-review:head=<sha>`. `pr-review` writes it into the posted review, so a later run can see that the commit was reviewed. The marker on the PR is the record that a commit was reviewed. For a PR number, the worker checks it before each review. A branch target has no marker to check.
 
 ## Next
 

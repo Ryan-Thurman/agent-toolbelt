@@ -17,6 +17,7 @@ REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 created=0
 updated=0
 skipped=0
+unchanged=0      # --force found the same content, so it wrote nothing
 gated=0          # files skipped because their harness was not selected
 
 # Support files already installed for this target. Reset by install.sh.
@@ -35,6 +36,8 @@ harness_enabled() {
 # DRY_DIRS: newline-separated directories that a dry run already reported. A directory
 # prints once, not once per file inside it.
 DRY_DIRS=""
+# SEEN_PATHS: newline-separated paths that this target already counted.
+SEEN_PATHS=""
 
 ensure_dir() {
   local dir="$1"
@@ -83,15 +86,41 @@ install_file() {
 
   ensure_dir "$(dirname "$dest")"
 
+  # Two packs can write the same path. Count each target path once, so the dry run
+  # and the real run give the same totals. The first pack reports the path.
+  local repeat=0
+  case $'\n'"$SEEN_PATHS" in
+    *$'\n'"$dest"$'\n'*) repeat=1 ;;
+    *) SEEN_PATHS="$SEEN_PATHS$dest"$'\n' ;;
+  esac
+
   if [ -e "$dest" ] && [ "$FORCE" != "1" ]; then
-    echo "skip existing: $dest"
-    skipped=$((skipped + 1))
+    if [ "$repeat" = "0" ]; then
+      echo "skip existing: $dest"
+      skipped=$((skipped + 1))
+    fi
+    return 0
+  fi
+
+  # With --force, an existing file with the same content needs no write.
+  local state=new
+  if [ -e "$dest" ]; then
+    state=changed
+    if install_copy "$src" /dev/stdout | cmp -s - "$dest"; then state=same; fi
+  fi
+
+  if [ "$state" = "same" ]; then
+    if [ "$repeat" = "0" ]; then
+      echo "= same: $dest"
+      unchanged=$((unchanged + 1))
+    fi
     return 0
   fi
 
   if [ "$DRY_RUN" = "1" ]; then
-    if [ -e "$dest" ]; then
-      echo "~ would overwrite: $dest"
+    [ "$repeat" = "1" ] && return 0
+    if [ "$state" = "changed" ]; then
+      echo "~ would change: $dest"
       updated=$((updated + 1))
     else
       echo "+ would install: $dest"
@@ -100,12 +129,12 @@ install_file() {
     return 0
   fi
 
-  if [ -e "$dest" ]; then
-    install_copy "$src" "$dest" || exit 1
+  install_copy "$src" "$dest" || exit 1
+  [ "$repeat" = "1" ] && return 0
+  if [ "$state" = "changed" ]; then
     echo "~ updated: $dest"
     updated=$((updated + 1))
   else
-    install_copy "$src" "$dest" || exit 1
     echo "+ installed: $dest"
     created=$((created + 1))
   fi

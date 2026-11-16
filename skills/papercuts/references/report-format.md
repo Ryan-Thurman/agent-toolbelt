@@ -59,6 +59,9 @@ This pack names `--post` as its posting flag. A caller, CI job, worker, or polle
 An interactive user who passed `--post` and said to post has confirmed.
 In any other interactive run, show the preview and ask before the write.
 A first trial uses the report-only path: save the report and show the preview, with no write.
+A run that no person attends, such as `claude -p`, has no caller that passes consent.
+Treat it as a first trial. Save the report and show the preview, unless the command line has `--post`.
+With `--post` on that command line, post.
 
 | Target | How to post |
 | --- | --- |

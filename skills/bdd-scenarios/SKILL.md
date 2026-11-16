@@ -29,6 +29,9 @@ The `--setup` runner plan and the `--review` findings are reports. Write each on
 `.atb-work/bdd-scenarios/<scope-slug>.md`, as `shared/contracts/references/execution.md`
 ("Durable report location") requires, unless the user names a path. Print the path.
 The runner plan goes in the "Runner plan" section of `templates/bdd-scenarios.md`.
+After the user agrees to the install, smoke-run one scenario that needs no database or other service
+(see `references/runners.md`). Record the command, the result, and the wired scenario in the plan.
+If the smoke run fails, report the failure. Do not report the install as working.
 
 ## Procedure
 

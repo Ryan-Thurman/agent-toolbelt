@@ -33,6 +33,7 @@ Criteria with no test:
 
 Only when the repository has no runner. The proposed runner, the alternative, the files that it adds,
 the commands for local use and CI, and who chooses.
+After the user agrees and the install runs, record the smoke run: the command, the result, and the one scenario that it wired.
 
 ## Handoff
 

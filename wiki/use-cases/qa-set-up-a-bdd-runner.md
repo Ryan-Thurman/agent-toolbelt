@@ -14,19 +14,19 @@ This page covers scenarios that call an HTTP API. Browser scenarios need another
 1. Create a branch in the repository. Start Claude Code there with the Toolbelt loaded: `claude --plugin-dir <toolbelt-folder>`.
 2. Plan the runner: `/agent-toolbelt:bdd-scenarios --setup`. Read the runner question in the plan.
 3. Answer the question. To take the default, write: `Yes, install playwright-bdd for the @api scenarios.` The skill installs only after you agree.
-4. Ask the agent to wire the scenario. Write: `Wire one @api scenario that needs no database. Set the base URL from API_URL. Set the missing-step option to skip unwired scenarios. Add the script bdd (bddgen && playwright test).` The sample run used the option `missingSteps: 'skip-scenario'`. The agent checks the key name against the installed types.
+4. Ask the agent to wire the scenario. Write: `Wire one @api scenario that needs no database. Set the base URL from API_URL. Limit the generator to that scenario with a tags filter (for example @AC-4), not only a feature path. Add the script bdd (bddgen && playwright test).` A feature path that names one file did not work in the sample, because the file still had 31 unwired steps. The agent checks the option names against the installed types.
 5. Start your API. Then run: `API_URL=<api-url> npm run bdd`.
 6. Read each failure. A red row is valid only when the feature code is absent.
 
 You get a pinned runner, a configuration, one wired outline, and a list of the scenarios that wait for step definitions.
-In the sample, two rows are valid red, one row shows a route clash, and one row shows existing behavior.
+In the sample, the run has 4 tests. Two rows are valid red, one row shows a route clash, and one row shows existing behavior.
 No row can turn green until a step that needs a database is written.
 The sections below explain each step, when to stop, and what the output looks like.
 
 ## Situation
 
 The sample is the RealWorld "Conduit" API in TypeScript (Express, Prisma, Jest), at commit 30b68e1.
-The run used the skill before the fix in PR #58. A hand check against Toolbelt 1.3.0, which includes that fix, found the same runner default, pinning rule, and install rule.
+The page comes from a rerun with Toolbelt 1.3.0 (commit 8ac3e11).
 The team refined a story, CON-12 "Bookmark articles", and wrote two feature files for it.
 The files use Gherkin (the Given/When/Then text format) and hold 20 scenarios. Scenario outlines (one scenario with a table of example rows) expand them to 29 tests.
 The page [Refine a vague story](qa-refine-a-vague-story.md) shows how those files came about.
@@ -62,12 +62,12 @@ It also says to read the installed version before you name a configuration key, 
 | --- | --- | --- | --- |
 | 1 | Create a branch. Load the Toolbelt: `claude --plugin-dir /path/to/agent-toolbelt`. Or install the skill into the project: `./install.sh --harness all bdd-scenarios /path/to/project`. | The skill must be available, and the install must not touch your main branch. | You type `/` and see `/agent-toolbelt:bdd-scenarios` (plugin) or `/bdd-scenarios` (installed copy). |
 | 2 | Check for a runner (command below the table). Find the feature folder. | The skill looks for the runner, the feature folder, and the step definitions first. | You can say "no runner" with the empty result as evidence. |
-| 3 | Run `/agent-toolbelt:bdd-scenarios --setup`. | The `--setup` flag selects the runner procedure in `references/runners.md`. | The plan names a proposed runner and asks you to choose before it installs. This run predates the runner-plan section of `templates/bdd-scenarios.md`. The skill now saves the plan to `.atb-work/bdd-scenarios/<scope-slug>.md`. The run's plan listed the repository state, the options, and a question. |
+| 3 | Run `/agent-toolbelt:bdd-scenarios --setup`. | The `--setup` flag selects the runner procedure in `references/runners.md`. | The plan names a proposed runner and asks you to choose before it installs. The skill saves the plan to `.atb-work/bdd-scenarios/<scope-slug>.md` and prints the path. The rerun saved it as `.atb-work/bdd-scenarios/con-12-bookmark-articles.md`. |
 | 4 | Answer the runner question. Ask for a different option if the team already uses a Jest binding. | The skill installs a runner only when you agree. | You wrote "yes" or named another option. |
 | 5 | Install on your branch: `npm install --save-dev --save-exact --ignore-scripts @playwright/test@<version> playwright-bdd@<version>`. Pick two versions that work together: run `npm view playwright-bdd@<version> peerDependencies` to read the Playwright range, or ask the agent to choose and show the range. The sample used `playwright-bdd` 9.2.1 with `@playwright/test` 1.65.1, as an example. The run used `--ignore-scripts` so that install scripts do not run. That is the run's choice. | The skill says to pin the two versions together, because each release supports a range of Playwright versions. | `package.json` lists both packages with exact versions. |
 | 6 | Read the installed configuration types. In version 9.2.1 the file is `node_modules/playwright-bdd/dist/config/types.d.ts`. Look for the equivalent in your version. | The skill says to read the installed version and its official documentation before you name a configuration key. The run did not open the online documentation. | You can name the keys for the feature path, the step path, and the missing-step behavior. |
-| 7 | Ask the agent to write the configuration (feature path, step path, base URL from `API_URL`, and the missing-step option), one step file, one script (`bddgen && playwright test`), and the `.gitignore` lines. | The generator needs the feature path, the step path, and the base URL of the API before it can produce tests. The run chose these files. The skill gives the model of the runner, not the files. | `npx bddgen` finishes and `.features-gen` is ignored by git. |
-| 8 | Start your API, then run: `API_URL=<api-url> npm run bdd`. | Scenarios at the `@api` level call a running API. | The runner lists every scenario. Wired scenarios run. The others show as skipped. |
+| 7 | Ask the agent to write the configuration (feature path, step path, a tags filter for the first scenario, and the base URL from `API_URL`), one step file, one script (`bddgen && playwright test`), and the `.gitignore` lines. | The generator needs the feature path, the step path, and the base URL of the API before it can produce tests. The run chose these files. The skill gives the model of the runner, not the files. | `npx bddgen` finishes and `.features-gen` is ignored by git. |
+| 8 | Start your API, then run: `API_URL=<api-url> npm run bdd`. | Scenarios at the `@api` level call a running API. | The runner lists the filtered scenarios, and each one runs. |
 | 9 | Read each failure. Write down if the cause is the absent feature or something else. | The acceptance loop requires each new scenario to fail because the behavior is absent. | Each red row has a cause in your notes. |
 
 Command for step 2, for a JavaScript repository. For Python, look in `pyproject.toml`. For Java, look in `pom.xml` or `build.gradle`.
@@ -93,72 +93,71 @@ npx ts-node --transpile-only \
 - If the repository already has a BDD runner, skip this page. Run `/bdd-scenarios` to write scenarios or `/bdd-scenarios --review` to review feature files.
 - If the stack is Python, the skill proposes `pytest-bdd`. If it is Java or Kotlin, it proposes Cucumber-JVM. The steps on this page change for those stacks.
 - If your team already runs Jest everywhere and has no browser flow, ask for the Jest-binding option. Read its documentation first, because the skill gives no notes for it.
-- If the generator stops with a list of missing step definitions, set the missing-step option to skip unwired scenarios, as the sample does. Wiring one scenario does not clear the list, because every unwired scenario counts. In the run the generator reported 53 missing steps with the sign-in outline already wired. For a first run, the skill also says to point the feature path at one file.
+- If the generator stops with a list of missing step definitions, narrow it with a tags filter such as `tags: '@AC-4'`. Wiring one scenario does not clear the list, because every unwired scenario counts. In the rerun the generator reported 53 missing steps for all files and 31 for the one file `article-bookmarks.feature`. The skill advised one file at that time, and that was not enough here. The skill now names the tags filter first. The other option is `missingSteps: 'skip-scenario'`, which kept 29 tests in the report, 25 of them skipped.
 - If your scenarios have no tags, are browser scenarios (`@e2e`), or have no API that you can start locally, stop and read `references/runners.md`, or ask for the Jest-binding option. This page covers `@api` scenarios only.
-- If the repository uses Nx, ask a developer whether the script belongs in `package.json` or in an Nx target. This run predates the Nx note in `references/runners.md`, which puts the script in the project's own configuration and target. The run used `package.json`.
+- If the repository uses Nx (a monorepo build tool, with `project.json` files), ask a developer whether the script belongs in `package.json` or in an Nx target. The Nx note in `references/runners.md` puts the script in the project's own configuration and target. The sample root is itself the Nx project, so the rerun used the root `package.json`. The note now covers this case.
 - If CI will run the scenarios, it needs a started API and, for most scenarios, a database. This run did not test that.
 - If a failure says `ECONNREFUSED`, the API is not running. This is not a valid red. Start the API and run again.
 - If a `Then` step passes before the feature exists, the scenario row proves existing behavior. Record it as existing coverage, as the acceptance loop says.
 - If CI will run the scenarios, add `@wip` to the scenarios of later phases first. CI runs every scenario except `@wip`, and one failing scenario fails the build.
-- Do not add `@wip` to a failing scenario of a finished phase to make CI pass. Fix it or report a defect.
+- Do not add `@wip` to a failing scenario of a finished phase to make CI pass. Fix it or report a defect. This is practice. The skill and the acceptance loop say to remove `@wip` only from the scenarios of the current phase.
 - Stop when one outline runs against the real API, every failing row has a stated cause, and the unwired scenarios show as skipped. Only rows whose `Then` step fails because the feature is absent count as valid red.
 - Choose [Review feature files](qa-review-feature-files.md) when you doubt the scenarios themselves.
 - Choose [Deliver a ticket as phased pull requests](dev-deliver-a-ticket-as-phased-prs.md) when the runner works and a developer is ready to turn the scenarios from red to green.
 
 ## What you get
 
-The skill returns a plan. The run installed the runner in a throwaway copy, then wired one outline.
+The skill returns a plan. The rerun installed the runner in a throwaway copy, then wired one outline.
 The outline is "A reader who is not signed in cannot use bookmarks" (criterion AC-4, four example rows). `@api` marks it as a scenario that calls the API and starts no browser. `@wip` marks a scenario of a later phase that CI skips.
 The run chose it because it needs no database. The sign-in check happens before any data access.
 AC-4 and the other IDs come from the refined story. Tags such as `@AC-4` link a scenario to its criterion.
 
 First, the runner plan. It records that the run used the default and shows the question.
-The plan layout is the run's choice.
+The layout follows the "Runner plan" section of `templates/bdd-scenarios.md`.
 
-Excerpt from the plan header and the section "Choice for the user", from a run on the Conduit sample API at commit 30b68e1. Lines are wrapped, and `...` marks skipped text.
+Excerpt from the saved plan `.atb-work/bdd-scenarios/con-12-bookmark-articles.md`, from a rerun on the Conduit sample API at commit 30b68e1 with Toolbelt commit 8ac3e11. `...` marks skipped text.
 
 ```markdown
-Mode: `bdd-scenarios --setup`. Status: proposal. The skill says to install
-only when the user agrees.
-This run is headless, so no person chose. The run used the skill's default
-and recorded that fact ...
+# BDD scenarios: CON-12 Bookmark articles
 
+Source: refined story CON-12 and the two feature files in `features/`
+Runner: playwright-bdd - Proposed, waits for the user's choice
+
+Mode: `bdd-scenarios --setup`. This run is headless, so no person chose. The run uses the skill default and records that fact.
 ...
-
-Question for the user: install `playwright-bdd` for the `@api` scenarios?
-Default answer: yes.
+Question for the user: install `playwright-bdd` for the `@api` scenarios? Default answer: yes.
 ```
 
-Next, the configuration that the run wrote after it read the installed types.
-The `missingSteps` line is the run's choice. The skill does not name it.
+Next, the configuration that the rerun wrote after it read the installed types.
+The `tags` line limits the generator to the AC-4 scenarios. It is the rerun's choice, and the skill does not name it.
 
-Excerpt from a run on the Conduit sample API at commit 30b68e1. This is the full file `playwright.config.ts`.
+Excerpt from a rerun on the Conduit sample API at commit 30b68e1. This is the full file `playwright.config.ts`.
 
 ```typescript
 import { defineConfig } from '@playwright/test';
 import { defineBddConfig } from 'playwright-bdd';
 
 const testDir = defineBddConfig({
-  features: 'features/*.feature',
+  features: 'features/article-bookmarks.feature',
   steps: 'features/steps/*.ts',
-  missingSteps: 'skip-scenario',
+  tags: '@AC-4',
 });
 
 export default defineConfig({
   testDir,
   grepInvert: /@wip/,
-  reporter: [['list'], ['html', { open: 'never' }]],
+  reporter: [['list']],
   use: { baseURL: process.env.API_URL ?? 'http://localhost:3000' },
 });
 ```
 
-The run with the API up started 29 tests. Four ran and failed, and 25 skipped because their steps do not exist yet.
+The run with the API up started 4 tests. All four ran and failed.
 The first failure is the row "no sign-in, bookmark an article".
 
-Failure 1 of 4 and the summary lines from the run, on the Conduit sample API at commit 30b68e1. `...` marks skipped text.
+Failure 1 of 4 and the summary lines from the rerun, on the Conduit sample API at commit 30b68e1. `...` marks skipped text.
 
 ```text
-Running 29 tests using 2 workers
+Running 4 tests using 1 worker
 ...
     Error: expect(received).toBe(expected) // Object.is equality
 
@@ -166,8 +165,6 @@ Running 29 tests using 2 workers
     Received: 404
 ...
   4 failed
-...
-  25 skipped
 ```
 
 The four rows did not fail for the same reason.
@@ -177,7 +174,7 @@ The first column is the example row order in the feature file.
 | --- | --- | --- | --- |
 | 1 | No sign-in, bookmark an article | `Then` failed: 401 expected, 404 received | Valid red. The 404 was observed. The route is absent in the code. |
 | 2 | No sign-in, remove a bookmark | `Then` failed: 401 expected, 404 received | Valid red. The 404 was observed. The route is absent in the code. |
-| 3 | No sign-in, list bookmarks | `Then` failed: 401 expected, 500 received | The path `/api/articles/bookmarks` matches the existing route `/articles/:slug`. A probe returned a Prisma error from `getArticle`, and no database ran. With a database the result is likely 404, by reading and not run. |
+| 3 | No sign-in, list bookmarks | `Then` failed: 401 expected, 500 received | The path `/api/articles/bookmarks` matches the existing route `/articles/:slug`. A probe returned 500, and no database ran. With a database the result is likely 404, by reading and not run. |
 | 4 | Expired sign-in, list bookmarks | `Then` passed. The next step failed with `Not wired`. | `Then` passed (observed). The 401 comes from the existing error handler, read in `main.ts`. The row proves existing behavior. |
 
 The step `no bookmark changes` throws `Not wired: comparing bookmark lists needs a database`.
@@ -185,21 +182,21 @@ An empty step body passes for the wrong reason, so the run did not use one.
 This step also keeps all four rows red after the feature exists.
 Someone must write it against a database before any row can turn green.
 
-Last, the generator with the missing-step option removed. This shows why the first run needs the skip option. The sign-in outline was already wired in this run.
+Last, the generator with the feature path set to one file and no tags filter. This is the first-run limit. The skill advised one file at that time, but the file still holds 12 scenarios.
 
-Excerpt from a run on the Conduit sample API at commit 30b68e1. `...` marks skipped text.
+Excerpt from a rerun on the Conduit sample API at commit 30b68e1. `...` marks skipped text.
 
 ```text
-Missing step definitions: 53
+Missing step definitions: 31
 
-...
-When('the reader bookmarks the article', async ({}) => {
-  // Step: When the reader bookmarks the article
-  // From: features/article-bookmarks.feature:12:7
+Given('a signed-in reader and an article that the reader has not bookmarked', async ({}) => {
+  // Step: Given a signed-in reader and an article that the reader has not bookmarked
+  // From: features/article-bookmarks.feature:11:7
 });
 ...
 ```
 
+With all files and no filter, the same command reported 53 missing steps. With `missingSteps: 'skip-scenario'` and all files, the run listed 29 tests, 4 failed and 25 skipped.
 The generator prints a skeleton for each missing step. Use the skeletons as the start of your step files.
 
 What you must check in the output:
@@ -207,10 +204,18 @@ What you must check in the output:
 - The plan names the runner as proposed until you answer. In the run, no person chose, so the run used the default. That note belongs to this excerpt only.
 - `package.json` lists both packages with exact versions, and `.features-gen` is ignored by git.
 - Wired scenarios fail for a named reason. A failure with `ECONNREFUSED` has no meaning for the feature.
-- Skipped scenarios are counted. A skipped scenario is not a passed scenario.
-- The existing Jest tests still run. In this run one file ran before and after the install (3 of 3 passed both times). The full suite did not run.
+- Scenarios that the tags filter removes are not in the report. Count them yourself. With `skip-scenario` they show as skipped, and a skipped scenario is not a passed scenario.
+- The existing Jest tests still run. After the install, one Jest file ran (3 of 3 passed). The run saved no Jest result from before the install, and the full suite did not run. Run your full suite before and after the install.
 
-Not executed in this run: any scenario with a signed-in reader, any run against a database, a CI job, and a read of the online documentation of `playwright-bdd`.
+This run did not execute the items below. Each row names the evidence that verifies it.
+
+| Not executed | Verified when |
+| --- | --- |
+| A scenario with a signed-in reader | A step writes a valid token, and the row fails or passes on the API response. |
+| A run against a database | The API starts with a test database, and the `no bookmark changes` step compares real data. |
+| A CI job | A CI run starts the API, runs `npm run bdd`, and excludes `@wip`. |
+| The online documentation of `playwright-bdd` | You read the page for your installed version, and the keys on this page match it. |
+| The full Jest suite | The full suite gives the same result before and after the install. |
 
 ## Common mistakes
 

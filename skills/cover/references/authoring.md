@@ -34,6 +34,10 @@ A test that cannot fail does not protect behavior. Falsify every new test with t
 | Regression lock | Run the test against the pre-fix revision in an isolated worktree. |
 | Pinning test | In an isolated worktree or copy, mutate the pinned behavior and run the test. |
 
+- Get the new test into the pre-fix worktree by copying the test file into it. Do not commit the copy there.
+  A worktree made from the test branch and reverted with `git revert` also holds the test.
+- If the pre-fix revision lacks a symbol that the test imports, add a stub for it in the worktree first
+  (the "Stub" rule in `shared/contracts/references/test-driven-development.md`). A compile error is not red.
 - Keep the intended assertion. A changed expected literal or a setup error does not prove detection.
 - Confirm that the mutation landed and that the test failed for the intended reason.
 - Restore temporary changes, even after a failure, and verify the restoration.

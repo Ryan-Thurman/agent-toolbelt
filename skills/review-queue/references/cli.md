@@ -51,7 +51,8 @@ UNIQUE(repo, target, head_sha)        -- the idempotency constraint
 ### `enqueue --repo R --target T --sha S [--tier light|standard|deep] [--reason X] [--by WHO]`
 Push a job (producer). `--repo`, `--target`, `--sha` are required. Pass the absolute checkout path
 (`git rev-parse --show-toplevel`) as `--repo`. The SHA is the idempotency key, so pass the pushed PR
-head oid, or `git rev-parse HEAD` after a push. Re-enqueuing the same (repo, target, sha)
+head oid. For a branch that is not checked out, pass the tip of that branch (`git rev-parse --verify <branch>^{commit}`),
+as `commands/enqueue-review.md` does. Do not use `HEAD` unless the target is the checked-out branch. Re-enqueuing the same (repo, target, sha)
 is a no-op. Output:
 ```json
 [{"id":1,"status":"pending","result":"enqueued"}]   // or "result":"duplicate" if already present
@@ -69,7 +70,8 @@ Output is the claimed job, or `[]` when nothing is pending:
 
 ### `complete <id> --worker W --verdict V [--findings N] [--notes X]`
 Mark a job reviewed (consumer), recording the verdict/finding count for the audit trail.
-`--worker` is required. Pass the same id that `claim` used. The update runs only when job `<id>` is
+`--worker` is required. `--verdict` must be `APPROVE`, `REQUEST CHANGES`, or `NEEDS DISCUSSION`, or be omitted.
+`--findings` must be a whole number, or be omitted. Any other value exits non-zero and changes no job. Pass the same id that `claim` used. The update runs only when job `<id>` is
 `claimed` by `W`, so a worker whose lease expired cannot overwrite the result of the worker that took
 the job over. Output: `[{"id":1,"status":"done","updated":1}]`. With `updated:0`, the command exits
 non-zero and the job is not changed, because `W` does not hold the claim.

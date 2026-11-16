@@ -42,6 +42,6 @@ Each row separates commands that can match the same request.
 | `/phase-gate` · `/review-on-open` · `/enqueue-review` + `/review-queue-worker` | `phase-gate` · `review-on-open` · `review-queue` | Review at a phase boundary · review when a PR opens or updates · review from a local queue. |
 | `/simplify` · `/code-smell` · `/retrofit` · `/crap-refactor` | `simplify` · `retrofit` · `crap-analysis` | Apply small cleanups · detect smells only · apply one defined change at every site · refactor after a CRAP verdict. |
 | `/phase-close` · `/handoff` | `phase-context-workflow` · `handoff` | Close a phase file · hand off any other work. |
-| `/papercuts` · `/papercuts --feature` | `papercuts` | Friction in this session · friction across one feature. Use the delivery retrospective workflow for the process after a release. |
+| `/papercuts` · `/papercuts --feature` | `papercuts` | Friction in this session · friction across one feature. For the process after a release, no command exists. Give the agent this prompt: `Follow workflows/delivery-retrospective-workflow.md for <scope>. Write the report and post nothing.` |
 | `/bug-intake` -> `/reproduce` -> `/rca` -> `/fix-plan` | `bug-to-fix` | Use in this order. `/rca --diagnose` does not edit files. |
 | `/to-issues` or `/bug-intake` -> `/ticket-sync` | `ticket-sync` | Publish the written ticket files to the tracker. |

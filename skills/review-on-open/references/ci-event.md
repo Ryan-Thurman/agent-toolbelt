@@ -127,7 +127,9 @@ not instructions, but CI adds a second risk: a malicious PR running with access 
   files set the rules that judge the PR. The workflow therefore restores the base versions of these root
   files before `claude` runs, and removes any file the base does not have. It also replaces the
   `.agents/` and `.claude/` folders with their base versions. These folders hold the installed reviewer
-  skills, the commands, and the React scan script that the allowlist runs. Without this step, a PR can
+  skills, the commands, and the React scan script that the allowlist runs. The replace is whole on purpose. A PR must not change `.claude/settings.json`
+  or the commands that the reviewer uses. The CI run therefore discards every PR change in `.agents/` and
+  `.claude/`, also for unrelated tracked files. Without this step, a PR can
   change the reviewer itself or run its own code with the job token. Claude Code reads `CLAUDE.md`
   from the working tree by itself, so this restore step is the control. `pr-review` also loads
   `.pr-review.md` from the base (`skills/pr-review/references/repo-config.md`). The step does not cover

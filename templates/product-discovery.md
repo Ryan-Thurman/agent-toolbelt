@@ -9,7 +9,7 @@ Separate observed evidence from assumptions.
 | Claim | Verdict | Source ID |
 | --- | --- | --- |
 
-Verdict is `Supported`, `Contradicted`, or `Unknown`. Give each source a stable ID.
+Verdict is `Supported`, `Contradicted`, `Mixed`, or `Insufficient evidence`, with a reason. `shared/contracts/references/evidence-quality.md` wins if the lists differ. Give each source a stable ID.
 
 ## Opportunity and candidate
 

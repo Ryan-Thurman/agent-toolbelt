@@ -9,8 +9,13 @@ Status: Read-only | Authorized active scope: <reference>
 | ID | Asset / entry point / precondition | Reachability and exploitability | Impact | Evidence (file:line, revision) | CWE / OWASP if supported | Remediation | Verification | Confidence |
 |---|---|---|---|---|---|---|---|---|
 
-Impact uses one of these levels: `Critical`, `High`, `Medium`, `Low`, or `Info`.
-Record the asset that each level affects.
+Impact uses one of these levels. Record the asset that each level affects.
+
+- `Critical`: an attacker can take over the system or expose all sensitive data with no special access.
+- `High`: an attacker can read or change sensitive data, or gain higher privilege, with limited access.
+- `Medium`: harm needs a precondition such as a user action, or reaches limited data.
+- `Low`: harm is small or hard to reach, or defense in depth lessens it.
+- `Info`: no direct harm. The note helps hardening or later review.
 
 ## Dependency and secret exposure notes
 

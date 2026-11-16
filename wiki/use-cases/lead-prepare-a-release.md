@@ -55,8 +55,8 @@ The verdict then reads all three. The rollout plan comes last, because its rules
 ## Decision points
 
 - If the report says the pipeline owns the deploy, take the package (verdict, rollback plan, release notes, rollout plan) and stop. The Quick path ends at the package in this case. Do not run deploy commands. The skill frames the rollout plan as the watch-list for the pipeline.
-- If the project has no rollback trigger, the verdict is NO-GO. Define the trigger with the owner. Do not copy a threshold from another project.
-- If a blocking gap exists before the change and the change does not cause it, decide who owns it. The checklist has no rule for this case. In this run, the audit findings were treated as blocking, and that was the run's choice.
+- If the project has no rollback trigger, the verdict is NO-GO. Define the trigger with the owner. Do not copy a threshold from another project. For a first launch with no earlier release, name how to remove this release, such as flag-off or taking the deployment down. Without that, the verdict is NO-GO.
+- If a blocking gap exists before the change and the change does not cause it, record it as `Pre-existing`, with its owner and the audit date. The checklist now says that it blocks the release only when the release policy makes it a gate, or when the change makes it reachable. This run predates that rule and treated the audit findings as blocking.
 - If the change alters behavior, an endpoint, a flag, or the data model, update the docs in the same change. A later promise is a NO-GO. If it alters none of these, record "not doc-impacting" with a reason.
 - If the change is a documentation change, expect most of the checklist to be skipped.
 - Stop when the verdict is NO-GO and each gap has an owner, or when the verdict is GO and the rollout plan has rules.
@@ -83,7 +83,7 @@ The project has no rollback trigger, no release policy, and no SLO.
 | B2 | Dependency audit is not clean. | Upgrade the packages, or the owner accepts each finding in writing. |
 | B3 | The tests that cover the change did not run. | Run the suite against a test database, or record that the owner accepts the gap. |
 
-The report has a fourth gap, B4. The code uses `process.env.JWT_SECRET || 'superSecret'`, so a production server without `JWT_SECRET` signs tokens with a public string. The report says that B2 to B4 exist before the commit and that the run treated them as blocking.
+The report has a fourth gap, B4. The code uses `process.env.JWT_SECRET || 'superSecret'`, so a production server without `JWT_SECRET` signs tokens with a public string. The report says that B2 to B4 exist before the commit and that the run treated them as blocking. The run predates the `Pre-existing` rule in the checklist, so the skill now blocks on them only under the conditions in "Decision points".
 
 Next, the rollback plan. The report gives the revert and the effect on tokens that clients already hold.
 

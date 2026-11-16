@@ -11,8 +11,8 @@ This page is for a team lead or product owner who plans one feature from idea to
 The quick path covers stages 1 to 4. Stages 5 to 7 follow the Steps table. Stop at each gate and wait for its owner.
 
 1. Start Claude Code in the repository with the Toolbelt loaded: `claude --plugin-dir <toolbelt-folder>`. The `/agent-toolbelt:` prefix works in plugin mode only. In an installed copy, type `/<skill>` with no prefix. No installer pack copies this workflow file, so use the plugin or a Toolbelt checkout.
-2. Define (stage 1). Run this line. The workflow now names `templates/idea-to-release-gate-report.md` for gate reports. This page predates that template, so the gate file in the line below is this page's choice.
-   `Follow <toolbelt-folder>/workflows/idea-to-release-workflow.md for <feature>. Write each gate report to <work-folder>/gates.md. Stop at each gate and wait for the named approver.`
+2. Define (stage 1). Run this line. The workflow writes each gate report from `<toolbelt-folder>/templates/idea-to-release-gate-report.md`. Without a folder that the project names, the workflow saves it to `.atb-work/idea-to-release/<feature-slug>-gate-<n>.md`. The line below names `<work-folder>` instead.
+   `Follow <toolbelt-folder>/workflows/idea-to-release-workflow.md for <feature>. Write each gate report with the gate report template to <work-folder>/gate-<n>.md. Stop at each gate and wait for the named approver.`
    Then run `/agent-toolbelt:product-discovery <request>. Evidence: <evidence-file>. Write the report to <work-folder>/discovery.md with the product-discovery template.` Read the result line of `discovery.md`. Stop on `Needs evidence` or `Deferred`.
 3. Shape and design (stages 1 and 2). Run these commands in order. Gate 2 stays `Blocked` until the QA lead's cases exist in `<work-folder>/qa-cases.md`.
    `/agent-toolbelt:shape-up Shape this idea into an approved brief: <idea>. Save the approved brief to <work-folder>/brief.md.`
@@ -38,7 +38,7 @@ This page connects nine use-case pages. It runs no skill again, and no run relea
 - The QA test-case run, the pre-PR review, and the release check ran on a different change: the token fix, commit 30b68e1. The pre-PR review ran on its cherry-pick copy, commit 667bbe6. They show the skill and not the bookmark.
 - Every run was headless. No person answered a question or approved a plan. Each run used the recommended default of each question and marked it as a default. A default is not an approval.
 
-The story and test-case runs ran before the skill fixes in Toolbelt commit 695056c. For example, `story-refinement` now saves its files to `.atb-work/story-refinement/<item-key>/`, and the run used its own folder names. Check the skill files if a detail of those runs matters to you.
+The story and test-case runs ran before the skill fixes in Toolbelt commit 695056c and in PR #60. For example, `story-refinement` now saves its files to `.atb-work/story-refinement/<item-key>/`, and the run used its own folder names. Check the skill files if a detail of those runs matters to you.
 
 ## Why this path
 
@@ -88,7 +88,7 @@ The last quote is improvement I-3 of the retrospective. The report lists it unde
 
 ## Gate verdicts
 
-A gate gives `Ready`, `Ready with risks`, or `Blocked`. `Ready with risks` needs a named owner for each risk. This page assigned the verdicts below by the gate rules of the workflow. The workflow now has a gate report template and a result-to-verdict table, and this page predates both. No earlier run produced a gate report. Each row gives the verdict that a person gets when they ask for this gate after the run.
+A gate gives `Ready`, `Ready with risks`, or `Blocked`. `Ready with risks` needs a named owner for each risk. This page assigned the verdicts below by the gate rules and the result-to-verdict table of the workflow. The runs predate the gate report template, so no earlier run produced a gate report. Each row gives the verdict that a person gets when they ask for this gate after the run.
 
 | Stage | Gate verdict | Reason, from the evidence | Approval that stays with people |
 | --- | --- | --- | --- |
@@ -100,7 +100,7 @@ A gate gives `Ready`, `Ready with risks`, or `Blocked`. `Ready with risks` needs
 | 6. Assignment and delivery | `Blocked` | Phase 1 has red and green evidence, but no person approved the plan, and no mode or start authorization is recorded. | In a human team, the assigned developer and QA accept the ticket and the plan. In an agent pod, a person approves the plan and the product owner authorizes the start. |
 | 7. Close and learn | `Blocked` | No human technical review, QA verification, or acceptance exists. The release check says `NO-GO` and the outcome review says `Gather evidence`. | A named human technical reviewer and a named human QA verify the result. The product owner accepts it. The project names who approves the release. |
 
-The result of a skill is not a gate verdict. A skill says `Ready with defaults`, `Needs decision`, or `NO-GO` for its own check. The gate also needs the approvals in the last column. The workflow's result-to-verdict table maps `Ready with defaults` to `Ready with risks` when a named person owns each default. This page applied that mapping by hand. The table maps `Needs decision` to `Blocked`, and this page did the same.
+The result of a skill is not a gate verdict. A skill says `Ready with defaults`, `Needs decision`, or `NO-GO` for its own check. The gate also needs the approvals in the last column. The result-to-verdict table of the workflow maps `Ready with defaults` to `Ready with risks` when a named person owns each default. It maps `Needs decision`, `Not verified`, `NO-GO`, and a `Proposed order` to `Blocked`. A result with no row, such as `Needs evidence`, keeps its meaning, and the gate report states the verdict that you map it to.
 
 None of the gates reaches `Ready`. This is the correct result for runs with no person to approve. It also lists the work for a real team: answer the owner questions, name the reviewers, and record each approval.
 

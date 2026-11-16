@@ -177,8 +177,8 @@ Not executed in this run:
 
 - You omit `--harness`. The installer stops with exit code 2 and writes nothing, because it has no default. Add `--harness all`, or name the hosts that your team uses.
 - You try a command without `--dry-run` "just to see". The installer then creates a missing target folder and installs into it. In this run, a probe command created a folder that the run then deleted. Check the command line for `--dry-run` before you press Enter.
-- You expect `all` to mean skills only. It includes the Cursor hooks pack. Read the "Packs:" line in the preview.
-- You expect a repository two levels down, or a folder with no `.git`, to be a target. The installer skips it with no message. Compare the "Sweep targets" list with your repository list.
+- You expect `all` to include every pack. It leaves out opt-in packs such as `cursor-hooks`, so name them in the pack list when you want them. Read the "Packs:" line in the preview.
+- You expect a repository two levels down, or a folder with no `.git`, to be a target. The installer prints a `skipped` line for a folder with no `.git` and a depth note for the sweep, and it prints nothing for a repository two levels down. Compare the "Sweep targets" list with your repository list.
 - You rerun to pick up a new Toolbelt version and see `0 created`. The installer skips existing files unless you pass `--force`. Review local edits, then use `--force`.
 - You commit nothing and leave about 590 untracked files in each repository. Each person who clones the repository then has no Toolbelt files. Commit them, or ignore them on purpose.
 - You treat the file listing as proof that every host works. The run did not start Cursor or Codex.

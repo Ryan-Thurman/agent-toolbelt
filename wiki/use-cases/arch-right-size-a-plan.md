@@ -12,7 +12,7 @@ This page is for a tech lead who suspects that a delivery plan builds more than 
 2. Check the plan: `/agent-toolbelt:plan-review <plan-file>`. The plan file lists its requirements with IDs. Read the Coverage, Decisions, and Right size rows.
 3. Revise the plan: `/agent-toolbelt:dev-plan <plan-file> and apply the right-sizing check. Give the revised plan first, then each removed, merged, and deferred part with a trigger.` Approve the phase map when the agent asks. Ask it to save the revised plan to `<revised-plan-file>`.
 4. Replace each proposed trigger number with a number that the owner confirms.
-5. Check the result: `/agent-toolbelt:plan-review <revised-plan-file>`. You are done when the verdict is `Ready` and each open decision has an owner.
+5. Check the result: `/agent-toolbelt:plan-review <revised-plan-file>`. You are done when the verdict is `Ready` or `Ready with warnings` and each open decision and warning has an owner.
 
 You get a verdict on the original plan and a revised plan. You also get a table of parts, each with a ground and a result, and a trigger for each deferred part.
 The sections below explain each step, when to stop, and what the output looks like.
@@ -58,7 +58,7 @@ The order is fixed by what each step needs. The readiness check comes first, bec
 | --- | --- | --- | --- |
 | 1 | Load the Toolbelt in Claude Code: `claude --plugin-dir /path/to/agent-toolbelt`. Or install the skill into the project: `./install.sh --harness all phased-delivery /path/to/project`. | The commands must exist in your session. | You type `/` and see `/agent-toolbelt:plan-review` (plugin) or `/plan-review` (installed copy). |
 | 2 | Save the plan in a file in the repository, for example `plans/notifications.md`. List the source requirements in the same file, each with an ID. | The check links each part to a requirement. A plan with no requirements cannot be checked for coverage. | Each requirement has an ID, and the file names the exclusions. |
-| 3 | Run `/agent-toolbelt:plan-review <plan-file>`. In the sample, the plan file is `inputs/overbuilt-notifications-plan.md`. | The command reviews the plan and changes nothing. It checks 12 rows, from Coverage to Right size. | You have a verdict (`Ready`, `Needs revision`, or `Not verified`) and a result for each row. `Not verified` means that required scope or evidence remains unresolved. |
+| 3 | Run `/agent-toolbelt:plan-review <plan-file>`. In the sample, the plan file is `inputs/overbuilt-notifications-plan.md`. | The command reviews the plan and changes nothing. It checks 12 rows, from Coverage to Right size. | You have a verdict (`Ready`, `Ready with warnings`, `Needs revision`, or `Not verified`) and a result for each row. `Not verified` means that required scope or evidence remains unresolved. |
 | 4 | Read Coverage, Decisions, Dependencies, Integration, Unit tests, Execution, and Scope first. List each requirement that has no work and no test. | Every row except the five warning rows can change the verdict. The warning rows are Acceptance scenarios, Test levels, Negative cases, Reliability, and Right size (see "Decision points"). | You can name each requirement without work, and each exclusion that the plan breaks. |
 | 5 | Run `/agent-toolbelt:dev-plan <plan-file> and apply the right-sizing check. Give the revised plan first, then each removed, merged, and deferred part with a trigger.` | The command runs steps 1 and 2 of the delivery loop for the file. Step 2 waits for your approval of the phase map, and the headless run had no such stop. The skill now marks a headless map `Draft for approval`. This run predates that rule. Its readiness check is part of the loop. The right-sizing reference asks for the revised plan first, then the lists. The wording of the request is this page's choice. | You approved the phase map. The output has a revised plan, a table of parts with a ground and a result for each, a list of kept safeguards, and a trigger for each deferred part. |
 | 6 | Check each kept part against its ground, and each deferred part against its trigger. Ask the owner to confirm or replace each trigger number. | The source gives no target, so the run proposed the numbers. A proposal is not a decision. The skill now writes `Decision needed` for a trigger that has no source number, and the run predates that rule. | Each trigger names something that you can measure, and an owner confirmed the number. |
@@ -70,9 +70,9 @@ The order is fixed by what each step needs. The readiness check comes first, bec
 - If the plan adds no service, store, queue, job, abstraction, or rollout phase, skip the size check. The Right size row covers only the parts that the plan adds.
 - If every part already has a ground, record the grounds and stop.
 - If a part answers an observed failure with a record, keep it and cite the record. An observed failure is a ground. A possible future need is not.
-- If the team already agreed on a part, ask the owner for its ground. The Decisions row keeps agreed choices. The Right size row asks for a ground. The skill gives no order between them, so the owner decides.
+- If the team already agreed on a part, ask the owner for its ground. The Decisions row keeps agreed choices. The Right size row asks for a ground. The Decisions row wins. Right size never removes a part that the plan keeps as an agreed decision. When the two rows conflict, the verdict is `Needs revision` and the skill names the owner who decides.
 - If a deferred part protects a named failure domain or a recovery requirement, keep it. Send the recovery question to [`reliability-review`](../../skills/reliability-review/SKILL.md) and `system-design`.
-- If the verdict is `Ready` and the Right size row is a warning, read the warning. The skill reports it as a warning that does not change the result, unless the project instructions make it a gate. Make it a gate in the project instructions if you want a block.
+- If the verdict is `Ready with warnings`, read each warning. The Right size row is a warning that does not block the plan, unless the project instructions make it a gate. Make it a gate in the project instructions if you want a block.
 - If the verdict is `Not verified`, supply the missing scope or evidence and run the check again. If the plan comes from tickets, the Scope row applies, so list the tickets with the plan.
 - Stop when the revised plan passes the readiness rows and each open decision has an owner. Each deferred part must also have a trigger with a confirmed number. Stop after two revision passes and report what is open.
 - Choose [Design a new capability](arch-design-a-new-capability.md) when you have no plan or design yet, or want the design reconsidered.
@@ -95,7 +95,7 @@ Excerpt from a run on the Conduit sample API at commit 30b68e1. Condensed from t
 | Right size | Warning | The plan adds about 22 moving parts. Three have a ground in a requirement. See `right-sizing-table.md`. |
 ```
 
-After the revision, the second readiness check gave this verdict (condensed from `readiness-after.md`):
+After the revision, the second readiness check gave this verdict (condensed from `readiness-after.md`). The run predates the `Ready with warnings` verdict. The skill now gives that verdict for a plan with open warnings.
 
 ```markdown
 Result: `Ready`, with two open decisions (D-2, D-3) and two warnings.
@@ -131,7 +131,7 @@ Excerpt from a run on the Conduit sample API at commit 30b68e1. The text is verb
 | 2 | The list endpoint and the mark-as-read endpoint exist. | N-3, N-4, N-5 | 1 | `feat/notifications-api` -> `feat/notifications-write` |
 ```
 
-Excerpt from a run on the Conduit sample API at commit 30b68e1. Two of the five deferred rows are shown, and the text is verbatim. The trigger numbers are proposals. The plan template now has a Deferred parts table with the columns Part, Ground, Trigger, and Owner. This run predates that table and used its own columns.
+Excerpt from a run on the Conduit sample API at commit 30b68e1. Two of the five deferred rows are shown, and the text is verbatim. The trigger numbers are proposals. The plan template now has a Deferred parts table with the columns Deferred part, Ground for deferring, Trigger to add it, and Owner. This run predates that table and used its own columns.
 
 ```markdown
 | Deferred parts | Add when |

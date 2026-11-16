@@ -43,7 +43,7 @@ For a source-to-target upgrade, the skill also points to `references/version-del
 | 1 | Load the Toolbelt in Claude Code: `claude --plugin-dir /path/to/agent-toolbelt`. Or install the skill into the project: `./install.sh --harness all tech-backlog-assessment /path/to/project`. Start the agent in the repository root. | The skill reads the repository, so the agent must start where the code is. | You type `/` and see `/agent-toolbelt:tech-assess` (plugin) or `/tech-assess` (installed copy). |
 | 2 | Write the item as one sentence with the decision in it. Sample: "Must we upgrade Prisma 4 to the current major version?" Use `<package>` and `<old major>` for your item. Add the ticket text if one exists. | The skill classifies the item first. A vague item gives a vague verdict. | The sentence names the package or area and the decision. |
 | 3 | Run `/agent-toolbelt:tech-assess "<item>"`. In the sample: `/agent-toolbelt:tech-assess "Must we upgrade Prisma 4 to the current major version?"` | The command follows the `tech-backlog-assessment` skill. | The agent starts to read the repository and the lockfile. |
-| 4 | Allow web access, so that the agent can read the official release notes. If you have no web access, give the agent the notes as files. | When package metadata, advisories, license, or support status affects the recommendation, the skill requires primary and current sources. | Sources and dates are named, or the report says what the agent searched. This run added a "Sources" section. The template has none. |
+| 4 | Allow web access, so that the agent can read the official release notes. If you have no web access, give the agent the notes as files. | When package metadata, advisories, license, or support status affects the recommendation, the skill requires primary and current sources. | Sources and dates are named, or the report says what the agent searched. The template now has a section "Sources, dates, and checks not run". This run predates it and used its own "Sources" section. |
 | 5 | Read "Current state". Make sure that each claim has a file, a command, or a count behind it. | The verdict depends on what the code uses. A count shows the size of the change. | Each row names a file, a search, or a command output. |
 | 6 | Read "Options considered". Make sure that the status quo is a row and that each rejected option has a reason. | The skill compares at least two options when the item holds a real decision. It includes the status quo when plausible. | You can say why each option was rejected. |
 | 7 | For an upgrade only, read the version delta. Skip this step when the item is not a version upgrade. Find each row marked as intersecting your code and each row marked `Unknown`. | The skill reports only changes that touch actual usage, and it separates removed APIs from silent behavior changes. | Each `Unknown` row has an owner or a spike step. |
@@ -55,9 +55,9 @@ The agent runs searches and reads files in step 3. Commands that install or gene
 ## Decision points
 
 - If the report says `Do`, ask for a phased plan with `/dev-plan`. The skill creates a phased plan only when you ask to continue. The page [Deliver a ticket as phased PRs](dev-deliver-a-ticket-as-phased-prs.md) shows that path.
-- If the report says `Spike`, do not plan the full work yet. Run the spike first. The report names the steps and the evidence that ends the spike.
+- If the report says `Spike`, do not plan the full work yet. Run the spike first. The report names the question that the spike answers, its time limit, the steps, and the evidence that ends the spike.
 - If the report says `Defer` or `Reject`, update the ticket with the rationale and stop. The file `workflows/tech-backlog-assessment-workflow.md` gives that step.
-- If the item is a confirmed bug, choose [Fix a reported bug](dev-fix-a-reported-bug.md).
+- If the item is a confirmed bug, choose [Fix a reported bug](dev-fix-a-reported-bug.md). The report then names `bug-to-fix` and `/bug-intake` as the next step.
 - If the item is ready to build and needs a plan, choose [Deliver a ticket as phased PRs](dev-deliver-a-ticket-as-phased-prs.md).
 - If you have no web access, give the agent the notes as files. Expect `Spike` or `Low` confidence. The report must say what it searched.
 - If the change is the same edit at many call sites, hand it to `/retrofit`. The page [Swap a library at every call site](dev-swap-a-library-everywhere.md) shows that path.
@@ -89,7 +89,7 @@ This is a default of the run, see "Open questions".
 
 Check three things in this output. First, the report names the major that it chose. The registry tag `latest` pointed to `8.0.0-rc.33` on the run date, so "current" was ambiguous. The open question asks you to confirm the choice. Second, the report gives reasons against the other majors. Third, the summary asks for a time-boxed spike on a copy, not an upgrade order.
 
-The next excerpt shows how the report links the release notes to your code. The run chose this layout of the version delta. The skill's reference says what to record but gives no table.
+The next excerpt shows how the report links the release notes to your code. The run chose this layout of the version delta. The template now has a "Version delta" row, and the skill's reference says what to record. Neither gives a table.
 
 Excerpt from a run on the Conduit sample API at commit 30b68e1. Condensed from the run report: 3 of the 11 rows, and the Type column. The text of the cells that remain is verbatim.
 
@@ -136,7 +136,7 @@ The run used the skill's recommended default for each open question and did not 
 
 - After `Do`: [Deliver a ticket as phased PRs](dev-deliver-a-ticket-as-phased-prs.md) for the plan.
 - For a repeated edit: [Swap a library at every call site](dev-swap-a-library-everywhere.md).
-- After a `Spike` that passes: run `/dev-plan` with the spike result as input.
+- After a `Spike`: assess the item again with the spike result as input. Then run the command that the new report names.
 - To find more candidates: [Choose tech debt to pay](lead-choose-tech-debt-to-pay.md).
 - To protect the change with tests before you start: [Find coverage gaps before release](qa-find-coverage-gaps-before-release.md).
 - To see how several skills connect from idea to release: [Journey: idea to release](journey-idea-to-release.md).

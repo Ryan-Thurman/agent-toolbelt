@@ -10,7 +10,7 @@ This page is for a platform engineer whose coding agents open branches and pull 
 
 1. Make sure that `sqlite3 --version` works. Choose one queue file, and run `export REVIEW_QUEUE_DB=<queue-file>` in the shell of every session before you start the agent.
 2. In the repository, get the commit of each branch with `git rev-parse <branch>`. Start the producer session with `claude --plugin-dir <toolbelt-folder>`. Check that `/agent-toolbelt:enqueue-review` shows in the `/` list. No toolbelt folder? See [Installation](../Installation.md) or [Install the Toolbelt for a team](ops-install-for-a-team.md). Then run `/agent-toolbelt:enqueue-review <branch> --repo=<repo-path> --sha=<commit>`. The answer is `enqueued` or `duplicate`.
-3. Warning: the worker runs `/pr-review <target> --comment`. For any target that has an open PR, it posts inline comments without a prompt. A branch target that has no PR is not posted to. A later change adds `--report-only`, which posts nothing and leaves the queue unchanged. Use it for the first trial. In the repository, start a new session that did not write the code: `claude --plugin-dir <toolbelt-folder>` with the same `REVIEW_QUEUE_DB`. Run `/agent-toolbelt:review-queue-worker --max=<n>`.
+3. Warning: the worker runs `/pr-review <target> --comment`. For any target that has an open PR, it posts inline comments without a prompt. A branch target that has no PR is not posted to. The `--report-only` flag posts nothing and leaves the queue unchanged. Use it for the first trial. In the repository, start a new session that did not write the code: `claude --plugin-dir <toolbelt-folder>` with the same `REVIEW_QUEUE_DB`. Run `/agent-toolbelt:review-queue-worker --report-only --max=<n>`. When the trial output is good, run the command again without `--report-only`.
 4. Read the one line for each job and the tally. Find the report of each job in the output of the `pr-review` sub-agent in the worker session, or in the posted comments for a PR. Read every finding before you merge.
 
 You get one recorded verdict and finding count for each branch head. The worker command writes no report file, so copy a report if you want to keep it.
@@ -30,9 +30,9 @@ The run differs from your setup in four ways:
 - No sub-agents were available. The run did each review as a Self-review. One agent applied each review facet in turn. A facet is one review angle, such as correctness or tests.
 - The same session wrote the branches and reviewed them, so the reviews are not independent. The trigger rules require a fresh agent for each review and forbid a review inside the authoring session. A new worker session is a safe practice, and the worker also runs each review as its own sub-agent.
 - The run followed `worker.md` by hand. No `/review-queue-worker` command ran.
-- The run did not pass `--comment` to `/pr-review`. The worker passed it in the run. A later change adds `--report-only`, which drops it.
-- The run skipped the marker check that `worker.md` puts before each review, because no PR existed. That was the run's choice. `posting.md` says that posting is skipped when the target is not a real PR. The run read that rule and did not execute it. A later change puts this branch rule in `worker.md`, so the worker follows it.
-- The command path for a branch with no PR was not executed. `worker.md` step 2 assumes a PR, so treat the advice to try branches with no PR as untested.
+- The run did not pass `--comment` to `/pr-review`. The worker passed it in the run. The worker now drops it only with `--report-only`.
+- The run skipped the marker check that `worker.md` puts before each review, because no PR existed. That was the run's choice. `posting.md` says that posting is skipped when the target is not a real PR. The run read that rule and did not execute it. Since PR #60, `worker.md` step 2 has this branch rule, so the worker follows it.
+- The command path for a branch with no PR was not executed. `worker.md` step 2 now covers a branch target, but no run has tried that path, so treat it as untested.
 - The run saved each review report by hand as a file. The worker command writes none.
 - The run called `requeue` by hand on a scratch queue for the failure path.
 - The skill files were re-checked against `main` at 695056c (PR #58). That PR did not change the queue files. It changed the `pr-review` auto-tier rules, and the tier explanation below still holds for this diff.
@@ -159,7 +159,7 @@ The run also tried the failure path on a scratch queue. A job with a repository 
 - You run the worker in the session that wrote the branch. The review is then not independent, and the trigger rules forbid a review inside the authoring session. Start the worker in a new session.
 - The producer and the worker use different queue files. The worker then claims nothing, because it reads another file. Set `REVIEW_QUEUE_DB` to the same path in both shells before you start the agents.
 - You omit `--sha` for a branch that is not checked out. In the run, the job recorded the commit of the current `HEAD`, and the idempotency key was wrong. A later change makes the command stop in that case. Pass the commit of the branch.
-- You run the worker on a repository where the branch has an open PR, and you do not want comments. The worker posts without a prompt. Use `/pr-review` without `--comment` instead, or test on branches that have no PR.
+- You run the worker on a repository where the branch has an open PR, and you do not want comments. The worker posts without a prompt. Start the worker with `--report-only` first, or use `/pr-review` without `--comment`.
 - You read `APPROVE` as "no findings". The verdict counts blockers, approval-blocking questions, and required scope gaps. A should-fix finding is a problem to fix that does not change the verdict. Read the should-fix findings.
 - You expect a `dead` job to run again. It runs again only after a new push gives a new commit.
 - You put the `--db` flag before the subcommand when you call `review-queue.sh`. In the run, the script failed with "unknown command: --db". A later change accepts the flag in either place.

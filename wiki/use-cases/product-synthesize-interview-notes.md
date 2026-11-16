@@ -25,12 +25,12 @@ This page is for a product researcher who has several interview notes and must l
    /agent-toolbelt:user-research-synthesis "How do readers decide to save an article, and what happens to saved articles afterward?" N1.md N2.md N3.md N4.md
    ```
 
-4. Ask for the report as a file, and ask for the two tables that the run added: `Write the report to <folder>/research-synthesis.md. Include a source table, and an observation log with a location and a type (Reported or Observed) for each row.` The skill and its template do not ask for these two tables. Without this request, the report can have no log, and steps 6 and 7 below have nothing to check.
+4. Ask for the report as a file with the template: `Write the report to <folder>/research-synthesis.md with the Toolbelt template.` The template has a source table and an observation table. Each observation row has a location and a kind: `reported`, `observed`, or `interpretation`. The run predates PR #60 and asked for these two tables by hand.
 5. For each theme, open the cited notes. Read the counterexamples and the "Limits and next evidence" section before you share anything.
 
 Stop here if each theme has a counterexample or a recorded search for one. To choose what to build from the themes, go to [Decide whether to build something](product-decide-whether-to-build.md).
 
-You get a report with themes, counterexamples, and limits. The source table and the observation log come from your request in step 4.
+You get a report with themes, counterexamples, and limits. The source table and the observation table come from the template.
 The sections below explain each step, when to stop, and what the output looks like.
 
 ## Situation
@@ -82,7 +82,7 @@ The order of the procedure follows the data. The skill first records the sample,
 | 3 | Write the research question in one sentence. In the sample: "How do readers decide to save an article, and what happens to saved articles afterward?" | The skill records the research question first. The themes answer this question. | The sentence names what you want to learn, not a feature. |
 | 4 | Run `/agent-toolbelt:user-research-synthesis "<research-question>" <note-files>`. In the sample, pass the four files `N1.md` to `N4.md`. | The command takes the research question and the sources as one argument. The run was headless, which means that no person answered questions. | The source table in the report lists every file that you passed, with date, method, and unavailable inputs. |
 | 5 | Ask for the report as a file in a folder that you name: `Write the report to <folder>/research-synthesis.md`. | The skill defaults to report-only. It writes a research artifact when you request one. It writes to `.atb-work/user-research-synthesis/<scope-slug>.md` when the request names no folder. This run predates that rule. Name a folder that your project uses for research, if you want one. If your project has a research record format, name it in the request. The skill uses it when suitable. | The file exists and has the sections of `templates/user-research-synthesis.md`, or of your project record. |
-| 6 | Read the observation log (the run's addition, see step 4 of the Quick path). Check that each row has a location and a type: reported or observed. Open two or three locations. | A theme is only as good as the observations under it. The skill separates what a participant reported, what was observed, and the analyst's interpretation. | Each row you open matches the note. |
+| 6 | Read the observation table. Check that each row has a location and a kind: reported, observed, or interpretation. Open two or three locations. | A theme is only as good as the observations under it. The skill separates what a participant reported, what was observed, and the analyst's interpretation. | Each row you open matches the note. |
 | 7 | Read each theme. Check the counterexamples column and the status, if the report has one. | The skill requires that each material theme links to evidence and has counterexamples or a recorded search for them. | Each theme has a counterexample, or a statement that the search found none. |
 | 8 | Read every count. Check that it names its denominator. | The skill gives counts only when the denominator is known. A convenience sample (people who were easy to reach, not chosen to represent readers) cannot show how common a view is in the population. | Each count reads like "3 of 4 participants", and no sentence claims a share of all readers. |
 | 9 | Read "Limits and next evidence". Name the next evidence and an owner. | The skill reports sample limits, unanswered questions, and the next evidence or decision. | You can name the next piece of evidence that you will collect, or the decision that you will take to the owner. |
@@ -91,7 +91,7 @@ The order of the procedure follows the data. The skill first records the sample,
 
 - Skip step 2 if your notes already carry IDs and numbered items. If your notes are unnumbered, ask the skill to cite the nearest quote as the location. If you hold one note, use the skill but expect no themes across participants. If you hold raw transcripts, pass them as they are and say that they are transcripts.
 - If no theme has defensible evidence, accept the report that says insufficient evidence. The skill allows this result.
-- If a note carries no consent to quote, check permission before you copy a quotation into a shared document. The skill requires that quotations are permitted for the intended output. It does not say what to do when permission is unknown. The run kept quotations in the internal report and shared source IDs and locations instead. That is practice, not a skill rule. If you have no consent record, treat permission as unknown.
+- If a note carries no consent to quote, check permission before you copy a quotation into a shared document. The skill quotes a participant only when permission for the intended output is known. When permission is unknown, it paraphrases the statement and labels it `paraphrase`. If you have no consent record, treat permission as unknown. The run predates this rule. It kept quotations in the internal report and shared source IDs and locations instead.
 - If a participant repeats a request, count it as one participant. The skill separates participants from repeated comments.
 - If the sources are a survey with a known number of respondents, the skill gives counts when the denominator is known. Check the sampling method yourself before you claim a share. That is practice, because the skill only says that a convenience sample cannot establish prevalence.
 - Stop when each material theme has a counterexample or a recorded search, and the limits section names the next evidence. The skill does not require a feature, a ticket, or an opportunity.
@@ -103,7 +103,7 @@ The order of the procedure follows the data. The skill first records the sample,
 
 The run was headless, so no person answered questions. The skill asks none. The run chose the research question itself because the task gave none, so replace it with your own. The report has five parts: a source table, an observation log, a theme table, a list of conflicting accounts, and a list of limits.
 
-The report uses these IDs. P1 to P4 are participants. N1 to N4 are notes, and N1.3 is item 3 of N1. O-01 to O-20 are observations. T-01 to T-05 are themes. The log and the source table are additions of this run. `templates/user-research-synthesis.md` has no section for them, but the skill asks for source IDs and locations. Ask for both, as in step 4 of the Quick path.
+The report uses these IDs. P1 to P4 are participants. N1 to N4 are notes, and N1.3 is item 3 of N1. O-01 to O-20 are observations. T-01 to T-05 are themes. The log and the source table are additions of this run. `templates/user-research-synthesis.md` now has a section for each, with the kinds `reported`, `observed`, and `interpretation`. Ask for the template, as in step 4 of the Quick path.
 
 First, the observations that show a reported statement and an observed behavior side by side.
 

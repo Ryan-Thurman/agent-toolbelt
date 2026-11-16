@@ -9,9 +9,9 @@ This page is for a product manager who gets a feature request and must decide wh
 ## Quick path
 
 1. Write the evidence into one file: an ID for each ticket and stakeholder request, and a source and a limit for each number. [Step 2](#steps) has the details.
-2. Start Claude Code in the product repository, with the Toolbelt loaded: `claude --plugin-dir <toolbelt-folder>`. Give the evidence file as a path in the prompt. If you have no repository, start in any folder.
+2. Start Claude Code with the Toolbelt loaded: `claude --plugin-dir <toolbelt-folder>`. Give the evidence file as a path in the prompt. The skill does not scan the repository, so name each code file that it must read.
 3. Run the skill and name the output file: `/agent-toolbelt:product-discovery <request>. Evidence: <evidence-file>. Write the report to <report-file> with the product-discovery template.` For example: `/agent-toolbelt:product-discovery Add article bookmarks. Evidence: evidence-pack.md. Write the report to product-discovery.md with the product-discovery template.`
-4. Check that each claim behind the request has one of four verdicts and a reason, in a table or in text.
+4. Check that each claim behind the request has one verdict (`Supported`, `Contradicted`, or `Unknown`) and a reason, in a table or in text.
 5. Read the decision. If it says `Ready to shape`, run `/agent-toolbelt:shape-up <candidate>`. If it says `Needs evidence`, get the owner's approval, then run the cheapest experiment. If it says `Deferred`, stop.
 
 You get a report with a decision that traces to your evidence, and the open questions that only the owner can answer.
@@ -46,9 +46,9 @@ The procedure has this order because each step limits the next one. The skill se
 | --- | --- | --- | --- |
 | 1 | Load the Toolbelt: `claude --plugin-dir /path/to/agent-toolbelt`. Or install the skill into the project: `./install.sh --harness all product-discovery /path/to/project`. | The skill must be available in your session. | You type `/` and see `/agent-toolbelt:product-discovery` (plugin) or `/product-discovery` (installed copy). |
 | 2 | Write the evidence into files. Give each ticket an ID and an account. Give each number a source and a limit. Name the role of each stakeholder. | The skill separates known evidence from assumptions and never invents research. It needs IDs to trace a claim. | Each item has an ID. Each number has a source and a limit. |
-| 3 | Start the agent in the product repository, if you have one. Name the area where a similar feature can exist in your first prompt. | The skill inspects repository context. It can find that the product already does part of the request. | The first prompt names the folder or area. In the sample, the area is the favorite code in `src/app/routes/article`. |
-| 4 | Run `/agent-toolbelt:product-discovery <request>. Evidence: <evidence-file>. Write the report to <report-file> with the product-discovery template.` In the sample: `/agent-toolbelt:product-discovery Add article bookmarks. Evidence: evidence-pack.md. Write the report to product-discovery.md with the product-discovery template.` | The skill uses its template when you ask for a durable report. It sets no default path, so you name the file. By default it only reports and creates no ticket. | The file exists. It has the seven template sections, from Desired outcome to Decision. |
-| 5 | Read the claims in "Evidence and problem". Check each claim behind the request. | The skill separates known evidence from assumptions, so a stakeholder claim needs its own evidence. | Each claim has `Supported`, `Contradicted`, `Mixed`, or `Insufficient evidence`, and a reason, in a table or in text. The verdict words come from `shared/contracts/references/evidence-quality.md`. |
+| 3 | If the product already can do part of the request, name the file or folder where a similar feature can exist in your first prompt. | The skill does not scan the repository. It reads a file only when you name it. | The first prompt names the file or folder. In the sample, the area is the favorite code in `src/app/routes/article`. |
+| 4 | Run `/agent-toolbelt:product-discovery <request>. Evidence: <evidence-file>. Write the report to <report-file> with the product-discovery template.` In the sample: `/agent-toolbelt:product-discovery Add article bookmarks. Evidence: evidence-pack.md. Write the report to product-discovery.md with the product-discovery template.` | The skill uses its template when you ask for a durable report. When you name no path, it writes the report to `.atb-work/product-discovery/<scope-slug>.md` and prints the path. Name the file to choose the place. By default it only reports and creates no ticket. | The file exists. It has the seven template sections, from Desired outcome to Decision. |
+| 5 | Read the claims in "Evidence and problem". Check each claim behind the request. | The skill separates known evidence from assumptions, so a stakeholder claim needs its own evidence. | Each claim has `Supported`, `Contradicted`, or `Unknown`, and a reason, in a table or in text. The run below predates PR #60 and used the words of `shared/contracts/references/evidence-quality.md` (`Mixed`, `Insufficient evidence`). |
 | 6 | Read "Opportunity and candidate". Make sure that the current experience is one of the options. | The skill compares the current experience as an explicit option. It records selected, deferred, and rejected options with reasons. | Each option has a decision and a reason. |
 | 7 | Read "Risks and assumptions". Pick the experiment for the riskiest assumption. It is the assumption that drives the decision. In the sample, it is A1, the return-visit claim. | The skill names the risks and the cheapest experiment that can change the decision. | One assumption is the riskiest, and one experiment targets it. |
 | 8 | Read "Success and failure thresholds". Set each number that the evidence cannot support, before any data arrives. | The skill requires a supported baseline for success and failure conditions. | Each threshold has an owner and a value, or stays on the list of open questions. |
@@ -59,7 +59,7 @@ The procedure has this order because each step limits the next one. The skill se
 - If your evidence is interview notes or survey answers, run `user-research-synthesis` first. The skill then reuses its findings and does not treat interpretations as customer facts.
 - If an approved brief exists, skip this page. The skill is for deciding what to build, not for a brief that is already approved. Use [`shape-up`](../../skills/shape-up/SKILL.md).
 - If you have no repository, skip step 3. The report then cannot say what the product already does.
-- If you run the [idea-to-release workflow](../../workflows/idea-to-release-workflow.md), its stage 1 says "no repository scan". This run predates the fix that makes step 1 of the skill say the same. In the sample run, the check covered only the one area where a similar feature can exist. That is the run's practice. The skill does not allow a scan, so decide this for your project.
+- If you run the [idea-to-release workflow](../../workflows/idea-to-release-workflow.md), its stage 1 says "no repository scan". The skill now says the same: it reads a file only when you name it. The sample run predates PR #60. It checked the one area where a similar feature can exist, without a named file.
 - If the evidence contains no baseline for a measure, the skill records the threshold as `Not set`, and the owner sets it. Do not accept a number that nothing supports.
 - If the state is `Needs evidence`, do not hand the candidate to `shape-up`. Run the experiment first. The project owns research access and experiment approval.
 - If the state is `Deferred`, record the reason and stop. Create a ticket only if your next action needs one.
@@ -69,7 +69,7 @@ The procedure has this order because each step limits the next one. The skill se
 
 ## What you get
 
-The run had no person to answer questions. The skill asks no question of a person. Two items need the owner: the desired outcome and each threshold. The run left both open and listed them as owner questions. The run also chose its own labels. The skill prescribes none of them. C1 to C7 are claims, O0 to O3 are options, A1 to A3 are assumptions, and E1 to E3 are experiments. SR, T, and UN are the IDs of the invented evidence pack. A-nn, such as A-22, is an anonymous account ID in that pack, and it is not an assumption. E1 counts opens of the favorites list for 30 days. E2 asks the nine accounts about their last save. E3 reads the front end. The skill prescribes no claim table. The verdict words come from `evidence-quality.md`, and the table layout is the run's choice, so your report can show the claims as text.
+The run had no person to answer questions. The skill asks no question of a person. Two items need the owner: the desired outcome and each threshold. The run left both open and listed them as owner questions. The run also chose its own labels. The skill prescribes none of them. C1 to C7 are claims, O0 to O3 are options, A1 to A3 are assumptions, and E1 to E3 are experiments. SR, T, and UN are the IDs of the invented evidence pack. A-nn, such as A-22, is an anonymous account ID in that pack, and it is not an assumption. E1 counts opens of the favorites list for 30 days. E2 asks the nine accounts about their last save. E3 reads the front end. The template now has a claim table with the columns Claim, Verdict, and Source ID. The run predates it, so its table layout is the run's choice. Your report can show the claims as text.
 
 First, the claim verdicts.
 
@@ -156,7 +156,7 @@ Return here (or defer) if E2 shows no shared need.
 
 What you must check in the output:
 
-- Each claim that backs the request has a verdict and a reason, in a table or in text. A claim with `Insufficient evidence` cannot justify the build.
+- Each claim that backs the request has a verdict and a reason, in a table or in text. A claim with `Unknown` (or `Insufficient evidence` in the run) cannot justify the build.
 - The counts use accounts, not tickets, and each share has its denominator.
 - The current experience appears as an option.
 - No threshold has a number that the pack does not support.

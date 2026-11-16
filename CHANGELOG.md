@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## v1.4.0 - 2026-11-15
 
 ### Added
 
@@ -14,6 +14,7 @@
 
 ### Changed
 
+- The portal shows the use-case role groups in role order: QA, developer, product, architecture and SRE, tech lead, platform, UI, writers, and journeys.
 - Breaking: right-sized `code-quality-gate`. Consumers that compare `scope_fingerprint` or read the round fields must update. Removed flags: `--rounds`, `--scope`, `--disposition-json`. Removed header fields: `scope_fingerprint`, `round_bound`, `rounds_completed`. The fingerprint script no longer prints `scope_fingerprint`, and `head_fingerprint` is the one staleness check. The `--allowed-paths-file` argument is optional, and the gate still writes `allowed-paths.nul`. `coverage` is always `final`. `--mode=apply` no longer runs its own repair loop. It hands the accepted findings to `/pr-improve`, which owns scope, rounds, and its ledger, then runs the gate again in report mode. Status `CAPPED` stays and means that `/pr-improve` reported `capped-not-converged`. Step 2 is now one `/pr-review --tier=standard --show-nits` call. It replaces the style packet and the separate `/simplify` pass. The `--focus` flag is gone. The pre-existing failure rule now defines the same failure as the same failing test names, or the same lint rule IDs and paths. The gate pack no longer installs the style contracts and `simplify`, because `pr-review` brings the contracts it needs.
 - `install.sh ... all` no longer installs the `cursor-hooks` pack. The pack is opt-in (`# OPT_IN: true`), as the docs said. Name `cursor-hooks` in the pack list to install it. A dry run now prints its counts, and a sweep prints each child folder that it skips.
 - Skills that write a report and get no path from the user now write to `.atb-work/<skill>/<scope-slug>.md` and print the path. The rule is in `shared/contracts/references/execution.md`.

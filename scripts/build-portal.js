@@ -39,7 +39,7 @@ function prepareOutputDirectory(output, generatedFiles) {
 const USE_CASE_GROUPS = [
   ['qa', 'QA and test'], ['dev', 'Developer'], ['product', 'Product'],
   ['arch', 'Architecture, SRE, and security'], ['sre', 'Architecture, SRE, and security'], ['sec', 'Architecture, SRE, and security'],
-  ['lead', 'Tech lead'], ['ops', 'Platform and operators'], ['write', 'Writers'], ['ui', 'UI and front end'], ['journey', 'End-to-end journeys']
+  ['lead', 'Tech lead'], ['ops', 'Platform and operators'], ['ui', 'UI and front end'], ['write', 'Writers'], ['journey', 'End-to-end journeys']
 ];
 
 // Read wiki/use-cases/*.md. The pages own the content; the portal shows the title, the summary,
@@ -69,6 +69,7 @@ function loadUseCases(root, skillIds) {
     const prefix = slug.split('-')[0];
     const group = (USE_CASE_GROUPS.find(([key]) => key === prefix) || [null, 'Other'])[1];
     return {
+      order: USE_CASE_GROUPS.findIndex(([key]) => key === prefix),
       slug,
       title: titleLine.slice(2).trim(),
       summary: summary.join(' '),
@@ -78,7 +79,10 @@ function loadUseCases(root, skillIds) {
       source_path: `wiki/use-cases/${name}`,
       source_url: `${REPOSITORY_URL}/blob/main/wiki/use-cases/${name}`
     };
-  });
+  })
+    // Show the groups in role order (USE_CASE_GROUPS), not in file-name order.
+    .sort((a, b) => (a.order < 0 ? 99 : a.order) - (b.order < 0 ? 99 : b.order) || a.slug.localeCompare(b.slug))
+    .map(({ order, ...useCase }) => useCase);
 }
 
 function normalizePortalPayload(root = ROOT) {

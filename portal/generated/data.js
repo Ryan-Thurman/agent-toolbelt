@@ -2872,42 +2872,104 @@ window.AGENT_TOOLBELT_DATA = {
   ],
   "use_cases": [
     {
-      "slug": "arch-answer-an-architecture-question",
-      "title": "Answer an architecture question",
-      "summary": "This page is for a developer or architect with one focused architecture question about an existing codebase. You get a direct answer with its evidence and the alternatives that the code rules out. You also get a list of decisions that only the owner can make. To design a whole feature, use [Design a new capability](arch-design-a-new-capability.md) instead.",
-      "group": "Architecture, SRE, and security",
-      "roles": "Developer, architect",
+      "slug": "qa-find-coverage-gaps-before-release",
+      "title": "Find coverage gaps before a release",
+      "summary": "This page is for a QA lead who has one week before a release and does not know where the tests are weak. You get a ranked list of coverage gaps with a risk for each. You also get a list of risky functions, scored by complexity and coverage.",
+      "group": "QA and test",
+      "roles": "QA lead, with a developer for step 5",
       "skills": [
-        "system-design"
+        "cover",
+        "crap-analysis"
       ],
-      "source_path": "wiki/use-cases/arch-answer-an-architecture-question.md",
-      "source_url": "https://github.com/Ryan-Thurman/agent-toolbelt/blob/main/wiki/use-cases/arch-answer-an-architecture-question.md"
+      "source_path": "wiki/use-cases/qa-find-coverage-gaps-before-release.md",
+      "source_url": "https://github.com/Ryan-Thurman/agent-toolbelt/blob/main/wiki/use-cases/qa-find-coverage-gaps-before-release.md"
     },
     {
-      "slug": "arch-design-a-new-capability",
-      "title": "Design a new capability before you build it",
-      "summary": "This page is for an architect or senior developer who must design a new capability in an existing codebase. You get a design document with diagrams and recorded decisions, a threat review, and a reliability review. A verdict, such as `Needs decision`, says whether the design can go to planning.",
-      "group": "Architecture, SRE, and security",
-      "roles": "Architect or senior developer",
+      "slug": "qa-map-risk-areas-in-an-inherited-repo",
+      "title": "Map risk areas in an inherited repository",
+      "summary": "This page is for a QA lead whose team inherited a repository and must decide where testing effort goes first. You get a reviewed risk map of the repository and a prioritized set of test cases for the riskiest area.",
+      "group": "QA and test",
+      "roles": "QA lead, with one developer or product owner to answer questions",
       "skills": [
-        "system-design",
-        "threat-model",
-        "reliability-review"
+        "risk-area-mapping",
+        "test-case-design"
       ],
-      "source_path": "wiki/use-cases/arch-design-a-new-capability.md",
-      "source_url": "https://github.com/Ryan-Thurman/agent-toolbelt/blob/main/wiki/use-cases/arch-design-a-new-capability.md"
+      "source_path": "wiki/use-cases/qa-map-risk-areas-in-an-inherited-repo.md",
+      "source_url": "https://github.com/Ryan-Thurman/agent-toolbelt/blob/main/wiki/use-cases/qa-map-risk-areas-in-an-inherited-repo.md"
     },
     {
-      "slug": "arch-right-size-a-plan",
-      "title": "Right-size a plan that looks over-built",
-      "summary": "This page is for a tech lead who suspects that a delivery plan builds more than the requirements need. You get a list of the parts that have no ground and a revised plan with fewer parts. Each deferred part has a trigger that tells you when to add it back.",
-      "group": "Architecture, SRE, and security",
-      "roles": "Tech lead",
+      "slug": "qa-plan-staging-failure-tests",
+      "title": "Plan failure tests for a service in staging",
+      "summary": "This page is for a QA or SRE engineer who must plan failure tests for a service before launch. You get a reliability review of the service and a set of failure-scenario cards. You get plans, not results: no test runs. Each card has a testable hypothesis and a Given/When/Then form (a scenario in three plain steps: a starting state, an event, and an expected outcome). Each card also has a test-first case, which is a test that you write before the fix and that fails until the fix exists. The cards that need a real platform fault also get a staging experiment plan with abort conditions and no-go checks.",
+      "group": "QA and test",
+      "roles": "QA engineer, SRE",
       "skills": [
-        "phased-delivery"
+        "reliability-review",
+        "failure-scenario-design"
       ],
-      "source_path": "wiki/use-cases/arch-right-size-a-plan.md",
-      "source_url": "https://github.com/Ryan-Thurman/agent-toolbelt/blob/main/wiki/use-cases/arch-right-size-a-plan.md"
+      "source_path": "wiki/use-cases/qa-plan-staging-failure-tests.md",
+      "source_url": "https://github.com/Ryan-Thurman/agent-toolbelt/blob/main/wiki/use-cases/qa-plan-staging-failure-tests.md"
+    },
+    {
+      "slug": "qa-plan-tests-for-a-small-pr",
+      "title": "Plan tests for a small authentication pull request",
+      "summary": "This page is for a QA engineer who gets a small pull request in an authentication area and must decide what to test. You get a short, prioritized case list, a list of the code that the change affects, and a statement about whether the existing tests cover it.",
+      "group": "QA and test",
+      "roles": "QA engineer",
+      "skills": [
+        "test-case-design"
+      ],
+      "source_path": "wiki/use-cases/qa-plan-tests-for-a-small-pr.md",
+      "source_url": "https://github.com/Ryan-Thurman/agent-toolbelt/blob/main/wiki/use-cases/qa-plan-tests-for-a-small-pr.md"
+    },
+    {
+      "slug": "qa-refine-a-vague-story",
+      "title": "Make a vague story testable before the sprint starts",
+      "summary": "This page is for a QA engineer who joins refinement with a one-line story and must make it testable. You finish with a refined spec, one question packet for each owner, and a readiness verdict. You also get Gherkin (Given/When/Then text) scenarios that trace to the criteria.",
+      "group": "QA and test",
+      "roles": "QA engineer. The product owner and a developer answer the questions.",
+      "skills": [
+        "story-refinement",
+        "bdd-scenarios"
+      ],
+      "source_path": "wiki/use-cases/qa-refine-a-vague-story.md",
+      "source_url": "https://github.com/Ryan-Thurman/agent-toolbelt/blob/main/wiki/use-cases/qa-refine-a-vague-story.md"
+    },
+    {
+      "slug": "qa-review-feature-files",
+      "title": "Review feature files that a developer wrote",
+      "summary": "Use this page to review feature files that a developer wrote. You get a list of findings, ranked by risk, and each finding has a suggested rewrite. Gherkin is the Given/When/Then text format that behavior-driven development (BDD) tools read. This page is not for you if the feature files do not exist yet (use the write mode of `bdd-scenarios`) or if the criteria are vague (use [Refine a vague story](qa-refine-a-vague-story.md) first). You must say if the files are good enough to build against.",
+      "group": "QA and test",
+      "roles": "QA engineer. The developer who wrote the files answers the findings.",
+      "skills": [
+        "bdd-scenarios"
+      ],
+      "source_path": "wiki/use-cases/qa-review-feature-files.md",
+      "source_url": "https://github.com/Ryan-Thurman/agent-toolbelt/blob/main/wiki/use-cases/qa-review-feature-files.md"
+    },
+    {
+      "slug": "qa-set-up-a-bdd-runner",
+      "title": "Set up a BDD runner when you only have feature files",
+      "summary": "This page is for a QA engineer whose team has Gherkin feature files but no BDD runner (a tool that executes Given/When/Then text as tests) in the repository. You get a runner plan, a proposed install, and one scenario outline that runs against your API and fails for a reason you can read. Scenarios that need a database stay unwired. This page covers scenarios that call an HTTP API. Browser scenarios need another path (see Decision points).",
+      "group": "QA and test",
+      "roles": "QA engineer. A developer helps with the CI job.",
+      "skills": [
+        "bdd-scenarios"
+      ],
+      "source_path": "wiki/use-cases/qa-set-up-a-bdd-runner.md",
+      "source_url": "https://github.com/Ryan-Thurman/agent-toolbelt/blob/main/wiki/use-cases/qa-set-up-a-bdd-runner.md"
+    },
+    {
+      "slug": "qa-turn-test-cases-into-tests",
+      "title": "Turn approved test cases into automated unit tests",
+      "summary": "This page is for a QA engineer or developer who has approved test cases and must turn them into automated tests. You get unit tests that run in the repository's own test runner. Each test has a red run (the test fails) when the behavior it guards breaks. It also has a green run (the test passes) on the working code. This page covers a test that locks a fixed bug. That test is red on the code from before the fix. A test that pins current behavior is red when you break that behavior on purpose.",
+      "group": "QA and test",
+      "roles": "QA engineer, developer",
+      "skills": [
+        "cover"
+      ],
+      "source_path": "wiki/use-cases/qa-turn-test-cases-into-tests.md",
+      "source_url": "https://github.com/Ryan-Thurman/agent-toolbelt/blob/main/wiki/use-cases/qa-turn-test-cases-into-tests.md"
     },
     {
       "slug": "dev-answer-review-comments",
@@ -3034,77 +3096,156 @@ window.AGENT_TOOLBELT_DATA = {
       "source_url": "https://github.com/Ryan-Thurman/agent-toolbelt/blob/main/wiki/use-cases/dev-swap-a-library-everywhere.md"
     },
     {
-      "slug": "journey-bug-report-to-regression-test",
-      "title": "Take a bug from report to a locked regression test",
-      "summary": "This page is for a developer and a QA engineer who share one bug. It takes the bug from the first report to a branch that is ready for review. You get a fix with a regression test (a test that fails when the bug returns). You also get a QA case list for the change and a readiness verdict. Each stage links to the use-case page that shows it in detail.",
-      "group": "End-to-end journeys",
-      "roles": "Developer, QA engineer",
+      "slug": "product-compare-an-ask-with-the-product",
+      "title": "Check whether the product already does what was asked",
+      "summary": "This page is for a product owner who gets a request such as \"can users follow tags and see a feed of them?\" You must say whether the product can do it today. You get a report with a status for each requested outcome, evidence from the code, and a ranked list of open decisions.",
+      "group": "Product",
+      "roles": "Product owner. A developer reads the evidence and the product owner answers the questions.",
       "skills": [
-        "bug-to-fix",
-        "test-case-design",
-        "cover",
-        "pr-review"
+        "shape-up"
       ],
-      "source_path": "wiki/use-cases/journey-bug-report-to-regression-test.md",
-      "source_url": "https://github.com/Ryan-Thurman/agent-toolbelt/blob/main/wiki/use-cases/journey-bug-report-to-regression-test.md"
+      "source_path": "wiki/use-cases/product-compare-an-ask-with-the-product.md",
+      "source_url": "https://github.com/Ryan-Thurman/agent-toolbelt/blob/main/wiki/use-cases/product-compare-an-ask-with-the-product.md"
     },
     {
-      "slug": "journey-idea-to-release",
-      "title": "From an idea to an accepted release",
-      "summary": "This page is for a team lead or product owner who plans one feature from idea to an accepted release with agents and people. It maps the seven stages of the idea-to-release workflow to nine earlier runs and shows why no gate reaches `Ready`. No run released the feature. You get the use-case page for each stage, the gate verdict that the evidence supports, and the approvals that stay with people.",
-      "group": "End-to-end journeys",
-      "roles": "Product owner, team lead, QA lead, developers. Each stage names its own owner.",
+      "slug": "product-decide-whether-to-build",
+      "title": "Decide whether a requested feature is worth building",
+      "summary": "This page is for a product manager who gets a feature request and must decide whether to build it. You get a report that checks each claim behind the request and compares the options. It names the riskiest assumptions and ends in one decision: ready to shape, needs evidence, or deferred.",
+      "group": "Product",
+      "roles": "Product manager",
       "skills": [
-        "product-discovery",
+        "product-discovery"
+      ],
+      "source_path": "wiki/use-cases/product-decide-whether-to-build.md",
+      "source_url": "https://github.com/Ryan-Thurman/agent-toolbelt/blob/main/wiki/use-cases/product-decide-whether-to-build.md"
+    },
+    {
+      "slug": "product-review-outcomes-after-release",
+      "title": "Review product outcomes after a release",
+      "summary": "This page is for a product manager who ships a change and must judge whether it moved the outcome. You get a review with the original hypothesis, the before and after comparisons that are valid, and the uncertainty of the result. It ends with one of four decisions: `Continue`, `Revise`, `Stop`, or `Gather evidence`.",
+      "group": "Product",
+      "roles": "Product manager",
+      "skills": [
+        "product-outcome-review"
+      ],
+      "source_path": "wiki/use-cases/product-review-outcomes-after-release.md",
+      "source_url": "https://github.com/Ryan-Thurman/agent-toolbelt/blob/main/wiki/use-cases/product-review-outcomes-after-release.md"
+    },
+    {
+      "slug": "product-shape-an-idea-into-tickets",
+      "title": "Shape an idea into a brief and tickets",
+      "summary": "This page is for a product owner who has a rough idea. The idea needs a brief that the team approves and tickets that the team can build. You finish with an approved brief, ticket files in build order, and a preview of the issues that your tracker receives after you confirm. A tracker is a system, such as GitHub Issues, Jira, or Azure Boards, that holds tickets.",
+      "group": "Product",
+      "roles": "Product owner. In practice, a developer helps with questions that the code cannot answer.",
+      "skills": [
         "shape-up",
-        "system-design",
-        "test-case-design",
-        "story-refinement",
-        "bdd-scenarios",
-        "phased-delivery",
-        "pr-review",
-        "ship-it",
-        "product-outcome-review",
-        "papercuts"
+        "ticket-sync"
       ],
-      "source_path": "wiki/use-cases/journey-idea-to-release.md",
-      "source_url": "https://github.com/Ryan-Thurman/agent-toolbelt/blob/main/wiki/use-cases/journey-idea-to-release.md"
+      "source_path": "wiki/use-cases/product-shape-an-idea-into-tickets.md",
+      "source_url": "https://github.com/Ryan-Thurman/agent-toolbelt/blob/main/wiki/use-cases/product-shape-an-idea-into-tickets.md"
     },
     {
-      "slug": "journey-incident-to-prevention",
-      "title": "From an incident to prevention",
-      "summary": "This page is for an SRE and a tech lead after an incident that they have mitigated. You get a fix with a regression test and a register of the failure modes that the incident showed (a table of what can fail and what detects each). You also get test plans for the gaps and a readiness check that shows which gaps are still open. Each stage links to the use-case page that shows it in detail.",
-      "group": "End-to-end journeys",
-      "roles": "SRE, tech lead, with a developer for the fix and QA for the tests",
+      "slug": "product-synthesize-interview-notes",
+      "title": "Find themes in a set of interview notes",
+      "summary": "This page is for a product researcher who has several interview notes and must learn what they show before anyone decides what to build. You get a report where each theme links to the notes that support it, the notes that contradict it, and the limits of the sample.",
+      "group": "Product",
+      "roles": "Product researcher",
+      "skills": [
+        "user-research-synthesis"
+      ],
+      "source_path": "wiki/use-cases/product-synthesize-interview-notes.md",
+      "source_url": "https://github.com/Ryan-Thurman/agent-toolbelt/blob/main/wiki/use-cases/product-synthesize-interview-notes.md"
+    },
+    {
+      "slug": "arch-answer-an-architecture-question",
+      "title": "Answer an architecture question",
+      "summary": "This page is for a developer or architect with one focused architecture question about an existing codebase. You get a direct answer with its evidence and the alternatives that the code rules out. You also get a list of decisions that only the owner can make. To design a whole feature, use [Design a new capability](arch-design-a-new-capability.md) instead.",
+      "group": "Architecture, SRE, and security",
+      "roles": "Developer, architect",
+      "skills": [
+        "system-design"
+      ],
+      "source_path": "wiki/use-cases/arch-answer-an-architecture-question.md",
+      "source_url": "https://github.com/Ryan-Thurman/agent-toolbelt/blob/main/wiki/use-cases/arch-answer-an-architecture-question.md"
+    },
+    {
+      "slug": "arch-design-a-new-capability",
+      "title": "Design a new capability before you build it",
+      "summary": "This page is for an architect or senior developer who must design a new capability in an existing codebase. You get a design document with diagrams and recorded decisions, a threat review, and a reliability review. A verdict, such as `Needs decision`, says whether the design can go to planning.",
+      "group": "Architecture, SRE, and security",
+      "roles": "Architect or senior developer",
+      "skills": [
+        "system-design",
+        "threat-model",
+        "reliability-review"
+      ],
+      "source_path": "wiki/use-cases/arch-design-a-new-capability.md",
+      "source_url": "https://github.com/Ryan-Thurman/agent-toolbelt/blob/main/wiki/use-cases/arch-design-a-new-capability.md"
+    },
+    {
+      "slug": "arch-right-size-a-plan",
+      "title": "Right-size a plan that looks over-built",
+      "summary": "This page is for a tech lead who suspects that a delivery plan builds more than the requirements need. You get a list of the parts that have no ground and a revised plan with fewer parts. Each deferred part has a trigger that tells you when to add it back.",
+      "group": "Architecture, SRE, and security",
+      "roles": "Tech lead",
+      "skills": [
+        "phased-delivery"
+      ],
+      "source_path": "wiki/use-cases/arch-right-size-a-plan.md",
+      "source_url": "https://github.com/Ryan-Thurman/agent-toolbelt/blob/main/wiki/use-cases/arch-right-size-a-plan.md"
+    },
+    {
+      "slug": "sre-follow-up-an-incident",
+      "title": "Follow up an incident after it is mitigated",
+      "summary": "This page is for an SRE who has mitigated an incident and must now fix the cause and close the gaps that let it run. You get a root cause with a regression test and a register of failure modes (a table of what can fail, how you detect it, and who owns the control) with open decisions. You also get failure scenario cards and a case list for the fix and the code next to it.",
+      "group": "Architecture, SRE, and security",
+      "roles": "SRE, with a developer for the fix",
       "skills": [
         "bug-to-fix",
         "reliability-review",
         "failure-scenario-design",
         "test-case-design",
-        "cover",
-        "pr-review",
-        "ship-it"
+        "cover"
       ],
-      "source_path": "wiki/use-cases/journey-incident-to-prevention.md",
-      "source_url": "https://github.com/Ryan-Thurman/agent-toolbelt/blob/main/wiki/use-cases/journey-incident-to-prevention.md"
+      "source_path": "wiki/use-cases/sre-follow-up-an-incident.md",
+      "source_url": "https://github.com/Ryan-Thurman/agent-toolbelt/blob/main/wiki/use-cases/sre-follow-up-an-incident.md"
     },
     {
-      "slug": "journey-modernize-a-legacy-area",
-      "title": "Pay down the debt in an old area of the code",
-      "summary": "This page is for a tech lead who must pay down debt in one old area and keep its behavior. You leave with an updated debt register, tests that pin the code, one cleanup, and one gate status. Each stage links to the use case that shows it.",
-      "group": "End-to-end journeys",
-      "roles": "Tech lead, with a developer for the code stages and a QA lead for the coverage stage",
+      "slug": "sre-run-a-production-readiness-review",
+      "title": "Run a production readiness review before a launch",
+      "summary": "This page is for an SRE or a tech lead who must decide if a service is ready for its first launch. You get a status for each reliability requirement (`Verified`, `Failed`, or `Not verified`). You also get a list of the missing evidence and a GO or NO-GO verdict with its blocking gaps.",
+      "group": "Architecture, SRE, and security",
+      "roles": "SRE, tech lead",
       "skills": [
-        "tech-debt-discovery",
-        "tech-backlog-assessment",
-        "cover",
-        "crap-analysis",
-        "simplify",
-        "retrofit",
-        "code-quality-gate"
+        "reliability-review",
+        "ship-it"
       ],
-      "source_path": "wiki/use-cases/journey-modernize-a-legacy-area.md",
-      "source_url": "https://github.com/Ryan-Thurman/agent-toolbelt/blob/main/wiki/use-cases/journey-modernize-a-legacy-area.md"
+      "source_path": "wiki/use-cases/sre-run-a-production-readiness-review.md",
+      "source_url": "https://github.com/Ryan-Thurman/agent-toolbelt/blob/main/wiki/use-cases/sre-run-a-production-readiness-review.md"
+    },
+    {
+      "slug": "sec-audit-existing-code",
+      "title": "Audit the auth area of existing code",
+      "summary": "This page is for a developer or security engineer who must audit code that already runs, such as the login and token code of a service. You get a read-only report of evidence-backed findings, the risk that remains, and a statement of what the audit did not check. You can also ask for a list of the controls that work.",
+      "group": "Architecture, SRE, and security",
+      "roles": "Developer or security engineer",
+      "skills": [
+        "security-audit"
+      ],
+      "source_path": "wiki/use-cases/sec-audit-existing-code.md",
+      "source_url": "https://github.com/Ryan-Thurman/agent-toolbelt/blob/main/wiki/use-cases/sec-audit-existing-code.md"
+    },
+    {
+      "slug": "sec-threat-model-a-design",
+      "title": "Review the threats of a design before it is built",
+      "summary": "This page is for a security-minded engineer who must review a design before anyone builds it. You get a threat model: the assets, the attack paths, a testable security requirement for each accepted fix, and the risk that remains.",
+      "group": "Architecture, SRE, and security",
+      "roles": "Security engineer, tech lead, or developer who reviews a design",
+      "skills": [
+        "threat-model"
+      ],
+      "source_path": "wiki/use-cases/sec-threat-model-a-design.md",
+      "source_url": "https://github.com/Ryan-Thurman/agent-toolbelt/blob/main/wiki/use-cases/sec-threat-model-a-design.md"
     },
     {
       "slug": "lead-choose-tech-debt-to-pay",
@@ -3270,220 +3411,6 @@ window.AGENT_TOOLBELT_DATA = {
       "source_url": "https://github.com/Ryan-Thurman/agent-toolbelt/blob/main/wiki/use-cases/ops-unattended-agent-runs.md"
     },
     {
-      "slug": "product-compare-an-ask-with-the-product",
-      "title": "Check whether the product already does what was asked",
-      "summary": "This page is for a product owner who gets a request such as \"can users follow tags and see a feed of them?\" You must say whether the product can do it today. You get a report with a status for each requested outcome, evidence from the code, and a ranked list of open decisions.",
-      "group": "Product",
-      "roles": "Product owner. A developer reads the evidence and the product owner answers the questions.",
-      "skills": [
-        "shape-up"
-      ],
-      "source_path": "wiki/use-cases/product-compare-an-ask-with-the-product.md",
-      "source_url": "https://github.com/Ryan-Thurman/agent-toolbelt/blob/main/wiki/use-cases/product-compare-an-ask-with-the-product.md"
-    },
-    {
-      "slug": "product-decide-whether-to-build",
-      "title": "Decide whether a requested feature is worth building",
-      "summary": "This page is for a product manager who gets a feature request and must decide whether to build it. You get a report that checks each claim behind the request and compares the options. It names the riskiest assumptions and ends in one decision: ready to shape, needs evidence, or deferred.",
-      "group": "Product",
-      "roles": "Product manager",
-      "skills": [
-        "product-discovery"
-      ],
-      "source_path": "wiki/use-cases/product-decide-whether-to-build.md",
-      "source_url": "https://github.com/Ryan-Thurman/agent-toolbelt/blob/main/wiki/use-cases/product-decide-whether-to-build.md"
-    },
-    {
-      "slug": "product-review-outcomes-after-release",
-      "title": "Review product outcomes after a release",
-      "summary": "This page is for a product manager who ships a change and must judge whether it moved the outcome. You get a review with the original hypothesis, the before and after comparisons that are valid, and the uncertainty of the result. It ends with one of four decisions: `Continue`, `Revise`, `Stop`, or `Gather evidence`.",
-      "group": "Product",
-      "roles": "Product manager",
-      "skills": [
-        "product-outcome-review"
-      ],
-      "source_path": "wiki/use-cases/product-review-outcomes-after-release.md",
-      "source_url": "https://github.com/Ryan-Thurman/agent-toolbelt/blob/main/wiki/use-cases/product-review-outcomes-after-release.md"
-    },
-    {
-      "slug": "product-shape-an-idea-into-tickets",
-      "title": "Shape an idea into a brief and tickets",
-      "summary": "This page is for a product owner who has a rough idea. The idea needs a brief that the team approves and tickets that the team can build. You finish with an approved brief, ticket files in build order, and a preview of the issues that your tracker receives after you confirm. A tracker is a system, such as GitHub Issues, Jira, or Azure Boards, that holds tickets.",
-      "group": "Product",
-      "roles": "Product owner. In practice, a developer helps with questions that the code cannot answer.",
-      "skills": [
-        "shape-up",
-        "ticket-sync"
-      ],
-      "source_path": "wiki/use-cases/product-shape-an-idea-into-tickets.md",
-      "source_url": "https://github.com/Ryan-Thurman/agent-toolbelt/blob/main/wiki/use-cases/product-shape-an-idea-into-tickets.md"
-    },
-    {
-      "slug": "product-synthesize-interview-notes",
-      "title": "Find themes in a set of interview notes",
-      "summary": "This page is for a product researcher who has several interview notes and must learn what they show before anyone decides what to build. You get a report where each theme links to the notes that support it, the notes that contradict it, and the limits of the sample.",
-      "group": "Product",
-      "roles": "Product researcher",
-      "skills": [
-        "user-research-synthesis"
-      ],
-      "source_path": "wiki/use-cases/product-synthesize-interview-notes.md",
-      "source_url": "https://github.com/Ryan-Thurman/agent-toolbelt/blob/main/wiki/use-cases/product-synthesize-interview-notes.md"
-    },
-    {
-      "slug": "qa-find-coverage-gaps-before-release",
-      "title": "Find coverage gaps before a release",
-      "summary": "This page is for a QA lead who has one week before a release and does not know where the tests are weak. You get a ranked list of coverage gaps with a risk for each. You also get a list of risky functions, scored by complexity and coverage.",
-      "group": "QA and test",
-      "roles": "QA lead, with a developer for step 5",
-      "skills": [
-        "cover",
-        "crap-analysis"
-      ],
-      "source_path": "wiki/use-cases/qa-find-coverage-gaps-before-release.md",
-      "source_url": "https://github.com/Ryan-Thurman/agent-toolbelt/blob/main/wiki/use-cases/qa-find-coverage-gaps-before-release.md"
-    },
-    {
-      "slug": "qa-map-risk-areas-in-an-inherited-repo",
-      "title": "Map risk areas in an inherited repository",
-      "summary": "This page is for a QA lead whose team inherited a repository and must decide where testing effort goes first. You get a reviewed risk map of the repository and a prioritized set of test cases for the riskiest area.",
-      "group": "QA and test",
-      "roles": "QA lead, with one developer or product owner to answer questions",
-      "skills": [
-        "risk-area-mapping",
-        "test-case-design"
-      ],
-      "source_path": "wiki/use-cases/qa-map-risk-areas-in-an-inherited-repo.md",
-      "source_url": "https://github.com/Ryan-Thurman/agent-toolbelt/blob/main/wiki/use-cases/qa-map-risk-areas-in-an-inherited-repo.md"
-    },
-    {
-      "slug": "qa-plan-staging-failure-tests",
-      "title": "Plan failure tests for a service in staging",
-      "summary": "This page is for a QA or SRE engineer who must plan failure tests for a service before launch. You get a reliability review of the service and a set of failure-scenario cards. You get plans, not results: no test runs. Each card has a testable hypothesis and a Given/When/Then form (a scenario in three plain steps: a starting state, an event, and an expected outcome). Each card also has a test-first case, which is a test that you write before the fix and that fails until the fix exists. The cards that need a real platform fault also get a staging experiment plan with abort conditions and no-go checks.",
-      "group": "QA and test",
-      "roles": "QA engineer, SRE",
-      "skills": [
-        "reliability-review",
-        "failure-scenario-design"
-      ],
-      "source_path": "wiki/use-cases/qa-plan-staging-failure-tests.md",
-      "source_url": "https://github.com/Ryan-Thurman/agent-toolbelt/blob/main/wiki/use-cases/qa-plan-staging-failure-tests.md"
-    },
-    {
-      "slug": "qa-plan-tests-for-a-small-pr",
-      "title": "Plan tests for a small authentication pull request",
-      "summary": "This page is for a QA engineer who gets a small pull request in an authentication area and must decide what to test. You get a short, prioritized case list, a list of the code that the change affects, and a statement about whether the existing tests cover it.",
-      "group": "QA and test",
-      "roles": "QA engineer",
-      "skills": [
-        "test-case-design"
-      ],
-      "source_path": "wiki/use-cases/qa-plan-tests-for-a-small-pr.md",
-      "source_url": "https://github.com/Ryan-Thurman/agent-toolbelt/blob/main/wiki/use-cases/qa-plan-tests-for-a-small-pr.md"
-    },
-    {
-      "slug": "qa-refine-a-vague-story",
-      "title": "Make a vague story testable before the sprint starts",
-      "summary": "This page is for a QA engineer who joins refinement with a one-line story and must make it testable. You finish with a refined spec, one question packet for each owner, and a readiness verdict. You also get Gherkin (Given/When/Then text) scenarios that trace to the criteria.",
-      "group": "QA and test",
-      "roles": "QA engineer. The product owner and a developer answer the questions.",
-      "skills": [
-        "story-refinement",
-        "bdd-scenarios"
-      ],
-      "source_path": "wiki/use-cases/qa-refine-a-vague-story.md",
-      "source_url": "https://github.com/Ryan-Thurman/agent-toolbelt/blob/main/wiki/use-cases/qa-refine-a-vague-story.md"
-    },
-    {
-      "slug": "qa-review-feature-files",
-      "title": "Review feature files that a developer wrote",
-      "summary": "Use this page to review feature files that a developer wrote. You get a list of findings, ranked by risk, and each finding has a suggested rewrite. Gherkin is the Given/When/Then text format that behavior-driven development (BDD) tools read. This page is not for you if the feature files do not exist yet (use the write mode of `bdd-scenarios`) or if the criteria are vague (use [Refine a vague story](qa-refine-a-vague-story.md) first). You must say if the files are good enough to build against.",
-      "group": "QA and test",
-      "roles": "QA engineer. The developer who wrote the files answers the findings.",
-      "skills": [
-        "bdd-scenarios"
-      ],
-      "source_path": "wiki/use-cases/qa-review-feature-files.md",
-      "source_url": "https://github.com/Ryan-Thurman/agent-toolbelt/blob/main/wiki/use-cases/qa-review-feature-files.md"
-    },
-    {
-      "slug": "qa-set-up-a-bdd-runner",
-      "title": "Set up a BDD runner when you only have feature files",
-      "summary": "This page is for a QA engineer whose team has Gherkin feature files but no BDD runner (a tool that executes Given/When/Then text as tests) in the repository. You get a runner plan, a proposed install, and one scenario outline that runs against your API and fails for a reason you can read. Scenarios that need a database stay unwired. This page covers scenarios that call an HTTP API. Browser scenarios need another path (see Decision points).",
-      "group": "QA and test",
-      "roles": "QA engineer. A developer helps with the CI job.",
-      "skills": [
-        "bdd-scenarios"
-      ],
-      "source_path": "wiki/use-cases/qa-set-up-a-bdd-runner.md",
-      "source_url": "https://github.com/Ryan-Thurman/agent-toolbelt/blob/main/wiki/use-cases/qa-set-up-a-bdd-runner.md"
-    },
-    {
-      "slug": "qa-turn-test-cases-into-tests",
-      "title": "Turn approved test cases into automated unit tests",
-      "summary": "This page is for a QA engineer or developer who has approved test cases and must turn them into automated tests. You get unit tests that run in the repository's own test runner. Each test has a red run (the test fails) when the behavior it guards breaks. It also has a green run (the test passes) on the working code. This page covers a test that locks a fixed bug. That test is red on the code from before the fix. A test that pins current behavior is red when you break that behavior on purpose.",
-      "group": "QA and test",
-      "roles": "QA engineer, developer",
-      "skills": [
-        "cover"
-      ],
-      "source_path": "wiki/use-cases/qa-turn-test-cases-into-tests.md",
-      "source_url": "https://github.com/Ryan-Thurman/agent-toolbelt/blob/main/wiki/use-cases/qa-turn-test-cases-into-tests.md"
-    },
-    {
-      "slug": "sec-audit-existing-code",
-      "title": "Audit the auth area of existing code",
-      "summary": "This page is for a developer or security engineer who must audit code that already runs, such as the login and token code of a service. You get a read-only report of evidence-backed findings, the risk that remains, and a statement of what the audit did not check. You can also ask for a list of the controls that work.",
-      "group": "Architecture, SRE, and security",
-      "roles": "Developer or security engineer",
-      "skills": [
-        "security-audit"
-      ],
-      "source_path": "wiki/use-cases/sec-audit-existing-code.md",
-      "source_url": "https://github.com/Ryan-Thurman/agent-toolbelt/blob/main/wiki/use-cases/sec-audit-existing-code.md"
-    },
-    {
-      "slug": "sec-threat-model-a-design",
-      "title": "Review the threats of a design before it is built",
-      "summary": "This page is for a security-minded engineer who must review a design before anyone builds it. You get a threat model: the assets, the attack paths, a testable security requirement for each accepted fix, and the risk that remains.",
-      "group": "Architecture, SRE, and security",
-      "roles": "Security engineer, tech lead, or developer who reviews a design",
-      "skills": [
-        "threat-model"
-      ],
-      "source_path": "wiki/use-cases/sec-threat-model-a-design.md",
-      "source_url": "https://github.com/Ryan-Thurman/agent-toolbelt/blob/main/wiki/use-cases/sec-threat-model-a-design.md"
-    },
-    {
-      "slug": "sre-follow-up-an-incident",
-      "title": "Follow up an incident after it is mitigated",
-      "summary": "This page is for an SRE who has mitigated an incident and must now fix the cause and close the gaps that let it run. You get a root cause with a regression test and a register of failure modes (a table of what can fail, how you detect it, and who owns the control) with open decisions. You also get failure scenario cards and a case list for the fix and the code next to it.",
-      "group": "Architecture, SRE, and security",
-      "roles": "SRE, with a developer for the fix",
-      "skills": [
-        "bug-to-fix",
-        "reliability-review",
-        "failure-scenario-design",
-        "test-case-design",
-        "cover"
-      ],
-      "source_path": "wiki/use-cases/sre-follow-up-an-incident.md",
-      "source_url": "https://github.com/Ryan-Thurman/agent-toolbelt/blob/main/wiki/use-cases/sre-follow-up-an-incident.md"
-    },
-    {
-      "slug": "sre-run-a-production-readiness-review",
-      "title": "Run a production readiness review before a launch",
-      "summary": "This page is for an SRE or a tech lead who must decide if a service is ready for its first launch. You get a status for each reliability requirement (`Verified`, `Failed`, or `Not verified`). You also get a list of the missing evidence and a GO or NO-GO verdict with its blocking gaps.",
-      "group": "Architecture, SRE, and security",
-      "roles": "SRE, tech lead",
-      "skills": [
-        "reliability-review",
-        "ship-it"
-      ],
-      "source_path": "wiki/use-cases/sre-run-a-production-readiness-review.md",
-      "source_url": "https://github.com/Ryan-Thurman/agent-toolbelt/blob/main/wiki/use-cases/sre-run-a-production-readiness-review.md"
-    },
-    {
       "slug": "ui-clean-up-react-effects",
       "title": "Clean up React effects and re-render problems",
       "summary": "This page is for a front-end developer whose React components have effects that run too often or state that re-renders too much. You get a scan report that lists each effect and each rule that applies, and one safe fix with a test that fails before the fix and passes after it.",
@@ -3531,6 +3458,79 @@ window.AGENT_TOOLBELT_DATA = {
       ],
       "source_path": "wiki/use-cases/write-make-a-runbook-plain.md",
       "source_url": "https://github.com/Ryan-Thurman/agent-toolbelt/blob/main/wiki/use-cases/write-make-a-runbook-plain.md"
+    },
+    {
+      "slug": "journey-bug-report-to-regression-test",
+      "title": "Take a bug from report to a locked regression test",
+      "summary": "This page is for a developer and a QA engineer who share one bug. It takes the bug from the first report to a branch that is ready for review. You get a fix with a regression test (a test that fails when the bug returns). You also get a QA case list for the change and a readiness verdict. Each stage links to the use-case page that shows it in detail.",
+      "group": "End-to-end journeys",
+      "roles": "Developer, QA engineer",
+      "skills": [
+        "bug-to-fix",
+        "test-case-design",
+        "cover",
+        "pr-review"
+      ],
+      "source_path": "wiki/use-cases/journey-bug-report-to-regression-test.md",
+      "source_url": "https://github.com/Ryan-Thurman/agent-toolbelt/blob/main/wiki/use-cases/journey-bug-report-to-regression-test.md"
+    },
+    {
+      "slug": "journey-idea-to-release",
+      "title": "From an idea to an accepted release",
+      "summary": "This page is for a team lead or product owner who plans one feature from idea to an accepted release with agents and people. It maps the seven stages of the idea-to-release workflow to nine earlier runs and shows why no gate reaches `Ready`. No run released the feature. You get the use-case page for each stage, the gate verdict that the evidence supports, and the approvals that stay with people.",
+      "group": "End-to-end journeys",
+      "roles": "Product owner, team lead, QA lead, developers. Each stage names its own owner.",
+      "skills": [
+        "product-discovery",
+        "shape-up",
+        "system-design",
+        "test-case-design",
+        "story-refinement",
+        "bdd-scenarios",
+        "phased-delivery",
+        "pr-review",
+        "ship-it",
+        "product-outcome-review",
+        "papercuts"
+      ],
+      "source_path": "wiki/use-cases/journey-idea-to-release.md",
+      "source_url": "https://github.com/Ryan-Thurman/agent-toolbelt/blob/main/wiki/use-cases/journey-idea-to-release.md"
+    },
+    {
+      "slug": "journey-incident-to-prevention",
+      "title": "From an incident to prevention",
+      "summary": "This page is for an SRE and a tech lead after an incident that they have mitigated. You get a fix with a regression test and a register of the failure modes that the incident showed (a table of what can fail and what detects each). You also get test plans for the gaps and a readiness check that shows which gaps are still open. Each stage links to the use-case page that shows it in detail.",
+      "group": "End-to-end journeys",
+      "roles": "SRE, tech lead, with a developer for the fix and QA for the tests",
+      "skills": [
+        "bug-to-fix",
+        "reliability-review",
+        "failure-scenario-design",
+        "test-case-design",
+        "cover",
+        "pr-review",
+        "ship-it"
+      ],
+      "source_path": "wiki/use-cases/journey-incident-to-prevention.md",
+      "source_url": "https://github.com/Ryan-Thurman/agent-toolbelt/blob/main/wiki/use-cases/journey-incident-to-prevention.md"
+    },
+    {
+      "slug": "journey-modernize-a-legacy-area",
+      "title": "Pay down the debt in an old area of the code",
+      "summary": "This page is for a tech lead who must pay down debt in one old area and keep its behavior. You leave with an updated debt register, tests that pin the code, one cleanup, and one gate status. Each stage links to the use case that shows it.",
+      "group": "End-to-end journeys",
+      "roles": "Tech lead, with a developer for the code stages and a QA lead for the coverage stage",
+      "skills": [
+        "tech-debt-discovery",
+        "tech-backlog-assessment",
+        "cover",
+        "crap-analysis",
+        "simplify",
+        "retrofit",
+        "code-quality-gate"
+      ],
+      "source_path": "wiki/use-cases/journey-modernize-a-legacy-area.md",
+      "source_url": "https://github.com/Ryan-Thurman/agent-toolbelt/blob/main/wiki/use-cases/journey-modernize-a-legacy-area.md"
     }
   ],
   "tooling_audit": [
